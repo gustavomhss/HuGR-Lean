@@ -1,0 +1,11 @@
+   Compiling runner-fixture v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-runners/fixtures/runners/native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.31s
+     Running unittests main.rs (target/debug/deps/runner_fixture-d9245d9ac050ef78)
+
+running 3 tests
+test tests::network ... ignored, needs network 🔥
+test tests::arithmetic ... ok
+test tests::café ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

@@ -1,5 +1,0 @@
-=== RUN   TestChatty
-    chatty_test.go:10: useful diagnostic log
---- PASS: TestChatty (0.00s)
-PASS
-ok  	example.com/demo	0.002s

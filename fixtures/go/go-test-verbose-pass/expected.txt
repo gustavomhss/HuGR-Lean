@@ -1,1 +1,0 @@
-ok  	example.com/demo/math	0.003s

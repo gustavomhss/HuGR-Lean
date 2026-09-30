@@ -1,6 +1,0 @@
-On branch main
-Your branch is up to date with 'origin/main'.
-Changes to be committed:
-  modified:   src/main.rs
-  new file:   src/utils.rs
-  deleted:    src/old_file.rs

@@ -1,4 +1,0 @@
-=== RUN   TestBroken
-    math_test.go:15: expected 5, got 3
---- FAIL: TestBroken (0.01s)
-FAIL	example.com/demo/math	0.015s

@@ -1,0 +1,8 @@
+[package]
+name = "runner-fixture"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "runner-fixture"
+path = "main.rs"

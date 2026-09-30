@@ -1,112 +1,37 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "node:test";
+import { tokenizeCommand } from "../src/core/command.js";
 
-import {
-  identifyInvocation,
-  recognizeShellCommand,
-  type CommandIdentity,
-} from "../src/command.js";
-import {
-  PROTOCOL_V1,
-  type ObservationV1,
-  type ShellDialectV1,
-  unknownTermination,
-} from "../src/types.js";
-
-function direct(command: string, dialect: ShellDialectV1): CommandIdentity {
-  const recognition = recognizeShellCommand(command, dialect);
-  assert.equal(recognition.kind, "direct", command);
-  if (recognition.kind !== "direct") {
-    throw new Error("expected direct recognition");
-  }
-  return recognition.identity;
-}
-
-function complex(command: string, dialect: ShellDialectV1 = "unknown"): void {
-  assert.deepEqual(recognizeShellCommand(command, dialect), {
-    kind: "complex_or_unknown",
-  });
-}
-
-test("common bare commands route conservatively", () => {
-  assert.deepEqual(direct("cargo test", "unknown"), {
-    executable: "cargo",
-    program: "cargo",
-    args: ["test"],
-  });
-  assert.deepEqual(direct("/usr/bin/git status --short", "unknown"), {
-    executable: "/usr/bin/git",
-    program: "git",
-    args: ["status", "--short"],
-  });
-  assert.deepEqual(direct("./node_modules/.bin/eslint src/lib.ts", "unknown"), {
-    executable: "./node_modules/.bin/eslint",
-    program: "eslint",
-    args: ["src/lib.ts"],
-  });
-});
-
-test("unknown dialect rejects shell semantics", () => {
-  for (const command of [
-    "cargo test 'foo'",
-    'cargo test "foo"',
-    "cargo test foo\\ bar",
-    "echo $HOME",
-    "echo ${HOME}",
-    "echo $(pwd)",
-    "echo `pwd`",
-    "echo ~",
-    "echo *.ts",
-    "cargo test | tee out",
-    "cargo test || echo fail",
-    "cargo test && echo ok",
-    "cargo test ; echo ok",
-    "cargo test > out",
-    "sleep 1 &",
-    "( cargo test )",
-    "cargo test\necho done",
-    "echo café",
-    "echo \u001b[31mred",
-  ]) {
-    complex(command);
+test("literal invocations keep argument boundaries and paths without rewriting", () => {
+  for (const [command, expected] of [
+    ["cargo test --package lean", ["cargo", "test", "--package", "lean"]],
+    [" /usr/bin/git\t-C ./repo status --short ", ["/usr/bin/git", "-C", "./repo", "status", "--short"]],
+    ["./tool 'path with spaces' \"another path\" '' --color=never", ["./tool", "path with spaces", "another path", "", "--color=never"]],
+    ["C:/tools/cargo.exe test ../project", ["C:/tools/cargo.exe", "test", "../project"]],
+    ["tool arg=value '=sh' \"=other\"", ["tool", "arg=value", "=sh", "=other"]],
+  ] as const) {
+    const argv = tokenizeCommand(command);
+    assert.deepEqual(argv, expected);
+    assert.equal(Object.isFrozen(argv), true);
   }
 });
 
-test("posix skips only unambiguous leading assignments", () => {
-  assert.deepEqual(
-    direct("FOO=bar RUSTFLAGS=-Dwarnings cargo test --locked", "posix"),
-    {
-      executable: "cargo",
-      program: "cargo",
-      args: ["test", "--locked"],
-    },
-  );
-  complex("FOO=$BAR cargo test", "posix");
-  complex("FOO=bar", "posix");
-  complex("FOO=bar cargo test", "unknown");
+test("reject shell syntax, expansions and ambiguous quoting, including inside quotes", () => {
+  const commands = [
+    "", " \t ", "FOO=bar cargo test", "FOO='' cargo test", "env FOO=bar cargo test && echo ok",
+    "cargo test; echo ok", "cargo test && echo ok", "cargo test || echo ok", "cargo test | tee log",
+    "cargo test &", "cargo test >log", "cargo test <input", "cargo test 2>&1", "cargo test <<<x",
+    "cargo $(echo test)", "cargo `echo test`", "cargo ${MODE}", "cargo $MODE", "cargo %MODE%", "cargo !MODE!",
+    "cargo test\n", "cargo test\r", "cargo test\\", "cargo 'a\\b'", "cargo \"$MODE\"",
+    "cargo test # comment", "(cargo test)", "cargo *", "cargo ?.ts", "cargo ~/project", "cargo {a,b}",
+    "cargo [ab]", "cargo @args", "cargo ^test", "cargo \"unterminated", "cargo 'unterminated",
+    "ca\"rgo\" test", "cargo --path=\"a b\"", "cargo 'a'\"b\"", "cargo \"a\"b", "'cargo' test", '"cargo" test',
+    "cargo 'a;b'", "cargo \"a|b\"", "cargo 'a\tb'", "cargo \u001b[31mtest", "cargo café", "-cargo test",
+    "=sh", "cargo =sh", "cargo =/usr/bin/sh", "cargo ==sh",
+  ];
+  for (const command of commands) assert.equal(tokenizeCommand(command), undefined, JSON.stringify(command));
 });
 
-test("non-shell sources route only by source", () => {
-  const observation: ObservationV1 = {
-    schema_version: PROTOCOL_V1,
-    source: "read",
-    command: "cargo test",
-    shell_dialect: "unknown",
-    output: "",
-    termination: unknownTermination(),
-    completeness: "unknown",
-    presentation: "unknown",
-  };
-  assert.deepEqual(identifyInvocation(observation), {
-    kind: "source",
-    source: "read",
-  });
-});
-
-test("recognition is deterministic", () => {
-  const command = "/usr/bin/cargo test foo::bar --features=a,b";
-  const first = recognizeShellCommand(command, "unknown");
-  for (let index = 0; index < 32; index += 1) {
-    assert.deepEqual(recognizeShellCommand(command, "unknown"), first);
-  }
+test("runtime non-string command is rejected", () => {
+  assert.equal(tokenizeCommand(null as unknown as string), undefined);
 });

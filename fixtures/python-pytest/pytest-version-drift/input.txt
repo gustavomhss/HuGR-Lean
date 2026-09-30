@@ -1,7 +1,0 @@
-tests/test_demo.py::test_one FAILED
-=== FAILURES ===
-____ test_one ____
-E AssertionError: boom
-=== short test summary info ===
-FAILED tests/test_demo.py::test_one - AssertionError
-pytest summary format changed completely

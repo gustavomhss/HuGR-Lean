@@ -1,0 +1,8 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-runners/fixtures/runners/native
+collected 3 items
+
+test_runners.py ..s                                                      [100%]
+
+========================= 2 passed, 1 skipped in 0.06s =========================

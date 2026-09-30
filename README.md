@@ -1,103 +1,108 @@
 # HuGR-Lean
 
-**Deterministic tool-output filtering for coding agents.**
+Small, local, deterministic tool-output filtering **before model ingestion**.
+One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra model calls.
 
-HuGR-Lean removes obvious execution noise from tool results **before it reaches the model context**.
+## Install and enable
 
-No LLM calls. No semantic summarization. No guessing.
+Node 22+. Install the release tarball:
 
-## Core idea
-
-```text
-tool result
-    ↓
-HuGR-Lean
-    ↓
-remove known noise
-    ↓
-model-visible result
+```sh
+npm install -g https://github.com/gmhelmold/HuGR-Lean/releases/download/v0.2.0/hugr-lean-0.2.0.tgz
+hugr-lean doctor
 ```
 
-## Principles
+Copy `pluginURL` from doctor into your OpenCode configuration:
 
-- deterministic by default
-- conservative on unknown outputs
-- preserve failures and critical execution signals
-- zero extra model calls
-- invisible to normal agent workflows
-- raw output recoverable when reduction is material
-- small, auditable, testable core
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["file:///absolute/installed/path/hugr-lean/dist/index.js"]
+}
+```
 
-## Runtime direction
+Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
+Verified host route: **OpenCode 1.18.17, macOS x64, legacy `opencode run`**.
+Core/CLI/storage CI runs Node 22 on Linux, macOS and Windows. Other host routes require their own proof.
 
-HuGR-Lean is a local open-source TypeScript package.
+When npm registry publication is available, `hugr-lean@0.2.0` can be used as the plugin package name;
+the package-name loading route has been tested with a locally installed tarball.
 
-- no cloud service or account;
-- no LLM calls;
-- no Rust/native filtering binary;
-- no subprocess/IPC filtering path;
-- zero runtime dependencies targeted for the core;
-- installed package exposes compiled JavaScript plus TypeScript declarations.
+## Behavior and coverage
 
-## Core package usage
+Supported native grammars: Cargo test/build, pytest, Go verbose tests, Jest, Vitest,
+English Git status and numbered ripgrep. Coverage is deliberately format-specific; see
+[coverage matrix](docs/COVERAGE.md).
 
-HuGR-Lean is an in-process library. The host adapter owns the original tool output and calls the engine directly. `v1Profiles()` is the authoritative production profile set; constructing `Engine` without profiles intentionally runs only core/SafeNormalization behavior:
+- Unknown commands, malformed/new formats, failures and incomplete/truncated results stay exact.
+- Every reduction must preserve declared evidence and be smaller in UTF-8 bytes.
+- Original summaries remain exact; supported passing-test progress can disappear after count validation.
+- The adapter changes only model-visible text. Native command, title, metadata and attachments remain host-owned.
+- Host truncation happens before the hook: raw recovery means the exact captured boundary, not full process stdout.
+
+## Options and raw recovery
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [["file:///absolute/installed/path/hugr-lean/dist/index.js", {
+    "enabled": true,
+    "excludeCommands": ["git"],
+    "maxInputBytes": 4194304,
+    "raw": false
+  }]]
+}
+```
+
+Defaults: enabled; 4 MiB input limit (configurable 1–16 MiB); raw off.
+Invalid options disable filtering. Enable raw with `"raw": {}` or a `directory`, `maxBytes`, `ttlMs` object.
+Raw stores material reductions only: at least 1 KiB and 10% saved. Defaults: 64 MiB serialized records,
+seven-day lazy expiry; full store preserves existing records and makes the current reduction fail open.
+Use a caller-private local directory. IDs and plugin diagnostics are never appended to normal tool output.
+
+```sh
+hugr-lean raw list
+hugr-lean raw get ID
+hugr-lean raw purge
+```
+
+Custom stores use `--directory PATH`. Raw get returns exact text or exit 2 with `unavailable`.
+
+## Library
 
 ```ts
-import { Engine, PROTOCOL_V1, v1Profiles } from "hugr-lean";
+import { filter } from "hugr-lean/core";
 
-const engine = new Engine(undefined, v1Profiles());
-
-const result = engine.process({
-  schema_version: PROTOCOL_V1,
-  source: "shell",
-  command: "cargo test",
-  shell_dialect: "unknown",
-  output: toolOutput,
-  termination: { kind: "exited", code: 0 },
-  completeness: "complete",
-  presentation: "unknown",
+const result = filter({
+  source: "shell", command: "cargo test", output: toolOutput,
+  termination: { kind: "exited", code: 0 }, completeness: "complete", presentation: "unknown",
 });
+const modelText = "replacement" in result ? result.replacement : toolOutput;
 ```
 
-Until the first package release is published, contributors use the repository directly; the OpenCode install/enable flow belongs to E4.
+Only supply execution facts the host actually exposes. Core and profiles perform no filesystem/network I/O.
 
-## Local development
+## Lifecycle
 
-```bash
+Disable with `enabled:false`, or remove the plugin entry; restart OpenCode.
+Upgrade by installing the newer tarball/version and restarting. Uninstall by removing the config entry,
+optionally running `raw purge`, then `npm uninstall -g hugr-lean`; restart OpenCode.
+
+## Development and modules
+
+```sh
 npm ci
-npm run typecheck
-npm test
-npm run build
-npm pack --dry-run
+npm run check
+npm run smoke
+npm run benchmark
 ```
 
-No Rust toolchain, native compiler, daemon, service account, or local database is required.
+[Core](src/core/README.md) · [Profiles](src/profiles/README.md) · [Raw](src/raw/README.md) ·
+[OpenCode](src/opencode/README.md) · [CLI](src/cli/README.md).
+Each module includes ownership, maintenance, instruction manual and blast-radius documents.
+Target 400 LOC/file; allow 600; tolerate 750; above 750 split. CI checks logical code lines and documentation presence.
 
-## Non-goals
-
-HuGR-Lean is not a memory system, RAG layer, vector database, semantic compressor, context orchestrator, or autonomous agent.
-
-## Status
-
-Project plan, Technical Specification, roadmap, and issue decomposition are established. **E0 passed G-E0 and E1 has re-passed G-E1 on the TypeScript-only runtime. E2 profile-family work is active again.**
-
-- [Formal Project Plan](docs/PROJECT_PLAN.md)
-- [Approved Technical Specification](docs/TECHNICAL_SPEC.md)
-- [Epic Roadmap / Execution Plan](docs/ROADMAP.md)
-- [Technical Specification review](docs/reviews/HL-SPEC-001-REVIEW-01.md)
-- [E0 cold review / gate evidence](docs/reviews/HL-E0-REVIEW-01.md)
-- [WP1 cold review](docs/reviews/HL-WP1-REVIEW-01.md)
-- [WP2 cold review](docs/reviews/HL-WP2-REVIEW-01.md)
-- [E1 core correctness gate — original Rust implementation](docs/reviews/HL-E1-REVIEW-01.md)
-- [TypeScript runtime migration review](docs/reviews/HL-ARCH-TS-MIGRATION-REVIEW-01.md)
-- [E1 core correctness gate — TypeScript runtime](docs/reviews/HL-E1-REVIEW-02.md)
-
-### Epic tracking issues
-
-- #1 — E0 Evidence & Baseline
-- #2 — E1 Core Engine
-- #3 — E2 Profile System & Coverage
-- #4 — E3 Recovery & Safety
-- #5 — E4 OpenCode Integration & UX
-- #6 — E5 Proof, Packaging & Release
+[Benchmarks](docs/BENCHMARK.md) distinguish native fixture savings from synthetic latency workloads.
+[Host proof](docs/OPENCODE.md) uses a local model mock, including actual model-bound requests.
+Selected [TRS fixtures](fixtures/runners/SOURCES.md) carry pinned source paths, hashes and MIT notices;
+production parsers are original TypeScript. See [NOTICE](NOTICE) and [licenses](licenses/TRS-MIT.txt).

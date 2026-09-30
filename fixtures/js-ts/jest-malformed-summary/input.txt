@@ -1,5 +1,0 @@
-PASS src/demo.test.js
-  ✓ works
-
-Test Suites: 1 passed, 1 total
-Tests:       1 passed, 2 total

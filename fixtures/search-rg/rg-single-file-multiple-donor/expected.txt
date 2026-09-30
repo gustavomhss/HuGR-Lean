@@ -1,5 +1,0 @@
-src/main.rs
-  10:fn init() {
-  25:fn process() {
-  42:fn main() {
-  58:fn cleanup() {

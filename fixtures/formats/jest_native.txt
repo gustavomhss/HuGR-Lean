@@ -1,0 +1,11 @@
+PASS ./jest-native.test.cjs
+  maths 🔥
+    ✓ adds café (7 ms)
+    nested
+      ✓ keeps path: evidence (2 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        1.022 s
+Ran all test suites.

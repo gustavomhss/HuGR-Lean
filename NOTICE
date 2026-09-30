@@ -1,0 +1,9 @@
+HuGR-Lean
+Copyright (c) 2026 gmhelmold. MIT License; see LICENSE.
+
+Selected test fixtures are copied from dPeluChe/trs, MIT License:
+commit 0175ae73f36709fd4a9242b2e431d026d6f82bb3.
+Copyright (c) 2026 dPeluChe.
+See licenses/TRS-MIT.txt and fixtures/{runners,formats}/SOURCES.md for paths,
+hashes and modification records. Fixture bytes are not runtime dependencies.
+Production parsers are original TypeScript; no donor executable is required.

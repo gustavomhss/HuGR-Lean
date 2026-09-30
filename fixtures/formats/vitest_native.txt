@@ -1,0 +1,10 @@
+
+ RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-formats-native
+
+ ✓ vitest-native.test.js (2 tests) 5ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:23:02
+   Duration  1.28s (transform 26ms, setup 0ms, collect 10ms, tests 5ms, environment 0ms, prepare 324ms)
+

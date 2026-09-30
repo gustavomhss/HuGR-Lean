@@ -1,0 +1,8 @@
+=== RUN   TestArithmetic
+--- PASS: TestArithmetic (0.00s)
+=== RUN   TestCafé
+--- PASS: TestCafé (0.00s)
+=== RUN   TestSkipped
+--- SKIP: TestSkipped (0.00s)
+PASS
+ok  	example.com/runners	1.755s

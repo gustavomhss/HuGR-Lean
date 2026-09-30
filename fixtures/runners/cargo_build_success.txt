@@ -1,0 +1,2 @@
+   Compiling runner-fixture v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-runners/fixtures/runners/native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.46s

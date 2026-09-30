@@ -1,6 +1,0 @@
-=== RUN   TestOuter
-=== RUN   TestOuter/child
---- PASS: TestOuter/child (0.00s)
---- PASS: TestOuter (0.00s)
-PASS
-ok  	example.com/demo	0.002s

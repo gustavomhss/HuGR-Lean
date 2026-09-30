@@ -1,5 +1,0 @@
-src/config.rs
-  10:url: "https://example.com/api"
-  15:host: "localhost:8080"
-src/parser.rs
-  42:// Parse format: key:value

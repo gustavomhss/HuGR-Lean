@@ -1,4 +1,0 @@
-=== RUN   TestBar
-    math_test.go:22: not supported on this platform
---- SKIP: TestBar (0.00s)
-ok  	example.com/demo/math	0.002s

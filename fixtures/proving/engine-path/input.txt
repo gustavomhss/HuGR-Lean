@@ -1,3 +1,0 @@
-compile chatter
-PROOF critical-signal
-more chatter

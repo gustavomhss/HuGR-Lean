@@ -1,0 +1,5 @@
+{
+  "rootDir": ".",
+  "testMatch": ["**/jest-native.test.cjs"],
+  "testEnvironment": "node"
+}
