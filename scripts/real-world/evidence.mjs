@@ -222,6 +222,11 @@ function gitEvidence(source) {
     [...text].every((char) => /[\p{L}\p{M}\p{N}\p{S} _./@+-]/u.test(char));
   for (let index = 0; index < source.length; index++) {
     const row = source[index], { text } = row;
+    if (divergence) {
+      kept.push(row.raw);
+      known &&= /^and have [1-9]\d* and [1-9]\d* different commits each, respectively\.$/.test(text);
+      divergence = false; continue;
+    }
     if (text === "") { kept.push(row.raw); continue; }
     if (index === 0) { kept.push(row.raw); continue; }
     if (footer) known = false;
@@ -231,7 +236,6 @@ function gitEvidence(source) {
       used.add(key); continue;
     }
     kept.push(row.raw);
-    if (divergence) { known &&= /^and have [1-9]\d* and [1-9]\d* different commits each, respectively\.$/.test(text); divergence = false; continue; }
     const next = titles.indexOf(text);
     if (next >= 0) { known &&= next > section && (section < 0 || counts[section] > 0); section = next; continue; }
     if (section < 0 && text.startsWith("Your branch ")) {
@@ -323,6 +327,7 @@ export function checkEvidence(spec, capture, result) {
   const exited = Number.isSafeInteger(exitCode) && exitCode >= 0;
   if (!(exitCode === null || exited) || !(signal === null || typeof signal === "string" && signal.length > 0) ||
       typeof complete !== "boolean" || typeof timedOut !== "boolean" || exited && signal !== null) fail("capture_metadata", "invalid native exit/signal/completeness/timeout facts");
+  if (complete === false) fail("native_completeness", "native capture is incomplete");
   const normalExit = exited && signal === null && timedOut === false;
   if (!normalExit || (spec?.expectExit === "zero" ? exitCode !== 0 : exitCode === 0)) fail("native_exit", `expected ${spec?.expectExit}; observed exit=${exitCode}, signal=${signal}, timedOut=${timedOut}`);
   if (output.length === 0 && spec?.allowEmpty !== true) fail("empty_capture", "empty output requires explicit allowEmpty: true");
@@ -359,9 +364,9 @@ export function checkEvidence(spec, capture, result) {
   }
   const unsafe = !normalExit || exitCode !== 0 || complete !== true || !oracles.has(spec?.oracle) || ["exact", "node"].includes(spec?.oracle);
   if (unsafe) noReplacement("failure, incomplete, unknown, exact and Node surfaces require whole original output");
-  // Whole passthrough proves safety even when no native success grammar is known.
+  // Whole passthrough proves byte preservation; native capture validity is separate.
   if (unsafe || !hasReplacement && ["passthrough", "failed_open"].includes(result.status)) return { ok: violations.length === 0, violations, signals };
-  if (/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]|\r(?!\n)/.test(output)) {
+  if (/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]|\r(?!\n)/.test(output)) {
     noReplacement("unknown control/presentation surface");
   } else if (spec.oracle === "rg") {
     const before = rgRecords(source, false), after = rgRecords(rows(filtered), true);

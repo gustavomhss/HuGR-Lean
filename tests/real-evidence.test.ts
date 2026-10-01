@@ -133,7 +133,7 @@ for (const entry of controls) {
     for (const patch of [{ exitCode: 2 }, { exitCode: null }, { exitCode: null, signal: "SIGTERM" }, { complete: false }, { timedOut: true }] as const) {
       red(verdict(entry.oracle, entry.output, result, {}, patch), /no_replacement/);
     }
-    green(verdict(entry.oracle, entry.output, passthrough(entry.output), {}, { complete: false }));
+    red(verdict(entry.oracle, entry.output, passthrough(entry.output), {}, { complete: false }), /native_completeness/);
   });
 }
 
