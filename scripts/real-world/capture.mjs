@@ -6,7 +6,9 @@ import { gzipSync } from "node:zlib";
 
 export const sha256 = (data) => createHash("sha256").update(data).digest("hex");
 
-/** Capture the literal shell command once, with actual exit facts and arrival-order bytes. */
+/** Capture once. durationMs ends at pipe close/launch failure/bounded timeout cleanup,
+ * before log drain, concatenation and decoding; exitDurationMs separately observes leader exit.
+ * bookkeepingMs measures the remaining drain/decode work, not native command execution. */
 export async function captureCommand(spec, env, { timeout = 600000, logDir } = {}) {
   if (process.platform === "win32") throw new Error("NATIVE_CAPTURE_REQUIRES_POSIX_SHELL");
   if (typeof spec.command !== "string" || !spec.command.length || !path.isAbsolute(spec.cwd)) throw new Error("INVALID_NATIVE_CASE");
@@ -22,7 +24,7 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
       .catch((error) => { logError ??= error; });
   };
   const started = performance.now();
-  let timedOut = false, code = null, signal = null, launchError;
+  let timedOut = false, code = null, signal = null, launchError, durationMs, durationBoundary, exitDurationMs;
   const killErrors = [];
   const child = spawn("/bin/sh", ["-c", spec.command], { cwd: spec.cwd, env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
   if (logDir) pending = pending.then(() => writeFile(path.join(logDir, "running.json"), JSON.stringify({ state: "capturing", command: spec.command, cwd: spec.cwd, pid: child.pid, startedAt: new Date().toISOString() })))
@@ -33,8 +35,9 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
       try { if (child.pid) process.kill(-child.pid, kind); }
       catch (error) { if (error.code !== "ESRCH") killErrors.push(`${kind}: ${error.code}: ${error.message}`); }
     };
-    const finish = () => {
+    const finish = (boundary) => {
       if (finished) return; finished = true;
+      durationMs = performance.now() - started; durationBoundary = boundary;
       clearTimeout(timer); clearTimeout(escalation); clearTimeout(settlement);
       resolve({ code, signal });
     };
@@ -43,18 +46,18 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
       escalation = setTimeout(() => {
         stop("SIGKILL"); cleanupDone = true;
         child.stdout.destroy(); child.stderr.destroy();
-        if (closed) finish();
-        else settlement = setTimeout(finish, 250);
+        if (closed) finish("timeout-cleanup");
+        else settlement = setTimeout(() => finish("bounded-timeout-settlement"), 250);
       }, 2000);
     }, timeout);
     child.stdout.on("data", (chunk) => { stdout.push(chunk); merged.push(chunk); retain("stdout", chunk); });
     child.stderr.on("data", (chunk) => { stderr.push(chunk); merged.push(chunk); retain("stderr", chunk); });
-    child.on("error", (error) => { launchError = `${error.code}: ${error.message}`; if (!timedOut) finish(); });
-    child.on("exit", (value, valueSignal) => { code = value; signal = valueSignal; });
+    child.on("error", (error) => { launchError = `${error.code}: ${error.message}`; if (!timedOut) finish("launch-error"); });
+    child.on("exit", (value, valueSignal) => { code = value; signal = valueSignal; exitDurationMs = performance.now() - started; });
     child.on("close", () => {
       closed = true;
       // Keep escalation alive after leader close; only exit supplies native facts.
-      if (!timedOut || cleanupDone) finish();
+      if (!timedOut || cleanupDone) finish(timedOut ? "timeout-cleanup" : "pipe-close");
     });
   });
   await pending;
@@ -63,10 +66,14 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
   let output, encodingError;
   try { output = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); }
   catch (error) { encodingError = error.message; }
+  const stdoutBytes = Buffer.concat(stdout), stderrBytes = Buffer.concat(stderr);
+  const bookkeepingMs = performance.now() - started - durationMs;
   return { command: spec.command, cwd: spec.cwd, exitCode: result.code, signal: result.signal, timedOut,
     complete: !timedOut && !launchError && Number.isSafeInteger(result.code) && result.signal === null,
-    durationMs: performance.now() - started, output, encodingError, launchError, ...(killErrors.length ? { killErrors } : {}),
-    raw: bytes, stdout: Buffer.concat(stdout), stderr: Buffer.concat(stderr), captureDefinition: "stdout/stderr arrival order; no text rewriting" };
+    durationMs, durationBoundary, exitDurationMs, bookkeepingMs,
+    durationDefinition: "spawn start to pipe close, launch failure or bounded timeout cleanup settlement; excludes log drain and decoding",
+    output, encodingError, launchError, ...(killErrors.length ? { killErrors } : {}),
+    raw: bytes, stdout: stdoutBytes, stderr: stderrBytes, captureDefinition: "stdout/stderr arrival order; no text rewriting" };
 }
 
 /** Archive every capture, including failed/partial output; compression is outside measurement. */
