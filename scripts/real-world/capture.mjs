@@ -23,29 +23,39 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
   };
   const started = performance.now();
   let timedOut = false, code = null, signal = null, launchError;
+  const killErrors = [];
   const child = spawn("/bin/sh", ["-c", spec.command], { cwd: spec.cwd, env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
   if (logDir) pending = pending.then(() => writeFile(path.join(logDir, "running.json"), JSON.stringify({ state: "capturing", command: spec.command, cwd: spec.cwd, pid: child.pid, startedAt: new Date().toISOString() })))
     .catch((error) => { logError ??= error; });
   const result = await new Promise((resolve) => {
-    let finished = false, escalation;
+    let finished = false, closed = false, cleanupDone = false, escalation, settlement;
     const stop = (kind) => {
       try { if (child.pid) process.kill(-child.pid, kind); }
-      catch (error) { if (error.code !== "ESRCH") launchError ??= error.message; }
+      catch (error) { if (error.code !== "ESRCH") killErrors.push(`${kind}: ${error.code}: ${error.message}`); }
     };
     const finish = () => {
       if (finished) return; finished = true;
-      clearTimeout(timer); clearTimeout(escalation);
+      clearTimeout(timer); clearTimeout(escalation); clearTimeout(settlement);
       resolve({ code, signal });
     };
     const timer = setTimeout(() => {
       timedOut = true; stop("SIGTERM");
-      escalation = setTimeout(() => { stop("SIGKILL"); child.stdout.destroy(); child.stderr.destroy(); finish(); }, 2000);
+      escalation = setTimeout(() => {
+        stop("SIGKILL"); cleanupDone = true;
+        child.stdout.destroy(); child.stderr.destroy();
+        if (closed) finish();
+        else settlement = setTimeout(finish, 250);
+      }, 2000);
     }, timeout);
     child.stdout.on("data", (chunk) => { stdout.push(chunk); merged.push(chunk); retain("stdout", chunk); });
     child.stderr.on("data", (chunk) => { stderr.push(chunk); merged.push(chunk); retain("stderr", chunk); });
-    child.on("error", (error) => { launchError = `${error.code}: ${error.message}`; finish(); });
+    child.on("error", (error) => { launchError = `${error.code}: ${error.message}`; if (!timedOut) finish(); });
     child.on("exit", (value, valueSignal) => { code = value; signal = valueSignal; });
-    child.on("close", (value, valueSignal) => { code = value; signal = valueSignal; finish(); });
+    child.on("close", () => {
+      closed = true;
+      // Keep escalation alive after leader close; only exit supplies native facts.
+      if (!timedOut || cleanupDone) finish();
+    });
   });
   await pending;
   if (logError) throw new Error(`CAPTURE_LOG_FAILED: ${logError.message}`);
@@ -55,7 +65,7 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
   catch (error) { encodingError = error.message; }
   return { command: spec.command, cwd: spec.cwd, exitCode: result.code, signal: result.signal, timedOut,
     complete: !timedOut && !launchError && Number.isSafeInteger(result.code) && result.signal === null,
-    durationMs: performance.now() - started, output, encodingError, launchError,
+    durationMs: performance.now() - started, output, encodingError, launchError, ...(killErrors.length ? { killErrors } : {}),
     raw: bytes, stdout: Buffer.concat(stdout), stderr: Buffer.concat(stderr), captureDefinition: "stdout/stderr arrival order; no text rewriting" };
 }
 

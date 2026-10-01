@@ -1,5 +1,5 @@
 // Network/dependency setup only. Native benchmark commands belong to the capture runner.
-import { spawn } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { appendFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
@@ -75,21 +75,43 @@ export function setupRunner(root, env) {
         try { process.platform === "win32" ? child.kill(signal) : process.kill(-child.pid, signal); }
         catch (error) { if (error.code !== "ESRCH") killErrors.push(`${signal}: ${error.code}: ${error.message}`); }
       };
-      let escalation, settled = false, exitFacts = { code: null, signal: null };
+      let escalation, settlement, settled = false, closed = false, cleanupDone = false, leaderExited = false;
+      let exitFacts = { code: null, signal: null };
       const finish = () => {
         if (settled) return;
         settled = true;
-        clearTimeout(timer); clearTimeout(escalation);
+        clearTimeout(timer); clearTimeout(escalation); clearTimeout(settlement);
         resolve(exitFacts);
+      };
+      const finishCleanup = () => {
+        cleanupDone = true;
+        // Escaped pipe holders are not members of the owned group. Bound our reads,
+        // then allow native leader exit/close to arrive before bounded settlement.
+        child.stdout.destroy(); child.stderr.destroy();
+        if (closed) finish();
+        else settlement = setTimeout(finish, 250);
       };
       const timer = setTimeout(() => {
         timedOut = true;
+        if (process.platform === "win32") {
+          // A tree kill must start while the leader PID still identifies our child.
+          if (!child.pid || leaderExited) {
+            killErrors.push("SETUP_TREE_CLEANUP_UNSUPPORTED: Windows leader already exited");
+            finishCleanup();
+          } else {
+            execFile("taskkill.exe", ["/pid", String(child.pid), "/T", "/F"], { env: environment, timeout: 2000, windowsHide: true }, (error) => {
+              if (error) {
+                killErrors.push(`SETUP_TREE_CLEANUP_FAILED: ${error.message}`);
+                child.kill("SIGKILL"); // Leader-only fallback is not reported as tree cleanup.
+              }
+              finishCleanup();
+            });
+          }
+          return;
+        }
         escalation = setTimeout(() => {
           kill("SIGKILL");
-          // A detached descendant can hold these pipes after its parent exits.
-          // Stop owning the reads and settle without waiting for ChildProcess.close.
-          child.stdout.destroy(); child.stderr.destroy();
-          finish();
+          finishCleanup();
         }, 2000);
         kill("SIGTERM");
       }, timeout);
@@ -97,8 +119,12 @@ export function setupRunner(root, env) {
       child.stderr.on("data", (chunk) => { stderr.push(chunk); merged.push(chunk); retain("stderr", chunk); });
       child.on("error", (error) => { spawnError = `${error.code}: ${error.message}`; });
       // Exit is independent of pipe closure. Unobserved termination stays null/null.
-      child.once("exit", (code, signal) => { exitFacts = { code, signal }; });
-      child.once("close", finish);
+      child.once("exit", (code, signal) => { leaderExited = true; exitFacts = { code, signal }; });
+      child.once("close", () => {
+        closed = true;
+        // Closing the leader/pipes cannot discharge timeout group ownership.
+        if (!timedOut || cleanupDone) finish();
+      });
     });
     await pending;
     const record = { name, file, args, cwd, started, state: "finished", finished: new Date().toISOString(), ...result, timedOut,
