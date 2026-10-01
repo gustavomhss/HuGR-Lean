@@ -26,7 +26,7 @@ function nativeProfile(id: string, match: Profile["match"], parse: Parser): Prof
     reduce(output: string, observation: Observation) {
       if (observation.source !== "shell" || observation.completeness !== "complete" ||
           observation.termination.kind !== "exited" || observation.termination.code !== 0 ||
-          /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]|\r(?!\n)/.test(output)) return undefined;
+          /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]|\r(?!\n)/.test(output)) return undefined;
       return parse(output);
     },
   };
