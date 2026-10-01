@@ -103,6 +103,7 @@ Each module includes ownership, maintenance, instruction manual and blast-radius
 Target 400 LOC/file; allow 600; tolerate 750; above 750 split. CI checks logical code lines and documentation presence.
 
 [Benchmarks](docs/BENCHMARK.md) distinguish native fixture savings from synthetic latency workloads.
+[Real-world evaluation](docs/BENCHMARK_REAL.md) executes unchanged commands in pinned projects and reports zero-savings cases, preservation and overhead separately.
 [Host proof](docs/OPENCODE.md) uses a local model mock, including actual model-bound requests.
 Selected [TRS fixtures](fixtures/runners/SOURCES.md) carry pinned source paths, hashes and MIT notices;
 production parsers are original TypeScript. See [NOTICE](NOTICE) and [licenses](licenses/TRS-MIT.txt).
