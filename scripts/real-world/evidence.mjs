@@ -1,5 +1,7 @@
 // Pure, independent checks of captured native output. No production parsers or I/O.
 // Signals are original native rows, not execution, coverage or savings claims.
+import { nativeFailureBinding, pytestSummary } from "./failure-binding.mjs";
+
 const oracles = new Set(["exact", "cargo-build", "cargo-test", "pytest", "go", "jest", "vitest", "git", "rg", "node"]);
 const statuses = new Set(["reduced", "normalized", "passthrough", "failed_open"]);
 const bytes = (text) => Buffer.byteLength(text, "utf8");
@@ -52,16 +54,12 @@ function summaries(oracle, source) {
     }
   });
 }
-function pytestSummary(text) {
-  const body = text.replace(/^=+\s*|\s*=+$/g, "").trim(), split = body.lastIndexOf(" in ");
-  return split > 0 && /^\d+(?:\.\d+)?s$/.test(body.slice(split + 4)) && body.slice(0, split).split(", ").every((count) =>
-    /^\d+ (?:passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)$/.test(count));
-}
-
 // Bind the catalog's controlled identities to native diagnostics, not prose or
 // a marker quoted in source/arguments. Unsupported failure proofs fail closed.
 function failureBinding(oracle, source, marker, code) {
+  if (source.some((row) => row.view === undefined)) return false;
   const text = source.map((row) => row.view ?? ""), trimmed = text.map((line) => line.trim());
+  if (["cargo-build", "cargo-test", "go", "pytest"].includes(oracle)) return nativeFailureBinding(oracle, text, marker, code);
   const segment = (start, end) => {
     const index = text.findIndex(start);
     if (index < 0) return [];
@@ -72,23 +70,7 @@ function failureBinding(oracle, source, marker, code) {
     const count = new RegExp(`^${prefix} +([1-9][0-9]*) failed(?:[, |]|$)`).exec(line);
     return count && uint(count[1]);
   });
-  if (oracle === "cargo-build" || oracle === "cargo-test") return code === 101 && trimmed.includes(`error: ${marker}`) &&
-    trimmed.some((line) => /^--> src\/lib\.rs:[1-9][0-9]*:[1-9][0-9]*$/.test(line)) &&
-    trimmed.some((line) => /^error: could not compile `[^`]+`.* due to [1-9][0-9]* previous errors?$/.test(line));
   if (code !== 1) return false;
-  if (oracle === "go") {
-    const start = text.indexOf("=== RUN   TestBenchExpectedFailure");
-    const finish = text.findIndex((line, index) => index > start && /^(?:=== RUN|--- (?:PASS|FAIL|SKIP):)/.test(line));
-    return start >= 0 && finish > start && /^--- FAIL: TestBenchExpectedFailure \(\d+(?:\.\d+)?s\)$/.test(text[finish]) &&
-      text.slice(finish + 1).includes("FAIL") && text.slice(start + 1, finish).some((line) =>
-      /^ +bench_expected_failure_test\.go:[1-9][0-9]*: /.test(line) && line.includes(marker));
-  }
-  if (oracle === "pytest") {
-    const body = segment((line) => /^_+ test_bench_expected_failure _+$/.test(line), (line) => /^(?:_+ |={3,} )/.test(line));
-    return text.some((line) => /^FAILED [^\s]+\/bench_expected_failure_test\.py::test_bench_expected_failure(?: |$)/.test(line)) &&
-      body.some((line) => /^E +AssertionError: /.test(line) && line.slice(line.indexOf("AssertionError: ") + 16).includes(marker)) &&
-      text.some((line) => pytestSummary(line) && /\b[1-9][0-9]* failed\b/.test(line));
-  }
   if (oracle === "jest") {
     const suite = segment((line) => /^ ?FAIL (?:src|test|tests)\/bench-expected-failure\.test\.[cm]?[jt]s(?: \(\d+(?:\.\d+)? s\))?$/.test(line), (line) => /^(?: ?(?:PASS|FAIL) |Test Suites:)/.test(line));
     const start = suite.findIndex((line) => line.trim() === `● ${marker}`);
