@@ -70,10 +70,14 @@ export function setupRunner(root, env) {
     const killErrors = [];
     const result = await new Promise((resolve) => {
       const child = spawn(file, args, { cwd, env: environment, stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32" });
+      let groupGone = false;
       const kill = (signal) => {
-        if (!child.pid) return;
-        try { process.platform === "win32" ? child.kill(signal) : process.kill(-child.pid, signal); }
-        catch (error) { if (error.code !== "ESRCH") killErrors.push(`${signal}: ${error.code}: ${error.message}`); }
+        if (!child.pid || groupGone) return;
+        try { process.kill(-child.pid, signal); }
+        catch (error) {
+          if (error.code === "ESRCH") groupGone = true; // Ownership cannot be reacquired by numeric ID.
+          else killErrors.push(`${signal}: ${error.code}: ${error.message}`);
+        }
       };
       let escalation, settlement, settled = false, closed = false, cleanupDone = false, leaderExited = false;
       let exitFacts = { code: null, signal: null };

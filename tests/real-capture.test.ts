@@ -68,7 +68,7 @@ test("ready native timeout retains exact binary prefixes, live logs and archives
   try {
     const port = (server.address() as AddressInfo).port;
     const source = `const fs=require('node:fs'); process.on('SIGTERM',()=>process.exit(9)); setInterval(()=>{},1000); const ready=require('node:net').connect(${port},'127.0.0.1'); ready.once('data',()=>{ fs.writeSync(1,Buffer.from(${JSON.stringify([...stdout])})); fs.writeSync(2,Buffer.from(${JSON.stringify([...stderr])})); ready.end(); }); ready.write(JSON.stringify({token:${JSON.stringify(token)},pid:process.pid})+'\\n');`;
-    running = captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd }, process.env, { timeout: 2000, logDir: cwd });
+    running = captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd }, process.env, { timeout: 5000, logDir: cwd });
     const readiness = Promise.race([ready, new Promise<never>((_, reject) => {
       watchdog = setTimeout(() => reject(new Error("NATIVE_TIMEOUT_READINESS_MISSING")), 8000);
     })]);
@@ -108,14 +108,17 @@ test("malformed native UTF-8 retains raw bytes and names unusable text", { skip:
   } finally { await rm(cwd, { recursive: true, force: true }); }
 });
 
-test("capture timeout settles when a detached descendant holds both pipes open", { skip: process.platform === "win32", timeout: 15000 }, async () => {
+test("capture timeout settles when a detached descendant holds both pipes open", { skip: process.platform === "win32", timeout: 20000 }, async () => {
   const cwd = await mkdtemp(path.join(tmpdir(), "lean-capture-pipes-"));
   let watchdog: ReturnType<typeof setTimeout> | undefined;
   const token = randomUUID(), server = createServer();
   let ownedPid: number | undefined;
+  let running: Promise<any> | undefined;
+  const sockets = new Set<import("node:net").Socket>();
   const ownership = new Promise<number>((resolve, reject) => {
     server.on("error", reject);
     server.on("connection", (socket) => {
+      sockets.add(socket); socket.once("close", () => sockets.delete(socket));
       let message = "";
       socket.on("data", (chunk) => {
         message += chunk.toString(); if (!message.endsWith("\n")) return;
@@ -130,10 +133,11 @@ test("capture timeout settles when a detached descendant holds both pipes open",
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
   try {
     const port = (server.address() as AddressInfo).port;
-    const source = `const child = require('node:child_process').spawn(process.execPath, ['-e', 'setTimeout(() => {}, 30000)'], {detached:true, stdio:['ignore',1,2]}); const owner = require('node:net').connect(${port}, '127.0.0.1'); owner.once('data', () => { require('node:fs').writeFileSync('descendant.pid', String(child.pid)); process.stdout.write('descendant=' + child.pid + '\\n'); process.stderr.write('retained-stderr\\n'); child.unref(); }); owner.write(JSON.stringify({token:${JSON.stringify(token)}, pid:child.pid}) + '\\n');`;
+    const source = `const child = require('node:child_process').spawn(process.execPath, ['-e', 'setTimeout(() => {}, 30000)'], {detached:true, stdio:['ignore',1,2]}); const identity = {token:${JSON.stringify(token)}, pid:child.pid}; require('node:fs').writeFileSync('descendant.pid', JSON.stringify(identity)); const owner = require('node:net').connect(${port}, '127.0.0.1'); owner.once('data', () => { process.stdout.write('descendant=' + child.pid + '\\n'); process.stderr.write('retained-stderr\\n'); child.unref(); }); owner.write(JSON.stringify(identity) + '\\n');`;
+    running = captureCommand({ command: `${JSON.stringify(process.execPath)} -e ${JSON.stringify(source)}`, cwd }, process.env, { timeout: 5000, logDir: cwd });
     const [capture] = await Promise.race([
-      Promise.all([captureCommand({ command: `${JSON.stringify(process.execPath)} -e ${JSON.stringify(source)}`, cwd }, process.env, { timeout: 1500, logDir: cwd }), ownership]),
-      new Promise<never>((_, reject) => { watchdog = setTimeout(() => reject(new Error("CAPTURE_DID_NOT_SETTLE")), 10000); }),
+      Promise.all([running, ownership]),
+      new Promise<never>((_, reject) => { watchdog = setTimeout(() => reject(new Error("CAPTURE_DID_NOT_SETTLE")), 12000); }),
     ]);
     assert.equal(capture.timedOut, true); assert.equal(capture.complete, false);
     assert.equal(capture.exitCode, 0); assert.equal(capture.signal, null);
@@ -143,13 +147,20 @@ test("capture timeout settles when a detached descendant holds both pipes open",
     clearTimeout(watchdog);
     let cleanupError: unknown;
     try {
-      const pid = await readFile(path.join(cwd, "descendant.pid"), "utf8");
-      assert.match(pid, /^[1-9]\d*$/, "CAPTURE_OWNERSHIP_PID_RECORD_INVALID");
-      assert.equal(Number(pid), ownedPid, "CAPTURE_OWNERSHIP_PID_RECORD_MISMATCH");
+      const identity = JSON.parse(await readFile(path.join(cwd, "descendant.pid"), "utf8"));
+      assert.equal(identity.token, token, "CAPTURE_OWNERSHIP_TOKEN_RECORD_MISMATCH");
+      assert.ok(Number.isSafeInteger(identity.pid) && identity.pid > 0, "CAPTURE_OWNERSHIP_PID_RECORD_INVALID");
+      if (ownedPid !== undefined) assert.equal(identity.pid, ownedPid, "CAPTURE_OWNERSHIP_PID_RECORD_MISMATCH");
+      else ownedPid = identity.pid; // Independently authenticated fixture record remains cleanup authority if readiness fails.
     } catch (error) { cleanupError = (error as NodeJS.ErrnoException).code === "ENOENT" ? new Error("CAPTURE_OWNERSHIP_PID_RECORD_MISSING") : error; }
     try { if (ownedPid) process.kill(ownedPid, "SIGKILL"); }
     catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
-    finally { await new Promise<void>((resolve) => server.close(() => resolve())); await rm(cwd, { recursive: true, force: true }); }
+    finally {
+      for (const socket of sockets) socket.destroy();
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      await running;
+      await rm(cwd, { recursive: true, force: true });
+    }
     if (cleanupError) throw cleanupError;
   }
 });

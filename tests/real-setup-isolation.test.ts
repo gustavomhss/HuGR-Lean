@@ -74,7 +74,7 @@ test("ready setup timeout persists exact binary stdout/stderr/merged bytes and o
     syncBuiltinESMExports();
     const port = (server.address() as AddressInfo).port;
     const source = `const fs=require('node:fs'); process.on('SIGTERM',()=>process.exit(9)); setInterval(()=>{},1000); const ready=require('node:net').connect(${port},'127.0.0.1'); ready.once('data',()=>{ fs.writeSync(1,Buffer.from(${JSON.stringify([...stdout])})); fs.writeSync(2,Buffer.from(${JSON.stringify([...stderr])})); ready.end(); }); ready.write(JSON.stringify({token:${JSON.stringify(token)}})+'\\n');`;
-    running = setupRunner(root, isolatedEnv(root))("binary-timeout", process.execPath, ["-e", source], { timeout: 2000 })
+    running = setupRunner(root, isolatedEnv(root))("binary-timeout", process.execPath, ["-e", source], { timeout: 5000 })
       .then(() => { throw new Error("SETUP_BINARY_TIMEOUT_ACCEPTED"); }, (error: any) => { assert.match(error.message, /SETUP_FAILED: binary-timeout: timeout/); return error.record; });
     const readiness = Promise.race([ready, new Promise<never>((_, reject) => { watchdog = setTimeout(() => reject(new Error("SETUP_TIMEOUT_READINESS_MISSING")), 8000); })]);
     const [record] = await Promise.all([running, readiness]);

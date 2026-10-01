@@ -30,10 +30,14 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
   if (logDir) pending = pending.then(() => writeFile(path.join(logDir, "running.json"), JSON.stringify({ state: "capturing", command: spec.command, cwd: spec.cwd, pid: child.pid, startedAt: new Date().toISOString() })))
     .catch((error) => { logError ??= error; });
   const result = await new Promise((resolve) => {
-    let finished = false, closed = false, cleanupDone = false, escalation, settlement;
+    let finished = false, closed = false, cleanupDone = false, groupGone = false, escalation, settlement;
     const stop = (kind) => {
-      try { if (child.pid) process.kill(-child.pid, kind); }
-      catch (error) { if (error.code !== "ESRCH") killErrors.push(`${kind}: ${error.code}: ${error.message}`); }
+      if (!child.pid || groupGone) return;
+      try { process.kill(-child.pid, kind); }
+      catch (error) {
+        if (error.code === "ESRCH") groupGone = true; // Never target a recycled group after known absence.
+        else killErrors.push(`${kind}: ${error.code}: ${error.message}`);
+      }
     };
     const finish = (boundary) => {
       if (finished) return; finished = true;
