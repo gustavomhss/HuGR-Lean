@@ -163,6 +163,12 @@ export async function verifyCheckout(project, run) {
   return { ...project, verifiedHead: head, cleanBeforeSetup: true, licenseFiles, modifications: [] };
 }
 
+/** Record the dependency tree only after the logged, literal install succeeds. */
+export async function installHugrDependencies(project, run) {
+  await run("hugr-install", "npm", ["ci"], { cwd: project.path });
+  project.modifications.push({ phase: "setup", path: "node_modules", change: "Installed package-lock dependencies with npm ci; lifecycle output retained in setup logs." });
+}
+
 /** Strict fresh-root setup: errors leave logs and a failure manifest, never a partial success. */
 export async function setupProjects(root, { repoRoot }) {
   root = path.resolve(root);
@@ -215,7 +221,7 @@ export async function setupProjects(root, { repoRoot }) {
       project.modifications.push({ phase: "setup", path: "node_modules", change: "Installed frozen-lockfile dependencies; upstream/pnpm lifecycle policy and all output retained in setup logs." });
       if (id === "ms") project.modifications.push({ phase: "setup", path: ".git/config, .husky/_", change: "Upstream prepare script runs husky; no hook-disabling flags or environment." });
     }
-    await run("hugr-install", "npm", ["ci"], { cwd: byId.hugr.path });
+    await installHugrDependencies(byId.hugr, run);
     await run("python-venv", "python3", ["-m", "venv", path.join(root, "python")]);
     await run("python-install", path.join(pythonBin, process.platform === "win32" ? "python.exe" : "python"), ["-m", "pip", "install", `pytest==${TOOLING.pytest}`, "-e", byId.boltons.path]);
     versions.pytest = (await run("version-pytest", "pytest", ["--version"])).text.trim();
