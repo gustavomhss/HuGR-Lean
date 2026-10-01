@@ -117,7 +117,8 @@ export function verifyHostScenario(scenario, result, rows) {
   const afters = rows.filter((row) => row.kind === "after");
   requireFact(loaded.length === 1 && loaded[0].hookPresent === true, "REAL_HOST_PLUGIN_HOOK_MISSING");
   equal(loaded[0].options, OPTIONS, "REAL_HOST_OPTIONS_MISMATCH");
-  requireFact(befores.length === 1 && afters.length === 1 && rows.indexOf(befores[0]) < rows.indexOf(afters[0]), "REAL_HOST_OBSERVER_ROUNDTRIP_MISSING");
+  requireFact(befores.length === 1 && afters.length === 1, "REAL_HOST_OBSERVER_ROUNDTRIP_MISSING");
+  requireFact(rows.indexOf(loaded[0]) < rows.indexOf(befores[0]) && rows.indexOf(befores[0]) < rows.indexOf(afters[0]), "REAL_HOST_OBSERVER_ORDER_INVALID");
   const before = befores[0], after = afters[0];
   const original = before.boundary?.output, model = result.modelResult?.content;
   requireFact(typeof original === "string" && original.length > 0, "REAL_HOST_ORIGINAL_MISSING");
@@ -142,6 +143,7 @@ export function verifyHostScenario(scenario, result, rows) {
   requireFact(original.startsWith(metadata.output) || (tailPreview?.length > 0 && original.endsWith(tailPreview)), "REAL_HOST_ORIGINAL_NATIVE_MISMATCH");
   const { output: ignoredBefore, ...otherBefore } = before.boundary;
   const { output: ignoredAfter, ...otherAfter } = after.boundary;
+  requireFact([before.boundary, after.boundary, result.tool.state].every((boundary) => Object.hasOwn(boundary, "title") && typeof boundary.title === "string"), "REAL_HOST_TITLE_MISSING");
   equal(otherBefore, otherAfter, "REAL_HOST_NONOUTPUT_CHANGED");
   equal(before.boundary.title, result.tool.state.title, "REAL_HOST_TITLE_CHANGED");
   requireFact(Number.isFinite(after.hookElapsedMs) && after.hookElapsedMs >= 0, "REAL_HOST_HOOK_TIMING_MISSING");
@@ -158,18 +160,21 @@ export function verifyHostScenario(scenario, result, rows) {
     const records = rowsOf(original).map((line) => /^([^:]+):([1-9]\d*):(.*)$/u.exec(line));
     requireFact(records.length > 1 && records.every(Boolean), "REAL_HOST_RG_CONTROL_MISSING");
     equal(model.endsWith("\n"), original.endsWith("\n"), "REAL_HOST_RG_EVIDENCE_LOST");
-    let groupedPath;
+    let groupedPath, groupConsumed = false;
+    const finishGroup = () => requireFact(groupedPath === undefined || groupConsumed, "REAL_HOST_RG_EVIDENCE_LOST");
     const recovered = [];
     for (const line of rowsOf(model)) {
       const full = /^([^:]+):([1-9]\d*):(.*)$/u.exec(line);
-      if (full) { recovered.push([full[1], full[2], full[3]]); groupedPath = undefined; }
-      else if (/^[^:]+:$/u.test(line)) groupedPath = line.slice(0, -1);
+      if (full) { finishGroup(); recovered.push([full[1], full[2], full[3]]); groupedPath = undefined; }
+      else if (/^[^:]+:$/u.test(line)) { finishGroup(); groupedPath = line.slice(0, -1); groupConsumed = false; }
       else {
         const entry = /^([1-9]\d*):(.*)$/u.exec(line);
         requireFact(groupedPath && entry, "REAL_HOST_RG_EVIDENCE_LOST");
         recovered.push([groupedPath, entry[1], entry[2]]);
+        groupConsumed = true;
       }
     }
+    finishGroup();
     required = records.map((record) => record.slice(1));
     equal(recovered, required, "REAL_HOST_RG_EVIDENCE_LOST");
   } else if (scenario.oracle === "cargo") {
@@ -242,6 +247,13 @@ export async function runObservedScenario({ scenario, plugin, outputDir, setup, 
     await json(path.join(directory, "record.json"), record);
     return record;
   } catch (error) {
+    const diagnostics = error.diagnostics;
+    if (diagnostics) {
+      isolatedRoot = diagnostics.root ?? isolatedRoot;
+      if (typeof diagnostics.stdout === "string") await writeFile(path.join(directory, "host.stdout.jsonl"), diagnostics.stdout);
+      if (typeof diagnostics.stderr === "string") await writeFile(path.join(directory, "host.stderr.txt"), diagnostics.stderr);
+      await json(path.join(directory, "host-result.json"), { status: "failed", ...diagnostics });
+    }
     if (!error.code?.startsWith("REAL_HOST_")) {
       const message = error.message;
       error.code = message.includes("second-request tool result") ? "REAL_HOST_SECOND_REQUEST_MISSING"
@@ -251,8 +263,8 @@ export async function runObservedScenario({ scenario, plugin, outputDir, setup, 
         : message.includes("exact completed tool result") ? "REAL_HOST_MODEL_EVENT_MISMATCH"
         : "REAL_HOST_NATIVE_ROUNDTRIP_FAILED";
     }
-    await json(path.join(directory, "failure.json"), { status: "failed", name: error.code ?? "REAL_HOST_SCENARIO_FAILED", message: error.message, elapsedMs: performance.now() - began, artifacts: directory, isolatedRoot, loadBefore, loadAfter: loadavg() });
-    throw Object.assign(new Error(`${error.code}: ${error.message}`, { cause: error }), { code: error.code });
+    await json(path.join(directory, "failure.json"), { status: "failed", name: error.code ?? "REAL_HOST_SCENARIO_FAILED", message: error.message, diagnostics, elapsedMs: performance.now() - began, artifacts: directory, isolatedRoot, loadBefore, loadAfter: loadavg() });
+    throw Object.assign(new Error(`${error.code}: ${error.message}`, { cause: error }), { code: error.code, diagnostics });
   }
 }
 
@@ -413,7 +425,7 @@ export async function runRealHost({ repoRoot = fileURLToPath(new URL("../../", i
   }
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && await realpath(process.argv[1]).catch(() => null) === await realpath(fileURLToPath(import.meta.url))) {
   try {
     requireFact(process.argv.length === 3, "REAL_HOST_USAGE", "node scripts/real-world/host.mjs OUTPUT_DIR");
     const result = await runRealHost({ outputDir: process.argv[2], dependencies: process.env.HUGR_SMOKE_DEPS });

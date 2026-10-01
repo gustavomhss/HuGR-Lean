@@ -47,12 +47,14 @@ export async function runProcess(binary, args, options = {}) {
     const child = spawn(binary, args, { ...spawnOptions, stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32" });
     let stdout = "";
     let stderr = "";
+    let exitCode = null, exitSignal = null;
     let settled = false;
     const settle = (error, result) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      if (error) reject(error); else resolve(result);
+      if (error) reject(Object.assign(error, { diagnostics: { code: exitCode, signal: exitSignal, stdout, stderr } }));
+      else resolve(result);
     };
     const timer = setTimeout(() => {
       // A detached descendant can retain both pipes after the main child exits. Never await close here.
@@ -67,6 +69,7 @@ export async function runProcess(binary, args, options = {}) {
     }, timeout);
     child.stdout.on("data", (data) => { stdout += data; });
     child.stderr.on("data", (data) => { stderr += data; });
+    child.once("exit", (code, signal) => { exitCode = code; exitSignal = signal; });
     child.once("error", (error) => settle(new Error(`Cannot execute ${binary}: ${error.message}`, { cause: error })));
     child.once("close", (code, signal) => settle(undefined, { code, signal, stdout, stderr }));
   });
@@ -190,7 +193,7 @@ export async function copySdkDependencies(dependencies, destination) {
 
 export async function runScenario({ binary = process.env.OPENCODE_BIN ?? "opencode", binaryArgs = [], plugin, pluginSpec, pluginOptions, hook = false, command = `printf '%s\\n' ${RAW}`, toolTimeout = 5000, timeout = 45000, setup, toolOutput, dependencies = process.env.HUGR_SMOKE_DEPS, keep = process.env.HUGR_KEEP_SMOKE === "1" } = {}) {
   const root = await mkdtemp(path.join(tmpdir(), "hugr-opencode-"));
-  let mock;
+  let mock, execution;
   try {
     const env = isolatedEnvironment(root);
     const cwd = path.join(root, "project");
@@ -218,14 +221,14 @@ export async function runScenario({ binary = process.env.OPENCODE_BIN ?? "openco
       ...(toolOutput ? { tool_output: toolOutput } : {}),
     };
     await writeFile(env.OPENCODE_CONFIG, JSON.stringify(config));
-    const result = await runProcess(binary, [...binaryArgs, "run", "--format", "json", "--model", "hugr-mock/boundary", "--title", "Boundary smoke", PROMPT], { cwd, env, timeout });
+    const result = execution = await runProcess(binary, [...binaryArgs, "run", "--format", "json", "--model", "hugr-mock/boundary", "--title", "Boundary smoke", PROMPT], { cwd, env, timeout });
     assert.equal(result.code, 0, `OpenCode failed (${result.code}, ${result.signal})\n${result.stdout}\n${result.stderr}`);
     assert.deepEqual(mock.errors, [], "Mock rejected a request");
     assert.equal(mock.modelResults.length, 1, `Mock did not receive exactly one second-request tool result; requests=${mock.receivedRequests}\n${result.stdout}\n${result.stderr}`);
     const events = result.stdout.split("\n").filter((line) => line.startsWith("{")).map((line) => JSON.parse(line));
     assert.equal(events.filter((event) => event.type === "error").length, 0, `OpenCode emitted an error: ${result.stdout}`);
     const tools = events.filter((event) => event.type === "tool_use" && event.part?.tool === "bash");
-    assert.equal(tools.length, 1, `No unique bash completion event\n${result.stdout}`);
+    if (tools.length !== 1) throw Object.assign(new Error("No unique bash completion event"), { code: "REAL_HOST_NATIVE_COMPLETION_MISSING" });
     assert.equal(tools[0].part.state.status, "completed", "Native bash did not complete");
     assert.equal(tools[0].part.callID, mock.issuedCall.id, "Native completion does not match the issued bash call");
     assert.equal(tools[0].part.state.input.command, command, "Host changed the native command");
@@ -237,9 +240,11 @@ export async function runScenario({ binary = process.env.OPENCODE_BIN ?? "openco
     }
     assert.equal(mock.receivedRequests, 2, "Mock did not receive exactly the two expected requests");
     assert.deepEqual(mock.unfinishedRequests, [], "Mock still has an unfinished request");
-    return { root, command, pluginEntry: config.plugin[0], modelResult: mock.modelResults[0], tool: tools[0].part, hooks, requests: mock.receivedRequests, stdout: result.stdout, stderr: result.stderr };
+    return { root, command, pluginEntry: config.plugin[0], modelResult: mock.modelResults[0], tool: tools[0].part, hooks, requests: mock.receivedRequests, ...result };
   } catch (error) {
-    throw new Error(`${error.message}\nMock requests received: ${mock?.receivedRequests ?? 0}; tool results: ${mock?.modelResults.length ?? 0}\nIsolated artifacts: ${root}${keep ? " (retained)" : " (removed; set HUGR_KEEP_SMOKE=1 to retain)"}`, { cause: error });
+    const diagnostics = { ...(execution ?? error.diagnostics), root, requests: mock?.receivedRequests ?? 0, toolResults: mock?.modelResults.length ?? 0 };
+    const streams = execution ?? error.diagnostics;
+    throw Object.assign(new Error(`${error.message}${streams ? `\nHost stdout:\n${streams.stdout}\nHost stderr:\n${streams.stderr}` : ""}\nMock requests received: ${diagnostics.requests}; tool results: ${diagnostics.toolResults}\nIsolated artifacts: ${root}${keep ? " (retained)" : " (removed; set HUGR_KEEP_SMOKE=1 to retain)"}`, { cause: error }), { code: error.code, diagnostics });
   } finally {
     try { if (mock) await mock.close(); }
     finally { if (!keep) await rm(root, { recursive: true, force: true }); }

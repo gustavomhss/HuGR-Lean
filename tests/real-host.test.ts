@@ -109,6 +109,46 @@ test("oracle names absent observers, requests, changed commands and nested/exit 
   assert.throws(() => host.verifyHostScenario(exactCase, changedText.result, changedText.rows), /REAL_HOST_EXACT_OUTPUT_CHANGED/);
 });
 
+test("observer order and title presence/type are required before equality", () => {
+  const scenario = host.HOST_SCENARIOS.find((item: { id: string }) => item.id === "unknown-read");
+  const good = specimen("unknown café 🔥\n", "unknown café 🔥\n", scenario.command);
+  host.verifyHostScenario(scenario, good.result, good.rows);
+  for (const order of [[1, 0, 2], [1, 2, 0], [0, 2, 1]]) {
+    assert.throws(() => host.verifyHostScenario(scenario, good.result, order.map((i) => good.rows[i])), /REAL_HOST_OBSERVER_ORDER_INVALID/);
+  }
+  for (const scope of ["all", "before", "after", "native"] as const) {
+    for (const title of [undefined, null, 42]) {
+      const bad = structuredClone(good);
+      const boundaries = [bad.rows[1]!.boundary!, bad.rows[2]!.boundary!, bad.result.tool.state];
+      const targets = scope === "all" ? boundaries : [boundaries[{ before: 0, after: 1, native: 2 }[scope]]!];
+      for (const value of targets) {
+        if (title === undefined) Reflect.deleteProperty(value, "title");
+        else Object.assign(value, { title });
+      }
+      assert.throws(() => host.verifyHostScenario(scenario, bad.result, bad.rows), /REAL_HOST_TITLE_MISSING/, `${scope}/${title}`);
+    }
+  }
+  const changed = structuredClone(good);
+  changed.result.tool.state.title = "changed title";
+  assert.throws(() => host.verifyHostScenario(scenario, changed.result, changed.rows), /REAL_HOST_TITLE_CHANGED/);
+});
+
+test("rg headings consume records before next heading, full record and EOF", () => {
+  const scenario = host.HOST_SCENARIOS.find((item: { oracle: string }) => item.oracle === "rg");
+  const file = `src/${"long-native-path-".repeat(4)}café.ts`;
+  const original = [1, 2, 3].map((n) => `${file}:${n}:readonly 🔥\n`).join("");
+  const grouped = `${file}:\n1:readonly 🔥\n2:readonly 🔥\n3:readonly 🔥\n`;
+  for (const text of [grouped, `${file}:\n1:readonly 🔥\n2:readonly 🔥\n${file}:3:readonly 🔥\n`]) {
+    const good = specimen(original, text, scenario.command);
+    host.verifyHostScenario(scenario, good.result, good.rows);
+  }
+  for (const text of [`x:\n${grouped}`, `${grouped}x:\n`, `${file}:\n1:readonly 🔥\n2:readonly 🔥\nx:\n${file}:3:readonly 🔥\n`]) {
+    assert.ok(Buffer.byteLength(text) < Buffer.byteLength(original), "phantom group must reach grammar check");
+    const bad = specimen(original, text, scenario.command);
+    assert.throws(() => host.verifyHostScenario(scenario, bad.result, bad.rows), /REAL_HOST_RG_EVIDENCE_LOST/);
+  }
+});
+
 test("rg evidence, failed exits, Cargo ignored evidence and upstream truncation have teeth", () => {
   const rgCase = host.HOST_SCENARIOS.find((item: { oracle: string }) => item.oracle === "rg");
   const rg = specimen("src/café.ts:1:readonly café\nsrc/café.ts:2:readonly 🔥\n", "src/café.ts:\n1:readonly café\n2:readonly 🔥\n", rgCase.command);
@@ -200,21 +240,25 @@ const messages = [{role: "user", content: "HUGR_BOUNDARY"}];
 const request = async () => { const response = await fetch(cfg.provider["hugr-mock"].options.baseURL + "/chat/completions", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({model: "boundary", messages, tools: [{function: {name: "bash"}}], stream: false})}); return await response.json(); };
 const assistant = (await request()).choices[0].message;
 const call = assistant.tool_calls[0], args = JSON.parse(call.function.arguments);
+console.log("UNIT_HOST_STDOUT café 🔥");
+console.error("UNIT_HOST_STDERR café 🔥");
 if (process.env.UNIT_PROBE === "no-second") process.exit(0);
+if (process.env.UNIT_PROBE === "host-failed") process.exit(9);
 const original = process.env.UNIT_ORIGINAL;
 const output = {title: "unit fake host", output: original, metadata: {exit: 0, truncated: false, output: original, unitFuture: {nested: [1, "🔥"]}}};
-if (process.env.UNIT_PROBE !== "no-observer") {
+if (process.env.UNIT_PROBE !== "no-observer" && cfg.plugin.length) {
   const [url, options] = cfg.plugin[0];
   const hooks = await (await import(url)).default({}, options);
   await hooks["tool.execute.after"]({tool: "bash", args, callID: call.id, sessionID: "unit"}, output);
 }
 messages.push(assistant, {role: "tool", tool_call_id: call.id, content: output.output});
 await request();
-console.log(JSON.stringify({type: "tool_use", part: {tool: "bash", callID: call.id, state: {status: "completed", input: args, ...output}}}));
+if (process.env.UNIT_PROBE !== "no-completion") console.log(JSON.stringify({type: "tool_use", part: {tool: "bash", callID: call.id, state: {status: "completed", input: args, ...output}}}));
 `;
 
 test("fake-host units prove before-call sidecar, no observer/request and ignored hook failures", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "hugr-real-host-plumbing-"));
+  const retainedRoots = new Set<string>();
   try {
     const { original } = await nativeGit(root);
     const fakeHost = path.join(root, "unit-host.mjs"), unitPlugin = path.join(root, "unit-plugin.mjs"), outputs = path.join(root, "outputs");
@@ -226,10 +270,11 @@ export default async () => ({"tool.execute.after": async (_, output) => {
   if (process.env.UNIT_PROBE !== "no-filter") output.output = output.output.split("\\n").filter(line => !line.startsWith('  (use "git ')).join("\\n");
 }});
 `);
-    for (const probe of ["good", "no-observer", "no-second", "wrong-original", "no-filter"]) {
+    for (const probe of ["good", "no-observer", "no-second", "no-completion", "host-failed", "wrong-original", "no-filter"]) {
       const scenario = { ...gitCase, id: probe };
       const options = { scenario, plugin: unitPlugin, outputDir: outputs, binary: process.execPath, binaryArgs: [fakeHost], dependencies: false,
-        setup: async ({ env }: { env: NodeJS.ProcessEnv }) => {
+        setup: async ({ root: isolatedRoot, env }: { root: string; env: NodeJS.ProcessEnv }) => {
+          retainedRoots.add(isolatedRoot);
           env.UNIT_ORIGINAL = original; env.UNIT_PROBE = probe; env.UNIT_SIDECAR = path.join(outputs, probe, "observer.jsonl");
           if (probe === "wrong-original") {
             const wrapper = path.join(outputs, probe, "observer.mjs");
@@ -244,14 +289,51 @@ export default async () => ({"tool.execute.after": async (_, output) => {
         const retained = JSON.parse(await readFile(path.join(result.artifacts, "host-result.json"), "utf8")) as { root: string };
         await rm(retained.root, { recursive: true, force: true });
       } else {
-        const name = { "no-observer": "REAL_HOST_OBSERVER_MISSING", "no-second": "REAL_HOST_SECOND_REQUEST_MISSING", "wrong-original": "REAL_HOST_ORIGINAL_MISMATCH", "no-filter": "REAL_HOST_KNOWN_GIT_NOT_REDUCED" }[probe]!;
+        const name = { "no-observer": "REAL_HOST_OBSERVER_MISSING", "no-second": "REAL_HOST_SECOND_REQUEST_MISSING", "no-completion": "REAL_HOST_NATIVE_COMPLETION_MISSING", "host-failed": "REAL_HOST_NATIVE_ROUNDTRIP_FAILED", "wrong-original": "REAL_HOST_ORIGINAL_MISMATCH", "no-filter": "REAL_HOST_KNOWN_GIT_NOT_REDUCED" }[probe]!;
         await assert.rejects(host.runObservedScenario(options), new RegExp(name));
         const failure = JSON.parse(await readFile(path.join(outputs, probe, "failure.json"), "utf8")) as { status: string; name: string; isolatedRoot: string };
         assert.equal(failure.status, "failed"); assert.equal(failure.name, name);
+        assert.match(await readFile(path.join(outputs, probe, "host.stdout.jsonl"), "utf8"), /UNIT_HOST_STDOUT café 🔥/);
+        assert.equal(await readFile(path.join(outputs, probe, "host.stderr.txt"), "utf8"), "UNIT_HOST_STDERR café 🔥\n");
+        if (["no-completion", "host-failed", "no-second"].includes(probe)) {
+          const captured = JSON.parse(await readFile(path.join(outputs, probe, "host-result.json"), "utf8"));
+          assert.equal(captured.status, "failed");
+          assert.equal(captured.code, probe === "host-failed" ? 9 : 0);
+          assert.equal(captured.signal, null);
+          assert.equal(captured.requests, probe === "no-completion" ? 2 : 1);
+          assert.equal(captured.root, failure.isolatedRoot);
+        }
         await rm(failure.isolatedRoot, { recursive: true, force: true });
       }
     }
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally {
+    for (const retained of retainedRoots) await rm(retained, { recursive: true, force: true });
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("runScenario rejection exposes original process diagnostics and retained root", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "hugr-host-diagnostics-"));
+  let retained: string | undefined;
+  try {
+    const fakeHost = path.join(root, "host.mjs");
+    await writeFile(fakeHost, UNIT_HOST);
+    await assert.rejects(boundary.runScenario({ binary: process.execPath, binaryArgs: [fakeHost], dependencies: false, keep: true,
+      setup: async ({ env }: { env: NodeJS.ProcessEnv }) => { env.UNIT_PROBE = "no-completion"; env.UNIT_ORIGINAL = "unknown café 🔥\n"; } }), (error: any) => {
+      retained = error.diagnostics.root;
+      assert.equal(error.code, "REAL_HOST_NATIVE_COMPLETION_MISSING");
+      assert.equal(error.diagnostics.code, 0);
+      assert.equal(error.diagnostics.signal, null);
+      assert.equal(error.diagnostics.requests, 2);
+      assert.equal(error.diagnostics.toolResults, 1);
+      assert.equal(error.diagnostics.stdout, "UNIT_HOST_STDOUT café 🔥\n");
+      assert.equal(error.diagnostics.stderr, "UNIT_HOST_STDERR café 🔥\n");
+      assert.match(error.message, /UNIT_HOST_STDERR café 🔥/);
+      assert.ok(error.message.includes(retained!));
+      return true;
+    });
+    assert.ok((await readFile(path.join(retained!, "opencode.json"), "utf8")).includes("hugr-mock"));
+  } finally { if (retained) await rm(retained, { recursive: true, force: true }); await rm(root, { recursive: true, force: true }); }
 });
 
 test("public runner refuses missing host and retains named setup failure", async () => {
