@@ -21,6 +21,7 @@
     "structure": "node scripts/check-structure.mjs",
     "smoke": "node scripts/package-smoke.mjs",
     "benchmark": "node scripts/benchmark.mjs",
+    "benchmark:real": "node scripts/real-world/run.mjs",
     "check": "npm run structure && npm run typecheck && npm test && npm run build",
     "prepack": "npm run build"
   },
