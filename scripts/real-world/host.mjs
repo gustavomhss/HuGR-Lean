@@ -306,3 +306,118 @@ async function provision(repoRoot, root, env) {
     modifications: ["append README.md diff evidence", `stage ${STAGED}`, `create untracked ${UNTRACKED}`],
     cargo: { category: "control", source: "fixtures/runners/native", note: "Own committed native runner fixture, not external upstream coverage" } };
 }
+
+/** Frozen public API. All host sessions retained; setup failures stay red and retain diagnostics. */
+export async function runRealHost({ repoRoot = fileURLToPath(new URL("../../", import.meta.url)), outputDir, dependencies, binary = process.env.OPENCODE_BIN ?? "opencode" } = {}) {
+  requireFact(typeof outputDir === "string" && outputDir.length > 0, "REAL_HOST_OUTPUT_DIR_MISSING");
+  repoRoot = path.resolve(repoRoot); outputDir = path.resolve(outputDir);
+  await mkdir(outputDir, { recursive: true });
+  requireFact((await readdir(outputDir)).length === 0, "REAL_HOST_OUTPUT_DIR_NOT_EMPTY", outputDir);
+  await writeFile(path.join(outputDir, "README.md"), guide);
+  const root = await mkdtemp(path.join(tmpdir(), "hugr-real-host-"));
+  const gitEnv = { GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_COUNT: "3", GIT_CONFIG_KEY_0: "core.quotePath", GIT_CONFIG_VALUE_0: "false", GIT_CONFIG_KEY_1: "color.ui", GIT_CONFIG_VALUE_1: "false", GIT_CONFIG_KEY_2: "advice.statusHints", GIT_CONFIG_VALUE_2: "true", GIT_TERMINAL_PROMPT: "0" };
+  const hostFlags = { OPENCODE_EXPERIMENTAL_DISABLE_FILEWATCHER: "1" };
+  const env = isolatedEnvironment(root, { ...gitEnv, ...hostFlags }), context = { cwd: root, env };
+  await Promise.all([env.HOME, env.XDG_CONFIG_HOME, env.XDG_DATA_HOME, env.XDG_CACHE_HOME, env.XDG_STATE_HOME, env.OPENCODE_CONFIG_DIR].map((dir) => mkdir(dir, { recursive: true })));
+  const started = performance.now();
+  const report = { status: "running", version: null, platform: process.platform, scenarios: [], failures: [], outputDir, setupRoot: root, binary, hostFlags, gitEnvironment: gitEnv,
+    environment: { arch: process.arch, osRelease: release(), cpus: cpus().length, cpuModel: cpus()[0]?.model, totalMemoryBytes: totalmem(), loadBefore: loadavg(), isolatedCPU: false }, bootstrap: { mode: dependencies ? "isolated-sdk-copy" : "fresh-npm-install", dependencies: dependencies ?? null } };
+  try {
+    const version = await checked(binary, ["--version"], context, "REAL_HOST_MISSING_HOST");
+    report.version = version.stdout.trim();
+    equal(report.version, HOST_VERSION, "REAL_HOST_UNSUPPORTED_HOST_VERSION");
+    report.versions = { node: process.version };
+    report.resolvedTools = { node: await realpath(process.execPath), opencode: await resolvedTool(binary, context) };
+    // Select installed stable toolchain artifacts directly; never load user's rustup/Cargo config.
+    const toolchains = path.join(process.env.RUSTUP_HOME ?? path.join(homedir(), ".rustup"), "toolchains");
+    const stable = (await readdir(toolchains).catch((error) => { if (error.code === "ENOENT") return []; throw error; })).sort().find((name) => name.startsWith("stable-"));
+    if (stable) {
+      report.environment.nativeToolchain = path.join(toolchains, stable, "bin");
+      env.PATH = `${report.environment.nativeToolchain}${path.delimiter}${env.PATH}`;
+    }
+    const plugin = path.join(repoRoot, "dist/index.js");
+    requireFact((await stat(plugin).catch(() => undefined))?.isFile(), "REAL_HOST_COMPILED_PLUGIN_MISSING", plugin);
+    report.plugin = { path: plugin, compiled: [] };
+    for (const file of ["index.js", "opencode/index.js", "core/engine.js", "profiles/formats.js", "profiles/runners.js"]) report.plugin.compiled.push({ path: `dist/${file}`, sha256: digest(await readFile(path.join(repoRoot, "dist", file))) });
+    report.tools = {};
+    for (const [tool, args] of [["git", ["--version"]], ["rg", ["--version"]], ["cargo", ["--version"]], ["rustc", ["--version"]], ["tar", ["--version"]], ["cat", []], ["npm", ["--version"]]]) {
+      const result = await checked(tool, args, context, `REAL_HOST_MISSING_TOOL_${tool.toUpperCase()}`);
+      report.tools[tool] = result.stdout.trim();
+      report.resolvedTools[tool] = await resolvedTool(tool, context);
+    }
+    report.versions.npm = report.tools.npm;
+    if (!dependencies) {
+      await json(path.join(env.OPENCODE_CONFIG_DIR, "package.json"), { private: true });
+      const npmStarted = performance.now();
+      let installation;
+      try {
+        installation = await checked("npm", ["install", "--legacy-peer-deps", "--ignore-scripts", "--no-audit", "--no-fund", "--save-exact", `@opencode-ai/plugin@${HOST_VERSION}`], { cwd: env.OPENCODE_CONFIG_DIR, env }, "REAL_HOST_SDK_BOOTSTRAP_FAILED");
+      } catch (error) {
+        await json(path.join(outputDir, "sdk-install.json"), { status: "failed", message: error.message, retainedRoot: root });
+        throw error;
+      } finally { report.bootstrap.elapsedMs = performance.now() - npmStarted; }
+      await json(path.join(outputDir, "sdk-install.json"), installation);
+      dependencies = env.OPENCODE_CONFIG_DIR;
+    }
+    report.bootstrap.retainedSdk = path.resolve(dependencies);
+    const sdkManifest = JSON.parse(await readFile(path.join(dependencies, "node_modules/@opencode-ai/plugin/package.json"), "utf8"));
+    equal(sdkManifest.version, HOST_VERSION, "REAL_HOST_SDK_VERSION_MISMATCH");
+    report.bootstrap.lockSha256 = digest(await readFile(path.join(dependencies, "package-lock.json")));
+    report.project = await provision(repoRoot, root, env);
+    report.setupMs = performance.now() - started;
+    await json(path.join(outputDir, "setup.json"), report);
+    for (const scenario of HOST_SCENARIOS) {
+      try {
+        const record = await runObservedScenario({ scenario, plugin, outputDir, binary, dependencies, setup: async ({ cwd, env: hostEnv }) => {
+          Object.assign(hostEnv, gitEnv, hostFlags, { PATH: env.PATH });
+          await cp(report.project.cwd, cwd, { recursive: true });
+          const setupEvidence = { modifications: [], hostFlags };
+          if (scenario.nativeCwd) {
+            // bash starts in project; project unchanged committed Cargo files into that cwd.
+            for (const file of ["Cargo.toml", "main.rs"]) await cp(path.join(cwd, "fixtures/runners/native", file), path.join(cwd, file));
+            hostEnv.CARGO_HOME = path.join(path.dirname(cwd), "cargo-home");
+            hostEnv.CARGO_NET_OFFLINE = "true";
+            setupEvidence.modifications.push("project unchanged pinned fixtures/runners/native/{Cargo.toml,main.rs} into bash cwd; real cargo, offline, private CARGO_HOME");
+          }
+          if (scenario.oracle === "truncated") {
+            const stress = path.join(cwd, "host-stress");
+            await mkdir(stress);
+            for (let i = 0; i < 1800; i++) await writeFile(path.join(stress, `host-stress-${String(i).padStart(4, "0")}-${"native-path-".repeat(5)}.txt`), "native Git entry\n");
+            setupEvidence.modifications.push("create 1800 native Git untracked file entries under host-stress/; upstream default truncation limits");
+          }
+          if (scenario.id === "unknown-read") setupEvidence.expectedOriginal = await readFile(path.join(cwd, "README.md"), "utf8");
+          return setupEvidence;
+        } });
+        report.scenarios.push(record);
+      } catch (error) {
+        const failure = JSON.parse(await readFile(path.join(outputDir, scenario.id, "failure.json"), "utf8"));
+        report.scenarios.push({ ...scenario, status: "failed", ...failure });
+        report.failures.push({ id: scenario.id, name: error.code, message: error.message });
+      }
+      await json(path.join(outputDir, "report.json"), report);
+    }
+    requireFact(report.scenarios.length === HOST_SCENARIOS.length && report.scenarios.length > 0, "REAL_HOST_SCENARIOS_EMPTY");
+    requireFact(report.failures.length === 0, "REAL_HOST_SCENARIOS_FAILED", report.failures.map(({ id, name }) => `${id}: ${name}`).join("; "));
+    report.status = "proved";
+    report.elapsedMs = performance.now() - started;
+    report.environment.loadAfter = loadavg();
+    await json(path.join(outputDir, "report.json"), report);
+    return report;
+  } catch (error) {
+    report.status = "failed";
+    report.failure = { name: error.code ?? "REAL_HOST_SETUP_FAILED", message: error.message };
+    report.elapsedMs = performance.now() - started;
+    report.environment.loadAfter = loadavg();
+    await json(path.join(outputDir, "report.json"), report);
+    throw Object.assign(new Error(`${report.failure.name}: ${error.message}\nReal-host artifacts: ${outputDir}; setup: ${root}`, { cause: error }), { code: report.failure.name });
+  }
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    requireFact(process.argv.length === 3, "REAL_HOST_USAGE", "node scripts/real-world/host.mjs OUTPUT_DIR");
+    const result = await runRealHost({ outputDir: process.argv[2], dependencies: process.env.HUGR_SMOKE_DEPS });
+    console.log(JSON.stringify({ status: result.status, version: result.version, platform: result.platform, outputDir: result.outputDir, elapsedMs: result.elapsedMs,
+      scenarios: result.scenarios.map(({ id, command, rawBytes, modelBytes, savedBytes, elapsedMs, metadataExact, evidenceOK, note }) => ({ id, command, rawBytes, modelBytes, savedBytes, elapsedMs, metadataExact, evidenceOK, note })) }, null, 2));
+  } catch (error) { console.error(error.stack); process.exitCode = 1; }
+}

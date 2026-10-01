@@ -22,6 +22,7 @@
     "smoke": "node scripts/package-smoke.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "benchmark:real": "node scripts/real-world/run.mjs",
+    "benchmark:real:host": "node scripts/real-world/host.mjs",
     "check": "npm run structure && npm run typecheck && npm test && npm run build",
     "prepack": "npm run build"
   },
