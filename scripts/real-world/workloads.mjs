@@ -1,36 +1,101 @@
 // Literal developer commands, chosen by ecosystem/project coverage, never reducer acceptance.
-import { readFile, rm, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import fs, { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { setupProjects } from "./setup.mjs";
 
 export const FAILURE_MARKER = "BENCH_EXPECTED_FAILURE";
 
+const sameFile = (left, right) => left.isFile() && right.isFile() && left.dev === right.dev && left.ino === right.ino;
+const inside = (root, file) => {
+  const relative = path.relative(root, file);
+  return relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+};
+const readWrite = constants.O_RDWR | (constants.O_NOFOLLOW ?? 0);
+
+async function editPath(root, relative) {
+  if (typeof relative !== "string" || !relative || path.isAbsolute(relative) || relative.split(path.sep).includes("..")) {
+    throw new Error(`CASE_PATH_OUTSIDE: ${relative}`);
+  }
+  const file = path.resolve(root, relative), parent = await fs.realpath(path.dirname(file));
+  if (file === root || !inside(root, file) || !inside(root, parent)) throw new Error(`CASE_PATH_OUTSIDE: ${relative}`);
+  return path.join(parent, path.basename(file));
+}
+
+async function writeAt(handle, bytes, position, progress = () => {}) {
+  let offset = 0;
+  while (offset < bytes.length) {
+    const { bytesWritten } = await handle.write(bytes, offset, bytes.length - offset, position + offset);
+    if (!bytesWritten) throw new Error("CASE_WRITE_INCOMPLETE");
+    offset += bytesWritten;
+    progress(offset);
+  }
+}
+
 /** Transactional file edits; restoration also works after a partial prepare or failed capture. */
 export function edits(projectPath, changes) {
-  let saved;
+  let saved, root;
   return {
     async prepare() {
       if (saved) throw new Error("CASE_ALREADY_PREPARED");
       saved = [];
       try {
+        root = await fs.realpath(projectPath);
         for (const change of changes) {
-          const file = path.join(projectPath, change.path);
-          let original;
-          try { original = await readFile(file); }
+          const file = await editPath(root, change.path);
+          let entry;
+          try { entry = await fs.lstat(file); }
           catch (error) { if (error.code !== "ENOENT" || change.append) throw error; }
-          if (!change.append && original !== undefined) throw new Error(`CASE_WOULD_OVERWRITE: ${file}`);
-          saved.push({ file, original });
-          await writeFile(file, change.append ? Buffer.concat([original, Buffer.from(change.text)]) : change.text);
+          if (!change.append && entry) throw new Error(`CASE_WOULD_OVERWRITE: ${file}`);
+          if (change.append && !entry.isFile()) throw new Error(`CASE_APPEND_NOT_REGULAR: ${file}`);
+          // Failed exclusive creation establishes no ownership and must never enter rollback.
+          const handle = await fs.open(file, change.append ? readWrite : "wx+");
+          try {
+            const identity = await handle.stat();
+            if (!sameFile(identity, await fs.lstat(file)) || (entry && !sameFile(identity, entry))) {
+              throw new Error(`CASE_PREPARE_FOREIGN: ${file}`);
+            }
+            const original = change.append ? await handle.readFile() : undefined;
+            const base = original ?? Buffer.alloc(0), bytes = Buffer.from(change.text);
+            const record = { file, original, identity, expected: base };
+            saved.push(record);
+            await writeAt(handle, bytes, base.length, (offset) => {
+              record.expected = Buffer.concat([base, bytes.subarray(0, offset)]);
+            });
+          } finally { await handle.close(); }
         }
-      } catch (error) { await this.restore(); throw error; }
+      } catch (error) {
+        try { await this.restore(); }
+        catch (rollback) { throw new AggregateError([error, rollback], `CASE_ROLLBACK_FAILED: ${error.message}; ${rollback.message}`); }
+        throw error;
+      }
     },
     async restore() {
       if (!saved) return;
-      for (const { file, original } of saved.toReversed()) {
-        if (original === undefined) await rm(file, { force: true });
-        else await writeFile(file, original);
+      const failures = [];
+      for (const record of saved.toReversed()) {
+        const { file, original, identity, expected } = record;
+        let handle;
+        try {
+          if (await fs.realpath(root) !== root || await editPath(root, path.relative(root, file)) !== file ||
+              !sameFile(identity, await fs.lstat(file))) throw new Error("identity changed");
+          handle = await fs.open(file, readWrite);
+          if (!sameFile(identity, await handle.stat()) || !(await handle.readFile()).equals(expected) ||
+              !sameFile(identity, await fs.lstat(file))) throw new Error("identity or content changed");
+        } catch (cause) {
+          await handle?.close();
+          failures.push(new Error(`CASE_RESTORE_FOREIGN: ${file}`, { cause }));
+          continue;
+        }
+        try {
+          if (original === undefined) await fs.unlink(file);
+          else { await writeAt(handle, original, 0); await handle.truncate(original.length); }
+          saved.splice(saved.indexOf(record), 1);
+        } finally { await handle.close(); }
       }
-      saved = undefined;
+      if (!saved.length) saved = undefined;
+      if (failures.length === 1) throw failures[0];
+      if (failures.length) throw new AggregateError(failures, "CASE_RESTORE_FOREIGN: multiple files");
     },
   };
 }
