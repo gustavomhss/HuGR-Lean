@@ -5,6 +5,8 @@ import path from "node:path";
 import { sha256 } from "./capture.mjs";
 
 const identity = (row) => JSON.stringify([row.id, row.project, row.category, row.command, row.expectExit, row.oracle]);
+export const nativePolicy = (spec) => ({ allowEmpty: spec.allowEmpty ?? false,
+  ...(spec.marker === undefined ? {} : { marker: spec.marker }) });
 export function checkCatalog(planned, measured, native) {
   for (const [name, rows] of [["planned", planned], ["measured", measured], ["native", native]]) {
     assert.ok(Array.isArray(rows) && rows.length, `EMPTY_CASE_CATALOG: ${name}`);
@@ -13,9 +15,22 @@ export function checkCatalog(planned, measured, native) {
   const reference = planned.map(identity).sort();
   assert.deepEqual(measured.map(identity).sort(), reference, "MEASURED_CATALOG_IDENTITY_MISMATCH");
   assert.deepEqual(native.map(identity).sort(), reference, "NATIVE_CATALOG_IDENTITY_MISMATCH");
+  for (const spec of native) {
+    const policy = nativePolicy(spec);
+    if (Object.hasOwn(spec, "allowEmpty")) assert.equal(typeof spec.allowEmpty, "boolean", `${spec.id}: INVALID_NATIVE_ALLOW_EMPTY`);
+    if (Object.hasOwn(policy, "marker")) assert.ok(typeof policy.marker === "string" && policy.marker.length, `${spec.id}: INVALID_NATIVE_MARKER`);
+    for (const [name, rows] of [["planned", planned], ["measured", measured]]) {
+      const row = rows.find((entry) => entry.id === spec.id);
+      for (const key of ["allowEmpty", "marker"]) {
+        if (Object.hasOwn(row, key)) assert.equal(row[key], policy[key], `${spec.id}: ${name} NATIVE_POLICY_MISMATCH: ${key}`);
+      }
+    }
+  }
 }
 export async function verifiedCapture(outputDir, row) {
   const directory = path.join(outputDir, "cases", row.id);
+  const persisted = JSON.parse(await readFile(path.join(directory, "result.json"), "utf8"));
+  assert.deepEqual(row, persisted, `${row.id}: PERSISTED_RESULT_MISMATCH`);
   const capture = JSON.parse(await readFile(path.join(directory, "capture.json"), "utf8"));
   const contents = {};
   for (const name of ["original", "filtered", "stdout", "stderr"]) {
@@ -28,10 +43,16 @@ export async function verifiedCapture(outputDir, row) {
     contents[name] = data;
   }
   assert.equal(contents.original.toString("utf8"), capture.output, `${row.id}: CAPTURE_OUTPUT_MISMATCH`);
-  assert.equal(capture.command, row.command, `${row.id}: CAPTURE_COMMAND_MISMATCH`);
-  assert.equal(capture.exitCode, row.observedExit); assert.equal(capture.signal, row.signal);
-  assert.equal(capture.complete, row.complete); assert.equal(capture.timedOut, row.timedOut);
-  assert.equal(capture.durationMs, row.captureMs);
+  assert.equal(contents.original.length, contents.stdout.length + contents.stderr.length, `${row.id}: STREAM_BYTE_MISMATCH`);
+  for (const [fact, key] of [["command", "command"], ["exitCode", "observedExit"], ["signal", "signal"],
+    ["complete", "complete"], ["timedOut", "timedOut"], ["durationMs", "captureMs"]]) {
+    assert.equal(capture[fact], row[key], `${row.id}: CAPTURE_FACT_MISMATCH: ${fact}`);
+  }
+  const inputBytes = contents.original.length, outputBytes = contents.filtered.length, savedBytes = inputBytes - outputBytes;
+  const derived = { inputBytes, outputBytes, savedBytes, reductionPercent: inputBytes ? savedBytes / inputBytes * 100 : 0,
+    material: savedBytes >= 1024 && savedBytes >= inputBytes * 0.1,
+    linesBefore: capture.output.split("\n").length, linesAfter: contents.filtered.toString("utf8").split("\n").length };
+  for (const [key, value] of Object.entries(derived)) assert.equal(row[key], value, `${row.id}: DERIVED_METRIC_MISMATCH: ${key}`);
   if (["passthrough", "failed_open"].includes(row.decision)) assert.deepEqual(contents.filtered, contents.original, `${row.id}: EXACT_FILTERED_BYTES_CHANGED`);
   return { capture: { ...capture, raw: contents.original }, filtered: contents.filtered };
 }

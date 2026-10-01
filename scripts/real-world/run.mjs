@@ -8,6 +8,7 @@ import { compiled } from "../benchmark.mjs";
 import { provision } from "./workloads.mjs";
 import { captureCommand, archiveCapture } from "./capture.mjs";
 import { measureCapture, aggregate } from "./measure.mjs";
+import { nativePolicy } from "./integrity.mjs";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const json = (file, value) => writeFile(file, JSON.stringify(value, null, 2) + "\n");
@@ -40,7 +41,10 @@ export async function runRealBenchmark({ outputDir, preparedRoot, repoRoot = ROO
     const started = performance.now(); prepared = await provisionProjects(preparedRoot, { repoRoot });
     report.setup = { mode: "fresh provision", root: preparedRoot, elapsedMs: performance.now() - started };
     report.projects = prepared.projects; report.versions = prepared.versions;
-    report.planned = prepared.cases.map(({ id, project, category, command, expectExit, oracle, cache, modifications }) => ({ id, project, category, command, expectExit, oracle, cache, modifications }));
+    report.planned = prepared.cases.map((spec) => {
+      const { id, project, category, command, expectExit, oracle, cache, modifications } = spec;
+      return { id, project, category, command, expectExit, oracle, cache, modifications, ...nativePolicy(spec) };
+    });
     assert.ok(prepared.cases.length, "REAL_BENCHMARK_EMPTY_CASES");
     assert.equal(new Set(prepared.cases.map((row) => row.id)).size, prepared.cases.length, "REAL_BENCHMARK_DUPLICATE_CASE");
     await json(path.join(outputDir, "report.json"), report);
@@ -62,6 +66,7 @@ export async function runRealBenchmark({ outputDir, preparedRoot, repoRoot = ROO
           throw new Error(`CAPTURE_EXECUTION_FAILED: ${spec.id}; see capture.json for original execution facts`);
         }
         measurement = await measure(spec, capture, app);
+        Object.assign(measurement.record, nativePolicy(spec));
         measurement.record.artifacts = await archiveCapture(directory, capture, measurement.filtered);
         report.cases.push(measurement.record);
         if (!measurement.record.evidence.ok) report.failures.push({ id: spec.id, name: "EVIDENCE_OR_EXECUTION_FAILED", violations: measurement.record.evidence.violations });

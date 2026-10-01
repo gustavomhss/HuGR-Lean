@@ -16,12 +16,11 @@ export async function analyze(outputDir) {
   const rows = [];
   for (const row of report.cases) {
     const { capture, filtered } = await verifiedCapture(outputDir, row);
-    const spec = report.planned.find((entry) => entry.id === row.id);
     const nativeSpec = catalog.cases.find((entry) => entry.id === row.id);
     assert.ok(nativeSpec, `${row.id}: NATIVE_SPEC_MISSING`);
     const result = { status: row.decision, reason: row.reason, inputBytes: row.inputBytes, outputBytes: row.outputBytes,
       ...(row.decision === "reduced" || row.decision === "normalized" ? { replacement: filtered.toString("utf8"), profile: row.profile } : {}) };
-    const evidence = checkEvidence({ ...nativeSpec, ...spec }, capture, result);
+    const evidence = checkEvidence(nativeSpec, capture, result);
     rows.push({ ...row, evidence, originalEvidence: row.evidence });
   }
   const verdict = { schema: "hugr-lean/real-world-analysis/1", inspectedAt: new Date().toISOString(), version: report.version,
