@@ -298,3 +298,162 @@ test("Vitest file identity/count and whole duration survive; per-file timing may
   green(verdict("vitest", verbose, actual(entry.command, verbose)));
   red(verdict("vitest", verbose, replacement(verbose, result.replacement)), /no_replacement/);
 });
+
+test("Git every fact row survives, including branch/tracking/status/rename/submodule/path facts", () => {
+  const entry = controls.find((item) => item.oracle === "git")!, result = actual(entry.command, entry.output);
+  assert.ok("replacement" in result);
+  for (const line of result.replacement.split("\n").filter(Boolean)) {
+    red(verdict("git", entry.output, replacement(entry.output, result.replacement.replace(line + "\n", ""))), /native_signal/);
+  }
+  for (const [from, to] of [["modified:   src/ledger.ts", "deleted:    src/ledger.ts"], ["old café.ts -> new 🔥.ts", "old café.ts -> other.ts"],
+    ["notes café🔥.md", "notes.md"], ["new commits, modified content, untracked content", "modified content"]]) {
+    red(verdict("git", entry.output, replacement(entry.output, result.replacement.replace(from!, to!))), /native_signal/);
+  }
+});
+
+test("Git unsupported/malformed shapes require exact fallback even if every fact row is retained", () => {
+  const hint = '  (use "git restore --staged <file>..." to unstage)\n';
+  const valid = `On branch unit\n\nChanges to be committed:\n${hint}\tmodified:   src/ledger.ts\n`;
+  const malformed = [valid.replace("On branch unit", "custom status unit"), valid.replace("src/ledger.ts", '"src/ledger.ts"'),
+    valid.replace("modified:   src/ledger.ts", "renamed:    old.ts -> "), valid.replace("modified:   src/ledger.ts", "modified:   deps/lib (unknown annotation)"),
+    valid + "Untracked files:\n", valid + "nothing to commit, working tree clean\n", valid + "  (use unknown advice)\n",
+    valid.replace("Changes to be committed:", "Changes not staged for commit:")];
+  for (const input of malformed) {
+    green(verdict("git", input, actual("git status", input)));
+    red(verdict("git", input, replacement(input, input.replace(hint, ""))), /no_replacement/);
+  }
+});
+
+test("rg independent flattening checks path/line/content/order/multiplicity/line endings", () => {
+  const entry = controls.find((item) => item.oracle === "rg")!, result = actual(entry.command, entry.output);
+  assert.ok("replacement" in result);
+  const output = result.replacement;
+  for (const mutant of [output.replace("src/café🔥.ts:", "src/other.ts:"), output.replace("7:https", "8:https"),
+    output.replace("example.org:x 🔥", "example.org:y 🔥"), output.replace("7:https://example.org:x 🔥\r\n", ""),
+    output.replace("9:last\r\n10:\r\n", "10:\r\n9:last\r\n"), output.replace("9:last\r\n", "9:last\n")]) {
+    red(verdict("rg", entry.output, replacement(entry.output, mutant)), /rg_records/);
+  }
+  const missingDuplicate = output.replace("7:https://example.org:x 🔥\r\n", "");
+  red(verdict("rg", entry.output, replacement(entry.output, missingDuplicate)), /rg_records/);
+});
+
+test("ambiguous rg numeric delimiters, paths, columns and headings require whole original", () => {
+  for (const input of ["a.ts:1:text:23:suffix\na.ts:2:y\n", "a.ts:1:text:02:suffix\na.ts:2:y\n", "a.ts:1:2:column\na.ts:2:3:y\n",
+    "src:odd.ts:1:x\nsrc:odd.ts:2:y\n", "1:10:x\n1:11:y\n", "C:\\a.ts:1:x\nC:\\a.ts:2:y\n", "a.ts\n1:x\n2:y\n", "a.ts:0:x\na.ts:2:y\n"]) {
+    green(verdict("rg", input, actual("rg -n -e x .", input)));
+    red(verdict("rg", input, replacement(input, input.slice(2))), /no_replacement/);
+  }
+});
+
+test("ordinary CRLF and unterminated native summaries use source-exact copied evidence", () => {
+  for (const entry of controls.filter((item) => item.oracle !== "rg")) {
+    for (const input of [entry.output.replaceAll("\n", "\r\n"), entry.output.trimEnd()]) {
+      green(verdict(entry.oracle, input, actual(entry.command, input)));
+    }
+  }
+});
+
+test("unknown controls and cursor/presentation bytes are never treated as removable noise", () => {
+  const entry = controls[0];
+  for (const prefix of ["\0", "\x1b[32m", "\rprogress\r", "invoice café🔥\n"]) {
+    const input = prefix + entry.output;
+    green(verdict(entry.oracle, input, actual(entry.command, input)));
+    red(verdict(entry.oracle, input, replacement(input, entry.output)), /no_replacement/);
+  }
+});
+
+for (const oracle of ["jest", "vitest", "git"]) test(`${oracle}: every native blank row survives actual core reduction`, () => {
+  const entry = controls.find((item) => item.oracle === oracle)!;
+  for (const input of [entry.output, entry.output.replaceAll("\n", "\r\n")]) {
+    const result = actual(entry.command, input); assert.ok("replacement" in result);
+    const blanks = [...result.replacement.matchAll(/^\r?\n/gm)]; assert.ok(blanks.length > 0);
+    for (const blank of blanks) {
+      const output = result.replacement.slice(0, blank.index) + result.replacement.slice(blank.index + blank[0].length);
+      red(verdict(oracle, input, replacement(input, output)), /native_evidence/);
+    }
+  }
+});
+
+// Verbatim native feasibility captures, not benchmark inputs. Producer:
+// gmhelmold/HuGR-Lean@6bb714e5abf38a6e93f70860c3910de0b2104fd1, MIT,
+// scripts/real-world/workloads.mjs. Manifest: lean-workloads-prepared-20260930-final/agent-feasibility.json.
+// Source root: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-workloads-prepared-20260930/setup-logs/
+// Source basenames: 635652ed-a321-493e-9561-fddb84785b5f-{19-probe-vitest-direct,13-probe-pytest-quiet}.output.
+// Projects: unjs/ufo@f06c800d0c59f2a4a1b9ba65eb6cb61a84419be6 (MIT, LICENSE, test/*.test.ts);
+// mahmoud/boltons@4e5faa3d7e4008d89e0d8bf1ea87b6d9a061a16d (BSD-3-Clause, LICENSE, tests/*.py).
+// Modification record: JavaScript literal escaping/interpolation only; source UTF-8 bytes unchanged, pinned below.
+const probeProjects = "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-workloads-prepared-20260930/projects";
+const vitest4Signals = [
+  "\x1b[2m Test Files \x1b[22m \x1b[1m\x1b[32m13 passed\x1b[39m\x1b[22m\x1b[90m (13)\x1b[39m\n",
+  "\x1b[2m      Tests \x1b[22m \x1b[1m\x1b[32m489 passed\x1b[39m\x1b[22m\x1b[90m (489)\x1b[39m\n",
+  "\x1b[2m   Start at \x1b[22m 13:35:24\n",
+  "\x1b[2m   Duration \x1b[22m 2.50s\x1b[2m (transform 2.49s, setup 0ms, import 4.45s, tests 489ms, environment 17ms)\x1b[22m\n",
+];
+const vitest4 = `
+\x1b[1m\x1b[30m\x1b[46m RUN \x1b[49m\x1b[39m\x1b[22m \x1b[36mv4.1.5 \x1b[39m\x1b[90m${probeProjects}/ufo\x1b[39m
+
+ \x1b[32m✓\x1b[39m test/resolve.test.ts \x1b[2m(\x1b[22m\x1b[2m12 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 29\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/url.test.ts \x1b[2m(\x1b[22m\x1b[2m6 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 29\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/query.test.ts \x1b[2m(\x1b[22m\x1b[2m34 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 39\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/trailing-slash.test.ts \x1b[2m(\x1b[22m\x1b[2m45 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 39\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/parse.test.ts \x1b[2m(\x1b[22m\x1b[2m56 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 50\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/join.test.ts \x1b[2m(\x1b[22m\x1b[2m45 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 38\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/base.test.ts \x1b[2m(\x1b[22m\x1b[2m36 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 30\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/encoding.test.ts \x1b[2m(\x1b[22m\x1b[2m58 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 38\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/normalize.test.ts \x1b[2m(\x1b[22m\x1b[2m65 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 63\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/double-slash.test.ts \x1b[2m(\x1b[22m\x1b[2m5 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 31\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/utilities.test.ts \x1b[2m(\x1b[22m\x1b[2m98 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 66\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/is-same.test.ts \x1b[2m(\x1b[22m\x1b[2m5 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 13\x1b[2mms\x1b[22m\x1b[39m
+ \x1b[32m✓\x1b[39m test/punycode.test.ts \x1b[2m(\x1b[22m\x1b[2m24 tests\x1b[22m\x1b[2m)\x1b[22m\x1b[32m 24\x1b[2mms\x1b[22m\x1b[39m
+
+${vitest4Signals.join("")}
+`;
+const pytestQuietSummary = "525 passed, 5 warnings, 12 subtests passed in 6.12s\n";
+const pytestQuiet = `........................................................................ [ 13%]
+...................................................................... [ 27%]
+.............................................................. [ 38%]
+........................................................................ [ 52%]
+........................................................................ [ 66%]
+........................................................................ [ 80%]
+........................................................................ [ 93%]
+.................................                                        [100%]
+=============================== warnings summary ===============================
+tests/test_funcutils_fb_py3.py::test_wraps_async
+  ${probeProjects}/boltons/tests/test_funcutils_fb_py3.py:236: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+    assert asyncio.iscoroutinefunction(f)
+
+tests/test_funcutils_fb_py3.py::test_wraps_async
+  ${probeProjects}/boltons/tests/test_funcutils_fb_py3.py:240: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+    assert asyncio.iscoroutinefunction(f2)
+
+tests/test_ioutils.py::TestMultiFileReader::test_open
+  ${probeProjects}/boltons/tests/test_ioutils.py:561: DeprecationWarning: codecs.open() is deprecated. Use open() instead.
+    utf8_file_str = codecs.open(CUR_FILE_PATH, encoding='utf8').read()
+
+tests/test_ioutils.py::TestMultiFileReader::test_open
+  ${probeProjects}/boltons/tests/test_ioutils.py:562: DeprecationWarning: codecs.open() is deprecated. Use open() instead.
+    f1, f2 = (codecs.open(CUR_FILE_PATH, encoding='utf8'),
+
+tests/test_ioutils.py::TestMultiFileReader::test_open
+  ${probeProjects}/boltons/tests/test_ioutils.py:563: DeprecationWarning: codecs.open() is deprecated. Use open() instead.
+    codecs.open(CUR_FILE_PATH, encoding='utf8'))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+${pytestQuietSummary}`;
+
+test("actual Vitest 4 ANSI and pytest-q capture bodies expose source-exact summary signals", () => {
+  const blob = (text: string): string => createHash("sha1").update(`blob ${bytes(text)}\0`).update(text).digest("hex");
+  for (const [oracle, command, input, expected, hash] of [
+    ["vitest", "vitest run", vitest4, vitest4Signals, "e40b738143b5a03466ea41aea5c7d7328b2def30"],
+    ["pytest", "pytest -q", pytestQuiet, [pytestQuietSummary], "a98e1fe635c69a6fb19b74d8c9768d9e83c6088f"],
+  ] as const) {
+    assert.equal(blob(input), hash, "Fixture must reproduce actual captured source bytes");
+    assert.notEqual(blob(input + "\n"), hash, "Pinned capture integrity control must bite");
+    const result = actual(command, input); assert.equal("replacement" in result, false);
+    const found = verdict(oracle, input, result); green(found); assert.deepEqual(found.signals, expected);
+    const output = input.replace(expected[0]!, "");
+    red(verdict(oracle, input, replacement(input, output)), /native_signal/);
+  }
+  assert.ok(vitest4Signals.every((row) => row.includes("\x1b[")), "SGR inspection must retain raw colored signal rows");
+  red(verdict("vitest", vitest4, replacement(vitest4, vitest4.replace(/\x1b\[[0-9;]*m/g, ""))), /no_replacement/);
+});
