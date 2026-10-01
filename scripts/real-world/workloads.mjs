@@ -102,8 +102,20 @@ export function edits(projectPath, changes) {
 
 /** Pure catalog construction supports offline CI; provision supplies the real setup runner. */
 export function catalog(projects, run) {
+  const required = ["itoa", "gjson", "boltons", "ms", "ufo", "hugr"], seen = new Set();
+  if (!Array.isArray(projects)) throw new Error("CATALOG_INVALID_PROJECTS: expected array");
+  for (const [index, project] of projects.entries()) {
+    if (!project || typeof project !== "object" || !required.includes(project.id)) {
+      throw new Error(`CATALOG_INVALID_PROJECT: ${index}`);
+    }
+    if (seen.has(project.id)) throw new Error(`CATALOG_DUPLICATE_PROJECT: ${project.id}`);
+    if (typeof project.path !== "string" || !project.path.trim() || project.path.includes("\0") || !path.isAbsolute(project.path)) {
+      throw new Error(`CATALOG_INVALID_PROJECT_PATH: ${project.id}`);
+    }
+    seen.add(project.id);
+  }
+  for (const id of required) if (!seen.has(id)) throw new Error(`CATALOG_MISSING_PROJECT: ${id}`);
   const byId = Object.fromEntries(projects.map((project) => [project.id, project]));
-  for (const id of ["itoa", "gjson", "boltons", "ms", "ufo", "hugr"]) if (!byId[id]?.path) throw new Error(`CATALOG_MISSING_PROJECT: ${id}`);
   const cases = [];
   const add = (id, project, command, oracle, options = {}) => {
     const entry = { id, project, category: "primary", command, cwd: byId[project].path, expectExit: "zero", oracle,

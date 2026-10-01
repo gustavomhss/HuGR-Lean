@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { once } from "node:events";
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { connect, createServer, type AddressInfo, type Socket } from "node:net";
@@ -427,7 +427,7 @@ test("setup timeout settles despite detached descendant holding stdout/stderr op
   });
 });
 
-test("controlled failures operate in project clones, keep marked framework code, and restore exact bytes", async () => {
+test("controlled failures operate in synthetic directories, keep marked framework code, and restore exact bytes", async () => {
   await tree(async (root) => {
     for (const id of ids) for (const relative of ["src", "test", "tests"]) await mkdir(path.join(root, id, relative), { recursive: true });
     const original = Buffer.from([0, 255, ...Buffer.from("// original UTF-8 🦣\n")]);
@@ -467,12 +467,14 @@ test("file transaction refuses overwrite and rolls back a partially failed prepa
   });
 });
 
+const licenseFixture = "Permission is hereby granted, free of charge, to any person obtaining a copy.\n";
+
 async function localRepo(root: string): Promise<{ project: Project; run: Run }> {
   const directory = path.join(root, "hugr"), run = setup.setupRunner(root, setup.isolatedEnv(root));
   await mkdir(directory);
   await writeFile(path.join(directory, "README.md"), "UPSTREAM_README 🦣\n");
   await writeFile(path.join(directory, "PLAN.md"), "UPSTREAM_PLAN\n");
-  await writeFile(path.join(directory, "LICENSE"), "Permission is hereby granted, free of charge, to any person obtaining a copy.\n");
+  await writeFile(path.join(directory, "LICENSE"), licenseFixture);
   await run("repo-init", "git", ["init"], { cwd: directory });
   await run("repo-add", "git", ["add", "--", "README.md", "PLAN.md", "LICENSE"], { cwd: directory });
   await run("repo-commit", "git", ["commit", "-m", "test: create offline project fixture"], { cwd: directory });
@@ -486,9 +488,8 @@ test("clean verification checks real Git HEAD/status and license files, not meta
     const verified = await setup.verifyCheckout(project, run);
     assert.equal(verified.verifiedHead, project.commit);
     assert.equal(verified.cleanBeforeSetup, true);
-    assert.equal(verified.licenseFiles.length, 1);
-    assert.equal(verified.licenseFiles[0].bytes, (await readFile(path.join(project.path, "LICENSE"))).length);
-    assert.match(verified.licenseFiles[0].sha256, /^[a-f0-9]{64}$/);
+    assert.deepEqual(verified.licenseFiles, [{ path: "LICENSE", bytes: Buffer.byteLength(licenseFixture),
+      sha256: createHash("sha256").update(licenseFixture).digest("hex") }]);
     await assert.rejects(setup.verifyCheckout({ ...project, commit: "f".repeat(40) }, run), /SETUP_HEAD_MISMATCH: hugr/);
     await assert.rejects(setup.verifyCheckout({ ...project, commit: "main" }, run), /SETUP_INVALID_PIN: hugr/);
     await assert.rejects(setup.verifyCheckout({ ...project, licensePaths: ["ABSENT_LICENSE"] }, run), { code: "ENOENT" });
