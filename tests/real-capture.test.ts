@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { createServer, type AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
@@ -9,26 +9,85 @@ import { gunzipSync } from "node:zlib";
 
 const { captureCommand, archiveCapture } = await import(new URL("../scripts/real-world/capture.mjs", import.meta.url).href);
 const { aggregate, stats } = await import(new URL("../scripts/real-world/measure.mjs", import.meta.url).href);
+const quote = (value: string) => `'${value.replaceAll("'", "'\\''")}'`;
+
+// Each producer makes one small write per pipe. Either pipe can arrive first;
+// duplicated, dropped or interleaved invented bytes are not admissible here.
+function mergedProducer(raw: Buffer, stdout: Buffer, stderr: Buffer): Buffer {
+  const expected = [Buffer.concat([stdout, stderr]), Buffer.concat([stderr, stdout])].find((bytes) => bytes.equals(raw));
+  assert.ok(expected, "NATIVE_MERGED_BYTES_DIFFER_FROM_PRODUCER");
+  return expected;
+}
+
+async function assertArchives(directory: string, artifacts: any, expected: Record<string, Buffer>) {
+  assert.deepEqual(Object.keys(artifacts).sort(), Object.keys(expected).sort());
+  for (const [name, bytes] of Object.entries(expected)) {
+    assert.equal(artifacts[name].bytes, bytes.length, `${name} byte count`);
+    assert.equal(artifacts[name].sha256, createHash("sha256").update(bytes).digest("hex"), `${name} digest`);
+    assert.deepEqual(gunzipSync(await readFile(path.join(directory, artifacts[name].file))), bytes, `${name} archived producer bytes`);
+  }
+}
 
 test("actual native bytes and failure exit are captured, archived and recovered exactly", { skip: process.platform === "win32" }, async () => {
   const cwd = await mkdtemp(path.join(tmpdir(), "lean-capture-"));
   try {
-    const command = "printf 'café 🔥\\r\\n'; printf 'native warning\\n' >&2; exit 7";
+    const stdout = Buffer.from("café 🔥\r\n"), stderr = Buffer.from("native warning\n");
+    const source = `const fs=require('node:fs'); fs.writeSync(1,Buffer.from(${JSON.stringify([...stdout])})); fs.writeSync(2,Buffer.from(${JSON.stringify([...stderr])})); process.exitCode=7;`;
+    const command = `exec ${quote(process.execPath)} -e ${quote(source)}`;
     const capture = await captureCommand({ command, cwd }, process.env);
     assert.equal(capture.command, command); assert.equal(capture.exitCode, 7); assert.equal(capture.signal, null);
     assert.equal(capture.complete, true); assert.equal(capture.timedOut, false);
-    assert.equal(capture.stdout.toString(), "café 🔥\r\n"); assert.equal(capture.stderr.toString(), "native warning\n");
-    assert.ok(capture.output.includes("café 🔥\r\n") && capture.output.includes("native warning\n"));
-    const artifacts = await archiveCapture(path.join(cwd, "artifacts"), capture, capture.output);
-    assert.deepEqual(gunzipSync(await readFile(path.join(cwd, "artifacts", artifacts.original.file))), capture.raw);
-    assert.equal(artifacts.original.bytes, capture.raw.length);
+    assert.deepEqual(capture.stdout, stdout); assert.deepEqual(capture.stderr, stderr);
+    const original = mergedProducer(capture.raw, stdout, stderr);
+    assert.equal(capture.output, original.toString("utf8")); assert.equal(capture.encodingError, undefined);
+    const directory = path.join(cwd, "artifacts"), artifacts = await archiveCapture(directory, capture, capture.output);
+    await assertArchives(directory, artifacts, { original, stdout, stderr, filtered: original });
   } finally { await rm(cwd, { recursive: true, force: true }); }
 });
 
-test("timeout retains partial native output without inventing completed exit", { skip: process.platform === "win32" }, async () => {
-  const capture = await captureCommand({ command: "printf observed-prefix; sleep 10", cwd: tmpdir() }, process.env, { timeout: 150 });
-  assert.equal(capture.timedOut, true); assert.equal(capture.complete, false); assert.equal(capture.output, "observed-prefix");
-  assert.ok(capture.exitCode === null || capture.signal !== null);
+test("ready native timeout retains exact binary prefixes, live logs and archives with actual exit facts", { skip: process.platform === "win32", timeout: 15000 }, async () => {
+  const cwd = await mkdtemp(path.join(tmpdir(), "lean-capture-prefix-")), server = createServer(), token = randomUUID();
+  const stdout = Buffer.from([0, 255, 65, 13, 10]), stderr = Buffer.from("\0stderr 🔥\n");
+  let running: Promise<any> | undefined;
+  let watchdog: ReturnType<typeof setTimeout> | undefined;
+  const ready = new Promise<number>((resolve, reject) => {
+    server.on("error", reject);
+    server.on("connection", (socket) => {
+      let message = "";
+      socket.on("data", (chunk) => {
+        message += chunk.toString(); if (!message.endsWith("\n")) return;
+        try {
+          const owner = JSON.parse(message); assert.equal(owner.token, token);
+          assert.ok(Number.isSafeInteger(owner.pid) && owner.pid > 0);
+          resolve(owner.pid); socket.end("emit");
+        } catch (error) { reject(error); socket.destroy(); }
+      });
+    });
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  try {
+    const port = (server.address() as AddressInfo).port;
+    const source = `const fs=require('node:fs'); process.on('SIGTERM',()=>process.exit(9)); setInterval(()=>{},1000); const ready=require('node:net').connect(${port},'127.0.0.1'); ready.once('data',()=>{ fs.writeSync(1,Buffer.from(${JSON.stringify([...stdout])})); fs.writeSync(2,Buffer.from(${JSON.stringify([...stderr])})); ready.end(); }); ready.write(JSON.stringify({token:${JSON.stringify(token)},pid:process.pid})+'\\n');`;
+    running = captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd }, process.env, { timeout: 2000, logDir: cwd });
+    const readiness = Promise.race([ready, new Promise<never>((_, reject) => {
+      watchdog = setTimeout(() => reject(new Error("NATIVE_TIMEOUT_READINESS_MISSING")), 8000);
+    })]);
+    const [capture, pid] = await Promise.all([running, readiness]);
+    assert.equal(capture.timedOut, true); assert.equal(capture.complete, false);
+    assert.equal(capture.exitCode, 9); assert.equal(capture.signal, null); assert.equal(capture.launchError, undefined);
+    assert.deepEqual(capture.stdout, stdout); assert.deepEqual(capture.stderr, stderr);
+    const original = mergedProducer(capture.raw, stdout, stderr);
+    assert.equal(capture.output, undefined); assert.ok(capture.encodingError);
+    for (const [name, bytes] of Object.entries({ stdout, stderr, original })) assert.deepEqual(await readFile(path.join(cwd, `${name}.live`)), bytes);
+    assert.equal(JSON.parse(await readFile(path.join(cwd, "running.json"), "utf8")).pid, pid);
+    const directory = path.join(cwd, "artifacts"), artifacts = await archiveCapture(directory, capture);
+    await assertArchives(directory, artifacts, { original, stdout, stderr });
+  } finally {
+    clearTimeout(watchdog);
+    await running;
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    await rm(cwd, { recursive: true, force: true });
+  }
 });
 
 test("malformed native UTF-8 retains raw bytes and names unusable text", { skip: process.platform === "win32" }, async () => {
@@ -36,13 +95,16 @@ test("malformed native UTF-8 retains raw bytes and names unusable text", { skip:
   try {
     const valid = await captureCommand({ command: "printf '\\357\\273\\277café 🔥\\n'", cwd }, process.env);
     assert.equal(valid.output, "\uFEFFcafé 🔥\n"); assert.equal(valid.encodingError, undefined);
+    assert.deepEqual(valid.raw, Buffer.from("\uFEFFcafé 🔥\n")); assert.deepEqual(valid.stdout, Buffer.from("\uFEFFcafé 🔥\n"));
+    assert.deepEqual(valid.stderr, Buffer.alloc(0));
     const capture = await captureCommand({ command: "printf '\\377\\376bad'", cwd }, process.env);
     assert.equal(capture.complete, true); assert.equal(capture.exitCode, 0);
     assert.equal(capture.output, undefined); assert.ok(capture.encodingError);
-    assert.deepEqual(capture.raw, Buffer.from([255, 254, 98, 97, 100]));
-    const artifacts = await archiveCapture(path.join(cwd, "artifacts"), capture);
+    const original = Buffer.from([255, 254, 98, 97, 100]), stderr = Buffer.alloc(0);
+    assert.deepEqual(capture.raw, original); assert.deepEqual(capture.stdout, original); assert.deepEqual(capture.stderr, stderr);
+    const directory = path.join(cwd, "artifacts"), artifacts = await archiveCapture(directory, capture);
     assert.equal(artifacts.filtered, undefined);
-    assert.deepEqual(gunzipSync(await readFile(path.join(cwd, "artifacts", artifacts.original.file))), capture.raw);
+    await assertArchives(directory, artifacts, { original, stdout: original, stderr });
   } finally { await rm(cwd, { recursive: true, force: true }); }
 });
 
