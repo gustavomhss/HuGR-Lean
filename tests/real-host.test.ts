@@ -342,9 +342,10 @@ test("public runner refuses missing host and retains named setup failure", async
   try {
     const outputDir = path.join(root, "outputs");
     await assert.rejects(host.runRealHost({ repoRoot: root, outputDir, binary: path.join(root, "missing-opencode") }), /REAL_HOST_MISSING_HOST/);
-    const report = JSON.parse(await readFile(path.join(outputDir, "report.json"), "utf8")) as { status: string; failure: { name: string }; setupRoot: string; scenarios: unknown[] };
+    const report = JSON.parse(await readFile(path.join(outputDir, "report.json"), "utf8")) as { status: string; mode: string; failure: { name: string }; setupRoot: string; scenarios: unknown[] };
     assert.equal(report.status, "failed"); assert.equal(report.failure.name, "REAL_HOST_MISSING_HOST"); assert.deepEqual(report.scenarios, []);
     retained = report.setupRoot;
+    assert.equal(report.mode, "native");
   } finally { if (retained) await rm(retained, { recursive: true, force: true }); await rm(root, { recursive: true, force: true }); }
 });
 

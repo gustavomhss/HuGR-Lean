@@ -29,6 +29,7 @@ test("host CLI runs through direct, absolute and relative symlink entries", asyn
       const report = JSON.parse(await readFile(path.join(outputDir, "report.json"), "utf8"));
       try {
         assert.equal(report.status, "failed");
+        assert.equal(report.mode, "native");
         assert.equal(report.failure.name, "REAL_HOST_MISSING_HOST");
         assert.deepEqual(report.scenarios, []);
       } finally { await rm(report.setupRoot, { recursive: true, force: true }); }
