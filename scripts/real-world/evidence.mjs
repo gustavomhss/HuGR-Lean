@@ -58,34 +58,7 @@ function summaries(oracle, source) {
 // a marker quoted in source/arguments. Unsupported failure proofs fail closed.
 function failureBinding(oracle, source, marker, code) {
   if (source.some((row) => row.view === undefined)) return false;
-  const text = source.map((row) => row.view ?? ""), trimmed = text.map((line) => line.trim());
-  if (["cargo-build", "cargo-test", "go", "pytest"].includes(oracle)) return nativeFailureBinding(oracle, text, marker, code);
-  const segment = (start, end) => {
-    const index = text.findIndex(start);
-    if (index < 0) return [];
-    const tail = text.slice(index + 1), stop = tail.findIndex(end);
-    return stop < 0 ? tail : tail.slice(0, stop);
-  };
-  const failed = (prefix) => trimmed.some((line) => {
-    const count = new RegExp(`^${prefix} +([1-9][0-9]*) failed(?:[, |]|$)`).exec(line);
-    return count && uint(count[1]);
-  });
-  if (code !== 1) return false;
-  if (oracle === "jest") {
-    const suite = segment((line) => /^ ?FAIL (?:src|test|tests)\/bench-expected-failure\.test\.[cm]?[jt]s(?: \(\d+(?:\.\d+)? s\))?$/.test(line), (line) => /^(?: ?(?:PASS|FAIL) |Test Suites:)/.test(line));
-    const start = suite.findIndex((line) => line.trim() === `● ${marker}`);
-    if (start < 0) return false;
-    const tail = suite.slice(start + 1), stop = tail.findIndex((line) => /^\s*● /.test(line)), body = (stop < 0 ? tail : tail.slice(0, stop)).map((line) => line.trim());
-    const assertion = body.findIndex((line) => /^expect\(received\)\..*\(expected\)/.test(line));
-    const expected = body.findIndex((line) => line.startsWith("Expected:")), received = body.findIndex((line) => line.startsWith("Received:"));
-    return assertion >= 0 && expected > assertion && received > expected && failed("Tests:");
-  }
-  if (oracle === "vitest") {
-    const body = segment((line) => /^ FAIL +test\/bench-expected-failure\.test\.[cm]?[jt]s > /.test(line) &&
-      line.trim().endsWith(` > ${marker}`), (line) => /^(?: FAIL | Test Files| +Tests )/.test(line));
-    return body.some((line) => line.trim().startsWith("AssertionError: ")) && failed("Tests");
-  }
-  return false;
+  return nativeFailureBinding(oracle, source.map((row) => row.view), marker, code);
 }
 
 function runnerEvidence(oracle, source) {

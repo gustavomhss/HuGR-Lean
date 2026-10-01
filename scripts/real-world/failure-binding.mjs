@@ -47,10 +47,73 @@ export function nativeFailureBinding(oracle, text, marker, code) {
     const location = /^tests\/bench_expected_failure_test\.py:[1-9][0-9]*: AssertionError$/.test(body.at(-1) ?? "");
     const tail = error === body.length - 2 || error === body.length - 3 && /^E +assert False$/.test(body[error + 1]);
     const failed = text.slice(short + 1).filter((line) => /^FAILED \S+::test_bench_expected_failure(?: |$)/.test(line));
+    const identity = /^FAILED tests\/bench_expected_failure_test\.py::test_bench_expected_failure - (.*)$/.exec(failed[0] ?? "");
     return error >= 2 && body[error - 2].trim() === "def test_bench_expected_failure():" &&
       assertion?.[2] === marker && location && tail && failed.length === 1 &&
-      /^FAILED tests\/bench_expected_failure_test\.py::test_bench_expected_failure(?: - .*)?$/.test(failed[0]) &&
+      !!identity && ["As...", `AssertionError: ${marker}`].includes(identity[1]) &&
       text.slice(short + 1).some((line) => pytestSummary(line) && /\b[1-9][0-9]* failed\b/.test(line));
   }
+  if (oracle === "jest") return jestFailure(text, marker);
+  if (oracle === "vitest") return vitestFailure(text, marker);
   return false;
+}
+
+function coherentCount(line, pattern) {
+  const count = pattern.exec(line);
+  return !!count && count.slice(1).every((value) => value === undefined || Number.isSafeInteger(Number(value))) &&
+    Number(count[1]) + Number(count[2] ?? 0) === Number(count[3]);
+}
+function failedFooter(text, start, oracle, expectedFailures) {
+  const suites = oracle === "jest" ? /^Test Suites: +([1-9]\d*) failed(?:, ([1-9]\d*) passed)?, ([1-9]\d*) total$/ :
+    /^ Test Files +([1-9]\d*) failed(?: \| ([1-9]\d*) passed)? \(([1-9]\d*)\)$/;
+  const tests = oracle === "jest" ? /^Tests: +([1-9]\d*) failed(?:, ([1-9]\d*) passed)?, ([1-9]\d*) total$/ :
+    /^ {6}Tests +([1-9]\d*) failed(?: \| ([1-9]\d*) passed)? \(([1-9]\d*)\)$/;
+  const index = unique(text, (line) => suites.test(line)), next = unique(text, (line) => tests.test(line));
+  return index >= start && next === index + 1 && coherentCount(text[index], suites) && coherentCount(text[next], tests) &&
+    (expectedFailures === undefined || Number(tests.exec(text[next])[1]) === expectedFailures);
+}
+function controlledAssertion(source, marker) {
+  const call = /^test\((["'])([^"']*)\1, \(\) => \{ expect\(true\)\.toBe\(false\); \}\);$/.exec(source);
+  return call?.[2] === marker;
+}
+
+function jestFailure(text, marker) {
+  const file = /^ ?FAIL ((?:src|test|tests)\/bench-expected-failure\.test\.[cm]?[jt]s)(?: \(\d+(?:\.\d+)? s\))?$/;
+  const start = unique(text, (line) => file.test(line));
+  const suite = bounded(text, start, (line) => /^(?: ?(?:PASS|FAIL) |Test Suites:)/.test(line));
+  if (!suite) return false;
+  const heading = unique(suite.body, (line) => line === `  ● ${marker}`);
+  if (heading < 0 || suite.body.slice(0, heading).some((line) => line !== "")) return false;
+  const tail = suite.body.slice(heading + 1), stop = tail.findIndex((line) => /^ {2}● /.test(line));
+  const body = (stop < 0 ? tail : tail.slice(0, stop)).filter((line) => line !== "");
+  if (!/^ {4}expect\(received\)\.toBe\(expected\)(?: \/\/ Object\.is equality)?$/.test(body[0] ?? "") ||
+      body[1] !== "    Expected: false" || body[2] !== "    Received: true") return false;
+  const pointer = body.findIndex((line) => /^ {4}> [1-9]\d* \| /.test(line));
+  const frame = /^ {4}> ([1-9]\d*) \| (.*)$/.exec(body[pointer] ?? "");
+  const at = body.findIndex((line) => /^ {6}at /.test(line));
+  const location = /^ {6}at Object\.<anonymous> \(([^()]+):([1-9]\d*):([1-9]\d*)\)$/.exec(body[at] ?? "");
+  const sourceRow = (line) => /^ +[1-9]\d* \|(?: .*)?$/.test(line);
+  return pointer >= 3 && !!frame && controlledAssertion(frame[2], marker) &&
+    body.slice(3, pointer).every(sourceRow) && /^ +\| +\^$/.test(body[pointer + 1] ?? "") &&
+    at > pointer + 1 && body.slice(pointer + 2, at).every(sourceRow) && !!location &&
+    location[1] === file.exec(text[start])[1] && location[2] === frame[1] && failedFooter(text, suite.stop, "jest");
+}
+
+function vitestFailure(text, marker) {
+  const file = /^ FAIL +((?:test)\/bench-expected-failure\.test\.[cm]?[jt]s) > (.+)$/;
+  const start = unique(text, (line) => file.exec(line)?.[2] === marker);
+  const block = bounded(text, start, (line) => /^(?: FAIL | Test Files)/.test(line));
+  const preceding = text.slice(0, start).filter((line) => line !== "").at(-1) ?? "";
+  const failures = /^⎯+ Failed Tests ([1-9]\d*) ⎯+$/.exec(preceding);
+  if (!block || !failures) return false;
+  const body = block.body.filter((line) => line !== "");
+  if (body[0] !== "AssertionError: expected true to be false // Object.is equality" ||
+      body[1] !== "- Expected" || body[2] !== "+ Received" || body[3] !== "- false" || body[4] !== "+ true") return false;
+  const location = /^ ❯ ([^:]+):([1-9]\d*):([1-9]\d*)$/.exec(body[5] ?? "");
+  const pointer = body.findIndex((line, index) => index >= 6 && /^ +[1-9]\d*\| /.test(line) &&
+    /^ +([1-9]\d*)\| /.exec(line)?.[1] === location?.[2]);
+  const frame = /^ +([1-9]\d*)\| (.*)$/.exec(body[pointer] ?? "");
+  return !!location && location[1] === file.exec(text[start])[1] && pointer >= 6 && !!frame &&
+    controlledAssertion(frame[2], marker) && body.slice(6, pointer).every((line) => /^ +[1-9]\d*\|(?: .*)?$/.test(line)) &&
+    /^ +\| +\^$/.test(body[pointer + 1] ?? "") && failedFooter(text, block.stop, "vitest", Number(failures[1]));
 }

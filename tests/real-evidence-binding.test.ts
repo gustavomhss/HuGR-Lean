@@ -66,6 +66,7 @@ test("Pytest assertion location and full FAILED nodeid belong to one native fail
     pytest.replace(`E       AssertionError: ${marker}`, `E       AssertionError: quoted "${marker}"`),
     pytest.replace(pytestBody, `\nE       AssertionError: ${marker}\n\n`),
     pytest.replace(pytestShort + pytestFailed, pytestFailed + pytestShort),
+    pytest.replace(pytestFailed, "FAILED tests/bench_expected_failure_test.py::test_bench_expected_failure - RuntimeError: setup\n"),
     pytest.replace(pytestFailed, pytestFailed + pytestFailed)]) binding("pytest", bad, false);
 });
 
@@ -78,4 +79,140 @@ test("Pytest rejects same bare name in other file borrowing controlled FAILED ro
   binding("pytest", pytestStart + other + controlled + pytestShort + rows + "======== 2 failed in 0.01s ========\n", false);
   binding("pytest", pytest.replace(pytestShort, pytestHeading + pytestBody + pytestLocation + pytestShort), false);
   binding("pytest", pytest.replace(pytestFailed, pytestFailed + `FAILED other.py::test_bench_expected_failure - ${marker}\n`), false);
+});
+
+const jestStart = `FAIL src/bench-expected-failure.test.ts\n  ● ${marker}\n`;
+const jestMatcher = `
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+`;
+const jestFrame = `      1 | // Independent in-memory control.
+      2 | import { test, expect } from '@jest/globals';
+    > 3 | test('${marker}', () => { expect(true).toBe(false); });
+        |                                                     ^
+      4 |
+
+      at Object.<anonymous> (src/bench-expected-failure.test.ts:3:53)
+
+`;
+const jestTotals = "Test Suites: 1 failed, 1 total\nTests:       1 failed, 1 total\n";
+const jest = jestStart + jestMatcher + jestFrame + jestTotals;
+test("Jest native matcher occupies first diagnostic position; runtime-error assertion prose fails", () => {
+  binding("jest", jest, true);
+  binding("jest", jest.replaceAll("\n", "\r\n"), true);
+  const prose = "\n    Error: failed to load document containing assertion examples:\n\n";
+  binding("jest", jestStart + prose + jestMatcher + jestFrame + jestTotals, false);
+  binding("jest", jest.replace("    expect(received)", "    Error: expect(received)"), false);
+});
+
+test("Jest matcher values stay coherent with controlled true-to-false assertion", () => {
+  for (const bad of [jest.replace("Expected: false", "Expected: true"),
+    jest.replace("Received: true", "Received: false"),
+    jest.replace("Received: true", "Received: 1"),
+    jest.replace("toBe(expected)", "toEqual(expected)"),
+    jest.replace("    Expected: false\n    Received: true", "    Received: true\n    Expected: false")]) binding("jest", bad, false);
+});
+
+test("Jest source frame and native stack location must bind controlled suite and line", () => {
+  for (const bad of [jest.replace("at Object.<anonymous> (src/bench-expected-failure.test.ts", "at Object.<anonymous> (src/other.test.ts"),
+    jest.replace("test.ts:3:53)", "test.ts:4:53)"),
+    jest.replace(jestFrame, ""), jest.replace("        |                                                     ^\n", ""),
+    jest.replace("expect(true).toBe(false)", "expect(false).toBe(false)")]) binding("jest", bad, false);
+});
+
+test("Jest cannot borrow matcher from another bullet or suite, duplicate identities or earlier summary", () => {
+  for (const bad of [jest.replace(jestMatcher, "\n    Error: setup failed\n\n  ● Other test\n" + jestMatcher),
+    jest.replace(jestMatcher, "\nPASS src/other.test.ts\n" + jestMatcher),
+    jestStart + jestMatcher + jestFrame + jestStart + jestMatcher + jestFrame + jestTotals,
+    jest.replace(jestTotals, ""), jestTotals + jest.replace(jestTotals, ""),
+    jest.replace("Test Suites: 1 failed, 1 total", "Test Suites: 1 failed, 2 total"),
+    jest.replace("Tests:       1 failed, 1 total", "Tests:       1 failed, 2 total")]) binding("jest", bad, false);
+});
+
+const vitestHeader = "⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯\n\n";
+const vitestStart = ` FAIL  test/bench-expected-failure.test.ts > ${marker}\n`;
+const vitestMatcher = `AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+`;
+const vitestFrame = ` ❯ test/bench-expected-failure.test.ts:3:53
+      1| // Independent in-memory control.
+      2| import { test, expect } from 'vitest';
+      3| test('${marker}', () => { expect(true).toBe(false); });
+       |                                                     ^
+      4|
+
+⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+`;
+const vitestTotals = " Test Files  1 failed (1)\n      Tests  1 failed (1)\n";
+const vitest = vitestHeader + vitestStart + vitestMatcher + vitestFrame + vitestTotals;
+test("Vitest AssertionError occupies first diagnostic position, not runtime-error prose", () => {
+  binding("vitest", vitest, true);
+  binding("vitest", vitest.replaceAll("\n", "\r\n"), true);
+  binding("vitest", vitest.replace(vitestMatcher, "Error: document contains this example:\n" + vitestMatcher), false);
+  binding("vitest", vitest.replace(vitestHeader, ""), false);
+});
+
+test("Vitest native Expected/Received diff and pointed assertion must agree", () => {
+  for (const bad of [vitest.replace("- false", "- true"), vitest.replace("+ true", "+ false"),
+    vitest.replace("- Expected\n+ Received", "+ Received\n- Expected"),
+    vitest.replace("expected true to be false", "expected false to be true"),
+    vitest.replace("expect(true).toBe(false)", "expect(false).toBe(false)")]) binding("vitest", bad, false);
+});
+
+test("Vitest location stays in controlled block with bounded failed result", () => {
+  for (const bad of [vitest.replace(" ❯ test/bench-expected-failure.test.ts", " ❯ test/other.test.ts"),
+    vitest.replace("test.ts:3:53", "test.ts:4:53"), vitest.replace(vitestFrame, ""),
+    vitest.replace(vitestMatcher, "Error: setup failed\n FAIL  test/other.test.ts > other\n" + vitestMatcher),
+    vitest.replace(vitestTotals, ""), vitestTotals + vitest.replace(vitestTotals, ""),
+    vitest.replace("Test Files  1 failed (1)", "Test Files  1 failed (2)"),
+    vitest.replace("Tests  1 failed (1)", "Tests  1 failed (2)"),
+    vitestHeader + vitestStart + vitestMatcher + vitestFrame + vitestStart + vitestMatcher + vitestFrame + vitestTotals]) binding("vitest", bad, false);
+});
+
+test("Native matcher bindings retain mixed passed/failed counts and bounded SGR inspection", () => {
+  const mixedJest = "PASS src/other.test.ts (0.1 s)\n" + jest.replace(jestTotals,
+    "Test Suites: 1 failed, 4 passed, 5 total\nTests:       1 failed, 167 passed, 168 total\n");
+  const mixedVitest = vitest.replace(vitestTotals,
+    " Test Files  1 failed | 13 passed (14)\n      Tests  1 failed | 489 passed (490)\n");
+  for (const [oracle, output] of [["jest", mixedJest], ["vitest", mixedVitest]] as const) {
+    binding(oracle, output, true);
+    const colored = output.split("\n").map((line) => line ? `\x1b[31m${line}\x1b[39m` : "").join("\n");
+    binding(oracle, colored, true);
+    binding(oracle, output, false, 2);
+  }
+});
+
+test("Jest native diagnostic indentation and full controlled test name cannot be prose", () => {
+  const mutations = [
+    jest.replace(`  ● ${marker}`, `    ● ${marker}`),
+    jest.replace(`  ● ${marker}`, `  ● ${marker} example`),
+    jest.replace("    expect(received)", "expect(received)"),
+    jest.replace("    Expected: false", "  Expected: false"),
+    jest.replace("    > 3 |", "      3 |"),
+    jest.replace("      at Object.<anonymous>", "    at Object.<anonymous>"),
+  ];
+  for (const bad of mutations) binding("jest", bad, false);
+});
+
+test("Vitest full controlled test name and native error/location position cannot be prose", () => {
+  const mutations = [
+    vitest.replace(` > ${marker}\n`, ` > example > ${marker}\n`),
+    vitest.replace("AssertionError:", "    AssertionError:"),
+    vitest.replace(" ❯ test/", "   ❯ test/"),
+    vitest.replace("- false\n+ true", "+ true\n- false"),
+    vitest.replace("       |                                                     ^\n", ""),
+    vitest.replace(vitestTotals, "      Tests  1 failed (1)\n Test Files  1 failed (1)\n"),
+    vitest.replace("Failed Tests 1", "Failed Tests 2"),
+  ];
+  for (const bad of mutations) binding("vitest", bad, false);
 });
