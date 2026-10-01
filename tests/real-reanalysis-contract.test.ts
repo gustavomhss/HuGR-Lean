@@ -89,7 +89,7 @@ test("material requires both 1024 saved bytes and ten percent, including boundar
   const root = await mkdtemp(path.join(tmpdir(), "lean-material-boundaries-"));
   try {
     const { report } = await fixture(root), base = report.cases[0]!, directory = path.join(root, "cases", base.id);
-    for (const [inputBytes, savedBytes, material] of [[10230, 1023, false], [20480, 1024, false], [10240, 1024, true], [20480, 2048, true]] as const) {
+    for (const [inputBytes, savedBytes, material] of [[10230, 1023, false], [20480, 1024, false], [10240, 1024, true], [20480, 2048, true], [3072, 1024, true]] as const) {
       const raw = Buffer.alloc(inputBytes, 0x78), filtered = raw.subarray(0, inputBytes - savedBytes);
       const capture = { output: raw.toString(), command: base.command, exitCode: 0, signal: null, complete: true, timedOut: false, durationMs: 17 };
       const artifacts = await archiveCapture(directory, { ...capture, raw, stdout: raw, stderr: Buffer.alloc(0) }, filtered.toString());
