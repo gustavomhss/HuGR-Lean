@@ -1,9 +1,9 @@
 // Network/dependency setup only. Native benchmark commands belong to the capture runner.
-import { execFile, spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { appendFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import path from "node:path";
+import { runOwnedProcess } from "./owned-process.mjs";
 
 export const PINS = Object.freeze([
   { id: "itoa", repository: "https://github.com/dtolnay/itoa.git", commit: "1577ed901354d0d7448ac162328f9dbf5183124c",
@@ -66,77 +66,21 @@ export function setupRunner(root, env) {
       pending = pending.then(() => Promise.all([appendFile(`${base}.${stream}`, chunk), appendFile(`${base}.output`, chunk)]))
         .catch((error) => { logError ??= error; });
     };
-    let timedOut = false, spawnError;
-    const killErrors = [];
-    const result = await new Promise((resolve) => {
-      const child = spawn(file, args, { cwd, env: environment, stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32" });
-      let groupGone = false;
-      const kill = (signal) => {
-        if (!child.pid || groupGone) return;
-        try { process.kill(-child.pid, signal); }
-        catch (error) {
-          if (error.code === "ESRCH") groupGone = true; // Ownership cannot be reacquired by numeric ID.
-          else killErrors.push(`${signal}: ${error.code}: ${error.message}`);
-        }
-      };
-      let escalation, settlement, settled = false, closed = false, cleanupDone = false, leaderExited = false;
-      let exitFacts = { code: null, signal: null };
-      const finish = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer); clearTimeout(escalation); clearTimeout(settlement);
-        resolve(exitFacts);
-      };
-      const finishCleanup = () => {
-        cleanupDone = true;
-        // Escaped pipe holders are not members of the owned group. Bound our reads,
-        // then allow native leader exit/close to arrive before bounded settlement.
-        child.stdout.destroy(); child.stderr.destroy();
-        if (closed) finish();
-        else settlement = setTimeout(finish, 250);
-      };
-      const timer = setTimeout(() => {
-        timedOut = true;
-        if (process.platform === "win32") {
-          // A tree kill must start while the leader PID still identifies our child.
-          if (!child.pid || leaderExited) {
-            killErrors.push("SETUP_TREE_CLEANUP_UNSUPPORTED: Windows leader already exited");
-            finishCleanup();
-          } else {
-            execFile("taskkill.exe", ["/pid", String(child.pid), "/T", "/F"], { env: environment, timeout: 2000, windowsHide: true }, (error) => {
-              if (error) {
-                killErrors.push(`SETUP_TREE_CLEANUP_FAILED: ${error.message}`);
-                child.kill("SIGKILL"); // Leader-only fallback is not reported as tree cleanup.
-              }
-              finishCleanup();
-            });
-          }
-          return;
-        }
-        escalation = setTimeout(() => {
-          kill("SIGKILL");
-          finishCleanup();
-        }, 2000);
-        kill("SIGTERM");
-      }, timeout);
-      child.stdout.on("data", (chunk) => { stdout.push(chunk); merged.push(chunk); retain("stdout", chunk); });
-      child.stderr.on("data", (chunk) => { stderr.push(chunk); merged.push(chunk); retain("stderr", chunk); });
-      child.on("error", (error) => { spawnError = `${error.code}: ${error.message}`; });
-      // Exit is independent of pipe closure. Unobserved termination stays null/null.
-      child.once("exit", (code, signal) => { leaderExited = true; exitFacts = { code, signal }; });
-      child.once("close", () => {
-        closed = true;
-        // Closing the leader/pipes cannot discharge timeout group ownership.
-        if (!timedOut || cleanupDone) finish();
-      });
+    const result = await runOwnedProcess(file, args, {
+      cwd, env: environment, timeout,
+      onStdout: (chunk) => { stdout.push(chunk); merged.push(chunk); retain("stdout", chunk); },
+      onStderr: (chunk) => { stderr.push(chunk); merged.push(chunk); retain("stderr", chunk); },
     });
+    const { timedOut, spawnError, killErrors } = result;
     await pending;
-    const record = { name, file, args, cwd, started, state: "finished", finished: new Date().toISOString(), ...result, timedOut,
+    const record = { name, file, args, cwd, started, state: "finished", finished: new Date().toISOString(), code: result.code, signal: result.signal, timedOut,
+      durationMs: result.durationMs, durationBoundary: result.durationBoundary,
+      ...(result.exitDurationMs === undefined ? {} : { exitDurationMs: result.exitDurationMs }),
       ...(spawnError ? { spawnError } : {}), ...(killErrors.length ? { killErrors } : {}),
       stdout: `${base}.stdout`, stderr: `${base}.stderr`, output: `${base}.output` };
     if (logError) throw Object.assign(new Error(`SETUP_LOG_FAILED: ${name}: ${logError.message}`), { record });
     await writeFile(`${base}.json`, json(record));
-    if (spawnError || timedOut || result.code !== 0 || result.signal) {
+    if (spawnError || timedOut || killErrors.length || result.code !== 0 || result.signal) {
       throw Object.assign(new Error(`SETUP_FAILED: ${name}: ${timedOut ? "timeout" : spawnError ?? `exit=${result.code} signal=${result.signal}`}; logs=${base}`), { record });
     }
     return { ...record, text: Buffer.concat(stdout).toString("utf8"), errorText: Buffer.concat(stderr).toString("utf8") };

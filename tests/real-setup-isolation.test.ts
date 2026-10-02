@@ -68,7 +68,9 @@ test("ready setup timeout persists exact binary stdout/stderr/merged bytes and o
   try {
     childProcess.spawn = ((...args: any[]) => {
       const child = Reflect.apply(spawn, childProcess, args);
-      if (args[0] === process.execPath) child.once("exit", (code: number | null, signal: NodeJS.Signals | null) => { nativeExit = { code, signal }; });
+      child.on("message", (message: any) => {
+        if (message.type === "exit") nativeExit = { code: message.code, signal: message.signal };
+      });
       return child;
     }) as typeof spawn;
     syncBuiltinESMExports();
