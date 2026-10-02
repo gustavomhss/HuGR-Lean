@@ -6,7 +6,8 @@ import { setupProjects } from "./setup.mjs";
 
 export const FAILURE_MARKER = "BENCH_EXPECTED_FAILURE";
 
-const sameFile = (left, right) => left.isFile() && right.isFile() && left.dev === right.dev && left.ino === right.ino;
+const sameFile = (left, right) => left.isFile() && right.isFile() && left.nlink === 1 && right.nlink === 1 &&
+  left.dev === right.dev && left.ino === right.ino;
 const inside = (root, file) => {
   const relative = path.relative(root, file);
   return relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
@@ -48,6 +49,7 @@ export function edits(projectPath, changes) {
           catch (error) { if (error.code !== "ENOENT" || change.append) throw error; }
           if (!change.append && entry) throw new Error(`CASE_WOULD_OVERWRITE: ${file}`);
           if (change.append && !entry.isFile()) throw new Error(`CASE_APPEND_NOT_REGULAR: ${file}`);
+          if (change.append && entry.nlink !== 1) throw new Error(`CASE_APPEND_LINKED: ${file}`);
           // Failed exclusive creation establishes no ownership and must never enter rollback.
           const handle = await fs.open(file, change.append ? readWrite : "wx+");
           try {
