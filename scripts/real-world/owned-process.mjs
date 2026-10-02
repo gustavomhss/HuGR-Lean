@@ -1,11 +1,13 @@
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { runWindowsProcess } from "./windows-process.mjs";
 
 /** Run literal native executable/argv through a pinned group leader and private authenticated IPC.
  * Numeric PIDs are facts only, never cleanup authority. Pipes carry inherited native bytes.
  * Native duration excludes guardian startup and post-boundary bookkeeping. */
 export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStderr, onSpawn, onExit } = {}) {
+  if (process.platform === "win32") return runWindowsProcess(file, args, { cwd, env, timeout, onStdout, onStderr, onSpawn, onExit });
   return new Promise((resolve) => {
     const token = randomUUID(), start = process.hrtime.bigint();
     // Native env travels over IPC unchanged. Guardian must not execute native NODE_OPTIONS twice.

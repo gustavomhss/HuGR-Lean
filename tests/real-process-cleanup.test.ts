@@ -145,32 +145,32 @@ test("successful setup/capture finish promptly without waiting for timeout escal
 });
 
 for (const runner of ["setup", "capture"]) {
-test(`${runner} keeps guardian after native exit; escaped heartbeat survives cleanup then stops through live channel`, { skip: process.platform === "win32", timeout: 15000 }, async () => {
-  const root = await mkdtemp(path.join(tmpdir(), "lean-expired-native-")), ownership = await ownershipChannel();
-  const beat = path.join(root, "escaped.beat"), kill = process.kill;
-  let running: Promise<any> | undefined;
-  try {
-    process.kill = () => { throw new Error("PARENT_NUMERIC_SIGNAL_FORBIDDEN"); };
-    const escaped = `require('node:fs').appendFileSync(${JSON.stringify(beat)},'x');setInterval(()=>require('node:fs').appendFileSync(${JSON.stringify(beat)},'x'),20);setTimeout(()=>process.exit(0),15000);${ownership.source}`;
-    const source = `require('node:child_process').spawn(process.execPath,['-e',${JSON.stringify(escaped)}],{detached:true,stdio:['ignore',1,2]}).unref();process.stdout.write('escaped-ready');process.exit(7);`;
-    running = runner === "setup"
-      ? setupRunner(root, isolatedEnv(root))("expired-native", process.execPath, ["-e", source], { timeout: 1000 })
-        .then(() => { throw new Error("SETUP_TIMEOUT_ACCEPTED"); }, (error: any) => error.record)
-      : captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root), { timeout: 1000 });
-    const record = await running;
-    assert.equal(record.timedOut, true); assert.equal(runner === "setup" ? record.code : record.exitCode, 7); assert.equal(record.signal, null);
-    assert.deepEqual(record.killErrors ?? [], [], "NUMERIC_CLEANUP_AUTHORITY_USED");
-    assert.deepEqual(runner === "setup" ? await readFile(record.stdout) : record.stdout, Buffer.from("escaped-ready"));
-    const before = (await readFile(beat)).length; await delay(100);
-    assert.ok((await readFile(beat)).length > before, "ESCAPED_CONTROL_KILLED");
-  } finally {
-    await ownership.stop(); await running;
-    process.kill = kill;
-    await delay(100); const stopped = (await readFile(beat)).length; await delay(100);
-    assert.equal((await readFile(beat)).length, stopped, "LIVE_CHANNEL_TEARDOWN_FAILED");
-    await rm(root, { recursive: true, force: true });
-  }
-});
+  test(`${runner} keeps guardian after native exit; escaped heartbeat survives cleanup then stops through live channel`, { skip: process.platform === "win32", timeout: 15000 }, async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "lean-expired-native-")), ownership = await ownershipChannel();
+    const beat = path.join(root, "escaped.beat"), kill = process.kill;
+    let running: Promise<any> | undefined;
+    try {
+      process.kill = () => { throw new Error("PARENT_NUMERIC_SIGNAL_FORBIDDEN"); };
+      const escaped = `require('node:fs').appendFileSync(${JSON.stringify(beat)},'x');setInterval(()=>require('node:fs').appendFileSync(${JSON.stringify(beat)},'x'),20);setTimeout(()=>process.exit(0),15000);${ownership.source}`;
+      const source = `require('node:child_process').spawn(process.execPath,['-e',${JSON.stringify(escaped)}],{detached:true,stdio:['ignore',1,2]}).unref();process.stdout.write('escaped-ready');process.exit(7);`;
+      running = runner === "setup"
+        ? setupRunner(root, isolatedEnv(root))("expired-native", process.execPath, ["-e", source], { timeout: 1000 })
+          .then(() => { throw new Error("SETUP_TIMEOUT_ACCEPTED"); }, (error: any) => error.record)
+        : captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root), { timeout: 1000 });
+      const record = await running;
+      assert.equal(record.timedOut, true); assert.equal(runner === "setup" ? record.code : record.exitCode, 7); assert.equal(record.signal, null);
+      assert.deepEqual(record.killErrors ?? [], [], "NUMERIC_CLEANUP_AUTHORITY_USED");
+      assert.deepEqual(runner === "setup" ? await readFile(record.stdout) : record.stdout, Buffer.from("escaped-ready"));
+      const before = (await readFile(beat)).length; await delay(100);
+      assert.ok((await readFile(beat)).length > before, "ESCAPED_CONTROL_KILLED");
+    } finally {
+      await ownership.stop(); await running;
+      process.kill = kill;
+      await delay(100); const stopped = (await readFile(beat)).length; await delay(100);
+      assert.equal((await readFile(beat)).length, stopped, "LIVE_CHANNEL_TEARDOWN_FAILED");
+      await rm(root, { recursive: true, force: true });
+    }
+  });
 }
 
 for (const runner of ["setup", "capture"]) {

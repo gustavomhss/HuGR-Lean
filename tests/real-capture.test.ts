@@ -124,7 +124,7 @@ test("capture timeout settles when a detached descendant holds both pipes open",
         try {
           const owner = JSON.parse(message); assert.equal(owner.token, token);
           assert.ok(Number.isSafeInteger(owner.pid) && owner.pid > 0);
-           resolve(owner.pid); socket.write("owned"); // Retain live peer channel through teardown.
+          resolve(owner.pid); socket.write("owned"); // Retain live peer channel through teardown.
         } catch (error) { reject(error); socket.destroy(); }
       });
     });
