@@ -144,7 +144,8 @@ test("successful setup/capture finish promptly without waiting for timeout escal
   } finally { childProcess.spawn = spawn; syncBuiltinESMExports(); await rm(root, { recursive: true, force: true }); }
 });
 
-test("setup keeps guardian after native exit; escaped heartbeat survives cleanup then stops through live channel", { skip: process.platform === "win32", timeout: 15000 }, async () => {
+for (const runner of ["setup", "capture"]) {
+test(`${runner} keeps guardian after native exit; escaped heartbeat survives cleanup then stops through live channel`, { skip: process.platform === "win32", timeout: 15000 }, async () => {
   const root = await mkdtemp(path.join(tmpdir(), "lean-expired-native-")), ownership = await ownershipChannel();
   const beat = path.join(root, "escaped.beat"), kill = process.kill;
   let running: Promise<any> | undefined;
@@ -152,11 +153,14 @@ test("setup keeps guardian after native exit; escaped heartbeat survives cleanup
     process.kill = () => { throw new Error("PARENT_NUMERIC_SIGNAL_FORBIDDEN"); };
     const escaped = `require('node:fs').appendFileSync(${JSON.stringify(beat)},'x');setInterval(()=>require('node:fs').appendFileSync(${JSON.stringify(beat)},'x'),20);setTimeout(()=>process.exit(0),15000);${ownership.source}`;
     const source = `require('node:child_process').spawn(process.execPath,['-e',${JSON.stringify(escaped)}],{detached:true,stdio:['ignore',1,2]}).unref();process.stdout.write('escaped-ready');process.exit(7);`;
-    running = setupRunner(root, isolatedEnv(root))("expired-native", process.execPath, ["-e", source], { timeout: 1000 })
-      .then(() => { throw new Error("SETUP_TIMEOUT_ACCEPTED"); }, (error: any) => error.record);
+    running = runner === "setup"
+      ? setupRunner(root, isolatedEnv(root))("expired-native", process.execPath, ["-e", source], { timeout: 1000 })
+        .then(() => { throw new Error("SETUP_TIMEOUT_ACCEPTED"); }, (error: any) => error.record)
+      : captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root), { timeout: 1000 });
     const record = await running;
-    assert.equal(record.timedOut, true); assert.equal(record.code, 7); assert.equal(record.signal, null);
-    assert.deepEqual(await readFile(record.stdout), Buffer.from("escaped-ready"));
+    assert.equal(record.timedOut, true); assert.equal(runner === "setup" ? record.code : record.exitCode, 7); assert.equal(record.signal, null);
+    assert.deepEqual(record.killErrors ?? [], [], "NUMERIC_CLEANUP_AUTHORITY_USED");
+    assert.deepEqual(runner === "setup" ? await readFile(record.stdout) : record.stdout, Buffer.from("escaped-ready"));
     const before = (await readFile(beat)).length; await delay(100);
     assert.ok((await readFile(beat)).length > before, "ESCAPED_CONTROL_KILLED");
   } finally {
@@ -167,3 +171,31 @@ test("setup keeps guardian after native exit; escaped heartbeat survives cleanup
     await rm(root, { recursive: true, force: true });
   }
 });
+}
+
+for (const runner of ["setup", "capture"]) {
+  test(`${runner} treats guardian loss after observed native exit zero as failure`, { skip: process.platform === "win32", timeout: 10000 }, async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "lean-native-zero-loss-")), spawn = childProcess.spawn;
+    try {
+      childProcess.spawn = ((...args: any[]) => {
+        const guardian = Reflect.apply(spawn, childProcess, args);
+        guardian.on("message", (message: any) => {
+          if (message.type === "exit") setImmediate(() => { if (guardian.connected) guardian.disconnect(); });
+        });
+        return guardian;
+      }) as typeof spawn;
+      syncBuiltinESMExports();
+      const source = "require('node:child_process').spawn(process.execPath,['-e','setTimeout(()=>{},1500)'],{stdio:['ignore',1,2]}).unref();process.stdout.write('prefix');process.exit(0)";
+      const record = runner === "setup"
+        ? await setupRunner(root, isolatedEnv(root))("native-zero-loss", process.execPath, ["-e", source])
+          .then(() => { throw new Error("GUARDIAN_LOSS_ACCEPTED"); }, (error: any) => error.record)
+        : await captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root));
+      assert.equal(runner === "setup" ? record.code : record.exitCode, 0); assert.equal(record.signal, null);
+      assert.equal(record.spawnError ?? record.launchError, undefined);
+      assert.equal(record.durationBoundary, "guardian-loss");
+      assert.ok(record.killErrors.some((message: string) => message.startsWith("GUARDIAN_CHANNEL_LOST:")));
+      assert.deepEqual(runner === "setup" ? await readFile(record.stdout) : record.stdout, Buffer.from("prefix"));
+      if (runner === "capture") assert.equal(record.complete, false, "GUARDIAN_LOSS_MARKED_COMPLETE");
+    } finally { childProcess.spawn = spawn; syncBuiltinESMExports(); await rm(root, { recursive: true, force: true }); }
+  });
+}

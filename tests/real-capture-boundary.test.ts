@@ -17,10 +17,12 @@ test("native/pipe duration excludes independently delayed live log drain and dec
   try {
     fs.appendFile = async (...args: Parameters<typeof append>) => { appendCalls++; await delay(250); return append(...args); };
     childProcess.spawn = ((...args: any[]) => {
-      spawnAt = performance.now();
       const child = Reflect.apply(spawn, childProcess, args);
-      child.once("exit", () => { exitAt = performance.now(); });
-      child.once("close", () => { closeAt = performance.now(); });
+      child.on("message", (message: any) => {
+        if (message.type === "spawn") spawnAt = performance.now() - Number(process.hrtime.bigint() - BigInt(message.started)) / 1e6;
+        if (message.type === "exit") exitAt = performance.now();
+      });
+      for (const stream of [child.stdout, child.stderr]) stream?.once("close", () => { closeAt = performance.now(); });
       return child;
     }) as typeof spawn;
     syncBuiltinESMExports();
@@ -63,12 +65,12 @@ test("duration ends after pipes, separately from earlier native leader exit", { 
   } finally { await fs.rm(root, { recursive: true, force: true }); }
 });
 
-test("bounded timeout observes SIGKILL leader exit before settlement, never synthesized exit zero", { skip: process.platform === "win32", timeout: 15000 }, async () => {
+test("bounded timeout keeps unobserved native exit null after guardian self-SIGKILL, never invents guardian signal or exit zero", { skip: process.platform === "win32", timeout: 15000 }, async () => {
   const source = "process.on('SIGTERM', () => {}); process.stdout.write('ready'); setInterval(() => {}, 1000);";
   const captured = await captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: tmpdir() }, process.env, { timeout: 5000 });
   assert.equal(captured.output, "ready"); assert.equal(captured.timedOut, true); assert.equal(captured.complete, false);
-  assert.equal(captured.exitCode, null); assert.equal(captured.signal, "SIGKILL");
-  assert.equal(captured.durationBoundary, "timeout-cleanup");
+  assert.equal(captured.exitCode, null); assert.equal(captured.signal, null);
+  assert.equal(captured.durationBoundary, "bounded-timeout-settlement");
   assert.ok(captured.durationMs >= 6900 && captured.durationMs < 12000, "TIMEOUT_SETTLEMENT_BOUNDARY_WRONG");
-  assert.ok(captured.exitDurationMs <= captured.durationMs, "NATIVE_EXIT_MISSING_BEFORE_TIMEOUT_SETTLEMENT");
+  assert.equal(captured.exitDurationMs, undefined, "UNOBSERVED_NATIVE_EXIT_SYNTHESIZED_FROM_GUARDIAN");
 });

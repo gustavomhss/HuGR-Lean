@@ -29,9 +29,15 @@ process.on("message", (message) => {
   if (message.type === "launch" && !launched) {
     launched = true;
     const started = process.hrtime.bigint();
-    child = spawn(message.file, message.args, { cwd: message.cwd, env: message.env, stdio: ["ignore", 1, 2] });
+    let launchError;
+    try { child = spawn(message.file, message.args, { cwd: message.cwd, env: message.env, stdio: ["ignore", 1, 2] }); }
+    catch (error) { launchError = error; }
     // Guardian must not hold capture pipes open after native child/descendants finish.
     closeSync(1); closeSync(2);
+    if (launchError) {
+      send({ type: "spawnError", message: `${launchError.code}: ${launchError.message}`, started: String(started) });
+      return;
+    }
     child.once("spawn", () => {
       nativeSpawned = true;
       send({ type: "spawn", pid: child.pid, started: String(started) });

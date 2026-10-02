@@ -8,8 +8,10 @@ import { fileURLToPath } from "node:url";
 export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStderr, onSpawn, onExit } = {}) {
   return new Promise((resolve) => {
     const token = randomUUID(), start = process.hrtime.bigint();
+    // Native env travels over IPC unchanged. Guardian must not execute native NODE_OPTIONS twice.
+    const guardianEnv = Object.fromEntries(["SystemRoot", "WINDIR"].filter((key) => env?.[key] !== undefined).map((key) => [key, env[key]]));
     const guardian = spawn(process.execPath, [fileURLToPath(new URL("./process-guardian.mjs", import.meta.url)), token], {
-      env, detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe", "ipc"],
+      env: guardianEnv, detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe", "ipc"],
     });
     let authority = true, finished = false, spawned = false, failedSpawn = false, nativeExited = false;
     let pipes = 0, timedOut = false, cleanupDone = false, escalating = false, escalationRequested = false, nativeStart = start;
@@ -29,7 +31,7 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       clearTimeout(timer); clearTimeout(escalation); clearTimeout(settlement);
       send({ type: "release" });
       authority = false;
-      resolve({ code, signal, timedOut, spawnError, killErrors, durationMs, durationBoundary, exitDurationMs });
+      resolve({ code, signal, nativeSpawned: spawned, nativeExitObserved: nativeExited, timedOut, spawnError, killErrors, durationMs, durationBoundary, exitDurationMs });
     };
     const maybeFinish = () => {
       if (pipes !== 2 || (!nativeExited && !failedSpawn)) return;
@@ -45,6 +47,7 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       if (!authority || finished) return;
       authority = false;
       killErrors.push(message);
+      if (guardian.connected) guardian.disconnect(); // Guardian cleans its own group, never a parent PID fallback.
       guardian.stdout.destroy(); guardian.stderr.destroy();
       finish("guardian-loss");
     };
@@ -61,7 +64,7 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       }, 2000);
       else settlement = setTimeout(() => { killErrors.push("SETUP_TREE_CLEANUP_FAILED: guardian response timeout"); boundCleanup(); }, 2500);
     };
-    timer = setTimeout(beginTimeout, timeout);
+    timer = setTimeout(() => lose("GUARDIAN_STARTUP_TIMEOUT: native launch facts unavailable"), 5000);
     guardian.stdout.on("data", (chunk) => onStdout?.(chunk));
     guardian.stderr.on("data", (chunk) => onStderr?.(chunk));
     for (const stream of [guardian.stdout, guardian.stderr]) stream.once("close", () => { pipes++; maybeFinish(); });

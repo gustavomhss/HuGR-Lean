@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import childProcess from "node:child_process";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, realpath, rm, writeFile } from "node:fs/promises";
 import { syncBuiltinESMExports } from "node:module";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -84,4 +84,43 @@ const cp=await import('node:child_process');
 cp.ChildProcess.prototype.kill=function(){this.emit('error',Object.assign(new Error('CONTROLLED_HANDLE_DENIAL'),{code:'EPERM'}));return false};
 `);
   assert.deepEqual(record.killErrors, ["SETUP_TREE_CLEANUP_UNSUPPORTED: authenticated Windows tree identity unavailable", "EPERM: CONTROLLED_HANDLE_DENIAL"]);
+});
+
+test("native timeout and duration exclude independently delayed guardian startup", { skip: process.platform === "win32", timeout: 10000 }, async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "lean-guardian-startup-")), spawn = childProcess.spawn;
+  try {
+    const loader = path.join(root, "delay.mjs"); await writeFile(loader, "await new Promise(resolve=>setTimeout(resolve,600));");
+    childProcess.spawn = ((file: string, args: string[], options: any) => spawn(file, ["--import", pathToFileURL(loader).href, ...args], options)) as typeof spawn;
+    syncBuiltinESMExports();
+    const start = performance.now();
+    const record = await runOwnedProcess(process.execPath, ["-e", "process.exit(7)"], { cwd: root, env: process.env, timeout: 200 });
+    assert.ok(performance.now() - start >= 600, "GUARDIAN_STARTUP_DELAY_CONTROL_MISSING");
+    assert.equal(record.timedOut, false); assert.equal(record.code, 7); assert.equal(record.signal, null);
+    assert.ok(record.durationMs < 200, "GUARDIAN_STARTUP_INCLUDED_IN_NATIVE_DURATION");
+  } finally { childProcess.spawn = spawn; syncBuiltinESMExports(); await rm(root, { recursive: true, force: true }); }
+});
+
+test("native NODE_OPTIONS executes once, with literal argv, cwd and environment", { skip: process.platform === "win32" }, async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "lean-guardian-literal-"));
+  try {
+    const preload = path.join(root, "native.cjs"); await writeFile(preload, "process.stdout.write('preload:');");
+    const env = { NODE_OPTIONS: `--require ${JSON.stringify(preload)}`, NATIVE_SENTINEL: "literal" }, chunks: Buffer[] = [];
+    const source = "process.stdout.write(JSON.stringify({argv:process.argv.slice(1),cwd:process.cwd(),env:process.env}));";
+    const args = ["-e", source, "space arg", "--literal"];
+    const direct = await new Promise<Buffer>((resolve, reject) => {
+      const child = childProcess.spawn(process.execPath, args, { cwd: root, env, stdio: ["ignore", "pipe", "ignore"] }), bytes: Buffer[] = [];
+      child.stdout.on("data", (chunk: Buffer) => bytes.push(chunk)); child.once("error", reject);
+      child.once("close", (code) => code === 0 ? resolve(Buffer.concat(bytes)) : reject(new Error("DIRECT_NATIVE_CONTROL_FAILED")));
+    });
+    const record = await runOwnedProcess(process.execPath, args, {
+      cwd: root, env, timeout: 5000, onStdout: (chunk: Buffer) => chunks.push(chunk),
+    });
+    const text = Buffer.concat(chunks).toString();
+    assert.ok(text.startsWith("preload:"), "NATIVE_PRELOAD_CONTROL_MISSING");
+    const native = JSON.parse(text.slice("preload:".length));
+    assert.deepEqual(native.argv, ["space arg", "--literal"]); assert.equal(native.cwd, await realpath(root));
+    for (const [key, value] of Object.entries(env)) assert.equal(native.env[key], value);
+    assert.deepEqual(Buffer.concat(chunks), direct, "GUARDIAN_CHANGED_NATIVE_ENV_OR_DUPLICATED_PRELOAD"); // OS-added env is decided by direct native control.
+    assert.equal(record.code, 0); assert.equal(record.nativeSpawned, true); assert.equal(record.nativeExitObserved, true);
+  } finally { await rm(root, { recursive: true, force: true }); }
 });

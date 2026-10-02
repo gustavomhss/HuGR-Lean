@@ -112,7 +112,6 @@ test("capture timeout settles when a detached descendant holds both pipes open",
   const cwd = await mkdtemp(path.join(tmpdir(), "lean-capture-pipes-"));
   let watchdog: ReturnType<typeof setTimeout> | undefined;
   const token = randomUUID(), server = createServer();
-  let ownedPid: number | undefined;
   let running: Promise<any> | undefined;
   const sockets = new Set<import("node:net").Socket>();
   const ownership = new Promise<number>((resolve, reject) => {
@@ -125,7 +124,7 @@ test("capture timeout settles when a detached descendant holds both pipes open",
         try {
           const owner = JSON.parse(message); assert.equal(owner.token, token);
           assert.ok(Number.isSafeInteger(owner.pid) && owner.pid > 0);
-          ownedPid = owner.pid; resolve(owner.pid); socket.end("owned");
+           resolve(owner.pid); socket.write("owned"); // Retain live peer channel through teardown.
         } catch (error) { reject(error); socket.destroy(); }
       });
     });
@@ -133,7 +132,8 @@ test("capture timeout settles when a detached descendant holds both pipes open",
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
   try {
     const port = (server.address() as AddressInfo).port;
-    const source = `const child = require('node:child_process').spawn(process.execPath, ['-e', 'setTimeout(() => {}, 30000)'], {detached:true, stdio:['ignore',1,2]}); const identity = {token:${JSON.stringify(token)}, pid:child.pid}; require('node:fs').writeFileSync('descendant.pid', JSON.stringify(identity)); const owner = require('node:net').connect(${port}, '127.0.0.1'); owner.once('data', () => { process.stdout.write('descendant=' + child.pid + '\\n'); process.stderr.write('retained-stderr\\n'); child.unref(); }); owner.write(JSON.stringify(identity) + '\\n');`;
+    const escaped = `setTimeout(()=>process.exit(0),15000);const owner=require('node:net').connect(${port},'127.0.0.1');owner.on('end',()=>process.exit(0));owner.on('error',()=>process.exit(0));owner.once('data',()=>{process.stdout.write('descendant='+process.pid+'\\n');process.stderr.write('retained-stderr\\n');});owner.write(JSON.stringify({token:${JSON.stringify(token)},pid:process.pid})+'\\n');`;
+    const source = `require('node:child_process').spawn(process.execPath,['-e',${JSON.stringify(escaped)}],{detached:true,stdio:['ignore',1,2]}).unref();`;
     running = captureCommand({ command: `${JSON.stringify(process.execPath)} -e ${JSON.stringify(source)}`, cwd }, process.env, { timeout: 5000, logDir: cwd });
     const [capture] = await Promise.race([
       Promise.all([running, ownership]),
@@ -145,23 +145,10 @@ test("capture timeout settles when a detached descendant holds both pipes open",
     assert.equal(capture.stderr.toString(), "retained-stderr\n");
   } finally {
     clearTimeout(watchdog);
-    let cleanupError: unknown;
-    try {
-      const identity = JSON.parse(await readFile(path.join(cwd, "descendant.pid"), "utf8"));
-      assert.equal(identity.token, token, "CAPTURE_OWNERSHIP_TOKEN_RECORD_MISMATCH");
-      assert.ok(Number.isSafeInteger(identity.pid) && identity.pid > 0, "CAPTURE_OWNERSHIP_PID_RECORD_INVALID");
-      if (ownedPid !== undefined) assert.equal(identity.pid, ownedPid, "CAPTURE_OWNERSHIP_PID_RECORD_MISMATCH");
-      else ownedPid = identity.pid; // Independently authenticated fixture record remains cleanup authority if readiness fails.
-    } catch (error) { cleanupError = (error as NodeJS.ErrnoException).code === "ENOENT" ? new Error("CAPTURE_OWNERSHIP_PID_RECORD_MISSING") : error; }
-    try { if (ownedPid) process.kill(ownedPid, "SIGKILL"); }
-    catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
-    finally {
-      for (const socket of sockets) socket.destroy();
-      await new Promise<void>((resolve) => server.close(() => resolve()));
-      await running;
-      await rm(cwd, { recursive: true, force: true });
-    }
-    if (cleanupError) throw cleanupError;
+    for (const socket of sockets) socket.destroy(); // Native peer self-terminates on live channel loss.
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    await running;
+    await rm(cwd, { recursive: true, force: true });
   }
 });
 
