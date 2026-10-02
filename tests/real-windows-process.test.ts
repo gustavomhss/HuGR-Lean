@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import childProcess from "node:child_process";
 import { syncBuiltinESMExports } from "node:module";
 import { tmpdir } from "node:os";
+import { PassThrough } from "node:stream";
 import { test } from "node:test";
 
 const { runOwnedProcess } = await import(new URL("../scripts/real-world/owned-process.mjs", import.meta.url).href);
@@ -51,20 +52,37 @@ test("Windows missing tree capability plus successful spawn then handle EPERM ar
   }
 });
 
-test("Windows expired native leader keeps actual exit and explicitly lacks tree cleanup; no leader fallback", { timeout: 10000 }, async () => {
-  const platform = Object.getOwnPropertyDescriptor(process, "platform")!, spawn = childProcess.spawn;
-  let fallback = 0;
+test("Windows expired native leader with controlled held pipes keeps actual exit; mock pipe plumbing, no tree proof", { timeout: 10000 }, async () => {
+  const platform = Object.getOwnPropertyDescriptor(process, "platform")!, spawn = childProcess.spawn, kill = process.kill;
+  const stdout = new PassThrough(), stderr = new PassThrough();
+  let fallback = 0, numericLookup = 0, nativeExit = false;
   try {
     Object.defineProperty(process, "platform", { ...platform, value: "win32" });
+    process.kill = () => { numericLookup++; throw new Error("NUMERIC_TREE_AUTHORITY_FORBIDDEN"); };
     childProcess.spawn = ((...args: any[]) => {
       const child = Reflect.apply(spawn, childProcess, args);
+      // Keep the real native exit event. Hold only the wrapper's read streams open:
+      // grandchild inheritance does not keep these pipes open on every platform.
+      Object.defineProperties(child, { stdout: { value: stdout }, stderr: { value: stderr } });
       child.kill = () => { fallback++; throw new Error("EXPIRED_HANDLE_REACQUIRED"); }; return child;
     }) as typeof spawn;
     syncBuiltinESMExports();
-    const source = "require('node:child_process').spawn(process.execPath,['-e','setTimeout(()=>{},4000)'],{stdio:['ignore',1,2]}).unref();process.exit(7)";
-    const record = await runOwnedProcess(process.execPath, ["-e", source], { cwd: tmpdir(), env: process.env, timeout: 2000 });
+    const record = await runOwnedProcess(process.execPath, ["-e", "process.exit(7)"], {
+      cwd: tmpdir(), env: process.env, timeout: 2000,
+      onExit: (code: number, signal: string | null) => {
+        assert.equal(code, 7); assert.equal(signal, null);
+        assert.equal(stdout.destroyed, false); assert.equal(stderr.destroyed, false);
+        nativeExit = true;
+      },
+    });
+    assert.equal(nativeExit, true, "NATIVE_EXIT_BEFORE_PIPE_TIMEOUT_NOT_EXERCISED");
     assert.equal(record.code, 7); assert.equal(record.signal, null); assert.equal(record.nativeExitObserved, true);
-    assert.equal(record.timedOut, true); assert.equal(fallback, 0);
+    assert.equal(record.timedOut, true); assert.equal(record.durationBoundary, "timeout-cleanup");
+    assert.equal(stdout.destroyed, true); assert.equal(stderr.destroyed, true);
+    assert.equal(fallback, 0); assert.equal(numericLookup, 0);
     assert.deepEqual(record.killErrors, ["SETUP_TREE_CLEANUP_UNSUPPORTED: authenticated Windows tree identity unavailable"]);
-  } finally { childProcess.spawn = spawn; syncBuiltinESMExports(); Object.defineProperty(process, "platform", platform); }
+  } finally {
+    stdout.destroy(); stderr.destroy(); process.kill = kill;
+    childProcess.spawn = spawn; syncBuiltinESMExports(); Object.defineProperty(process, "platform", platform);
+  }
 });
