@@ -1,5 +1,5 @@
 // Private IPC guardian. Only this live group leader may signal its current POSIX group.
-import { execFile, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { closeSync } from "node:fs";
 
 const token = process.argv[2];
@@ -18,7 +18,9 @@ process.on("SIGTERM", () => {}); // Remain group leader through graceful cleanup
 process.on("disconnect", () => {
   // Authority never transfers to a saved PID. Unexpected parent loss cleans our own group.
   if (process.platform !== "win32") selfSignal("SIGKILL");
-  else if (nativeSpawned && !nativeExited) child.kill("SIGKILL");
+  else if (nativeSpawned && !nativeExited) {
+    try { child.kill("SIGKILL"); } catch { /* Channel loss already reported by parent. */ }
+  }
   clearInterval(keepAlive);
   process.exit(1);
 });
@@ -44,20 +46,13 @@ process.on("message", (message) => {
     process.exit(0);
   } else if (message.type === "cleanup" && launched) {
     if (process.platform === "win32") {
-      // Windows has no pinned POSIX group. Never taskkill an expired native leader.
-      if (!nativeSpawned || nativeExited) {
-        killError("SETUP_TREE_CLEANUP_UNSUPPORTED: Windows leader already exited");
-        send({ type: "cleanupDone" });
-      } else {
-        execFile("taskkill.exe", ["/pid", String(child.pid), "/T", "/F"], { env: message.env, timeout: 2000, windowsHide: true }, (error) => {
-          if (error) {
-            killError(`SETUP_TREE_CLEANUP_FAILED: ${error.message}`);
-            try { child.kill("SIGKILL"); }
-            catch (failure) { killError(`SIGKILL: ${failure.code}: ${failure.message}`); }
-          }
-          send({ type: "cleanupDone" });
-        });
+      // Node exposes no authenticated Windows tree handle. taskkill /pid can race reuse.
+      killError("SETUP_TREE_CLEANUP_UNSUPPORTED: authenticated Windows tree identity unavailable");
+      if (nativeSpawned && !nativeExited) {
+        try { child.kill("SIGKILL"); } // Native ChildProcess handle: leader-only fallback.
+        catch (failure) { killError(`SIGKILL: ${failure.code}: ${failure.message}`); }
       }
+      send({ type: "cleanupDone" });
     } else if (message.signal === "SIGTERM") selfSignal("SIGTERM");
     else if (message.signal === "SIGKILL") {
       // Send intent before self-kill; parent also requires actual guardian SIGKILL exit.

@@ -12,13 +12,14 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       env, detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe", "ipc"],
     });
     let authority = true, finished = false, spawned = false, failedSpawn = false, nativeExited = false;
-    let pipes = 0, timedOut = false, cleanupDone = false, escalating = false, nativeStart = start;
+    let pipes = 0, timedOut = false, cleanupDone = false, escalating = false, escalationRequested = false, nativeStart = start;
     let code = null, signal = null, spawnError, exitDurationMs, timer, escalation, settlement;
     const killErrors = [];
     const elapsed = () => Number(process.hrtime.bigint() - nativeStart) / 1e6;
     const send = (message) => {
       if (!authority || !guardian.connected) return false;
-      guardian.send({ ...message, token }, (error) => { if (error && !finished) lose(`GUARDIAN_CHANNEL_LOST: ${error.message}`); });
+      try { guardian.send({ ...message, token }, (error) => { if (error && !finished) lose(`GUARDIAN_CHANNEL_LOST: ${error.message}`); }); }
+      catch (error) { lose(`GUARDIAN_CHANNEL_LOST: ${error.message}`); return false; }
       return true;
     };
     const finish = (durationBoundary) => {
@@ -51,6 +52,7 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       timedOut = true;
       if (!send({ type: "cleanup", signal: "SIGTERM", env })) { lose("GUARDIAN_CHANNEL_LOST: cleanup unavailable"); return; }
       if (process.platform !== "win32") escalation = setTimeout(() => {
+        escalationRequested = true;
         send({ type: "cleanup", signal: "SIGKILL" });
         settlement = setTimeout(() => {
           killErrors.push("GUARDIAN_CLEANUP_UNCONFIRMED: escalation did not terminate guardian");
@@ -77,7 +79,10 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
         nativeExited = true; code = message.code; signal = message.signal; exitDurationMs = message.elapsedMs;
         onExit?.(code, signal); maybeFinish();
       } else if (message.type === "killError") killErrors.push(message.message);
-      else if (message.type === "escalating") escalating = true;
+      else if (message.type === "escalating") {
+        if (escalationRequested) escalating = true;
+        else lose("GUARDIAN_PROTOCOL_FAILED: unsolicited escalation");
+      }
       else if (message.type === "cleanupDone") boundCleanup();
     });
     guardian.on("error", (error) => lose(`GUARDIAN_FAILED: ${error.code}: ${error.message}`));
