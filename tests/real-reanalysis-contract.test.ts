@@ -3,19 +3,21 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
+import { gzipSync, gunzipSync } from "node:zlib";
 const { analyze } = await import(new URL("../scripts/real-world/analyze.mjs", import.meta.url).href);
 const { verifiedCapture } = await import(new URL("../scripts/real-world/integrity.mjs", import.meta.url).href);
-const { archiveCapture } = await import(new URL("../scripts/real-world/capture.mjs", import.meta.url).href);
+const { archiveCapture, sha256 } = await import(new URL("../scripts/real-world/capture.mjs", import.meta.url).href);
 
-async function fixture(root: string, { empty = false, allowEmpty = false } = {}) {
+async function fixture(root: string, { empty = false, allowEmpty = false, withStderr = false } = {}) {
   const setupRoot = path.join(root, "native-projects"); await mkdir(setupRoot);
   const timing = { wallMs: { p50: 1, p95: 2, mean: 1.5 }, cpuMs: { p50: 0, p95: 0, mean: 0 }, warmups: 20, samples: 100 };
   const planned = [], cases = [], native = [];
   for (const category of ["primary", "control"]) {
     const spec = { id: category, category, project: "synthetic", command: "unrecognized tool", oracle: "exact", expectExit: "zero" };
-    const raw = Buffer.from(empty ? "" : "native café 🔥\n"), directory = path.join(root, "cases", spec.id);
+    const stdout = Buffer.from(empty ? "" : "native café 🔥\n"), stderr = Buffer.from(withStderr ? "native stderr\n" : "");
+    const raw = Buffer.concat([stdout, stderr]), directory = path.join(root, "cases", spec.id);
     const capture = { command: spec.command, cwd: setupRoot, output: raw.toString(), exitCode: 0, signal: null, complete: true, timedOut: false, durationMs: 17 };
-    const artifacts = await archiveCapture(directory, { ...capture, raw, stdout: raw, stderr: Buffer.alloc(0) }, capture.output);
+    const artifacts = await archiveCapture(directory, { ...capture, raw, stdout, stderr }, capture.output);
     const row = { ...spec, artifacts, observedExit: 0, signal: null, complete: true, timedOut: false, captureMs: 17,
       inputBytes: raw.length, outputBytes: raw.length, savedBytes: 0, reductionPercent: 0, material: false,
       linesBefore: capture.output.split("\n").length, linesAfter: capture.output.split("\n").length,
@@ -95,12 +97,69 @@ test("material requires both 1024 saved bytes and ten percent, including boundar
       const artifacts = await archiveCapture(directory, { ...capture, raw, stdout: raw, stderr: Buffer.alloc(0) }, filtered.toString());
       const row = { ...base, artifacts, decision: "reduced", profile: "synthetic", inputBytes, outputBytes: inputBytes - savedBytes,
         savedBytes, material, reductionPercent: savedBytes / inputBytes * 100, linesBefore: 1, linesAfter: 1 };
-      await writeFile(path.join(directory, "capture.json"), JSON.stringify(capture));
+      await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts }));
       await writeFile(path.join(directory, "result.json"), JSON.stringify(row));
       await verifiedCapture(root, row);
       const forged = { ...row, material: !material };
       await writeFile(path.join(directory, "result.json"), JSON.stringify(forged));
       await assert.rejects(verifiedCapture(root, forged), /DERIVED_METRIC_MISMATCH: material/);
     }
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("analysis rejects forged report/result stream hashes against retained capture metadata", async (t) => {
+  const root = await mkdtemp(path.join(tmpdir(), "lean-analysis-capture-hashes-"));
+  try {
+    const { report } = await fixture(root, { withStderr: true }), row = report.cases[0]!;
+    assert.equal((await analyze(root)).evidenceOK, true);
+    const published = await readFile(path.join(root, "analysis.json")), directory = path.join(root, "cases", row.id);
+    const captureBytes = await readFile(path.join(directory, "capture.json"));
+    for (const name of ["stdout", "stderr"] as const) {
+      await t.test(name, async () => {
+        const file = path.join(directory, row.artifacts[name].file), original = gunzipSync(await readFile(file));
+        const changed = Buffer.alloc(original.length, 0x78);
+        assert.equal(changed.length, original.length); assert.notDeepEqual(changed, original);
+        const forged = structuredClone(row);
+        forged.artifacts[name].sha256 = sha256(changed);
+        try {
+          await writeFile(file, gzipSync(changed));
+          report.cases[0] = forged;
+          await writeFile(path.join(root, "report.json"), JSON.stringify(report));
+          await writeFile(path.join(directory, "result.json"), JSON.stringify(forged));
+          await assert.rejects(analyze(root), new RegExp(`CAPTURE_ARTIFACT_MISMATCH: ${name}`));
+          assert.deepEqual(await readFile(path.join(root, "analysis.json")), published);
+          assert.deepEqual(await readFile(path.join(directory, "capture.json")), captureBytes);
+        } finally {
+          await writeFile(file, gzipSync(original));
+          report.cases[0] = row;
+          await writeFile(path.join(root, "report.json"), JSON.stringify(report));
+          await writeFile(path.join(directory, "result.json"), JSON.stringify(row));
+        }
+      });
+    }
+    assert.equal((await analyze(root)).evidenceOK, true);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("analysis rejects missing retained capture artifact bindings without replacing prior verdict", async (t) => {
+  const root = await mkdtemp(path.join(tmpdir(), "lean-analysis-missing-capture-hashes-"));
+  try {
+    const { report } = await fixture(root);
+    assert.equal((await analyze(root)).evidenceOK, true);
+    const published = await readFile(path.join(root, "analysis.json"));
+    const file = path.join(root, "cases", report.cases[0]!.id, "capture.json");
+    const retained = await readFile(file), capture = JSON.parse(retained.toString());
+    for (const name of ["all", "original", "stdout", "stderr"]) {
+      await t.test(name, async () => {
+        const changed = structuredClone(capture);
+        if (name === "all") delete changed.artifacts;
+        else delete changed.artifacts[name];
+        await writeFile(file, JSON.stringify(changed));
+        await assert.rejects(analyze(root), /CAPTURE_ARTIFACT_MISMATCH/);
+        assert.deepEqual(await readFile(path.join(root, "analysis.json")), published);
+      });
+    }
+    await writeFile(file, retained);
+    assert.equal((await analyze(root)).evidenceOK, true);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

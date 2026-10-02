@@ -40,6 +40,7 @@ export async function verifiedCapture(outputDir, row) {
     assert.equal(data.length, artifact.bytes, `${row.id}: ${name} BYTE_MISMATCH`);
     assert.equal(sha256(data), artifact.sha256, `${row.id}: ${name} DIGEST_MISMATCH`);
     if (["original", "filtered"].includes(name)) assert.deepEqual(Buffer.from(data.toString("utf8"), "utf8"), data, `${row.id}: ${name} UTF8_ROUNDTRIP_MISMATCH`);
+    if (name !== "filtered") assert.deepEqual(artifact, capture.artifacts?.[name], `${row.id}: CAPTURE_ARTIFACT_MISMATCH: ${name}`);
     contents[name] = data;
   }
   assert.equal(contents.original.toString("utf8"), capture.output, `${row.id}: CAPTURE_OUTPUT_MISMATCH`);

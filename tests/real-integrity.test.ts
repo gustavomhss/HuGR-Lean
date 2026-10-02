@@ -53,7 +53,7 @@ test("verified capture binds all digests, exact output, native facts and duratio
     const directory = path.join(root, "cases", "one"), raw = Buffer.from("native café\n");
     const capture = { output: raw.toString(), raw, stdout: raw, stderr: Buffer.alloc(0), command: "tool", exitCode: 0, signal: null, complete: true, timedOut: false, durationMs: 17 };
     const artifacts = await archiveCapture(directory, capture, capture.output);
-    await writeFile(path.join(directory, "capture.json"), JSON.stringify(capture));
+    await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts }));
     const row = result(raw, artifacts);
     const persist = (value: unknown) => writeFile(path.join(directory, "result.json"), JSON.stringify(value));
     await persist(row);
@@ -66,9 +66,9 @@ test("verified capture binds all digests, exact output, native facts and duratio
     }
     await persist(row);
     await t.test("decoded native output", async () => {
-      await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, output: "forged café\n" }));
+      await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts, output: "forged café\n" }));
       await assert.rejects(verifiedCapture(root, row), /CAPTURE_OUTPUT_MISMATCH/);
-      await writeFile(path.join(directory, "capture.json"), JSON.stringify(capture));
+      await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts }));
     });
     const changed = Buffer.from("forged café\n");
     assert.equal(changed.length, raw.length);
@@ -87,7 +87,7 @@ test("same-size valid UTF-8 stdout corruption fails its digest", async (t) => {
     const raw = Buffer.from("native café\n"), directory = path.join(root, "cases", "one");
     const capture = { output: raw.toString(), raw, stdout: raw, stderr: Buffer.alloc(0), command: "tool", exitCode: 0, signal: null, complete: true, timedOut: false, durationMs: 17 };
     const row = result(raw, await archiveCapture(directory, capture, capture.output));
-    await writeFile(path.join(directory, "capture.json"), JSON.stringify(capture));
+    await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts: row.artifacts }));
     await writeFile(path.join(directory, "result.json"), JSON.stringify(row));
     assert.deepEqual((await verifiedCapture(root, row)).capture.raw, raw);
     const changed = Buffer.from("forged café\n"); assert.equal(changed.length, raw.length);
@@ -98,6 +98,7 @@ test("same-size valid UTF-8 stdout corruption fails its digest", async (t) => {
     await t.test("native stream byte total", async () => {
       const artifacts = await archiveCapture(directory, { ...capture, stdout: Buffer.concat([raw, Buffer.from("x")]) }, capture.output);
       const forged = { ...row, artifacts };
+      await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts }));
       await writeFile(path.join(directory, "result.json"), JSON.stringify(forged));
       await assert.rejects(verifiedCapture(root, forged), /STREAM_BYTE_MISMATCH/);
     });
@@ -120,7 +121,7 @@ test("matching artifact hashes cannot admit malformed original or filtered UTF-8
     const directory = path.join(root, "cases", "one"), raw = Buffer.from("native café 🔥\n");
     const capture = { output: raw.toString(), raw, stdout: raw, stderr: Buffer.alloc(0), command: "tool", exitCode: 0, signal: null, complete: true, timedOut: false, durationMs: 17 };
     const artifacts = await archiveCapture(directory, capture, capture.output);
-    await writeFile(path.join(directory, "capture.json"), JSON.stringify(capture));
+    await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...capture, artifacts }));
     const row = result(raw, artifacts);
     await writeFile(path.join(directory, "result.json"), JSON.stringify(row));
     assert.deepEqual((await verifiedCapture(root, row)).filtered, raw);
@@ -134,7 +135,7 @@ test("matching artifact hashes cannot admit malformed original or filtered UTF-8
         const forged = { ...result(original, artifacts), decision: "reduced", profile: "synthetic", ...metrics(original, filtered) };
         await writeFile(path.join(directory, "filtered.txt.gz"), gzipSync(filtered));
         await writeFile(path.join(directory, "result.json"), JSON.stringify(forged));
-        await writeFile(path.join(directory, "capture.json"), JSON.stringify(malformedCapture));
+        await writeFile(path.join(directory, "capture.json"), JSON.stringify({ ...malformedCapture, artifacts }));
         await assert.rejects(verifiedCapture(root, forged), new RegExp(`${name} UTF8_ROUNDTRIP_MISMATCH`));
       });
     }
