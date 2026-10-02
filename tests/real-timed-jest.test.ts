@@ -41,6 +41,11 @@ test("native-shaped timed Jest rejects wrong source pointer and pointed assertio
 test("native-shaped timed Jest rejects wrong stack file or source line", () => {
   rejected(output.replace("at Object.<anonymous> (src/bench-expected-failure.test.ts", "at Object.<anonymous> (src/other.test.ts"));
   rejected(output.replace("test.ts:3:53)", "test.ts:4:53)"));
+  rejected(output.replace("test.ts:3:53)", "test.ts:3:999)"));
+});
+
+test("native-shaped timed Jest rejects caret column mismatched with stack column", () => {
+  rejected(output.replace("        |                                                     ^", "        | ^"));
 });
 
 test("native-shaped timed Jest rejects missing suite footer", () => {

@@ -4,8 +4,8 @@ import { test } from "node:test";
 const { checkEvidence } = await import(new URL("../scripts/real-world/evidence.mjs", import.meta.url).href);
 const marker = "BENCH_EXPECTED_FAILURE";
 const bytes = (text: string): number => Buffer.byteLength(text, "utf8");
-function binding(oracle: string, output: string, ok: boolean, exitCode = oracle.startsWith("cargo-") ? 101 : 1): void {
-  const spec = Object.freeze({ id: `binding-${oracle}`, oracle, expectExit: "nonzero", marker });
+function binding(oracle: string, output: string, ok: boolean, exitCode = oracle.startsWith("cargo-") ? 101 : 1, controlledMarker = marker): void {
+  const spec = Object.freeze({ id: `binding-${oracle}`, oracle, expectExit: "nonzero", marker: controlledMarker });
   const capture = Object.freeze({ output, exitCode, signal: null, complete: true, timedOut: false });
   const result = Object.freeze({ status: "passthrough", reason: "micro_fixture", inputBytes: bytes(output), outputBytes: bytes(output) });
   const before = JSON.stringify([spec, capture, result]);
@@ -215,4 +215,82 @@ test("Vitest full controlled test name and native error/location position cannot
     vitest.replace("Failed Tests 1", "Failed Tests 2"),
   ];
   for (const bad of mutations) binding("vitest", bad, false);
+});
+
+// Original MIT in-memory frame/section controls; no compiler execution or copied captures.
+const positionFixtures = [
+  { oracle: "jest", output: jest, gutter: "        |" },
+  { oracle: "vitest", output: vitest, gutter: "       |" },
+];
+function positioned(input: string, gutter: string, location: number, caret = location): string {
+  const original = gutter + " ".repeat(53) + "^";
+  assert.ok(input.includes(original), "Fixture must contain original native caret");
+  return input.replace(":3:53", `:3:${location}`).replace(original, gutter + " ".repeat(caret) + "^");
+}
+
+test("Jest/Vitest native caret column and location agree within ASCII source bounds", () => {
+  const recipe = `test('${marker}', () => { expect(true).toBe(false); });`;
+  assert.equal(recipe.length, 68);
+  for (const entry of positionFixtures) {
+    binding(entry.oracle, entry.output, true);
+    binding(entry.oracle, positioned(entry.output, entry.gutter, 68), true);
+    binding(entry.oracle, positioned(entry.output, entry.gutter, 999, 53), false);
+    binding(entry.oracle, positioned(entry.output, entry.gutter, 53, 1), false);
+    binding(entry.oracle, positioned(entry.output, entry.gutter, 53, 54), false);
+  }
+});
+
+test("Jest/Vitest matching columns still reject beyond-source and shifted-gutter pointers", () => {
+  for (const entry of positionFixtures) {
+    binding(entry.oracle, positioned(entry.output, entry.gutter, 69), false);
+    binding(entry.oracle, positioned(entry.output, entry.gutter, 999), false);
+    const original = entry.gutter + " ".repeat(53) + "^";
+    const shifted = entry.gutter.slice(1) + " ".repeat(54) + "^";
+    binding(entry.oracle, entry.output.replace(original, shifted), false);
+  }
+});
+
+test("Jest/Vitest columns use source UTF-16 bounds with Unicode marker/context", () => {
+  const unicodeMarker = marker + "🔥", recipe = `test('${unicodeMarker}', () => { expect(true).toBe(false); });`;
+  assert.equal(recipe.length, 70); assert.equal(bytes(recipe), 72);
+  for (const entry of positionFixtures) {
+    const input = entry.output.replaceAll(marker, unicodeMarker).replace("Independent in-memory control.", "Unicode context café🔥.");
+    binding(entry.oracle, positioned(input, entry.gutter, 55), true, 1, unicodeMarker);
+    binding(entry.oracle, positioned(input, entry.gutter, 70), true, 1, unicodeMarker);
+    binding(entry.oracle, positioned(input, entry.gutter, 71), false, 1, unicodeMarker);
+  }
+});
+
+const controlledRecord = vitestStart + vitestMatcher + vitestFrame;
+const otherRecord = controlledRecord.replaceAll("bench-expected-failure.test.ts", "other.test.ts").replaceAll(marker, "OTHER_EXPECTED_FAILURE");
+function twoVitestFailures(controlSecond = false): string {
+  const records = controlSecond ? [otherRecord, controlledRecord] : [controlledRecord, otherRecord];
+  return vitestHeader.replace("Failed Tests 1", "Failed Tests 2") +
+    records.map((record, index) => record.replace("[1/1]", `[${index + 1}/2]`)).join("") +
+    " Test Files  2 failed (2)\n      Tests  2 failed (2)\n";
+}
+
+test("Vitest controlled record binds containing Failed Tests section in either record order", () => {
+  for (const controlSecond of [false, true]) {
+    const input = twoVitestFailures(controlSecond);
+    binding("vitest", input, true);
+    binding("vitest", input.replaceAll("\n", "\r\n"), true);
+  }
+});
+
+test("Vitest containing section rejects borrowed context, ambiguous records and inconsistent delimiters", () => {
+  const first = twoVitestFailures(), second = twoVitestFailures(true);
+  const repeatedOther = vitestHeader.replace("Failed Tests 1", "Failed Tests 3") +
+    [controlledRecord, otherRecord, otherRecord].map((record, index) => record.replace("[1/1]", `[${index + 1}/3]`)).join("") +
+    " Test Files  2 failed (2)\n      Tests  3 failed (3)\n";
+  for (const bad of [
+    first.replace("Failed Tests 2", "Failed Suites 2"),
+    second.replace(vitestStart, "⎯⎯⎯ Unhandled Errors 1 ⎯⎯⎯\n\n" + vitestStart),
+    first.replace(vitestMatcher, "Error: controlled setup failed\n"),
+    first.replace("[1/2]", "[2/2]"), first.replace("[2/2]", "[2/3]"),
+    first.replace("[1/2]", ""), first.replace("Failed Tests 2", "Failed Tests 3"),
+    first.replaceAll("other.test.ts", "bench-expected-failure.test.ts").replaceAll("OTHER_EXPECTED_FAILURE", marker),
+    second.replace("[1/2]", "[1/2]\nnot a native failure record"),
+    repeatedOther,
+  ]) binding("vitest", bad, false);
 });

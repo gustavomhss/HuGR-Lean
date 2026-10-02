@@ -77,6 +77,15 @@ function controlledAssertion(source, marker) {
   return call?.[2] === marker;
 }
 
+// Data-only association: native caret padding and location use source UTF-16
+// columns after the numbered gutter, not UTF-8 bytes or compiler execution.
+function positionedCaret(frameRow, caretRow, source, locationColumn) {
+  const caret = /^( +)\|( +)\^$/.exec(caretRow ?? ""), gutter = frameRow.indexOf("|");
+  if (!caret || caret[1].length !== gutter) return false;
+  const column = caretRow.indexOf("^") - (gutter + 2) + 1, expected = Number(locationColumn);
+  return Number.isSafeInteger(expected) && column === expected && column >= 1 && column <= source.length;
+}
+
 function jestFailure(text, marker) {
   const file = /^ ?FAIL ((?:src|test|tests)\/bench-expected-failure\.test\.[cm]?[jt]s)(?: \(\d+(?:\.\d+)? s\))?$/;
   const start = unique(text, (line) => file.test(line));
@@ -94,18 +103,45 @@ function jestFailure(text, marker) {
   const location = /^ {6}at Object\.<anonymous> \(([^()]+):([1-9]\d*):([1-9]\d*)\)$/.exec(body[at] ?? "");
   const sourceRow = (line) => /^ +[1-9]\d* \|(?: .*)?$/.test(line);
   return pointer >= 3 && !!frame && controlledAssertion(frame[2], marker) &&
-    body.slice(3, pointer).every(sourceRow) && /^ +\| +\^$/.test(body[pointer + 1] ?? "") &&
+    body.slice(3, pointer).every(sourceRow) && !!location &&
+    positionedCaret(body[pointer], body[pointer + 1], frame[2], location[3]) &&
     at > pointer + 1 && body.slice(pointer + 2, at).every(sourceRow) && !!location &&
     location[1] === file.exec(text[start])[1] && location[2] === frame[1] && failedFooter(text, suite.stop, "jest");
+}
+
+function vitestSection(text, control) {
+  const header = /^⎯+ Failed Tests ([1-9]\d*) ⎯+$/;
+  const start = unique(text, (line) => header.test(line));
+  const section = bounded(text, start, (line) => /^(?: Test Files|⎯+ [^⎯]+ ⎯+$)/.test(line));
+  if (!section || control <= start || control >= section.stop) return undefined;
+  const count = Number(header.exec(text[start])[1]), identities = new Set();
+  if (!Number.isSafeInteger(count)) return undefined;
+  let pending = false, content = false, records = 0;
+  for (const line of section.body) {
+    if (line === "") continue;
+    const record = /^ FAIL +(\S+) > (.+)$/.exec(line);
+    if (record) {
+      const identity = JSON.stringify(record.slice(1));
+      if (pending || identities.has(identity)) return undefined;
+      identities.add(identity); records++; pending = true; content = false; continue;
+    }
+    const trailer = /^⎯+\[([1-9]\d*)\/([1-9]\d*)\]⎯+$/.exec(line);
+    if (trailer) {
+      if (!pending || !content || Number(trailer[1]) !== records || Number(trailer[2]) !== count) return undefined;
+      pending = false; continue;
+    }
+    if (!pending || /^(?: FAIL |⎯)/.test(line)) return undefined;
+    content = true;
+  }
+  return !pending && records === count ? { count, stop: section.stop } : undefined;
 }
 
 function vitestFailure(text, marker) {
   const file = /^ FAIL +((?:test)\/bench-expected-failure\.test\.[cm]?[jt]s) > (.+)$/;
   const start = unique(text, (line) => file.exec(line)?.[2] === marker);
   const block = bounded(text, start, (line) => /^(?: FAIL | Test Files)/.test(line));
-  const preceding = text.slice(0, start).filter((line) => line !== "").at(-1) ?? "";
-  const failures = /^⎯+ Failed Tests ([1-9]\d*) ⎯+$/.exec(preceding);
-  if (!block || !failures) return false;
+  const section = vitestSection(text, start);
+  if (!block || !section || block.stop > section.stop) return false;
   const body = block.body.filter((line) => line !== "");
   if (body[0] !== "AssertionError: expected true to be false // Object.is equality" ||
       body[1] !== "- Expected" || body[2] !== "+ Received" || body[3] !== "- false" || body[4] !== "+ true") return false;
@@ -115,5 +151,6 @@ function vitestFailure(text, marker) {
   const frame = /^ +([1-9]\d*)\| (.*)$/.exec(body[pointer] ?? "");
   return !!location && location[1] === file.exec(text[start])[1] && pointer >= 6 && !!frame &&
     controlledAssertion(frame[2], marker) && body.slice(6, pointer).every((line) => /^ +[1-9]\d*\|(?: .*)?$/.test(line)) &&
-    /^ +\| +\^$/.test(body[pointer + 1] ?? "") && failedFooter(text, block.stop, "vitest", Number(failures[1]));
+    positionedCaret(body[pointer], body[pointer + 1], frame[2], location[3]) &&
+    failedFooter(text, section.stop, "vitest", section.count);
 }
