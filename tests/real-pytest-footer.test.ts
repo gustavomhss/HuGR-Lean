@@ -40,6 +40,18 @@ test("Pytest footer calibration: intended fixture passes; changed assertion mark
   binding(changed, false);
 });
 
+test("C05 Pytest malformed footer candidates cannot borrow later valid summary", () => {
+  binding(fixture(), true);
+  binding(fixture().replace(`E       AssertionError: ${marker}`, "E       AssertionError: OTHER_FAILURE"), false);
+  for (const body of ["failed in 0.01s", "many unknown in 0.01s"]) {
+    for (const candidate of [body + "\n", `======== ${body} ========\n`]) {
+      assert.equal(pytestSummary(candidate.trimEnd()), false, candidate);
+      binding(candidate + fixture(), false);
+      binding(fixture(failed + candidate + footer), false);
+    }
+  }
+});
+
 test("Pytest footer supports mixed outcomes, distinct FAILED rows, CRLF and inspected SGR", () => {
   for (const summary of ["1 failed in 0s", "1 failed, 2 passed, 3 skipped, 1 warning in 0.12s",
     "1 failed, 5 warnings, 2 xfailed, 3 xpassed, 4 subtests passed, 0 errors in 1s"]) {

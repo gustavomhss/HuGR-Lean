@@ -30,9 +30,10 @@ function pytestFooter(text, short) {
   while (text[final] === "") final--;
   const counts = parsedPytestSummary(text[final] ?? ""), records = text.slice(short + 1, final), nodeids = new Set();
   if (!counts || !(counts.get("failed") > 0) || (counts.get("error") ?? 0) > 0 || !records.length) return false;
-  // Closed summary-shaped rows include malformed counts/durations/outcomes;
-  // an earlier competing row cannot borrow the final valid footer.
-  const summaryLike = (line) => /^(?:\S+ (?:passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)\b|[+-]?\d\S* .+ in )/.test(pytestBody(line));
+  // Wrapped duration delimiters and plain " in <token>s" rows are candidates
+  // independently of counts; retain known outcome-shaped malformed rows too.
+  const summaryLike = (line) => /^=+ .* in .* =+$/.test(line) || /^\S.* in \S+s$/.test(line) ||
+    /^(?:\S+ (?:passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)\b|[+-]?\d\S* .+ in )/.test(pytestBody(line));
   if (text.some((line, index) => index !== final && summaryLike(line))) return false;
   for (const line of records) {
     const record = /^FAILED (\S+::\S+) - (.+)$/.exec(line);
@@ -95,11 +96,11 @@ function failedFooter(text, start, oracle, expectedFailures) {
     /^ Test Files +([1-9]\d*) failed(?: \| ([1-9]\d*) passed)? \(([1-9]\d*)\)$/;
   const tests = oracle === "jest" ? /^Tests: +([1-9]\d*) failed(?:, ([1-9]\d*) passed)?, ([1-9]\d*) total$/ :
     /^ {6}Tests +([1-9]\d*) failed(?: \| ([1-9]\d*) passed)? \(([1-9]\d*)\)$/;
-  // Closed native labels bind the first boundary, including unsupported count rows.
+  // Unique native summary labels include unsupported counts, even after other suites.
   const suitePrefix = oracle === "jest" ? /^Test Suites:/ : /^ Test Files\b/;
   const testPrefix = oracle === "jest" ? /^Tests:/ : /^ {6}Tests\b/;
   const index = unique(text, (line) => suitePrefix.test(line)), next = unique(text, (line) => testPrefix.test(line));
-  return index === start && next === index + 1 && coherentCount(text[index], suites) && coherentCount(text[next], tests) &&
+  return index >= start && next === index + 1 && coherentCount(text[index], suites) && coherentCount(text[next], tests) &&
     (expectedFailures === undefined || Number(tests.exec(text[next])[1]) === expectedFailures);
 }
 function controlledAssertion(source, marker) {

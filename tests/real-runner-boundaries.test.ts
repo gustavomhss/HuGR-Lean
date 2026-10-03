@@ -68,6 +68,19 @@ test("C05 frozen timed runners, mixed counts, CRLF and bounded SGR calibrate acc
   }
 });
 
+test("C05 Jest PASS before or after controlled FAIL retains later unique mixed footer", () => {
+  const entry = fixtures[0], pass = "PASS src/other.test.ts (0.1 s)\n";
+  for (const body of [jestBody, jestBody.replace(" (9.068 s)", "")]) {
+    for (const suites of [pass + body, body + pass]) {
+      const good = suites + entry.suite + entry.tests + entry.timing;
+      binding("jest", good, true);
+      binding("jest", good.replaceAll("\n", "\r\n"), true);
+      binding("jest", good.replace(`  ● ${marker}`, "  ● OTHER_FAILURE"), false);
+      binding("jest", good.replace(entry.suite, entry.passedSuite + entry.suite), false);
+    }
+  }
+});
+
 test("C05 first native summary boundary cannot borrow later failed footer", () => {
   for (const entry of fixtures) {
     const good = output(entry);
