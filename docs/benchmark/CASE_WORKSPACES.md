@@ -45,6 +45,6 @@ than skipped proofs. Snapshot setup time and retained-copy disk overhead fall ou
 native-command and filtering timing. Historical captures and numeric reports remain
 immutable; no upstream/native corpus rerun is implied by these synthetic checks.
 
-A05 integrates the retained-workspace backend only. The legacy `edits` export stays
-temporarily for unchanged direct comparison tests; A06 removes that backend and its
-superseded rollback tests. This phase does not close every architecture finding.
+The source-writing `edits` export and rollback helpers are retired. Helper replies
+require a distinct absolute string cwd and valid success/error fields; protocol failures
+retain raw buffers and partial metadata. IPC mock controls are not native filesystem proof.

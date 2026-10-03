@@ -9,6 +9,10 @@ import path from "node:path";
 import { test } from "node:test";
 
 const workloads = await import(new URL("../scripts/real-world/workloads.mjs", import.meta.url).href);
+test("workloads namespace exports catalog and retires source-writing edits", () => {
+  assert.equal(Object.hasOwn(workloads, "catalog"), true);
+  assert.equal(Object.hasOwn(workloads, "edits"), false);
+});
 const setup = await import(new URL("../scripts/real-world/setup.mjs", import.meta.url).href);
 type Project = { id: string; path: string; commit: string; license: string; licensePaths: string[]; sourcePaths: string[] };
 type Case = {
@@ -479,22 +483,6 @@ test("controlled failures keep source bytes and foreign edits; marked owned imag
         else await assert.rejects(readFile(file), { code: "ENOENT" });
       }
     }
-  });
-});
-
-test("file transaction refuses overwrite and rolls back a partially failed prepare", async () => {
-  await tree(async (root) => {
-    const original = Buffer.from("UPSTREAM_ORIGINAL\n");
-    await writeFile(path.join(root, "original.txt"), original);
-    const partial = workloads.edits(root, [
-      { path: "original.txt", append: true, text: "FIRST_EDIT\n" }, { path: "absent-parent/new.txt", text: "SECOND_EDIT\n" },
-    ]);
-    await assert.rejects(partial.prepare(), { code: "ENOENT" });
-    assert.deepEqual(await readFile(path.join(root, "original.txt")), original);
-    const overwrite = workloads.edits(root, [{ path: "original.txt", text: "WRONG\n" }]);
-    await assert.rejects(overwrite.prepare(), /CASE_WOULD_OVERWRITE/);
-    assert.deepEqual(await readFile(path.join(root, "original.txt")), original);
-    await assert.rejects(workloads.edits(root, [{ path: "absent.txt", append: true, text: "WRONG\n" }]).prepare(), { code: "ENOENT" });
   });
 });
 

@@ -1,5 +1,6 @@
 import { execFile } from "node:child_process";
 import { realpath } from "node:fs/promises";
+import { isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 const helper = fileURLToPath(new URL("./case-workspace.py", import.meta.url));
 const fail = (code, message = code, details = {}) => Object.assign(new Error(message), { code, ...details });
@@ -39,8 +40,14 @@ export function caseWorkspace(projectPath, changes) {
       catch (cause) { throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, cause }); }
       if (!result || typeof result.ok !== "boolean") throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", details);
       workspace = result.workspace ?? workspace;
-      if (!result.ok) throw fail(result.error?.code ?? "CASE_HELPER_FAILED", result.error?.message ?? "CASE_HELPER_FAILED", { ...details, workspace });
-      if (!workspace?.cwd || workspace.source !== source || workspace.retained !== true || workspace.sourceReadOnly !== true) {
+      if (!result.ok) {
+        if (typeof result.error?.code !== "string" || !result.error.code || typeof result.error.message !== "string") {
+          throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, workspace });
+        }
+        throw fail(result.error.code, result.error.message, { ...details, workspace });
+      }
+      if (typeof workspace?.cwd !== "string" || !isAbsolute(workspace.cwd) || workspace.cwd === source ||
+          workspace.source !== source || workspace.retained !== true || workspace.sourceReadOnly !== true) {
         throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, workspace });
       }
       cwd = workspace.cwd;
