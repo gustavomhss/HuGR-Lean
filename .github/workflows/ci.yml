@@ -6,7 +6,7 @@ on:
   pull_request:
   workflow_dispatch:
 concurrency:
-  group: verify-${{ github.event.pull_request.number || github.ref }}
+  group: verify-${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || (github.ref == 'refs/heads/main' && 'main') || format('run-{0}', github.run_id) }}
   cancel-in-progress: true
 permissions:
   contents: read
