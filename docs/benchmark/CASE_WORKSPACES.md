@@ -56,5 +56,8 @@ Before success publication, read-only realpath/stat checks require an existing d
 distinct from canonical source, with canonical parent equal to source's parent and basename
 `.hugr-case-` plus exactly 32 lowercase hex characters. Source aliases, descendants,
 unrelated paths and missing directories reject with `CASE_HELPER_PROTOCOL`; filesystem
-causes remain attached. Published cwd is canonical. IPC mock controls use disposable real
-owned-sibling paths for validation, but are not native filesystem or Windows-support proof.
+causes remain attached. Success candidates stay local until validation completes: any
+success validation rejection preserves prior valid partial metadata in the getter and error.
+Valid failure-reply metadata still replaces prior partial metadata. Published cwd is canonical.
+IPC mock controls use disposable real owned-sibling paths for validation, but are not
+native filesystem or Windows-support proof.

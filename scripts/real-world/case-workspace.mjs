@@ -44,24 +44,26 @@ export function caseWorkspace(projectPath, changes) {
       if (!result || typeof result.ok !== "boolean") throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", details);
       if (result.workspace != null) {
         if (!validWorkspace(result.workspace)) throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", details);
-        workspace = result.workspace;
       }
+      const candidate = result.workspace ?? workspace;
       if (!result.ok) {
+        workspace = candidate;
         if (typeof result.error?.code !== "string" || !result.error.code || typeof result.error.message !== "string") {
           throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, workspace });
         }
         throw fail(result.error.code, result.error.message, { ...details, workspace });
       }
-      if (!validWorkspace(workspace)) throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, workspace });
+      if (!validWorkspace(candidate)) throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", details);
       let canonical;
       try {
-        canonical = await realpath(workspace.cwd);
+        canonical = await realpath(candidate.cwd);
         if (!(await stat(canonical)).isDirectory()) throw new TypeError("Workspace cwd is not a directory");
-      } catch (cause) { throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, workspace, cause }); }
+      } catch (cause) { throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, cause }); }
       const name = basename(canonical);
       if (canonical === source || dirname(canonical) !== dirname(source) || name.length !== 43 || !/^\.hugr-case-[0-9a-f]{32}$/.test(name)) {
-        throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", { ...details, workspace });
+        throw fail("CASE_HELPER_PROTOCOL", "CASE_HELPER_PROTOCOL", details);
       }
+      workspace = candidate;
       cwd = canonical;
     },
     async restore() { cwd = projectPath; },

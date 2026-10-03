@@ -31,7 +31,7 @@ test("IPC mock plumbing only: reply validation and raw failure retention; not na
       ["missing workspace retains partial", { ok: true }, undefined],
       ["valid failure workspace", { ok: false, workspace, error: { code: "FOREIGN_BACKEND", message: "" } }, "FOREIGN_BACKEND"],
       ...[{}, [], "", "relative"].map((cwd): [string, any, string, undefined, boolean] => [`cwd=${JSON.stringify(cwd)}`, { ...success, workspace: { ...workspace, cwd } }, "CASE_HELPER_PROTOCOL", undefined, true]),
-      ...[source, source + path.sep + ".", source + path.sep, source + path.sep + ".." + path.sep + "source", alias, path.join(source, "child"), unrelated, path.dirname(unrelated), missing, file, ...badNames].map((cwd): [string, any, string] => [`owned boundary cwd=${cwd}`, { ...success, workspace: { ...workspace, cwd } }, "CASE_HELPER_PROTOCOL"]),
+      ...[source, source + path.sep + ".", source + path.sep, source + path.sep + ".." + path.sep + "source", alias, path.join(source, "child"), unrelated, path.dirname(unrelated), missing, file, ...badNames].map((cwd): [string, any, string, undefined, boolean] => [`owned boundary cwd=${cwd}`, { ...success, workspace: { ...workspace, cwd } }, "CASE_HELPER_PROTOCOL", undefined, true]),
       ...[{ source: 42 }, { retained: 1 }, { sourceReadOnly: false }].map((patch): [string, any, string, undefined, boolean] => [`workspace=${JSON.stringify(patch)}`, { ...success, workspace: { ...workspace, ...patch } }, "CASE_HELPER_PROTOCOL", undefined, true]),
       ...[true, false].flatMap((ok) => [42, [], {}, { ...workspace, cwd: 42 }].map((workspace): [string, any, string, undefined, boolean] => [`malformed workspace=${JSON.stringify(workspace)} ok=${ok}`, { ok, workspace, error: { code: "FOREIGN_BACKEND", message: "retained failure" } }, "CASE_HELPER_PROTOCOL", undefined, true])),
       ...[null, {}, { ok: "true" }, "malformed stdout"].map((reply): [string, any, string] => [JSON.stringify(reply), reply, "CASE_HELPER_PROTOCOL"]),
@@ -58,7 +58,7 @@ test("IPC mock plumbing only: reply validation and raw failure retention; not na
           assert.equal(error.code, code); assert.equal(error.message, cause ? `CASE_HELPER_FAILED: ${cause.message}` : code === "FOREIGN_BACKEND" ? reply.error.message : "CASE_HELPER_PROTOCOL"); assert.equal(error.stdout, stdout); assert.equal(error.stderr, stderr);
           if (cause) assert.equal(error.cause, cause); else if (typeof reply === "string") assert.ok(error.cause instanceof SyntaxError);
           if (reply?.workspace?.cwd === missing) assert.equal(error.cause?.code, "ENOENT");
-          assert.deepEqual(error.workspace, expected); assert.equal(error.workspace, c.workspace); assert.equal(c.cwd, source); return true;
+          assert.deepEqual(error.workspace, expected); assert.deepEqual(c.workspace, expected); assert.equal(error.workspace, c.workspace); assert.equal(c.cwd, source); return true;
         });
         const metadata = c.workspace; assert.deepEqual(metadata, expected); await c.restore(); await c.restore(); assert.equal(c.cwd, source); assert.equal(c.workspace, metadata);
         await assert.rejects(c.prepare(), { code: "CASE_ALREADY_PREPARED" });
