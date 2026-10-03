@@ -27,6 +27,8 @@ Before preparation and after restore, cwd names the source. During capture it na
 the owned copy. Restore only resets memory context: no file restoration, deletion
 or Git unstaging. Marked bytes, private staged state, partial failure images and
 later foreign edits remain available in the retained workspace.
+Transactions are one-shot: restore does not allow preparation again, even after a
+failed attempt. A later prepare rejects with `CASE_ALREADY_PREPARED`.
 
 ## Artifacts and costs
 
@@ -45,6 +47,14 @@ than skipped proofs. Snapshot setup time and retained-copy disk overhead fall ou
 native-command and filtering timing. Historical captures and numeric reports remain
 immutable; no upstream/native corpus rerun is implied by these synthetic checks.
 
-The source-writing `edits` export and rollback helpers are retired. Helper replies
-require a distinct absolute string cwd and valid success/error fields; protocol failures
-retain raw buffers and partial metadata. IPC mock controls are not native filesystem proof.
+The source-writing `edits` export and rollback helpers are retired. Workspace metadata
+must be an object with an absolute string cwd, canonical source and both retention/read-only
+flags true before replacing valid partial stderr metadata. Malformed stdout workspace
+metadata rejects with `CASE_HELPER_PROTOCOL` for success and failure replies; raw buffers
+and prior valid partial metadata survive. Valid unknown string failure codes/messages survive.
+Before success publication, read-only realpath/stat checks require an existing directory
+distinct from canonical source, with canonical parent equal to source's parent and basename
+`.hugr-case-` plus exactly 32 lowercase hex characters. Source aliases, descendants,
+unrelated paths and missing directories reject with `CASE_HELPER_PROTOCOL`; filesystem
+causes remain attached. Published cwd is canonical. IPC mock controls use disposable real
+owned-sibling paths for validation, but are not native filesystem or Windows-support proof.
