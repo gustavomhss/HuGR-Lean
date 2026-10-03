@@ -149,6 +149,8 @@ for (const runner of ["setup", "capture"]) {
     const root = await mkdtemp(path.join(tmpdir(), "lean-expired-native-")), ownership = await ownershipChannel();
     const beat = path.join(root, "escaped.beat"), kill = process.kill;
     let running: Promise<any> | undefined;
+    const failures: unknown[] = [];
+    const retain = async (step: () => Promise<unknown>) => { try { await step(); } catch (error) { failures.push(error); } };
     try {
       process.kill = () => { throw new Error("PARENT_NUMERIC_SIGNAL_FORBIDDEN"); };
       const escaped = `require('node:fs').appendFileSync(${JSON.stringify(beat)},'x');setInterval(()=>require('node:fs').appendFileSync(${JSON.stringify(beat)},'x'),20);setTimeout(()=>process.exit(0),15000);${ownership.source}`;
@@ -163,13 +165,22 @@ for (const runner of ["setup", "capture"]) {
       assert.deepEqual(runner === "setup" ? await readFile(record.stdout) : record.stdout, Buffer.from("escaped-ready"));
       const before = (await readFile(beat)).length; await delay(100);
       assert.ok((await readFile(beat)).length > before, "ESCAPED_CONTROL_KILLED");
-    } finally {
-      await ownership.stop(); await running;
-      process.kill = kill;
-      await delay(100); const stopped = (await readFile(beat)).length; await delay(100);
-      assert.equal((await readFile(beat)).length, stopped, "LIVE_CHANNEL_TEARDOWN_FAILED");
-      await rm(root, { recursive: true, force: true });
+    } catch (error) { failures.push(error); }
+    finally {
+      try {
+        await retain(() => ownership.stop());
+        await retain(async () => { await running; });
+        await retain(async () => {
+          await delay(100); const stopped = (await readFile(beat)).length; await delay(100);
+          assert.equal((await readFile(beat)).length, stopped, "LIVE_CHANNEL_TEARDOWN_FAILED");
+        });
+      } finally {
+        process.kill = kill;
+        await retain(() => rm(root, { recursive: true, force: true }));
+      }
     }
+    if (failures.length === 1) throw failures[0];
+    if (failures.length) throw new AggregateError(failures, "ESCAPED_FIXTURE_FAILURES");
   });
 }
 

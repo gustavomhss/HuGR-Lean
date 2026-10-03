@@ -17,9 +17,12 @@ async function delayedGuardian(fault: boolean, run: (root: string) => Promise<an
   const root = await mkdtemp(path.join(tmpdir(), "lean-guardian-startup-"));
   const spawn = childProcess.spawn, timer = globalThis.setTimeout;
   let guardian: ReturnType<typeof spawn> | undefined, transport: Duplex | undefined;
-  let exited: Promise<unknown> | undefined, watchdog: (() => void) | undefined;
+  let exited: Promise<unknown> | undefined, drained: Promise<void> | undefined, watchdog: (() => void) | undefined;
   let watchdogs = 0, launches = 0, heldMs = 0;
-  const trace: string[] = [];
+  const trace: string[] = [], failures: unknown[] = [];
+  const release = () => {
+    if (transport && !transport.destroyed && !transport.writableEnded) transport.write("release\n");
+  };
   try {
     const loader = path.join(root, "delay.mjs");
     await writeFile(loader, `
@@ -27,7 +30,8 @@ import { Socket } from 'node:net';
 // Self-owned fallback bounds broken implementations too; no parent PID cleanup.
 setTimeout(() => process.exit(90), 3000).unref();
 const socket = new Socket({ fd: 4, readable: true, writable: true });
-const disconnected = () => socket.write('disconnected\\n');
+socket.on('error', error => { console.error(error); process.exit(91); });
+const disconnected = () => { if (!socket.destroyed && !socket.writableEnded) socket.write('disconnected\\n'); };
 process.once('disconnect', disconnected);
 await new Promise(resolve => {
   socket.once('data', data => { if (data.toString() === 'release\\n') resolve(); });
@@ -53,6 +57,8 @@ socket.end('released:' + process.connected + '\\n');
         return Reflect.apply(send, guardian, [message, ...rest]);
       }) as typeof send;
       transport = guardian.stdio[4] as Duplex;
+      transport.on("error", error => failures.push(error));
+      drained = new Promise(resolve => transport!.once("close", resolve));
       let pending = "";
       transport.on("data", (chunk: Buffer) => {
         pending += chunk.toString();
@@ -61,8 +67,8 @@ socket.end('released:' + process.connected + '\\n');
           const message = pending.slice(0, end); pending = pending.slice(end + 1); trace.push(message);
           if (message === "blocked") {
             if (fault) watchdog!();
-            else timer(() => { heldMs = performance.now() - start; transport!.write("release\n"); }, 75);
-          } else if (message === "disconnected") transport!.write("release\n");
+            else timer(() => { heldMs = performance.now() - start; release(); }, 75);
+          } else if (message === "disconnected") release();
         }
       });
       return guardian;
@@ -70,19 +76,29 @@ socket.end('released:' + process.connected + '\\n');
     syncBuiltinESMExports();
     const result = await run(root);
     const exit = await exited; // Observe actual guardian termination, including mutant fallback.
+    await drained; // Exit alone does not prove fd4 trace has drained and closed.
     assert.equal(watchdogs, 1, "STARTUP_WATCHDOG_SEAM_NOT_EXERCISED");
     assert.deepEqual(trace, fault ? ["blocked", "disconnected", "released:false"] : ["blocked", "released:true"]);
     assert.equal(launches, fault ? 0 : 1, "UNEXPECTED_NATIVE_LAUNCH_REQUEST");
     assert.deepEqual(exit, fault ? { code: null, signal: "SIGKILL" } : { code: 0, signal: null }, "GUARDIAN_REQUIRED_FALLBACK_EXIT");
     return { result, heldMs };
-  } finally {
+  } catch (error) { failures.push(error); }
+  finally {
     childProcess.spawn = spawn; globalThis.setTimeout = timer; syncBuiltinESMExports();
-    if (guardian?.connected) guardian.disconnect();
-    if (transport && !transport.destroyed) transport.end("release\n");
-    await exited; // Fixture fallback owns cleanup even when assertions fail.
-    transport?.destroy();
-    await rm(root, { recursive: true, force: true });
+    try {
+      if (guardian?.connected) guardian.disconnect();
+      if (transport && !transport.destroyed && !transport.writableEnded) transport.end("release\n");
+    } catch (error) { failures.push(error); }
+    try { await exited; await drained; } // Fixture fallback owns cleanup even when assertions fail.
+    catch (error) { failures.push(error); }
+    finally {
+      transport?.destroy();
+      try { await rm(root, { recursive: true, force: true }); } catch (error) { failures.push(error); }
+    }
+    if (failures.length === 1) throw failures[0];
+    if (failures.length) throw new AggregateError(failures, "STARTUP_FIXTURE_FAILURES");
   }
+  throw new Error("STARTUP_FIXTURE_RESULT_MISSING");
 }
 
 function unknownDuration(record: any) {

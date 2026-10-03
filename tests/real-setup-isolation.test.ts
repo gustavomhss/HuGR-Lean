@@ -89,13 +89,44 @@ test("ready setup timeout persists exact binary stdout/stderr/merged bytes and o
     assert.deepEqual(await readFile(record.stdout), stdout); assert.deepEqual(await readFile(record.stderr), stderr);
     const original = await readFile(record.output);
     assert.ok([Buffer.concat([stdout, stderr]), Buffer.concat([stderr, stdout])].some((expected) => expected.equals(original)), "SETUP_BINARY_PREFIX_BYTES_ERASED_OR_DUPLICATED");
+    if (process.platform === "win32") assert.equal(Object.hasOwn(record, "guardianElapsedMs"), false);
+    else assert.ok(Number.isFinite(record.guardianElapsedMs) && record.guardianElapsedMs > 0);
     assert.deepEqual(JSON.parse(await readFile(record.output.replace(/\.output$/, ".json"), "utf8")), record);
   } finally {
-    clearTimeout(watchdog); await running;
-    childProcess.spawn = spawn; syncBuiltinESMExports();
-    await new Promise<void>((resolve) => server.close(() => resolve()));
-    await rm(root, { recursive: true, force: true });
+    clearTimeout(watchdog);
+    try { await running; }
+    finally {
+      childProcess.spawn = spawn; syncBuiltinESMExports();
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      await rm(root, { recursive: true, force: true });
+    }
   }
+});
+
+test("Windows platform-mock serialization omits absent guardian elapsed for native success and failure", async () => {
+  // Exercises Windows routing/JSON on this host; not a Windows handle or tree compatibility claim.
+  const root = await mkdtemp(path.join(tmpdir(), "lean-setup-windows-json-"));
+  const platform = Object.getOwnPropertyDescriptor(process, "platform")!;
+  try {
+    Object.defineProperty(process, "platform", { ...platform, value: "win32" });
+    const run = setupRunner(root, isolatedEnv(root));
+    for (const code of [0, 9]) {
+      const source = `process.stdout.write(Buffer.from([0,255,65]));process.exitCode=${code};`;
+      let record: any;
+      if (code === 0) {
+        const { text, errorText, ...saved } = await run("windows-success", process.execPath, ["-e", source]);
+        assert.equal(text, Buffer.from([0, 255, 65]).toString("utf8")); assert.equal(errorText, ""); record = saved;
+      } else await assert.rejects(run("windows-failure", process.execPath, ["-e", source]), (error: any) => {
+        assert.match(error.message, /SETUP_FAILED: windows-failure: exit=9/); record = error.record; return true;
+      });
+      assert.equal(record.code, code); assert.equal(record.signal, null);
+      assert.equal(record.nativeSpawned, true); assert.equal(record.nativeExitObserved, true);
+      assert.equal(Object.hasOwn(record, "guardianElapsedMs"), false, "WINDOWS_GUARDIAN_FIELD_INVENTED");
+      assert.ok(Number.isFinite(record.exitDurationMs));
+      assert.deepEqual(await readFile(record.stdout), Buffer.from([0, 255, 65]));
+      assert.deepEqual(JSON.parse(await readFile(record.output.replace(/\.output$/, ".json"), "utf8")), record);
+    }
+  } finally { Object.defineProperty(process, "platform", platform); await rm(root, { recursive: true, force: true }); }
 });
 
 test("hugr dependency setup ledger follows successful literal npm ci and omits failed installs", async () => {

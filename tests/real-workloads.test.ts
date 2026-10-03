@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { randomUUID } from "node:crypto";
+import { once } from "node:events";
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { createServer, type AddressInfo, type Socket } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { createInterface } from "node:readline";
 import { test } from "node:test";
 
 const workloads = await import(new URL("../scripts/real-world/workloads.mjs", import.meta.url).href);
@@ -168,8 +173,8 @@ const { spawn } = require('node:child_process');
 const { writeFileSync } = require('node:fs');
 const detached = process.argv[2] === 'detached';
 process.stdout.write('PARENT_OUTPUT\\n', () => {
-  const source = "process.stdout.write(Buffer.from([0,255,65])); process.stderr.write('DESCENDANT_OUTPUT\\\\n'); " +
-    (detached ? 'setInterval(() => {}, 1000);' : 'setTimeout(() => {}, 50);');
+  const source = process.argv[3] + "process.stdout.write(Buffer.from([0,255,65])); process.stderr.write('DESCENDANT_OUTPUT\\\\n'); " +
+    (detached ? '' : 'setTimeout(() => process.exit(0), 50);');
   const child = spawn(process.execPath, ['-e', source], { detached, stdio: ['ignore', 1, 2] });
   writeFileSync(process.argv[1], JSON.stringify({ pid: child.pid }));
   if (detached) { child.unref(); process.exit(7); }
@@ -183,30 +188,83 @@ async function fixturePid(file: string): Promise<number> {
   return pid;
 }
 
-async function cleanupPipeFixture(file: string): Promise<void> {
-  try { process.kill(await fixturePid(file), "SIGKILL"); }
-  catch (error: any) { if (!["ENOENT", "ESRCH"].includes(error.code)) throw error; }
+async function pipeOwnership() {
+  const token = randomUUID(), server = createServer(), sockets = new Set<Socket>(), errors: Error[] = [];
+  let peer: Socket | undefined, stopped = false;
+  server.on("error", error => errors.push(error));
+  server.on("connection", socket => {
+    sockets.add(socket); socket.once("close", () => sockets.delete(socket));
+    socket.on("error", error => errors.push(error));
+    const lines = createInterface({ input: socket });
+    lines.once("line", line => {
+      if (line !== token || peer) { errors.push(new Error("PIPE_OWNER_AUTH_FAILED")); socket.destroy(); }
+      else { peer = socket; server.emit("owned"); }
+      lines.close(); socket.resume();
+    });
+  });
+  server.listen(0, "127.0.0.1"); await once(server, "listening");
+  const source = `setTimeout(()=>process.exit(90),12000).unref();
+const owner=require('node:net').connect(${(server.address() as AddressInfo).port},'127.0.0.1');
+owner.on('end',()=>process.exit(0));owner.on('error',()=>process.exit(91));
+owner.on('data',()=>owner.write('alive\\n'));owner.write(${JSON.stringify(token + "\n")});`;
+  return { source, async probe() {
+    if (!peer) await once(server, "owned", { signal: AbortSignal.timeout(6000) });
+    assert.ok(peer && !peer.destroyed && !peer.writableEnded, "PIPE_OWNER_NOT_LIVE");
+    const reply = once(peer, "data", { signal: AbortSignal.timeout(1000) });
+    peer.write("probe\n");
+    assert.equal((await reply)[0].toString(), "alive\n", "PIPE_OWNER_REPLY_MISSING");
+  }, async stop() {
+    if (stopped) return;
+    stopped = true;
+    const closed = once(server, "close");
+    for (const socket of sockets) if (!socket.destroyed && !socket.writableEnded) socket.end();
+    server.close(); await closed;
+    assert.deepEqual(errors, [], "PIPE_OWNERSHIP_SOCKET_ERRORS");
+  } };
+}
+
+async function ownedPipeTree(action: (root: string, owner: Awaited<ReturnType<typeof pipeOwnership>>) => Promise<void>) {
+  await tree(async root => {
+    const owner = await pipeOwnership(), outside = await pipeOwnership(), kill = process.kill;
+    const control = spawn(process.execPath, ["-e", outside.source], { stdio: "ignore" });
+    const exited = once(control, "exit"), failures: unknown[] = [];
+    const retain = async (step: () => Promise<unknown>) => { try { await step(); } catch (error) { failures.push(error); } };
+    try {
+      process.kill = () => { throw new Error("PIPE_FIXTURE_NUMERIC_TEARDOWN_FORBIDDEN"); };
+      await outside.probe();
+      await action(root, owner);
+    } catch (error) { failures.push(error); }
+    finally {
+      try {
+        await retain(() => owner.stop());
+        await retain(() => outside.probe()); // Unrelated live peer must survive fixture cleanup.
+        await retain(() => outside.stop());
+        await retain(async () => assert.deepEqual(await exited, [0, null], "UNRELATED_CONTROL_EXIT_FORGED"));
+      } finally { process.kill = kill; }
+    }
+    if (failures.length === 1) throw failures[0];
+    if (failures.length) throw new AggregateError(failures, "PIPE_FIXTURE_FAILURES");
+  });
 }
 
 test("setup accepts non-detached descendants and retains both output pipes", async () => {
-  await tree(async (root) => {
+  await ownedPipeTree(async (root, owner) => {
     const pidFile = path.join(root, "owned-descendant.json"), run = setup.setupRunner(root, setup.isolatedEnv(root));
-    try {
-      const result = await run("attached-pipe-control", process.execPath, ["-e", pipeFixture, pidFile, "attached"], { timeout: 3000 });
-      assert.equal(result.code, 0);
-      assert.equal(result.signal, null);
-      assert.equal(result.timedOut, false);
-      assert.equal(result.state, "finished");
-      assert.deepEqual(await readFile(result.stdout), Buffer.concat([Buffer.from("PARENT_OUTPUT\n"), Buffer.from([0, 255, 65])]));
-      assert.equal(await readFile(result.stderr, "utf8"), "DESCENDANT_OUTPUT\n");
-    } finally { await cleanupPipeFixture(pidFile); }
+    const result = await run("attached-pipe-control", process.execPath, ["-e", pipeFixture, pidFile, "attached", owner.source], { timeout: 3000 });
+    assert.equal(result.code, 0);
+    assert.equal(result.signal, null);
+    assert.equal(result.timedOut, false);
+    assert.equal(result.state, "finished");
+    assert.deepEqual(await readFile(result.stdout), Buffer.concat([Buffer.from("PARENT_OUTPUT\n"), Buffer.from([0, 255, 65])]));
+    assert.equal(await readFile(result.stderr, "utf8"), "DESCENDANT_OUTPUT\n");
+    await fixturePid(pidFile); // Readiness fact only, never signal authority.
   });
 });
 
 test("setup timeout settles despite detached descendant holding stdout/stderr open", async () => {
-  await tree(async (root) => {
+  await ownedPipeTree(async (root, owner) => {
     const pidFile = path.join(root, "owned-descendant.json"), run = setup.setupRunner(root, setup.isolatedEnv(root));
-    const running = run("detached-pipe-failure", process.execPath, ["-e", pipeFixture, pidFile, "detached"], { timeout: 3000 })
+    const running = run("detached-pipe-failure", process.execPath, ["-e", pipeFixture, pidFile, "detached", owner.source], { timeout: 3000 })
       .then((result: any) => ({ result, error: undefined }), (error: any) => ({ result: undefined, error }));
     let watchdog: ReturnType<typeof setTimeout> | undefined;
     try {
@@ -231,10 +289,11 @@ test("setup timeout settles despite detached descendant holding stdout/stderr op
       assert.equal(persisted.timedOut, true);
       assert.equal(persisted.code, 7);
       assert.equal(persisted.signal, null);
-      process.kill(await fixturePid(pidFile), 0); // Positive control: escaped descendant still holds its pipes.
+      await fixturePid(pidFile);
+      await owner.probe(); // Live authenticated descendant still holds its pipes.
     } finally {
       clearTimeout(watchdog);
-      await cleanupPipeFixture(pidFile);
+      await owner.stop();
       await running; // Mutation cleanup also releases the old close-only implementation.
     }
   });
