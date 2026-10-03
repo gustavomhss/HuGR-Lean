@@ -330,6 +330,7 @@ test("pipe ownership bounds half-open and unauthenticated native peers, caches r
     let closed: Promise<void> | undefined;
     const peerErrors: NodeJS.ErrnoException[] = [];
     const original = new Error("PIPE_ACTION_FAILURE_CONTROL");
+    let failure: unknown;
     const expected = { "half-open": "PIPE_OWNER_STOP_TIMEOUT", unauthenticated: "PIPE_OWNER_UNAUTHENTICATED", "auth-timeout": "PIPE_OWNER_AUTH_TIMEOUT", invalid: "PIPE_OWNER_AUTH_FAILED" }[mode]!;
     try {
       await assert.rejects(ownedPipeTree(async (_root, owner) => {
@@ -346,13 +347,14 @@ test("pipe ownership bounds half-open and unauthenticated native peers, caches r
           await ended; socket.destroy(); await closed;
         }
         const stopped = owner.stop(); assert.strictEqual(owner.stop(), stopped, "PIPE_STOP_SETTLEMENT_NOT_CACHED");
-        let failure: unknown;
         await assert.rejects(stopped, (error: Error) => { assert.equal(error.message, expected, "PIPE_CLOSE_DID_NOT_SETTLE_AS_EXPECTED"); failure = error; return true; });
         await assert.rejects(owner.stop(), error => error === failure);
         throw original;
       }), (error: AggregateError) => {
         assert.ok(error instanceof AggregateError, `${mode}: ${error.stack}`); assert.strictEqual(error.errors[0], original);
-        assert.equal(error.errors[1].message, expected); return true;
+        assert.equal(error.errors.length, 2, "PIPE_UNEXPECTED_CLEANUP_FAILURE");
+        assert.equal(error.errors[1].message, expected);
+        assert.strictEqual(error.errors[1], failure, "PIPE_CACHED_STOP_FAILURE_REPLACED"); return true;
       });
     } finally {
       clearTimeout(fallback); socket?.destroy(); await closed;
