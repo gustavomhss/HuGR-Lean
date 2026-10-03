@@ -11,6 +11,17 @@ import { measureCapture, aggregate } from "./measure.mjs";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const json = (file, value) => writeFile(file, JSON.stringify(value, null, 2) + "\n");
+export async function archiveCaseFailure(directory, spec, error) {
+  await mkdir(directory, { recursive: true });
+  const diagnostics = {};
+  for (const stream of ["stdout", "stderr"]) {
+    if (!Buffer.isBuffer(error[stream])) continue;
+    diagnostics[stream] = `workspace-helper.${stream}`;
+    await writeFile(path.join(directory, diagnostics[stream]), error[stream]);
+  }
+  await json(path.join(directory, "failure.json"), { id: spec.id, message: error.message, code: error.code,
+    caseWorkspace: spec.workspace ?? error.workspace ?? null, diagnostics });
+}
 export async function runRealBenchmark({ outputDir, preparedRoot, repoRoot = ROOT } = {},
   { compile = compiled, provisionProjects = provision, takeCapture = captureCommand, measure = measureCapture } = {}) {
   assert.ok(outputDir, "REAL_BENCHMARK_OUTPUT_DIR_REQUIRED");
@@ -43,7 +54,7 @@ export async function runRealBenchmark({ outputDir, preparedRoot, repoRoot = ROO
         capture = await takeCapture(spec, prepared.env, { logDir: directory });
         const artifacts = await archiveCapture(directory, capture);
         const { raw, stdout, stderr, ...facts } = capture;
-        await json(path.join(directory, "capture.json"), { ...facts, artifacts });
+        await json(path.join(directory, "capture.json"), { ...facts, artifacts, caseWorkspace: spec.workspace ?? null });
         if (capture.launchError || capture.encodingError) throw new Error(`CAPTURE_UNUSABLE: ${capture.launchError ?? capture.encodingError}`);
         if (capture.killErrors?.length || capture.complete !== true || capture.timedOut !== false ||
             !Number.isSafeInteger(capture.exitCode) || capture.exitCode < 0 || capture.signal !== null ||
@@ -57,7 +68,7 @@ export async function runRealBenchmark({ outputDir, preparedRoot, repoRoot = ROO
         await json(path.join(directory, "result.json"), measurement.record);
       } catch (error) {
         report.failures.push({ id: spec.id, name: "NATIVE_CASE_FAILED", message: error.message });
-        await mkdir(directory, { recursive: true }); await json(path.join(directory, "failure.json"), { id: spec.id, message: error.message });
+        await archiveCaseFailure(directory, spec, error);
       } finally {
         try { await spec.restore?.(); }
         catch (error) { report.failures.push({ id: spec.id, name: "RESTORE_FAILED", message: error.message }); }

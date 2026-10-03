@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -10,6 +10,7 @@ type Entry = {
   id: string; project: string; category: string; command: string; oracle: string; expectExit: string; cwd: string;
   allowEmpty: boolean; controlledFailure?: boolean; marker?: string; cache?: string; follows?: string;
   modifications: { path: string }[]; prepare(): Promise<void>; restore(): Promise<void>;
+  workspace?: { source: string; cwd: string; retained: boolean; sourceReadOnly: boolean };
 };
 const ids = ["itoa", "gjson", "boltons", "ms", "ufo", "hugr"];
 const projects = (root: string) => ids.map((id) => ({ id, path: path.join(root, id) }));
@@ -123,8 +124,8 @@ const failures = [
     code: "// HuGR benchmark control, not an upstream test.\nimport { test, expect } from 'vitest';\ntest('BENCH_EXPECTED_FAILURE', () => { expect(true).toBe(false); });\n" },
 ];
 
-test("five failure controls prepare fixed failing recipes and restore independently named fixture paths", async () => {
-  const root = await mkdtemp(path.join(tmpdir(), "hugr-control-contract-"));
+test("five failure controls retain exact recipes in owned copies and preserve independently named source paths", async () => {
+  const root = await realpath(await mkdtemp(path.join(tmpdir(), "hugr-control-contract-")));
   const original = Buffer.from([0, 255, ...Buffer.from("// upstream 🦣\r\n")]);
   try {
     for (const id of ids) for (const directory of ["src", "test", "tests"]) await mkdir(path.join(root, id, directory), { recursive: true });
@@ -139,12 +140,63 @@ test("five failure controls prepare fixed failing recipes and restore independen
       assert.equal(entry.marker, "BENCH_EXPECTED_FAILURE");
       assert.deepEqual(entry.modifications.map((modification) => modification.path), [spec.file], `${spec.id}: edit ledger`);
       const file = path.join(root, spec.project, spec.file);
+      let owned: string | undefined;
       try {
-        await entry.prepare();
-        assert.deepEqual(await readFile(file), spec.append ? Buffer.concat([original, Buffer.from(spec.code)]) : Buffer.from(spec.code), spec.id);
+        if (process.platform === "win32") await assert.rejects(entry.prepare(), { code: "CASE_WORKSPACE_UNSUPPORTED" });
+        else {
+          await entry.prepare();
+          owned = entry.cwd;
+          assert.notEqual(owned, path.join(root, spec.project));
+          if (spec.append) assert.deepEqual(await readFile(file), original, "Active control must not edit source");
+          else await assert.rejects(readFile(file), { code: "ENOENT" });
+          assert.deepEqual(await readFile(path.join(owned, spec.file)), spec.append ? Buffer.concat([original, Buffer.from(spec.code)]) : Buffer.from(spec.code), spec.id);
+        }
       } finally { await entry.restore(); }
+      assert.equal(entry.cwd, path.join(root, spec.project));
+      if (owned) assert.deepEqual(await readFile(path.join(owned, spec.file)), spec.append ? Buffer.concat([original, Buffer.from(spec.code)]) : Buffer.from(spec.code), spec.id);
       if (spec.append) assert.deepEqual(await readFile(file), original, spec.id);
       else await assert.rejects(readFile(file), { code: "ENOENT" });
     }
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("controlled failure archives partial workspace metadata and separate raw helper diagnostics", async () => {
+  const { archiveCaseFailure } = await import(new URL("../scripts/real-world/run.mjs", import.meta.url).href);
+  const root = await realpath(await mkdtemp(path.join(tmpdir(), "hugr-control-failure-")));
+  try {
+    await mkdir(path.join(root, "gjson"));
+    const source = path.join(root, "gjson/bench_expected_failure_test.go"), original = Buffer.from([0, 255, 65]);
+    await writeFile(source, original);
+    const entry = catalog(root).find((candidate) => candidate.id === "go-test-failure");
+    assert.ok(entry);
+    let failure: any;
+    await assert.rejects(entry.prepare(), (error: any) => {
+      failure = error;
+      assert.equal(error.code, process.platform === "win32" ? "CASE_WORKSPACE_UNSUPPORTED" : "CASE_WOULD_OVERWRITE");
+      return true;
+    });
+    const directory = path.join(root, "cases", entry.id);
+    await archiveCaseFailure(directory, entry, failure);
+    const record = JSON.parse(await readFile(path.join(directory, "failure.json"), "utf8"));
+    assert.equal(record.code, failure.code);
+    if (process.platform === "win32") assert.equal(record.caseWorkspace, null);
+    else {
+      assert.deepEqual(record.caseWorkspace, entry.workspace);
+      assert.equal(record.caseWorkspace.sourceReadOnly, true);
+      assert.equal(record.caseWorkspace.retained, true);
+      assert.notEqual(record.caseWorkspace.cwd, entry.cwd);
+      for (const stream of ["stdout", "stderr"]) {
+        assert.ok(Buffer.isBuffer(failure[stream]) && failure[stream].length > 0);
+        assert.deepEqual(await readFile(path.join(directory, record.diagnostics[stream])), failure[stream]);
+      }
+      const binary = Object.assign(new Error("RAW_DIAGNOSTIC_CONTROL"), { stdout: Buffer.from([0, 255, 65]), stderr: Buffer.from([254, 0]) });
+      const binaryDir = path.join(root, "cases", "binary-diagnostic-control");
+      await archiveCaseFailure(binaryDir, entry, binary);
+      assert.deepEqual(await readFile(path.join(binaryDir, "workspace-helper.stdout")), binary.stdout);
+      assert.deepEqual(await readFile(path.join(binaryDir, "workspace-helper.stderr")), binary.stderr);
+    }
+    await entry.restore();
+    assert.equal(entry.cwd, path.join(root, "gjson"));
+    assert.deepEqual(await readFile(source), original);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

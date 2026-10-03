@@ -3,6 +3,7 @@ import { constants } from "node:fs";
 import fs, { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { setupProjects } from "./setup.mjs";
+import { caseWorkspace } from "./case-workspace.mjs";
 
 export const FAILURE_MARKER = "BENCH_EXPECTED_FAILURE";
 
@@ -33,7 +34,7 @@ async function writeAt(handle, bytes, position, progress = () => {}) {
   }
 }
 
-/** Transactional file edits; restoration also works after a partial prepare or failed capture. */
+/** Legacy direct-test comparison only; A06 retires this source-writing backend. */
 export function edits(projectPath, changes) {
   let saved, root;
   return {
@@ -119,9 +120,14 @@ export function catalog(projects, run) {
   for (const id of required) if (!seen.has(id)) throw new Error(`CATALOG_MISSING_PROJECT: ${id}`);
   const byId = Object.fromEntries(projects.map((project) => [project.id, project]));
   const cases = [];
-  const add = (id, project, command, oracle, options = {}) => {
+  const add = (id, project, command, oracle, options = {}, transaction) => {
     const entry = { id, project, category: "primary", command, cwd: byId[project].path, expectExit: "zero", oracle,
       allowEmpty: false, prepare: async () => {}, restore: async () => {}, modifications: [], ...options };
+    // Define after construction: spreading options would snapshot live getters.
+    Object.defineProperties(entry, {
+      cwd: { enumerable: true, get: () => transaction?.cwd ?? byId[project].path },
+      workspace: { enumerable: true, get: () => transaction?.workspace },
+    });
     cases.push(entry);
     return entry;
   };
@@ -130,10 +136,16 @@ export function catalog(projects, run) {
     await run(`prepare-${id}`, file, args, { cwd: byId[id.startsWith("cargo") ? "itoa" : "gjson"].path });
   };
   const failure = (id, project, command, oracle, changes) => {
-    const transaction = edits(byId[project].path, changes);
+    const transaction = caseWorkspace(byId[project].path, changes);
     add(id, project, command, oracle, { category: "control", expectExit: "nonzero", marker: FAILURE_MARKER,
-      controlledFailure: true, modifications: changes.map(({ path: file, append }) => ({ phase: "case", path: file, change: append ? "Append marked failing code; restore original bytes after capture." : "Add marked failing framework test; remove after capture." })),
-      prepare: () => transaction.prepare(), restore: () => transaction.restore() });
+      controlledFailure: true, modifications: changes.map(({ path: file, append }) => ({ phase: "case", path: file, change: append ? "Append marked failing code in retained copy; source unchanged; workspace retained after capture." : "Add marked failing framework test in retained copy; source unchanged; workspace retained after capture." })),
+      async prepare() {
+        try { await transaction.prepare(); }
+        catch (error) {
+          if (error.code !== "CASE_ALREADY_PREPARED") await transaction.restore();
+          throw error;
+        }
+      }, restore: () => transaction.restore() }, transaction);
   };
 
   add("cargo-build-cold", "itoa", "cargo build", "cargo-build", { prepare: cold("cargo-build-cold", "cargo", ["clean"]), cache: "cold" });
@@ -176,28 +188,28 @@ export function catalog(projects, run) {
     { path: "PLAN.md", append: true, text: "\nHuGR benchmark unstaged modification.\n" },
     { path: "bench-untracked.txt", text: "HuGR benchmark untracked control.\n" },
   ];
-  const mixed = edits(byId.hugr.path, mixedChanges);
+  const mixed = caseWorkspace(byId.hugr.path, mixedChanges);
   let mixedPrepared = false;
   const restoreMixed = async () => {
-    if (!mixedPrepared) return;
-    try { await run("restore-git-status-mixed", "git", ["restore", "--staged", "--", "README.md"], { cwd: byId.hugr.path }); }
-    finally { await mixed.restore(); }
+    await mixed.restore();
     mixedPrepared = false;
   };
   add("git-status-mixed", "hugr", "git status", "git", { category: "control",
-    modifications: mixedChanges.map(({ path: file }) => ({ phase: "case", path: file, change: "Controlled staged/unstaged/untracked status; restored after capture." })),
+    modifications: mixedChanges.map(({ path: file }) => ({ phase: "case", path: file, change: "Controlled staged/unstaged/untracked status in retained copy; source/index unchanged; workspace retained after capture." })),
     async prepare() {
       if (!run) throw new Error("CASE_SETUP_RUNNER_MISSING: git-status-mixed");
       if (mixedPrepared) throw new Error("CASE_ALREADY_PREPARED");
-      const status = (await run("prepare-git-clean-check", "git", ["status", "--porcelain=v1", "--untracked-files=all"], { cwd: byId.hugr.path })).text;
+      const status = (await run("prepare-git-clean-check", "git", ["--no-optional-locks", "status", "--porcelain=v1", "--untracked-files=all"], { cwd: byId.hugr.path })).text;
       if (status !== "") throw new Error(`CASE_DIRTY_CHECKOUT: git-status-mixed: ${status}`);
-      await mixed.prepare();
-      mixedPrepared = true;
-      try { await run("prepare-git-status-mixed", "git", ["add", "--", "README.md"], { cwd: byId.hugr.path }); }
+      try {
+        await mixed.prepare();
+        mixedPrepared = true;
+        await run("prepare-git-status-mixed", "git", ["add", "--", "README.md"], { cwd: mixed.cwd });
+      }
       catch (error) { await restoreMixed(); throw error; }
     },
     restore: restoreMixed,
-  });
+  }, mixed);
   add("rg-source", "hugr", "rg -n 'export' src", "rg");
   add("git-diff-history", "hugr", "git diff HEAD~1", "exact");
   add("read-readme", "hugr", "cat README.md", "exact");

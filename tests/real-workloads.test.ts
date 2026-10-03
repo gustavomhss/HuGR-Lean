@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { once } from "node:events";
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile } from "node:fs/promises";
 import { connect, createServer, type AddressInfo, type Socket } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -15,6 +15,7 @@ type Case = {
   id: string; project: string; category: string; command: string; cwd: string; expectExit: string; oracle: string;
   marker?: string; controlledFailure?: boolean; allowEmpty: boolean; follows?: string; cache?: string;
   modifications: { path: string }[]; prepare(): Promise<void>; restore(): Promise<void>;
+  workspace?: { source: string; cwd: string; retained: boolean; sourceReadOnly: boolean };
 };
 type Run = (name: string, file: string, args: string[], options?: { cwd?: string; timeout?: number }) => Promise<{ text: string }>;
 const ids = ["itoa", "gjson", "boltons", "ms", "ufo", "hugr"];
@@ -22,7 +23,7 @@ const projects = (root: string): Project[] => setup.PINS.map((pin: Project) => (
 const cases = (root: string, run?: Run): Case[] => workloads.catalog(projects(root), run);
 
 async function tree(action: (root: string) => Promise<void>): Promise<void> {
-  const root = await mkdtemp(path.join(tmpdir(), "hugr-workloads-"));
+  const root = await realpath(await mkdtemp(path.join(tmpdir(), "hugr-workloads-")));
   try { await action(root); }
   finally { await rm(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }); }
 }
@@ -49,6 +50,11 @@ test("catalog is nonempty, uniquely identified, complete, and keeps literal norm
     assert.match(entry.id, /^[a-z0-9-]+$/);
     assert.ok(ids.includes(entry.project), entry.id);
     assert.equal(entry.cwd, path.join(root, entry.project));
+    for (const key of ["cwd", "workspace"]) {
+      const descriptor = Object.getOwnPropertyDescriptor(entry, key);
+      assert.equal(descriptor?.enumerable, true);
+      assert.equal(typeof descriptor?.get, "function", `${entry.id}: live ${key}`);
+    }
     assert.ok(["primary", "control"].includes(entry.category), entry.id);
     assert.ok(["zero", "nonzero"].includes(entry.expectExit), entry.id);
     assert.ok(entry.command.length > 0 && entry.oracle.length > 0, entry.id);
@@ -427,22 +433,47 @@ test("setup timeout settles despite detached descendant holding stdout/stderr op
   });
 });
 
-test("controlled failures operate in synthetic directories, keep marked framework code, and restore exact bytes", async () => {
+test("controlled failures keep source bytes and foreign edits; marked owned images remain retained", async () => {
   await tree(async (root) => {
     for (const id of ids) for (const relative of ["src", "test", "tests"]) await mkdir(path.join(root, id, relative), { recursive: true });
     const original = Buffer.from([0, 255, ...Buffer.from("// original UTF-8 🦣\n")]);
     await writeFile(path.join(root, "itoa/src/lib.rs"), original);
+    for (const id of ids) await writeFile(path.join(root, id, "fixture.txt"), "UPSTREAM_FIXTURE\n");
     const entries = cases(root), failures = entries.filter((entry) => entry.controlledFailure);
     assert.deepEqual(failures.map((entry) => entry.project).sort(), ["boltons", "gjson", "itoa", "ms", "ufo"]);
     for (const entry of failures) {
       assert.equal(entry.category, "control");
       assert.equal(entry.expectExit, "nonzero");
+      const source = entry.cwd;
+      if (process.platform === "win32") {
+        await assert.rejects(entry.prepare(), { code: "CASE_WORKSPACE_UNSUPPORTED" });
+        await entry.restore();
+        assert.equal(entry.cwd, source);
+        assert.equal(await readFile(path.join(source, "fixture.txt"), "utf8"), "UPSTREAM_FIXTURE\n");
+        for (const { path: file } of entry.modifications) {
+          if (entry.project === "itoa") assert.deepEqual(await readFile(path.join(source, file)), original);
+          else await assert.rejects(readFile(path.join(source, file)), { code: "ENOENT" });
+        }
+        continue;
+      }
       await entry.prepare();
+      const owned = entry.cwd;
+      assert.notEqual(owned, source);
+      assert.deepEqual(entry.workspace, { source, cwd: owned, retained: true, sourceReadOnly: true });
+      assert.equal(await readFile(path.join(owned, "fixture.txt"), "utf8"), "UPSTREAM_FIXTURE\n");
+      assert.equal(JSON.parse(JSON.stringify(entry)).cwd, owned, "Serialized entry must read live cwd");
       await assert.rejects(entry.prepare(), /CASE_ALREADY_PREPARED/);
       for (const modification of entry.modifications) assert.ok((await readFile(path.join(entry.cwd, modification.path))).includes(Buffer.from("BENCH_EXPECTED_FAILURE")), entry.id);
+      await writeFile(path.join(source, "fixture.txt"), "SOURCE_FOREIGN_EDIT\n");
+      await writeFile(path.join(owned, "fixture.txt"), "RETAINED_FOREIGN_EDIT\n");
       await entry.restore();
       await entry.restore();
+      assert.equal(entry.cwd, source);
+      assert.equal(entry.workspace?.cwd, owned);
+      assert.equal(await readFile(path.join(source, "fixture.txt"), "utf8"), "SOURCE_FOREIGN_EDIT\n");
+      assert.equal(await readFile(path.join(owned, "fixture.txt"), "utf8"), "RETAINED_FOREIGN_EDIT\n");
       for (const modification of entry.modifications) {
+        assert.ok((await readFile(path.join(owned, modification.path))).includes(Buffer.from("BENCH_EXPECTED_FAILURE")), entry.id);
         const file = path.join(entry.cwd, modification.path);
         if (entry.project === "itoa") assert.deepEqual(await readFile(file), original);
         else await assert.rejects(readFile(file), { code: "ENOENT" });
@@ -499,29 +530,76 @@ test("clean verification checks real Git HEAD/status and license files, not meta
   });
 });
 
-test("mixed status stages only named file, exercises real Git, and restores worktree and index", async () => {
+test("mixed status stages only owned README; source index and retained foreign edits survive restore", async () => {
   await tree(async (root) => {
     const { project, run } = await localRepo(root), readme = await readFile(path.join(project.path, "README.md")), plan = await readFile(path.join(project.path, "PLAN.md"));
     const mixed = cases(root, run).find((entry) => entry.id === "git-status-mixed");
     assert.ok(mixed);
     assert.equal(mixed.category, "control");
+    const index = await readFile(path.join(project.path, ".git/index"));
     await mixed.restore();
-    await mixed.prepare();
-    try {
-      const staged = (await run("probe-staged", "git", ["diff", "--cached", "--name-only"], { cwd: project.path })).text;
-      assert.equal(staged, "README.md\n");
-      const status = (await run("probe-mixed", "git", ["status", "--porcelain=v1"], { cwd: project.path })).text;
-      assert.ok(status.includes("M  README.md\n") && status.includes(" M PLAN.md\n") && status.includes("?? bench-untracked.txt\n"), status);
-    } finally { await mixed.restore(); }
+    let owned: string | undefined;
+    if (process.platform === "win32") {
+      await assert.rejects(mixed.prepare(), { code: "CASE_WORKSPACE_UNSUPPORTED" });
+      await mixed.restore();
+    } else {
+      await mixed.prepare();
+      owned = mixed.cwd;
+      assert.notEqual(owned, project.path);
+      assert.deepEqual(await readFile(path.join(project.path, ".git/index")), index);
+      assert.deepEqual(await readFile(path.join(project.path, "README.md")), readme);
+      assert.deepEqual(await readFile(path.join(project.path, "PLAN.md")), plan);
+      await assert.rejects(mixed.prepare(), /CASE_ALREADY_PREPARED/);
+      try {
+        const staged = (await run("probe-staged", "git", ["diff", "--cached", "--name-only"], { cwd: mixed.cwd })).text;
+        assert.equal(staged, "README.md\n");
+        const status = (await run("probe-mixed", "git", ["status", "--porcelain=v1"], { cwd: mixed.cwd })).text;
+        assert.ok(status.includes("M  README.md\n") && status.includes(" M PLAN.md\n") && status.includes("?? bench-untracked.txt\n"), status);
+      } finally { await mixed.restore(); }
+      assert.equal((await run("probe-retained-stage", "git", ["diff", "--cached", "--name-only"], { cwd: owned })).text, "README.md\n");
+      assert.equal(await readFile(path.join(owned, "bench-untracked.txt"), "utf8"), "HuGR benchmark untracked control.\n");
+    }
+    assert.equal(mixed.cwd, project.path);
+    assert.deepEqual(await readFile(path.join(project.path, ".git/index")), index);
     assert.deepEqual(await readFile(path.join(project.path, "README.md")), readme);
     assert.deepEqual(await readFile(path.join(project.path, "PLAN.md")), plan);
-    assert.equal((await run("probe-restored", "git", ["status", "--porcelain=v1"], { cwd: project.path })).text, "");
+    assert.equal((await run("probe-restored", "git", ["--no-optional-locks", "status", "--porcelain=v1"], { cwd: project.path })).text, "");
     await writeFile(path.join(project.path, "README.md"), "UNRELATED_USER_CHANGE\n");
+    if (owned) await writeFile(path.join(owned, "PLAN.md"), "RETAINED_FOREIGN_CHANGE\n");
     await run("probe-user-stage", "git", ["add", "--", "README.md"], { cwd: project.path });
+    const userIndex = await readFile(path.join(project.path, ".git/index"));
     await assert.rejects(mixed.prepare(), /CASE_DIRTY_CHECKOUT: git-status-mixed/);
     await mixed.restore();
     assert.equal(await readFile(path.join(project.path, "README.md"), "utf8"), "UNRELATED_USER_CHANGE\n");
+    assert.deepEqual(await readFile(path.join(project.path, ".git/index")), userIndex);
+    if (owned) assert.equal(await readFile(path.join(owned, "PLAN.md"), "utf8"), "RETAINED_FOREIGN_CHANGE\n");
     assert.equal((await run("probe-user-index", "git", ["diff", "--cached", "--name-only"], { cwd: project.path })).text, "README.md\n");
+  });
+});
+
+test("mixed status failed owned staging resets cwd without source writes or unstaging", async () => {
+  await tree(async (root) => {
+    const { project, run } = await localRepo(root), index = await readFile(path.join(project.path, ".git/index"));
+    const failure = new Error("CONTROL_STAGE_FAILED");
+    const mixed = cases(root, async (name, file, args, options) => {
+      if (name === "prepare-git-status-mixed") {
+        assert.notEqual(options?.cwd, project.path);
+        await run(name, file, args, options);
+        throw failure;
+      }
+      assert.deepEqual(args, ["--no-optional-locks", "status", "--porcelain=v1", "--untracked-files=all"]);
+      return run(name, file, args, options);
+    }).find((entry) => entry.id === "git-status-mixed");
+    assert.ok(mixed);
+    await assert.rejects(mixed.prepare(), process.platform === "win32" ? { code: "CASE_WORKSPACE_UNSUPPORTED" } : (error) => error === failure);
+    await mixed.restore();
+    assert.equal(mixed.cwd, project.path);
+    assert.deepEqual(await readFile(path.join(project.path, ".git/index")), index);
+    assert.equal(await readFile(path.join(project.path, "README.md"), "utf8"), "UPSTREAM_README 🦣\n");
+    if (process.platform !== "win32") {
+      assert.ok(mixed.workspace?.cwd);
+      assert.equal((await run("probe-failed-stage", "git", ["diff", "--cached", "--name-only"], { cwd: mixed.workspace.cwd })).text, "README.md\n");
+    }
   });
 });
 
