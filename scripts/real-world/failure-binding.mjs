@@ -95,8 +95,11 @@ function failedFooter(text, start, oracle, expectedFailures) {
     /^ Test Files +([1-9]\d*) failed(?: \| ([1-9]\d*) passed)? \(([1-9]\d*)\)$/;
   const tests = oracle === "jest" ? /^Tests: +([1-9]\d*) failed(?:, ([1-9]\d*) passed)?, ([1-9]\d*) total$/ :
     /^ {6}Tests +([1-9]\d*) failed(?: \| ([1-9]\d*) passed)? \(([1-9]\d*)\)$/;
-  const index = unique(text, (line) => suites.test(line)), next = unique(text, (line) => tests.test(line));
-  return index >= start && next === index + 1 && coherentCount(text[index], suites) && coherentCount(text[next], tests) &&
+  // Closed native labels bind the first boundary, including unsupported count rows.
+  const suitePrefix = oracle === "jest" ? /^Test Suites:/ : /^ Test Files\b/;
+  const testPrefix = oracle === "jest" ? /^Tests:/ : /^ {6}Tests\b/;
+  const index = unique(text, (line) => suitePrefix.test(line)), next = unique(text, (line) => testPrefix.test(line));
+  return index === start && next === index + 1 && coherentCount(text[index], suites) && coherentCount(text[next], tests) &&
     (expectedFailures === undefined || Number(tests.exec(text[next])[1]) === expectedFailures);
 }
 function controlledAssertion(source, marker) {
@@ -132,7 +135,7 @@ function jestFailure(text, marker) {
   return pointer >= 3 && !!frame && controlledAssertion(frame[2], marker) &&
     body.slice(3, pointer).every(sourceRow) && !!location &&
     positionedCaret(body[pointer], body[pointer + 1], frame[2], location[3]) &&
-    at > pointer + 1 && body.slice(pointer + 2, at).every(sourceRow) && !!location &&
+    at > pointer + 1 && at === body.length - 1 && body.slice(pointer + 2, at).every(sourceRow) && !!location &&
     location[1] === file.exec(text[start])[1] && location[2] === frame[1] && failedFooter(text, suite.stop, "jest");
 }
 
@@ -143,14 +146,16 @@ function vitestSection(text, control) {
   if (!section || control <= start || control >= section.stop) return undefined;
   const count = Number(header.exec(text[start])[1]), identities = new Set();
   if (!Number.isSafeInteger(count)) return undefined;
-  let pending = false, content = false, records = 0;
-  for (const line of section.body) {
+  let pending = false, content = false, records = 0, ordinal;
+  for (const [offset, line] of section.body.entries()) {
     if (line === "") continue;
     const record = /^ FAIL +(\S+) > (.+)$/.exec(line);
     if (record) {
       const identity = JSON.stringify(record.slice(1));
       if (pending || identities.has(identity)) return undefined;
-      identities.add(identity); records++; pending = true; content = false; continue;
+      identities.add(identity); records++; pending = true; content = false;
+      if (start + 1 + offset === control) ordinal = records;
+      continue;
     }
     const trailer = /^⎯+\[([1-9]\d*)\/([1-9]\d*)\]⎯+$/.exec(line);
     if (trailer) {
@@ -160,7 +165,7 @@ function vitestSection(text, control) {
     if (!pending || /^(?: FAIL |⎯)/.test(line)) return undefined;
     content = true;
   }
-  return !pending && records === count ? { count, stop: section.stop } : undefined;
+  return !pending && records === count ? { count, ordinal, stop: section.stop } : undefined;
 }
 
 function vitestFailure(text, marker) {
@@ -176,8 +181,11 @@ function vitestFailure(text, marker) {
   const pointer = body.findIndex((line, index) => index >= 6 && /^ +[1-9]\d*\| /.test(line) &&
     /^ +([1-9]\d*)\| /.exec(line)?.[1] === location?.[2]);
   const frame = /^ +([1-9]\d*)\| (.*)$/.exec(body[pointer] ?? "");
+  const trailer = /^⎯+\[([1-9]\d*)\/([1-9]\d*)\]⎯+$/.exec(body.at(-1) ?? "");
   return !!location && location[1] === file.exec(text[start])[1] && pointer >= 6 && !!frame &&
     controlledAssertion(frame[2], marker) && body.slice(6, pointer).every((line) => /^ +[1-9]\d*\|(?: .*)?$/.test(line)) &&
     positionedCaret(body[pointer], body[pointer + 1], frame[2], location[3]) &&
+    body.slice(pointer + 2, -1).every((line) => /^ +[1-9]\d*\|(?: .*)?$/.test(line)) &&
+    !!trailer && Number(trailer[1]) === section.ordinal && Number(trailer[2]) === section.count &&
     failedFooter(text, section.stop, "vitest", section.count);
 }
