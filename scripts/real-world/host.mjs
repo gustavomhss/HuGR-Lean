@@ -202,6 +202,14 @@ export function verifyHostScenario(scenario, result, rows) {
   };
 }
 
+async function archiveStreams(directory, streams) {
+  // Raw files are byte authority. Legacy string-only mocks provide decoded text, not raw evidence.
+  for (const [name, file] of [["stdout", "host.stdout.jsonl"], ["stderr", "host.stderr.txt"]]) {
+    const content = Buffer.isBuffer(streams[`${name}Bytes`]) ? streams[`${name}Bytes`] : streams[name];
+    if (Buffer.isBuffer(content) || typeof content === "string") await writeFile(path.join(directory, file), content);
+  }
+}
+
 export async function runObservedScenario({ scenario, plugin, outputDir, setup, ...options }, execution) {
   const transport = execution?.runScenario ?? runScenario;
   const mode = execution === undefined ? "native" : "mock-plumbing";
@@ -218,8 +226,7 @@ export async function runObservedScenario({ scenario, plugin, outputDir, setup, 
     const result = await transport({ ...options, plugin: wrapper, pluginOptions: OPTIONS, command: scenario.command, toolTimeout: TOOL_TIMEOUT, timeout: 45000, keep: true,
       setup: async (context) => { isolatedRoot = context.root; if (setup) setupEvidence = await setup(context); started = performance.now(); setupMs = started - began; } });
     const elapsedMs = performance.now() - started;
-    await writeFile(path.join(directory, "host.stdout.jsonl"), result.stdout);
-    await writeFile(path.join(directory, "host.stderr.txt"), result.stderr);
+    await archiveStreams(directory, result);
     await json(path.join(directory, "host-result.json"), result);
     const rawRows = await readFile(sidecar, "utf8").catch((error) => { throw Object.assign(new Error(`REAL_HOST_OBSERVER_SIDECAR_MISSING: ${error.message}`), { code: "REAL_HOST_OBSERVER_SIDECAR_MISSING" }); });
     requireFact(rawRows.trim().length > 0, "REAL_HOST_OBSERVER_MISSING", sidecar);
@@ -252,8 +259,7 @@ export async function runObservedScenario({ scenario, plugin, outputDir, setup, 
     const diagnostics = error.diagnostics;
     if (diagnostics) {
       isolatedRoot = diagnostics.root ?? isolatedRoot;
-      if (typeof diagnostics.stdout === "string") await writeFile(path.join(directory, "host.stdout.jsonl"), diagnostics.stdout);
-      if (typeof diagnostics.stderr === "string") await writeFile(path.join(directory, "host.stderr.txt"), diagnostics.stderr);
+      await archiveStreams(directory, diagnostics);
       await json(path.join(directory, "host-result.json"), { status: "failed", ...diagnostics });
     }
     if (!error.code?.startsWith("REAL_HOST_")) {

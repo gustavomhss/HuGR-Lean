@@ -45,20 +45,22 @@ export async function runProcess(binary, args, options = {}) {
   const { timeout = 45000, ...spawnOptions } = options;
   return await new Promise((resolve, reject) => {
     const child = spawn(binary, args, { ...spawnOptions, stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32" });
-    let stdout = "";
-    let stderr = "";
+    const stdoutChunks = [], stderrChunks = [];
     let exitCode = null, exitSignal = null;
     let settled = false;
-    const settle = (error, result) => {
+    const settle = (error, result, timedOut = false) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      if (error) reject(Object.assign(error, { diagnostics: { code: exitCode, signal: exitSignal, stdout, stderr } }));
-      else resolve(result);
+      const stdoutBytes = Buffer.concat(stdoutChunks), stderrBytes = Buffer.concat(stderrChunks);
+      const streams = { stdoutBytes, stderrBytes, stdout: stdoutBytes.toString("utf8"), stderr: stderrBytes.toString("utf8") };
+      if (timedOut) error.message += `\n${streams.stdout}\n${streams.stderr}`;
+      if (error) reject(Object.assign(error, { diagnostics: { code: exitCode, signal: exitSignal, ...streams } }));
+      else resolve({ ...result, ...streams });
     };
     const timer = setTimeout(() => {
       // A detached descendant can retain both pipes after the main child exits. Never await close here.
-      settle(new Error(`OpenCode timeout after ${timeout} ms\n${stdout}\n${stderr}`));
+      settle(new Error(`OpenCode timeout after ${timeout} ms`), undefined, true);
       if (child.pid && process.platform !== "win32") {
         try { process.kill(-child.pid, "SIGKILL"); } catch { /* Best effort: the group may have exited. */ }
       }
@@ -67,11 +69,11 @@ export async function runProcess(binary, args, options = {}) {
       child.stderr.destroy();
       child.unref();
     }, timeout);
-    child.stdout.on("data", (data) => { stdout += data; });
-    child.stderr.on("data", (data) => { stderr += data; });
+    child.stdout.on("data", (data) => { stdoutChunks.push(Buffer.from(data)); });
+    child.stderr.on("data", (data) => { stderrChunks.push(Buffer.from(data)); });
     child.once("exit", (code, signal) => { exitCode = code; exitSignal = signal; });
     child.once("error", (error) => settle(new Error(`Cannot execute ${binary}: ${error.message}`, { cause: error })));
-    child.once("close", (code, signal) => settle(undefined, { code, signal, stdout, stderr }));
+    child.once("close", (code, signal) => settle(undefined, { code, signal }));
   });
 }
 
