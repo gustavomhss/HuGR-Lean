@@ -9,10 +9,37 @@ function bounded(text, start, end) {
   const stop = text.findIndex((line, index) => index > start && end(line));
   return stop > start ? { body: text.slice(start + 1, stop), stop } : undefined;
 }
-export function pytestSummary(text) {
-  const body = text.replace(/^=+\s*|\s*=+$/g, "").trim(), split = body.lastIndexOf(" in ");
-  return split > 0 && /^\d+(?:\.\d+)?s$/.test(body.slice(split + 4)) && body.slice(0, split).split(", ").every((count) =>
-    /^\d+ (?:passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)$/.test(count));
+const pytestBody = (text) => text.replace(/^=+\s*|\s*=+$/g, "").trim();
+function parsedPytestSummary(text) {
+  const body = pytestBody(text), split = body.lastIndexOf(" in "), duration = body.slice(split + 4);
+  if (split <= 0 || !/^\d+(?:\.\d+)?s$/.test(duration) || !Number.isFinite(Number(duration.slice(0, -1)))) return undefined;
+  const counts = new Map();
+  for (const token of body.slice(0, split).split(", ")) {
+    const count = /^(0|[1-9][0-9]*) (passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)$/.exec(token);
+    if (!count || !Number.isSafeInteger(Number(count[1]))) return undefined;
+    const category = count[2].replace(/^(error|warning)s$/, "$1");
+    if (counts.has(category)) return undefined;
+    counts.set(category, Number(count[1]));
+  }
+  return counts;
+}
+export function pytestSummary(text) { return parsedPytestSummary(text) !== undefined; }
+
+function pytestFooter(text, short) {
+  let final = text.length - 1;
+  while (text[final] === "") final--;
+  const counts = parsedPytestSummary(text[final] ?? ""), records = text.slice(short + 1, final), nodeids = new Set();
+  if (!counts || !(counts.get("failed") > 0) || (counts.get("error") ?? 0) > 0 || !records.length) return false;
+  // Closed summary-shaped rows include malformed counts/durations/outcomes;
+  // an earlier competing row cannot borrow the final valid footer.
+  const summaryLike = (line) => /^(?:\S+ (?:passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)\b|[+-]?\d\S* .+ in )/.test(pytestBody(line));
+  if (text.some((line, index) => index !== final && summaryLike(line))) return false;
+  for (const line of records) {
+    const record = /^FAILED (\S+::\S+) - (.+)$/.exec(line);
+    if (!record || nodeids.has(record[1])) return false;
+    nodeids.add(record[1]);
+  }
+  return counts.get("failed") === nodeids.size;
 }
 
 export function nativeFailureBinding(oracle, text, marker, code) {
@@ -51,7 +78,7 @@ export function nativeFailureBinding(oracle, text, marker, code) {
     return error >= 2 && body[error - 2].trim() === "def test_bench_expected_failure():" &&
       assertion?.[2] === marker && location && tail && failed.length === 1 &&
       !!identity && ["As...", `AssertionError: ${marker}`].includes(identity[1]) &&
-      text.slice(short + 1).some((line) => pytestSummary(line) && /\b[1-9][0-9]* failed\b/.test(line));
+      pytestFooter(text, short);
   }
   if (oracle === "jest") return jestFailure(text, marker);
   if (oracle === "vitest") return vitestFailure(text, marker);
