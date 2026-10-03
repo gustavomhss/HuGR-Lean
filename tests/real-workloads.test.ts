@@ -3,10 +3,9 @@ import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { once } from "node:events";
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import { createServer, type AddressInfo, type Socket } from "node:net";
+import { connect, createServer, type AddressInfo, type Socket } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { createInterface } from "node:readline";
 import { test } from "node:test";
 
 const workloads = await import(new URL("../scripts/real-world/workloads.mjs", import.meta.url).href);
@@ -188,38 +187,93 @@ async function fixturePid(file: string): Promise<number> {
   return pid;
 }
 
+function pipeLine(socket: Socket): Promise<{ line: string; chunks: number }> {
+  return new Promise((resolve, reject) => {
+    let pending = "", chunks = 0;
+    const finish = (error?: Error, line?: string) => {
+      clearTimeout(timer); socket.off("data", data); socket.off("end", ended); socket.off("close", ended); socket.off("error", failed);
+      if (error) reject(error); else resolve({ line: line!, chunks });
+    };
+    const data = (chunk: Buffer) => { chunks++; pending += chunk.toString(); const end = pending.indexOf("\n"); if (end >= 0) finish(undefined, pending.slice(0, end)); };
+    const ended = () => finish(new Error("PIPE_OWNER_REPLY_CLOSED")), failed = (error: Error) => finish(error);
+    const timer = setTimeout(() => finish(new Error("PIPE_OWNER_REPLY_TIMEOUT")), 1000);
+    socket.on("data", data); socket.once("end", ended); socket.once("close", ended); socket.once("error", failed);
+    if (socket.destroyed || socket.readableEnded) ended();
+  });
+}
+
+function throwPipeFailures(failures: unknown[]) {
+  if (failures.length === 1) throw failures[0];
+  if (failures.length) throw new AggregateError(failures, "PIPE_FIXTURE_FAILURES");
+}
+
+async function collectPipeFailures(action: () => Promise<unknown>, cleanup: (() => Promise<unknown>)[]) {
+  const failures: unknown[] = [];
+  try { await action(); } catch (error) { failures.push(error); }
+  finally { for (const step of cleanup) try { await step(); } catch (error) { if (!failures.includes(error)) failures.push(error); } }
+  throwPipeFailures(failures);
+}
+
 async function pipeOwnership() {
-  const token = randomUUID(), server = createServer(), sockets = new Set<Socket>(), errors: Error[] = [];
-  let peer: Socket | undefined, stopped = false;
+  const token = randomUUID(), server = createServer({ allowHalfOpen: true }), sockets = new Set<Socket>(), errors: Error[] = [];
+  const authTimers = new Map<Socket, ReturnType<typeof setTimeout>>();
+  let peer: Socket | undefined, stopped: Promise<void> | undefined;
   server.on("error", error => errors.push(error));
   server.on("connection", socket => {
-    sockets.add(socket); socket.once("close", () => sockets.delete(socket));
+    sockets.add(socket);
+    socket.once("close", () => { sockets.delete(socket); clearTimeout(authTimers.get(socket)); authTimers.delete(socket); });
     socket.on("error", error => errors.push(error));
-    const lines = createInterface({ input: socket });
-    lines.once("line", line => {
+    authTimers.set(socket, setTimeout(() => { errors.push(new Error("PIPE_OWNER_AUTH_TIMEOUT")); socket.destroy(); }, 1000));
+    let pending = "";
+    const authenticate = (chunk: Buffer) => {
+      pending += chunk.toString(); const end = pending.indexOf("\n"); if (end < 0) return;
+      socket.off("data", authenticate); clearTimeout(authTimers.get(socket)); authTimers.delete(socket);
+      const line = pending.slice(0, end);
       if (line !== token || peer) { errors.push(new Error("PIPE_OWNER_AUTH_FAILED")); socket.destroy(); }
       else { peer = socket; server.emit("owned"); }
-      lines.close(); socket.resume();
-    });
+    };
+    socket.on("data", authenticate);
+    if (stopped) { errors.push(new Error("PIPE_OWNER_UNAUTHENTICATED")); socket.destroy(); }
   });
   server.listen(0, "127.0.0.1"); await once(server, "listening");
+  const port = (server.address() as AddressInfo).port;
   const source = `setTimeout(()=>process.exit(90),12000).unref();
-const owner=require('node:net').connect(${(server.address() as AddressInfo).port},'127.0.0.1');
+const owner=require('node:net').connect(${port},'127.0.0.1');
 owner.on('end',()=>process.exit(0));owner.on('error',()=>process.exit(91));
 owner.on('data',()=>owner.write('alive\\n'));owner.write(${JSON.stringify(token + "\n")});`;
-  return { source, async probe() {
+  return { source, port, token, async accepted() {
+    if (!sockets.size) await once(server, "connection", { signal: AbortSignal.timeout(1000) });
+  }, async probe() {
     if (!peer) await once(server, "owned", { signal: AbortSignal.timeout(6000) });
     assert.ok(peer && !peer.destroyed && !peer.writableEnded, "PIPE_OWNER_NOT_LIVE");
-    const reply = once(peer, "data", { signal: AbortSignal.timeout(1000) });
+    const reply = pipeLine(peer);
     peer.write("probe\n");
-    assert.equal((await reply)[0].toString(), "alive\n", "PIPE_OWNER_REPLY_MISSING");
-  }, async stop() {
-    if (stopped) return;
-    stopped = true;
-    const closed = once(server, "close");
-    for (const socket of sockets) if (!socket.destroyed && !socket.writableEnded) socket.end();
-    server.close(); await closed;
-    assert.deepEqual(errors, [], "PIPE_OWNERSHIP_SOCKET_ERRORS");
+    const result = await reply;
+    assert.equal(result.line, "alive", "PIPE_OWNER_REPLY_MISSING"); return result.chunks;
+  }, stop() {
+    return stopped ??= (async () => {
+      let grace: ReturnType<typeof setTimeout> | undefined, deadline: ReturnType<typeof setTimeout> | undefined;
+      try {
+        await new Promise<void>(resolve => {
+          server.close(() => resolve());
+          for (const socket of sockets) {
+            if (socket.destroyed) continue;
+            if (socket !== peer) { errors.push(new Error("PIPE_OWNER_UNAUTHENTICATED")); socket.destroy(); }
+            else if (!socket.destroyed && !socket.writableEnded) socket.end();
+          }
+          grace = setTimeout(() => {
+            if (sockets.size) errors.push(new Error("PIPE_OWNER_STOP_TIMEOUT"));
+            for (const socket of sockets) socket.destroy();
+          }, 250);
+          deadline = setTimeout(() => { errors.push(new Error("PIPE_OWNER_SERVER_CLOSE_TIMEOUT")); resolve(); }, 1000);
+        });
+      } finally {
+        clearTimeout(grace); clearTimeout(deadline);
+        for (const timer of authTimers.values()) clearTimeout(timer);
+        authTimers.clear(); for (const socket of sockets) socket.destroy();
+      }
+      throwPipeFailures(errors);
+    })();
   } };
 }
 
@@ -227,23 +281,14 @@ async function ownedPipeTree(action: (root: string, owner: Awaited<ReturnType<ty
   await tree(async root => {
     const owner = await pipeOwnership(), outside = await pipeOwnership(), kill = process.kill;
     const control = spawn(process.execPath, ["-e", outside.source], { stdio: "ignore" });
-    const exited = once(control, "exit"), failures: unknown[] = [];
-    const retain = async (step: () => Promise<unknown>) => { try { await step(); } catch (error) { failures.push(error); } };
+    const exited = once(control, "exit");
     try {
       process.kill = () => { throw new Error("PIPE_FIXTURE_NUMERIC_TEARDOWN_FORBIDDEN"); };
-      await outside.probe();
-      await action(root, owner);
-    } catch (error) { failures.push(error); }
-    finally {
-      try {
-        await retain(() => owner.stop());
-        await retain(() => outside.probe()); // Unrelated live peer must survive fixture cleanup.
-        await retain(() => outside.stop());
-        await retain(async () => assert.deepEqual(await exited, [0, null], "UNRELATED_CONTROL_EXIT_FORGED"));
-      } finally { process.kill = kill; }
-    }
-    if (failures.length === 1) throw failures[0];
-    if (failures.length) throw new AggregateError(failures, "PIPE_FIXTURE_FAILURES");
+      await collectPipeFailures(async () => { await outside.probe(); await action(root, owner); }, [
+        () => owner.stop(), () => outside.probe(), // Unrelated live peer must survive fixture cleanup.
+        () => outside.stop(), async () => assert.deepEqual(await exited, [0, null], "UNRELATED_CONTROL_EXIT_FORGED"),
+      ]);
+    } finally { process.kill = kill; }
   });
 }
 
@@ -261,13 +306,78 @@ test("setup accepts non-detached descendants and retains both output pipes", asy
   });
 });
 
+test("pipe ownership frames native fragmented replies and names premature close or missing reply", { timeout: 10000 }, async () => {
+  for (const mode of ["normal", "fragmented", "closed", "silent"]) {
+    const owner = await pipeOwnership(), socket = connect({ port: owner.port, host: "127.0.0.1" });
+    let fragment: ReturnType<typeof setTimeout> | undefined;
+    try {
+      await once(socket, "connect"); socket.setNoDelay(); socket.write(owner.token + "\n");
+      socket.once("data", () => {
+        if (mode === "closed") socket.end("ali");
+        else if (mode === "normal") socket.write("alive\n");
+        else if (mode === "fragmented") { socket.write("al"); fragment = setTimeout(() => socket.write("ive\n"), 25); }
+      });
+      if (mode === "closed" || mode === "silent") await assert.rejects(owner.probe(), new RegExp(mode === "closed" ? "PIPE_OWNER_REPLY_CLOSED" : "PIPE_OWNER_REPLY_TIMEOUT"));
+      else assert.ok(await owner.probe() >= (mode === "fragmented" ? 2 : 1), "FRAGMENTED_REPLY_CONTROL_NOT_EXERCISED");
+    } finally { clearTimeout(fragment); socket.destroy(); await owner.stop(); }
+  }
+});
+
+test("pipe ownership bounds half-open and unauthenticated native peers, caches rejection, restores global", { timeout: 15000 }, async t => {
+  const kill = process.kill;
+  for (const mode of ["half-open", "unauthenticated", "auth-timeout", "invalid"] as const) {
+    let socket: Socket | undefined, fallback: ReturnType<typeof setTimeout> | undefined;
+    let closed: Promise<void> | undefined;
+    const peerErrors: NodeJS.ErrnoException[] = [];
+    const original = new Error("PIPE_ACTION_FAILURE_CONTROL");
+    const expected = { "half-open": "PIPE_OWNER_STOP_TIMEOUT", unauthenticated: "PIPE_OWNER_UNAUTHENTICATED", "auth-timeout": "PIPE_OWNER_AUTH_TIMEOUT", invalid: "PIPE_OWNER_AUTH_FAILED" }[mode]!;
+    try {
+      await assert.rejects(ownedPipeTree(async (_root, owner) => {
+        socket = connect({ port: owner.port, host: "127.0.0.1", allowHalfOpen: true });
+        socket.on("error", error => peerErrors.push(error));
+        closed = new Promise(resolve => socket!.once("close", () => resolve()));
+        fallback = setTimeout(() => socket?.destroy(), 2000); // Native peer also bounds broken cleanup mutants.
+        await once(socket, "connect"); socket.resume(); await owner.accepted();
+        if (mode === "half-open") {
+          socket.on("data", () => socket!.write("alive\n")); socket.write(owner.token + "\n"); await owner.probe();
+        } else if (mode !== "unauthenticated") {
+          const ended = new Promise<void>(resolve => { socket!.once("end", resolve); socket!.once("close", () => resolve()); });
+          if (mode === "invalid") socket.write("wrong-token\n");
+          await ended; socket.destroy(); await closed;
+        }
+        const stopped = owner.stop(); assert.strictEqual(owner.stop(), stopped, "PIPE_STOP_SETTLEMENT_NOT_CACHED");
+        let failure: unknown;
+        await assert.rejects(stopped, (error: Error) => { assert.equal(error.message, expected, "PIPE_CLOSE_DID_NOT_SETTLE_AS_EXPECTED"); failure = error; return true; });
+        await assert.rejects(owner.stop(), error => error === failure);
+        throw original;
+      }), (error: AggregateError) => {
+        assert.ok(error instanceof AggregateError, `${mode}: ${error.stack}`); assert.strictEqual(error.errors[0], original);
+        assert.equal(error.errors[1].message, expected); return true;
+      });
+    } finally {
+      clearTimeout(fallback); socket?.destroy(); await closed;
+      assert.strictEqual(process.kill, kill, "PIPE_TEARDOWN_GLOBAL_NOT_RESTORED");
+      for (const error of peerErrors) { assert.equal(error.code, "ECONNRESET", `Unexpected ${mode} peer error`); t.diagnostic(`${mode} forced-close peer: ${error.message}`); }
+    }
+  }
+});
+
+test("pipe teardown retains action and stop failures and awaits rejected running settlement", async () => {
+  const original = new Error("ACTION_CONTROL"), stop = new Error("STOP_CONTROL"), running = new Error("RUNNING_CONTROL");
+  let settled = false;
+  await assert.rejects(collectPipeFailures(async () => { throw original; }, [
+    async () => { throw stop; }, async () => { await new Promise(resolve => setImmediate(resolve)); settled = true; throw running; },
+  ]), (error: AggregateError) => { assert.deepEqual(error.errors, [original, stop, running]); return true; });
+  assert.equal(settled, true, "PIPE_RUNNING_SETTLEMENT_SKIPPED");
+});
+
 test("setup timeout settles despite detached descendant holding stdout/stderr open", async () => {
   await ownedPipeTree(async (root, owner) => {
     const pidFile = path.join(root, "owned-descendant.json"), run = setup.setupRunner(root, setup.isolatedEnv(root));
     const running = run("detached-pipe-failure", process.execPath, ["-e", pipeFixture, pidFile, "detached", owner.source], { timeout: 3000 })
       .then((result: any) => ({ result, error: undefined }), (error: any) => ({ result: undefined, error }));
     let watchdog: ReturnType<typeof setTimeout> | undefined;
-    try {
+    await collectPipeFailures(async () => {
       const outcome = await Promise.race([running, new Promise<never>((_, reject) => {
         watchdog = setTimeout(() => reject(new Error("SETUP_RUNNER_DEADLINE_MISSED: detached pipes held close open")), 9000);
       })]);
@@ -291,11 +401,7 @@ test("setup timeout settles despite detached descendant holding stdout/stderr op
       assert.equal(persisted.signal, null);
       await fixturePid(pidFile);
       await owner.probe(); // Live authenticated descendant still holds its pipes.
-    } finally {
-      clearTimeout(watchdog);
-      await owner.stop();
-      await running; // Mutation cleanup also releases the old close-only implementation.
-    }
+    }, [async () => { clearTimeout(watchdog); await owner.stop(); }, async () => { await running; }]);
   });
 });
 
