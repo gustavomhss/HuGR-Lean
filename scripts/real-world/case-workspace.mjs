@@ -1,10 +1,8 @@
 import { execFile } from "node:child_process";
 import { realpath } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-
 const helper = fileURLToPath(new URL("./case-workspace.py", import.meta.url));
 const fail = (code, message = code, details = {}) => Object.assign(new Error(message), { code, ...details });
-
 export function caseWorkspace(projectPath, changes) {
   let cwd = projectPath, workspace, attempted = false;
   return {
@@ -23,8 +21,9 @@ export function caseWorkspace(projectPath, changes) {
         path: c.path, append: c.append === true, bytes: Buffer.from(c.text, "utf8").toString("base64"),
       })) });
       const { error, stdout, stderr } = await new Promise((resolve) => {
-        const child = execFile("python3", ["-B", helper], {
-          timeout: 120_000, maxBuffer: 1024 * 1024, encoding: "buffer",
+        const env = Object.fromEntries(["PATH", "SystemRoot", "WINDIR"].filter((key) => process.env[key] !== undefined).map((key) => [key, process.env[key]]));
+        const child = execFile("python3", ["-I", "-S", "-B", helper], {
+          timeout: 120_000, maxBuffer: 1024 * 1024, encoding: "buffer", env,
         }, (error, stdout, stderr) => resolve({ error, stdout, stderr }));
         child.stdin.on("error", () => {}); // execFile's result retains process failure and both pipes.
         child.stdin.end(input);

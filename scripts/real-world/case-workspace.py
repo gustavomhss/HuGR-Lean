@@ -1,26 +1,13 @@
 """Read-only source cloning; all child syscalls are relative to pinned directories."""
-import base64
-import contextlib
-import errno
-import json
-import os
-import secrets
-import stat
-import sys
-
-
+import base64, json
+import contextlib, errno, secrets
+import os, shutil, stat, sys
 def reject(name, detail=""):
     raise ValueError(name + (": " + detail if detail else ""))
-
-
 def identity(s):
     return s.st_dev, s.st_ino, stat.S_IFMT(s.st_mode)
-
-
 def version(s):
     return identity(s), s.st_mode, s.st_nlink, s.st_size, s.st_mtime_ns, s.st_ctime_ns
-
-
 def build(request):
     workspace = None
     try:
@@ -42,18 +29,20 @@ def build(request):
             changes[p] = (r["append"], base64.b64decode(r["bytes"], validate=True))
         with contextlib.ExitStack() as stack:
             directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
-            def opened(name, flags, parent=None, mode=0o600):
+            def opened(name, flags, parent=None, mode=0o600, owner=stack):
                 fd = os.open(name, flags, mode, dir_fd=parent)
-                stack.callback(os.close, fd)
+                owner.callback(os.close, fd)
                 return fd
             def entry(parent, name):
                 return os.stat(name, dir_fd=parent, follow_symlinks=False)
+            def check_source(parent, name, expected, fd=None):
+                if version(os.fstat(fd) if fd is not None else entry(parent, name)) != version(expected):
+                    reject("CASE_SOURCE_CHANGED", name)
             parent_path, source_name = os.path.split(source.rstrip("/"))
             parent = opened(parent_path or "/", directory_flags)
             before = entry(parent, source_name)
             src = opened(source_name, directory_flags, parent)
-            if version(before) != version(os.fstat(src)):
-                reject("CASE_SOURCE_CHANGED", source)
+            check_source(parent, source_name, before, src)
             name = ".hugr-case-" + secrets.token_hex(16)
             os.mkdir(name, 0o700, dir_fd=parent)
             workspace = dict(source=source, cwd=os.path.join(parent_path, name), retained=True, sourceReadOnly=True)
@@ -62,28 +51,21 @@ def build(request):
             dst = opened(name, directory_flags, parent)
             if identity(root_stat) != identity(os.fstat(dst)):
                 reject("CASE_DESTINATION_CHANGED", name)
-            sources, destinations = [(parent, source_name, before)], [(parent, name, os.fstat(dst))]
-            dirs = {"": (src, dst)}
-            def check_source(parent, name, expected):
-                if version(entry(parent, name)) != version(expected):
-                    reject("CASE_SOURCE_CHANGED", name)
-            def leaf(parent, name, data, mode, reader=None):
+            sources, destinations = {"": before}, {"": os.fstat(dst)}
+            def leaf(parent, name, relative, data, mode, reader=None):
                 flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
                 fd = os.open(name, flags, 0o600, dir_fd=parent)
                 try:
                     with os.fdopen(fd, "wb", closefd=False) as output:
                         if reader is not None:
-                            while True:
-                                chunk = os.read(reader, 1024 * 1024)
-                                if not chunk:
-                                    break
-                                output.write(chunk)
+                            with os.fdopen(os.dup(reader), "rb") as input:
+                                shutil.copyfileobj(input, output, 1024 * 1024)
                         output.write(data)
                     os.fchmod(fd, stat.S_IMODE(mode))
                     pinned = os.fstat(fd)
                     if identity(entry(parent, name)) != identity(pinned):
                         reject("CASE_DESTINATION_CHANGED", name)
-                    destinations.append((parent, name, pinned))
+                    destinations[relative] = pinned
                 finally:
                     os.close(fd)
             def clone(s, d, prefix):
@@ -91,64 +73,75 @@ def build(request):
                 for n in os.listdir(s):
                     p = prefix + n
                     old = entry(s, n)
-                    sources.append((s, n, old))
+                    sources[p] = old
                     recipe = changes.pop(p, None)
                     if recipe and not recipe[0]:
                         reject("CASE_WOULD_OVERWRITE", p)
                     if recipe and (not stat.S_ISREG(old.st_mode) or old.st_nlink != 1):
                         reject("CASE_APPEND_NOT_SINGLE_REGULAR", p)
                     if stat.S_ISDIR(old.st_mode):
-                        child = opened(n, directory_flags, s)
-                        if version(old) != version(os.fstat(child)):
-                            reject("CASE_SOURCE_CHANGED", p)
-                        os.mkdir(n, 0o700, dir_fd=d)
-                        new = entry(d, n)
-                        owned = opened(n, directory_flags, d)
-                        if identity(new) != identity(os.fstat(owned)):
-                            reject("CASE_DESTINATION_CHANGED", p)
-                        destinations.append((d, n, os.fstat(owned)))
-                        dirs[p] = (child, owned)
-                        clone(child, owned, p + "/")
+                        with contextlib.ExitStack() as scope:
+                            child = opened(n, directory_flags, s, owner=scope)
+                            check_source(s, n, old, child)
+                            os.mkdir(n, 0o700, dir_fd=d)
+                            new = entry(d, n)
+                            owned = opened(n, directory_flags, d, owner=scope)
+                            if identity(new) != identity(os.fstat(owned)):
+                                reject("CASE_DESTINATION_CHANGED", p)
+                            destinations[p] = os.fstat(owned)
+                            clone(child, owned, p + "/")
                     elif stat.S_ISREG(old.st_mode):
                         fd = os.open(n, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=s)
                         try:
-                            if version(old) != version(os.fstat(fd)):
-                                reject("CASE_SOURCE_CHANGED", p)
-                            leaf(d, n, recipe[1] if recipe else b"", old.st_mode, fd)
-                            if version(old) != version(os.fstat(fd)):
-                                reject("CASE_SOURCE_CHANGED", p)
+                            check_source(s, n, old, fd)
+                            leaf(d, n, p, recipe[1] if recipe else b"", old.st_mode, fd)
+                            check_source(s, n, old, fd)
                         finally:
                             os.close(fd)
                     elif stat.S_ISLNK(old.st_mode):
                         os.symlink(os.readlink(n, dir_fd=s), n, dir_fd=d)
-                        destinations.append((d, n, entry(d, n)))
+                        destinations[p] = entry(d, n)
                     else:
                         reject("CASE_UNSUPPORTED_ENTRY", p)
                     check_source(s, n, old)
-                if version(initial) != version(os.fstat(s)):
-                    reject("CASE_SOURCE_CHANGED", prefix)
+                for p in list(changes):
+                    parent_name, _, n = p.rpartition("/")
+                    if parent_name != prefix.rstrip("/"):
+                        continue
+                    append, data = changes.pop(p)
+                    try:
+                        entry(s, n)
+                    except FileNotFoundError:
+                        if append:
+                            reject("CASE_APPEND_MISSING", p)
+                    else:
+                        reject("CASE_WOULD_OVERWRITE", p)
+                    leaf(d, n, p, data, 0o644)
+                check_source(None, prefix, initial, s)
+                if prefix:
+                    os.fchmod(d, stat.S_IMODE(initial.st_mode))
             clone(src, dst, "")
-            for p, (append, data) in changes.items():
-                parent_name, _, n = p.rpartition("/")
-                if parent_name not in dirs:
-                    reject("CASE_PARENT_NOT_DIRECTORY", p)
-                s, d = dirs[parent_name]
-                try:
-                    entry(s, n)
-                except FileNotFoundError:
-                    if append:
-                        reject("CASE_APPEND_MISSING", p)
-                else:
-                    reject("CASE_WOULD_OVERWRITE", p)
-                leaf(d, n, data, 0o644)
-            for p, (_, d) in dirs.items():
-                if p:
-                    os.fchmod(d, stat.S_IMODE(os.fstat(dirs[p][0]).st_mode))
-            for p, n, old in sources:
-                check_source(p, n, old)
-            for p, n, pinned in destinations:
-                if identity(entry(p, n)) != identity(pinned):
-                    reject("CASE_DESTINATION_CHANGED", n)
+            if changes:
+                reject("CASE_PARENT_NOT_DIRECTORY", next(iter(changes)))
+            def verify(root, records, measure, error):
+                for relative, expected in records.items():
+                    fd, parts = root, relative.split("/") if relative else []
+                    with contextlib.ExitStack() as scope:
+                        for i, n in enumerate(parts[:-1]):
+                            pinned = records["/".join(parts[:i + 1])]
+                            if identity(entry(fd, n)) != identity(pinned):
+                                reject(error, relative)
+                            fd = opened(n, directory_flags, fd, owner=scope)
+                            if identity(os.fstat(fd)) != identity(pinned):
+                                reject(error, relative)
+                        actual = entry(fd, parts[-1]) if parts else os.fstat(root)
+                        if measure(actual) != measure(expected):
+                            reject(error, relative)
+            verify(src, sources, version, "CASE_SOURCE_CHANGED")
+            verify(dst, destinations, identity, "CASE_DESTINATION_CHANGED")
+            check_source(parent, source_name, before)
+            if identity(entry(parent, name)) != identity(os.fstat(dst)):
+                reject("CASE_DESTINATION_CHANGED", name)
             # Read-only publication check: cwd must still name the pinned parent.
             if identity(os.stat(parent_path or "/", follow_symlinks=False)) != identity(os.fstat(parent)):
                 reject("CASE_DESTINATION_CHANGED", parent_path)
@@ -161,8 +154,6 @@ def build(request):
         else:
             message = "CASE_FILESYSTEM: " + message if isinstance(error, OSError) else "CASE_INVALID_INPUT: " + message
         return dict(ok=False, workspace=workspace, error=dict(code=code, message=message))
-
-
 if __name__ == "__main__":
     try:
         result = build(json.load(sys.stdin))
