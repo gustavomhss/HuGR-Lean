@@ -202,9 +202,14 @@ function pipeLine(socket: Socket): Promise<{ line: string; chunks: number }> {
   });
 }
 
+function pipeFailureDetails(failure: unknown): string {
+  const detail = failure instanceof Error ? `${failure.message}\n${failure.stack ?? ""}` : String(failure);
+  return failure instanceof AggregateError ? [detail, ...failure.errors.map(pipeFailureDetails)].join("\n") : detail;
+}
+
 function throwPipeFailures(failures: unknown[]) {
   if (failures.length === 1) throw failures[0];
-  if (failures.length) throw new AggregateError(failures, "PIPE_FIXTURE_FAILURES");
+  if (failures.length) throw new AggregateError(failures, "PIPE_FIXTURE_FAILURES\n" + failures.map(pipeFailureDetails).join("\n"));
 }
 
 async function collectPipeFailures(action: () => Promise<unknown>, cleanup: (() => Promise<unknown>)[]) {
@@ -365,11 +370,19 @@ test("pipe ownership bounds half-open and unauthenticated native peers, caches r
 });
 
 test("pipe teardown retains action and stop failures and awaits rejected running settlement", async () => {
-  const original = new Error("ACTION_CONTROL"), stop = new Error("STOP_CONTROL"), running = new Error("RUNNING_CONTROL");
+  const original = new Error("ACTION_CONTROL"), stop = new Error("STOP_CONTROL"), nested = new Error("NESTED_RUNNING_CONTROL");
+  const running = new AggregateError([nested], "RUNNING_CONTROL");
   let settled = false;
   await assert.rejects(collectPipeFailures(async () => { throw original; }, [
     async () => { throw stop; }, async () => { await new Promise(resolve => setImmediate(resolve)); settled = true; throw running; },
-  ]), (error: AggregateError) => { assert.deepEqual(error.errors, [original, stop, running]); return true; });
+  ]), (error: AggregateError) => {
+    assert.deepEqual(error.errors, [original, stop, running]);
+    for (const failure of [original, stop, running, nested]) {
+      assert.ok(error.message.includes(failure.message), "PIPE_FAILURE_MESSAGE_HIDDEN");
+      assert.ok(error.message.includes(failure.stack!), "PIPE_FAILURE_STACK_HIDDEN");
+    }
+    return true;
+  });
   assert.equal(settled, true, "PIPE_RUNNING_SETTLEMENT_SKIPPED");
 });
 
