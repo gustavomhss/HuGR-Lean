@@ -141,6 +141,25 @@ test("analysis rejects forged report/result stream hashes against retained captu
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test("analysis accepts native-only artifact metadata and ignores stale capture filtered metadata", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "lean-analysis-native-only-artifacts-"));
+  try {
+    const { report } = await fixture(root);
+    for (const row of report.cases) {
+      const file = path.join(root, "cases", row.id, "capture.json");
+      const capture = JSON.parse(await readFile(file, "utf8"));
+      delete capture.artifacts.filtered;
+      await writeFile(file, JSON.stringify(capture));
+    }
+    assert.equal((await analyze(root)).evidenceOK, true);
+    const file = path.join(root, "cases", report.cases[0]!.id, "capture.json");
+    const capture = JSON.parse(await readFile(file, "utf8"));
+    capture.artifacts.filtered = { file: "stale-filtered", bytes: -1, sha256: "not-a-native-artifact" };
+    await writeFile(file, JSON.stringify(capture));
+    assert.equal((await analyze(root)).evidenceOK, true);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test("analysis rejects missing retained capture artifact bindings without replacing prior verdict", async (t) => {
   const root = await mkdtemp(path.join(tmpdir(), "lean-analysis-missing-capture-hashes-"));
   try {
