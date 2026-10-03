@@ -52,6 +52,27 @@ test("C05 Pytest malformed footer candidates cannot borrow later valid summary",
   }
 });
 
+test("C05 Pytest bounded FAILED reasons ending in durations remain records", () => {
+  binding(fixture(failed + other + footer.replace("1 failed", "2 failed")), true);
+  for (const reason of ["AssertionError: operation failed in 0.01s", "RuntimeError: retry in NaNs"]) {
+    const durationRow = other.replace("AssertionError: independent failure", reason);
+    for (const records of [failed + durationRow, durationRow + failed]) {
+      const good = fixture(records + footer.replace("1 failed", "2 failed"));
+      for (const input of [good, good.replaceAll("\n", "\r\n"),
+        good.split("\n").map((line) => line ? `\x1b[31m${line}\x1b[39m` : "").join("\n")]) binding(input, true);
+      binding(good.replace(`E       AssertionError: ${marker}`, "E       AssertionError: OTHER_FAILURE"), false);
+      binding(durationRow + good, false); // Outside the bounded section, candidate detection still applies.
+      binding(good.replace("2 failed in", "1 failed in"), false);
+      for (const body of ["failed in 0.01s", "many unknown in 0.01s"]) {
+        for (const candidate of [body + "\n", `======== ${body} ========\n`]) {
+          binding(candidate + good, false);
+          binding(fixture(records + candidate + footer.replace("1 failed", "2 failed")), false);
+        }
+      }
+    }
+  }
+});
+
 test("Pytest footer supports mixed outcomes, distinct FAILED rows, CRLF and inspected SGR", () => {
   for (const summary of ["1 failed in 0s", "1 failed, 2 passed, 3 skipped, 1 warning in 0.12s",
     "1 failed, 5 warnings, 2 xfailed, 3 xpassed, 4 subtests passed, 0 errors in 1s"]) {

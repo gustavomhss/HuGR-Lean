@@ -34,12 +34,13 @@ function pytestFooter(text, short) {
   // independently of counts; retain known outcome-shaped malformed rows too.
   const summaryLike = (line) => /^=+ .* in .* =+$/.test(line) || /^\S.* in \S+s$/.test(line) ||
     /^(?:\S+ (?:passed|skipped|failed|errors?|xfailed|xpassed|warnings?|subtests passed)\b|[+-]?\d\S* .+ in )/.test(pytestBody(line));
-  if (text.some((line, index) => index !== final && summaryLike(line))) return false;
   for (const line of records) {
     const record = /^FAILED (\S+::\S+) - (.+)$/.exec(line);
     if (!record || nodeids.has(record[1])) return false;
     nodeids.add(record[1]);
   }
+  // Only validated FAILED rows in this bounded section take precedence over candidates.
+  if (text.some((line, index) => index !== final && !(index > short && index < final) && summaryLike(line))) return false;
   return counts.get("failed") === nodeids.size;
 }
 
