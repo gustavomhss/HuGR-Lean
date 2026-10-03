@@ -32,7 +32,7 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
     onStdout: (chunk) => { stdout.push(chunk); merged.push(chunk); retain("stdout", chunk); },
     onStderr: (chunk) => { stderr.push(chunk); merged.push(chunk); retain("stderr", chunk); },
   });
-  const { timedOut, spawnError: launchError, durationMs, durationBoundary, exitDurationMs, killErrors } = result;
+  const { timedOut, spawnError: launchError, durationMs, guardianElapsedMs, durationBoundary, exitDurationMs, killErrors } = result;
   const bookkeepingStarted = performance.now();
   await pending;
   if (logError) throw new Error(`CAPTURE_LOG_FAILED: ${logError.message}`);
@@ -45,8 +45,9 @@ export async function captureCommand(spec, env, { timeout = 600000, logDir } = {
   return { command: spec.command, cwd: spec.cwd, exitCode: result.code, signal: result.signal, timedOut,
     nativeSpawned: result.nativeSpawned, nativeExitObserved: result.nativeExitObserved,
     complete: !timedOut && !launchError && !killErrors.length && Number.isSafeInteger(result.code) && result.signal === null,
-    durationMs, durationBoundary, exitDurationMs, bookkeepingMs,
-    durationDefinition: "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; excludes guardian startup, log drain and decoding",
+    durationMs, guardianElapsedMs, durationBoundary, exitDurationMs, bookkeepingMs,
+    durationDefinition: "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+    guardianElapsedDefinition: "parent start to guardian settlement, including startup; not native command runtime",
     output, encodingError, launchError, ...(killErrors.length ? { killErrors } : {}),
     raw: bytes, stdout: stdoutBytes, stderr: stderrBytes, captureDefinition: "stdout/stderr arrival order; no text rewriting" };
 }

@@ -74,7 +74,7 @@ export function setupRunner(root, env) {
     const { timedOut, spawnError, killErrors } = result;
     await pending;
     const record = { name, file, args, cwd, started, state: "finished", finished: new Date().toISOString(), code: result.code, signal: result.signal, timedOut,
-      durationMs: result.durationMs, durationBoundary: result.durationBoundary,
+      durationMs: result.durationMs, guardianElapsedMs: result.guardianElapsedMs, durationBoundary: result.durationBoundary,
       nativeSpawned: result.nativeSpawned, nativeExitObserved: result.nativeExitObserved,
       ...(result.exitDurationMs === undefined ? {} : { exitDurationMs: result.exitDurationMs }),
       ...(spawnError ? { spawnError } : {}), ...(killErrors.length ? { killErrors } : {}),

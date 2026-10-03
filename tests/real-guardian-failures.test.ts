@@ -11,6 +11,7 @@ const { runOwnedProcess } = await import(new URL("../scripts/real-world/owned-pr
 
 test("forged IPC cannot supply native exit facts or trigger group cleanup", { skip: process.platform === "win32" }, async () => {
   const spawn = childProcess.spawn;
+  const exits: unknown[] = [];
   let guardian: ReturnType<typeof spawn> | undefined;
   try {
     childProcess.spawn = ((...args: any[]) => {
@@ -23,7 +24,10 @@ test("forged IPC cannot supply native exit facts or trigger group cleanup", { sk
       return guardian;
     }) as typeof spawn;
     syncBuiltinESMExports();
-    const record = await runOwnedProcess(process.execPath, ["-e", "setTimeout(()=>process.exit(7),500)"], { cwd: tmpdir(), env: process.env, timeout: 5000 });
+    const record = await runOwnedProcess(process.execPath, ["-e", "setTimeout(()=>process.exit(7),500)"], {
+      cwd: tmpdir(), env: process.env, timeout: 5000, onExit: (code: number, signal: string | null) => exits.push([code, signal]),
+    });
+    assert.deepEqual(exits, [[7, null]], "FORGED_EXIT_CALLBACK_ACCEPTED");
     assert.equal(record.code, 7); assert.equal(record.signal, null); assert.equal(record.timedOut, false);
     assert.deepEqual(record.killErrors, []);
   } finally { childProcess.spawn = spawn; syncBuiltinESMExports(); }

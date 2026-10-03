@@ -3,8 +3,7 @@ import { spawn } from "node:child_process";
 import { closeSync } from "node:fs";
 
 const token = process.argv[2];
-let launched = false, nativeSpawned = false, nativeExited = false, child;
-const keepAlive = setInterval(() => {}, 1000);
+let launched = false, nativeSpawned = false, nativeExited = false, child, keepAlive;
 const send = (message, callback) => {
   if (process.connected) process.send({ ...message, token }, callback);
   else callback?.();
@@ -15,7 +14,7 @@ const selfSignal = (signal) => {
   catch (error) { killError(`${signal}: ${error.code}: ${error.message}`); }
 };
 process.on("SIGTERM", () => {}); // Remain group leader through graceful cleanup.
-process.on("disconnect", () => {
+const disconnect = () => {
   // Authority never transfers to a saved PID. Unexpected parent loss cleans our own group.
   if (process.platform !== "win32") selfSignal("SIGKILL");
   else if (nativeSpawned && !nativeExited) {
@@ -23,7 +22,10 @@ process.on("disconnect", () => {
   }
   clearInterval(keepAlive);
   process.exit(1);
-});
+};
+process.on("disconnect", disconnect);
+if (!process.connected) disconnect();
+keepAlive = setInterval(() => {}, 1000);
 process.on("message", (message) => {
   if (message?.token !== token) return;
   if (message.type === "launch" && !launched) {

@@ -16,10 +16,10 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       env: guardianEnv, detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe", "ipc"],
     });
     let authority = true, finished = false, spawned = false, failedSpawn = false, nativeExited = false;
-    let pipes = 0, timedOut = false, cleanupDone = false, escalating = false, escalationRequested = false, nativeStart = start;
+    let pipes = 0, timedOut = false, cleanupDone = false, escalating = false, escalationRequested = false, nativeStart;
     let code = null, signal = null, spawnError, exitDurationMs, timer, escalation, settlement;
     const killErrors = [];
-    const elapsed = () => Number(process.hrtime.bigint() - nativeStart) / 1e6;
+    const elapsed = () => nativeStart === undefined ? null : Number(process.hrtime.bigint() - nativeStart) / 1e6;
     const send = (message) => {
       if (!authority || !guardian.connected) return false;
       try { guardian.send({ ...message, token }, (error) => { if (error && !finished) lose(`GUARDIAN_CHANNEL_LOST: ${error.message}`); }); }
@@ -30,10 +30,11 @@ export function runOwnedProcess(file, args, { cwd, env, timeout, onStdout, onStd
       if (finished) return;
       finished = true;
       const durationMs = elapsed(); // Before IPC release, log drain or decoding.
+      const guardianElapsedMs = Number(process.hrtime.bigint() - start) / 1e6;
       clearTimeout(timer); clearTimeout(escalation); clearTimeout(settlement);
       send({ type: "release" });
       authority = false;
-      resolve({ code, signal, nativeSpawned: spawned, nativeExitObserved: nativeExited, timedOut, spawnError, killErrors, durationMs, durationBoundary, exitDurationMs });
+      resolve({ code, signal, nativeSpawned: spawned, nativeExitObserved: nativeExited, timedOut, spawnError, killErrors, durationMs, guardianElapsedMs, durationBoundary, exitDurationMs });
     };
     const maybeFinish = () => {
       if (pipes !== 2 || (!nativeExited && !failedSpawn)) return;
