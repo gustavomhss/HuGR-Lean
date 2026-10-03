@@ -173,7 +173,7 @@ const { writeFileSync } = require('node:fs');
 const detached = process.argv[2] === 'detached';
 process.stdout.write('PARENT_OUTPUT\\n', () => {
   const source = process.argv[3] + "process.stdout.write(Buffer.from([0,255,65])); process.stderr.write('DESCENDANT_OUTPUT\\\\n'); " +
-    (detached ? '' : 'setTimeout(() => process.exit(0), 50);');
+    (detached ? '' : 'setTimeout(() => { process.exitCode ??= 0; endOwner(); }, 50);');
   const child = spawn(process.execPath, ['-e', source], { detached, stdio: ['ignore', 1, 2] });
   writeFileSync(process.argv[1], JSON.stringify({ pid: child.pid }));
   if (detached) { child.unref(); process.exit(7); }
@@ -228,6 +228,7 @@ async function pipeOwnership() {
     sockets.add(socket);
     socket.once("close", () => { sockets.delete(socket); clearTimeout(authTimers.get(socket)); authTimers.delete(socket); });
     socket.on("error", error => errors.push(error));
+    socket.on("end", () => { if (socket === peer && !socket.destroyed && !socket.writableEnded) socket.end(); });
     authTimers.set(socket, setTimeout(() => { errors.push(new Error("PIPE_OWNER_AUTH_TIMEOUT")); socket.destroy(); }, 1000));
     let pending = "";
     const authenticate = (chunk: Buffer) => {
@@ -244,7 +245,13 @@ async function pipeOwnership() {
   const port = (server.address() as AddressInfo).port;
   const source = `setTimeout(()=>process.exit(90),12000).unref();
 const owner=require('node:net').connect(${port},'127.0.0.1');
-owner.on('end',()=>process.exit(0));owner.on('error',()=>process.exit(91));
+let ownerClosed=false, naturallyDrained=false;
+const endOwner=()=>{if(!owner.destroyed&&!owner.writableEnded)owner.end();};
+owner.on('end',endOwner);
+owner.on('error',error=>{console.error(error);process.exitCode=91;owner.destroy();});
+owner.once('close',()=>{ownerClosed=true;});
+process.once('beforeExit',()=>{naturallyDrained=ownerClosed;});
+process.once('exit',code=>{if(code===0&&!naturallyDrained){process.exitCode=92;require('node:fs').writeSync(2,'PIPE_OWNER_EXIT_BEFORE_DRAIN\\n');}});
 owner.on('data',()=>owner.write('alive\\n'));owner.write(${JSON.stringify(token + "\n")});`;
   return { source, port, token, async accepted() {
     if (!sockets.size) await once(server, "connection", { signal: AbortSignal.timeout(1000) });
