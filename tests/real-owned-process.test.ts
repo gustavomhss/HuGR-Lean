@@ -3,7 +3,7 @@ import childProcess from "node:child_process";
 import { syncBuiltinESMExports } from "node:module";
 import { tmpdir } from "node:os";
 import { test } from "node:test";
-import { setTimeout as delay } from "node:timers/promises";
+import { bounded, ownershipChannel } from "./process-readiness.js";
 
 const { runOwnedProcess } = await import(new URL("../scripts/real-world/owned-process.mjs", import.meta.url).href);
 
@@ -22,13 +22,15 @@ test("guardian inherits exact native bytes and separates native exit from guardi
 
 test("guardian pins group after native exit; modeled reused IDs cannot harm unrelated native control through teardown", { skip: process.platform === "win32", timeout: 10000 }, async () => {
   const kill = process.kill, spawn = childProcess.spawn;
-  const control = spawn(process.execPath, ["-e", "process.on('message',m=>{if(m==='stop')process.exit(0)});process.on('disconnect',()=>process.exit(0));setInterval(()=>process.send('beat'),20)"], { stdio: ["ignore", "ignore", "ignore", "ipc"] });
-  let beats = 0;
-  control.on("message", () => { beats++; });
+  const ownership = await ownershipChannel();
+  const control = spawn(process.execPath, ["-e", ownership.source], { stdio: "ignore" });
+  const exited = new Promise(resolve => control.once("exit", (code, signal) => resolve({ code, signal })));
   let guardian: ReturnType<typeof spawn> | undefined;
   const messages: string[] = [];
+  const failures: unknown[] = [];
+  const retain = async (step: () => Promise<unknown>) => { try { await step(); } catch (error) { failures.push(error); } };
   try {
-    await delay(300); assert.ok(beats > 0, "UNRELATED_NATIVE_CONTROL_NOT_LIVE");
+    await ownership.ping();
     // Alias model, not actual kernel recycling. Any parent numeric signal hits live unrelated control.
     process.kill = () => kill(control.pid!, "SIGKILL");
     childProcess.spawn = ((...args: any[]) => {
@@ -43,14 +45,16 @@ test("guardian pins group after native exit; modeled reused IDs cannot harm unre
     assert.ok(messages.includes("spawn") && messages.includes("exit") && messages.includes("escalating"), "GUARDIAN_PROTOCOL_CONTROL_MISSING");
     assert.equal(guardian!.signalCode, "SIGKILL"); assert.deepEqual(record.killErrors, []);
     assert.equal(record.durationBoundary, "timeout-cleanup");
-    const before = beats; await delay(100);
-    assert.ok(beats > before, "UNRELATED_NATIVE_CONTROL_KILLED");
-  } finally {
+    await ownership.ping();
+  } catch (error) { failures.push(error); }
+  finally {
     process.kill = kill; childProcess.spawn = spawn; syncBuiltinESMExports();
-    if (control.connected) control.send("stop");
-    await new Promise<void>((resolve) => control.exitCode !== null || control.signalCode !== null ? resolve() : control.once("exit", () => resolve()));
-    assert.equal(control.exitCode, 0, "UNRELATED_NATIVE_CONTROL_DIED_DURING_TEARDOWN");
+    await retain(() => ownership.ping()); await retain(() => ownership.stop());
+    await retain(async () => {
+      assert.deepEqual(await bounded(exited, "UNRELATED_EXIT_MISSING"), { code: 0, signal: null }, "UNRELATED_NATIVE_CONTROL_DIED_DURING_TEARDOWN");
+    });
   }
+  if (failures.length) throw new AggregateError(failures, `UNRELATED_FIXTURE_FAILURES: ${failures.map(String).join("; ")}`);
 });
 
 test("native launch error differs from guardian loss and revokes live IPC authority", { skip: process.platform === "win32" }, async () => {

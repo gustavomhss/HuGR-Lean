@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { pathToFileURL } from "node:url";
+import { bounded, nativeDeadline, ownershipChannel } from "./process-readiness.js";
 
 const { runOwnedProcess } = await import(new URL("../scripts/real-world/owned-process.mjs", import.meta.url).href);
 
@@ -53,26 +54,36 @@ test("channel loss after native launch preserves bytes, names failure, never bec
 
 async function injectedGuardian(preload: string) {
   const root = await mkdtemp(path.join(tmpdir(), "lean-guardian-fault-")), spawn = childProcess.spawn;
+  const ownership = await ownershipChannel(), deadline = nativeDeadline(), failures: unknown[] = [];
   let guardian: ReturnType<typeof spawn> | undefined;
+  let exited: Promise<unknown> | undefined;
   try {
     const loader = path.join(root, "fault.mjs"); await writeFile(loader, preload);
     childProcess.spawn = ((file: string, args: string[], options: any) => {
-      guardian = spawn(file, ["--import", pathToFileURL(loader).href, ...args], options); return guardian;
+      guardian = spawn(file, ["--import", pathToFileURL(loader).href, ...args], options);
+      exited = new Promise(resolve => guardian!.once("exit", resolve)); return guardian;
     }) as typeof spawn;
     syncBuiltinESMExports();
     const stdout: Buffer[] = [];
-    // Fixture self-terminates even when injected cleanup denies all signals. No saved PID teardown.
-    const result = await runOwnedProcess(process.execPath, ["-e", "process.stdout.write('launched');setTimeout(()=>process.exit(9),3200)"], {
-      cwd: root, env: process.env, timeout: 500, onStdout: (chunk: Buffer) => stdout.push(chunk),
+    let ready!: () => void;
+    const prefix = new Promise<void>(resolve => { ready = resolve; });
+    const running = runOwnedProcess(process.execPath, ["-e", "process.stdout.write('launched');" + ownership.source], {
+      cwd: root, env: process.env, timeout: 500, onStdout: (chunk: Buffer) => { stdout.push(chunk); if (Buffer.concat(stdout).equals(Buffer.from("launched"))) ready(); },
     });
+    await bounded(prefix, "NATIVE_LAUNCHED_PREFIX_MISSING"); await ownership.ping(); await deadline.fire();
+    const result = await running;
     assert.deepEqual(Buffer.concat(stdout), Buffer.from("launched"));
     assert.equal(result.timedOut, true); assert.equal(result.spawnError, undefined);
     assert.equal(result.code, null); assert.equal(result.signal, null); assert.equal(result.exitDurationMs, undefined);
     return result;
-  } finally {
-    childProcess.spawn = spawn; syncBuiltinESMExports();
+  } catch (error) { failures.push(error); }
+  finally {
+    childProcess.spawn = spawn; deadline.restore(); syncBuiltinESMExports();
     if (guardian?.connected) guardian.disconnect();
+    try { await ownership.stop(); } catch (error) { failures.push(error); }
+    try { if (exited) await bounded(exited, "FAULT_GUARDIAN_EXIT_MISSING"); } catch (error) { failures.push(error); }
     await rm(root, { recursive: true, force: true });
+    if (failures.length) throw new AggregateError(failures, `FAULT_FIXTURE_FAILURES: ${failures.map(String).join("; ")}`);
   }
 }
 
@@ -90,18 +101,47 @@ cp.ChildProcess.prototype.kill=function(){this.emit('error',Object.assign(new Er
   assert.deepEqual(record.killErrors, ["SETUP_TREE_CLEANUP_UNSUPPORTED: authenticated Windows tree identity unavailable", "EPERM: CONTROLLED_HANDLE_DENIAL"]);
 });
 
-test("native timeout and duration exclude independently delayed guardian startup", { skip: process.platform === "win32", timeout: 10000 }, async () => {
+test("native timeout registration and duration follow released startup and authenticated spawn", { skip: process.platform === "win32", timeout: 10000 }, async () => {
   const root = await mkdtemp(path.join(tmpdir(), "lean-guardian-startup-")), spawn = childProcess.spawn;
+  const deadline = nativeDeadline(), trace: string[] = [], failures: unknown[] = [];
+  let guardian: ReturnType<typeof spawn> | undefined, exited: Promise<unknown> | undefined;
+  let heldMs = 0, released = 0n, started = 0n;
   try {
-    const loader = path.join(root, "delay.mjs"); await writeFile(loader, "await new Promise(resolve=>setTimeout(resolve,600));");
-    childProcess.spawn = ((file: string, args: string[], options: any) => spawn(file, ["--import", pathToFileURL(loader).href, ...args], options)) as typeof spawn;
+    const loader = path.join(root, "delay.mjs"); await writeFile(loader, `
+setTimeout(()=>process.exit(90),8000).unref();
+await new Promise(resolve=>{process.once('message',m=>{if(m.fixtureRelease)resolve()});process.send({type:'blocked'})});
+`);
+    childProcess.spawn = ((file: string, args: string[], options: any) => {
+      const start = process.hrtime.bigint();
+      guardian = spawn(file, ["--import", pathToFileURL(loader).href, ...args], options);
+      exited = new Promise(resolve => guardian!.once("exit", (code, signal) => resolve({ code, signal })));
+      guardian.on("message", (message: any) => {
+        trace.push(message.type);
+        if (message.type === "blocked") {
+          if (deadline.count !== 0) failures.push(new Error("NATIVE_TIMEOUT_ARMED_BEFORE_LAUNCH"));
+          released = process.hrtime.bigint(); heldMs = Number(released - start) / 1e6;
+          guardian!.send({ fixtureRelease: true });
+        } else if (message.type === "spawn") {
+          if (message.token !== args.at(-1)) failures.push(new Error("NATIVE_SPAWN_TOKEN_MISMATCH"));
+          started = BigInt(message.started);
+        }
+      });
+      return guardian;
+    }) as typeof spawn;
     syncBuiltinESMExports();
-    const start = performance.now();
     const record = await runOwnedProcess(process.execPath, ["-e", "process.exit(7)"], { cwd: root, env: process.env, timeout: 200 });
-    assert.ok(performance.now() - start >= 600, "GUARDIAN_STARTUP_DELAY_CONTROL_MISSING");
+    assert.deepEqual(failures, []); assert.deepEqual(trace, ["blocked", "ready", "spawn", "exit"]);
+    assert.equal(deadline.count, 1, "NATIVE_TIMEOUT_SEAM_COUNT"); assert.ok(deadline.milliseconds >= 1 && deadline.milliseconds <= 200);
+    assert.ok(started >= released && released > 0n, "NATIVE_STARTED_BEFORE_RELEASE");
     assert.equal(record.timedOut, false); assert.equal(record.code, 7); assert.equal(record.signal, null);
-    assert.ok(record.durationMs < 200, "GUARDIAN_STARTUP_INCLUDED_IN_NATIVE_DURATION");
-  } finally { childProcess.spawn = spawn; syncBuiltinESMExports(); await rm(root, { recursive: true, force: true }); }
+    assert.ok(record.guardianElapsedMs - record.durationMs >= heldMs, "GUARDIAN_STARTUP_INCLUDED_IN_NATIVE_DURATION");
+    assert.deepEqual(await bounded(exited!, "STARTUP_GUARDIAN_EXIT_MISSING"), { code: 0, signal: null });
+  } finally {
+    childProcess.spawn = spawn; deadline.restore(); syncBuiltinESMExports();
+    if (guardian?.connected) guardian.disconnect();
+    if (exited) await bounded(exited, "STARTUP_TEARDOWN_EXIT_MISSING");
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test("native NODE_OPTIONS executes once, with literal argv, cwd and environment", { skip: process.platform === "win32" }, async () => {
