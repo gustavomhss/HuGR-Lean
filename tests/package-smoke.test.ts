@@ -252,7 +252,7 @@ test("pack ignores a measured HOME-writing prepack; install ignores a measured f
         await assert.rejects(npm(["pack", "--json", "--ignore-scripts=false", "--pack-destination", directory], directory), (error: unknown) => {
           assert.ok(error instanceof Error);
           prepackFailure = error;
-          assert.match(error.message, /PREPACK_MUST_NOT_RUN/);
+          assert.match(error.message, /^(?:npm (?:error|ERR!) )?Error: PREPACK_MUST_NOT_RUN\r?$/m);
           return true;
         });
         assert.equal(await readFile(path.join(temporary, "home/prepack-ran"), "utf8"), "control");
@@ -284,7 +284,7 @@ ${JSON.stringify(diagnostic)}`, { cause: error });
       const consumer = path.join(directory, "hook-control");
       await mkdir(consumer);
       await writeFile(path.join(consumer, "package.json"), '{"private":true}');
-      await assert.rejects(npm(["install", tarball, "--no-audit", "--no-fund"], consumer), /INSTALL_SCRIPT_MUST_NOT_RUN/);
+      await assert.rejects(npm(["install", tarball, "--no-audit", "--no-fund"], consumer), /^(?:npm (?:error|ERR!) )?Error: INSTALL_SCRIPT_MUST_NOT_RUN\r?$/m);
       await assert.rejects(readFile(path.join(callerHome, "prepack-ran")), { code: "ENOENT" });
     } finally {
       for (const [name, value] of Object.entries(saved)) {

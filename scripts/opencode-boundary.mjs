@@ -28,7 +28,7 @@ export function isolatedEnvironment(root, extra = {}) {
     npm_config_cache: path.join(root, "cache", "npm"),
     npm_config_userconfig: path.join(root, "npmrc"),
     npm_config_globalconfig: path.join(root, "global-npmrc"),
-    ...(process.platform === "win32" ? { SystemRoot: process.env.SystemRoot, WINDIR: process.env.WINDIR, PATHEXT: process.env.PATHEXT } : {}),
+    ...(process.platform === "win32" ? { SystemRoot: process.env.SystemRoot, WINDIR: process.env.WINDIR, PATHEXT: process.env.PATHEXT, ComSpec: process.env.ComSpec } : {}),
     OPENCODE_CONFIG: path.join(root, "opencode.json"),
     OPENCODE_CONFIG_DIR: path.join(root, "config", "opencode"),
     OPENCODE_DISABLE_PROJECT_CONFIG: "1",

@@ -14,14 +14,24 @@ const smoke = await import(new URL("../scripts/opencode-smoke.mjs", import.meta.
 test("child environment excludes ambient credentials and config", () => {
   const names = ["OPENAI_API_KEY", "ANTHROPIC_API_KEY", "OPENCODE_CONFIG_CONTENT", "OPENCODE_PURE", "OPENCODE_SERVER_PASSWORD", "AWS_SECRET_ACCESS_KEY", "GITHUB_TOKEN", "HTTP_PROXY"];
   const saved = names.map((name) => process.env[name]);
+  const platform = Object.getOwnPropertyDescriptor(process, "platform")!;
+  const comSpec = process.env.ComSpec;
   try {
     for (const name of names) process.env[name] = "synthetic-ambient-control";
-    const env = boundary.isolatedEnvironment("/isolated");
-    for (const name of names) assert.ok(!Object.hasOwn(env, name), `${name} leaked into the host environment`);
-    assert.equal(env.HOME, path.join("/isolated", "home"));
-    assert.equal(env.OPENCODE_CONFIG, path.join("/isolated", "opencode.json"));
-    assert.equal(env.OPENCODE_DISABLE_MODELS_FETCH, "1");
+    process.env.ComSpec = String.raw`C:\Windows\System32\cmd.exe`;
+    for (const target of ["linux", "win32"]) {
+      // Synchronous scope exercises both allowlist branches without launching a foreign shell.
+      Object.defineProperty(process, "platform", { value: target });
+      const env = boundary.isolatedEnvironment("/isolated");
+      for (const name of names) assert.ok(!Object.hasOwn(env, name), `${name} leaked into the host environment`);
+      assert.equal(env.ComSpec, target === "win32" ? process.env.ComSpec : undefined);
+      assert.equal(env.HOME, path.join("/isolated", "home"));
+      assert.equal(env.OPENCODE_CONFIG, path.join("/isolated", "opencode.json"));
+      assert.equal(env.OPENCODE_DISABLE_MODELS_FETCH, "1");
+    }
   } finally {
+    Object.defineProperty(process, "platform", platform);
+    if (comSpec === undefined) delete process.env.ComSpec; else process.env.ComSpec = comSpec;
     names.forEach((name, i) => { if (saved[i] === undefined) delete process.env[name]; else process.env[name] = saved[i]; });
   }
 });
