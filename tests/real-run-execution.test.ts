@@ -67,7 +67,9 @@ async function exercise(patch: Record<string, unknown> = {}, failure?: string) {
       assert.equal(report.failures.length, 1);
       const failed = await readJson(path.join(outputDir, "cases/primary/failure.json"));
       assert.match(failed.message, new RegExp(`^${failure}:`));
-      assert.deepEqual(report.failures[0], { ...failed, name: "NATIVE_CASE_FAILED" });
+      assert.deepEqual(report.failures[0], { id: failed.id, message: failed.message, name: "NATIVE_CASE_FAILED" });
+      assert.deepEqual(failed.diagnostics, {});
+      assert.equal(failed.caseWorkspace, null);
     } else {
       assert.deepEqual(report.failures, []);
       assert.equal(report.primary.cases, 1); assert.equal(report.controls.cases, 1);
@@ -75,7 +77,8 @@ async function exercise(patch: Record<string, unknown> = {}, failure?: string) {
     for (const [i, spec] of specs.entries()) {
       const directory = path.join(outputDir, "cases", spec.id), capture = captures[i]!;
       const { raw: _raw, stdout: _stdout, stderr: _stderr, ...facts } = capture;
-      const { artifacts, ...savedFacts } = await readJson(path.join(directory, "capture.json"));
+      const { artifacts, caseWorkspace, ...savedFacts } = await readJson(path.join(directory, "capture.json"));
+      assert.equal(caseWorkspace, null);
       assert.deepEqual(savedFacts, JSON.parse(JSON.stringify(facts)));
       for (const [name, bytes] of [["original", raw], ["stdout", stdout], ["stderr", stderr]] as const) {
         assert.deepEqual(gunzipSync(await readFile(path.join(directory, artifacts[name].file))), bytes);
@@ -98,7 +101,10 @@ test("public caller admits complete exit 0 and expected exit 7, including zero d
 test("guardian loss preserves evidence but cannot become measured execution", async () => {
   const capture = { ...baseCapture, ...guardianLoss };
   const result = { status: "passthrough", reason: "synthetic", inputBytes: raw.length, outputBytes: raw.length };
-  assert.equal(checkEvidence(specs[0], capture, result).ok, true);
+  const evidence = checkEvidence(specs[0], capture, result);
+  assert.equal(evidence.ok, false); // Integrated C also rejects incomplete native evidence.
+  assert.ok(evidence.violations.some((value: string) => value.includes(": native_completeness:")));
+  assert.ok(!evidence.violations.some((value: string) => value.includes(": no_replacement:")));
   assert.equal(checkEvidence(specs[0], capture, { ...result, outputBytes: 0 }).ok, false);
   await exercise(guardianLoss, "CAPTURE_EXECUTION_FAILED");
 });
