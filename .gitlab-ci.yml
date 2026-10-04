@@ -1,0 +1,132 @@
+workflow:
+  auto_cancel:
+    on_new_commit: interruptible
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push" && ($CI_COMMIT_BRANCH || $CI_COMMIT_TAG)'
+    - if: '($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "api") && $CI_COMMIT_BRANCH'
+    - when: never
+
+stages: [verify]
+
+default:
+  interruptible: true
+  retry: 0
+
+verify-linux:
+  stage: verify
+  timeout: 20m
+  rules:
+    - if: '$CI_PIPELINE_SOURCE'
+  tags: [saas-linux-small-amd64]
+  image: node:22.17.1-bookworm
+  script:
+    - |
+      set -eu
+      if ! command -v python3 >/dev/null || ! command -v git >/dev/null; then
+        apt-get update
+        apt-get install -y --no-install-recommends python3 git
+      fi
+      python3 -c 'import sys; assert sys.version_info.major == 3; print(sys.version)'
+      git --version
+      node -e "if (process.platform !== 'linux' || process.arch !== 'x64' || process.version !== 'v22.17.1') process.exit(1); console.log(process.platform, process.arch, process.version)"
+    - npm ci
+    - npm run check
+    - npm run smoke
+    - npm pack --dry-run
+
+verify-windows:
+  stage: verify
+  timeout: 20m
+  rules:
+    - if: '$CI_PIPELINE_SOURCE'
+  tags: [saas-windows-medium-amd64]
+  # Hosted Windows uses a custom executor and PowerShell, not an image keyword.
+  script:
+    - |
+      $ErrorActionPreference = 'Stop'
+      $nodeVersion = ''
+      if (Get-Command node.exe -ErrorAction SilentlyContinue) {
+        $nodeVersion = & node.exe --version
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      }
+      if ($nodeVersion -ne 'v22.17.1') {
+        $base = 'https://nodejs.org/dist/v22.17.1'
+        $archive = 'node-v22.17.1-win-x64.zip'
+        $root = Join-Path $env:CI_PROJECT_DIR '.ci-node'
+        New-Item -ItemType Directory -Force -Path $root | Out-Null
+        $zip = Join-Path $root $archive
+        $sums = Join-Path $root 'SHASUMS256.txt'
+        Invoke-WebRequest -UseBasicParsing -Uri "$base/$archive" -OutFile $zip
+        Invoke-WebRequest -UseBasicParsing -Uri "$base/SHASUMS256.txt" -OutFile $sums
+        $pattern = '^[0-9a-fA-F]{64}\s+' + [regex]::Escape($archive) + '$'
+        $checksumRows = @(Get-Content $sums | Where-Object { $_ -match $pattern })
+        if ($checksumRows.Count -ne 1) { throw 'Expected one exact Node checksum entry' }
+        $expected = ($checksumRows[0] -split '\s+')[0]
+        if ((Get-FileHash -Algorithm SHA256 $zip).Hash -ne $expected) { throw 'Node checksum mismatch' }
+        Expand-Archive -Path $zip -DestinationPath $root -Force
+        $env:PATH = (Join-Path $root 'node-v22.17.1-win-x64') + ';' + $env:PATH
+      }
+      & node.exe -e "if (process.platform !== 'win32' || process.arch !== 'x64' || process.version !== 'v22.17.1') process.exit(1); console.log(process.platform, process.arch, process.version)"
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      & python -c "import sys; assert sys.version_info.major == 3; print(sys.version)"
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      & git --version
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    - |
+      & npm.cmd ci
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    - |
+      & npm.cmd run check
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    - |
+      & npm.cmd run smoke
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    - |
+      & npm.cmd pack --dry-run
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+verify-macos:
+  stage: verify
+  timeout: 20m
+  rules:
+    - if: '$CI_PIPELINE_SOURCE'
+  tags: [saas-macos-medium-m1]
+  image: macos-15-xcode-16
+  when: manual
+  allow_failure: false
+  script:
+    - |
+      set -eu
+      python3 -c 'import sys; assert sys.version_info.major == 3; print(sys.version)'
+      git --version
+      node_version=''
+      if command -v node >/dev/null; then
+        node_version="$(node --version)"
+      fi
+      if [ "$node_version" != 'v22.17.1' ]; then
+        base='https://nodejs.org/dist/v22.17.1'
+        archive='node-v22.17.1-darwin-arm64.tar.gz'
+        mkdir -p "$CI_PROJECT_DIR/.ci-node"
+        curl --fail --silent --show-error "$base/$archive" -o "$CI_PROJECT_DIR/.ci-node/$archive"
+        curl --fail --silent --show-error "$base/SHASUMS256.txt" -o "$CI_PROJECT_DIR/.ci-node/SHASUMS256.txt"
+        python3 - "$CI_PROJECT_DIR/.ci-node" "$archive" <<'PY'
+      import hashlib, pathlib, sys
+      root, archive = pathlib.Path(sys.argv[1]), sys.argv[2]
+      rows = [line.split() for line in (root / 'SHASUMS256.txt').read_text().splitlines()]
+      matches = [row[0] for row in rows if len(row) == 2 and row[1] == archive]
+      if len(matches) != 1:
+          raise SystemExit('Expected one exact Node checksum entry')
+      if hashlib.sha256((root / archive).read_bytes()).hexdigest() != matches[0]:
+          raise SystemExit('Node checksum mismatch')
+      PY
+        tar -xzf "$CI_PROJECT_DIR/.ci-node/$archive" -C "$CI_PROJECT_DIR/.ci-node"
+        export PATH="$CI_PROJECT_DIR/.ci-node/node-v22.17.1-darwin-arm64/bin:$PATH"
+      fi
+      node -e "if (process.platform !== 'darwin' || process.arch !== 'arm64' || process.version !== 'v22.17.1') process.exit(1); console.log(process.platform, process.arch, process.version)"
+    - npm ci
+    - npm run check
+    - npm run smoke
+    - npm pack --dry-run
