@@ -5,12 +5,27 @@ One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra
 
 ## Install and enable
 
-Node 22+. Install the release tarball:
+Node 22+, npm and Git. Build the **reviewed integration snapshot**, pinned to
+[`ae4c3b5b5d444f80207c119c2fdc794f5cd954ff`](https://github.com/gusmhs/HuGR-Lean/commit/ae4c3b5b5d444f80207c119c2fdc794f5cd954ff).
+This is not a new release; `main` still points to the older release.
+Run these commands from a directory where you want a fresh clone. Choose an unused folder name
+(shown here as `hugr-lean-reviewed`), and stop if any command fails:
 
 ```sh
-npm install -g https://github.com/gmhelmold/HuGR-Lean/releases/download/v0.2.0/hugr-lean-0.2.0.tgz
+git clone https://github.com/gusmhs/HuGR-Lean.git hugr-lean-reviewed
+cd hugr-lean-reviewed
+git checkout --detach ae4c3b5b5d444f80207c119c2fdc794f5cd954ff
+npm ci
+npm pack
+npm install -g ./hugr-lean-0.2.0.tgz
 hugr-lean doctor
 ```
+
+`npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
+uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
+directory on `PATH`. The package version remains `0.2.0` pending a human release/version decision.
+This locally built tarball is not claimed to be byte-identical to the original release asset.
+See [distribution status](docs/DISTRIBUTION.md) for source, tag and artifact identities.
 
 Copy `pluginURL` from doctor into your OpenCode configuration:
 
