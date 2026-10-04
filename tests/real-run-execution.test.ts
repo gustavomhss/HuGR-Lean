@@ -105,7 +105,8 @@ test("guardian loss preserves evidence but cannot become measured execution", as
   assert.equal(evidence.ok, false); // Integrated C also rejects incomplete native evidence.
   assert.ok(evidence.violations.some((value: string) => value.includes(": native_completeness:")));
   assert.ok(!evidence.violations.some((value: string) => value.includes(": no_replacement:")));
-  assert.equal(checkEvidence(specs[0], capture, { ...result, outputBytes: 0 }).ok, false);
+  const corrupted = checkEvidence(specs[0], capture, { ...result, outputBytes: 0 });
+  assert.ok(corrupted.violations.some((value: string) => value.includes(": output_bytes:")));
   await exercise(guardianLoss, "CAPTURE_EXECUTION_FAILED");
 });
 
