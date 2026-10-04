@@ -37,7 +37,9 @@ Every job runs, in order, `npm ci`, `npm run check`, `npm run smoke`, and
 typecheck, tests, and build; pack retains its existing prepack build. POSIX setup
 uses `set -eu`; each Windows native command immediately checks `$LASTEXITCODE`.
 PowerShell cmdlet errors terminate via `$ErrorActionPreference = 'Stop'`.
-Jobs are interruptible, have a 20-minute timeout, and never retry automatically.
+Jobs are interruptible and never retry automatically. Linux/macOS have a 20-minute
+timeout; Windows has 25 minutes because hosted VM/bootstrap and installed-package
+checks reached the original limit during final packaging. Gate commands are unchanged.
 
 Workflow permits merge requests, branch/tag pushes (including main), and web/API
 branch pipelines. Only branch pushes with an open MR are suppressed to avoid

@@ -39,7 +39,8 @@ verify-linux:
 
 verify-windows:
   stage: verify
-  timeout: 20m
+  # Hosted VM/bootstrap plus installed-package checks reached the original 20m limit.
+  timeout: 25m
   rules:
     - if: '$CI_PIPELINE_SOURCE'
   tags: [saas-windows-medium-amd64]
