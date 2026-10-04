@@ -247,8 +247,37 @@ test("pack ignores a measured HOME-writing prepack; install ignores a measured f
       await assert.rejects(readFile(path.join(callerHome, "prepack-ran")), { code: "ENOENT" });
       await assert.rejects(readFile(path.join(temporary, "home/prepack-ran")), { code: "ENOENT" });
       // Positive control runs the same prepack, still with an isolated HOME, never caller credentials.
-      await assert.rejects(npm(["pack", "--json", "--ignore-scripts=false", "--pack-destination", directory], directory), /PREPACK_MUST_NOT_RUN/);
-      assert.equal(await readFile(path.join(temporary, "home/prepack-ran"), "utf8"), "control");
+      let prepackFailure: Error | undefined;
+      try {
+        await assert.rejects(npm(["pack", "--json", "--ignore-scripts=false", "--pack-destination", directory], directory), (error: unknown) => {
+          assert.ok(error instanceof Error);
+          prepackFailure = error;
+          assert.match(error.message, /PREPACK_MUST_NOT_RUN/);
+          return true;
+        });
+        assert.equal(await readFile(path.join(temporary, "home/prepack-ran"), "utf8"), "control");
+      } catch (error) {
+        // A command echo can match the sentinel without executing the hook. Keep the npm failure too.
+        const probe = `const { spawnSync } = require('node:child_process');
+const env = Object.fromEntries(['HOME', 'USERPROFILE', 'PATH', 'PATHEXT', 'ComSpec', 'SystemRoot', 'SHELL'].map(key => [key, process.env[key] ?? null]));
+const viaShell = args => {
+  const result = spawnSync('node', args, { encoding: 'utf8', shell: true, timeout: 3000 });
+  return { status: result.status, signal: result.signal, stdout: result.stdout, stderr: result.stderr, error: result.error?.message };
+};
+console.log(JSON.stringify({ execPath: process.execPath, version: process.version, homedir: require('node:os').homedir(), env,
+  pathNode: viaShell(['-p', 'process.execPath']), pathNodeVersion: viaShell(['--version']) }));`;
+        let diagnostic: unknown;
+        try {
+          const { code, signal, stdout, stderr } = await smoke.isolatedProcess(process.execPath, ["-e", probe], { cwd: directory, isolation: temporary, timeout: 10000 });
+          diagnostic = { code, signal, stdout, stderr };
+        } catch (probeError) { diagnostic = probeError instanceof Error ? probeError.stack : String(probeError); }
+        throw new Error(`Prepack control failed; expected HOME=${path.join(temporary, "home")}; marker=${path.join(temporary, "home/prepack-ran")}
+${error instanceof Error ? error.stack : String(error)}
+Original npm failure:
+${prepackFailure?.stack ?? "npm did not reject with an Error"}
+Isolated diagnostic (Node shell probe, not npm lifecycle):
+${JSON.stringify(diagnostic)}`, { cause: error });
+      }
       const packed = await npm(["pack", "--json", "--ignore-scripts", "--pack-destination", directory], directory);
       // Positive control: the same hook really fails if npm is allowed to execute install scripts.
       const tarball = path.join(directory, JSON.parse(packed.stdout)[0].filename);
