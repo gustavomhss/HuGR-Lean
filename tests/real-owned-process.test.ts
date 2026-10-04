@@ -9,10 +9,10 @@ const { runOwnedProcess } = await import(new URL("../scripts/real-world/owned-pr
 
 test("guardian inherits exact native bytes and separates native exit from guardian lifetime", { skip: process.platform === "win32" }, async () => {
   const stdout: Buffer[] = [], stderr: Buffer[] = [];
-  const record = await runOwnedProcess(process.execPath, ["-e", "require('node:fs').writeSync(1,Buffer.from([0,255,65]));process.stderr.write('native');process.exitCode=7"], {
+  const record = await bounded<any>(runOwnedProcess(process.execPath, ["-e", "require('node:fs').writeSync(1,Buffer.from([0,255,65]));process.stderr.write('native');process.exitCode=7"], {
     cwd: tmpdir(), env: { PATH: process.env.PATH }, timeout: 5000,
     onStdout: (chunk: Buffer) => stdout.push(chunk), onStderr: (chunk: Buffer) => stderr.push(chunk),
-  });
+  }), "NATIVE_BYTES_RESULT_MISSING");
   assert.deepEqual(Buffer.concat(stdout), Buffer.from([0, 255, 65]));
   assert.deepEqual(Buffer.concat(stderr), Buffer.from("native"));
   assert.equal(record.code, 7); assert.equal(record.signal, null); assert.equal(record.timedOut, false);
@@ -40,7 +40,7 @@ test("guardian pins group after native exit; modeled reused IDs cannot harm unre
     }) as typeof spawn;
     syncBuiltinESMExports();
     const source = "require('node:child_process').spawn(process.execPath,['-e','setTimeout(()=>{},5000)'],{stdio:['ignore',1,2]}).unref();process.exit(7)";
-    const record = await runOwnedProcess(process.execPath, ["-e", source], { cwd: tmpdir(), env: process.env, timeout: 500 });
+    const record = await bounded<any>(runOwnedProcess(process.execPath, ["-e", source], { cwd: tmpdir(), env: process.env, timeout: 500 }), "REUSED_IDS_RESULT_MISSING");
     assert.equal(record.code, 7); assert.equal(record.signal, null); assert.equal(record.timedOut, true);
     assert.ok(messages.includes("spawn") && messages.includes("exit") && messages.includes("escalating"), "GUARDIAN_PROTOCOL_CONTROL_MISSING");
     assert.equal(guardian!.signalCode, "SIGKILL"); assert.deepEqual(record.killErrors, []);
@@ -58,7 +58,7 @@ test("guardian pins group after native exit; modeled reused IDs cannot harm unre
 });
 
 test("native launch error differs from guardian loss and revokes live IPC authority", { skip: process.platform === "win32" }, async () => {
-  const missing = await runOwnedProcess("/missing-lean-native-executable", [], { cwd: tmpdir(), env: process.env, timeout: 5000 });
+  const missing = await bounded<any>(runOwnedProcess("/missing-lean-native-executable", [], { cwd: tmpdir(), env: process.env, timeout: 5000 }), "LAUNCH_ERROR_RESULT_MISSING");
   assert.match(missing.spawnError, /ENOENT/); assert.equal(missing.code, null); assert.equal(missing.signal, null);
   const spawn = childProcess.spawn;
   let guardian: ReturnType<typeof spawn> | undefined;
@@ -72,7 +72,7 @@ test("native launch error differs from guardian loss and revokes live IPC author
       return guardian;
     }) as typeof spawn;
     syncBuiltinESMExports();
-    const lost = await runOwnedProcess(process.execPath, ["-e", "process.exit(0)"], { cwd: tmpdir(), env: process.env, timeout: 5000 });
+    const lost = await bounded<any>(runOwnedProcess(process.execPath, ["-e", "process.exit(0)"], { cwd: tmpdir(), env: process.env, timeout: 5000 }), "GUARDIAN_LOSS_RESULT_MISSING");
     assert.equal(lost.spawnError, undefined); assert.equal(lost.code, null);
     assert.ok(lost.killErrors.some((message: string) => message.startsWith("GUARDIAN_CHANNEL_LOST:")));
     assert.equal(sends, 0, "REVOKED_AUTHORITY_REACQUIRED");

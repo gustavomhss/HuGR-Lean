@@ -25,9 +25,9 @@ test("forged IPC cannot supply native exit facts or trigger group cleanup", { sk
       return guardian;
     }) as typeof spawn;
     syncBuiltinESMExports();
-    const record = await runOwnedProcess(process.execPath, ["-e", "setTimeout(()=>process.exit(7),500)"], {
+    const record = await bounded<any>(runOwnedProcess(process.execPath, ["-e", "setTimeout(()=>process.exit(7),500)"], {
       cwd: tmpdir(), env: process.env, timeout: 5000, onExit: (code: number, signal: string | null) => exits.push([code, signal]),
-    });
+    }), "FORGED_IPC_RESULT_MISSING");
     assert.deepEqual(exits, [[7, null]], "FORGED_EXIT_CALLBACK_ACCEPTED");
     assert.equal(record.code, 7); assert.equal(record.signal, null); assert.equal(record.timedOut, false);
     assert.deepEqual(record.killErrors, []);
@@ -41,10 +41,10 @@ test("channel loss after native launch preserves bytes, names failure, never bec
   try {
     childProcess.spawn = ((...args: any[]) => { guardian = Reflect.apply(spawn, childProcess, args); return guardian; }) as typeof spawn;
     syncBuiltinESMExports();
-    const record = await runOwnedProcess(process.execPath, ["-e", "process.stdout.write('native-prefix');setInterval(()=>{},1000)"], {
+    const record = await bounded<any>(runOwnedProcess(process.execPath, ["-e", "process.stdout.write('native-prefix');setInterval(()=>{},1000)"], {
       cwd: tmpdir(), env: process.env, timeout: 5000,
       onStdout: (chunk: Buffer) => { bytes.push(chunk); guardian!.disconnect(); },
-    });
+    }), "CHANNEL_LOSS_RESULT_MISSING");
     assert.deepEqual(Buffer.concat(bytes), Buffer.from("native-prefix"));
     assert.equal(record.spawnError, undefined); assert.equal(record.code, null); assert.equal(record.signal, null);
     assert.equal(record.durationBoundary, "guardian-loss");
@@ -71,7 +71,7 @@ async function injectedGuardian(preload: string) {
       cwd: root, env: process.env, timeout: 500, onStdout: (chunk: Buffer) => { stdout.push(chunk); if (Buffer.concat(stdout).equals(Buffer.from("launched"))) ready(); },
     });
     await bounded(prefix, "NATIVE_LAUNCHED_PREFIX_MISSING"); await ownership.ping(); await deadline.fire();
-    const result = await running;
+    const result = await bounded<any>(running, "FAULT_RESULT_MISSING");
     assert.deepEqual(Buffer.concat(stdout), Buffer.from("launched"));
     assert.equal(result.timedOut, true); assert.equal(result.spawnError, undefined);
     assert.equal(result.code, null); assert.equal(result.signal, null); assert.equal(result.exitDurationMs, undefined);
@@ -122,16 +122,19 @@ await new Promise(resolve=>{process.once('message',m=>{if(m.fixtureRelease)resol
           released = process.hrtime.bigint(); heldMs = Number(released - start) / 1e6;
           guardian!.send({ fixtureRelease: true });
         } else if (message.type === "spawn") {
+          // This listener runs before owned-process handles the authenticated spawn.
           if (message.token !== args.at(-1)) failures.push(new Error("NATIVE_SPAWN_TOKEN_MISMATCH"));
+          else if (deadline.count !== 0) failures.push(new Error("NATIVE_TIMEOUT_BEFORE_AUTHENTICATED_SPAWN"));
           started = BigInt(message.started);
         }
       });
       return guardian;
     }) as typeof spawn;
     syncBuiltinESMExports();
-    const record = await runOwnedProcess(process.execPath, ["-e", "process.exit(7)"], { cwd: root, env: process.env, timeout: 200 });
+    const record = await bounded<any>(runOwnedProcess(process.execPath, ["-e", "process.exit(7)"], { cwd: root, env: process.env, timeout: 200 }), "STARTUP_RESULT_MISSING");
+    assert.equal(deadline.count, 1, "NATIVE_TIMEOUT_SEAM_COUNT");
     assert.deepEqual(failures, []); assert.deepEqual(trace, ["blocked", "ready", "spawn", "exit"]);
-    assert.equal(deadline.count, 1, "NATIVE_TIMEOUT_SEAM_COUNT"); assert.ok(deadline.milliseconds >= 1 && deadline.milliseconds <= 200);
+    assert.ok(deadline.milliseconds >= 1 && deadline.milliseconds <= 200);
     assert.ok(started >= released && released > 0n, "NATIVE_STARTED_BEFORE_RELEASE");
     assert.equal(record.timedOut, false); assert.equal(record.code, 7); assert.equal(record.signal, null);
     assert.ok(record.guardianElapsedMs - record.durationMs >= heldMs, "GUARDIAN_STARTUP_INCLUDED_IN_NATIVE_DURATION");
@@ -151,14 +154,14 @@ test("native NODE_OPTIONS executes once, with literal argv, cwd and environment"
     const env = { NODE_OPTIONS: `--require ${JSON.stringify(preload)}`, NATIVE_SENTINEL: "literal" }, chunks: Buffer[] = [];
     const source = "process.stdout.write(JSON.stringify({argv:process.argv.slice(1),cwd:process.cwd(),env:process.env}));";
     const args = ["-e", source, "space arg", "--literal"];
-    const direct = await new Promise<Buffer>((resolve, reject) => {
+    const direct = await bounded(new Promise<Buffer>((resolve, reject) => {
       const child = childProcess.spawn(process.execPath, args, { cwd: root, env, stdio: ["ignore", "pipe", "ignore"] }), bytes: Buffer[] = [];
       child.stdout.on("data", (chunk: Buffer) => bytes.push(chunk)); child.once("error", reject);
       child.once("close", (code) => code === 0 ? resolve(Buffer.concat(bytes)) : reject(new Error("DIRECT_NATIVE_CONTROL_FAILED")));
-    });
-    const record = await runOwnedProcess(process.execPath, args, {
+    }), "DIRECT_NATIVE_RESULT_MISSING");
+    const record = await bounded<any>(runOwnedProcess(process.execPath, args, {
       cwd: root, env, timeout: 5000, onStdout: (chunk: Buffer) => chunks.push(chunk),
-    });
+    }), "LITERAL_NATIVE_RESULT_MISSING");
     const text = Buffer.concat(chunks).toString();
     assert.ok(text.startsWith("preload:"), "NATIVE_PRELOAD_CONTROL_MISSING");
     const native = JSON.parse(text.slice("preload:".length));

@@ -35,7 +35,7 @@ setInterval(() => {}, 1000);
             .then(() => { throw new Error("SETUP_TIMEOUT_ACCEPTED"); }, (error: any) => error.record)
           : captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, env, { timeout: 5000 });
         await ownership.ping(); await deadline.fire();
-        const record = await running;
+        const record = await bounded(running!, "ATTACHED_RESULT_MISSING");
         assert.equal(record.timedOut, true);
         assert.equal(runner === "setup" ? record.code : record.exitCode, 7);
         assert.equal(record.signal, null, "Do not invent descendant SIGKILL as leader signal");
@@ -66,10 +66,10 @@ test("successful setup/capture finish promptly without waiting for timeout escal
     }) as typeof spawn;
     syncBuiltinESMExports();
     const env = isolatedEnv(root);
-    const setup = await setupRunner(root, env)("natural-close", process.execPath, ["-e", "process.stdout.write('done')"]);
+    const setup = await bounded<any>(setupRunner(root, env)("natural-close", process.execPath, ["-e", "process.stdout.write('done')"]), "NATURAL_SETUP_RESULT_MISSING");
     assert.ok(closeAt && performance.now() - closeAt < 1500, "NATURAL_SETUP_CLOSE_WAITED_FOR_ESCALATION");
     closeAt = 0;
-    const capture = await captureCommand({ command: "printf done", cwd: root }, env);
+    const capture = await bounded<any>(captureCommand({ command: "printf done", cwd: root }, env), "NATURAL_CAPTURE_RESULT_MISSING");
     assert.equal(setup.code, 0); assert.equal(capture.exitCode, 0);
     assert.equal(setup.timedOut, false); assert.equal(capture.timedOut, false);
     assert.ok(closeAt && performance.now() - closeAt < 1500, "NATURAL_CAPTURE_CLOSE_WAITED_FOR_ESCALATION");
@@ -100,7 +100,7 @@ for (const runner of ["setup", "capture"]) {
           .then(() => { throw new Error("SETUP_TIMEOUT_ACCEPTED"); }, (error: any) => error.record)
         : captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root), { timeout: 1000 });
       await ownership.ping(); await bounded(observedExit, "NATIVE_EXIT_BEFORE_CLEANUP_MISSING"); await deadline.fire();
-      const record = await running;
+      const record = await bounded(running!, "ESCAPED_RESULT_MISSING");
       assert.equal(record.timedOut, true); assert.equal(runner === "setup" ? record.code : record.exitCode, 7); assert.equal(record.signal, null);
       assert.deepEqual(record.killErrors ?? [], [], "NUMERIC_CLEANUP_AUTHORITY_USED");
       assert.deepEqual(runner === "setup" ? await readFile(record.stdout) : record.stdout, Buffer.from("escaped-ready"));
@@ -135,10 +135,10 @@ for (const runner of ["setup", "capture"]) {
       }) as typeof spawn;
       syncBuiltinESMExports();
       const source = "require('node:child_process').spawn(process.execPath,['-e','setTimeout(()=>{},1500)'],{stdio:['ignore',1,2]}).unref();process.stdout.write('prefix');process.exit(0)";
-      const record = runner === "setup"
-        ? await setupRunner(root, isolatedEnv(root))("native-zero-loss", process.execPath, ["-e", source])
+      const record = await bounded<any>(runner === "setup"
+        ? setupRunner(root, isolatedEnv(root))("native-zero-loss", process.execPath, ["-e", source])
           .then(() => { throw new Error("GUARDIAN_LOSS_ACCEPTED"); }, (error: any) => error.record)
-        : await captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root));
+        : captureCommand({ command: `exec ${quote(process.execPath)} -e ${quote(source)}`, cwd: root }, isolatedEnv(root)), "NATIVE_ZERO_LOSS_RESULT_MISSING");
       assert.equal(runner === "setup" ? record.code : record.exitCode, 0); assert.equal(record.signal, null);
       assert.equal(record.spawnError ?? record.launchError, undefined);
       assert.equal(record.durationBoundary, "guardian-loss");
