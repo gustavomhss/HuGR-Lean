@@ -2,11 +2,7 @@ workflow:
   auto_cancel:
     on_new_commit: interruptible
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "push" && ($CI_COMMIT_BRANCH || $CI_COMMIT_TAG)'
-    - if: '($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "api") && $CI_COMMIT_BRANCH'
+    - if: '$CI_PROJECT_ID == "87207373" && $CI_COMMIT_BRANCH == "ci/self-hosted" && $CI_COMMIT_REF_PROTECTED == "true" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "api")'
     - when: never
 
 stages: [verify]
@@ -17,10 +13,10 @@ default:
 
 verify-linux:
   stage: verify
-  timeout: 20m
-  rules:
-    - if: '$CI_PIPELINE_SOURCE'
-  tags: [saas-linux-small-amd64]
+  timeout: 40m
+  resource_group: hugr-lean-local-machine
+  allow_failure: false
+  tags: [hugr-lean-local-linux]
   image: node:22.17.1-bookworm
   script:
     - |
@@ -33,18 +29,20 @@ verify-linux:
       git --version
       node -e "if (process.platform !== 'linux' || process.arch !== 'x64' || process.version !== 'v22.17.1') process.exit(1); console.log(process.platform, process.arch, process.version)"
     - npm ci
-    - npm run check
+    - npm run structure
+    - npm run typecheck
+    - node --import tsx --test --test-concurrency=2 tests/*.test.ts
+    - npm run build
     - npm run smoke
     - npm pack --dry-run
 
 verify-windows:
   stage: verify
-  # Hosted VM/bootstrap plus installed-package checks reached the original 20m limit.
-  timeout: 25m
-  rules:
-    - if: '$CI_PIPELINE_SOURCE'
-  tags: [saas-windows-medium-amd64]
-  # Hosted Windows uses a custom executor and PowerShell, not an image keyword.
+  timeout: 40m
+  tags: [hugr-lean-local-windows]
+  when: manual
+  allow_failure: false
+  # Reserved for a native Windows PowerShell runner; no host is available yet.
   script:
     - |
       $ErrorActionPreference = 'Stop'
@@ -91,43 +89,20 @@ verify-windows:
 
 verify-macos:
   stage: verify
-  timeout: 20m
-  rules:
-    - if: '$CI_PIPELINE_SOURCE'
-  tags: [saas-macos-medium-m1]
-  image: macos-15-xcode-16
-  when: manual
+  timeout: 40m
+  resource_group: hugr-lean-local-machine
+  tags: [hugr-lean-local-macos]
   allow_failure: false
   script:
     - |
       set -eu
       python3 -c 'import sys; assert sys.version_info.major == 3; print(sys.version)'
       git --version
-      node_version=''
-      if command -v node >/dev/null; then
-        node_version="$(node --version)"
-      fi
-      if [ "$node_version" != 'v22.17.1' ]; then
-        base='https://nodejs.org/dist/v22.17.1'
-        archive='node-v22.17.1-darwin-arm64.tar.gz'
-        mkdir -p "$CI_PROJECT_DIR/.ci-node"
-        curl --fail --silent --show-error "$base/$archive" -o "$CI_PROJECT_DIR/.ci-node/$archive"
-        curl --fail --silent --show-error "$base/SHASUMS256.txt" -o "$CI_PROJECT_DIR/.ci-node/SHASUMS256.txt"
-        python3 - "$CI_PROJECT_DIR/.ci-node" "$archive" <<'PY'
-      import hashlib, pathlib, sys
-      root, archive = pathlib.Path(sys.argv[1]), sys.argv[2]
-      rows = [line.split() for line in (root / 'SHASUMS256.txt').read_text().splitlines()]
-      matches = [row[0] for row in rows if len(row) == 2 and row[1] == archive]
-      if len(matches) != 1:
-          raise SystemExit('Expected one exact Node checksum entry')
-      if hashlib.sha256((root / archive).read_bytes()).hexdigest() != matches[0]:
-          raise SystemExit('Node checksum mismatch')
-      PY
-        tar -xzf "$CI_PROJECT_DIR/.ci-node/$archive" -C "$CI_PROJECT_DIR/.ci-node"
-        export PATH="$CI_PROJECT_DIR/.ci-node/node-v22.17.1-darwin-arm64/bin:$PATH"
-      fi
-      node -e "if (process.platform !== 'darwin' || process.arch !== 'arm64' || process.version !== 'v22.17.1') process.exit(1); console.log(process.platform, process.arch, process.version)"
+      node -e "if (process.platform !== 'darwin' || process.arch !== 'x64' || process.version !== 'v22.17.1') process.exit(1); console.log(process.platform, process.arch, process.version)"
     - npm ci
-    - npm run check
+    - npm run structure
+    - npm run typecheck
+    - node --import tsx --test --test-concurrency=2 tests/*.test.ts
+    - npm run build
     - npm run smoke
     - npm pack --dry-run

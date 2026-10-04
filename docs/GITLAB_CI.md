@@ -1,63 +1,93 @@
-# Native GitLab CI
+# Self-hosted GitLab CI
 
 Project: <https://gitlab.com/gmhelmold/hugr-lean> (ID `87207373`).
-Initial branch: `ci/gitlab-native`, baseline `30cf5cc`.
+First branch pipeline: `ci/self-hosted`, baseline `ef9a00c`.
 
 ## Allocation and coverage
 
-The user authorized the namespace's Free GitLab compute allocation. Linux small
-and Windows medium runners were confirmed online for this namespace at planning
-time. Compute minutes are charged to the namespace even for public projects;
-the remaining balance is unknown. Public visibility does not imply unlimited use.
+The user requested dedicated self-hosted verification after hosted quota refusal.
+These jobs use local runners, not GitLab-hosted compute minutes. There is no hosted
+tag or quota fallback. Native macOS and Linux Docker share the user's Mac; Linux
+container success does not prove native macOS or Windows behavior.
 
-| Job | Runner / image | Start |
+| Job | Runner tag / executor / image | Start |
 | --- | --- | --- |
-| `verify-linux` | `saas-linux-small-amd64` / `node:22.17.1-bookworm` | Automatic |
-| `verify-windows` | `saas-windows-medium-amd64` / provider Windows VM | Automatic |
-| `verify-macos` | `saas-macos-medium-m1` / `macos-15-xcode-16` | Manual, blocking |
+| `verify-macos` | `hugr-lean-local-macos` / shell / no image | Automatic |
+| `verify-linux` | `hugr-lean-local-linux` / Docker / `node:22.17.1-bookworm` | Automatic |
+| `verify-windows` | `hugr-lean-local-windows` / native PowerShell / no image | Manual, blocking |
 
-Hosted macOS requires Premium/Ultimate or an eligible Open Source program;
-Free namespace entitlement is not assumed. Its job uses `when: manual` and
-`allow_failure: false`: **Linux/Windows green is not a full green matrix**.
-Until macOS is run successfully, the pipeline remains blocked and macOS coverage
-is pending. This configuration never automatically starts paid macOS compute.
-An operator must establish entitlement and authorization before starting it.
+**No Windows host is available. The full matrix is pending**, even if Mac/Linux
+pass. Windows uses `when: manual` and `allow_failure: false`; it must finish
+successfully before this pipeline can be fully green. Do not treat its manual
+state as success or emulate Windows proof on another OS.
 
-## Runtime and script semantics
+## Routing and isolation
 
-All jobs assert native platform, architecture, exact Node `22.17.1`, and Python 3;
-Git must work. Linux installs Python/Git through apt only if either is missing.
-Windows and macOS use preinstalled Node only at the pinned version; otherwise
-they fetch the official `nodejs.org/dist/v22.17.1` archive and `SHASUMS256.txt`,
-require exactly one matching filename and SHA-256, then extract under `.ci-node`
-and prepend PATH. Windows requires its provider's Python 3 installation.
+Workflow admits only project `87207373`, exact branch `ci/self-hosted`, protected
+ref status `true`, and pipeline sources `push`, `web`, or `api`. Everything else
+is rejected: tags, other branches, forks, merge-request pipelines, schedules,
+and downstream pipelines. Push remains enabled with an open MR. Review changes
+in a draft MR; the protected branch pipeline supplies execution evidence.
 
-Every job runs, in order, `npm ci`, `npm run check`, `npm run smoke`, and
-`npm pack --dry-run`, with normal lifecycle scripts. `check` includes structure,
-typecheck, tests, and build; pack retains its existing prepack build. POSIX setup
-uses `set -eu`; each Windows native command immediately checks `$LASTEXITCODE`.
-PowerShell cmdlet errors terminate via `$ErrorActionPreference = 'Stop'`.
-Jobs are interruptible and never retry automatically. Linux/macOS have a 20-minute
-timeout; Windows has 25 minutes because hosted VM/bootstrap and installed-package
-checks reached the original limit during final packaging. Gate commands are unchanged.
+Before unpausing runners, the lead must protect the exact `ci/self-hosted` branch
+with Maintainer-only push/merge. The lead registers runners locked to project
+`87207373`, with `run_untagged: false`, `access_level: ref_protected`, and only
+their assigned local tags. Tags route jobs; project locking and protection are
+separate server-side controls that YAML cannot configure or prove.
 
-Workflow permits merge requests, branch/tag pushes (including main), and web/API
-branch pipelines. Only branch pushes with an open MR are suppressed to avoid
-duplicate pipelines; web/API remain allowed. Superseded interruptible jobs are
-auto-cancelled. Every admitted pipeline includes all three verification jobs.
-Explicit job rules include MR pipelines; macOS retains its manual job-level `when`.
+Mac/Linux share `resource_group: hugr-lean-local-machine` to serialize jobs across
+pipelines in this project. The lead also sets runner `concurrent = 1` in each
+runner service configuration. Separate services need the shared resource group
+to prevent overlap on the one Mac. All jobs are interruptible, have a 40-minute
+timeout, and use `retry: 0`; superseded interruptible jobs are auto-cancelled.
 
-## Provider references and proof boundary
+## Runtime and gate semantics
 
-- [Windows runner documentation](https://docs.gitlab.com/ci/runners/hosted_runners/windows/)
-  specifies PowerShell and the custom executor: **no `image` or `services`**.
-  Its linked [image recipes](https://gitlab.com/gitlab-org/ci-cd/shared-runners/images/gcp/windows-containers/-/blob/main/cookbooks/preinstalled-software/recipes/languages.rb)
-  document provider-installed languages; these moving recipes do not pin Node.
-- [macOS runner documentation](https://docs.gitlab.com/ci/runners/hosted_runners/macos/)
-  lists the M1 tag, GA `macos-15-xcode-16` image, and entitlement restrictions.
+Every job fails closed unless Node is exactly `22.17.1`, architecture is `x64`,
+platform matches the job, Python is version 3, and Git runs successfully.
+macOS requires preinstalled tools on native Darwin x64: no image, sudo, downloads,
+or tool-version changes. Linux uses the official Node Bookworm Docker image and
+installs Python/Git with apt only if either is missing.
 
-Local YAML parsing, contract mutation probes, and script syntax checks cannot
-prove provider compatibility. The lead must run GitLab server CI lint (including
-`workflow.auto_cancel` support) and actual provider jobs before claiming it.
-Historical GitHub matrix success at `ae4c3b5` does not prove this GitLab matrix.
-Record actual job results and pending macOS coverage separately.
+Mac/Linux run these steps in order, preserving every `npm run check` stage:
+
+```sh
+npm ci
+npm run structure
+npm run typecheck
+node --import tsx --test --test-concurrency=2 tests/*.test.ts
+npm run build
+npm run smoke
+npm pack --dry-run
+```
+
+Only Node test-file scheduling is bounded to 2. The test glob and internal
+process/concurrency tests are unchanged. Pack retains its prepack build.
+POSIX setup uses `set -eu`; command errors fail the job.
+
+Windows retains the original Node bootstrap: use preinstalled `22.17.1` or fetch
+the official Windows x64 archive and `SHASUMS256.txt`, require one exact checksum
+row, verify SHA-256, extract under `.ci-node`, and prepend PATH. Python 3 and Git
+must already work. Its four commands remain `npm.cmd ci`, `npm.cmd run check`,
+`npm.cmd run smoke`, and `npm.cmd pack --dry-run`. `check` runs structure,
+typecheck, tests, and build. PowerShell uses `$ErrorActionPreference = 'Stop'`
+and immediately checks `$LASTEXITCODE` after each native command.
+
+## Ownership and proof boundary
+
+The lead owns registration, branch protection, tokens, service lifecycle, GitLab
+server lint, and actual runner execution. The CI author changes source only.
+Private runtime root: `~/Library/Application Support/HuGR-Lean/gitlab-runner`.
+Mac service label: `hugr-lean-gitlab-runner`; Linux container:
+`hugr-lean-gitlab-linux`. Keep tokens and runner configuration outside Git; never
+print credentials. Use runner-job-scoped Git environment settings to avoid
+credential-helper hangs; do not change global Git configuration.
+
+Local real-parser checks and mutations cover the closed job set, tags, workflow,
+gate steps, runtime assertions, and blocking Windows declaration. They do not
+prove GitLab server acceptance, runner protection, shell/executor compatibility,
+or native job results. The lead must run server CI lint (including auto-cancel
+and workflow semantics) and record actual job results separately. Runtime and
+Mac/Linux results remain unknown until execution; Windows remains unavailable.
+Existing GitHub/AppVeyor configurations remain alternatives and provenance;
+historical or hosted successes do not prove this self-hosted matrix.
