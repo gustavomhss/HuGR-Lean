@@ -4,7 +4,8 @@ The local repository is canonical; the public source destination is
 [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 This destination is source-only for this handoff. A new repository does not automatically
 contain old release assets or establish an npm release. The [README](../README.md#install-and-enable)
-builds from an approved full source SHA; candidate approval and verification remain pending.
+builds from an approved full source SHA; baseline local proof is verified, while final artifact
+verification, CI and candidate approval remain pending.
 
 ## Source and release identities
 
@@ -14,7 +15,7 @@ Source dates below identify commits, not archive build timestamps:
 | --- | --- |
 | Historical `v0.2.0`, local `main` (2026-09-30) | Original release source: `69607794cbb2a3ce6707a509777ac648aa859bdd`; not the completed delivery candidate. |
 | Historical integration (2026-10-03) | `ae4c3b5b5d444f80207c119c2fdc794f5cd954ff`, formerly the installation pin. |
-| Frozen code baseline (2026-10-07) | `56cd420190506e495b6446daf6ec6e4f95c94da2`; documentation is authored on this tree, with full local proof still ongoing. |
+| Frozen code baseline (2026-10-07) | `56cd420190506e495b6446daf6ec6e4f95c94da2`; full local macOS proof independently verified. This is not the final documentation-bearing artifact. |
 | Delivery PR/candidate receipt | Must record the exact full reviewed head externally; approval, CI and release are distinct decisions. |
 
 The old `ae4c3b5` pin predates the final format-profile C1 preservation fix
@@ -36,6 +37,10 @@ The local handoff record is `recovery/2026-10-02/DELIVERY-HANDOFF.md` in the can
 checkout; it is not a shipped/public evidence bundle. Its previous-owner draft upload is
 historical, not a release at the new destination. Neither checksum identifies a new candidate
 build. A copied tag or release description does not prove asset availability.
+Fresh local proof at the frozen baseline includes normal prepack and isolated lifecycle-enabled
+installation. Documentation ships in the tarball, so final repacking, installation, document
+inspection and the exact-head evidence receipt remain forthcoming outside the candidate commit.
+The private baseline receipt is not an available public evidence bundle.
 
 The README uses `npm ci`, then normal `npm pack` (whose `prepack` builds the package),
 then installation of that local archive into a writable npm prefix, followed by doctor.

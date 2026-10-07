@@ -7,31 +7,42 @@ One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra
 
 Node 22+, npm and Git. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 The delivery candidate is **pending human approval**, not a new release.
-Before running commands, replace `FULL_REVIEWED_DELIVERY_SHA` with the full 40-character
-commit SHA from the approved delivery PR and its candidate evidence receipt. Until approval
+Before running commands, replace only `FULL_REVIEWED_DELIVERY_SHA` in the assignment below
+with the full 40-character lowercase hexadecimal SHA from the approved delivery PR and its
+candidate evidence receipt. Until approval
 and that receipt exist, this installation recipe is not an approved installation target.
 Never substitute floating `main` or a branch tip for the reviewed snapshot.
 Run these commands from a directory where you want a fresh clone. Choose an unused folder name
 (shown here as `hugr-lean-reviewed`), and stop if any command fails:
 
 ```sh
+(
+set -eu
+HUGR_LEAN_COMMIT=FULL_REVIEWED_DELIVERY_SHA
+node -e 'const sha = process.argv[1] ?? ""; if (sha.length !== 40 || !/^[0-9a-f]{40}$/.test(sha)) { console.error("Expected approved full 40-character lowercase commit SHA"); process.exit(1); }' "$HUGR_LEAN_COMMIT"
 git clone https://github.com/gustavomhss/HuGR-Lean.git hugr-lean-reviewed
 cd hugr-lean-reviewed
-git checkout --detach FULL_REVIEWED_DELIVERY_SHA
+git checkout --detach "$HUGR_LEAN_COMMIT"
+HUGR_LEAN_HEAD=$(git rev-parse --verify HEAD)
+test "$HUGR_LEAN_HEAD" = "$HUGR_LEAN_COMMIT"
 npm ci
 npm pack
 node --input-type=module -e "import { readFileSync } from 'node:fs'; import { createHash } from 'node:crypto'; console.log(createHash('sha256').update(readFileSync(process.argv[1])).digest('hex'));" ./hugr-lean-0.2.0.tgz
 npm install -g ./hugr-lean-0.2.0.tgz
 hugr-lean doctor
+)
 ```
 
+The subshell stops on failure: invalid SHA syntax fails before clone; failed source selection
+or a mismatched HEAD stops before npm. Syntax and identity checks do not grant human approval.
 `npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
 uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
 directory on `PATH`. The package version remains `0.2.0` pending a human release/version decision.
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for pending local proof, deferred CI and human decisions. The new repository is source-only;
+for verified baseline local proof, pending final artifact inspection, deferred CI and human decisions.
+The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
 Copy `pluginURL` from doctor into your OpenCode configuration:
@@ -44,9 +55,11 @@ Copy `pluginURL` from doctor into your OpenCode configuration:
 ```
 
 Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Historically verified host route: **OpenCode 1.18.17, macOS x64, legacy `opencode run`**.
-Candidate Node 22 core/CLI/storage CI on Linux, macOS and Windows remains pending;
-Actions stays deferred until recorded complete local verification and explicit lead completion.
+Historically and freshly verified local host route at the frozen code baseline:
+**OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
+Final documentation-bearing artifact proof and Linux/macOS/Windows CI remain pending;
+Linux/Windows were not run locally. Actions stays deferred until final candidate verification
+is recorded and the lead explicitly declares completion.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
 When npm registry publication is available, `hugr-lean@0.2.0` can be used as the plugin package name;
