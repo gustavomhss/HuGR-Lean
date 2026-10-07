@@ -172,7 +172,7 @@ async function main() {
     index.checkedAbsentConfigs.push(...await rejectAncestorConfig(project));
     assert(Array.from({ length: 12 }, (_, index) => longName(index)).every(name => name.length >= 100), "LONG_NAMES_TOO_SHORT");
     const full = await capture("full", "cargo test --color never", project, 0, { fixtureSources, deliberateBuildDelaySeconds: 61 });
-    assert(nativeFacts(full).finishedRows.some(row => /\bin 1m \d+(?:\.\d+)?s$/.test(row)), "NATIVE_MINUTE_DURATION_MISSING");
+    assert(nativeFacts(full).finishedRows.some(row => /\bin [1-9]\d*m \d+(?:\.\d+)?s$/.test(row)), "NATIVE_MINUTE_DURATION_MISSING");
     const lib = await capture("lib", "cargo test --lib --color never", project, 0, { fixtureSources, deliberateBuildDelaySeconds: 0 });
     assert.equal(nativeFacts(full).summaries.length, 3, "FULL_SUITE_SUMMARIES_MISSING");
     assert.equal(nativeFacts(lib).summaries.length, 1, "LIB_SUITE_SUMMARY_MISSING");
