@@ -1,6 +1,6 @@
 # Core ownership
 
-Accountable owner and review contact: `gmhelmold`; the lead assigns an independent PR reviewer.
+Accountable owner and review contact: `gustavomhss`; the lead assigns an independent PR reviewer.
 
 - Owned implementation: [engine.ts](engine.ts), [command.ts](command.ts), [normalize.ts](normalize.ts), [lines.ts](lines.ts), [types.ts](types.ts), [index.ts](index.ts).
 - Responsibilities: observation validation, command admission, span integrity, smaller-byte acceptance, and exact fail-open behavior.
