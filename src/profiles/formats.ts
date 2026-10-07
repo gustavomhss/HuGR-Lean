@@ -7,7 +7,7 @@ function keep(result: Draft, span: Span): void { result.pieces.push(span); resul
 function safe(output: string, observation: Observation): boolean {
   return observation.source === "shell" && observation.completeness === "complete" &&
     observation.termination.kind === "exited" && observation.termination.code === 0 &&
-    output.length > 0 && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]|\r(?!\n)/u.test(output);
+    output.length > 0 && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]|\r(?!\n)/u.test(output);
 }
 function args(argv: readonly string[], tool: string): readonly string[] | undefined {
   if (argv[0] === tool) return argv.slice(1);

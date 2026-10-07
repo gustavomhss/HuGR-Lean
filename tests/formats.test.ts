@@ -72,6 +72,37 @@ test("native test/status grammars preserve CRLF and UTF-16 source offsets", () =
   for (const [id, name, expected] of positives) if (id !== "rg") assert.equal(reduced(id, fixture(name).replaceAll("\n", "\r\n")), expected.replaceAll("\n", "\r\n"));
 });
 
+// Insert inside admitted dynamic fields, so malformed report syntax cannot
+// conceal a missing control check. Git path grammar already rejects C1 controls.
+const controlFields = [
+  ["jest", "jest_native", "./jest-native.test.cjs", "file path"],
+  ["jest", "jest_native", "adds café", "test name"],
+  ["vitest", "vitest_native", "vitest-native.test.js", "file path"],
+  ["git-status", "git_status_mixed", "On branch main", "branch name"],
+  ["rg", "grep_single_file_multiple_matches", "fn init() {", "match content"],
+] as const;
+for (const [id, name, field, label] of controlFields) {
+  const input = fixture(name), expected = positives.find((entry) => entry[0] === id && entry[1] === name)?.[2];
+  assert.ok(expected, `${id}: missing reduction golden`);
+  assert.ok(input.includes(field), `${id}: missing insertion anchor`);
+  assert.ok(expected.includes(field), `${id}: missing expected evidence`);
+  const insert = (value: string) => input.replace(field, field + value);
+  test(`${id} ${label} retains ordinary Unicode with a real reduction`, () => {
+    const unicode = "漢字 e\u0301 🔥";
+    assert.equal(reduced(id, insert(unicode)), expected.replace(field, field + unicode));
+  });
+  test(`${id} ${label} declines every C1 control in otherwise admitted grammar`, () => {
+    assert.equal(reduced(id, input), expected, "Unmodified fixture must reduce");
+    const admitted: string[] = [];
+    for (let code = 0x80; code <= 0x9f; code++) {
+      const output = insert(String.fromCodePoint(code));
+      if (profile(id).reduce(output, observation(id, output)) !== undefined)
+        admitted.push(`U+${code.toString(16).toUpperCase().padStart(4, "0")}`);
+    }
+    assert.deepEqual(admitted, [], `${id} ${label}: C1 controls must prevent profile reduction`);
+  });
+}
+
 test("identity uses explicit argv; scripts, lookalikes, custom reporters, and git diff never match", () => {
   for (const [id, argv] of [["jest", ["jest", "--verbose"]], ["vitest", ["vitest", "run"]], ["tsc", ["tsc", "--pretty", "false"]], ["rg", ["rg", "-n", "term", "."]], ["git-status", ["git", "status"]]] as const) {
     assert.equal(profile(id).match(argv), true);
