@@ -1,6 +1,6 @@
 # Profile ownership
 
-Accountable owner and review contact: `gmhelmold`; the lead assigns an independent grammar/evidence reviewer.
+Accountable owner and review contact: `gustavomhss`; the lead assigns an independent grammar/evidence reviewer.
 
 - Owned implementation: [runners.ts](runners.ts), [formats.ts](formats.ts), and [registry](index.ts).
 - Responsibilities: exact identity matching, entire-output admission, summary consistency, critical-evidence declarations, and conservative refusal.

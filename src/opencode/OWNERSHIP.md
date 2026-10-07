@@ -1,6 +1,6 @@
 # OpenCode ownership
 
-Accountable owner and review contact: `gmhelmold`; the lead assigns an independent host-boundary reviewer.
+Accountable owner and review contact: `gustavomhss`; the lead assigns an independent host-boundary reviewer.
 
 - Owned implementation: [index.ts](index.ts) and [config.ts](config.ts); public root routing is [src/index.ts](../index.ts).
 - Responsibilities: proven host metadata mapping, short option validation, exact fail-open mutation behavior, and optional material raw persistence.

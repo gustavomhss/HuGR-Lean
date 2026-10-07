@@ -1,6 +1,6 @@
 # CLI ownership
 
-Accountable owner and review contact: `gmhelmold`; the lead assigns an independent CLI/package reviewer.
+Accountable owner and review contact: `gustavomhss`; the lead assigns an independent CLI/package reviewer.
 
 - Owned implementation: `src/cli/index.ts`, integrated at rebuild `795df94`; `tests/cli.test.ts` witnesses the compiled entry and package `bin` declares its path.
 - Responsibilities: strict filter/raw flags, supplied-byte I/O, raw list/get/purge access, doctor/version reporting, and error/exit semantics 0/1/2.

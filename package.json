@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "engines": { "node": ">=22" },
-  "repository": { "type": "git", "url": "https://github.com/gusmhs/HuGR-Lean.git" },
+  "repository": { "type": "git", "url": "https://github.com/gustavomhss/HuGR-Lean.git" },
   "files": ["dist", "README.md", "LICENSE", "NOTICE", "licenses", "src/**/*.md", "docs", "fixtures/**/SOURCES.md"],
   "exports": {
     ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
