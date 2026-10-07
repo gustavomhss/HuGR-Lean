@@ -276,6 +276,40 @@ test("production presentation-only normalization is idempotent and strictly smal
   exact(second, "not_smaller");
 });
 
+const c1Fields = [
+  ["formats/jest_native.txt", "./jest-native.test.cjs", "file path"],
+  ["formats/jest_native.txt", "adds café", "test name"],
+  ["formats/vitest_native.txt", "vitest-native.test.js", "file path"],
+  ["formats/git_status_mixed.txt", "On branch main", "branch name"],
+  ["formats/grep_single_file_multiple_matches.txt", "fn init() {", "match content"],
+] as const;
+for (const [path, field, label] of c1Fields) {
+  const entry = corpus.find((item) => item.path === path);
+  assert.ok(entry?.expected, `Missing reducing fixture: ${path}`);
+  const expected = entry.expected;
+  assert.ok(entry.input.includes(field) && expected.includes(field), `Missing dynamic field: ${path}`);
+  const insert = (value: string) => entry.input.replace(field, field + value);
+  test(`production ${entry.profile} ${label} reduces ordinary Unicode`, () => {
+    const unicode = "漢字 e\u0301 🔥";
+    reduced(observation(insert(unicode), entry.command), expected.replace(field, field + unicode), entry.profile);
+  });
+  test(`production ${entry.profile} ${label} preserves every C1 control exactly`, () => {
+    reduced(observation(entry.input, entry.command), expected, entry.profile);
+    const failures: string[] = [];
+    for (let code = 0x80; code <= 0x9f; code++) {
+      const output = insert(String.fromCodePoint(code)), bytes = Buffer.byteLength(output, "utf8");
+      for (const presentation of ["unknown", "terminal-rendered"] as const) {
+        const input = observation(output, entry.command, { presentation }), result = run(input);
+        if (result.status !== "passthrough" || result.reason !== "unsupported_output" ||
+          "replacement" in result || result.outputBytes !== bytes ||
+          !Buffer.from(visible(input, result), "utf8").equals(Buffer.from(output, "utf8")))
+          failures.push(`U+${code.toString(16).toUpperCase().padStart(4, "0")} (${presentation}): ${result.status}/${result.reason}`);
+      }
+    }
+    assert.deepEqual(failures, [], `${entry.profile} ${label}: C1 controls must preserve public output`);
+  });
+}
+
 test("common failure, incomplete, unknown, and missing metadata preserve entire corpus", () => {
   const variants: Partial<Observation>[] = [
     { termination: { kind: "exited", code: 1 } }, { termination: { kind: "exited", code: 137 } },
