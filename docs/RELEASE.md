@@ -1,5 +1,13 @@
 # HuGR-Lean 0.2.0 release
 
+> **Historical notice — 2026-09-30:** This record describes the original 0.2.0 delivery,
+> source `69607794cbb2a3ce6707a509777ac648aa859bdd`. Its CI results, assets and reproduction
+> commands remain historical; they do not certify the current candidate or asset availability
+> at `gustavomhss/HuGR-Lean`. The new destination is source-only for this handoff.
+> Current candidate/local-proof/CI status and pending human decisions are in
+> [DELIVERY.md](DELIVERY.md); artifact identities are in [DISTRIBUTION.md](DISTRIBUTION.md).
+> No new release or npm publication is announced here. The original results below are unchanged.
+
 ## Delivered
 - One MIT TypeScript package, five modules: core, profiles, raw, opencode, cli.
 - Eight reducing profiles; tsc and unsupported variants explicitly preserve original.
