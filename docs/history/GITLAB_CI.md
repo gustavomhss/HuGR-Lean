@@ -1,3 +1,7 @@
+# Retired historical guide
+
+> Not operational; do not register runners, trigger jobs or resume account setup. Current delivery uses GitHub gustavomhss/HuGR-Lean; CI remains deferred until completed candidate.
+
 # Self-hosted GitLab CI
 
 Project: <https://gitlab.com/gmhelmold/hugr-lean> (ID `87207373`).
