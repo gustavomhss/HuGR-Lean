@@ -1,6 +1,6 @@
 # Raw ownership
 
-Accountable owner and review contact: `gmhelmold`; the lead assigns an independent persistence/recovery reviewer.
+Accountable owner and review contact: `gustavomhss`; the lead assigns an independent persistence/recovery reviewer.
 
 - Owned implementation: [index.ts](index.ts), including options, serialized schema, publication, bounded scan, TTL cleanup, and cooperative lock recovery.
 - Responsibilities: exact JavaScript-string recovery, serialized-byte accounting, unexpired retention, identifier validation, and preservation of unrelated files.
