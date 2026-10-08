@@ -10,15 +10,5 @@
 --- PASS: TestParallel (0.00s)
     --- PASS: TestParallel/left (0.00s)
     --- PASS: TestParallel/right (0.00s)
-=== RUN   TestParallelQuiet
-=== RUN   TestParallelQuiet/one
-=== PAUSE TestParallelQuiet/one
-=== RUN   TestParallelQuiet/two
-=== PAUSE TestParallelQuiet/two
-=== CONT  TestParallelQuiet/one
-=== CONT  TestParallelQuiet/two
---- PASS: TestParallelQuiet (0.00s)
-    --- PASS: TestParallelQuiet/one (0.00s)
-    --- PASS: TestParallelQuiet/two (0.00s)
 PASS
 ok  	example.com/g01	2.377s

@@ -47,7 +47,7 @@ function options(argv: readonly string[]): Options | undefined {
   const run = seen.get("-run") ?? "";
   const verbose = seen.has("-v"), cover = seen.has("-cover");
   const count = Number(seen.get("-count") ?? "1");
-  if (seen.size && !packageSeen) return undefined;
+  if (seen.size && !packageSeen && !(argv.length === 3 && argv[2] === "-v")) return undefined;
   return { verbose, cover, count, run };
 }
 
@@ -241,8 +241,15 @@ function parse(output: string, config: Options): Reduction | undefined {
     i++;
   }
   if (!lifecycle.complete() || !summary(rows, i, config)) return undefined;
+  // Raw stdout can spell the same child lifecycle as Go. Preserve the entire enclosing tree.
+  const ambiguousRoots = new Set(lifecycle.scopes.filter(scope => scope.children.length || scope.parallel)
+    .map(scope => ancestors(scope)[0]!));
   const retained = new Set<number>();
-  for (const scope of lifecycle.scopes) if (scope.keep) for (const index of scope.rows) retained.add(index);
+  for (const scope of lifecycle.scopes) {
+    if (scope.keep || ambiguousRoots.has(ancestors(scope)[0]!)) {
+      for (const index of scope.rows) retained.add(index);
+    }
+  }
   const kept = rows.filter((_, index) => index >= i || retained.has(index));
   return kept.length < rows.length ? reduction(kept) : undefined;
 }
@@ -252,8 +259,9 @@ const textProfile = nativeProfile("go-test-verbose",
   (output, observation) => {
     const argv = tokenizeCommand(observation.command);
     if (!argv || goMode(argv) !== "text") return undefined;
-    // Keep the original serial/package/cache parser as the unmodified delegate.
-    if (goProfile.match(argv)) return goProfile.reduce(output, observation);
+    // Preserve legacy success; a decline may still be fully validated by the new grammar.
+    const legacy = goProfile.match(argv) ? goProfile.reduce(output, observation) : undefined;
+    if (legacy !== undefined) return legacy;
     const config = options(argv);
     return config ? parse(output, config) : undefined;
   });
