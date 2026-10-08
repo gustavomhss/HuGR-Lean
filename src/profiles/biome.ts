@@ -28,7 +28,7 @@ const header = /^([^\s].*):([1-9]\d*):([1-9]\d*) (lint\/[A-Za-z][A-Za-z0-9_-]*(?
 const summary = /^Checked ([1-9]\d*) (file|files) in \d+(?:\.\d+)?(?:µs|ms|s)\. No fixes applied\.$/;
 const found = /^Found ([1-9]\d*) (warning|warnings)\.$/;
 // Numbered source rows, caret rows, and old/new/both numbered native diff rows.
-const gutter = /^(?:(?: {4}|  > )[1-9]\d* │| {6}│| {4}[1-9]\d* [1-9]\d* │| {4}[1-9]\d* {3}│| {6}[1-9]\d* │) .*$/;
+const gutter = /^(?:(?:  > [1-9]\d*| {4,}[1-9]\d*(?: +[1-9]\d*)?) +│| {6,}│) .*$/;
 const positive = (value: string): number | undefined => {
   const n = Number(value);
   return Number.isSafeInteger(n) && n > 0 ? n : undefined;
@@ -75,7 +75,7 @@ function reduce(output: string, observation: Observation): Reduction | undefined
         blanks = 0;
       } else if (gutter.test(body)) {
         if (blanks > 0) {
-          if (/^ {6}│/.test(body)) return undefined;
+          if (/^ {6,}│/.test(body)) return undefined;
         } else if (section !== "gutter") return undefined;
         section = "gutter";
         blanks = 0;

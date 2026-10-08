@@ -175,6 +175,7 @@ test("Biome complete metadata required by public filter and direct reducer", () 
 
 test("Biome primary warning counts, checked paths, plurality and omissions are consistent", () => {
   for (const input of [native.replace("Found 1 warning.", "Found 2 warnings."), native.replace("Found 1 warning.\n", ""),
+    native.replace("Found 1 warning.", "Found 2 warning."),
     native.replace("Found 1 warning.", "Found 0 warnings."), native.replace("Found 1 warning.", "Found 1 warnings."),
     native.replace("Checked 1 file", "Checked 0 files"), native.replace("Checked 1 file", "Checked 1 files"),
     native.replace("Checked 1 file", "Checked 9007199254740992 files"), native.replace("Found 1 warning.", "Found 9007199254740992 warnings."),
@@ -203,6 +204,9 @@ test("Biome generic paths/rules/messages and wrapped native sections preserve al
   const multiple = warningOnly.replace("Checked 1 file in 2ms. No fixes applied.\nFound 1 warning.\n", "")
     + warningOnly.replaceAll("warning.js", "two.ts").replace("Checked 1 file", "Checked 2 files").replace("Found 1 warning.", "Found 2 warnings.");
   assert.equal(run(multiple).status, "reduced");
+  const wide = native.replaceAll("  > 2 │", "  > 102 │").replaceAll("    1 │", "    101 │")
+    .replaceAll("      │", "        │").replaceAll("    1 1 │", "    101 101 │").replaceAll("    2   │", "    102     │");
+  assert.equal(run(wide).status, "reduced", "gutter widths and positions are structural, not fixture-number spellings");
 });
 
 test("Biome explicit silent/clean, machine output and forged success errors have no economy", () => {
