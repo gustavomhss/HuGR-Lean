@@ -1,0 +1,58 @@
+  "tools": [
+    {
+      "name": "cargo",
+      "executable": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/cargo",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)"
+    },
+    {
+      "name": "rustc",
+      "executable": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc",
+      "version": "rustc 1.98.0 (88d9e12ae 2026-08-18)"
+    },
+    {
+      "name": "rustdoc",
+      "executable": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc",
+      "version": "rustdoc 1.98.0 (88d9e12ae 2026-08-18)"
+    }
+  ],
+  "producer": {
+    "script": "scripts/utility-native-cargo-remaining.mjs",
+    "sha256": "d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f",
+    "bytes": 13924
+  },
+  "amendedProducer": {
+    "script": "scripts/utility-native-cargo.mjs",
+    "sha256": "eac558ce29c3bf8e028d9a40bb25e095426bfb1c5a6d7af40453923149dfb218",
+    "bytes": 13509
+  },
+  "runtime": {
+    "executable": "/usr/local/bin/node",
+    "node": "v22.17.1",
+    "platform": "darwin",
+    "arch": "x64"
+  },
+  "helpers": [
+    {
+      "file": "scripts/real-world/capture.mjs",
+      "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+      "bytes": 4473
+    },
+    {
+      "file": "scripts/real-world/owned-process.mjs",
+      "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+      "bytes": 6278
+    },
+    {
+      "file": "scripts/real-world/process-guardian.mjs",
+      "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+      "bytes": 3314
+    },
+    {
+      "file": "scripts/opencode-boundary.mjs",
+      "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+      "bytes": 22037
+    }
+  ],
+  "environmentPolicy": "isolatedEnvironment; explicit installed-toolchain PATH; private HOME/XDG/CARGO_HOME/target; offline; no inherited Cargo/Rust/Node variables; ancestor Cargo configs rejected",
+  "completedAt": "2026-10-07T23:46:59.634Z"
+}
