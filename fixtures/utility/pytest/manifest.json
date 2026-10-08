@@ -192,3 +192,403 @@
         "sourceFile": "captures/quiet/stdout.log"
       },
       "stderr": {
+        "file": "quiet/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceFile": "captures/quiet/stderr.log"
+      },
+      "expected": {
+        "file": "quiet/quiet.expected.log",
+        "bytes": 901,
+        "sha256": "601a0189693d0e6f50e7a99dba525fa6481a7898da3c7a83140bd400863227ab"
+      },
+      "required": [
+        {
+          "text": "................................................uu-.s.                   [100%]",
+          "occurrence": 0
+        },
+        {
+          "text": "=============================== warnings summary ===============================",
+          "occurrence": 0
+        },
+        {
+          "text": "test_native.py::test_warning_context",
+          "occurrence": 0
+        },
+        {
+          "text": "  /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise/test_native.py:26: UserWarning: HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪",
+          "occurrence": 0
+        },
+        {
+          "text": "    warnings.warn(\"HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪\", UserWarning)",
+          "occurrence": 0
+        },
+        {
+          "text": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+          "occurrence": 0
+        },
+        {
+          "text": "=========================== short test summary info ============================",
+          "occurrence": 0
+        },
+        {
+          "text": "SUBSKIPPED(case='skip') [1] test_native.py:17: HUGR_PYTEST_SUBSKIP_SENTINEL café 雪 🧪",
+          "occurrence": 0
+        },
+        {
+          "text": "SUBSKIPPED(case='skip') [1] test_native.py:20: HUGR_PYTEST_SKIP_SENTINEL café 雪 🧪",
+          "occurrence": 0
+        },
+        {
+          "text": "1202 passed, 2 skipped, 1 warning, 2 subtests passed in 19.24s",
+          "occurrence": 0
+        }
+      ],
+      "material": true,
+      "provenanceRoot": "prep-fHWQpI",
+      "producer": {
+        "script": "scripts/utility-native-pytest.mjs",
+        "sourceSHA256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+      }
+    },
+    {
+      "id": "assertion-failure",
+      "profile": "pytest",
+      "command": "pytest",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "assertion-failure/receipt.json",
+        "bytes": 7063,
+        "sha256": "7fe2619fff7628f4ae710cbaf31d8df8c2adace41329720722292a93e61f670a",
+        "sourceFile": "captures/assertion-failure/receipt.json"
+      },
+      "fixtureSources": [
+        {
+          "file": "prep-fHWQpI/projects/failure/test_failure.py",
+          "bytes": 213,
+          "sha256": "7621639a25ab2d50ca5507b5af571275def07857d0f38e432e40fdc140a65400",
+          "sourceFile": "projects/failure/test_failure.py"
+        },
+        {
+          "file": "prep-fHWQpI/projects/failure/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092",
+          "sourceFile": "projects/failure/LICENSE"
+        },
+        {
+          "file": "prep-fHWQpI/projects/failure/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267",
+          "sourceFile": "projects/failure/pytest.ini"
+        }
+      ],
+      "original": {
+        "file": "assertion-failure/original.log",
+        "bytes": 1202,
+        "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd",
+        "sourceFile": "captures/assertion-failure/original.log"
+      },
+      "stdout": {
+        "file": "assertion-failure/stdout.log",
+        "bytes": 1202,
+        "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd",
+        "sourceFile": "captures/assertion-failure/stdout.log"
+      },
+      "stderr": {
+        "file": "assertion-failure/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceFile": "captures/assertion-failure/stderr.log"
+      },
+      "expected": {
+        "file": "assertion-failure/assertion-failure.expected.log",
+        "bytes": 1202,
+        "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+      },
+      "required": [
+        {
+          "text": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0\nrootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/failure\nconfigfile: pytest.ini\ncollected 1 item\n\ntest_failure.py F                                                        [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_assertion_failure ____________________________\n\n    def test_assertion_failure():\n        actual = \"HUGR_PYTEST_ASSERTION_ACTUAL café 雪 🧪\"\n        expected = \"HUGR_PYTEST_ASSERTION_EXPECTED café 雪 🧪\"\n>       assert actual == expected\nE       AssertionError: assert 'HUGR_PYTEST_...TUAL café 雪 🧪' == 'HUGR_PYTEST_...CTED café 雪 🧪'\nE         \nE         - HUGR_PYTEST_ASSERTION_EXPECTED café 雪 🧪\nE         ?                       ^^^^  ^^\nE         + HUGR_PYTEST_ASSERTION_ACTUAL café 雪 🧪\nE         ?                       ^  ^^^\n\ntest_failure.py:5: AssertionError\n============================== 1 failed in 0.82s ===============================\n",
+          "occurrence": 0
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "prep-fHWQpI",
+      "producer": {
+        "script": "scripts/utility-native-pytest.mjs",
+        "sourceSHA256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+      }
+    },
+    {
+      "id": "opaque-summary",
+      "profile": "pytest",
+      "command": "pytest",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "opaque-summary/receipt.json",
+        "bytes": 5873,
+        "sha256": "760d998664335d5523b472d5932a1ca0dc6e3bacbb378e960248cfb875662bae",
+        "sourceFile": "captures/opaque-summary/receipt.json"
+      },
+      "fixtureSources": [
+        {
+          "file": "prep-fHWQpI/projects/opaque/test_opaque.py",
+          "bytes": 81,
+          "sha256": "ef78be98d04c80d2c38756be43ebcc0e8a7121b01d0e709c48c3f4f6c6505808",
+          "sourceFile": "projects/opaque/test_opaque.py"
+        },
+        {
+          "file": "prep-fHWQpI/projects/opaque/conftest.py",
+          "bytes": 184,
+          "sha256": "2433b58beafefc6997ed5a891c0654331eb47f04f908e54e639e4e7e96e7dfbf",
+          "sourceFile": "projects/opaque/conftest.py"
+        },
+        {
+          "file": "prep-fHWQpI/projects/opaque/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092",
+          "sourceFile": "projects/opaque/LICENSE"
+        },
+        {
+          "file": "prep-fHWQpI/projects/opaque/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267",
+          "sourceFile": "projects/opaque/pytest.ini"
+        }
+      ],
+      "original": {
+        "file": "opaque-summary/original.log",
+        "bytes": 539,
+        "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19",
+        "sourceFile": "captures/opaque-summary/original.log"
+      },
+      "stdout": {
+        "file": "opaque-summary/stdout.log",
+        "bytes": 539,
+        "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19",
+        "sourceFile": "captures/opaque-summary/stdout.log"
+      },
+      "stderr": {
+        "file": "opaque-summary/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceFile": "captures/opaque-summary/stderr.log"
+      },
+      "expected": {
+        "file": "opaque-summary/opaque-summary.expected.log",
+        "bytes": 539,
+        "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19"
+      },
+      "required": [
+        {
+          "text": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0\nrootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/opaque\nconfigfile: pytest.ini\ncollected 1 item\n\ntest_opaque.py .                                                         [100%]\n\nHUGR_PYTEST_OPAQUE_TERMINAL_SUMMARY café 雪 🧪\n============================== 1 passed in 0.14s ===============================\n",
+          "occurrence": 0
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "prep-fHWQpI",
+      "producer": {
+        "script": "scripts/utility-native-pytest.mjs",
+        "sourceSHA256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+      }
+    },
+    {
+      "id": "literal-path",
+      "producer": {
+        "script": "scripts/utility-native-pytest-extra.mjs",
+        "sourceSHA256": "d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"
+      },
+      "profile": "pytest",
+      "command": "pytest test_native.py --color=no",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "literal-path/receipt.json",
+        "bytes": 11569,
+        "sha256": "9c17daea2bf0f1175a41484be4de09a10718070c34ba2defae014325e21712c7",
+        "sourceFile": "captures/literal-path/receipt.json"
+      },
+      "fixtureSources": [
+        {
+          "file": "extra-r2b4ph/projects/noise/test_native.py",
+          "bytes": 734,
+          "sha256": "3f1b45fe9eebfa7cfdf4c0890abc627941a16f9b8710569de151f8e8ab3ea96d",
+          "sourceFile": "projects/noise/test_native.py"
+        },
+        {
+          "file": "extra-r2b4ph/projects/noise/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092",
+          "sourceFile": "projects/noise/LICENSE"
+        },
+        {
+          "file": "extra-r2b4ph/projects/noise/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267",
+          "sourceFile": "projects/noise/pytest.ini"
+        }
+      ],
+      "original": {
+        "file": "literal-path/original.log",
+        "bytes": 2424,
+        "sha256": "31c0ef22e3224135dac4b5e01e93ea8ef6158a81826c0b5a7e364e42281924ca",
+        "sourceFile": "captures/literal-path/original.log"
+      },
+      "stdout": {
+        "file": "literal-path/stdout.log",
+        "bytes": 2424,
+        "sha256": "31c0ef22e3224135dac4b5e01e93ea8ef6158a81826c0b5a7e364e42281924ca",
+        "sourceFile": "captures/literal-path/stdout.log"
+      },
+      "stderr": {
+        "file": "literal-path/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceFile": "captures/literal-path/stderr.log"
+      },
+      "expected": {
+        "file": "literal-path/literal-path.expected.log",
+        "bytes": 1120,
+        "sha256": "4bf3d24f02fc64b43ff52dc87bc85ed3f2e13f87fc62ab9e517237b4c8b89333"
+      },
+      "required": [
+        {
+          "text": "platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0",
+          "occurrence": 0
+        },
+        {
+          "text": "rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise",
+          "occurrence": 0
+        },
+        {
+          "text": "configfile: pytest.ini",
+          "occurrence": 0
+        },
+        {
+          "text": "test_native.py ......................................................... [  4%]",
+          "occurrence": 0
+        },
+        {
+          "text": "................................................................s.       [100%]",
+          "occurrence": 0
+        },
+        {
+          "text": "=============================== warnings summary ===============================",
+          "occurrence": 0
+        },
+        {
+          "text": "test_native.py::test_warning_context",
+          "occurrence": 0
+        },
+        {
+          "text": "  /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise/test_native.py:31: UserWarning: HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪",
+          "occurrence": 0
+        },
+        {
+          "text": "    warnings.warn(\"HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪\", UserWarning)",
+          "occurrence": 0
+        },
+        {
+          "text": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+          "occurrence": 0
+        },
+        {
+          "text": "=========================== short test summary info ============================",
+          "occurrence": 0
+        },
+        {
+          "text": "SKIPPED [1] test_native.py:25: HUGR_PYTEST_SKIP_SENTINEL café 雪 🧪",
+          "occurrence": 0
+        },
+        {
+          "text": "================== 1202 passed, 1 skipped, 1 warning in 1.01s ==================",
+          "occurrence": 0
+        }
+      ],
+      "material": true,
+      "provenanceRoot": "extra-r2b4ph"
+    },
+    {
+      "id": "doctest-path",
+      "producer": {
+        "script": "scripts/utility-native-pytest-extra.mjs",
+        "sourceSHA256": "d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"
+      },
+      "profile": "pytest",
+      "command": "pytest --doctest-modules test_native.py --color=no",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "doctest-path/receipt.json",
+        "bytes": 11605,
+        "sha256": "7be329717e57b20215345e2e53294efc6fa65ada21d022583dce565ff69b7263",
+        "sourceFile": "captures/doctest-path/receipt.json"
+      },
+      "fixtureSources": [
+        {
+          "file": "extra-r2b4ph/projects/noise/test_native.py",
+          "bytes": 734,
+          "sha256": "3f1b45fe9eebfa7cfdf4c0890abc627941a16f9b8710569de151f8e8ab3ea96d",
+          "sourceFile": "projects/noise/test_native.py"
+        },
+        {
+          "file": "extra-r2b4ph/projects/noise/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092",
+          "sourceFile": "projects/noise/LICENSE"
+        },
+        {
+          "file": "extra-r2b4ph/projects/noise/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267",
+          "sourceFile": "projects/noise/pytest.ini"
+        }
+      ],
+      "original": {
+        "file": "doctest-path/original.log",
+        "bytes": 2424,
+        "sha256": "22cd15117ffb1bf73340c0977010845bd3b4a8a53d26f1d75b70a3e41e21da94",
+        "sourceFile": "captures/doctest-path/original.log"
+      },
+      "stdout": {
+        "file": "doctest-path/stdout.log",
+        "bytes": 2424,
+        "sha256": "22cd15117ffb1bf73340c0977010845bd3b4a8a53d26f1d75b70a3e41e21da94",
+        "sourceFile": "captures/doctest-path/stdout.log"
+      },
+      "stderr": {
+        "file": "doctest-path/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceFile": "captures/doctest-path/stderr.log"
+      },
+      "expected": {
+        "file": "doctest-path/doctest-path.expected.log",
+        "bytes": 1120,
+        "sha256": "43285a8fece407ddf4df9a5b16f326dc7dc3657d043f204cb0d1fba4990ab55b"
+      },
+      "required": [
+        {
+          "text": "platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0",
+          "occurrence": 0
+        },
+        {
+          "text": "rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise",
+          "occurrence": 0
