@@ -13,6 +13,14 @@ const identifier = "[A-Za-z_][A-Za-z0-9_-]{0,63}";
 const token = new RegExp(`^${identifier}$`);
 const tripleSyntax = "[A-Za-z0-9_]{1,32}(?:-[A-Za-z0-9_]{1,32}){1,5}";
 const tripleArg = new RegExp(`^${tripleSyntax}$`);
+function featureList(value: string): boolean {
+  if (value.length > 1024) return false;
+  const entries = value.split(/[ ,]+/).filter(Boolean);
+  return entries.length > 0 && entries.length <= 16 && entries.every(entry => {
+    const parts = entry.split("/");
+    return parts.length <= 2 && parts.every(part => token.test(part));
+  });
+}
 type Selector = "lib" | "doc" | "all-targets" | "examples" | "test" | "bin" | "example";
 interface Command {
   selector?: Selector; selected?: string; target?: string; filter?: string;
@@ -77,7 +85,7 @@ function command(argv: readonly string[]): Command | undefined {
     else if (arg === "--all-features" && once("all-features")) allFeatures = true;
     else if (arg === "--features" && once("features")) {
       const value = argv[++i];
-      if (!value || !token.test(value)) return undefined;
+      if (!value || !featureList(value)) return undefined;
       features = true;
     } else if (!arg.startsWith("-") && !result.filter && nameArg.test(arg)) result.filter = arg;
     else return undefined;
@@ -185,8 +193,11 @@ const expanded = nativeProfile("cargo-test", argv => legacy.match(argv) || comma
   (output: string, observation: Observation) => {
     const argv = tokenizeCommand(observation.command);
     if (!argv) return undefined;
-    // A declined legacy grammar stays declined; no broad fallback on legacy argv.
-    if (legacy.match(argv)) return legacy.reduce(output, observation);
+    // Prefer valid legacy reductions; a refusal still requires the complete closed delta grammar.
+    if (legacy.match(argv)) {
+      const result = legacy.reduce(output, observation);
+      if (result !== undefined) return result;
+    }
     const c = command(argv);
     return c ? delta(output, c) : undefined;
   });

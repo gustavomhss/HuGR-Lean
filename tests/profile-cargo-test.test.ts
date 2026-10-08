@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { filter } from "../src/core/engine.js";
+import { tokenizeCommand } from "../src/core/command.js";
 import { cargoProfiles } from "../src/profiles/cargo.js";
 import { familyProfiles } from "../src/profiles/cargo-test.js";
 import type { Observation } from "../src/types.js";
@@ -52,13 +53,14 @@ function accepted(obs: Observation, expected: string): void {
 
 test("C02 exports cargo-test only; native inventory and original boundary hashes", () => {
   assert.deepEqual(familyProfiles.map(p => p.id), ["cargo-test"]);
-  assert.equal(cases.length, 31);
+  assert.equal(cases.length, 35);
   assert.equal(new Set(cases.map(c => c.name)).size, cases.length);
   for (const c of cases) {
     const receipt = JSON.parse(read(c.provenance.receipt));
     const r = receipt.cases.find((r: Case) => r.name === c.name);
     assert.ok(r, c.name);
     assert.equal(r.command, c.command);
+    assert.deepEqual(tokenizeCommand(c.command), ["cargo", ...r.argv], "command identity must equal actual native argv");
     assert.equal(r.completeness, "complete");
     assert.deepEqual(r.termination, c.termination);
     assert.equal(r.error, null); assert.equal(r.signal, null);
@@ -243,5 +245,44 @@ test("REVIEW-C02-bounds: project values are bounded syntax, not fixture constant
   }
   for (const detail of ["optimized + stripped", "unoptimized + debuginfo + future", "fast"]) {
     exact({ ...obs, output: obs.output.replace("[optimized + debuginfo]", `[${detail}]`) });
+  }
+});
+test("LEAD-C02-default-fallback: genuine bare workspace legacy refusal enters complete delta, legacy positives stay equal", () => {
+  const c = cases.find(c => c.name === "C02/default-workspace")!, obs = observation(c);
+  assert.equal(c.command, "cargo test");
+  const original = cargoProfiles.find(p => p.id === "cargo-test")!;
+  assert.equal(original.match(["cargo", "test"]), true);
+  assert.equal(original.reduce(obs.output, obs), undefined);
+  accepted(obs, read(c.expectedFile));
+  for (const stem of ["full", "lib"]) {
+    const base = new URL("../fixtures/utility/cargo/", import.meta.url);
+    const output = readFileSync(new URL(`${stem}/original.log`, base), "utf8");
+    const legacyObs = { ...obs, output, command: stem === "lib" ? "cargo test --lib" : "cargo test" };
+    const result = original.reduce(output, legacyObs);
+    assert.ok(result); assert.deepEqual(profile.reduce(output, legacyObs), result);
+  }
+  exact({ ...obs, output: obs.output.replace("    Finished", "warning: native-shaped diagnostic before finish\n    Finished") });
+  for (const stem of ["nocapture-collision", "show-output-collision", "failure"]) {
+    const witness = cases.find(c => c.name === `C02/${stem}`)!;
+    exact({ ...obs, output: read(witness.file) });
+  }
+});
+test("LEAD-C02-feature-lists: native combined/qualified lists plus labeled full-flag project-value properties", () => {
+  for (const stem of ["workspace-feature-comma", "workspace-feature-space", "package-feature-list"]) {
+    const c = cases.find(c => c.name === `C02/${stem}`)!;
+    accepted(observation(c), read(c.expectedFile));
+  }
+  const c = cases.find(c => c.name === "C02/workspace-feature-comma")!, obs = observation(c), expected = read(c.expectedFile);
+  // Property transforms only: full argv retained, project feature names need no fixture literal checks.
+  for (const value of ["other_pkg/one,other_pkg/two,second-pkg/three", "other_pkg/one other_pkg/two second-pkg/three", "one,two three"]) {
+    const command = obs.command.replace(/--features .+$/, `--features "${value}"`);
+    accepted({ ...obs, command }, expected);
+  }
+  for (const value of ["", " ", "pkg/", "/feature", "pkg/feature/extra", "pkg?/feature", "feature:extra",
+    "x".repeat(65), Array.from({ length: 17 }, (_, i) => `feature_${i}`).join(","), "f".repeat(1025)]) {
+    const command = obs.command.replace(/--features .+$/, `--features "${value}"`);
+    const argv = [...tokenizeCommand(obs.command)!];
+    argv[argv.length - 1] = value;
+    assert.equal(profile.match(argv), false, value); exact({ ...obs, command });
   }
 });
