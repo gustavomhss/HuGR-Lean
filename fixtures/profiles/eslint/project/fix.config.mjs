@@ -1,0 +1,1 @@
+export default [{ rules: { semi: ["warn", "always"], quotes: ["warn", "double"] } }];
