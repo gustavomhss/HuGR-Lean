@@ -172,18 +172,18 @@
     {
       "name": "T01/npx-build-up-to-date", "family": "tsc",
       "command": ["npx", "tsc", "-b", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs", "--verbose", "--pretty", "false"],
-      "file": "npx-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "npx-build-up-to-date/independent.expected.txt",
+      "file": "npx-build-up-to-date/native.txt", "status": "passthrough",
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
-      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 22, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01"}
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 22, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01", "reason": "absolute argv / parent-relative report relation unproven without runtime CWD; original golden retained"}
     },
     {
       "name": "T01/npx-no-install-build-up-to-date", "family": "tsc",
       "command": ["npx", "--no-install", "tsc", "-b", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs", "--verbose", "--pretty", "false"],
-      "file": "npx-no-install-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "npx-no-install-build-up-to-date/independent.expected.txt",
+      "file": "npx-no-install-build-up-to-date/native.txt", "status": "passthrough",
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
-      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 23, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01"}
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 23, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01", "reason": "absolute argv / parent-relative report relation unproven without runtime CWD; original golden retained"}
     },
     {
       "name": "T01/direct-build-force", "family": "tsc",
@@ -192,6 +192,22 @@
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
       "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 24, "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct"}
+    },
+    {
+      "name": "T01/npx-relative-build-up-to-date", "family": "tsc",
+      "command": ["npx", "tsc", "-b", "../../../../../../../../var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs", "--verbose", "--pretty", "false"],
+      "file": "npx-relative-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "npx-relative-build-up-to-date/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#binding-fix-captures", "sequence": 25, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01"}
+    },
+    {
+      "name": "T01/npx-no-install-relative-build-up-to-date", "family": "tsc",
+      "command": ["npx", "--no-install", "tsc", "-b", "../../../../../../../../var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs", "--verbose", "--pretty", "false"],
+      "file": "npx-no-install-relative-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "npx-no-install-relative-build-up-to-date/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#binding-fix-captures", "sequence": 26, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01"}
     }
   ]
 }

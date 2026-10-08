@@ -7,11 +7,14 @@ import type { Observation, Profile, Reduction, Span } from "../core/types.js";
 // but an otherwise identical report from another version is indistinguishable.
 type Build = { project: string; force: boolean };
 const timestamp = /^((?:[1-9]|1[0-2]):[0-5]\d:[0-5]\d [AP]M - )(.+)$/u;
+// Remove only same-directory components. Preserve rootness, every parent and case.
+const sameDots = (value: string): string => value.split("/").filter((part) => part !== ".").join("/");
 function path(value: string): boolean {
-  if (!/^(?:\.{1,2}\/)*\/?[\p{L}\p{M}\p{N}\p{S}_ .@+-]+(?:\/[\p{L}\p{M}\p{N}\p{S}_ .@+-]+)*$/u.test(value)) return false;
-  return !/["'\\:]/u.test(value) && !value.replace(/^(?:\.{1,2}\/)+/u, "").split("/").some((part) => part === "." || part === "..");
+  if (value.split("/").some((part, index) => part === "" && index !== 0)) return false;
+  const form = sameDots(value);
+  if (!/^(?:\.\.\/)*\/?[\p{L}\p{M}\p{N}\p{S}_ .@+-]+(?:\/[\p{L}\p{M}\p{N}\p{S}_ .@+-]+)*$/u.test(form)) return false;
+  return !/["'\\:]/u.test(form) && !form.replace(/^(?:\.\.\/)+/u, "").split("/").some((part) => part === "..");
 }
-const canonical = (value: string): string => value.replace(/^(?:\.{1,2}\/)+/u, "").replace(/^\//u, "");
 function build(argv: readonly string[]): Build | undefined {
   let start = 0;
   if (argv[0] === "tsc") start = 1;
@@ -65,13 +68,13 @@ function reduce(output: string, observation: Observation): Reduction | undefined
   while (rows[cursor]?.text.startsWith("    * ")) {
     const row = rows[cursor++]!, name = row.text.slice(6);
     if (!path(name) || !name.endsWith("/tsconfig.json") ||
-        projects.some((project) => canonical(project) === canonical(name)) || projects.length >= 128) return undefined;
+        projects.some((project) => sameDots(project) === sameDots(name)) || projects.length >= 128) return undefined;
     projects.push(name); keep(row.span);
   }
   // This finite grammar describes a reference solution: the final listed root
   // has no own compilation event. Every preceding project must finish in order.
   const requested = command.project.endsWith("/tsconfig.json") ? command.project : `${command.project}/tsconfig.json`;
-  if (projects.length < 2 || canonical(projects.at(-1)!) !== canonical(requested) || !blank()) return undefined;
+  if (projects.length < 2 || sameDots(projects.at(-1)!) !== sameDots(requested) || !blank()) return undefined;
   let rebuilt = false;
   for (const project of projects.slice(0, -1)) {
     const body = event(), heading = `Project '${project}' `;
@@ -96,9 +99,11 @@ function reduce(output: string, observation: Observation): Reduction | undefined
     if (action) {
       const next = event(), match = next && /^(Building project|Updating output timestamps of project) '([^']+)'\.\.\.$/u.exec(next);
       if (!match || match[1] !== action || !path(match[2]!) || !match[2]!.startsWith("/")) return undefined;
-      const relative = canonical(project), absolute = match[2]!;
-      if (!absolute.endsWith(`/${relative}`)) return undefined;
-      const base = absolute.slice(0, -relative.length);
+      const form = sameDots(project), absolute = sameDots(match[2]!);
+      // An absolute display must agree exactly. A parent-relative display needs
+      // CWD to relate it to an absolute action; that contract is unavailable.
+      if (form.startsWith("../") || (form.startsWith("/") ? absolute !== form : !absolute.endsWith(`/${form}`))) return undefined;
+      const base = absolute.slice(0, -form.length);
       if (actionBase !== undefined && base !== actionBase) return undefined;
       actionBase = base;
       if (!blank()) return undefined;

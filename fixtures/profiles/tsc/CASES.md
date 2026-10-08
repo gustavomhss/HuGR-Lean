@@ -1,6 +1,7 @@
 # T01: native TypeScript capture packet
 
-State: REVIEW, implementation and restored production mutation probe complete.
+State: REVIEW, body and root-binding production probes restored. The latest
+root-binding receipt supersedes the earlier cross-form admission and economy below.
 Base `07ffe15`, branch `campaign/native-v2/T01`. The original capture-only checkpoint
 is `81b6c78`; its historical receipts below are preserved and superseded by the
 implementation receipt at the end. `formats.ts` retains its diagnostic-only stub.
@@ -331,3 +332,61 @@ physical lines; focused test file is 206 physical lines, both below the 400-LOC
 target. Native fixture whitespace findings remain intentional and unmodified.
 Lead review, registry integration and campaign-wide final verification remain
 lead-owned; this branch is not merged.
+
+## Binding fix captures
+
+Cold review reproduced a false binding: the old `canonical()` erased leading
+parents and absolute roots, so the `refs/tsconfig.json` report reduced for argv
+`../refs` and `/refs`. Three public-filter refusal/property tests were added before
+the fix; all three failed on that implementation, after proving the matching
+`refs` positive still reduced. The properties rename projects to `renamed`,
+`Project Refs` and `REFS`, preserving quoted-argument, whitespace and case binding.
+
+`sameDots()` now removes only complete `.` path components. It preserves every
+`..`, leading absolute slash and letter case; repeated separators and interior
+parent components are unsupported. The requested root and reported root must have
+the same path form after this limited dot normalization. No filesystem, CWD,
+environment, realpath or case-folding inference occurs in production. Absolute
+project displays require exact absolute action paths. Parent-relative displays
+with absolute rebuild/update actions refuse because their relationship needs CWD.
+
+Original direct and npx native/golden files remain byte-for-byte unchanged. The two
+original npx argv are absolute while their reports are parent-relative; runtime
+`Observation` has no CWD. Preserving those two *reductions* would contradict the
+required refusal of unproven relations. Their manifest dispositions therefore now
+say passthrough, with original argv and goldens retained as historical evidence.
+The own-profile tests explicitly verify binding refusal, not launcher rejection.
+
+Two additional genuine npx executions restore finite launcher reduction witnesses
+using relative argv that match the reported path forms exactly. Compiler remains
+locally lock-pinned 5.9.3; real `tsc --version` returned `Version 5.9.3`. Same
+isolated PATH/offline settings, host, complete stdout/empty stderr boundary and
+unknown presentation as before. Both exited 0. Each new native argv/CWD is recorded
+unchanged in `cases.json`; no old command was rewritten. Replay from the worktree:
+
+```sh
+T01_PROJECT=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct node fixtures/profiles/tsc/capture-direct.mjs npx-relative
+```
+
+The recorder calculates the actual relative project argument before launching npx.
+Both committed executions used eight `../` components followed by
+`var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs`.
+New hand-authored source-only goldens omit two identical 13-byte time prefixes per
+case, preserving all list paths, reasons, bodies and mixed/terminal newlines.
+Six admitted captures: 4,958 → 4,789 bytes, saving 169. Full 26-case native corpus,
+including the two newly exact-only original npx cases: 21,980 → 21,811 UTF-8 bytes.
+
+Production binding mutation replaced only `sameDots()` with the previous blanket
+parent/root stripping. The selected `root binding|original npx root relation`
+tests failed 6/6, exit 1, zero skips, reproducing both false path equivalence and
+unsafe original npx admission. Restored only that owned production line via
+apply_patch. Post-restoration focused suite/typecheck receipts follow in this file.
+
+Restored check: `node --import tsx --test tests/profile-tsc.test.ts` passed all 36
+tests, zero failures/skips; `npm run typecheck` exited 0. The native inventory test
+independently measured/asserted the 21,980 → 21,811 corpus byte ledger. `git diff
+--exit-code` over all original direct/npx native-and-golden directories confirmed
+they remain unchanged. Only owned source/test/fixture files changed. No shared
+core/types/registry/CI edits, filesystem I/O in the profile or full checks were made.
+Runtime CWD authentication remains unavailable; unproven cross-form relations
+stay exact instead of inheriting the old unsafe admission.
