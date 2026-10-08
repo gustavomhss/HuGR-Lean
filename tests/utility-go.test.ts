@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
-import { relative } from "node:path";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { fileURLToPath } from "node:url";
+import { loadUtility } from "./utility-fixtures.js";
 import { filter } from "../src/core/engine.js";
 import { goProfile } from "../src/profiles/go.js";
 import type { Observation, Profile, Reduction, Span } from "../src/types.js";
@@ -28,11 +27,9 @@ type Case = {
   original: Artifact; stdout: Artifact; stderr: Artifact; expected: Artifact;
   required: Anchor[]; material: boolean;
 };
-const root = new URL("../fixtures/utility/go/", import.meta.url);
-const manifest = JSON.parse(readFileSync(new URL("manifest.json", root), "utf8")) as {
-  schema: string; family: string; tools: { name: string; version: string; executable: string }[];
-  producer: { script: string; sourceSHA256: string }; cases: Case[];
-};
+const native = await loadUtility();
+const manifest = native.manifest("go");
+const provenance = manifest.provenance[0]!;
 const sourceInventory: Artifact = { file: "source-inventory.json", bytes: 5613,
   sha256: "0ed2d81daa636d2316c067d35bd5b460e760e3f4900baa0c7f83c2926264e3e8" };
 const versionReceipt: Artifact = { file: "captures/go-version/receipt.json", bytes: 4719,
@@ -41,7 +38,13 @@ const producerSnapshot: Artifact = { file: "producer-source.mjs", bytes: 15666,
   sha256: "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc" };
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 type ReadArtifact = (file: string) => Buffer;
-const readArtifact: ReadArtifact = file => readFileSync(new URL(file, root));
+const readArtifact: ReadArtifact = file => {
+  if (file === sourceInventory.file) return native.series("go", provenance.sourceInventory);
+  const refs = [...provenance.producerSources, ...provenance.versionCaptures.flatMap(v => [v.capture, v.original, v.stdout, v.stderr])];
+  const stored = refs.find(ref => (ref.sourceFile ?? ref.file) === file ||
+    file === producerSnapshot.file && ref.sourceFile === manifest.producer.script);
+  return native.read("go", stored?.file ?? file.replace(/^programs\//, "fixture-programs/"));
+};
 function bytes(a: Artifact, read = readArtifact): Buffer {
   assert.match(a.file, /^(?:[\w.-]+\/)*[\w.-]+$/);
   assert.ok(!a.file.split("/").includes(".."), "artifact traversal");
@@ -71,8 +74,9 @@ function versionEvidence(version: NativeReceipt, go: Tool, read = readArtifact):
   assert.deepEqual(bytes(version.original, read), bytes(version.stdout, read));
   assert.equal(bytes(version.stderr, read).length, 0);
 }
-function validatedReceipt(c: Case, read = readArtifact, inventoryArtifact = sourceInventory): NativeReceipt {
-  const receipt = JSON.parse(text(c.capture, read)) as NativeReceipt;
+function validatedReceipt(c: Case): NativeReceipt {
+  const read = readArtifact, inventoryArtifact = sourceInventory;
+  const receipt = native.case("go", c.id).captureReceipt as NativeReceipt;
   const roles = { cold: "noise", cached: "noise", failure: "exact", diagnostic: "exact", opaque: "exact" } as const;
   assert.ok(Object.hasOwn(roles, c.id), "native case identity");
   assert.equal(c.role, roles[c.id as keyof typeof roles], "captured role");
@@ -115,11 +119,8 @@ function validatedReceipt(c: Case, read = readArtifact, inventoryArtifact = sour
   return receipt;
 }
 function nativeObservation(c: Case, output = text(c.original)): Observation {
-  const facts = validatedReceipt(c);
-  return { source: "shell", command: facts.command, output,
-    termination: facts.timedOut ? { kind: "timed_out" } : facts.nativeExitObserved && facts.exitCode !== null && facts.signal === null
-      ? { kind: "exited", code: facts.exitCode } : { kind: "unknown" },
-    completeness: facts.complete ? "complete" : "unknown", presentation: "unknown" };
+  validatedReceipt(c);
+  return { ...native.case("go", c.id).observation, output };
 }
 function observation(output: string, command = "go test -v ./..."): Observation {
   return { ...nativeObservation(entry("cold"), output), command };
@@ -182,16 +183,15 @@ function rejected(input: string, obs = observation(input)): void {
   exact(obs);
 }
 
-test("native Go inventory: byte digests, direct receipts, source names, tool versions and contract goldens", () => {
+test("native Go inventory: byte digests, direct receipts, source names, tool versions and contract goldens", async () => {
   assert.equal(manifest.schema, "hugr-lean/utility-corpus/1");
   assert.equal(manifest.family, "go");
   assert.deepEqual(manifest.cases.map(c => c.id), ["cold", "cached", "failure", "diagnostic", "opaque"]);
   assert.deepEqual(manifest.tools.map(t => [t.name, t.version]), [["node", "v22.17.1"], ["go", "go version go1.27.1 darwin/amd64"]]);
   assert.deepEqual(manifest.producer, { script: "scripts/utility-native-go.mjs",
     sourceSHA256: "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc" });
-  const inventory = new Set<string>(["manifest.json", "SOURCES.md", producerSnapshot.file, sourceInventory.file, versionReceipt.file]);
   const version = JSON.parse(text(versionReceipt)) as NativeReceipt;
-  for (const a of [version.original, version.stdout, version.stderr]) { bytes(a); inventory.add(a.file); }
+  for (const a of [version.original, version.stdout, version.stderr]) bytes(a);
   for (const c of manifest.cases) {
     const receipt = validatedReceipt(c);
     assert.equal(receipt.producer.sourceSHA256, manifest.producer.sourceSHA256);
@@ -201,25 +201,29 @@ test("native Go inventory: byte digests, direct receipts, source names, tool ver
     assert.equal(c.profile, "go-test-verbose"); assert.equal(c.command, "go test -v ./...");
     assert.equal(c.original.bytes, c.stdout.bytes + c.stderr.bytes);
     const original = text(c.original), expected = text(c.expected);
-    for (const key of ["original", "stdout", "stderr"] as const) assert.deepEqual(receipt[key], c[key]);
-    for (const source of c.fixtureSources) inventory.add(source.file);
-    for (const source of receipt.fixtureSources) { inventory.add(source.file); inventory.add(source.originalSource.file); }
-    for (const a of [c.capture, c.original, c.stdout, c.stderr, c.expected]) { bytes(a); inventory.add(a.file); }
+    for (const key of ["original", "stdout", "stderr"] as const) {
+      const { sourceFile, ...stored } = c[key];
+      assert.deepEqual(receipt[key], { ...stored, file: sourceFile ?? stored.file });
+    }
+    for (const a of [c.capture, c.original, c.stdout, c.stderr, c.expected]) bytes(a);
     const rows = original.match(/[^\n]*\n|[^\n]+$/g)!;
     const positions = c.role === "noise" ? [1, 2, 3, 14, 15, 16, 17, 18, 31, 32, 33] : rows.map((_, i) => i + 1);
     const keep = positions.map(n => ({ text: rows[n - 1]!, occurrence: rows.slice(0, n - 1).filter(r => r === rows[n - 1]).length }));
     assert.deepEqual(c.required, keep, "every retained physical line, occurrence-aware");
     assert.equal(expected, keep.map(a => a.text).join(""), "explicit retain contract, no filter calls");
     for (const a of c.required) assert.equal(original.slice(...locate(original, a)), a.text);
+    assert.deepEqual(native.case("go", c.id).required.map(a => a.sourceSpan), c.required.map(a => locate(original, a)), "reader UTF-16 anchors agree with independent oracle");
     const saved = c.original.bytes - c.expected.bytes;
     assert.equal(c.material, saved >= 1024 && saved >= c.original.bytes * .1);
     assert.equal(c.expectedStatus, c.role === "noise" ? "reduced" : "passthrough");
     if (c.role === "exact") assert.equal(expected, original);
   }
   assert.ok(manifest.cases.some(c => c.role === "noise" && c.material), "MATERIAL: native family witness");
-  const disk = readdirSync(root, { recursive: true, withFileTypes: true })
-    .filter(d => d.isFile()).map(d => relative(fileURLToPath(root), `${d.parentPath}/${d.name}`));
-  assert.deepEqual(disk.sort(), [...inventory].sort(), "bidirectional owned artifact inventory");
+  // Reader accounts for every normalized artifact, including all authenticated provenance roots.
+  await assert.rejects(native.probe("go", "cold", async ({ write }) => {
+    await write({ file: "unmapped.txt", bytes: 0, sha256: "" }, "unmapped artifact\n");
+  }), /UNMAPPED_ARTIFACT/);
+  await native.descriptorTeeth("go", "cold");
 });
 
 for (const [id, label] of [["cold", "GO-PACKAGES"], ["cached", "GO-CACHE"]] as const) {
@@ -353,61 +357,60 @@ test("Go package-count scope: no RUN package, unbound diagnostics and nested tra
   }
 });
 
-function forgedCapture(c: Case, mutate: (copy: Case, receipt: NativeReceipt) => void): { copy: Case; read: ReadArtifact } {
-  const copy = structuredClone(c), receipt = JSON.parse(text(c.capture)) as NativeReceipt;
-  mutate(copy, receipt);
-  const b = Buffer.from(JSON.stringify(receipt));
-  copy.capture = { file: c.capture.file, bytes: b.length, sha256: sha(b) };
-  return { copy, read: file => file === c.capture.file ? b : readArtifact(file) };
-}
-test("native facts teeth: jointly forged receipt/manifest facts refuse despite matching valid SHA", () => {
+test("native facts teeth: jointly forged receipt/manifest facts refuse despite matching valid SHA", async () => {
   const invalid = [
-    [{ exitCode: 1 }, /captured exitCode/], [{ complete: false }, /captured complete/],
-    [{ nativeSpawned: false }, /captured nativeSpawned/], [{ nativeExitObserved: false }, /captured nativeExitObserved/],
-    [{ signal: "SIGTERM" }, /captured signal/], [{ timedOut: true }, /captured timedOut/],
+    { exitCode: 1 }, { complete: false }, { nativeSpawned: false },
+    { nativeExitObserved: false }, { signal: "SIGTERM" }, { timedOut: true },
   ] as const;
   for (const id of ["cold", "cached"]) {
     const c = entry(id);
     validatedReceipt(c);
-    for (const [delta, error] of invalid) {
-      const { copy, read } = forgedCapture(c, (copy, receipt) => { Object.assign(copy, delta); Object.assign(receipt, delta); });
-      bytes(copy.capture, read); // Self-consistent hash is insufficient; immutable role facts must bite.
-      assert.throws(() => validatedReceipt(copy, read), error);
+    for (const delta of invalid) {
+      await assert.rejects(native.probe("go", id, ({ item, receipt }) => {
+        for (const key of ["exitCode", "complete", "signal", "timedOut"] as const)
+          if (key in delta) Object.assign(item, { [key]: delta[key as keyof typeof delta] });
+        Object.assign(receipt, delta);
+      }), /INDEX_CAPTURE_FACT_MISMATCH|INVALID_NATIVE_FACTS|INCOHERENT_CAPTURE_FACTS/);
     }
   }
   const failure = entry("failure");
   assert.deepEqual(nativeObservation(failure).termination, { kind: "exited", code: 1 });
   assert.equal(validatedReceipt(failure).exitCode, 1);
-  const { copy, read } = forgedCapture(failure, (c, r) => { c.exitCode = 0; r.exitCode = 0; });
-  bytes(copy.capture, read);
-  assert.throws(() => validatedReceipt(copy, read), /captured exitCode/);
+  await assert.rejects(native.probe("go", "failure", ({ item, receipt }) => {
+    item.exitCode = 0; receipt.exitCode = 0;
+  }), /INDEX_CAPTURE_FACT_MISMATCH/);
 });
-test("provenance teeth: valid-SHA wrong snapshot, tool receipt/value, source inventory/origin/executed name", () => {
+test("provenance teeth: valid-SHA wrong snapshot, tool receipt/value, source inventory/origin/executed name", async () => {
   const c = entry("cold");
   validatedReceipt(c);
   const mutations: [((c: Case, r: NativeReceipt) => void), RegExp][] = [
-    [(_, r) => { r.producer.snapshot = { ...c.original }; }, /producer snapshot identity/],
-    [(_, r) => { r.tools.find(t => t.name === "go")!.receipt = { ...sourceInventory }; }, /Go version receipt identity/],
-    [(_, r) => { r.tools.find(t => t.name === "go")!.version = "go version go9.99.9 darwin/amd64"; }, /AssertionError/],
-    [(_, r) => { r.fixtureSources[0]!.origin = "unbound donor"; }, /native source inventory binding/],
-    [(_, r) => { r.fixtureSources[0]!.originalSource.file = "programs/failure/go.mod"; }, /native source inventory binding/],
-    [(_, r) => { r.fixtureSources[0]!.originalSource = { ...c.original }; }, /native source inventory binding/],
+    [(_, r) => { r.producer.snapshot = { ...c.original }; }, /RECEIPT_ARTIFACT_MISMATCH: go\/cold: capture/],
+    [(_, r) => { r.tools.find(t => t.name === "go")!.receipt = { ...c.original }; }, /RECEIPT_ARTIFACT_MISMATCH: go\/cold: capture/],
+    [(_, r) => { r.tools.find(t => t.name === "go")!.version = "go version go9.99.9 darwin/amd64"; }, /RECEIPT_ARTIFACT_MISMATCH: go\/cold: capture/],
+    [(_, r) => { r.fixtureSources[0]!.origin = "unbound donor"; }, /RECEIPT_ARTIFACT_MISMATCH: go\/cold: capture/],
+    [(_, r) => { r.fixtureSources[0]!.originalSource.file = "programs/failure/go.mod"; }, /RECEIPT_ARTIFACT_MISMATCH: go\/cold: capture/],
+    [(_, r) => { r.fixtureSources[0]!.originalSource = { ...c.original }; }, /RECEIPT_ARTIFACT_MISMATCH: go\/cold: capture/],
   ];
   for (const [mutate, error] of mutations) {
-    const { copy, read } = forgedCapture(c, mutate);
-    bytes(copy.capture, read);
-    const forged = JSON.parse(text(copy.capture, read)) as NativeReceipt;
-    bytes(forged.producer.snapshot, read); bytes(forged.tools.find(t => t.name === "go")!.receipt!, read);
-    assert.throws(() => validatedReceipt(copy, read), error);
+    await assert.rejects(native.probe("go", c.id, ({ item, receipt }) => {
+      mutate(item, receipt as NativeReceipt);
+      bytes((receipt as NativeReceipt).producer.snapshot);
+      bytes((receipt as NativeReceipt).tools.find(t => t.name === "go")!.receipt!);
+    }), error);
   }
   bytes(c.original); // Actual wrong artifact has valid SHA/bytes, not malformed digest syntax.
-  assert.throws(() => validatedReceipt(c, readArtifact, c.original), /native source inventory identity/);
-  const saved = JSON.parse(text(sourceInventory)) as NativeSource[];
-  saved[0]!.originalSource.file = "programs/failure/go.mod";
-  const b = Buffer.from(JSON.stringify(saved)), wrong = { ...sourceInventory, bytes: b.length, sha256: sha(b) };
-  const read: ReadArtifact = file => file === wrong.file ? b : readArtifact(file);
-  bytes(wrong, read);
-  assert.throws(() => validatedReceipt(c, read, wrong), /native source inventory identity/);
+  await assert.rejects(native.probe("go", c.id, ({ manifest }) => {
+    manifest.provenance[0]!.sourceInventory = { bytes: c.original.bytes, sha256: c.original.sha256, parts: [{ ...c.original }] };
+  }), /INVALID_JSON/);
+  await assert.rejects(native.probe("go", c.id, async ({ manifest, read, write }) => {
+    const series = manifest.provenance[0]!.sourceInventory;
+    const saved = JSON.parse(native.series("go", series).toString("utf8")) as NativeSource[];
+    saved[0]!.originalSource.file = "programs/failure/go.mod";
+    const b = Buffer.from(JSON.stringify(saved));
+    await write(series.parts[0]!, b); await write(series.parts[1]!, Buffer.alloc(0));
+    series.bytes = b.length; series.sha256 = sha(b);
+    assert.equal(sha(await read(series.parts[0]!.file)), series.sha256, "self-consistent forged inventory hash");
+  }), /INDEX_SOURCE_INVENTORY_MISMATCH/);
   const version = JSON.parse(text(versionReceipt)) as NativeReceipt;
   const go = validatedReceipt(c).tools.find(t => t.name === "go")!;
   versionEvidence(version, go);
