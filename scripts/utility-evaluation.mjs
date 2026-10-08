@@ -94,7 +94,8 @@ function anchors(original, expected, required, context) {
   let sourceEnd = 0, outputEnd = 0;
   return list(required, `${context}: required`).map((anchor) => {
     keys(anchor, ["text", "occurrence"], [], context);
-    demand(nonempty(anchor.text) && Number.isSafeInteger(anchor.occurrence) && anchor.occurrence >= 0, "INVALID_ANCHOR", context);
+    demand(nonempty(anchor.text) && Buffer.from(anchor.text).toString("utf8") === anchor.text
+      && Number.isSafeInteger(anchor.occurrence) && anchor.occurrence >= 0, "INVALID_ANCHOR", context);
     let start = -1, cursor = 0;
     for (let occurrence = 0; occurrence <= anchor.occurrence; occurrence++) {
       start = original.indexOf(anchor.text, cursor);
@@ -133,12 +134,19 @@ function receiptCheck(receipt, item, manifest, context) {
   demand(Number.isFinite(facts.durationMs) && facts.durationMs >= 0 && nonempty(facts.durationBoundary), "INVALID_DURATION_PROVENANCE", context);
   demand(sha(receipt.baseline ?? receipt.baselineSourceSHA)
     && (receipt.sourceHead === undefined || sha(receipt.sourceHead)), "INVALID_SOURCE_PROVENANCE", context);
+  demand(receipt.baseline === undefined || receipt.baselineSourceSHA === undefined
+    || receipt.baseline === receipt.baselineSourceSHA, "CONFLICTING_SOURCE_PROVENANCE", context);
+  demand(receipt.sourceInventorySHA256 === undefined || digest(receipt.sourceInventorySHA256), "INVALID_SOURCE_INVENTORY_DIGEST", context);
   demand(nonempty(receipt.environmentPolicy) || record(receipt.environmentPolicy) || record(receipt.environment), "MISSING_ENVIRONMENT_PROVENANCE", context);
   demand(record(receipt.producer)
     && (receipt.producer.script ?? receipt.producer.file) === manifest.producer.script
     && (receipt.producer.sourceSHA256 ?? receipt.producer.sha256) === manifest.producer.sourceSHA256, "PRODUCER_MISMATCH", context);
-  const streams = receipt.artifacts ?? receipt.streams ?? receipt;
-  for (const key of ["original", "stdout", "stderr"]) sameDigest(streams[key], item[key], `${context}: ${key}`);
+  const streamSets = [receipt.artifacts, receipt.streams, receipt.original === undefined ? undefined : receipt].filter((v) => v !== undefined);
+  demand(streamSets.length > 0, "MISSING_RECEIPT_STREAMS", context);
+  for (const streams of streamSets) {
+    demand(record(streams), "INVALID_RECEIPT_STREAMS", context);
+    for (const key of ["original", "stdout", "stderr"]) sameDigest(streams[key], item[key], `${context}: ${key}`);
+  }
   const sources = list(receipt.fixtureSources, `${context}: receipt.fixtureSources`), mapped = new Set();
   demand(sources.length === item.fixtureSources.length, "SOURCE_INVENTORY_MISMATCH", context);
   for (const source of item.fixtureSources) {
@@ -149,11 +157,18 @@ function receiptCheck(receipt, item, manifest, context) {
     demand(matches.length === 1, "SOURCE_MAPPING_MISMATCH", `${context}: ${name}`);
     sameDigest(matches[0], { ...source, file: name }, `${context}: ${name}`);
   }
+  const receiptTools = list(receipt.tools, `${context}: receipt.tools`);
+  demand(receiptTools.every(record), "INVALID_RECEIPT_TOOL", context);
   for (const tool of manifest.tools) {
-    const direct = receipt.tools?.filter((entry) => entry.name === tool.name) ?? [];
+    const direct = receiptTools.filter((entry) => entry.name === tool.name);
     const version = direct[0]?.version ?? receipt.versions?.[tool.name];
     const executable = direct[0]?.executable ?? receipt.versions?.[`${tool.name}Executable`] ?? receipt.versions?.[`${tool.name}Module`];
     demand(direct.length <= 1 && version === tool.version && executable === tool.executable, "TOOL_PROVENANCE_MISMATCH", `${context}: ${tool.name}`);
+  }
+  for (const tool of receiptTools) {
+    demand(record(tool) && nonempty(tool.name) && nonempty(tool.executable), "INVALID_RECEIPT_TOOL", context);
+    if (tool.version !== undefined) demand(manifest.tools.some((declared) => declared.name === tool.name
+      && declared.version === tool.version && declared.executable === tool.executable), "UNMAPPED_RECEIPT_TOOL", `${context}: ${tool.name}`);
   }
   return facts;
 }
@@ -172,7 +187,7 @@ export async function readUtilityCorpus(root) {
   const ids = new Set(), families = [], cases = [];
   for (const [family, profiles] of Object.entries(FAMILIES)) {
     demand(children.includes(family), "MISSING_FAMILY", family);
-    const files = await inventory(path.join(root, family)), used = new Set(["manifest.json", "SOURCES.md"]);
+    const files = await inventory(path.join(root, family)), used = new Set(["manifest.json", "SOURCES.md"]), sourcePaths = new Set(), snapshotPaths = new Set();
     demand(files.has("manifest.json"), "MISSING_MANIFEST", family);
     demand(files.has("SOURCES.md") && files.get("SOURCES.md").length > 0, "MISSING_SOURCES_NOTE", family);
     decode(files.get("SOURCES.md"), `${family}: SOURCES.md`);
@@ -180,6 +195,7 @@ export async function readUtilityCorpus(root) {
     keys(manifest, ["schema", "family", "tools", "producer", "cases"], [], family);
     demand(manifest.schema === SCHEMA && manifest.family === family, "INVALID_SCHEMA_OR_FAMILY", family);
     tools(manifest.tools, family);
+    demand(manifest.tools.some((tool) => tool.name === family), "MISSING_FAMILY_TOOL", family);
     keys(manifest.producer, ["script", "sourceSHA256"], [], family);
     safe(manifest.producer.script, family);
     demand(digest(manifest.producer.sourceSHA256), "INVALID_PRODUCER_DIGEST", family);
@@ -198,6 +214,7 @@ export async function readUtilityCorpus(root) {
       const local = new Set();
       for (const key of ["capture", "original", "stdout", "stderr", "expected"]) {
         descriptor(item[key], `${context}: ${key}`);
+        demand(item[key].file.endsWith(key === "capture" ? ".json" : key === "expected" ? ".expected.log" : ".log"), "INVALID_ARTIFACT_EXTENSION", `${context}: ${key}`);
         demand(!local.has(item[key].file), "DUPLICATE_ARTIFACT_PATH", context);
         local.add(item[key].file);
       }
@@ -205,22 +222,29 @@ export async function readUtilityCorpus(root) {
       for (const key of ["original", "stdout", "stderr", "expected"]) texts[key] = artifact(files, used, item[key], `${context}: ${key}`);
       demand(nonempty(texts.original) && nonempty(texts.expected), "EMPTY_CASE_OUTPUT", context);
       demand(item.original.bytes === item.stdout.bytes + item.stderr.bytes, "STREAM_LENGTH_MISMATCH", context);
+      if (item.stderr.bytes === 0) demand(texts.original === texts.stdout, "STREAM_CONTENT_MISMATCH", context);
+      if (item.stdout.bytes === 0) demand(texts.original === texts.stderr, "STREAM_CONTENT_MISMATCH", context);
       for (const source of list(item.fixtureSources, `${context}: fixtureSources`)) {
-        demand(!local.has(source.file), "DUPLICATE_ARTIFACT_PATH", context);
+        demand(!local.has(source.file) && (!used.has(source.file) || sourcePaths.has(source.file)), "DUPLICATE_ARTIFACT_PATH", context);
         local.add(source.file);
         artifact(files, used, source, `${context}: fixtureSources`, true);
+        sourcePaths.add(source.file);
       }
       const receipt = json(Buffer.from(artifact(files, used, item.capture, `${context}: capture`)), `${context}: receipt`);
       const facts = receiptCheck(receipt, item, manifest, context);
       if (receipt.producer.snapshot) {
         const snapshot = receipt.producer.snapshot;
+        demand(!used.has(snapshot.file) || snapshotPaths.has(snapshot.file), "DUPLICATE_ARTIFACT_PATH", `${context}: producer snapshot`);
         sameDigest(snapshot, { ...snapshot, sha256: manifest.producer.sourceSHA256 }, `${context}: producer snapshot`);
         artifact(files, used, snapshot, `${context}: producer snapshot`, true);
+        snapshotPaths.add(snapshot.file);
       }
       if (files.has("producer-source.mjs")) {
+        demand(!used.has("producer-source.mjs") || snapshotPaths.has("producer-source.mjs"), "DUPLICATE_ARTIFACT_PATH", `${family}: producer-source.mjs`);
         demand(hash(files.get("producer-source.mjs")) === manifest.producer.sourceSHA256, "PRODUCER_SNAPSHOT_MISMATCH", family);
         decode(files.get("producer-source.mjs"), `${family}: producer-source.mjs`);
         used.add("producer-source.mjs");
+        snapshotPaths.add("producer-source.mjs");
       }
       const saved = item.original.bytes - item.expected.bytes;
       demand(item.material === (saved >= 1024 && saved >= item.original.bytes * 0.1), "MATERIAL_FLAG_MISMATCH", context);
@@ -261,7 +285,7 @@ export async function evaluateUtilityCorpus({ root, filter, createAfterHook }) {
     const row = { id: item.id, family: item.family, role: item.role, command: item.command,
       exitCode: item.exitCode, signal: item.signal, complete: item.complete, timedOut: item.timedOut,
       expectedStatus: item.expectedStatus, expectedProfile: item.profile, material: item.material,
-      inputBytes: item.original.bytes, expectedBytes: item.expected.bytes, savedBytes: item.original.bytes - item.expected.bytes,
+      inputBytes: item.original.bytes, expectedBytes: item.expected.bytes, expectedSavedBytes: item.original.bytes - item.expected.bytes,
       capture: item.capture, original: item.original, expected: item.expected, fixtureSources: item.fixtureSources,
       ok: false, result: null };
     let stage = "filter";
