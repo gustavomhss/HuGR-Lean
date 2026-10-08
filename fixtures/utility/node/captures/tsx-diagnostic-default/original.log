@@ -1,0 +1,17 @@
+TAP version 13
+# Subtest: UTILITY_DIAGNOSTIC_ONLY_CONTEXT
+ok 1 - UTILITY_DIAGNOSTIC_ONLY_CONTEXT
+  ---
+  duration_ms: 5.964921
+  type: 'test'
+  ...
+# UTILITY_DIAGNOSTIC_ONLY_SENTINEL Ω 🚀
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4362.170667
