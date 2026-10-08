@@ -13,7 +13,7 @@ const hash = (data: Buffer) => createHash("sha256").update(data).digest("hex");
 let fixture: Promise<Json> | undefined;
 let temporaryDirectory: string | undefined;
 const candidate = (): Promise<Json> => fixture ??= (async () => {
-  // CI always uses committed fixtures. Explicit override supports local review before lead imports them.
+  // Default proof requires committed fixtures. Explicit override supports local review before lead imports them.
   const referenceRoot = path.resolve(process.env.HUGR_UTILITY_CORPUS_ROOT ?? fileURLToPath(new URL("../fixtures/utility/", import.meta.url)));
   try { assert.ok((await stat(referenceRoot)).isDirectory(), "NOT_CORPUS_DIRECTORY"); }
   catch (cause) { throw new Error(`MISSING_COMMITTED_UTILITY_CORPUS: ${referenceRoot}`, { cause }); }
