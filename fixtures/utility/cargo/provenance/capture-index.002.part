@@ -1,0 +1,257 @@
+        "XDG_STATE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/state",
+        "TMPDIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV",
+        "SHELL": "/bin/sh",
+        "LANG": "en_US.UTF-8",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "npm_config_cache": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/cache/npm",
+        "npm_config_userconfig": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/npmrc",
+        "npm_config_globalconfig": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/global-npmrc",
+        "OPENCODE_CONFIG": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/opencode.json",
+        "OPENCODE_CONFIG_DIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/config/opencode",
+        "OPENCODE_DISABLE_PROJECT_CONFIG": "1",
+        "OPENCODE_DISABLE_DEFAULT_PLUGINS": "1",
+        "OPENCODE_DISABLE_MODELS_FETCH": "1",
+        "OPENCODE_DISABLE_AUTOUPDATE": "1",
+        "OPENCODE_DISABLE_EXTERNAL_SKILLS": "1",
+        "OPENCODE_DISABLE_CLAUDE_CODE_SKILLS": "1",
+        "CARGO_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/cargo-home",
+        "CARGO_TARGET_DIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target",
+        "CARGO_NET_OFFLINE": "true",
+        "RUSTC": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc",
+        "RUSTDOC": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc"
+      },
+      "timeoutMs": 300000,
+      "fixtureSources": [
+        {
+          "file": "Cargo.toml",
+          "sha256": "ec70e8ce2c6956507ae627803fb7c85fd9c4481b5a84a04bcb737e2c85ae0b4b",
+          "bytes": 158
+        },
+        {
+          "file": "Cargo.lock",
+          "sha256": "c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb",
+          "bytes": 112
+        },
+        {
+          "file": "build.rs",
+          "sha256": "22f8135715f88f0ddafcfbde6a2c69c02358e5ea6b72c530ad65807582b182c0",
+          "bytes": 272
+        },
+        {
+          "file": "src/lib.rs",
+          "sha256": "ff816fec47a7e5fa86f107b4daa38ba89c0856d7784bd1b50260e0a21a960b7f",
+          "bytes": 1588
+        },
+        {
+          "file": "tests/native_integration.rs",
+          "sha256": "6edff1bfea411bf1e6f3ff7889ddaf5d1cae5decefc1c9c454f231805daef914",
+          "bytes": 1268
+        }
+      ],
+      "deliberateBuildDelaySeconds": 61,
+      "artifacts": {
+        "original": {
+          "file": "captures/full/original.log",
+          "sha256": "de588a236150859c4fa563f6a735fc350a451f3ad04f94d397c966387c452762",
+          "bytes": 2931
+        },
+        "stdout": {
+          "file": "captures/full/stdout.log",
+          "sha256": "8b69c2f0f060845d2e1d669569d5a103fd6065ea12b7d9a6cc3f0d747fd6be95",
+          "bytes": 2235
+        },
+        "stderr": {
+          "file": "captures/full/stderr.log",
+          "sha256": "40208acb33cae1649aa8c93653b2ffc9b96824dec0c45e65ce268b27c1021a80",
+          "bytes": 696
+        }
+      },
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "complete": true,
+      "durationMs": 136721.158234,
+      "guardianElapsedMs": 137061.416254,
+      "durationBoundary": "pipe-close",
+      "exitDurationMs": 136718.389678,
+      "bookkeepingMs": 1.3994729999976698,
+      "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+      "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+      "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+      "nativeFacts": {
+        "available": true,
+        "finishedRows": [
+          "    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 01s"
+        ],
+        "executableHeaders": [
+          "     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/hugr_utility_cargo-d33d504b26e55d28)",
+          "     Running tests/native_integration.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/native_integration-f4e869b263189acd)"
+        ],
+        "doctestHeaders": [
+          "   Doc-tests hugr_utility_cargo"
+        ],
+        "runningRows": [
+          "running 8 tests",
+          "running 7 tests",
+          "running 1 test"
+        ],
+        "summaries": [
+          "test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+          "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.61s"
+        ],
+        "ignoredRows": [
+          "test tests::ignored_unicode_reason ... ignored, original ignored reason: café 🦀 — native Unicode"
+        ],
+        "passingRows": [
+          "test tests::duplicate_suite_identity ... ok",
+          "test tests::passing_00_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_01_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_02_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_03_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_04_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_05_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::duplicate_suite_identity ... ok",
+          "test tests::passing_06_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_07_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_08_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_09_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_10_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_11_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test src/lib.rs - add (line 4) ... ok"
+        ],
+        "warningRows": [],
+        "errorRows": [],
+        "opaqueRows": [],
+        "streamOrdering": "Observed stdout/stderr chunk arrival order only; no cross-stream causal ordering guarantee."
+      }
+    }
+  ],
+  "failures": [
+    {
+      "name": "AssertionError",
+      "message": "NATIVE_MINUTE_DURATION_MISSING",
+      "stack": "AssertionError [ERR_ASSERTION]: NATIVE_MINUTE_DURATION_MISSING\n    at main (file:///Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/scripts/utility-native-cargo.mjs:175:5)\n    at async file:///Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/scripts/utility-native-cargo.mjs:210:1",
+      "at": "2026-10-07T21:44:35.325Z"
+    }
+  ],
+  "delay": {
+    "seconds": 61,
+    "phase": "cold build.rs build phase",
+    "executionsPlanned": 1,
+    "filteringMeasured": false,
+    "representativeBuildPerformance": false
+  },
+  "environmentPolicy": "isolatedEnvironment; explicit installed-toolchain PATH; private HOME/XDG/CARGO_HOME/target; offline; no inherited Cargo/Rust/Node variables; ancestor Cargo configs rejected",
+  "runtime": {
+    "node": "v22.17.1",
+    "executable": "/usr/local/bin/node",
+    "platform": "darwin",
+    "arch": "x64"
+  },
+  "helpers": [
+    {
+      "file": "scripts/real-world/capture.mjs",
+      "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+      "bytes": 4473
+    },
+    {
+      "file": "scripts/real-world/owned-process.mjs",
+      "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+      "bytes": 6278
+    },
+    {
+      "file": "scripts/real-world/process-guardian.mjs",
+      "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+      "bytes": 3314
+    },
+    {
+      "file": "scripts/opencode-boundary.mjs",
+      "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+      "bytes": 22037
+    }
+  ],
+  "discovery": {
+    "method": "explicit installed toolchain directory; no rustup proxy invocation or configuration",
+    "requestedBin": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin",
+    "toolchainBin": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin",
+    "executables": {
+      "cargo": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/cargo",
+      "rustc": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc",
+      "rustdoc": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc"
+    }
+  },
+  "environment": {
+    "PATH": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/home",
+    "XDG_CONFIG_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/config",
+    "XDG_DATA_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/data",
+    "XDG_CACHE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/cache",
+    "XDG_STATE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/state",
+    "TMPDIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV",
+    "SHELL": "/bin/sh",
+    "LANG": "en_US.UTF-8",
+    "CI": "1",
+    "NO_COLOR": "1",
+    "npm_config_cache": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/cache/npm",
+    "npm_config_userconfig": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/npmrc",
+    "npm_config_globalconfig": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/global-npmrc",
+    "OPENCODE_CONFIG": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/opencode.json",
+    "OPENCODE_CONFIG_DIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/config/opencode",
+    "OPENCODE_DISABLE_PROJECT_CONFIG": "1",
+    "OPENCODE_DISABLE_DEFAULT_PLUGINS": "1",
+    "OPENCODE_DISABLE_MODELS_FETCH": "1",
+    "OPENCODE_DISABLE_AUTOUPDATE": "1",
+    "OPENCODE_DISABLE_EXTERNAL_SKILLS": "1",
+    "OPENCODE_DISABLE_CLAUDE_CODE_SKILLS": "1",
+    "CARGO_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/cargo-home",
+    "CARGO_TARGET_DIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target",
+    "CARGO_NET_OFFLINE": "true",
+    "RUSTC": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc",
+    "RUSTDOC": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc"
+  },
+  "checkedAbsentConfigs": [
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/.cargo/config",
+    "/Users/gustavoschneiter/Documents/.cargo/config.toml",
+    "/Users/gustavoschneiter/.cargo/config",
+    "/Users/gustavoschneiter/.cargo/config.toml",
+    "/Users/.cargo/config",
+    "/Users/.cargo/config.toml",
+    "/.cargo/config",
+    "/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/project/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/project/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/_worktrees/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/HuGR/.cargo/config",
+    "/Users/gustavoschneiter/Documents/HuGR/.cargo/config.toml",
+    "/Users/gustavoschneiter/Documents/.cargo/config",
+    "/Users/gustavoschneiter/Documents/.cargo/config.toml",
+    "/Users/gustavoschneiter/.cargo/config",
+    "/Users/gustavoschneiter/.cargo/config.toml",
+    "/Users/.cargo/config",
+    "/Users/.cargo/config.toml",
+    "/.cargo/config",
+    "/.cargo/config.toml"
+  ],
+  "state": "blocked"
+}
