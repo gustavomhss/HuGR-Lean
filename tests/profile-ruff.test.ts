@@ -158,11 +158,16 @@ test("L03 positions and edit ranges are safe positive integers, ordered and non-
     }
   }
   exact(changed((records) => { records[0].end_location = { row: 1, column: 7 }; }));
+  exact(changed((records) => { records[0].location = { row: 2, column: 1 }; records[0].end_location = { row: 1, column: 100 }; }));
   exact(changed((records) => { records[0].end_location = { row: 0, column: 100 }; }));
   exact(changed((records) => { records[0].fix.edits[0].location = { row: 3, column: 1 }; }));
   for (const next of [{ row: 1, column: 2 }, { row: 1, column: 1 }]) {
     exact(changed((records) => { records[0].fix.edits.push({ content: "x", location: next, end_location: { row: 4, column: 1 } }); }));
   }
+  const insertion = changed((records) => {
+    records[0].fix.edits[0] = { content: "insert 🧪", location: { row: 1, column: 1 }, end_location: { row: 1, column: 1 } };
+  });
+  assert.equal(compacted(insertion), JSON.stringify(JSON.parse(insertion)));
 });
 
 test("L03 generic values, Unicode bodies, unsafe/multiple edits and metrics positions all survive", () => {
