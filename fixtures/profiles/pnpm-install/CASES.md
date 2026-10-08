@@ -46,8 +46,9 @@ commands remain exact negative launcher/producer-safety witnesses.
 | chalk-offline-miss | fresh project/empty store/offline | 0 | Entire failure incl. progress, registry URL/package context and help |
 | chalk-frozen | existing chalk project/lock/store, frozen/offline | 0 | Lockfile/up-to-date/completion lines; no removable progress |
 
-`install-help.txt` is auxiliary exact help, not an installer admission. Preserve all
-238 lines; provenance in SOURCES.md. No npm captures included.
+`P02/install-help` indexes `install-help.txt` as exact-only native help with original
+Node argv, observed exit and hash from capture.py/SOURCES.md. Preserve all 238 lines.
+No npm captures included.
 
 ## Approved grammar and limits
 
@@ -98,7 +99,7 @@ Changing bytes in memory makes hash comparison fail; originals never mutated.
 Typecheck instrument exercised with intentional external TypeScript error, then
 repository `npm run typecheck`. Empty-profile baseline failed six initial native
 golden assertions; later fresh-frozen baseline independently went red.
-`node --import tsx --test tests/profile-pnpm-install.test.ts`: 13 scoped tests.
+`node --import tsx --test tests/profile-pnpm-install.test.ts`: 14 scoped tests.
 Mutation probes in owned parser, each targeted named test failed:
 
 - Drop WARN rows from retained spans -> warning-context golden mismatch.
@@ -106,8 +107,10 @@ Mutation probes in owned parser, each targeted named test failed:
 - Remove final-row exhaustion check -> malformed/unknown admission test reduced.
 - Remove ignore-pnpmfile requirement -> producer-safety negative test reduced.
 
-All probes restored to compiling checkpoint parser; scoped suite 13/13 and
+All probes restored to compiling checkpoint parser; scoped suite 14/14 and
 typecheck pass after restoration. Owned parser diff against checkpoint is empty.
 Native index tests verify original argv equals command tokens, raw SHA-256,
 changed-byte positive control, unique IDs, dispositions and golden correspondence.
+Manifest walk covers every native text input/golden; deleting help entry in memory
+makes correspondence fail. Original help bytes and approved parser remain unchanged.
 Lead review required before registry integration or merge.

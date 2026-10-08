@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
 import { filter } from "../src/core/index.js";
 import type { Observation } from "../src/core/types.js";
@@ -34,7 +34,7 @@ function exact(output: string, cmd = command) {
 }
 
 test("P02/native index authenticates actual argv and unchanged raw captures", () => {
-  assert.equal(cases.length, 27);
+  assert.equal(cases.length, 28);
   assert.equal(new Set(cases.map(c => c.name)).size, cases.length);
   for (const c of cases) {
     assert.deepEqual(tokenizeCommand(c.command), c.provenance.argv, c.name);
@@ -42,6 +42,13 @@ test("P02/native index authenticates actual argv and unchanged raw captures", ()
     assert.notEqual(createHash("sha256").update(raw(c.file) + "mutation").digest("hex"), c.provenance.sha256);
     assert.equal(c.status, safe.some(name => c.name === `P02/${name}`) ? "reduced" : "passthrough", c.name);
   }
+});
+test("P02/manifest walk includes every native text input and golden, omission control fails", () => {
+  const disk = readdirSync(root, { recursive: true }).filter(file => file.endsWith(".txt")).sort();
+  const declared = (index: readonly Case[]) => index.flatMap(c => c.expectedFile ? [c.file, c.expectedFile] : [c.file]).sort();
+  assert.ok(disk.includes("install-help.txt"));
+  assert.deepEqual(declared(cases), disk);
+  assert.throws(() => assert.deepEqual(declared(cases.filter(c => c.file !== "install-help.txt")), disk));
 });
 for (const name of safe) test(`P02/${name} direct native golden reduces baseline`, () => {
   const c = cases.find(c => c.name === `P02/${name}`)!;
