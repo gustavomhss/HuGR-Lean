@@ -1,0 +1,123 @@
+{
+  "schema": "hugr-lean/utility-corpus/1",
+  "family": "cargo",
+  "tools": [
+    {"name":"cargo","version":"cargo 1.98.0 (797e8a9bc 2026-08-05)","executable":"/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/cargo"},
+    {"name":"rustc","version":"rustc 1.98.0 (88d9e12ae 2026-08-18)","executable":"/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc"},
+    {"name":"rustdoc","version":"rustdoc 1.98.0 (88d9e12ae 2026-08-18)","executable":"/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc"}
+  ],
+  "producer": {"script":"scripts/utility-native-cargo.mjs","sourceSHA256":"a2996b182210fee3a591edb7e60b15f9979402b48021a3e687ca53cf0bca27da"},
+  "cases": [
+    {
+      "id":"full", "profile":"cargo-test", "command":"cargo test --color never",
+      "role":"noise", "expectedStatus":"reduced", "exitCode":0, "complete":true, "signal":null, "timedOut":false,
+      "capture":{"file":"full/receipt.json","sha256":"800882cc0c1d6ee679e560e13dfbf1beef60fdf70df776d54334cfb7b1f2b0b3","bytes":10300},
+      "fixtureSources": [
+        {"file":"sources/full/Cargo.toml","sourceFile":"Cargo.toml","sha256":"ec70e8ce2c6956507ae627803fb7c85fd9c4481b5a84a04bcb737e2c85ae0b4b","bytes":158},
+        {"file":"sources/full/Cargo.lock","sourceFile":"Cargo.lock","sha256":"c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb","bytes":112},
+        {"file":"sources/full/build.rs","sourceFile":"build.rs","sha256":"22f8135715f88f0ddafcfbde6a2c69c02358e5ea6b72c530ad65807582b182c0","bytes":272},
+        {"file":"sources/full/src/lib.rs","sourceFile":"src/lib.rs","sha256":"ff816fec47a7e5fa86f107b4daa38ba89c0856d7784bd1b50260e0a21a960b7f","bytes":1588},
+        {"file":"sources/full/tests/native_integration.rs","sourceFile":"tests/native_integration.rs","sha256":"6edff1bfea411bf1e6f3ff7889ddaf5d1cae5decefc1c9c454f231805daef914","bytes":1268}
+      ],
+      "original":{"file":"full/original.log","sha256":"de588a236150859c4fa563f6a735fc350a451f3ad04f94d397c966387c452762","bytes":2931},
+      "stdout":{"file":"full/stdout.log","sha256":"8b69c2f0f060845d2e1d669569d5a103fd6065ea12b7d9a6cc3f0d747fd6be95","bytes":2235},
+      "stderr":{"file":"full/stderr.log","sha256":"40208acb33cae1649aa8c93653b2ffc9b96824dec0c45e65ce268b27c1021a80","bytes":696},
+      "expected":{"file":"full/full.expected.log","sha256":"89901d0d96daaba3fb28a2dff07ce6939dc8a9a7572ea4cc831e12c972ffae73","bytes":914},
+      "required": [
+        {"text":"    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 01s","occurrence":0},
+        {"text":"     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/hugr_utility_cargo-d33d504b26e55d28)","occurrence":0},
+        {"text":"test tests::ignored_unicode_reason ... ignored, original ignored reason: café 🦀 — native Unicode","occurrence":0},
+        {"text":"test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s","occurrence":0},
+        {"text":"     Running tests/native_integration.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/native_integration-f4e869b263189acd)","occurrence":0},
+        {"text":"test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s","occurrence":0},
+        {"text":"   Doc-tests hugr_utility_cargo","occurrence":0},
+        {"text":"test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.61s","occurrence":0}
+      ],
+      "material":true
+    },
+    {
+      "id":"lib", "profile":"cargo-test", "command":"cargo test --lib --color never",
+      "role":"noise", "expectedStatus":"reduced", "exitCode":0, "complete":true, "signal":null, "timedOut":false,
+      "capture":{"file":"lib/receipt.json","sha256":"670399ba8a13f1130b4829d5e42411a3f3184a9d15d7c9d3be167f8211c95ce8","bytes":10793},
+      "fixtureSources": [
+        {"file":"sources/full/build.rs","sourceFile":"build.rs","sha256":"22f8135715f88f0ddafcfbde6a2c69c02358e5ea6b72c530ad65807582b182c0","bytes":272},
+        {"file":"sources/lib/Cargo.lock","sourceFile":"Cargo.lock","sha256":"37c075e3a501a668c75cbbf0831ab4a084f28ab26f763bd2b9b605262da58908","bytes":203},
+        {"file":"sources/full/Cargo.toml","sourceFile":"Cargo.toml","sha256":"ec70e8ce2c6956507ae627803fb7c85fd9c4481b5a84a04bcb737e2c85ae0b4b","bytes":158},
+        {"file":"sources/full/src/lib.rs","sourceFile":"src/lib.rs","sha256":"ff816fec47a7e5fa86f107b4daa38ba89c0856d7784bd1b50260e0a21a960b7f","bytes":1588},
+        {"file":"sources/full/tests/native_integration.rs","sourceFile":"tests/native_integration.rs","sha256":"6edff1bfea411bf1e6f3ff7889ddaf5d1cae5decefc1c9c454f231805daef914","bytes":1268}
+      ],
+      "original":{"file":"lib/original.log","sha256":"23bc946303cdfbadf1f8aeaeb3f85e809a7dcf2e5fe7d7ec548e0c3870e67f18","bytes":1375},
+      "stdout":{"file":"lib/stdout.log","sha256":"52d45a2449b8fab1a6910a1230c75d6e42ca810ab2e675bb99017b6fc6b3ed64","bytes":1094},
+      "stderr":{"file":"lib/stderr.log","sha256":"4cebbfe1ba85e9eb48ec59031402571b5c490ae92b0e173d5e8ed1243bfe5314","bytes":281},
+      "expected":{"file":"lib/lib.expected.log","sha256":"e410624f62c738f76ac96252a37fb6b88fb9b07e608f13c201aa23814bd71fa4","bytes":478},
+      "required": [
+        {"text":"    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s","occurrence":0},
+        {"text":"     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/hugr_utility_cargo-d33d504b26e55d28)","occurrence":0},
+        {"text":"test tests::ignored_unicode_reason ... ignored, original ignored reason: café 🦀 — native Unicode","occurrence":0},
+        {"text":"test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s","occurrence":0}
+      ],
+      "material":false
+    },
+    {
+      "id":"failure", "profile":"cargo-test", "command":"cargo test --color never",
+      "role":"exact", "expectedStatus":"passthrough", "exitCode":101, "complete":true, "signal":null, "timedOut":false,
+      "capture":{"file":"failure/receipt.json","sha256":"d2c74e8687f65720a97f74f8fccab1254d7d18609274643d674a7af092cc988b","bytes":10865},
+      "fixtureSources": [
+        {"file":"sources/failure/Cargo.lock","sourceFile":"Cargo.lock","sha256":"20a2dbf34125a49cfeab19649df775282bcde3dc829568fb152a9d831a123a2b","bytes":104},
+        {"file":"sources/failure/Cargo.toml","sourceFile":"Cargo.toml","sha256":"aca7a8163a1ff84a0c7318187b9dea3c7929429ee6ba92201a42766ec76b6e3a","bytes":137},
+        {"file":"sources/failure/src/lib.rs","sourceFile":"src/lib.rs","sha256":"e89842279f2725fa77cfe7a52b7d76fe56889e6b463d01eff056169ab15ee492","bytes":118}
+      ],
+      "original":{"file":"failure/original.log","sha256":"d58e0b3e09316da82c38cb4a26e50234aaea8a7bd386f7bb87f303c040d1f685","bytes":642},
+      "stdout":{"file":"failure/stdout.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},
+      "stderr":{"file":"failure/stderr.log","sha256":"d58e0b3e09316da82c38cb4a26e50234aaea8a7bd386f7bb87f303c040d1f685","bytes":642},
+      "expected":{"file":"failure/failure.expected.log","sha256":"d58e0b3e09316da82c38cb4a26e50234aaea8a7bd386f7bb87f303c040d1f685","bytes":642},
+      "required": [
+        {"text":"   Compiling hugr_utility_cargo_failure v0.1.0 (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/remaining-Ak3JfQ/projects/failure)","occurrence":0},
+        {"text":"error: HUGR_CARGO_COMPILE_ERROR_SENTINEL café 🦀","occurrence":0},
+        {"text":" --> src/lib.rs:2:1","occurrence":0},
+        {"text":"  |","occurrence":0},
+        {"text":"2 | compile_error!(\"HUGR_CARGO_COMPILE_ERROR_SENTINEL café 🦀\");","occurrence":0},
+        {"text":"  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^","occurrence":0},
+        {"text":"error: could not compile `hugr_utility_cargo_failure` (lib) due to 1 previous error","occurrence":0},
+        {"text":"warning: build failed, waiting for other jobs to finish...","occurrence":0},
+        {"text":"error: could not compile `hugr_utility_cargo_failure` (lib test) due to 1 previous error","occurrence":0}
+      ],
+      "material":false
+    },
+    {
+      "id":"warning", "profile":"cargo-test", "command":"cargo test --color never",
+      "role":"exact", "expectedStatus":"passthrough", "exitCode":0, "complete":true, "signal":null, "timedOut":false,
+      "capture":{"file":"warning/receipt.json","sha256":"6d9646957d15bc3b8ad52c16a40d23ca02284b614479b54fa437fb3639270f5f","bytes":11436},
+      "fixtureSources": [
+        {"file":"sources/warning/Cargo.lock","sourceFile":"Cargo.lock","sha256":"d07b1301efad9b51b53621c065a6545191fad3aeb6620816e5cbb26d01a93608","bytes":104},
+        {"file":"sources/warning/Cargo.toml","sourceFile":"Cargo.toml","sha256":"8f9d60d36465e96a580d7d393237c47ef89f698e4f4db705bd9b284e7fc922a2","bytes":137},
+        {"file":"sources/warning/src/lib.rs","sourceFile":"src/lib.rs","sha256":"50f09a191f4a40a6e91c3d2044ecb4da7bc5b663555c4ce3df2a296d4bac2665","bytes":194}
+      ],
+      "original":{"file":"warning/original.log","sha256":"5b6c11654de17ab77137edfe98f5d41abb410170711d9a3964c974f3192a0f0c","bytes":1226},
+      "stdout":{"file":"warning/stdout.log","sha256":"3e07351a55801724fb4111d718203873c48423ecbd4bc19e277e598f69c1a687","bytes":269},
+      "stderr":{"file":"warning/stderr.log","sha256":"4bda7da885f4603e5e3f0d249ce57ffacc7cea0d56541a9d5e23fd1a76b8a25b","bytes":957},
+      "expected":{"file":"warning/warning.expected.log","sha256":"5b6c11654de17ab77137edfe98f5d41abb410170711d9a3964c974f3192a0f0c","bytes":1226},
+      "required": [
+        {"text":"   Compiling hugr_utility_cargo_warning v0.1.0 (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/remaining-Ak3JfQ/projects/warning)","occurrence":0},
+        {"text":"warning: function `original_unused_warning_sentinel` is never used","occurrence":0},
+        {"text":" --> src/lib.rs:2:4","occurrence":0},
+        {"text":"  |","occurrence":0},
+        {"text":"2 | fn original_unused_warning_sentinel() {}","occurrence":0},
+        {"text":"  |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^","occurrence":0},
+        {"text":"  |","occurrence":1},
+        {"text":"  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default","occurrence":0},
+        {"text":"warning: `hugr_utility_cargo_warning` (lib) generated 1 warning","occurrence":0},
+        {"text":"warning: `hugr_utility_cargo_warning` (lib test) generated 1 warning (1 duplicate)","occurrence":0},
+        {"text":"    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.90s","occurrence":0},
+        {"text":"     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/remaining-Ak3JfQ/target-controls/debug/deps/hugr_utility_cargo_warning-c25b74d3f334118f)","occurrence":0},
+        {"text":"running 1 test","occurrence":0},
+        {"text":"test tests::compiler_warning_control ... ok","occurrence":0},
+        {"text":"test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s","occurrence":0},
+        {"text":"   Doc-tests hugr_utility_cargo_warning","occurrence":0},
+        {"text":"running 0 tests","occurrence":0},
+        {"text":"test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s","occurrence":0}
+      ],
+      "material":false
+    }
+  ]
+}
