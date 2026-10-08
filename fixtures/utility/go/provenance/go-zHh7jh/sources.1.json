@@ -1,0 +1,10 @@
+    "sha256": "3f33e5f58cef75c1891e1b7692e7ef6f93cad44a46bd1dfa8a6598b7ff0dc4f5",
+    "originalSource": {
+      "file": "programs/opaque/opaque/opaque_test.go",
+      "bytes": 300,
+      "sha256": "3f33e5f58cef75c1891e1b7692e7ef6f93cad44a46bd1dfa8a6598b7ff0dc4f5"
+    },
+    "license": "MIT",
+    "origin": "original; no donor"
+  }
+]
