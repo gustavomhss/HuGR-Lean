@@ -1,7 +1,9 @@
 # L02 Biome native captures
 
-Capture-only packet at baseline `07ffe15e2263c2925778022194c5385807216603`.
-`cases.json` uses `native-cases1`; commands are the actual direct Biome argv,
+Capture baseline `07ffe15e2263c2925778022194c5385807216603`; implementation follows
+lead-approved header-bar-only policy. `cases.json` uses `hugr-lean/native-cases/1`;
+original full manifest is preserved verbatim in `capture-receipt.json`.
+Commands are the actual direct Biome argv,
 not the Node/Python capture driver. Original stdout/stderr share one real pipe.
 All observations: exited, complete, presentation unknown. No byte normalization.
 
@@ -10,8 +12,8 @@ All observations: exited, complete, presentation unknown. No byte normalization.
 | check-clean | check success, file count, duration, no fixes | Exact informational summary; no-noise witness |
 | lint-clean | lint success, file count, duration, no fixes | Exact informational summary; no-noise witness |
 | format-clean | format success, file count, duration, no fixes | Exact informational summary; no-noise witness |
-| lint-warning-advice | exit 0 warning + information, Unicode snippets, two fix suggestions | Retain diagnostics; grammar candidate only |
-| check-warning-advice | same diagnostics through check, exit 0 | Retain diagnostics; grammar candidate only |
+| lint-warning-advice | exit 0 warning + information, Unicode snippets, two fix suggestions | Reduced: two header bars only, 285 bytes |
+| check-warning-advice | same diagnostics through check, exit 0 | Reduced: two header bars only, 285 bytes |
 | lint-warning-failure | warning promoted to command failure by flag | Nonzero: exact |
 | check-multifile-failure | three paths, warning/info/error/format diff, counts | Nonzero: exact |
 | lint-error | debugger diagnostic, unsafe removal suggestion | Nonzero: exact |
@@ -28,9 +30,12 @@ All observations: exited, complete, presentation unknown. No byte normalization.
 
 Independent evidence: each case retains `biome.json`, input files under `before/`,
 resulting files under `after/`, and complete combined `output.txt`. Hashes and byte
-sizes reside in provenance. No expectedFile: no parser/golden claimed. Parser tests
-and baseline red/green are deferred to implementation owner; capture mutation
-probe checks hashes only, not production preservation behavior.
+sizes reside in original receipt provenance. The two `expected.txt` files are
+independently authored native goldens, deleting only header glyph runs of 55 and
+40 characters. `tests/profile-biome.test.ts` verifies their exact original-source
+complement and all prefix/body/footer required spans. Public custom filter with
+empty profiles is the baseline; initial scaffold produced two real failing native
+acceptance tests. The implemented custom family now passes those assertions.
 
 Required intact: all messages, diagnostic codes/categories/severities, positions,
 paths, Unicode source/snippets, contextual advice/help, safe/unsafe fix labels and
@@ -38,10 +43,25 @@ diffs, machine fix operations, counts, source changes, and command-failure text.
 Biome JSON location offsets are producer data; do not reinterpret them as HuGR
 UTF-16 spans. Future profile spans must index the original output in UTF-16.
 
-Proposed removable material: only decorative horizontal header rules and blank
-layout lines in successful plain-text diagnostics, after complete grammar proves
-all blocks, summary counts, boundaries and required spans. No grammar implemented;
-admitted removable bytes and demonstrated savings are **0**. Timing and summaries
-remain evidence. No ANSI stripping under unknown presentation. JSON is not a bare
-JSON document: the experimental warning prefix and nonzero textual failure suffix
-are part of original output.
+Approved removable material: ONLY decorative terminal `━` runs in unindented
+successful plain lint/check diagnostic headers. Prefix/category/position/FIXABLE,
+all body rows, blank padding, source carets, help, fix diffs, counts and timing stay
+exact. Whole grammar requires every block's info/warning primary, native layouts,
+complete footer and consistent warning/file counts. Unknown lines/controls, ANSI,
+CR, omitted diagnostics, pending blocks and repeated footers refuse. Named paths
+are generic and distinct path count cannot exceed checked files; rules/messages
+are not whitelisted. Information primaries have no separate summary count.
+
+`familyProfiles` exports `biome`; registry remains lead-owned. Command identity
+admits direct bare `biome` or structural absolute Unix executable ending `/biome`;
+no Node/npx alias. Closed captured flags are recognized; only successful plain
+check/lint without write/unsafe/reporter/forced-color are reducible. Explicit
+`--colors=off` is optional, never injected. Presentation must be unknown so the
+profile cannot reduce a core-normalized representation instead of original bytes.
+
+Economy: both reduced native cases are 1577 -> 1292 UTF-8 bytes, saving 285 bytes
+(95 glyphs); each removes the same two ordered source spans. Other 16 native cases
+are exact, with zero economy. JSON is already compact; experimental prefix and
+failure suffix make whole-output passthrough the approved safety disposition.
+Clean summaries and silent output are no-noise witnesses, not fake reductions.
+Provider `6b36dcd` JSON helper remains separate, unused and unedited.

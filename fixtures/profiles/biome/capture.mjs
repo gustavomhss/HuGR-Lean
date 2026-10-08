@@ -83,5 +83,5 @@ for (const [name, argv, expectedStatus] of definitions) {
       outputBytes: output.length, outputSha256: sha256(output), sourceSha256: hashes,
       configSha256: sha256(readFileSync(join(dir, "biome.json"))) } });
 }
-writeFileSync(join(destination, "cases.json"), `{"schema":"native-cases1","cases":[\n${cases.map((item) => JSON.stringify(item)).join(",\n")}\n]}\n`);
+writeFileSync(join(destination, "capture-receipt.json"), `{"schema":"native-cases1","cases":[\n${cases.map((item) => JSON.stringify(item)).join(",\n")}\n]}\n`);
 console.log(JSON.stringify(cases.map(({ name, status, provenance }) => ({ name, status, bytes: provenance.outputBytes }))));
