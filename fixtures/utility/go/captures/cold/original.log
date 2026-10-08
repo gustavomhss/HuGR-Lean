@@ -1,0 +1,33 @@
+=== RUN   TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+    alpha_test.go:8: HUGR_GO_CRITICAL_SENTINEL: retain diagnostic context café 🧭
+--- PASS: TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence02PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence02PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence03PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence03PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence04PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence04PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence05PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence05PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence06PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence06PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativeUnicodeSkipReason
+    alpha_test.go:32: HUGR_GO_SKIP_SENTINEL: indisponível café 🧭
+--- SKIP: TestNativeUnicodeSkipReason (0.00s)
+PASS
+ok  	example.com/hugr-utility-go/alpha	12.576s
+=== RUN   TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence02PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence02PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence03PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence03PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence04PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence04PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence05PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence05PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+=== RUN   TestNativePackageEvidence06PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting
+--- PASS: TestNativePackageEvidence06PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)
+PASS
+ok  	example.com/hugr-utility-go/beta	6.018s
+?   	example.com/hugr-utility-go/empty	[no test files]
