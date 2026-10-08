@@ -190,6 +190,15 @@ export async function normalizeUtilityCorpus() {
         if (receipt.amendedProducer) await retain({ file: receipt.amendedProducer.script, sha256: receipt.amendedProducer.sha256, bytes: receipt.amendedProducer.bytes });
       }
       for (const source of root.sources) {
+        if (family === "node" && source.file === "native-node-executable") {
+          const tool = root.index.tools.find((entry) => entry.name === "node");
+          ensure(tool?.version === "v22.17.1" && tool.executable === source.absolutePath, "EXTERNAL_RUNTIME_NOT_ALLOWED");
+          root.entry.externalRuntimes = [{ file: source.file, sha256: source.sha256, bytes: source.bytes,
+            kind: "tool-executable", tool: "node", version: tool.version, executable: tool.executable }];
+          normalizations.push({ family, externalRuntime: root.entry.externalRuntimes[0],
+            scope: "original collector fingerprint; runtime binary is neither read nor copied nor reverified" });
+          continue;
+        }
         const covered = manifest.cases.filter((item) => item.provenanceRoot === root.id).some((item) => item.fixtureSources.some((ref) =>
           (ref.sourceFile ?? ref.file) === source.file && ref.sha256 === source.sha256 && ref.bytes === source.bytes));
         if (!covered) await retain(source, source);
@@ -243,8 +252,12 @@ export async function normalizeUtilityCorpus() {
   }
   await writeFile(path.join(directory, "review-scopes.json"), format(reviewScopes), { flag: "wx" });
   const corpus = await readUtilityCorpus(corpusRoot);
+  const inventoryBytes = plan.reduce((sum, entry) => sum + entry.bytes, 0);
+  ensure(inventoryBytes < 10 * 1024 * 1024, "NORMALIZED_CORPUS_EXCEEDS_10MB");
   const result = { directory, corpusRoot, cases: corpus.cases.length, families: corpus.families.map(({ family, cases, provenance }) => ({ family, cases: cases.length, provenance })),
-    inventorySHA256: hash(Buffer.from(format(plan))), sourceScope: "publisher byte/hash snapshots; sourceHead binds recorded index sourceHead or baseline, not an inferred execution commit" };
+    inventorySHA256: hash(Buffer.from(format(plan))), inventoryFiles: plan.length, inventoryBytes,
+    largestFiles: [...plan].sort((a, b) => b.bytes - a.bytes).slice(0, 5),
+    sourceScope: "stored publisher byte/hash snapshots; sourceHead binds recorded index declaration; external runtimes are original collector fingerprints, not locally reverified integrity" };
   await writeFile(path.join(directory, "reader-result.json"), format(result), { flag: "wx" });
   return result;
 }
@@ -252,7 +265,8 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
   try {
     const result = await normalizeUtilityCorpus();
     process.stdout.write(format({ directory: result.directory, corpusRoot: result.corpusRoot, cases: result.cases,
-      families: result.families.map(({ family, cases }) => ({ family, cases })), inventorySHA256: result.inventorySHA256 }));
+      families: result.families.map(({ family, cases }) => ({ family, cases })), inventorySHA256: result.inventorySHA256,
+      inventoryFiles: result.inventoryFiles, inventoryBytes: result.inventoryBytes, largestFiles: result.largestFiles }));
   }
   catch (error) {
     if (activeDirectory) await writeFile(path.join(activeDirectory, "failure.json"), format({ directory: activeDirectory, error: error.stack }), { flag: "wx" });

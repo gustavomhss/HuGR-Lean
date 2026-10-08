@@ -160,6 +160,28 @@ function sourceMatch(refs, wanted, context) {
   demand(matches.length === 1, "UNBOUND_SOURCE_RECORD", `${context}: ${wanted.file}`);
   return matches[0];
 }
+function externalRuntimes(entry, index, sources, versions, family, refs) {
+  const external = new Map(), records = entry.externalRuntimes ?? [];
+  demand(Array.isArray(records), "INVALID_EXTERNAL_RUNTIMES", entry.id);
+  for (const runtime of records) {
+    keys(runtime, ["file", "sha256", "bytes", "kind", "tool", "version", "executable"], [], entry.id);
+    demand(family === "node" && runtime.file === "native-node-executable" && runtime.kind === "tool-executable"
+      && runtime.tool === "node" && runtime.version === "v22.17.1", "EXTERNAL_RUNTIME_NOT_ALLOWED", `${entry.id}: ${runtime.file}`);
+    demand(!external.has(runtime.file), "DUPLICATE_EXTERNAL_RUNTIME", entry.id);
+    const originals = sources.filter((source) => source.file === runtime.file), tools = index.tools.filter((tool) => tool.name === runtime.tool);
+    demand(originals.length === 1 && tools.length === 1 && originals[0].sha256 === runtime.sha256 && originals[0].bytes === runtime.bytes
+      && originals[0].absolutePath === runtime.executable && tools[0].executable === runtime.executable && tools[0].version === runtime.version,
+      "EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH", entry.id);
+    const version = versions.get("node-version"), indexed = index.toolReceipts.find((capture) => capture.id === "node-version");
+    demand(version?.text.trim() === runtime.version && indexed?.command === "node --version", "EXTERNAL_RUNTIME_VERSION_PROOF_MISMATCH", entry.id);
+    demand(!refs.some((ref) => (ref.sourceFile ?? ref.file) === runtime.file), "EXTERNAL_RUNTIME_BYTES_VENDORED", entry.id);
+    external.set(runtime.file, runtime);
+  }
+  for (const source of sources) if (family === "node" && source.file === "native-node-executable") {
+    demand(external.has(source.file), "UNBOUND_SOURCE_RECORD", `${entry.id}: native-node-executable requires external runtime fingerprint`);
+  }
+  return external;
+}
 function bindIndexedCapture(row, receipt, references, context, family) {
   demand(record(row), "MISSING_INDEXED_CAPTURE", context);
   const facts = receipt.facts ?? receipt, indexed = row.facts ?? row;
@@ -183,7 +205,7 @@ function declaredProvenance(files, used, manifest) {
   const roots = new Map();
   for (const entry of list(manifest.provenance, `${manifest.family}: provenance`)) {
     const context = `${manifest.family}/${entry.id}`;
-    keys(entry, ["id", "sourceHead", "producer", "index", "sourceInventory", "producerSources", "versionCaptures"], [], context);
+    keys(entry, ["id", "sourceHead", "producer", "index", "sourceInventory", "producerSources", "versionCaptures"], ["externalRuntimes"], context);
     safe(entry.id, context);
     demand(!roots.has(entry.id), "DUPLICATE_PROVENANCE_ROOT", context);
     demand(sha(entry.sourceHead), "INVALID_PROVENANCE_ROOT", context);
@@ -221,7 +243,8 @@ function declaredProvenance(files, used, manifest) {
       bindIndexedCapture(rows.find((row) => row.id === version.id), receipt, version, `${context}: ${version.id}`, manifest.family);
       versions.set(version.id, { ...version, receipt, text: texts.original });
     }
-    roots.set(entry.id, { entry, index, sources, refs, rows, versions, linked: 0 });
+    const external = externalRuntimes(entry, index, sources, versions, manifest.family, refs);
+    roots.set(entry.id, { entry, index, sources, refs, rows, versions, external, linked: 0 });
   }
   for (const root of roots.values()) {
     const prior = root.index.prior;
@@ -529,7 +552,9 @@ export async function readUtilityCorpus(root) {
     for (const candidate of roots.values()) {
       demand(candidate.linked > 0, "UNUSED_PROVENANCE_ROOT", `${family}/${candidate.entry.id}`);
       const refs = [...candidate.refs, ...(candidate.caseRefs ?? [])], unique = [...new Map(refs.map((ref) => [`${ref.sourceFile ?? ref.file}:${ref.sha256}`, ref])).values()];
-      for (const source of candidate.sources) sourceMatch(unique, source, `${family}/${candidate.entry.id}: sourceInventory`);
+      for (const source of candidate.sources) {
+        if (!candidate.external.has(source.file)) sourceMatch(unique, source, `${family}/${candidate.entry.id}: sourceInventory`);
+      }
     }
     if (roots.size) {
       const versions = [...roots.values()].flatMap((candidate) => [...candidate.versions.values()]);
@@ -545,6 +570,7 @@ export async function readUtilityCorpus(root) {
     families.push({ family, tools: manifest.tools, producer: manifest.producer, cases: rows, ...(cargoProof ? { cargoEvidence: cargoProof } : {}),
       provenance: [...roots.values()].map(({ entry, index }) => ({ ...entry, collectorState: index.state ?? index.stage,
         collectorFailures: index.errors ?? index.failedCaptures ?? index.failures ?? index.failure ?? [],
+        ...(entry.externalRuntimes ? { externalRuntimeScope: "original collector runtime fingerprints only; no local binary or supply-chain integrity revalidation" } : {}),
         sourceHeadBinding: "recorded sourceHead or baseline declaration; publisher source bytes are separately hash-bound" })) });
   }
   return { schema: SCHEMA, root, families, cases };

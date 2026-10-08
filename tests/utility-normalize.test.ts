@@ -1,18 +1,29 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile, mkdtemp, cp, rm, stat } from "node:fs/promises";
 import path from "node:path";
+import os from "node:os";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
-// @ts-expect-error Developer-only normalization script.
-import { normalizeUtilityCorpus } from "../scripts/utility-normalize.mjs";
 // @ts-expect-error Developer-only reader script.
-import { readUtilityCorpus } from "../scripts/utility-corpus.mjs";
+import { readUtilityCorpus, readArtifactInventory } from "../scripts/utility-corpus.mjs";
 
 type Json = Record<string, any>;
 const hash = (data: Buffer) => createHash("sha256").update(data).digest("hex");
 let fixture: Promise<Json> | undefined;
-const candidate = (): Promise<Json> => fixture ??= normalizeUtilityCorpus();
-// Actual existing capture bytes, never native producer execution. Only fresh private candidate is mutable.
+let temporaryDirectory: string | undefined;
+const candidate = (): Promise<Json> => fixture ??= (async () => {
+  // CI always uses committed fixtures. Explicit override supports local review before lead imports them.
+  const referenceRoot = path.resolve(process.env.HUGR_UTILITY_CORPUS_ROOT ?? fileURLToPath(new URL("../fixtures/utility/", import.meta.url)));
+  try { assert.ok((await stat(referenceRoot)).isDirectory(), "NOT_CORPUS_DIRECTORY"); }
+  catch (cause) { throw new Error(`MISSING_COMMITTED_UTILITY_CORPUS: ${referenceRoot}`, { cause }); }
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "hugr-native-corpus-test-"));
+  const corpusRoot = path.join(temporaryDirectory, "corpus");
+  await cp(referenceRoot, corpusRoot, { recursive: true, force: false, errorOnExist: true });
+  return { directory: temporaryDirectory, corpusRoot, referenceRoot };
+})();
+test.after(async () => { if (temporaryDirectory) await rm(temporaryDirectory, { recursive: true, force: true }); });
+// Committed native capture bytes, no private collector paths or normalizer execution in default tests.
 async function editJson(file: string, mutate: (value: Json) => void, check: () => Promise<void>) {
   const before = await readFile(file), value = JSON.parse(before.toString("utf8"));
   try { mutate(value); await writeFile(file, `${JSON.stringify(value, null, 2)}\n`); await check(); }
@@ -38,9 +49,8 @@ test("actual native reader validates 25 cases and preserves unchanged raw/expect
   const result = await candidate(), corpus = await readUtilityCorpus(result.corpusRoot);
   assert.equal(corpus.cases.length, 25);
   assert.deepEqual(corpus.families.map((family: Json) => [family.family, family.cases.length]), [["go", 5], ["pytest", 6], ["node", 10], ["cargo", 4]]);
-  const worktrees = path.resolve(result.directory, "../../..");
   for (const family of corpus.families) {
-    const actor = path.join(worktrees, `hugr-lean-utility-${family.family}-parser/fixtures/utility/${family.family}`);
+    const actor = path.join(result.referenceRoot, family.family);
     const originalManifest = JSON.parse(await readFile(path.join(actor, "manifest.json"), "utf8"));
     for (const row of family.cases) for (const key of ["capture", "original", "stdout", "stderr", "expected"]) {
       const original = originalManifest.cases.find((item: Json) => item.id === row.id)[key];
@@ -99,7 +109,7 @@ test("Cargo ancillary files and both after snapshots retained with independent h
   const before = evidence.sourceRecords.find((record: Json) => record.case === "full");
   assert.equal(before.origin, "reconstructed-producer-literal"); assert.equal(before.recordedBeforeSatisfied, false);
   assert.deepEqual(evidence.afterSources.map((record: Json) => record.artifact.file), ["sources/failure-after/Cargo.lock", "sources/warning-after/Cargo.lock"]);
-  const actor = path.resolve(result.directory, "../../../hugr-lean-utility-cargo-parser/fixtures/utility/cargo");
+  const actor = path.join(result.referenceRoot, "cargo");
   for (const ref of [data.cargoEvidence.lineage, data.cargoEvidence.inspection, ...data.cargoEvidence.afterSources.map((record: Json) => record.artifact)]) {
     assert.ok((await readFile(path.join(result.corpusRoot, "cargo", ref.file))).equals(await readFile(path.join(actor, ref.file))), ref.file);
   }
@@ -143,5 +153,43 @@ test("self-consistent inspection rewrite still rejects independent immutable pri
         meta.cargoEvidence.lineage.bytes = lineageBytes.length; meta.cargoEvidence.lineage.sha256 = hash(lineageBytes);
       }, async () => { await assert.rejects(readUtilityCorpus(result.corpusRoot), /RECEIPT_ARTIFACT_MISMATCH: cargo: evidence/); });
     });
+  });
+});
+
+test("runtime fingerprint is collector metadata; corpus below 10MB contains no Node executable", async () => {
+  const { result, data } = await manifest("node"), root = data.provenance[0], corpus = await readUtilityCorpus(result.corpusRoot);
+  assert.equal(root.index.sha256, "e0a80d439c84c66448807d499d598e81615e3c3245c49b69cfe6aae16de8c9ea");
+  assert.equal(root.externalRuntimes.length, 1);
+  assert.deepEqual(root.externalRuntimes[0], { file: "native-node-executable", sha256: "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541",
+    bytes: 224341744, kind: "tool-executable", tool: "node", version: "v22.17.1", executable: "/usr/local/bin/node" });
+  assert.match(corpus.families.find((family: Json) => family.family === "node").provenance[0].externalRuntimeScope, /no local binary or supply-chain integrity revalidation/);
+  const files = await readArtifactInventory(result.corpusRoot), total = [...files.values()].reduce((sum: number, bytes: Buffer) => sum + bytes.length, 0);
+  assert.ok(total < 10 * 1024 * 1024);
+  assert.ok([...files.keys()].every((file: string) => !file.endsWith("/native-node-executable")));
+});
+
+test("external runtime cannot exempt fixture, producer, helper or captured artifact bytes", async () => {
+  const { result, file, data } = await manifest("node"), root = data.provenance[0], item = data.cases[0];
+  const originals = [item.fixtureSources[0], root.producerSources[0], root.producerSources.find((ref: Json) => ref.sourceFile === "scripts/opencode-boundary.mjs"), item.original];
+  for (const ref of originals) await editJson(file, (meta) => {
+    meta.provenance[0].externalRuntimes.push({ file: ref.sourceFile ?? ref.file, sha256: ref.sha256, bytes: ref.bytes,
+      kind: "tool-executable", tool: "node", version: "v22.17.1", executable: "/usr/local/bin/node" });
+  }, async () => { await assert.rejects(readUtilityCorpus(result.corpusRoot), /EXTERNAL_RUNTIME_NOT_ALLOWED/); });
+});
+
+test("wrong valid runtime hash, size, path, kind, tool, version and executable reject", async () => {
+  const { result, file } = await manifest("node");
+  for (const [key, value] of Object.entries({ sha256: "0".repeat(64), bytes: 1, file: "../native-node-executable", kind: "helper",
+    tool: "tsx", version: "v23.0.0", executable: "/missing/not-publisher-node" })) {
+    await editJson(file, (meta) => { meta.provenance[0].externalRuntimes[0][key] = value; }, async () => {
+      await assert.rejects(readUtilityCorpus(result.corpusRoot), /EXTERNAL_RUNTIME_NOT_ALLOWED|EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH/);
+    });
+  }
+});
+
+test("omitted runtime declaration cannot leave source inventory record unchecked", async () => {
+  const { result, file } = await manifest("node");
+  await editJson(file, (meta) => { delete meta.provenance[0].externalRuntimes; }, async () => {
+    await assert.rejects(readUtilityCorpus(result.corpusRoot), /UNBOUND_SOURCE_RECORD: .*native-node-executable/);
   });
 });
