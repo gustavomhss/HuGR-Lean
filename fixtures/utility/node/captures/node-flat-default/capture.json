@@ -1,0 +1,88 @@
+{
+  "command": "node --test fixture.mjs",
+  "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/flat",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "nativeSpawned": true,
+  "nativeExitObserved": true,
+  "complete": true,
+  "durationMs": 4902.403526,
+  "guardianElapsedMs": 6998.796901,
+  "durationBoundary": "pipe-close",
+  "exitDurationMs": 4901.191463,
+  "bookkeepingMs": 0.44213800000215997,
+  "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+  "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+  "encodingError": null,
+  "launchError": null,
+  "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+  "cleanupErrors": [],
+  "baselineSourceSHA": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "sourceHead": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "startedAt": "2026-10-07T21:39:15.064Z",
+  "recordedAt": "2026-10-07T21:39:22.071Z",
+  "timeoutMs": 120000,
+  "producer": {
+    "file": "scripts/utility-native-node.mjs",
+    "sha256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19",
+    "bytes": 14960
+  },
+  "environmentPolicy": {
+    "constructor": "isolatedEnvironment(privateRoot)",
+    "inherited": [],
+    "PATH": "/usr/local/bin:/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/.bin:/usr/bin:/bin",
+    "NODE_OPTIONS": "absent",
+    "NODE_PATH": "absent",
+    "HOME": "home",
+    "XDG_CONFIG_HOME": "config",
+    "XDG_DATA_HOME": "data",
+    "XDG_CACHE_HOME": "cache",
+    "XDG_STATE_HOME": "state",
+    "TMPDIR": ".",
+    "npmUserConfig": "npmrc (fresh empty private file)",
+    "npmGlobalConfig": "global-npmrc (fresh empty private file)",
+    "npmOffline": true,
+    "reporterOverride": "none on default cases",
+    "io": "non-TTY stdout/stderr pipes; stdin ignored; captureCommand arrival order"
+  },
+  "tools": [
+    {
+      "name": "node",
+      "version": "v22.17.1",
+      "executable": "/usr/local/bin/node"
+    },
+    {
+      "name": "tsx",
+      "version": "4.23.15",
+      "executable": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs",
+      "lockedIntegrity": "sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==",
+      "installation": "existing pinned project; never installed"
+    }
+  ],
+  "fixtureSources": [
+    {
+      "file": "sources/flat/fixture.mjs",
+      "sha256": "9aef7e6916f968ffbe8bc3e909a8aa9fa964de37b5386653b6af0e0c559a8e2a",
+      "bytes": 2722
+    }
+  ],
+  "streams": {
+    "original": {
+      "file": "captures/node-flat-default/original.log",
+      "sha256": "d3366f5dc12861d5130a600efb07f5ce953ddde804f7697e5b4f71620738965f",
+      "bytes": 5132
+    },
+    "stdout": {
+      "file": "captures/node-flat-default/stdout.log",
+      "sha256": "d3366f5dc12861d5130a600efb07f5ce953ddde804f7697e5b4f71620738965f",
+      "bytes": 5132
+    },
+    "stderr": {
+      "file": "captures/node-flat-default/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "artifactCleanup": "not attempted; private root retained"
+}
