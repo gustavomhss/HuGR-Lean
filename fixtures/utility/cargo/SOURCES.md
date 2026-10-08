@@ -2,7 +2,7 @@
 
 Original local HuGR-Lean fixture programs, MIT; no donor material. Native baseline:
 `882585e5f916821a482d14bc7bfe7d6a102b772a`; parser scaffold:
-`d5ec6daa5728d49df3e6f76a75ae0b7c1ede3c9f`. Acceptance only; cold review precedes implementation.
+`d5ec6daa5728d49df3e6f76a75ae0b7c1ede3c9f`. Cargo implementation checkpoint: `84921de`.
 
 Immutable native root: `/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV`.
 Full originated at `captures/full/`; lib/failure/warning at `remaining-Ak3JfQ/captures/<id>/`.
@@ -43,21 +43,31 @@ Lib expected: 478 from 1,375; saved 897 (65.24%), material false. Family thresho
 Compiler-warning output and native failure (exit 101, including deliberately incorrect exit 0 observation) remain whole-output exact.
 Mutation/CRLF/Unicode/malformed cases are in-memory supplemental controls, not rewritten native captures.
 
-## FIX-FIRST source lineage and plan decision
-Ancillary baseline report moved byte-exact to `.acceptance-proof/cargo/acceptance-baseline.json`.
-`.acceptance-proof/cargo/original-producer.mjs` preserves all 13,502 original pinned bytes, MIT, no modifications.
+## Source provenance artifact schema
+`provenance/original-producer.mjs` preserves all 13,502 original pinned bytes, MIT, no modifications.
 It is inert evidence, never imported/executed. Tests parse its `sources["Cargo.lock"]` string with TypeScript AST.
 Producer `writeProject` writes each source literal and immediately reads/hashes its file (lines 52–61);
 full capture receives that recorded inventory (lines 169–174). No pre-full byte-copy operation exists there.
 Private `source-snapshots/Cargo.lock` explicitly documents later reconstruction, not an original before-file copy.
 Only lock metadata is reconstructed; runtime Rust fixture files are actual files matching recorded native source hashes.
-`.acceptance-proof/cargo/lineage.json` has typed sourceRecord origin/producer/originalExpectedHash labels.
+`provenance/lineage.json` has typed sourceRecord origin/producer/originalExpectedHash labels.
 Source-name/label tests forbid extending reconstruction to Rust or calling the full lock `recorded-before`.
 Original failed collector index is preserved as three byte-exact consecutive line fragments (250/250/257 rows);
 ordered concatenation is the original 41,526-byte JSON, bound to the independently hashed inspection receipt.
 Tests bind index full record to untouched raw receipt, then to raw streams/source inventory, and preserve collector failure facts.
 Per-case optional producer identifies actual full versus continuation actor; corrected collector identity remains untouched receipt metadata.
-Proposed EVAL optional per-case mapped lineage descriptor remains private/typed here pending lead schema approval.
-Plan resolution remains BLOCKED for full's recorded-before-file assertion: lead may explicitly admit
-producer-literal reconstruction for generated-comment Cargo.lock metadata only. Hash equality proves source
-conformance to the recorded inventory; it does not turn reconstruction into a recorded-before copy.
+Recovered producer-literal source conformance is explicitly accepted for Cargo.lock metadata only;
+`recordedBeforeSatisfied:false` remains factual. Recovery is not a reconstructed native capture.
+Hash equality does not turn recovered bytes into a recorded-before file snapshot.
+
+`provenance/lineage.json` uses `hugr-lean/cargo-lineage-proof/1`. Stored artifact paths are Cargo-family-relative.
+Artifact descriptors contain `file`, `sha256`, `bytes`; producer adds pinned `sourceFile`, `commit`, `license`, `modifications`.
+`inspection` binds the exact native `full/inspection-receipt.json` artifact.
+`index` has `sha256`, `bytes`, ordered `parts: Artifact[]`; concatenation must match the inspection receipt's index digest.
+Each `sourceRecords` entry has `case`, `sourceFile`, `origin`, `originalExpectedHash`, `recordedBeforeSatisfied`;
+`reconstructed-producer-literal` additionally requires a producer artifact descriptor and is limited to full Cargo.lock.
+Other locks use `recorded-before`; runtime Rust files stay actual hash-matched source evidence.
+`fullAfterStorage` maps `file`, `sourceFile`, `origin`, `receipt`, `inventory` to an actual receipt source descriptor.
+`sourceRecovery` records the accepted lock-only recovery semantics; `runtimeRustSources` describes source inventory origins.
+Formal EVAL optional manifest `provenance` and typed SourceIndex mapping await the lead's frozen source contract.
+Integration must bind lineage and inspection roots as file/hash/byte descriptors, not hash-only claims.

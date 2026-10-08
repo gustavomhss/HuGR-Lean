@@ -304,10 +304,9 @@ type NativeCase = {
   fixtureSources: Artifact[]; required: Anchor[];
   producer?: { script: string; sourceSHA256: string };
 };
-const projectRoot = new URL("../", import.meta.url);
-function verified(artifact: Artifact, base = root): Buffer {
+function verified(artifact: Artifact): Buffer {
   assert.ok(artifact.file.split("/").every((part) => /^[A-Za-z0-9_.-]+$/.test(part) && part !== "." && part !== ".."), "safe stored path");
-  const bytes = readFileSync(new URL(artifact.file, base));
+  const bytes = readFileSync(new URL(artifact.file, root));
   assert.equal(bytes.length, artifact.bytes, `byte binding: ${artifact.file}`);
   assert.equal(createHash("sha256").update(bytes).digest("hex"), artifact.sha256, `hash binding: ${artifact.file}`);
   assert.equal(Buffer.from(bytes.toString("utf8")).equals(bytes), true, "lossless UTF-8");
@@ -416,17 +415,17 @@ type SourceRecord = { case: string; sourceFile: string; originalExpectedHash: st
   { origin: "reconstructed-producer-literal"; recordedBeforeSatisfied: false; producer: Artifact }
 );
 type Lineage = {
-  schema: string; leadDecision: string; producer: Artifact & { commit: string; license: string };
+  schema: string; sourceRecovery: string; producer: Artifact & { commit: string; license: string };
   inspection: Artifact; index: { sha256: string; bytes: number; parts: Artifact[] }; sourceRecords: SourceRecord[];
   fullAfterStorage: { file: string; sourceFile: string; origin: string; receipt: string; inventory: string };
 };
-const proof = (): Lineage => JSON.parse(readFileSync(new URL(".acceptance-proof/cargo/lineage.json", projectRoot), "utf8"));
+const proof = (): Lineage => JSON.parse(read("provenance/lineage.json"));
 function boundLineage(lineage = proof()) {
   assert.equal(lineage.schema, "hugr-lean/cargo-lineage-proof/1");
-  const producer = verified(lineage.producer, projectRoot);
-  const inspection = JSON.parse(verified(lineage.inspection, projectRoot).toString("utf8"));
+  const producer = verified(lineage.producer);
+  const inspection = JSON.parse(verified(lineage.inspection).toString("utf8"));
   assert.equal(lineage.index.parts.length, 3, "complete index fragments required");
-  const bytes = Buffer.concat(lineage.index.parts.map((part) => verified(part, projectRoot)));
+  const bytes = Buffer.concat(lineage.index.parts.map((part) => verified(part)));
   assert.equal(bytes.length, lineage.index.bytes, "complete index byte binding");
   const hash = createHash("sha256").update(bytes).digest("hex");
   assert.equal(hash, lineage.index.sha256, "ordered original index digest binding");
@@ -471,7 +470,7 @@ function sourceRecord(record: SourceRecord, lineage = proof()): void {
     assert.equal(record.recordedBeforeSatisfied, false, "full pre-capture-copy requirement remains blocked");
     if (record.origin !== "reconstructed-producer-literal") assert.fail("missing reconstruction producer");
     assert.equal(record.producer.sha256, lineage.producer.sha256);
-    const literal = lockLiteral(verified(record.producer, projectRoot));
+    const literal = lockLiteral(verified(record.producer));
     assert.equal(createHash("sha256").update(literal).digest("hex"), expected.sha256);
     assert.equal(literal.length, expected.bytes); assert.equal(literal.equals(stored), true);
   } else {
@@ -501,12 +500,12 @@ test("typed source origins distinguish reconstructed lock from actual recorded l
   const { lineage } = boundLineage();
   assert.deepEqual(lineage.sourceRecords.map((record) => record.case), ["full", "lib", "failure", "warning"]);
   for (const record of lineage.sourceRecords) sourceRecord(record, lineage);
-  assert.match(lineage.leadDecision, /Pending.*Cargo.lock metadata only.*do not mark.*satisfied/);
+  assert.match(lineage.sourceRecovery, /Accepted recovered producer literal for Cargo.lock metadata only; recordedBeforeSatisfied remains false/);
   const after = lineage.fullAfterStorage;
   assert.equal(after.sourceFile, "Cargo.lock"); assert.equal(after.origin, "recorded-later-before-lib");
   const inventory: Artifact[] = JSON.parse(read(after.receipt))[after.inventory];
   const descriptor = inventory.find((item) => item.file === after.sourceFile)!;
-  verified({ ...descriptor, file: after.file }, projectRoot);
+  verified({ ...descriptor, file: after.file });
 });
 test("lineage teeth reject index order/digest, producer bytes and dishonest before-source labels", () => {
   const original = proof(); boundLineage(original);
@@ -514,7 +513,7 @@ test("lineage teeth reject index order/digest, producer bytes and dishonest befo
   assert.throws(() => boundLineage({ ...original, inspection: { ...original.inspection, sha256: "0".repeat(64) } }), /hash binding/);
   assert.throws(() => boundLineage({ ...original, producer: { ...original.producer, bytes: 13503 } }), /byte binding/);
   assert.throws(() => boundLineage({ ...original, index: { ...original.index, parts: [] } }), /complete index fragments required/);
-  const script = verified(original.producer, projectRoot).toString("utf8");
+  const script = verified(original.producer).toString("utf8");
   assert.throws(() => lockLiteral(Buffer.from(script.replace('"Cargo.lock":', '"Cargo.alias":'))), /one original Cargo.lock literal required/);
   const full = original.sourceRecords[0]!; sourceRecord(full, original);
   assert.throws(() => sourceRecord({ ...full, sourceFile: "src/lib.rs" }, original), /lock metadata only/);
