@@ -1,10 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { filter } from "../src/core/index.js";
 import type { Observation, Profile, Reduction, Span } from "../src/types.js";
 import { nodeTestProfile } from "../src/profiles/node-test.js";
+import { loadUtility } from "./utility-fixtures.js";
 
 type Artifact = { file: string; sha256: string; bytes: number };
 type Anchor = { text: string; occurrence: number };
@@ -23,15 +24,12 @@ type Case = {
   signal: null; timedOut: boolean; capture: Artifact; fixtureSources: (Artifact & { sourceFile?: string })[];
   original: Artifact; stdout: Artifact; stderr: Artifact; expected: Artifact; required: Anchor[]; material: boolean;
 };
-const root = new URL("../fixtures/utility/node/", import.meta.url);
-const manifest = JSON.parse(readFileSync(new URL("manifest.json", root), "utf8")) as {
-  schema: string; family: string; tools: Tool[];
-  producer: { script: string; sourceSHA256: string }; cases: Case[];
-};
+const native = await loadUtility();
+const manifest = native.manifest("node");
 const sha = (data: Uint8Array) => createHash("sha256").update(data).digest("hex");
 function artifact(item: Artifact): Buffer {
   assert.match(item.file, /^(?:captures|sources)\/[\w-]+\/[\w.-]+$/);
-  const data = readFileSync(new URL(item.file, root));
+  const data = native.read("node", item.file);
   assert.equal(data.length, item.bytes, `bytes: ${item.file}`);
   assert.equal(sha(data), item.sha256, `hash: ${item.file}`);
   return data;
@@ -39,9 +37,7 @@ function artifact(item: Artifact): Buffer {
 const text = (item: Artifact) => artifact(item).toString("utf8");
 const noise = manifest.cases.filter((item) => item.role === "noise");
 function observation(item: Case, output = text(item.original)): Observation {
-  return { source: "shell", command: item.command, output, completeness: item.complete ? "complete" : "truncated",
-    termination: item.timedOut ? { kind: "timed_out" } : item.signal ? { kind: "unknown" } :
-      { kind: "exited", code: item.exitCode }, presentation: "unknown" };
+  return { ...native.case("node", item.id).observation, output };
 }
 function lines(source: string): Span[] {
   return [...source.matchAll(/[^\n]*\n|[^\n]+$/g)].map((match) => [match.index, match.index + match[0].length]);
@@ -117,19 +113,19 @@ function positive(item: Case, source = text(item.original), expected = text(item
   }
 }
 
-test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact goldens", () => {
+test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact goldens", async () => {
   assert.equal(manifest.schema, "hugr-lean/utility-corpus/1");
   assert.equal(manifest.family, "node");
   const ids = ["node", "tsx"].flatMap((runner) => ["flat", "nested", "failure", "opaque", "diagnostic"].map((kind) => `${runner}-${kind}-default`));
   assert.deepEqual(manifest.cases.map((item) => item.id).sort(), ids.sort());
-  assert.deepEqual(readdirSync(new URL("captures/", root)).sort(), ids);
+  assert.deepEqual(readdirSync(`${native.root}/node/captures/`).sort(), ids);
   assert.deepEqual(manifest.tools.map(({ name, version }) => ({ name, version })),
     [{ name: "node", version: "v22.17.1" }, { name: "tsx", version: "4.23.15" }]);
   assert.deepEqual(manifest.producer, { script: "scripts/utility-native-node.mjs",
     sourceSHA256: "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19" });
   assert.equal(noise.length, 4);
   for (const item of manifest.cases) {
-    const receipt = JSON.parse(text(item.capture)) as Capture;
+    const receipt = native.case("node", item.id).captureReceipt as Capture;
     assert.equal(item.capture.file, `captures/${item.id}/capture.json`);
     assert.equal(item.command, item.id.startsWith("node-") ? "node --test fixture.mjs" : "tsx --test fixture.test.ts");
     for (const key of ["command", "exitCode", "complete", "signal", "timedOut"] as const) assert.equal(receipt[key], item[key]);
@@ -143,7 +139,10 @@ test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact 
     assert.deepEqual(receipt.producer, { file: manifest.producer.script, sha256: manifest.producer.sourceSHA256, bytes: 14960 });
     assert.equal(receipt.baselineSourceSHA, "882585e5f916821a482d14bc7bfe7d6a102b772a");
     assert.equal(receipt.environmentPolicy.reporterOverride, "none on default cases");
-    for (const key of ["original", "stdout", "stderr"] as const) assert.deepEqual(receipt.streams[key], item[key]);
+    for (const key of ["original", "stdout", "stderr"] as const) {
+      const { sourceFile, ...stored } = item[key];
+      assert.deepEqual(receipt.streams[key], { ...stored, file: sourceFile ?? stored.file });
+    }
     const original = artifact(item.original), expected = artifact(item.expected);
     assert.deepEqual(Buffer.from(original.toString("utf8")), original, "UTF-8 roundtrip");
     assert.equal(original.length, artifact(item.stdout).length + artifact(item.stderr).length);
@@ -161,6 +160,7 @@ test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact 
       assert.deepEqual(anchorSpan(source, anchor), [span[0], span[1] - 1]);
       assert.equal(anchor.text, source.slice(...span).replace(/\n$/, ""));
     });
+    assert.deepEqual(native.case("node", item.id).required.map(a => a.sourceSpan), item.required.map(a => anchorSpan(source, a)), "reader UTF-16 anchors agree with independent oracle");
     const saved = original.length - expected.length;
     assert.equal(item.material, saved >= 1024 && saved >= original.length * 0.1);
     assert.equal(item.expectedStatus, item.role === "noise" ? "reduced" : "passthrough");
@@ -169,10 +169,18 @@ test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact 
   assert.ok(noise.some((item) => item.material));
   const corrupt = { ...manifest.cases[0]!.original, sha256: "0".repeat(64) };
   assert.throws(() => artifact(corrupt), /hash:/, "digest instrument must see corruption");
+  await native.descriptorTeeth("node", "node-flat-default");
 });
 
 for (const item of manifest.cases) test(`NODE-NATIVE ${item.id}: ${item.expectedStatus}`, () => {
-  if (item.role === "noise") positive(item);
+  if (item.role === "noise") {
+    positive(item);
+    const unregistered = filter(observation(item));
+    assert.equal(unregistered.status, "passthrough", "Node remains selected-profile only; default registry is unchanged");
+    assert.equal("replacement" in unregistered, false);
+    assert.equal(unregistered.inputBytes, item.original.bytes);
+    assert.equal(unregistered.outputBytes, item.original.bytes);
+  }
   else {
     preserved(observation(item));
     preserved({ ...observation(item), termination: { kind: "exited", code: 0 } });

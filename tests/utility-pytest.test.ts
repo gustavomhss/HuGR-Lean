@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { filter } from "../src/core/index.js";
 import type { Observation, Piece, Reduction, Span } from "../src/types.js";
 import { pytestProfile } from "../src/profiles/pytest.js";
+import { loadUtility } from "./utility-fixtures.js";
 
 interface Artifact { file: string; bytes: number; sha256: string }
 interface Anchor { text: string; occurrence: number }
@@ -30,11 +30,11 @@ interface Manifest {
   producer: Receipt["producer"];
   cases: NativeCase[];
 }
-const base = new URL("../fixtures/utility/pytest/", import.meta.url);
-const manifest = JSON.parse(readFileSync(new URL("manifest.json", base), "utf8")) as Manifest;
+const native = await loadUtility();
+const manifest = native.manifest("pytest") as Manifest;
 const bytes = (file: string): Buffer => {
   assert.match(file, /^(?:[\w.-]+\/)*[\w.-]+$/); assert.ok(!file.split("/").includes(".."));
-  return readFileSync(new URL(file, base));
+  return native.read("pytest", file);
 };
 const text = (file: string): string => bytes(file).toString("utf8");
 const digest = (b: Buffer): string => createHash("sha256").update(b).digest("hex");
@@ -42,9 +42,7 @@ function checkArtifact(a: Artifact): Buffer {
   const b = bytes(a.file); assert.equal(b.length, a.bytes, a.file); assert.equal(digest(b), a.sha256, a.file); return b;
 }
 function observation(c: NativeCase, output = text(c.original.file)): Observation {
-  return { source: "shell", command: c.command, output, presentation: "unknown",
-    termination: c.timedOut ? { kind: "timed_out" } : c.signal !== null ? { kind: "unknown" } : { kind: "exited", code: c.exitCode },
-    completeness: c.complete ? "complete" : "unknown" };
+  return { ...native.case("pytest", c.id).observation, command: c.command, output };
 }
 function occurrence(output: string, a: Anchor): Span {
   assert.ok(a.text.length > 0); assert.ok(Number.isSafeInteger(a.occurrence) && a.occurrence >= 0);
@@ -94,12 +92,12 @@ function exact(o: Observation): void {
   assert.equal(pytestProfile.reduce(o.output, o), undefined, "private reducer must refuse");
 }
 
-test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independent KEEP/material", () => {
+test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independent KEEP/material", async () => {
   assert.equal(manifest.schema, "hugr-lean/utility-corpus/1"); assert.equal(manifest.family, "pytest");
   assert.deepEqual(manifest.cases.map(c => c.id).sort(), ["assertion-failure", "default", "doctest-path", "literal-path", "opaque-summary", "quiet"]);
   assert.deepEqual(manifest.tools.map(t => [t.name, t.version]), [["python", "3.14.5"], ["pytest", "9.0.3"], ["pluggy", "1.6.0"]]);
   assert.ok(manifest.tools.every(t => t.executable.length > 0));
-  assert.equal("provenance" in manifest, false, "unmapped index digests are not artifact bindings");
+  assert.ok(native.manifest("pytest").provenance.length > 0, "authenticated index/source/version bindings required");
   assert.ok(noise.length > 0); assert.ok(noise.some(c => c.material));
   const payloadPaths = new Set<string>();
   for (const c of manifest.cases) {
@@ -109,7 +107,7 @@ test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independ
     }
     const raw = text(c.original.file); assert.deepEqual(Buffer.from(raw), bytes(c.original.file));
     assert.equal(c.original.bytes, c.stdout.bytes + c.stderr.bytes);
-    const receipt = JSON.parse(text(c.capture.file)) as Receipt;
+    const receipt = native.case("pytest", c.id).captureReceipt as Receipt;
     assert.equal(receipt.id, c.id); assert.equal(receipt.command, c.command); assert.equal(receipt.facts.command, c.command);
     for (const k of ["exitCode", "complete", "signal", "timedOut"] as const) assert.equal(receipt.facts[k], c[k], `${c.id}/${k}`);
     assert.equal(receipt.facts.nativeSpawned, true); assert.equal(receipt.facts.nativeExitObserved, true);
@@ -117,7 +115,7 @@ test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independ
     assert.equal(receipt.environment.originalMIT, true); assert.equal(receipt.environment.historicalCorpus, false);
     assert.equal(receipt.environment.disabledPluginAutoload, true);
     const supplemental = c.id === "literal-path" || c.id === "doctest-path";
-    assert.equal(Object.hasOwn(c, "producer"), supplemental, "only actual extra-helper cases override producer");
+    assert.deepEqual(c.producer, native.manifest("pytest").provenance.find(root => root.id === native.case("pytest", c.id).provenanceRoot)!.producer, "actual producer root, including supplemental helper");
     assert.deepEqual(receipt.producer, c.producer ?? manifest.producer);
     assert.equal(receipt.sourceHead, supplemental ? "a8068deb32e8ce9b88dd28a6b2a753765eabfdcf" : "8eb1600703096cf2c23348e159ad1daa82f8b580");
     for (const tool of manifest.tools) assert.equal(receipt.versions[tool.name], tool.version);
@@ -126,6 +124,7 @@ test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independ
       assert.equal(receipt.artifacts[k].bytes, c[k].bytes); assert.equal(receipt.artifacts[k].sha256, c[k].sha256);
     }
     assert.deepEqual(c.fixtureSources.map(s => ({ ...s, file: s.sourceFile ?? s.file, sourceFile: undefined })).map(({ sourceFile: _, ...s }) => s), receipt.fixtureSources);
+    assert.deepEqual(native.case("pytest", c.id).required.map(a => a.sourceSpan), c.required.map(a => occurrence(raw, a)), "reader UTF-16 anchors agree with independent oracle");
     for (const source of c.fixtureSources) checkArtifact(source);
     const saved = c.original.bytes - c.expected.bytes;
     assert.equal(c.material, c.role === "noise" && saved >= 1024 && saved / c.original.bytes >= .1);
@@ -138,6 +137,7 @@ test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independ
   const raw = bytes(find("default").original.file), corrupt = Buffer.from(raw); corrupt[0] = corrupt[0]! ^ 1;
   assert.notEqual(digest(raw), digest(corrupt), "digest corruption control");
   assert.throws(() => checkArtifact({ ...find("default").original, sha256: digest(corrupt) }), /original.log/);
+  await native.descriptorTeeth("pytest", "default");
 });
 
 for (const c of noise) {
