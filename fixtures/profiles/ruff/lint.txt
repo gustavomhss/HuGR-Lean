@@ -1,0 +1,20 @@
+F401 [*] `os` imported but unused
+ --> lint.py:1:8
+  |
+1 | import os
+  |        ^^
+2 |
+3 | message = "café 🧪"
+  |
+help: Remove unused import: `os`
+
+F821 Undefined name `missing`
+ --> lint.py:4:7
+  |
+3 | message = "café 🧪"
+4 | print(missing)
+  |       ^^^^^^^
+  |
+
+Found 2 errors.
+[*] 1 fixable with the `--fix` option.

@@ -1,0 +1,9 @@
+--- format.py
++++ format.py
+@@ -1,2 +1,2 @@
+-values={"café 🧪":[1,2,3]}
+-print( values )
++values = {"café 🧪": [1, 2, 3]}
++print(values)
+
+1 file would be reformatted
