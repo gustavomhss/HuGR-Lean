@@ -1,0 +1,160 @@
+        "  ...",
+        "# Subtest: UTILITY_ROOT_SIBLING",
+        "ok 2 - UTILITY_ROOT_SIBLING",
+        "  ---",
+        "  ...",
+        "1..2",
+        "# tests 17",
+        "# suites 0",
+        "# pass 15",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 1",
+        "# todo 1",
+        "# duration_ms 1941.394242"
+      ],
+      "progressNameRows": 24,
+      "progressNameRowBytes": 4491,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    },
+    {
+      "id": "tsx-nested-default",
+      "command": "tsx --test fixture.test.ts",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/nested",
+      "capture": {
+        "file": "captures/tsx-nested-default/capture.json",
+        "sha256": "e33e6fd002e3e818a72913da0d35e10890876c83d131ac1dcaf91f2b6cadb82f",
+        "bytes": 3453
+      },
+      "original": {
+        "file": "captures/tsx-nested-default/original.log",
+        "sha256": "8960a731db04b76cd358b82b96d559cef02982d2ec6d6899b35fd2801b5a8bf6",
+        "bytes": 6198
+      },
+      "stdout": {
+        "file": "captures/tsx-nested-default/stdout.log",
+        "sha256": "8960a731db04b76cd358b82b96d559cef02982d2ec6d6899b35fd2801b5a8bf6",
+        "bytes": 6198
+      },
+      "stderr": {
+        "file": "captures/tsx-nested-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/nested/fixture.test.ts",
+          "sha256": "25b94b4c98f66661f656fbeac634f41f6e3f16021b44b54725df035cb46fe339",
+          "bytes": 3350
+        }
+      ],
+      "intent": "noise-candidate",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# Subtest: UTILITY_SERIAL_PARENT Ω 🚀",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "      ---",
+        "      ...",
+        "    # Subtest: UTILITY_SKIP_CHILD",
+        "    ok 13 - UTILITY_SKIP_CHILD # SKIP UTILITY_SKIP_REASON Ω 🚀",
+        "      ---",
+        "      ...",
+        "    # Subtest: UTILITY_TODO_CHILD",
+        "    ok 14 - UTILITY_TODO_CHILD # TODO UTILITY_TODO_REASON Ω 🚀",
+        "      ---",
+        "      ...",
+        "    # Subtest: UTILITY_DIAGNOSTIC_CHILD",
+        "    ok 15 - UTILITY_DIAGNOSTIC_CHILD",
+        "      ---",
+        "      ...",
+        "    # UTILITY_CRITICAL_DIAGNOSTIC_SENTINEL Ω 🚀",
+        "    1..15",
+        "ok 1 - UTILITY_SERIAL_PARENT Ω 🚀",
+        "  ---",
+        "  ...",
+        "# Subtest: UTILITY_ROOT_SIBLING",
+        "ok 2 - UTILITY_ROOT_SIBLING",
+        "  ---",
+        "  ...",
+        "1..2",
+        "# tests 17",
+        "# suites 0",
+        "# pass 15",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 1",
+        "# todo 1",
+        "# duration_ms 6898.341726"
+      ],
+      "progressNameRows": 24,
+      "progressNameRowBytes": 4491,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    },
+    {
+      "id": "node-failure-default",
+      "command": "node --test fixture.mjs",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure",
+      "capture": {
+        "file": "captures/node-failure-default/capture.json",
+        "sha256": "acb47e04520e879fbccbeeff57c44664906a4d8a661a031425f1f553c9932283",
+        "bytes": 3452
+      },
+      "original": {
+        "file": "captures/node-failure-default/original.log",
+        "sha256": "efe8690a6975a5ea78d32541d7e602698389bdb7ae6c2917bc6bfabebaa429fa",
+        "bytes": 1114
+      },
+      "stdout": {
+        "file": "captures/node-failure-default/stdout.log",
+        "sha256": "efe8690a6975a5ea78d32541d7e602698389bdb7ae6c2917bc6bfabebaa429fa",
+        "bytes": 1114
+      },
+      "stderr": {
+        "file": "captures/node-failure-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/failure/fixture.mjs",
+          "sha256": "55cd1ad94f7cd216e2e786ec4cf3a98b106fc308e253d5437d98ae8a975cde7f",
+          "bytes": 301
+        }
+      ],
+      "intent": "exact-control",
