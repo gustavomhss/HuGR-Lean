@@ -1,0 +1,35 @@
+      "intent": "exact-control",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# Subtest: UTILITY_DIAGNOSTIC_ONLY_CONTEXT",
+        "ok 1 - UTILITY_DIAGNOSTIC_ONLY_CONTEXT",
+        "  ---",
+        "  ...",
+        "# UTILITY_DIAGNOSTIC_ONLY_SENTINEL Ω 🚀",
+        "1..1",
+        "# tests 1",
+        "# suites 0",
+        "# pass 1",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 4362.170667"
+      ],
+      "progressNameRows": 0,
+      "progressNameRowBytes": 0,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    }
+  ],
+  "failedCaptures": [],
+  "limitations": [
+    "Private capture index, not final utility-corpus manifest or expected parser output.",
+    "Native rows are raw observations; grammar, removable rows and required anchors await lead freeze.",
+    "Progress exposure is not predicted filtering savings; no parser/evaluator is invoked.",
+    "No dependency install, network, npm execution, CI, build or production test suite.",
+    "Each command is captured once; explicit TAP fallback is separately named, never a replacement.",
+    "Artifacts and live capture files are retained; no cleanup of fixture roots is attempted."
+  ]
+}

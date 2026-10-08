@@ -1,0 +1,160 @@
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# Subtest: UTILITY_FAILURE_CONTEXT Ω 🚀",
+        "not ok 1 - UTILITY_FAILURE_CONTEXT Ω 🚀",
+        "  ---",
+        "  failureType: 'testCodeFailure'",
+        "  error: |-",
+        "    UTILITY_ASSERT_FAILURE_SENTINEL Ω 🚀",
+        "  code: 'ERR_ASSERTION'",
+        "  expected: 'expected'",
+        "  actual: 'observed'",
+        "  operator: 'strictEqual'",
+        "  stack: |-",
+        "  ...",
+        "1..1",
+        "# tests 1",
+        "# suites 0",
+        "# pass 0",
+        "# fail 1",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 2307.031896"
+      ],
+      "progressNameRows": 0,
+      "progressNameRowBytes": 0,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": true
+    },
+    {
+      "id": "tsx-failure-default",
+      "command": "tsx --test fixture.test.ts",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure",
+      "capture": {
+        "file": "captures/tsx-failure-default/capture.json",
+        "sha256": "920baa9e95750c9d22a1804508f3eba4c93b23fd7f973cb006b64d19e085c27b",
+        "bytes": 3456
+      },
+      "original": {
+        "file": "captures/tsx-failure-default/original.log",
+        "sha256": "1f2c64f66fc85d7467a067b80db555eb8c24b5a4981ba8c8a2174054a47d820d",
+        "bytes": 1114
+      },
+      "stdout": {
+        "file": "captures/tsx-failure-default/stdout.log",
+        "sha256": "1f2c64f66fc85d7467a067b80db555eb8c24b5a4981ba8c8a2174054a47d820d",
+        "bytes": 1114
+      },
+      "stderr": {
+        "file": "captures/tsx-failure-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/failure/fixture.test.ts",
+          "sha256": "43688d7d805901746aa8fa3ce614de5261e0290e90c51f68e67b8400b3058e88",
+          "bytes": 354
+        }
+      ],
+      "intent": "exact-control",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# Subtest: UTILITY_FAILURE_CONTEXT Ω 🚀",
+        "not ok 1 - UTILITY_FAILURE_CONTEXT Ω 🚀",
+        "  ---",
+        "  failureType: 'testCodeFailure'",
+        "  error: |-",
+        "    UTILITY_ASSERT_FAILURE_SENTINEL Ω 🚀",
+        "  code: 'ERR_ASSERTION'",
+        "  expected: 'expected'",
+        "  actual: 'observed'",
+        "  operator: 'strictEqual'",
+        "  stack: |-",
+        "  ...",
+        "1..1",
+        "# tests 1",
+        "# suites 0",
+        "# pass 0",
+        "# fail 1",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 5393.956884"
+      ],
+      "progressNameRows": 0,
+      "progressNameRowBytes": 0,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": true
+    },
+    {
+      "id": "node-opaque-default",
+      "command": "node --test fixture.mjs",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/opaque",
+      "capture": {
+        "file": "captures/node-opaque-default/capture.json",
+        "sha256": "4e8ff3911e56c12869b8c1a29714fd542aaceb4ca3925aabee7b07c28fb25ddb",
+        "bytes": 3445
+      },
+      "original": {
+        "file": "captures/node-opaque-default/original.log",
+        "sha256": "063f2fc7525f742b39b317372d3462d3e24aacd2be6efd7114d443194ab5f870",
+        "bytes": 349
+      },
+      "stdout": {
+        "file": "captures/node-opaque-default/stdout.log",
+        "sha256": "063f2fc7525f742b39b317372d3462d3e24aacd2be6efd7114d443194ab5f870",
+        "bytes": 349
+      },
+      "stderr": {
+        "file": "captures/node-opaque-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/opaque/fixture.mjs",
+          "sha256": "99dab40087738ed9350608920cfdd0f07fd8519ea8ebe938464e60d65c42fe4d",
+          "bytes": 391
+        }
+      ],
+      "intent": "exact-control",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# UTILITY_OPAQUE_OUTPUT_SENTINEL user-owned output Ω 🚀",
+        "# UTILITY_OPAQUE_STDERR_SENTINEL exact stderr Ω 🚀",
+        "# Subtest: UTILITY_OPAQUE_CONTEXT",
+        "ok 1 - UTILITY_OPAQUE_CONTEXT",
+        "  ---",
+        "  ...",
+        "1..1",
+        "# tests 1",
+        "# suites 0",
+        "# pass 1",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 1906.858408"
+      ],
+      "progressNameRows": 0,
+      "progressNameRowBytes": 0,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    },
