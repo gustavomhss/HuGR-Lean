@@ -1,0 +1,160 @@
+{
+  "schema": "hugr-lean/utility-native-prep/1",
+  "family": "pytest",
+  "stage": "native-inspection-pending",
+  "baseline": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "producer": {
+    "script": "scripts/utility-native-pytest.mjs",
+    "sourceSHA256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+  },
+  "privateRoot": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI",
+  "createdAt": "2026-10-07T21:43:37.512Z",
+  "timeoutMs": 120000,
+  "policy": {
+    "originalMIT": true,
+    "historicalCorpus": false,
+    "expectedProofFrozen": false,
+    "capture": "captureCommand; raw stdout/stderr arrival order; no rewriting",
+    "environment": "isolatedEnvironment allowlist; private HOME/XDG/cache/TMPDIR; no caller pytest/Python options",
+    "disabledPluginAutoload": true,
+    "inheritedPYTEST_ADDOPTS": false,
+    "inheritedPYTHONPATH": false,
+    "fixtureAddopts": "-rs (show native skipped/subskipped reasons)",
+    "columns": 80
+  },
+  "sourceInventory": [
+    {
+      "file": "source/utility-native-pytest.mjs",
+      "bytes": 12517,
+      "sha256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+    },
+    {
+      "file": "source/capture.mjs",
+      "bytes": 4473,
+      "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3"
+    },
+    {
+      "file": "source/owned-process.mjs",
+      "bytes": 6278,
+      "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5"
+    },
+    {
+      "file": "source/process-guardian.mjs",
+      "bytes": 3314,
+      "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1"
+    },
+    {
+      "file": "source/windows-process.mjs",
+      "bytes": 2803,
+      "sha256": "7e51f3b5a986a84f5bf97fd7912116fc97ae704072d6761c3f3194f4d7c93772"
+    },
+    {
+      "file": "source/opencode-boundary.mjs",
+      "bytes": 22037,
+      "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432"
+    },
+    {
+      "file": "projects/noise/test_native.py",
+      "bytes": 677,
+      "sha256": "8234c613211d29cc08e0ebdc211ba7932a41169201f81507702e868426345b75"
+    },
+    {
+      "file": "projects/failure/test_failure.py",
+      "bytes": 213,
+      "sha256": "7621639a25ab2d50ca5507b5af571275def07857d0f38e432e40fdc140a65400"
+    },
+    {
+      "file": "projects/opaque/test_opaque.py",
+      "bytes": 81,
+      "sha256": "ef78be98d04c80d2c38756be43ebcc0e8a7121b01d0e709c48c3f4f6c6505808"
+    },
+    {
+      "file": "projects/opaque/conftest.py",
+      "bytes": 184,
+      "sha256": "2433b58beafefc6997ed5a891c0654331eb47f04f908e54e639e4e7e96e7dfbf"
+    },
+    {
+      "file": "projects/noise/LICENSE",
+      "bytes": 1066,
+      "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+    },
+    {
+      "file": "projects/noise/pytest.ini",
+      "bytes": 23,
+      "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+    },
+    {
+      "file": "projects/failure/LICENSE",
+      "bytes": 1066,
+      "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+    },
+    {
+      "file": "projects/failure/pytest.ini",
+      "bytes": 23,
+      "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+    },
+    {
+      "file": "projects/opaque/LICENSE",
+      "bytes": 1066,
+      "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+    },
+    {
+      "file": "projects/opaque/pytest.ini",
+      "bytes": 23,
+      "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+    },
+    {
+      "file": "projects/version-proof.py",
+      "bytes": 310,
+      "sha256": "2cddd8b613d21f0a37ae2fd1e3cc5840716c850949026925170eb2220cc158e0"
+    }
+  ],
+  "tools": [
+    {
+      "name": "pytest",
+      "executable": "/usr/local/bin/pytest",
+      "realpath": "/usr/local/bin/pytest",
+      "launcherSHA256": "1096908037029ecbaebc29b0708a7cccda589ba7329ecd916354b1a0aaedea34"
+    },
+    {
+      "name": "python",
+      "executable": "/usr/local/opt/python@3.14/bin/python3.14",
+      "realpath": "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+    },
+    {
+      "name": "pytestModule",
+      "executable": "/usr/local/lib/python3.14/site-packages/pytest/__init__.py",
+      "bytes": 5582,
+      "sha256": "7be7a1e2218dc59a19d1ad131e4abe21172a295087efc72898938248782e8766"
+    },
+    {
+      "name": "pluggyModule",
+      "executable": "/usr/local/lib/python3.14/site-packages/pluggy/__init__.py",
+      "bytes": 811,
+      "sha256": "0fa769d609840e3b43a7c840c1073eaab81aba59cbe2296daea90b0ddfa0f6d8"
+    }
+  ],
+  "captures": [
+    {
+      "id": "versions",
+      "command": "'/usr/local/opt/python@3.14/bin/python3.14' '/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/version-proof.py'",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects",
+      "fixtureSources": [
+        {
+          "file": "projects/version-proof.py",
+          "bytes": 310,
+          "sha256": "2cddd8b613d21f0a37ae2fd1e3cc5840716c850949026925170eb2220cc158e0"
+        }
+      ],
+      "state": "captured",
+      "retainedLiveDirectory": "captures/versions/live",
+      "facts": {
+        "command": "'/usr/local/opt/python@3.14/bin/python3.14' '/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/version-proof.py'",
+        "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects",
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "nativeSpawned": true,
+        "nativeExitObserved": true,
+        "complete": true,
+        "durationMs": 2525.06934,
