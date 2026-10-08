@@ -1,0 +1,160 @@
+      "bytes": 22037,
+      "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432"
+    },
+    {
+      "file": "projects/noise/test_native.py",
+      "bytes": 734,
+      "sha256": "3f1b45fe9eebfa7cfdf4c0890abc627941a16f9b8710569de151f8e8ab3ea96d"
+    },
+    {
+      "file": "projects/noise/LICENSE",
+      "bytes": 1066,
+      "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+    },
+    {
+      "file": "projects/noise/pytest.ini",
+      "bytes": 23,
+      "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+    }
+  ],
+  "captures": [
+    {
+      "id": "literal-path",
+      "command": "pytest test_native.py --color=no",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise",
+      "state": "captured",
+      "fixtureSources": [
+        {
+          "file": "projects/noise/test_native.py",
+          "bytes": 734,
+          "sha256": "3f1b45fe9eebfa7cfdf4c0890abc627941a16f9b8710569de151f8e8ab3ea96d"
+        },
+        {
+          "file": "projects/noise/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+        },
+        {
+          "file": "projects/noise/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+        }
+      ],
+      "retainedLiveDirectory": "captures/literal-path/live",
+      "receipt": "captures/literal-path/receipt.json",
+      "facts": {
+        "command": "pytest test_native.py --color=no",
+        "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise",
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "nativeSpawned": true,
+        "nativeExitObserved": true,
+        "complete": true,
+        "durationMs": 1577.354393,
+        "guardianElapsedMs": 1638.011702,
+        "durationBoundary": "pipe-close",
+        "exitDurationMs": 1575.838106,
+        "bookkeepingMs": 1.1965230000000702,
+        "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+        "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+        "encodingError": null,
+        "launchError": null,
+        "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+        "killErrors": []
+      },
+      "artifacts": {
+        "original": {
+          "file": "captures/literal-path/original.log",
+          "bytes": 2424,
+          "sha256": "31c0ef22e3224135dac4b5e01e93ea8ef6158a81826c0b5a7e364e42281924ca"
+        },
+        "stdout": {
+          "file": "captures/literal-path/stdout.log",
+          "bytes": 2424,
+          "sha256": "31c0ef22e3224135dac4b5e01e93ea8ef6158a81826c0b5a7e364e42281924ca"
+        },
+        "stderr": {
+          "file": "captures/literal-path/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "observedRows": [
+        {
+          "line": 1,
+          "text": "============================= test session starts =============================="
+        },
+        {
+          "line": 2,
+          "text": "platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0"
+        },
+        {
+          "line": 3,
+          "text": "rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise"
+        },
+        {
+          "line": 4,
+          "text": "configfile: pytest.ini"
+        },
+        {
+          "line": 5,
+          "text": "collected 1203 items"
+        },
+        {
+          "line": 6,
+          "text": ""
+        },
+        {
+          "line": 7,
+          "text": "test_native.py ......................................................... [  4%]"
+        },
+        {
+          "line": 8,
+          "text": "........................................................................ [ 10%]"
+        },
+        {
+          "line": 9,
+          "text": "........................................................................ [ 16%]"
+        },
+        {
+          "line": 10,
+          "text": "........................................................................ [ 22%]"
+        },
+        {
+          "line": 11,
+          "text": "........................................................................ [ 28%]"
+        },
+        {
+          "line": 12,
+          "text": "........................................................................ [ 34%]"
+        },
+        {
+          "line": 13,
+          "text": "........................................................................ [ 40%]"
+        },
+        {
+          "line": 14,
+          "text": "........................................................................ [ 46%]"
+        },
+        {
+          "line": 15,
+          "text": "........................................................................ [ 52%]"
+        },
+        {
+          "line": 16,
+          "text": "........................................................................ [ 58%]"
+        },
+        {
+          "line": 17,
+          "text": "........................................................................ [ 64%]"
+        },
+        {
+          "line": 18,
+          "text": "........................................................................ [ 70%]"
+        },
+        {
+          "line": 19,
+          "text": "........................................................................ [ 76%]"
+        },
+        {
