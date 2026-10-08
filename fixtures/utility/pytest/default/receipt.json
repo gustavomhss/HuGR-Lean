@@ -1,0 +1,255 @@
+{
+  "id": "default",
+  "command": "pytest",
+  "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise",
+  "fixtureSources": [
+    {
+      "file": "projects/noise/test_native.py",
+      "bytes": 677,
+      "sha256": "8234c613211d29cc08e0ebdc211ba7932a41169201f81507702e868426345b75"
+    },
+    {
+      "file": "projects/noise/LICENSE",
+      "bytes": 1066,
+      "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+    },
+    {
+      "file": "projects/noise/pytest.ini",
+      "bytes": 23,
+      "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+    }
+  ],
+  "state": "captured",
+  "retainedLiveDirectory": "captures/default/live",
+  "facts": {
+    "command": "pytest",
+    "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise",
+    "exitCode": 0,
+    "signal": null,
+    "timedOut": false,
+    "nativeSpawned": true,
+    "nativeExitObserved": true,
+    "complete": true,
+    "durationMs": 19803.776437,
+    "guardianElapsedMs": 20201.801499,
+    "durationBoundary": "pipe-close",
+    "exitDurationMs": 19803.408876,
+    "bookkeepingMs": 2.61775100000159,
+    "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+    "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+    "encodingError": null,
+    "launchError": null,
+    "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+    "killErrors": []
+  },
+  "artifacts": {
+    "original": {
+      "file": "captures/default/original.log",
+      "bytes": 2422,
+      "sha256": "19a7b3fab0019f50d88ac9a4da0ca0fc3b9ccf01c3bbcbb5fc2e31a3c979e870"
+    },
+    "stdout": {
+      "file": "captures/default/stdout.log",
+      "bytes": 2422,
+      "sha256": "19a7b3fab0019f50d88ac9a4da0ca0fc3b9ccf01c3bbcbb5fc2e31a3c979e870"
+    },
+    "stderr": {
+      "file": "captures/default/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "receipt": "captures/default/receipt.json",
+  "observedRows": [
+    {
+      "line": 1,
+      "text": "============================= test session starts =============================="
+    },
+    {
+      "line": 2,
+      "text": "platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0"
+    },
+    {
+      "line": 3,
+      "text": "rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise"
+    },
+    {
+      "line": 4,
+      "text": "configfile: pytest.ini"
+    },
+    {
+      "line": 5,
+      "text": "collected 1203 items"
+    },
+    {
+      "line": 6,
+      "text": ""
+    },
+    {
+      "line": 7,
+      "text": "test_native.py ......................................................... [  4%]"
+    },
+    {
+      "line": 8,
+      "text": "........................................................................ [ 10%]"
+    },
+    {
+      "line": 9,
+      "text": "........................................................................ [ 16%]"
+    },
+    {
+      "line": 10,
+      "text": "........................................................................ [ 22%]"
+    },
+    {
+      "line": 11,
+      "text": "........................................................................ [ 28%]"
+    },
+    {
+      "line": 12,
+      "text": "........................................................................ [ 34%]"
+    },
+    {
+      "line": 13,
+      "text": "........................................................................ [ 40%]"
+    },
+    {
+      "line": 14,
+      "text": "........................................................................ [ 46%]"
+    },
+    {
+      "line": 15,
+      "text": "........................................................................ [ 52%]"
+    },
+    {
+      "line": 16,
+      "text": "........................................................................ [ 58%]"
+    },
+    {
+      "line": 17,
+      "text": "........................................................................ [ 64%]"
+    },
+    {
+      "line": 18,
+      "text": "........................................................................ [ 70%]"
+    },
+    {
+      "line": 19,
+      "text": "........................................................................ [ 76%]"
+    },
+    {
+      "line": 20,
+      "text": "........................................................................ [ 82%]"
+    },
+    {
+      "line": 21,
+      "text": "........................................................................ [ 88%]"
+    },
+    {
+      "line": 22,
+      "text": "........................................................................ [ 94%]"
+    },
+    {
+      "line": 23,
+      "text": "................................................................s.       [100%]"
+    },
+    {
+      "line": 24,
+      "text": ""
+    },
+    {
+      "line": 25,
+      "text": "=============================== warnings summary ==============================="
+    },
+    {
+      "line": 26,
+      "text": "test_native.py::test_warning_context"
+    },
+    {
+      "line": 27,
+      "text": "  /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise/test_native.py:26: UserWarning: HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪"
+    },
+    {
+      "line": 28,
+      "text": "    warnings.warn(\"HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪\", UserWarning)"
+    },
+    {
+      "line": 29,
+      "text": ""
+    },
+    {
+      "line": 30,
+      "text": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html"
+    },
+    {
+      "line": 31,
+      "text": "=========================== short test summary info ============================"
+    },
+    {
+      "line": 32,
+      "text": "SKIPPED [1] test_native.py:20: HUGR_PYTEST_SKIP_SENTINEL café 雪 🧪"
+    },
+    {
+      "line": 33,
+      "text": "================= 1202 passed, 1 skipped, 1 warning in 15.53s =================="
+    },
+    {
+      "line": 34,
+      "text": ""
+    }
+  ],
+  "baseline": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "producer": {
+    "script": "scripts/utility-native-pytest.mjs",
+    "sourceSHA256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+  },
+  "sourceHead": "8eb1600703096cf2c23348e159ad1daa82f8b580",
+  "environment": {
+    "originalMIT": true,
+    "historicalCorpus": false,
+    "expectedProofFrozen": false,
+    "capture": "captureCommand; raw stdout/stderr arrival order; no rewriting",
+    "environment": "isolatedEnvironment allowlist; private HOME/XDG/cache/TMPDIR; no caller pytest/Python options",
+    "disabledPluginAutoload": true,
+    "inheritedPYTEST_ADDOPTS": false,
+    "inheritedPYTHONPATH": false,
+    "fixtureAddopts": "-rs (show native skipped/subskipped reasons)",
+    "columns": 80
+  },
+  "timeoutMs": 120000,
+  "tools": [
+    {
+      "name": "pytest",
+      "executable": "/usr/local/bin/pytest",
+      "realpath": "/usr/local/bin/pytest",
+      "launcherSHA256": "1096908037029ecbaebc29b0708a7cccda589ba7329ecd916354b1a0aaedea34"
+    },
+    {
+      "name": "python",
+      "executable": "/usr/local/opt/python@3.14/bin/python3.14",
+      "realpath": "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+    },
+    {
+      "name": "pytestModule",
+      "executable": "/usr/local/lib/python3.14/site-packages/pytest/__init__.py",
+      "bytes": 5582,
+      "sha256": "7be7a1e2218dc59a19d1ad131e4abe21172a295087efc72898938248782e8766"
+    },
+    {
+      "name": "pluggyModule",
+      "executable": "/usr/local/lib/python3.14/site-packages/pluggy/__init__.py",
+      "bytes": 811,
+      "sha256": "0fa769d609840e3b43a7c840c1073eaab81aba59cbe2296daea90b0ddfa0f6d8"
+    }
+  ],
+  "versions": {
+    "python": "3.14.5",
+    "pythonFull": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "pythonExecutable": "/usr/local/opt/python@3.14/bin/python3.14",
+    "pytest": "9.0.3",
+    "pluggy": "1.6.0",
+    "pytestModule": "/usr/local/lib/python3.14/site-packages/pytest/__init__.py",
+    "pluggyModule": "/usr/local/lib/python3.14/site-packages/pluggy/__init__.py"
+  },
+  "sourceInventorySHA256": "a55ff12b7ad678b64b31f8200356d33a2e6e098f570c58c8f008e3b94585cedb"
+}
