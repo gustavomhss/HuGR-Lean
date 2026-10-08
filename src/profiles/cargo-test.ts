@@ -73,8 +73,7 @@ function command(argv: readonly string[]): Command | undefined {
       const value = argv[++i];
       if (!value || value.length > 128 || !tripleArg.test(value)) return undefined;
       result.target = value;
-    }
-    else if (arg === "--no-default-features" && once("no-default-features")) continue;
+    } else if (arg === "--no-default-features" && once("no-default-features")) continue;
     else if (arg === "--all-features" && once("all-features")) allFeatures = true;
     else if (arg === "--features" && once("features")) {
       const value = argv[++i];

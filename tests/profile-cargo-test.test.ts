@@ -52,7 +52,7 @@ function accepted(obs: Observation, expected: string): void {
 
 test("C02 exports cargo-test only; native inventory and original boundary hashes", () => {
   assert.deepEqual(familyProfiles.map(p => p.id), ["cargo-test"]);
-  assert.equal(cases.length, 23);
+  assert.equal(cases.length, 31);
   assert.equal(new Set(cases.map(c => c.name)).size, cases.length);
   for (const c of cases) {
     const receipt = JSON.parse(read(c.provenance.receipt));
@@ -191,7 +191,7 @@ test("C02 passing Rust Unicode identities remain admitted; invalid identifiers r
 });
 test("REVIEW-C02-values: labeled property transforms rename profiles/triples without inventing build details", () => {
   const custom = cases.find(c => c.name === "C02/custom-profile")!;
-  for (const name of ["review_fast", "other-profile"]) {
+  for (const name of ["review_fast", "other-profile", "p".repeat(64)]) {
     for (const detail of ["unoptimized", "unoptimized + debuginfo", "optimized", "optimized + debuginfo"]) {
       const change = (s: string) => s.replaceAll("`c02`", `\`${name}\``).replaceAll("/c02/", `/${name}/`)
         .replaceAll("[optimized + debuginfo]", `[${detail}]`);
@@ -230,4 +230,18 @@ test("REVIEW-C02-exact-skip: exact prefix skip preserves full identities; exact 
   accepted({ ...plain, command: plain.command + " -- --exact --skip tests::beta" }, read(pkg.expectedFile));
   exact({ ...plain, command: plain.command + " -- --exact --skip tests::beta_one" });
   exact({ ...plain, command: plain.command + " -- --skip tests::beta" });
+  const prefix = cases.find(c => c.name === "C02/review-exact-prefix")!;
+  const full = cases.find(c => c.name === "C02/review-exact-full")!;
+  exact({ ...observation(prefix), command: full.command });
+});
+test("REVIEW-C02-bounds: project values are bounded syntax, not fixture constants or future-format admission", () => {
+  const c = cases.find(c => c.name === "C02/custom-profile")!, obs = observation(c);
+  for (const arg of ["--profile " + "p".repeat(65), "--profile x/y", "--target unknown", "--target target.json",
+    "--target " + "x".repeat(33) + "-unknown-linux", "--target " + Array(6).fill("x".repeat(22)).join("-")]) {
+    const command = `cargo test --offline --lib ${arg}`;
+    assert.equal(profile.match(command.split(" ")), false, command); exact({ ...obs, command });
+  }
+  for (const detail of ["optimized + stripped", "unoptimized + debuginfo + future", "fast"]) {
+    exact({ ...obs, output: obs.output.replace("[optimized + debuginfo]", `[${detail}]`) });
+  }
 });
