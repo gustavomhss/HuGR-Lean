@@ -1,0 +1,4 @@
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.d.ts
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.legacy.d.ts
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/ok.ts
