@@ -1,0 +1,11 @@
+# Node/TAP acceptance corpus (implementation pending)
+
+Original internal MIT material, no donor. Producer commit `1ae6898a12373d512dd6cdc79891242a95f5a1fa`, path `scripts/utility-native-node.mjs`, SHA256 `5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19`; capture source baseline `882585e5f916821a482d14bc7bfe7d6a102b772a`. Parser scaffold baseline `d5ec6daa5728d49df3e6f76a75ae0b7c1ede3c9f`.
+
+Immutable native root: `hugr-lean-utility-node-native/.native-captures/node-m78clV`. Commands: literal `node --test fixture.mjs` and `tsx --test fixture.test.ts`; Node v22.17.1, tsx 4.23.15, default non-TTY TAP. No recapture. Raw original/stdout/stderr/capture.json and executed source files copied byte-exact, with manifest SHA256/byte bindings. Storage preserves receipt-relative names; no relocation or receipt rewriting. Producer itself is not imported or executed.
+
+Modification record: only independent expected logs, occurrence-aware anchors, acceptance tests and data-preparation helper added. Flat keeps lines 1,74–82; nested keeps 1–2,75–99,106–114 for both launchers. Exact failure/opaque/diagnostic cases keep every byte. Expected output uses inspected source line positions, not production reduction. Silent passing leaf blocks alone are deletable; parent envelopes/plans, skip/todo/diagnostic contexts, names, native durations and whole footer remain source-backed.
+
+`prepare-corpus.mjs` copies/verifies pinned evidence and authors this fixed retain contract; it never executes native commands. Ten receipts bind literal commands, isolated environment, tools, sources, streams and native termination. Native source programs remain internal MIT originals, unchanged. Required occurrence is zero-based in original output, including repeated YAML delimiters/types. Each retained nonempty evidence line is anchored.
+
+Scope: acceptance-only selected-profile replay; no default registry, compiled/installed/host/CI proof. Scaffold Node reduce is undefined: noisy native acceptance must be RED. Private test-only goldens calibrate declare-only and emit-only mutants before production exists. Production mutation/restoration and count-guard mutation proof remain implementation/reviewer work. Failed syntax-preparation evidence stays untouched in immutable private root; it is not a successful corpus case.
