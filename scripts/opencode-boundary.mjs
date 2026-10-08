@@ -58,7 +58,7 @@ export async function runProcess(binary, args, options = {}) {
       if (error) reject(Object.assign(error, { diagnostics: { code: exitCode, signal: exitSignal, ...streams } }));
       else resolve({ ...result, ...streams });
     };
-    const timer = setTimeout(() => {
+    const timer = setTimeout(function beginBoundaryTimeout() {
       // A detached descendant can retain both pipes after the main child exits. Never await close here.
       settle(new Error(`OpenCode timeout after ${timeout} ms`), undefined, true);
       if (child.pid && process.platform !== "win32") {
