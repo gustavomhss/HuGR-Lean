@@ -1,0 +1,12 @@
+{"Time":"2026-10-08T15:27:46.118278-03:00","Action":"start","Package":"example.com/g02/alpha"}
+{"Time":"2026-10-08T15:27:48.390942-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"goos: darwin\n"}
+{"Time":"2026-10-08T15:27:48.391375-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"goarch: amd64\n"}
+{"Time":"2026-10-08T15:27:48.391395-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"pkg: example.com/g02/alpha\n"}
+{"Time":"2026-10-08T15:27:48.391483-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\n"}
+{"Time":"2026-10-08T15:27:48.391589-03:00","Action":"run","Package":"example.com/g02/alpha","Test":"BenchmarkMetric"}
+{"Time":"2026-10-08T15:27:48.391622-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"BenchmarkMetric","Output":"=== RUN   BenchmarkMetric\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:48.391648-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"BenchmarkMetric","Output":"BenchmarkMetric\n"}
+{"Time":"2026-10-08T15:27:48.392575-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"BenchmarkMetric","Output":"BenchmarkMetric-12    \t       1\t     73234 ns/op\t    1992 B/op\t       4 allocs/op\n"}
+{"Time":"2026-10-08T15:27:48.392689-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:48.393939-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"ok  \texample.com/g02/alpha\t2.274s\n"}
+{"Time":"2026-10-08T15:27:48.393995-03:00","Action":"pass","Package":"example.com/g02/alpha","Elapsed":2.276}

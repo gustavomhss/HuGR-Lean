@@ -1,0 +1,9 @@
+{"Time":"2026-10-08T15:27:50.00869-03:00","Action":"start","Package":"example.com/g02/failure"}
+{"Time":"2026-10-08T15:27:53.513146-03:00","Action":"run","Package":"example.com/g02/failure","Test":"TestFailure"}
+{"Time":"2026-10-08T15:27:53.513416-03:00","Action":"output","Package":"example.com/g02/failure","Test":"TestFailure","Output":"=== RUN   TestFailure\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:53.513728-03:00","Action":"output","Package":"example.com/g02/failure","Test":"TestFailure","Output":"    failure_test.go:3: failure diagnostic café 🧭\n","OutputType":"error"}
+{"Time":"2026-10-08T15:27:53.513885-03:00","Action":"output","Package":"example.com/g02/failure","Test":"TestFailure","Output":"--- FAIL: TestFailure (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:53.513923-03:00","Action":"fail","Package":"example.com/g02/failure","Test":"TestFailure","Elapsed":0}
+{"Time":"2026-10-08T15:27:53.513962-03:00","Action":"output","Package":"example.com/g02/failure","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:53.514808-03:00","Action":"output","Package":"example.com/g02/failure","Output":"FAIL\texample.com/g02/failure\t3.505s\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:53.514859-03:00","Action":"fail","Package":"example.com/g02/failure","Elapsed":3.5060000000000002}
