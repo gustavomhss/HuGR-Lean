@@ -521,3 +521,43 @@ test("lineage teeth reject index order/digest, producer bytes and dishonest befo
   assert.throws(() => sourceRecord({ ...full, origin: "recorded-before", recordedBeforeSatisfied: true }, original), /cannot claim recorded-before/);
   assert.throws(() => sourceRecord({ ...full, originalExpectedHash: "0".repeat(64) }, original), /original expected hash binding/);
 });
+test("CARGO-LIB binds actual quoted/tab argv and refuses incompatible observation commands", () => {
+  for (const command of ["cargo test '--lib' --color 'never'", "cargo\ttest\t--color=never\t\"--lib\""]) {
+    const result = profile.reduce(raw("lib"), obs(raw("lib"), command));
+    assert.ok(result); assert.equal(evidence(raw("lib"), result, anchors(golden("lib"))), golden("lib"));
+    const filtered = filter(obs(raw("lib"), command));
+    assert.equal(filtered.status, "reduced");
+    if (filtered.status !== "reduced") assert.fail("quoted library argv must reduce");
+    assert.equal(filtered.replacement, golden("lib"));
+    exact(obs(raw("full"), command));
+    exact(obs(raw("lib").replace("unittests src/lib.rs", "unittests src/main.rs"), command));
+  }
+  for (const command of ["cargo test '--lib extra'", "cargo test --color '--lib'", "cargo build", "echo cargo test"]) {
+    exact(obs(raw("lib"), command));
+  }
+});
+test("legacy Cargo installed goldens remain exact under existing command identities", () => {
+  const installed = JSON.parse(readFileSync(new URL("../fixtures/installed-goldens.json", import.meta.url), "utf8"));
+  for (const [file, id, command] of [["cargo_test_success.txt", "cargo-test", "cargo test --color never"],
+    ["cargo_build_success.txt", "cargo-build", "cargo build --color never"]]) {
+    const input = readFileSync(new URL(`../fixtures/runners/${file}`, import.meta.url), "utf8");
+    const expected: string = installed.outputs[`runners/${file}`];
+    assert.ok(expected); const result = filter(obs(input, command));
+    assert.equal(result.status, "reduced");
+    if (result.status !== "reduced") assert.fail("legacy Cargo must reduce");
+    assert.equal(result.profile, id); assert.equal(result.replacement, expected);
+    const reduction = cargoProfiles.find((entry) => entry.id === id)!.reduce(input, obs(input, command));
+    assert.ok(reduction); assert.equal(evidence(input, reduction, anchors(expected)), expected);
+  }
+});
+test("actual native Cargo core bytes and material flags match frozen independent goals", (t) => {
+  const manifest = JSON.parse(read("manifest.json"));
+  for (const entry of manifest.cases as NativeCase[]) {
+    const observation = { ...obs(raw(entry.id), entry.command), termination: { kind: "exited", code: entry.exitCode } } as Observation;
+    const result = filter(observation), saved = result.inputBytes - result.outputBytes;
+    assert.equal(result.status, entry.expectedStatus); assert.equal(result.inputBytes, entry.original.bytes);
+    assert.equal(result.outputBytes, entry.expected.bytes);
+    assert.equal(saved >= 1024 && saved / result.inputBytes >= 0.1, entry.material);
+    t.diagnostic(`${entry.id}: ${result.inputBytes} -> ${result.outputBytes} UTF-8 bytes; saved ${saved}; material=${entry.material}`);
+  }
+});
