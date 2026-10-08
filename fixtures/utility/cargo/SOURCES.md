@@ -30,8 +30,10 @@ Native full exited 0, complete, with genuine `2m 01s`; collector wrongly demande
 Continuation did not recapture full or rerun the 61-second cold build.rs sleep. Delay is not filter latency or representative build performance.
 
 Full lock before: `source-snapshots/Cargo.lock`, reconstructed by producer inspection from pinned literal;
+this is reconstructed source evidence, NOT a file snapshot recorded before native full execution.
 SHA-256 `c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb` matches original receipt.
 After full / before and after lib: `37c075e3a501a668c75cbbf0831ab4a084f28ab26f763bd2b9b605262da58908`.
+Stored after-full bytes are the actual later sources-before/lib file; inspection binds its hash to post-full state.
 Cargo added two generated-file comments. Failure/warning locks changed likewise; both snapshots copied, never substituted for receipt-bound before versions.
 
 Independent full keep: 1-based lines 2,3,6,15,17,28,30,35; lib keep: 1,2,5,14.
@@ -40,3 +42,22 @@ Full expected: 914 UTF-8 bytes from 2,931; saved 2,017 (68.82%), material true.
 Lib expected: 478 from 1,375; saved 897 (65.24%), material false. Family threshold: at least one native case saves >=1,024 bytes and >=10%.
 Compiler-warning output and native failure (exit 101, including deliberately incorrect exit 0 observation) remain whole-output exact.
 Mutation/CRLF/Unicode/malformed cases are in-memory supplemental controls, not rewritten native captures.
+
+## FIX-FIRST source lineage and plan decision
+Ancillary baseline report moved byte-exact to `.acceptance-proof/cargo/acceptance-baseline.json`.
+`.acceptance-proof/cargo/original-producer.mjs` preserves all 13,502 original pinned bytes, MIT, no modifications.
+It is inert evidence, never imported/executed. Tests parse its `sources["Cargo.lock"]` string with TypeScript AST.
+Producer `writeProject` writes each source literal and immediately reads/hashes its file (lines 52–61);
+full capture receives that recorded inventory (lines 169–174). No pre-full byte-copy operation exists there.
+Private `source-snapshots/Cargo.lock` explicitly documents later reconstruction, not an original before-file copy.
+Only lock metadata is reconstructed; runtime Rust fixture files are actual files matching recorded native source hashes.
+`.acceptance-proof/cargo/lineage.json` has typed sourceRecord origin/producer/originalExpectedHash labels.
+Source-name/label tests forbid extending reconstruction to Rust or calling the full lock `recorded-before`.
+Original failed collector index is preserved as three byte-exact consecutive line fragments (250/250/257 rows);
+ordered concatenation is the original 41,526-byte JSON, bound to the independently hashed inspection receipt.
+Tests bind index full record to untouched raw receipt, then to raw streams/source inventory, and preserve collector failure facts.
+Per-case optional producer identifies actual full versus continuation actor; corrected collector identity remains untouched receipt metadata.
+Proposed EVAL optional per-case mapped lineage descriptor remains private/typed here pending lead schema approval.
+Plan resolution remains BLOCKED for full's recorded-before-file assertion: lead may explicitly admit
+producer-literal reconstruction for generated-comment Cargo.lock metadata only. Hash equality proves source
+conformance to the recorded inventory; it does not turn reconstruction into a recorded-before copy.
