@@ -1,42 +1,38 @@
-# C03 sources and reproduction
+# C03 source pins and reproduction
 
-Original MIT-authored tiny dependency-free workspace: `project/**`; source and recipe
-SHA-256 values: `source-hashes.txt`. Cargo lock contains only two local packages.
-No donor source copied. Baseline regression is referenced in place, unchanged:
-`fixtures/utility/cargo/warning/original.log`, commit
-`07ffe15e2263c2925778022194c5385807216603`; original receipt/provenance remains authoritative.
-It is a `cargo test` warning, not native Clippy evidence.
+Original MIT-authored tiny dependency-free workspace: `project/**`. Original source,
+recipe and captures are pinned at commit `e89de8b963ada834769959c1d8189c8d84e8c934`, paths
+`fixtures/profiles/cargo-clippy/{project,capture.mjs,source-hashes.txt,cases.json}`.
+No donor source copied. Current source/recipe SHA-256 values: `source-hashes.txt`.
 
-Pins verified by real commands: `cargo --version`, `rustc --version`,
-`cargo clippy --version`, `rustup component list --installed`.
-Cargo `1.98.0 (797e8a9bc 2026-08-05)`, rustc `1.98.0 (88d9e12ae 2026-08-18)`,
-Clippy `0.1.98 (88d9e12ae1 2026-08-18)`, installed
-`clippy-x86_64-apple-darwin`. Full material is recorded once in `cases.json`.
+Original manifest is preserved byte-for-byte in `capture-receipt.json` (Git blob
+`f9a6773382ebe1cac2fca15275671070d6b56d3b`). It retains versions, argv, cwd, environment,
+termination, completeness, boundary and historical derivative recipes/hashes. Current
+`cases.json` normalizes only actual native Clippy cases to shared schema; synthetic
+negatives now live in tests. Existing Cargo warning regression stays referenced in place.
 
-Recipe: from repository root, run
+Pins verified by native `cargo --version`, `rustc --version`, `cargo clippy --version`,
+`rustup component list --installed`: Cargo `1.98.0 (797e8a9bc 2026-08-05)`, rustc
+`1.98.0 (88d9e12ae 2026-08-18)`, Clippy `0.1.98 (88d9e12ae1 2026-08-18)` and installed
+`clippy-x86_64-apple-darwin`. Reach: macOS x86_64, explicit installed host target.
+
+Recipe: from repository root run
 `node fixtures/profiles/cargo-clippy/capture.mjs /absolute/fresh/disposable/project`.
-Parent must exist; project must not exist. Default uses approved temporary directory.
-Recipe copies sources then runs original native argv recorded per case, sequentially,
-offline with one build job and terminal color disabled. No installs or dependencies.
-Target/cache state is retained between commands; changing order changes evidence.
-Actual cwd/platform/environment/time and raw capture SHA-256 accompany the packet.
-Ambient Cargo config is not claimed hermetic; concrete successful lint output is evidence.
+Parent must exist; project must not exist. Recipe copies sources, invokes original native
+argv sequentially, offline, color disabled, one build job. Lock contains only local packages.
+Preserve command order/cache state. Ambient Cargo config is not claimed hermetic.
 
-Each native process exited normally within timeout, stdout empty. Fixture is unchanged
-stderr UTF-8 bytes, no concatenation order inference, ANSI stripping, path substitution,
-command rewriting, or output shaping. Rust canonicalizes `/var` to `/private/var` in
-progress paths naturally. Timing/path bytes remain original; reruns need not hash-identical.
+New native `C03/profile-dev` ran `cargo clippy --offline --workspace --profile dev` in the
+original disposable cwd after collision capture, same cleared variables/environment.
+Feature switch triggered real recompilation; actual stderr and independent one-row suffix
+golden are recorded with capture time, hash and pinned project source in its flat case.
 
-Four exact-only derivatives are explicitly labeled: appended opaque line, changed warning
-heading, removed completion/truncated metadata, unknown boundary metadata. These are
-negative witnesses, not extra native captures. Expected reduction files remove only
-the leading native progress prefix; suffix byte identity is independently checked.
+All native processes exited normally; stdout empty. Input files retain original stderr
+UTF-8 bytes, paths and timings. No ANSI stripping, concatenation ordering, path replacement
+or command rewriting. Rust naturally canonicalized `/var` to `/private/var`. Reruns need
+not hash-identical. Recipe now emits shared native manifest without synthetic negatives;
+this is a recorded modification of original pinned recipe, not a new receipt framework.
 
-Capture-only handoff: parser/tests/mutation and CI belong to later lead work. Local
-allowed repository checks are `npm ci` and `npm run typecheck`; no full suite or CI run.
-
-Capture validation independently checked the complete case-ID set, source/capture hashes,
-golden byte-suffix identity, later progress retention, and diagnostic/context sentinels.
-In-memory golden-byte corruption was rejected; this is capture validation, not a parser
-preservation mutation. Compiler control with a deliberately missing `--types` entry
-produced TS2688; normal typecheck was then rerun. No tracked mutation was made.
+Focused verification: `npx tsx --test tests/profile-cargo-clippy.test.ts`,
+`npm run typecheck`; byte suffix/hash controls and four restored preservation/admission
+mutations documented in CASES.md. No global suite, build, smoke, benchmark or CI dispatch.

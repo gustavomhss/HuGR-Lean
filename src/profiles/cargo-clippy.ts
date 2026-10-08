@@ -83,7 +83,8 @@ function diagnostic(rows: readonly Line[], start: number, knownCodes: ReadonlySe
 function parse(output: string, observation: Observation): Reduction | undefined {
   const argv = tokenizeCommand(observation.command);
   const profile = argv && command(argv);
-  if (!profile || !output.endsWith("\n") || /^warning: [A-Za-z_][A-Za-z0-9_-]*@\S+: /m.test(output)) return undefined;
+  if (!profile || !output.endsWith("\n") || output.includes("\t") ||
+      /^warning: [A-Za-z_][A-Za-z0-9_-]*@\S+: /m.test(output)) return undefined;
   const rows = lines(output);
   let i = 0;
   while (progress.test(rows[i]?.text ?? "")) i++;
@@ -134,6 +135,7 @@ function parse(output: string, observation: Observation): Reduction | undefined 
         originals.set(canonical, count);
       }
       contexts.add(key);
+      codes.clear(); // Default-note omission is scoped to one compiler target's warning group.
       pending = 0; fixes = 0; i++;
       continue;
     }

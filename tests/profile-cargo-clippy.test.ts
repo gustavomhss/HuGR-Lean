@@ -12,7 +12,7 @@ interface NativeCase {
   name: string; family: string; command: string; file: string; status: "reduced" | "passthrough";
   expectedFile?: string; termination: Observation["termination"];
   completeness: Observation["completeness"]; presentation: Observation["presentation"];
-  version: unknown; platform: string; provenance: { sha256: string };
+  version: string; platform: string; provenance: { sha256: string };
 }
 const packet = JSON.parse(read("cases.json")) as { schema: string; cases: NativeCase[] };
 const observation = (output: string, command = "cargo clippy --workspace"): Observation => ({
@@ -55,9 +55,14 @@ test("C03 shared native schema, immutable capture hashes and complete case inven
   assert.deepEqual(packet.cases.map(c => c.name), ["workspace", "cache", "package-features-target", "checking-target", "workspace-features-target-cache", "two-packages", "deny-warnings", "collision", "profile-dev"].map(id => `C03/${id}`));
   for (const c of packet.cases) {
     assert.equal(c.family, "cargo-clippy");
+    assert.equal(typeof c.version, "string");
     assert.ok(c.version && c.platform && c.provenance);
     assert.equal(createHash("sha256").update(read(c.file)).digest("hex"), c.provenance.sha256);
     assert.equal(c.completeness, "complete");
+    if (c.expectedFile) {
+      const output = read(c.file), expected = read(c.expectedFile);
+      assert.equal(output.slice(output.indexOf("\n") + 1), expected, "independent one-row native suffix oracle");
+    }
   }
 });
 test("C03 baseline empty profiles remain RED against independent golden reductions", () => {
@@ -106,8 +111,10 @@ test("C03 unknown/unbound/new-format/C0/C1/native errors and incomplete grammar 
     workspace.replace("alpha/src/lib.rs:4:5", "alpha/src/lib.rs:0:5"),
     workspace.replace("4 |     values.get(0)", "5 |     values.get(0)"),
     workspace.replace("clippy::get_first", "clippy::other_code"),
+    workspace.replace("#manual_contains", "#get_first").replace("  = note: `#[warn(clippy::manual_contains)]` on by default\n", ""),
     workspace.replace("  |     ^^^^^^^^^^^^^ help: try: `values.first()`\n", ""),
     workspace.replace("warning: `capture_alpha` (lib) generated 2 warnings", "warning: `capture_alpha` (lib) generated 1 warning"),
+    workspace.replace("warning: `capture_alpha` (lib) generated 2 warnings", "warning: `capture_alpha` (lib) generated 3 warnings"),
     workspace.replace("generated 2 warnings", "generated 2 warning"),
     workspace.replace("generated 1 warning (run", "generated 1 warnings (run"),
     workspace.replace("apply 2 suggestions", "apply 1 suggestion"),
@@ -116,7 +123,7 @@ test("C03 unknown/unbound/new-format/C0/C1/native errors and incomplete grammar 
     workspace.replace("target(s) in", "target in"), `${workspace}\n`,
     workspace.replace("in 0.96s", "in 2m 60s"),
   ];
-  for (const code of [0, 7, 11, 12, 27, 31, 127, 128, 159]) bad.push(workspace.replace("values.get", `${String.fromCharCode(code)}values.get`));
+  for (const code of [0, 7, 9, 11, 12, 27, 31, 127, 128, 159]) bad.push(workspace.replace("values.get", `${String.fromCharCode(code)}values.get`));
   for (const output of bad) exact(output);
 });
 test("C03 duplicate warning association/counts/plurals and premature progress exact", () => {
@@ -136,5 +143,16 @@ test("C03 metadata and unsupported argv exact; finite matching flags", () => {
     { termination: { kind: "unknown" } }, { termination: { kind: "timed_out" } },
     { termination: { kind: "exited", code: 101 } },
   ] as Partial<Observation>[]) exact(workspace, changes);
-  for (const command of ["cargo build", "cargo clippy --watch", "cargo clippy --message-format=json", "cargo clippy --workspace --workspace", "cargo clippy -p", "cargo clippy --features", "cargo clippy --target", "cargo clippy --offline --offline", "cargo clippy -- --fix", "cargo clippy --workspace && cargo build", "RUSTFLAGS=x cargo clippy"]) exact(workspace, { command });
+  for (const command of ["cargo build", "cargo clippy --watch", "cargo clippy --message-format=json", "cargo clippy --workspace --workspace", "cargo clippy -p", "cargo clippy --features", "cargo clippy --target", "cargo clippy --profile", "cargo clippy --profile other", "cargo clippy --offline --offline", "cargo clippy -- --fix", "cargo clippy -- '-D warnings'", "cargo clippy --workspace && cargo build", "RUSTFLAGS=x cargo clippy"]) exact(workspace, { command });
+});
+test("C03 malformed observation fields never supply replacement", () => {
+  for (const corrupt of [
+    { ...observation(workspace), termination: undefined },
+    { ...observation(workspace), completeness: false },
+    { ...observation(workspace), presentation: "false" },
+  ]) {
+    const result = filter(corrupt as unknown as Observation, { profiles: familyProfiles });
+    assert.equal(result.status, "failed_open");
+    assert.equal("replacement" in result, false);
+  }
 });
