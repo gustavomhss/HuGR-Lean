@@ -84,14 +84,20 @@ Independent expected files were hand-authored before the implementation. Keep ro
 
 Delta flags before `--`: one `--offline`, one color-never spelling, workspace/excludes or up to eight unique `-p`
 names, one selector (`--lib`, `--doc`, `--all-targets`, `--examples`, `--test NAME`, `--bin NAME`, `--example NAME`),
-one feature name/`--no-default-features`/`--all-features`, one `--release` or pinned `--profile c02`,
-and pinned `--target x86_64-apple-darwin`. Features plus all-features, conflicting/repeated selectors and
-workspace plus package selection refuse. Named exact filter goes before `--`; `--exact` goes afterward.
+one feature name/`--no-default-features`/`--all-features`, one `--release` or `--profile IDENTIFIER`,
+and `--target TRIPLE`. Identifiers are ASCII letters/underscore followed by letters/digits/underscore/hyphen,
+at most 64 characters. Triples contain 2–6 alphanumeric/underscore segments, at most 32 characters each
+and 128 overall; JSON target paths remain unclaimed. Features plus all-features, conflicting/repeated selectors and
+workspace plus package selection refuse. Named exact filter goes before `--`; `--exact` goes afterward,
+and may also occur without a positional filter to control skip equality. Without `--exact`, skip matching uses substring.
 After `--`: `--ignored` or `--include-ignored`, up to eight unique `--skip NAME`, and serial threads exactly
 `--test-threads=1` or `--test-threads 1`. `--doc` plus harness arguments is unclaimed and refused.
 Quiet/list/nocapture/show-output refuse at identity, even if output appears otherwise reducible.
 Unknown argv/lines, duplicate identities/executables, malformed or inconsistent suite totals, unmatched selected
-source contexts, profile/target paths, filter identity and unsupported metadata refuse complete output.
+suite kinds, selected executable identities, profile/target paths, filter identity and unsupported metadata refuse complete output.
+Source `.rs` paths are structural and independent of target names: custom manifest paths and `src/main.rs` are valid.
+Named test/bin/example selectors correlate the normalized target name with a native rustc hash-suffixed executable;
+unambiguous name mismatches refuse. Optimization/debug details use finite native syntax, not fixture configuration.
 Unicode Rust identities remain valid; punctuation-invalid passing names remain refused.
 Zero-filter has no removable passing identity/compile progress and returns undefined, preserving original framing.
 
@@ -137,8 +143,18 @@ Each suffix ran with `node --import tsx --test`. Restored full owned-file run an
 checks; no global suite/build/smoke/benchmark or CI dispatch. No mutation is part of the final diff.
 
 **Missing variants (explicitly unclaimed):** benches, standalone native debug `--target` witness (target/release
-combination captured), cross-target or JSON target, custom profiles other than pinned `c02`,
+combination captured), native cross-target or JSON target,
 workspace feature forwarding, substring filters and unrecorded libtest
 formats/flags (`--format`, JSON, shuffle, timing). No broader or Cartesian coverage claim; lead owns scope decisions.
 Capture collection itself has no tool/version/offline/termination blocker. CI was not dispatched; repository's
 candidate-wide manual workflow remains lead-owned and needs one final authorized run after campaign integration.
+
+## Cold-review FIX-FIRST corrections
+
+Named `REVIEW-C02-values`, `REVIEW-C02-paths`, and `REVIEW-C02-exact-skip` tests all failed before the fix,
+then passed with the corrected production grammar. Value/path transforms are labeled property evidence,
+not native executions: they rename profiles/triples, cover all four supported optimization/debug details,
+keep original source-backed headers, and reject argv/output identity mismatches. Exact-prefix skip is a positive;
+an emitted fully skipped identity remains a refusal, with substring matching retained when exact is absent.
+All original 23 native cases remain in the owned full-file run. New native review witnesses and restored
+production mutation receipts will be appended after collection/probes; no shared files or legacy fixtures are edited.
