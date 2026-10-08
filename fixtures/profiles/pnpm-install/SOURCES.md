@@ -13,15 +13,15 @@ chalk lockfile are captured without edits, normalization, truncation or deduplic
 - Version argv `["node",P,"--version"]`; exit 0, raw `10.18.3\n`.
 - Executable SHA-256: `b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9`.
 - Every install exact argv, project cwd relative to R, isolated store, output SHA-256
-  and exit status: `cases.json`. `command` uses pnpm spelling; actual argv uses
-  verified local Node launcher, recorded separately. Launcher admission pending.
+  and exit status: `cases.json`. Earlier `command` now records actual Node argv
+  without rewriting it to pnpm. Earlier raw files and hashes remain unchanged.
 - Help argv `["node",P,"install","--help"]`, cwd R; exit 0; SHA-256
   `1485a45242c945a4262f1089bd9eaaf3ac186a0b8ea4983d996e2108b9a34183`.
 - `chalk-lock.yaml` pins chalk 4.1.2 and five transitive MIT packages with integrity
   hashes (ansi-styles 4.3.0, color-convert 2.0.1, color-name 1.1.4, has-flag 4.0.0,
   supports-color 7.2.0). Registry: `https://registry.npmjs.org/`. Nothing executed.
 - Lockfile SHA-256: `cfe2171f0923d3f2e58f8602d788eab7e7c471591a3a401b1aa2d7830aab760d`.
-- capture.py SHA-256: `6da0a816f588e00de9258ac14193aa2ff127f3858ad095736c0e5a4bd579f310`.
+- Earlier capture.py SHA-256 before metadata correction: `6da0a816f588e00de9258ac14193aa2ff127f3858ad095736c0e5a4bd579f310`.
 
 All installs: subprocess timeout 60s (bootstrap 90s), shared OS pipe for stdout
 and stderr through EOF, observed exit, no PTY. Every recorded case exited before
@@ -50,3 +50,19 @@ shasum -a 256 capture.py chalk-lock.yaml install-help.txt *.txt
 
 For indexed files compare SHA-256 against `cases.json` provenance. Completion means
 complete command output at this OS-pipe boundary, not terminal screen reconstruction.
+
+## Direct producer-safe captures
+
+`capture-direct.py` supplies original tiny sources and direct argv. It reuses
+isolated pinned tool above through PATH prefix `R/tool/node_modules/.bin`;
+actual child argv starts `pnpm`, verified version stdout `10.18.3\n`.
+New disposable root: `/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p02-direct-ch9oyios`.
+Every safe install includes original `--ignore-scripts --ignore-pnpmfile`.
+Flag is available in pnpm 10.18.3 and all safe commands exit 0. Enabled malicious
+`.pnpmfile.cjs` witness keeps only ignore-scripts and emits native-looking progress
+plus Unicode logs through readPackage. It remains exact. All outputs use complete
+merged OS pipe through EOF, observed exit, default reporter, no PTY, 60s deadline.
+Fresh HOME/XDG_CONFIG_HOME; same public registry and bounded network policy.
+`safe-chalk-lock.yaml` records direct cold dependency graph/integrities.
+New output argv/hash/termination records append to existing minimal cases.json.
+Hash recipe additionally includes `capture-direct.py safe-chalk-lock.yaml`.
