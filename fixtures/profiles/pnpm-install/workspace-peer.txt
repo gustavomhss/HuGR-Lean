@@ -1,0 +1,8 @@
+Scope: all 3 workspace projects
+Already up to date
+
+dependencies:
++ p02-host 1.0.0 <- packages/host
++ p02-peer 1.0.0 <- packages/peer
+
+Done in 389ms using pnpm v10.18.3

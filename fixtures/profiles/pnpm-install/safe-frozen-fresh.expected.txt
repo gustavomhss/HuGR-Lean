@@ -1,0 +1,8 @@
+Lockfile is up to date, resolution step is skipped
+Packages: +6
+++++++
+
+dependencies:
++ chalk 4.1.2
+
+Done in 940ms using pnpm v10.18.3

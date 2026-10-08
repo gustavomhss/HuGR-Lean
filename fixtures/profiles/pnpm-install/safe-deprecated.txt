@@ -1,0 +1,15 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+ WARN  deprecated p02-consumer@1.0.0: P02 original deprecated-package witness
+Packages: +2
+++
+Progress: resolved 2, reused 2, downloaded 0, added 2, done
+ WARN  Issues with peer dependencies found
+.
+└─┬ p02-consumer 1.0.0
+  └── ✕ unmet peer p02-host@^2.0.0: found 1.0.0
+
+dependencies:
++ p02-consumer 1.0.0 deprecated
++ p02-host 1.0.0
+
+Done in 497ms using pnpm v10.18.3
