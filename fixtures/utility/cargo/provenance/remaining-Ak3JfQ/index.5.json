@@ -1,0 +1,160 @@
+        "sha256": "393717816881d3ba33964e93c4149a46804f1bcb3a5be17cf36dcb6bb1795db5",
+        "bytes": 302
+      },
+      {
+        "file": "captures/version-cargo/stderr.live",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "captures/version-cargo/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "captures/version-cargo/stdout.live",
+        "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-cargo/stdout.log",
+        "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-rustc/original.live",
+        "sha256": "785f1364c0d5bf077f7bfb885fd4bde99899dfd80ce0fb6226a4527d9b27724c",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-rustc/original.log",
+        "sha256": "785f1364c0d5bf077f7bfb885fd4bde99899dfd80ce0fb6226a4527d9b27724c",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-rustc/receipt.json",
+        "sha256": "555ca38155f5c5aa7feb847cf59c30da1bd448b309f666a9203873f8cfa23f7e",
+        "bytes": 6170
+      },
+      {
+        "file": "captures/version-rustc/running.json",
+        "sha256": "213db87ee426af90a50c54aa6e077de7eac9c0456c7a422d3e1b6faa7b57cf95",
+        "bytes": 302
+      },
+      {
+        "file": "captures/version-rustc/stderr.live",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "captures/version-rustc/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "captures/version-rustc/stdout.live",
+        "sha256": "785f1364c0d5bf077f7bfb885fd4bde99899dfd80ce0fb6226a4527d9b27724c",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-rustc/stdout.log",
+        "sha256": "785f1364c0d5bf077f7bfb885fd4bde99899dfd80ce0fb6226a4527d9b27724c",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-rustdoc/original.live",
+        "sha256": "dc6d1b6cc89b9e1c477136939098c81a9f02c60e83f637d4ed32178a819edb1d",
+        "bytes": 38
+      },
+      {
+        "file": "captures/version-rustdoc/original.log",
+        "sha256": "dc6d1b6cc89b9e1c477136939098c81a9f02c60e83f637d4ed32178a819edb1d",
+        "bytes": 38
+      },
+      {
+        "file": "captures/version-rustdoc/receipt.json",
+        "sha256": "00cfba8fff2291084399933a0e22eebeb39fe882ade39464642e3626d11191eb",
+        "bytes": 6375
+      },
+      {
+        "file": "captures/version-rustdoc/running.json",
+        "sha256": "924f83302ad6b387fa1856a69e0ef35ef19479ae84fbadb4e131e607212c9f67",
+        "bytes": 304
+      },
+      {
+        "file": "captures/version-rustdoc/stderr.live",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "captures/version-rustdoc/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "captures/version-rustdoc/stdout.live",
+        "sha256": "dc6d1b6cc89b9e1c477136939098c81a9f02c60e83f637d4ed32178a819edb1d",
+        "bytes": 38
+      },
+      {
+        "file": "captures/version-rustdoc/stdout.log",
+        "sha256": "dc6d1b6cc89b9e1c477136939098c81a9f02c60e83f637d4ed32178a819edb1d",
+        "bytes": 38
+      },
+      {
+        "file": "project/build.rs",
+        "sha256": "22f8135715f88f0ddafcfbde6a2c69c02358e5ea6b72c530ad65807582b182c0",
+        "bytes": 272
+      },
+      {
+        "file": "project/Cargo.lock",
+        "sha256": "37c075e3a501a668c75cbbf0831ab4a084f28ab26f763bd2b9b605262da58908",
+        "bytes": 203
+      },
+      {
+        "file": "project/Cargo.toml",
+        "sha256": "ec70e8ce2c6956507ae627803fb7c85fd9c4481b5a84a04bcb737e2c85ae0b4b",
+        "bytes": 158
+      },
+      {
+        "file": "project/src/lib.rs",
+        "sha256": "ff816fec47a7e5fa86f107b4daa38ba89c0856d7784bd1b50260e0a21a960b7f",
+        "bytes": 1588
+      },
+      {
+        "file": "project/tests/native_integration.rs",
+        "sha256": "6edff1bfea411bf1e6f3ff7889ddaf5d1cae5decefc1c9c454f231805daef914",
+        "bytes": 1268
+      },
+      {
+        "file": "source-snapshots/Cargo.lock",
+        "sha256": "c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb",
+        "bytes": 112
+      },
+      {
+        "file": "capture-index.json",
+        "sha256": "9f16140d5d3aa8f9f5169e1c3322d3ac236232554424caf5318aaeb46c5b378c",
+        "bytes": 41526
+      },
+      {
+        "file": "inspection-receipt.json",
+        "sha256": "d78e73af9f45ad6baab3d4923498d6ac35eee3f4dfc0d49be9b09cd991eee95b",
+        "bytes": 2088
+      }
+    ],
+    "buildInvocationBefore": [
+      {
+        "file": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/build/hugr_utility_cargo-f45f9604187c7c18/invoked.timestamp",
+        "mtimeMs": 1791409389089.7676
+      }
+    ],
+    "buildInvocationUnchanged": true,
+    "immutableAfterVerified": true
+  },
+  "leadDecision": "Native 2m 01s is valid minute evidence; original collector assertion was a bug.",
+  "delay": {
+    "additionalSleepSeconds": 0,
+    "coldFullRecaptured": false,
+    "filterLatencyMeasured": false
+  },
+  "baseline": "882585e5f916821a482d14bc7bfe7d6a102b772a",
