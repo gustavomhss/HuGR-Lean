@@ -1,0 +1,27 @@
+[
+        {
+          "file": "Cargo.toml",
+          "sha256": "ec70e8ce2c6956507ae627803fb7c85fd9c4481b5a84a04bcb737e2c85ae0b4b",
+          "bytes": 158
+        },
+        {
+          "file": "Cargo.lock",
+          "sha256": "c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb",
+          "bytes": 112
+        },
+        {
+          "file": "build.rs",
+          "sha256": "22f8135715f88f0ddafcfbde6a2c69c02358e5ea6b72c530ad65807582b182c0",
+          "bytes": 272
+        },
+        {
+          "file": "src/lib.rs",
+          "sha256": "ff816fec47a7e5fa86f107b4daa38ba89c0856d7784bd1b50260e0a21a960b7f",
+          "bytes": 1588
+        },
+        {
+          "file": "tests/native_integration.rs",
+          "sha256": "6edff1bfea411bf1e6f3ff7889ddaf5d1cae5decefc1c9c454f231805daef914",
+          "bytes": 1268
+        }
+      ]
