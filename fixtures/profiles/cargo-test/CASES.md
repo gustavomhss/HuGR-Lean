@@ -229,4 +229,18 @@ project names and mixed list separators without imposing fixture-specific names;
 
 `LEAD-C02-default-fallback` and `LEAD-C02-feature-lists` both went red before the production fix, then passed.
 The default test compares legacy successes directly, and rejects warnings before Finished plus genuine log/failure
-witnesses even under bare argv. Production guard probes and restored final verification are recorded below after execution.
+witnesses even under bare argv. Compiling checkpoint `209352d` was pushed before guard mutations.
+
+All three production probes below ran via `node --import tsx --test --test-name-pattern="<name>"
+tests/profile-cargo-test.test.ts`, exited 1, and were restored with `apply_patch`; no fixture/golden mutation occurred.
+
+| Named test | Production mutation | Observed red |
+| --- | --- | --- |
+| C02/default-workspace: unknown | Delete delta passing-summary reconciliation | inconsistent default workspace counter incorrectly reduces |
+| LEAD-C02-feature-lists | Delete qualified-entry/token structural validation, retain only list length/count bounds | malformed `pkg/` incorrectly matches identity |
+| LEAD-C02-default-fallback | Delete delta ignored-row emission | native ignored identities/reasons missing from default golden |
+
+Restored final owned-file run: **106 passed, 0 failed/skipped**. `npm run typecheck` exited 0.
+`git diff -- src/profiles/cargo-test.ts` was empty relative to the compiling checkpoint after restoration.
+Legacy positive results/required declarations remain equal; existing native captures and goldens remain unchanged.
+No shared registry/core/test/CI files were edited; no full suite/build/smoke/benchmark or CI dispatch.
