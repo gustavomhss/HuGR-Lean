@@ -1,5 +1,6 @@
 // Offline metadata normalizer: copies published bytes into a fresh own .normalized-corpus directory.
 // Exposure is captured fixture evidence only; stream chunk arrival is declared, not independently authenticated.
+// Native Node binary is not copied or published; externalRuntimes retains its original collector fingerprint only.
 import { createHash } from "node:crypto";
 import { lstat, readFile, mkdir, mkdtemp, writeFile, realpath } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
