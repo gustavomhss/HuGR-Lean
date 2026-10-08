@@ -67,6 +67,9 @@ then original validation completed. This probes capture integrity, not runtime p
 Native positive failed against empty baseline profile (`passthrough` instead of `reduced`), then passed
 independent compact golden. `tests/profile-ruff.test.ts` covers the case IDs above via selected-profile
 public filter; schema, identity, metadata, Unicode/body whitespace/UTF-16, duplicates and tails covered.
+Preservation mutations in owned `ruff.ts`: drop `fix`, `message`, then `code` token spans from both
+pieces and required evidence. Each native-positive probe failed independent golden equality.
+All three mutations restored to provider call; full owned test file and typecheck rerun afterward.
 No full tests/build/smoke/benchmark or CI dispatch.
 
 Externalization blocker: this session's `apply_patch` appends final LF even with the standard
