@@ -67,13 +67,14 @@ export async function readArtifactInventory(root) {
     for (const name of entries.sort()) {
       const file = prefix ? `${prefix}/${name}` : name, absolute = path.join(directory, name);
       safe(file, root);
-      const stat = await lstat(absolute);
+      // Number can collapse distinct 64-bit Windows file identities into one value.
+      const stat = await lstat(absolute, { bigint: true });
       demand(!stat.isSymbolicLink(), "SYMLINK", file);
       if (stat.isDirectory()) await walk(absolute, file);
       else {
         demand(stat.isFile(), "NOT_PLAIN_FILE", file);
         const identity = `${stat.dev}:${stat.ino}`;
-        demand(stat.nlink === 1 && !identities.has(identity), "FILE_ALIAS", file);
+        demand(stat.nlink === 1n && !identities.has(identity), "FILE_ALIAS", file);
         identities.add(identity);
         const relative = path.relative(root, await realpath(absolute));
         demand(relative && !path.isAbsolute(relative) && relative.split(path.sep)[0] !== "..", "OUTSIDE_PATH", file);
