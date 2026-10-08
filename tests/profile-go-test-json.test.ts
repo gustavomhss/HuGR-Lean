@@ -248,6 +248,32 @@ test("G02 no-test-only stream has no removable material", () => {
   refuse(nativeRows.slice(2, 5).join("\n") + "\n");
 });
 
+test("G02 review regression: early package PASS and summary before test closure", () => {
+  const rows = [...nativeRows];
+  const footer = rows.splice(32, 2);
+  rows.splice(26, 0, ...footer); // Root PASS frame seen, but root terminal and skip test are still pending.
+  refuse(rows.join("\n") + "\n");
+});
+
+test("G02 review regression: test activity after package completion", () => {
+  const rows = [...nativeRows];
+  const after = nativeRows.slice(35, 40).map(line => {
+    const e = decode(line);
+    e.Package = "example.com/g02/alpha";
+    e.Test = "TestAfter";
+    if (typeof e.Output === "string") e.Output = e.Output.replaceAll("TestOther", "TestAfter");
+    return JSON.stringify(e);
+  });
+  rows.splice(34, 0, ...after); // Complete new test after package PASS/summary, before package terminal.
+  refuse(rows.join("\n") + "\n");
+});
+
+test("G02 review regression: second complete parallel cycle", () => {
+  const rows = [...nativeRows];
+  rows.splice(15, 0, ...nativeRows.slice(11, 15)); // Repeat PAUSE/pause/cont/CONT after first CONT.
+  refuse(rows.join("\n") + "\n");
+});
+
 for (const name of ["build-failure", "test-failure"]) test(`G02 ${name}: spoofed success metadata still refuses native failures`, () => {
   refuse(read(`${name}.txt`));
 });
