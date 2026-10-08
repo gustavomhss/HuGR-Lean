@@ -1,0 +1,132 @@
+        },
+        {
+          "line": 10,
+          "text": "........................................................................ [ 22%]"
+        },
+        {
+          "line": 11,
+          "text": "........................................................................ [ 28%]"
+        },
+        {
+          "line": 12,
+          "text": "........................................................................ [ 34%]"
+        },
+        {
+          "line": 13,
+          "text": "........................................................................ [ 40%]"
+        },
+        {
+          "line": 14,
+          "text": "........................................................................ [ 46%]"
+        },
+        {
+          "line": 15,
+          "text": "........................................................................ [ 52%]"
+        },
+        {
+          "line": 16,
+          "text": "........................................................................ [ 58%]"
+        },
+        {
+          "line": 17,
+          "text": "........................................................................ [ 64%]"
+        },
+        {
+          "line": 18,
+          "text": "........................................................................ [ 70%]"
+        },
+        {
+          "line": 19,
+          "text": "........................................................................ [ 76%]"
+        },
+        {
+          "line": 20,
+          "text": "........................................................................ [ 82%]"
+        },
+        {
+          "line": 21,
+          "text": "........................................................................ [ 88%]"
+        },
+        {
+          "line": 22,
+          "text": "........................................................................ [ 94%]"
+        },
+        {
+          "line": 23,
+          "text": ".................................................................s.      [100%]"
+        },
+        {
+          "line": 24,
+          "text": ""
+        },
+        {
+          "line": 25,
+          "text": "=============================== warnings summary ==============================="
+        },
+        {
+          "line": 26,
+          "text": "test_native.py::test_warning_context"
+        },
+        {
+          "line": 27,
+          "text": "  /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise/test_native.py:31: UserWarning: HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪"
+        },
+        {
+          "line": 28,
+          "text": "    warnings.warn(\"HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪\", UserWarning)"
+        },
+        {
+          "line": 29,
+          "text": ""
+        },
+        {
+          "line": 30,
+          "text": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html"
+        },
+        {
+          "line": 31,
+          "text": "=========================== short test summary info ============================"
+        },
+        {
+          "line": 32,
+          "text": "SKIPPED [1] test_native.py:25: HUGR_PYTEST_SKIP_SENTINEL café 雪 🧪"
+        },
+        {
+          "line": 33,
+          "text": "================== 1203 passed, 1 skipped, 1 warning in 1.12s =================="
+        },
+        {
+          "line": 34,
+          "text": ""
+        }
+      ],
+      "role": "supplemental-native-argv-witness"
+    }
+  ],
+  "failedCaptures": [],
+  "errors": [],
+  "transformation": {
+    "source": "projects/noise/test_native.py",
+    "sourceSHA256": "8234c613211d29cc08e0ebdc211ba7932a41169201f81507702e868426345b75",
+    "modification": "Prepend original MIT module docstring with one passing doctest; suffix bytes unchanged",
+    "prefixBytes": 57,
+    "prefixSHA256": "549408c9db999e52579c28e6ac2de894a5af94f6f3b4ff8288fcd88bda7436bf",
+    "lineOffset": 5,
+    "anchors": {
+      "warning": {
+        "before": 26,
+        "after": 31
+      },
+      "ordinarySkip": {
+        "before": 20,
+        "after": 25
+      },
+      "subtestSkip": {
+        "before": 17,
+        "after": 22
+      }
+    }
+  },
+  "sourceInventorySHA256": "ea5205483ce2be62f5432ce7a5400da80b8eea463af64fbcb94794c3e2ca9817",
+  "completedAt": "2026-10-08T00:03:04.374Z"
+}
