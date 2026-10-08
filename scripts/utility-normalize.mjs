@@ -133,7 +133,10 @@ export async function normalizeUtilityCorpus() {
       const root = roots.find((candidate) => producer(receipt.producer).sourceSHA256 === candidate.entry.producer.sourceSHA256);
       ensure(root, `CASE_ROOT_MISSING: ${family}/${item.id}`);
       root.receipts.push(receipt); item.provenanceRoot = root.id; item.producer = producer(receipt.producer);
-      item.capture = await put(item.capture.file, raw, receipt.receipt ?? item.capture.sourceFile ?? item.capture.file);
+      const indexed = rows(root.index, family).find((row) => row.id === item.id);
+      const receiptSourceFile = typeof indexed?.receipt === "string" ? indexed.receipt : indexed?.capture?.file ?? indexed?.receipt?.file
+        ?? (family === "cargo" ? `captures/${item.id}/receipt.json` : receipt.receipt ?? item.capture.sourceFile ?? item.capture.file);
+      item.capture = await put(item.capture.file, raw, receiptSourceFile);
       for (const key of ["original", "stdout", "stderr", "expected"]) {
         const bytes = await checkedRead(path.join(actor, item[key].file), item[key]);
         const original = (receipt.artifacts ?? receipt.streams ?? receipt)[key];
