@@ -1,6 +1,6 @@
 # T01: native TypeScript capture packet
 
-State: IMPLEMENTED CHECKPOINT, pending production mutation probe and lead review.
+State: REVIEW, implementation and restored production mutation probe complete.
 Base `07ffe15`, branch `campaign/native-v2/T01`. The original capture-only checkpoint
 is `81b6c78`; its historical receipts below are preserved and superseded by the
 implementation receipt at the end. `formats.ts` retains its diagnostic-only stub.
@@ -288,10 +288,46 @@ new admission assertions). Each positive continues to assert that unchanged lega
 30 focused tests passed, no skips; `npm run typecheck` exited 0. Initial implementation
 checks exposed a no-op missing-header test mutation and a CRLF terminal refusal;
 the mutation was made non-vacuous and CRLF terminal recognition was corrected.
-Production body-loss mutation and restoration receipts will follow in this file.
+The first compiling implementation checkpoint `13494a0` was pushed before the
+production mutation probe; its source is the restored reference for the receipt below.
 
 Actual family-local corpus economy: six reductions total 4,958 → 4,802 UTF-8 bytes
 (156 bytes saved). Including the 18 exact-only original Node cases: 19,366 → 19,210
 bytes. These measurements use the six direct-launcher goldens, not the historical
 104-byte proposal subtotal. Default registry is unchanged, so no default-registry
 reduction or installed-package integration claim is made.
+
+## Production mutation and restored checks
+
+Probe changed only `src/profiles/tsc.ts`: the repeated-time branch emitted and
+declared only `[row.span[1] - 1, row.span[1]]` instead of the complete source-backed
+body `[row.span[0] + prefix.length, row.span[1]]`. This deliberately erased native
+project bodies while retaining newlines. The existing public core accepted the
+mutant's smaller output, making the independent tests the necessary oracle.
+
+```sh
+node --import tsx --test --test-name-pattern='public-filter native golden|independent project-list' tests/profile-tsc.test.ts
+```
+
+Result: exit 1, all seven selected tests failed, no skipped selected tests. Every
+native positive failed exact golden equality. The independent evidence assertion
+failed with `Event body not required: Building project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs/lib/tsconfig.json'...`.
+The original source branch was restored with apply_patch; `git diff --exit-code --
+src/profiles/tsc.ts` confirmed equality with the pushed compiling checkpoint.
+
+Restored focused check:
+
+```sh
+node --import tsx --test tests/profile-tsc.test.ts
+npm run typecheck
+```
+
+Result: all 30 tests passed, zero failures/skips, typecheck exited 0. An earlier
+typecheck attempt was terminated by the shell tool's 120,000 ms timeout; retry
+with a 300,000 ms deadline exited 0. The post-restoration typecheck also exited 0.
+The timeout is preserved here, not relabeled as a compiler failure or ignored green.
+No full tests/check/build/smoke/benchmark/CI were run. Production profile is 113
+physical lines; focused test file is 206 physical lines, both below the 400-LOC
+target. Native fixture whitespace findings remain intentional and unmodified.
+Lead review, registry integration and campaign-wide final verification remain
+lead-owned; this branch is not merged.
