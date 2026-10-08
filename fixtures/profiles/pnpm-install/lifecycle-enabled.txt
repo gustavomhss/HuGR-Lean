@@ -1,0 +1,11 @@
+Already up to date
+
+> p02-lifecycle@1.0.0 postinstall /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p02-pnpm-83cb9upg/lifecycle
+> node collision.cjs
+
+Progress: resolved 7, reused 7, downloaded 0, added 7, done
+Packages: +7
+Done in 1s using pnpm v10.18.3
+opaque lifecycle evidence λ
+
+Done in 392ms using pnpm v10.18.3
