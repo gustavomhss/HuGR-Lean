@@ -1,7 +1,7 @@
 # G02 native capture boundary
 
-Capture stage only. Native `.txt` files are generated process output, not synthesized fixtures.
-Expected files are independent proposed goldens, not current public-filter results.
+Historical capture-stage receipt. Native `.txt` files are generated process output, not synthesized fixtures.
+Expected files were authored independently before implementation; current custom-profile results are in CASES.md.
 Original local project lives at `/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/G02-project`.
 Sources are authored for this capture; no donor material copied.
 
@@ -22,7 +22,8 @@ Sources are authored for this capture; no donor material copied.
 - Original UTF-8 bytes: multi=6433, cached=6438, bench=1690, build-failure=710, test-failure=1337.
 - SHA-256 hashes in `cases.json` bind original bytes, including final newline.
 - Expected files authored independently from reviewed native line evidence using apply_patch;
-  no parser/filter output used. `status` is proposed disposition, not shipped behavior.
+  no parser/filter output used. Manifest dispositions are now verified with the custom family profile;
+  default registry integration remains lead-owned.
 
 Reproduce from a disposable copy of `project/`, running manifest commands in case order.
 Timestamps, interleaving and metrics vary; existing files are the exact completed captures.

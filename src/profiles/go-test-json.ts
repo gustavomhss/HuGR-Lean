@@ -56,8 +56,16 @@ const identity = (value: unknown): value is string =>
   typeof value === "string" && value.length > 0 && !/[\u0000-\u0020\u007f]/.test(value);
 const elapsed = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value) && value >= 0 && !Object.is(value, -0);
-const time = (value: unknown): value is string => typeof value === "string" &&
-  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/.test(value) && Number.isFinite(Date.parse(value));
+function time(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?(?:Z|[+-](\d{2}):(\d{2}))$/.exec(value);
+  if (!match) return false;
+  const [year, month, day, hour, minute, second] = match.slice(1, 7).map(Number) as [number, number, number, number, number, number];
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  return month >= 1 && month <= 12 && day >= 1 && day <= days[month - 1]! &&
+    hour <= 23 && minute <= 59 && second <= 59 && Number(match[7] ?? 0) <= 23 && Number(match[8] ?? 0) <= 59;
+}
 
 /** Closed observed key variants; no runtime TypeScript dependency or JSON reserialization. */
 function event(text: string): Event | undefined {
@@ -88,8 +96,11 @@ function event(text: string): Event | undefined {
 }
 
 type Phase = "runFrame" | "running" | "pauseFrame" | "paused" | "contFrame" | "passFrame" | "skipFrame" | "pass" | "skip";
-interface TestState { phase: Phase; duration?: number; children: Set<string> }
-interface PackageState { closed: boolean; tests: Map<string, TestState>; outputs: Event[] }
+interface TestState {
+  phase: Phase; duration?: number; parent: string | undefined;
+  parallel: boolean; childrenReleased: boolean; children: Set<string>;
+}
+interface PackageState { closed: boolean; rootsReleased: boolean; tests: Map<string, TestState>; outputs: Event[] }
 const closed = (t: TestState): boolean => t.phase === "pass" || t.phase === "skip";
 
 function frame(e: Event, t: TestState): boolean {
@@ -120,7 +131,7 @@ function reduce(output: string): Reduction | undefined {
     const packageName = e.Package!;
     if (e.Action === "start") {
       if (packages.has(packageName)) return undefined;
-      packages.set(packageName, { closed: false, tests: new Map(), outputs: [] });
+      packages.set(packageName, { closed: false, rootsReleased: false, tests: new Map(), outputs: [] });
       continue;
     }
     const p = packages.get(packageName);
@@ -153,12 +164,15 @@ function reduce(output: string): Reduction | undefined {
     if (e.Action === "run") {
       if (p.tests.has(name)) return undefined;
       const slash = name.lastIndexOf("/"), parent = slash < 0 ? undefined : name.slice(0, slash);
+      if (parent === undefined && p.rootsReleased) return undefined;
+      const siblings = [...p.tests.values()].filter(t => t.parent === parent);
+      if (siblings.some(t => !closed(t) && t.phase !== "paused")) return undefined;
       if (parent !== undefined) {
         const enclosing = p.tests.get(parent);
-        if (!enclosing || enclosing.phase !== "running") return undefined;
+        if (!enclosing || enclosing.phase !== "running" || enclosing.childrenReleased) return undefined;
         enclosing.children.add(name);
       }
-      p.tests.set(name, { phase: "runFrame", children: new Set() });
+      p.tests.set(name, { phase: "runFrame", parent, parallel: false, childrenReleased: false, children: new Set() });
       removed.add(i);
       continue;
     }
@@ -166,14 +180,24 @@ function reduce(output: string): Reduction | undefined {
     if (!t || closed(t)) return undefined;
     if (e.Action === "output") {
       if (e.OutputType === "frame") {
+        if (e.Output!.startsWith("--- ") && [...t.children].some(child => !closed(p.tests.get(child)!))) return undefined;
         if (!frame(e, t)) return undefined;
       } else if (t.phase !== "running") return undefined;
     } else if (e.Action === "pause") {
       if (t.phase !== "pauseFrame") return undefined;
+      if ([...t.children].some(child => !closed(p.tests.get(child)!) && p.tests.get(child)!.phase !== "paused")) return undefined;
       t.phase = "paused";
+      t.parallel = true;
       removed.add(i);
     } else if (e.Action === "cont") {
       if (t.phase !== "paused") return undefined;
+      if ([...p.tests.values()].some(s => s.parent === t.parent && !closed(s) && s.phase !== "paused" && !s.parallel)) return undefined;
+      if (t.parent === undefined) p.rootsReleased = true;
+      else {
+        const enclosing = p.tests.get(t.parent)!;
+        if (enclosing.phase !== "running") return undefined;
+        enclosing.childrenReleased = true;
+      }
       t.phase = "contFrame";
       removed.add(i);
     } else if (e.Action === "pass" || e.Action === "skip") {
