@@ -165,3 +165,27 @@ test("C02 native diagnostics and forged log rows cannot reduce even with false e
     exact({ ...observation(c), termination: { kind: "exited", code: 0 }, command: "cargo test --offline -p c02-alpha --lib" });
   }
 });
+test("C02 duplicate suite aliases, balanced transfers, malformed doctest metrics and names refuse", () => {
+  const workspace = cases.find(c => c.name === "C02/workspace")!, input = read(workspace.file);
+  const first = input.slice(input.indexOf("     Running"), input.indexOf("     Running", input.indexOf("     Running") + 1));
+  const relativeAlias = first.replace(/\([^()]+\/target\/debug\/deps\//, "(target/debug/deps/");
+  exact(observation(workspace, input + relativeAlias));
+  const balanced = input.replace("4 passed; 0 failed; 2 ignored;", "3 passed; 0 failed; 3 ignored;");
+  exact(observation(workspace, balanced));
+  const docs = cases.find(c => c.name === "C02/doc-target")!, text = read(docs.file);
+  for (const output of [text.replace("19.58s", "NaNs"), text.replace("11.93s", "Infinitys"),
+    text.replace("(line 1)", "(line 0)"), text.replace("(line 1)", "(line 9007199254740993)"),
+    text.replace("(line 5)", "(line 1)"), text.replace("identity (line 1)", "bad-name (line 1)"),
+    text + text.slice(text.indexOf("   Doc-tests"))]) {
+    assert.notEqual(output, text); exact(observation(docs, output));
+  }
+  const multi = cases.find(c => c.name === "C02/multi-package")!;
+  exact(observation(multi, read(multi.file).slice(0, read(multi.file).lastIndexOf("     Running"))));
+});
+test("C02 passing Rust Unicode identities remain admitted; invalid identifiers refuse", () => {
+  const c = cases.find(c => c.name === "C02/package")!, input = read(c.file), expected = read(c.expectedFile);
+  accepted(observation(c, input.replace("tests::beta_one", "tests::café_测试")), expected);
+  for (const value of ["test tests::bad-name ... ok", "test tests::beta_one ... ok extra", "test invoice ... ok\x01"]) {
+    exact(observation(c, input.replace("test tests::beta_one ... ok", value)));
+  }
+});

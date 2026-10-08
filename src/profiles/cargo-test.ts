@@ -82,7 +82,7 @@ function command(argv: readonly string[]): Command | undefined {
 const compileRow = /^   Compiling [A-Za-z0-9_-]+ v\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?(?: \([^()]+\))?$/;
 const finishRow = /^    Finished `(test|release|c02)` profile \[(unoptimized \+ debuginfo|optimized|optimized \+ debuginfo)\] target\(s\) in (?:(\d+)m )?(\d+(?:\.\d+)?)s$/;
 const summaryRow = /^test result: ok\. (\d+) passed; 0 failed; (\d+) ignored; 0 measured; (\d+) filtered out; finished in (\d+(?:\.\d+)?)s$/;
-const executableRow = /^     Running (unittests (?:src\/[^\s()]+|examples\/[^\s()]+)\.rs|tests\/[^\s()]+\.rs) \(((?:\/[^\s()]+\/)?target\/(?:x86_64-apple-darwin\/)?(?:debug|release|c02)\/(?:deps|examples)\/[^\s()]+)\)$/;
+const executableRow = /^     Running (unittests (?:src\/[^\s()]+|examples\/[^\s()]+)\.rs|tests\/[^\s()]+\.rs) \(((?:\/[^\s()]+\/)?target\/(?:(x86_64-apple-darwin)\/)?(debug|release|c02)\/(deps|examples)\/([^/\s()]+))\)$/;
 const docHeader = /^   Doc-tests ([A-Za-z0-9_-]+)$/;
 const docMetrics = /^all doctests ran in (\d+(?:\.\d+)?)s; merged doctests compilation took (\d+(?:\.\d+)?)s$/;
 function seconds(text: string, minute = false): boolean {
@@ -115,7 +115,7 @@ function delta(output: string, c: Command): Reduction | undefined {
   if (!finished || !finish || finish[1] !== c.profile || finish[2] !== detail ||
       !seconds(finish[4]!, finish[3] !== undefined) || (finish[3] !== undefined && (!uint(finish[3]) || Number(finish[3]) < 1))) return undefined;
   const kept: Line[] = [finished], executables = new Set<string>(), docs = new Set<string>();
-  const directory = `${c.target ? c.target + "/" : ""}${c.profile === "test" ? "debug" : c.profile}`;
+  const mode = c.profile === "test" ? "debug" : c.profile;
   let suites = 0;
   blanks();
   while (row) {
@@ -124,11 +124,12 @@ function delta(output: string, c: Command): Reduction | undefined {
     const isDoc = Boolean(doc), context = executable?.[1] ?? doc![1]!;
     if (!allowedContext(context, isDoc, c)) return undefined;
     if (executable) {
-      const file = executable[2]!, marker = `/target/${directory}/`, relative = `target/${directory}/`;
-      if (!(file.startsWith(relative) || file.includes(marker)) || executables.has(file)) return undefined;
+      const [, , , target, profile, kind, name] = executable;
+      const identity = `${target ?? ""}/${profile}/${kind}/${name}`;
+      if (target !== c.target || profile !== mode || executables.has(identity)) return undefined;
       const example = context.startsWith("unittests examples/");
-      if (!file.includes(`/${directory}/${example ? "examples" : "deps"}/`)) return undefined;
-      executables.add(file);
+      if (kind !== (example ? "examples" : "deps")) return undefined;
+      executables.add(identity);
     } else {
       if (docs.has(context)) return undefined;
       docs.add(context);

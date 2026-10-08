@@ -1,6 +1,6 @@
 # C02 Cargo test: approved bounded implementation
 
-State: implementation checkpoint, awaiting independent lead review. Baseline `07ffe15e2263c2925778022194c5385807216603`;
+State: REVIEW, awaiting independent lead review. Baseline `07ffe15e2263c2925778022194c5385807216603`;
 branch `campaign/native-v2/C02`; PR base `campaign/native-integration`.
 Lead approved reductions for workspace/package/features/targets/release/controlled-libtest goldens.
 `src/profiles/cargo-test.ts` exports only `cargo-test`, delegates legacy-admitted argv unchanged, and owns
@@ -104,7 +104,8 @@ New selected integration/binary/workspace invocations exercise new selectors, no
 
 ## Checks, controls, and blockers
 
-`npm ci` and `npm run typecheck` completed with exit 0. No production test/check/build/smoke/benchmark/CI run.
+Capture-phase `npm ci` and `npm run typecheck` completed with exit 0. No production test/check/build/smoke/benchmark/CI
+was run in that phase.
 A disposable native-project artifact audit checked exact manifest/receipt case correspondence, raw byte/hash fidelity,
 source snapshots against native files, producer hash, exact-only golden byte equality, selected-row reduced goldens,
 strict byte savings, and one-to-one native/expected file inventory.
@@ -118,7 +119,22 @@ Production checks: only `node --import tsx --test tests/profile-cargo-test.test.
 The owned file references existing utility full/lib/warning/failure fixtures without copying or editing them.
 It checks every native golden, original baseline rejection, UTF-16/CRLF/Unicode, required emitted/declaration spans,
 unknown insertions, counters, headers, partial summaries, failed/incomplete metadata, control characters,
-closed argv/arity and native-shaped logs. Mutation receipt will be recorded after production probes restore.
+closed argv/arity and native-shaped logs. Compiling checkpoint `f9e5ff1` was pushed before production mutation probes.
+The final file also checks absolute/relative executable aliases, balanced counter transfers, Unicode passing
+identities, doctest names/line indices/timing grammar, and missing selected package suites.
+
+### Production mutation receipts (all restored)
+
+All edits confined to owned `src/profiles/cargo-test.ts`, using `apply_patch`; no fixture/golden mutation.
+
+| Probe | Production mutation | Focused command suffix | Observed failure | Restoration |
+| --- | --- | --- | --- | --- |
+| count | Delete `uint(result[1]) !== passed` | `--test-name-pattern="C02/package: unknown" tests/profile-cargo-test.test.ts` | exit 1, reduced instead of passthrough for inconsistent passing counter | original comparison restored |
+| emitted evidence | Delete `kept.push(test)` from ignored branch | `--test-name-pattern="C02/workspace: public" tests/profile-cargo-test.test.ts` | exit 1, both ignored identity/reason rows missing from golden output | ignored emission restored |
+| declared evidence | Replace `reduction(kept)` with emitted spans and empty required spans | `--test-name-pattern="C02/doc-target: public" tests/profile-cargo-test.test.ts` | exit 1, public filter failed_open instead of reduced | source-backed required spans restored |
+
+Each suffix ran with `node --import tsx --test`. Restored full owned-file run and typecheck are the final scoped
+checks; no global suite/build/smoke/benchmark or CI dispatch. No mutation is part of the final diff.
 
 **Missing variants (explicitly unclaimed):** benches, standalone native debug `--target` witness (target/release
 combination captured), cross-target or JSON target, custom profiles other than pinned `c02`,
