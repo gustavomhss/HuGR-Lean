@@ -159,13 +159,13 @@ test("self-consistent inspection rewrite still rejects independent immutable pri
 test("runtime fingerprint is collector metadata; corpus below 10MB contains no Node executable", async () => {
   const { result, data } = await manifest("node"), root = data.provenance[0], corpus = await readUtilityCorpus(result.corpusRoot);
   assert.equal(root.index.sha256, "e0a80d439c84c66448807d499d598e81615e3c3245c49b69cfe6aae16de8c9ea");
-  assert.equal(root.externalRuntimes.length, 1);
-  assert.deepEqual(root.externalRuntimes[0], { file: "native-node-executable", sha256: "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541",
+  assert.equal(root.externalRuntimes.length, 2);
+  assert.deepEqual(root.externalRuntimes.find((runtime: Json) => runtime.tool === "node"), { file: "native-node-executable", sha256: "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541",
     bytes: 224341744, kind: "tool-executable", tool: "node", version: "v22.17.1", executable: "/usr/local/bin/node" });
   assert.match(corpus.families.find((family: Json) => family.family === "node").provenance[0].externalRuntimeScope, /no local binary or supply-chain integrity revalidation/);
   const files = await readArtifactInventory(result.corpusRoot), total = [...files.values()].reduce((sum: number, bytes: Buffer) => sum + bytes.length, 0);
   assert.ok(total < 10 * 1024 * 1024);
-  assert.ok([...files.keys()].every((file: string) => !file.endsWith("/native-node-executable")));
+  assert.ok([...files.keys()].every((file: string) => !file.endsWith("/native-node-executable") && !file.endsWith("/tsx-executable")));
 });
 
 test("external runtime cannot exempt fixture, producer, helper or captured artifact bytes", async () => {
@@ -181,15 +181,32 @@ test("wrong valid runtime hash, size, path, kind, tool, version and executable r
   const { result, file } = await manifest("node");
   for (const [key, value] of Object.entries({ sha256: "0".repeat(64), bytes: 1, file: "../native-node-executable", kind: "helper",
     tool: "tsx", version: "v23.0.0", executable: "/missing/not-publisher-node" })) {
-    await editJson(file, (meta) => { meta.provenance[0].externalRuntimes[0][key] = value; }, async () => {
+    await editJson(file, (meta) => { meta.provenance[0].externalRuntimes.find((runtime: Json) => runtime.tool === "node")[key] = value; }, async () => {
       await assert.rejects(readUtilityCorpus(result.corpusRoot), /EXTERNAL_RUNTIME_NOT_ALLOWED|EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH/);
     });
   }
 });
 
+test("tsx CLI module fingerprint binds exact observed path, version, integrity and collector bytes", async () => {
+  const { result, file, data } = await manifest("node"), fingerprint = data.provenance[0].externalRuntimes.find((runtime: Json) => runtime.tool === "tsx");
+  assert.equal(fingerprint.file, "pinned-tsx-project/tsx-executable");
+  assert.equal(fingerprint.kind, "tool-module"); assert.equal(fingerprint.version, "4.23.15");
+  assert.equal(fingerprint.sha256, "8690135061bc49d187143493b82d26a09b7fb71d6dd817d2242cc9dc52506de9");
+  assert.equal(fingerprint.bytes, 124418); assert.ok(fingerprint.lockedIntegrity.startsWith("sha512-"));
+  for (const [key, value] of Object.entries({ file: "sources/flat/fixture.test.ts", kind: "tool-executable", tool: "node", version: "4.23.16",
+    sha256: "0".repeat(64), bytes: 1, executable: "/wrong/runtime/tsx.mjs", lockedIntegrity: "sha512-FORGED" })) {
+    await editJson(file, (meta) => { meta.provenance[0].externalRuntimes.find((runtime: Json) => runtime.tool === "tsx")[key] = value; }, async () => {
+      await assert.rejects(readUtilityCorpus(result.corpusRoot), /EXTERNAL_RUNTIME_NOT_ALLOWED|EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH|EXTERNAL_RUNTIME_INTEGRITY_MISMATCH/);
+    });
+  }
+  await editJson(file, (meta) => { meta.provenance[0].externalRuntimes = meta.provenance[0].externalRuntimes.filter((runtime: Json) => runtime.tool !== "tsx"); }, async () => {
+    await assert.rejects(readUtilityCorpus(result.corpusRoot), /UNBOUND_SOURCE_RECORD.*pinned-tsx-project\/tsx-executable/);
+  });
+});
+
 test("omitted runtime declaration cannot leave source inventory record unchecked", async () => {
   const { result, file } = await manifest("node");
   await editJson(file, (meta) => { delete meta.provenance[0].externalRuntimes; }, async () => {
-    await assert.rejects(readUtilityCorpus(result.corpusRoot), /UNBOUND_SOURCE_RECORD: .*native-node-executable/);
+    await assert.rejects(readUtilityCorpus(result.corpusRoot), /UNBOUND_SOURCE_RECORD: .*(native-node-executable|pinned-tsx-project\/tsx-executable)/);
   });
 });
