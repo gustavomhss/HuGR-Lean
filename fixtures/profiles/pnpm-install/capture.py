@@ -49,7 +49,7 @@ def capture(name, project, args, store="local-store"):
     output, termination = run(argv, ROOT / project)
     (HERE / (name + ".txt")).write_bytes(output)
     CASES.append({"name": "P02/" + name, "family": "pnpm-install",
-                  "command": "pnpm " + " ".join(args) + " --store-dir " + str(ROOT / store),
+                  "command": " ".join(argv),
                   "file": name + ".txt", "status": "passthrough",
                   "termination": termination,
                   "completeness": "complete" if termination["kind"] == "exited" else "incomplete",

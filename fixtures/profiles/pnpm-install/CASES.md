@@ -1,10 +1,27 @@
 # P02 pnpm install: capture packet
 
-State: CAPTURED. pnpm 10.18.3 / Node v22.17.1. Every indexed case currently
-`passthrough` (implementation pending lead approval), not an admitted reduction.
+State: IMPLEMENTED CHECKPOINT after lead approval. pnpm 10.18.3 / Node v22.17.1.
+Admission requires original direct `pnpm install` with both `--ignore-scripts`
+and `--ignore-pnpmfile`. Earlier Node-launcher cases are negative witnesses;
+their command metadata now matches actual argv, and raw files remain unchanged.
 Native input: `<case>.txt`; stable ID: `P02/<case>`. Exact bytes/hash/argv/exit in
-`cases.json`. No expectedFile yet: retained source lines below are independent
-candidate evidence, not public-filter goldens. Future test names follow case IDs.
+`cases.json`. Direct safe expected files are independently transcribed retained
+source lines. Tests use only injected `familyProfiles`; shared registry is lead-owned.
+
+| New direct case | Disposition / source evidence |
+| --- | --- |
+| safe-cold | reduced; remove L1,L4 only; retain package/version/completion |
+| safe-cache | reduced; remove L1,L4 only; retain reused-store result evidence |
+| safe-offline | reduced; remove L1,L4 only; original offline flag |
+| safe-frozen | exact, no progress to remove |
+| safe-workspace | reduced; remove L2,L5 only; retain scope/member path/version |
+| safe-workspace-frozen | exact, no progress to remove |
+| safe-peer | reduced; remove L1,L4 only; retain warning/tree/range/found version |
+| safe-deprecated | reduced; remove L1,L5 only; retain deprecation plus peer warning |
+| hook-enabled | exact; original argv lacks ignore-pnpmfile, real hook emits progress/log collisions |
+
+Earlier table documents historical byte candidates only. All earlier indexed
+commands remain exact negative launcher/producer-safety witnesses.
 
 ## Mandatory variants and crossing combinations
 
@@ -36,20 +53,19 @@ candidate evidence, not public-filter goldens. Future test names follow case IDs
 Observed non-TTY pipe progress line, including LF:
 `Progress: resolved R, reused U, downloaded D, added A` optionally `, done`.
 Only ASCII decimal counters and exact labels/order/punctuation are candidate
-grammar; captured positive examples bound counters to 0..6. A future parser must
-validate entire supported transcript, finite argv, integer bounds/counter consistency,
+grammar; native captures exercise counters 0..6. Parser validates
+entire supported transcript, finite argv, integer bounds/counter consistency,
 terminal progress/completion, and exit 0 before admitting any deletion. Candidate
 deletion here is only both known native progress lines: 114 bytes per eligible
 transcript. Package artwork/counts, installed/latest versions, summaries, timings,
 lock/workspace association, warnings/help and all logs remain exact source spans.
 
-Chalk cold potential: 218 -> 104 bytes (52.3%); warm/offline: 219 -> 105 (52.1%).
-These are byte subtraction from captured lines, not filter or benchmark results.
+Direct safe chalk cold/cache/offline: 219 -> 105 bytes (52.1%) by scoped filter.
 Unknown/new lines, unsupported argv, incomplete boundary, failures or inconsistency
 require original. Enabled scripts cannot be admitted from grammar alone: root
-postinstall emits exact native-looking lines without prefixes. Ignore-scripts is
-only candidate safety constraint; pnpm hooks/config remain a separate identity
-question for parser approval. No PTY/watch/CR rendering inference.
+postinstall and pnpmfile hooks emit exact native-looking lines without prefixes.
+Both original disabling flags are mandatory; scripts-only commands stay exact.
+No PTY/watch/CR rendering inference.
 
 ## Checks and next gate
 
@@ -58,5 +74,6 @@ native download/reuse/peer/deprecation controls, script-enabled/disabled pairing
 Changing bytes in memory makes hash comparison fail; originals never mutated.
 Typecheck instrument exercised with intentional external TypeScript error, then
 repository `npm run typecheck`. Parser admission/preservation mutation tests await
-approved implementation. Lead must review packet and command/config constraints
-before any parser/golden/test/registry work. Capture stop.
+checkpoint probes pending. Empty-profile baseline failed all six native reduction
+assertions; scoped suite passes 12 tests, typecheck passes. Lead review required
+before registry integration or merge.

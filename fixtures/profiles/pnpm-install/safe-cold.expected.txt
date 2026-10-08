@@ -1,0 +1,7 @@
+Packages: +6
+++++++
+
+dependencies:
++ chalk 4.1.2 (6.0.1 is available)
+
+Done in 758ms using pnpm v10.18.3
