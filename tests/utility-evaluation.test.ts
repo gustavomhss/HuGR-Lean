@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdtemp, mkdir, writeFile, rm, realpath, symlink, link } from "node:fs/promises";
+import { mkdtemp, mkdir, writeFile, rm, realpath, symlink, link, cp } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 // Script is intentionally outside runtime TypeScript modules.
 // @ts-expect-error No declaration is shipped for developer-only scripts.
@@ -255,13 +256,23 @@ test("sourceFile relocation binds original receipt name without historical path 
   await assert.rejects(readUtilityCorpus(fixture.root), /SOURCE_MAPPING_MISMATCH/);
 });
 
-test("real CLI requires explicit clean build; import has no CLI side effects", () => {
+test("real CLI requires explicit clean build; import has no CLI side effects", async (t) => {
   const script = new URL("../scripts/utility-evaluation.mjs", import.meta.url);
-  const result = spawnSync(process.execPath, [script.pathname, "--root", "missing", "--invalid"], { encoding: "utf8", timeout: 10000 });
-  assert.equal(result.status, 1);
-  assert.equal(JSON.parse(result.stdout).ok, false);
-  assert.match(JSON.parse(result.stdout).failures[0].error, /CLEAN_BUILD_REQUIRED/);
-  assert.equal(result.stderr, "");
+  const temporary = await realpath(await mkdtemp(path.join(os.tmpdir(), "hugr-cli-url-")));
+  t.after(() => rm(temporary, { recursive: true, force: true }));
+  const encoded = path.join(temporary, "space # 🦀");
+  await mkdir(encoded);
+  await cp(script, path.join(encoded, "utility-evaluation.mjs"));
+  await cp(new URL("../scripts/utility-corpus.mjs", import.meta.url), path.join(encoded, "utility-corpus.mjs"));
+  for (const url of [script, pathToFileURL(path.join(encoded, "utility-evaluation.mjs"))]) {
+    const result = spawnSync(process.execPath, [fileURLToPath(url), "--root", "missing", "--invalid"], { encoding: "utf8", timeout: 10000 });
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 1);
+    assert.equal(result.stderr, "", "real evaluator must launch, not fail on a URL pathname");
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.ok, false);
+    assert.match(report.failures[0].error, /CLEAN_BUILD_REQUIRED/);
+  }
 });
 
 test("repeated text needs separate ordered occurrences; UTF-16 source spans and UTF-8 bytes", async (t) => {
