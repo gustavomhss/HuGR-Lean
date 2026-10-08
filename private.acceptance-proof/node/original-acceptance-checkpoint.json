@@ -1,6 +1,6 @@
 {
   "schema": "hugr-lean/node-acceptance-checkpoint/1",
-  "stage": "acceptance-only-RED; stop before implementation",
+  "stage": "original acceptance-only-RED; superseded by cold-suite FIXFIRST; stop before implementation",
   "branch": "utility/node-expansion",
   "baseline": "d5ec6daa5728d49df3e6f76a75ae0b7c1ede3c9f",
   "testReviewBase": "bddc32e",
