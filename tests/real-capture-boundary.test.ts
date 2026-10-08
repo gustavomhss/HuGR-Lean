@@ -19,6 +19,9 @@ test("native/pipe duration excludes independently delayed live log drain and dec
   const closures = new Set<string>(), drainStarts: number[] = [], writes: Promise<void>[] = [];
   const pipesClosed = new Promise<void>(resolve => { closed = resolve; });
   let capture: Promise<any> | undefined;
+  const failures: unknown[] = [];
+  const record = (error: unknown) => { if (!failures.includes(error)) failures.push(error); };
+  const retain = async (step: () => unknown) => { try { await step(); } catch (error) { record(error); } };
   try {
     fs.appendFile = (...args: Parameters<typeof append>) => {
       appendCalls++;
@@ -71,17 +74,22 @@ test("native/pipe duration excludes independently delayed live log drain and dec
     assert.equal(captured.output, producer.toString("utf8"));
     assert.deepEqual(captured.raw, producer);
     assert.deepEqual(await fs.readFile(path.join(root, "original.live")), producer);
+  } catch (error) { record(error);
   } finally {
-    try {
-      if (capture) await capture.catch(() => {}); // Wait before snapshotting writes added by capture.
+    await retain(async () => { if (capture) await capture; }); // Settle before snapshotting writes; deduplicate the primary error.
+    await retain(async () => {
       const settled = await Promise.allSettled(writes);
-      assert.deepEqual(settled.filter(result => result.status === "rejected"), [], "LIVE_LOG_TEARDOWN_WRITE_FAILED");
-    } finally {
-      fs.appendFile = append; childProcess.spawn = spawn; globalThis.TextDecoder = Decoder;
-      syncBuiltinESMExports();
-      await fs.rm(root, { recursive: true, force: true });
-    }
+      const rejected = settled.filter(result => result.status === "rejected");
+      if (rejected.length) throw new AggregateError(rejected.map(result => result.reason), "LIVE_LOG_TEARDOWN_WRITE_FAILED");
+    });
+    await retain(() => { fs.appendFile = append; });
+    await retain(() => { childProcess.spawn = spawn; });
+    await retain(() => { globalThis.TextDecoder = Decoder; });
+    await retain(() => syncBuiltinESMExports());
+    await retain(() => fs.rm(root, { recursive: true, force: true }));
   }
+  if (failures.length === 1) throw failures[0];
+  if (failures.length) throw new AggregateError(failures, `CAPTURE_FIXTURE_FAILURES: ${failures.map(String).join("; ")}`);
 });
 
 test("duration ends after pipes, separately from earlier native leader exit", { skip: process.platform === "win32" }, async () => {
