@@ -1,6 +1,6 @@
 // Native direct-launcher recorder. No fixture writes or output normalization.
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
 
 const cwd = process.env.T01_PROJECT;
 if (!cwd) throw new Error("T01_PROJECT must name the disposable project");
@@ -32,4 +32,8 @@ if (stage === "initial") {
   capture("npx-no-install-build-up-to-date", ["npx", "--no-install", "tsc", ...absolute], resolve("."));
 } else if (stage === "force") {
   capture("direct-build-force", ["tsc", ...args, "--force"]);
+} else if (stage === "npx-relative") {
+  const local = ["-b", relative(resolve("."), resolve(cwd, "refs")), "--verbose", "--pretty", "false"];
+  capture("npx-relative-build-up-to-date", ["npx", "tsc", ...local], resolve("."));
+  capture("npx-no-install-relative-build-up-to-date", ["npx", "--no-install", "tsc", ...local], resolve("."));
 } else throw new Error("Unknown capture stage");

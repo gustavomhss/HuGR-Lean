@@ -16,7 +16,8 @@ const root = new URL("../fixtures/profiles/tsc/", import.meta.url);
 const fixture = (path: string): string => readFileSync(new URL(path, root), "utf8");
 const manifest = JSON.parse(fixture("cases.json")) as { schema: string; cases: Case[] };
 const positives = ["direct-build-initial", "direct-build-up-to-date", "direct-build-incremental",
-  "npx-build-up-to-date", "npx-no-install-build-up-to-date", "direct-build-force"];
+  "npx-relative-build-up-to-date", "npx-no-install-relative-build-up-to-date", "direct-build-force"];
+const unbound = ["npx-build-up-to-date", "npx-no-install-build-up-to-date"];
 const original = ["success", "no-emit", "plain-error", "pretty-error", "build-initial",
   "build-up-to-date", "diagnostics", "extended-diagnostics", "list-files", "list-emitted-files",
   "explain-files", "metrics-lists", "error-metrics-lists", "build-incremental", "build-metrics-lists",
@@ -53,10 +54,10 @@ function reduced(obs: Observation, expected: string, selected: readonly Profile[
   assert.ok(result.outputBytes < result.inputBytes);
 }
 
-test("T01 finite native inventory and pinned metadata have exact correspondence", () => {
+test("T01 finite native inventory and pinned metadata have exact correspondence", (context) => {
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
   assert.deepEqual(manifest.cases.map((item) => item.name).sort(),
-    [...original, ...positives].map((name) => `T01/${name}`).sort());
+    [...original, ...positives, ...unbound].map((name) => `T01/${name}`).sort());
   assert.deepEqual(manifest.cases.filter((item) => item.status === "reduced").map((item) => item.name).sort(),
     positives.map((name) => `T01/${name}`).sort());
   for (const c of manifest.cases) {
@@ -66,6 +67,10 @@ test("T01 finite native inventory and pinned metadata have exact correspondence"
     assert.equal(typeof fixture(c.file), "string");
     if (c.status === "reduced") { assert.ok(c.expectedFile); assert.ok(fixture(c.expectedFile).length); }
   }
+  const input = manifest.cases.reduce((sum, c) => sum + Buffer.byteLength(fixture(c.file)), 0);
+  const output = manifest.cases.reduce((sum, c) => sum + Buffer.byteLength(fixture(c.expectedFile ?? c.file)), 0);
+  assert.deepEqual([input, output, input - output], [21980, 21811, 169]);
+  context.diagnostic(`Bound native corpus: ${input} -> ${output} UTF-8 bytes; ${input - output} saved`);
 });
 for (const name of positives) test(`T01 public-filter native golden: ${name}`, (context) => {
   const c = find(name), obs = observation(c), expected = fixture(c.expectedFile!);
@@ -81,6 +86,15 @@ for (const name of original) test(`T01 original Node capture stays exact: ${name
   const result = filter(obs, { profiles: familyProfiles });
   assert.equal(result.status, "passthrough"); assert.equal("replacement" in result, false);
   assert.equal(result.outputBytes, Buffer.byteLength(obs.output));
+});
+for (const name of unbound) test(`T01 original npx root relation stays exact: ${name}`, () => {
+  const c = find(name), obs = observation(c), retainedGolden = fixture(`${name}/independent.expected.txt`);
+  assert.equal(c.status, "passthrough");
+  assert.equal(profile().match(c.command), true, "Binding, not launcher refusal, must reject this report");
+  const result = filter(obs, { profiles: familyProfiles });
+  assert.equal(result.status, "passthrough"); assert.equal(result.reason, "unsupported_output");
+  assert.equal("replacement" in result, false); assert.equal(result.outputBytes, Buffer.byteLength(obs.output));
+  assert.throws(() => reduced(obs, retainedGolden), assert.AssertionError);
 });
 
 test("T01 independent project-list, body, timestamp-group and required-span evidence", () => {
@@ -203,4 +217,57 @@ test("T01 UTF-16 paths, ordered source spans and exact CRLF are preserved", () =
   const legacy = readFileSync(new URL("../fixtures/formats/lint_tsc_errors.txt", import.meta.url), "utf8");
   exact(legacy, { command: "tsc --pretty false", termination: { kind: "exited", code: 2 } });
   exact(legacy);
+});
+
+test("T01 root binding refuses wrong parent depth through public filter", () => {
+  const c = find("direct-build-up-to-date"), obs = observation(c);
+  reduced(obs, fixture(c.expectedFile!));
+  for (const project of ["../refs", "../../refs", "./../refs", ".././refs"])
+    exact(obs.output, { command: `tsc -b ${project} --verbose --pretty false` });
+});
+
+test("T01 root binding refuses wrong absolute root through public filter", () => {
+  const c = find("direct-build-up-to-date"), obs = observation(c);
+  reduced(obs, fixture(c.expectedFile!));
+  for (const project of ["/refs", "/./refs"])
+    exact(obs.output, { command: `tsc -b ${project} --verbose --pretty false` });
+});
+
+test("T01 root binding property survives renamed spaced and uppercase projects", () => {
+  const c = find("direct-build-up-to-date"), obs = observation(c), golden = fixture(c.expectedFile!);
+  for (const project of ["renamed", "Project Refs", "REFS"]) {
+    const output = obs.output.replaceAll("refs/", `${project}/`);
+    const expected = golden.replaceAll("refs/", `${project}/`);
+    for (const alias of [project, `./${project}`, `././${project}`]) {
+      const command = `tsc -b '${alias}' --verbose --pretty false`;
+      reduced({ ...obs, command, output }, expected);
+    }
+    for (const wrong of [`../${project}`, `../../${project}`, `/${project}`, `/./${project}`])
+      exact(output, { command: `tsc -b '${wrong}' --verbose --pretty false` });
+    exact(output, { command: supported });
+  }
+});
+
+test("T01 root binding preserves matching parent depth and rootness", () => {
+  const c = find("direct-build-up-to-date"), obs = observation(c), golden = fixture(c.expectedFile!);
+  for (const project of ["../refs", "../../refs", "/refs"]) {
+    const output = obs.output.replaceAll("refs/", `${project}/`), expected = golden.replaceAll("refs/", `${project}/`);
+    reduced({ ...obs, command: `tsc -b '${project}' --verbose --pretty false`, output }, expected);
+    for (const wrong of ["refs", "./refs", project === "../refs" ? "../../refs" : "../refs"])
+      exact(output, { command: `tsc -b '${wrong}' --verbose --pretty false` });
+  }
+  const native = find("npx-relative-build-up-to-date"), index = native.command.indexOf("-b") + 1;
+  const relative = native.command[index]!;
+  assert.equal(relative.startsWith("../../"), true);
+  for (const wrong of [relative.slice(3), `../${relative}`, find("npx-build-up-to-date").command[index]!]) {
+    const command = [...native.command]; command[index] = wrong;
+    assert.equal(profile().match(command), true);
+    exact(fixture(native.file), { command: command.join(" ") });
+  }
+  // Parent-relative project displays cannot be related to absolute build actions
+  // without CWD, even if argv and the listed solution root have the same form.
+  const initial = find("direct-build-initial"), input = fixture(initial.file);
+  const parentReport = input.replaceAll("refs/", "../refs/").replaceAll("t01-tsc-direct/../refs/", "t01-tsc-direct/refs/");
+  assert.notEqual(parentReport, input);
+  exact(parentReport, { command: "tsc -b ../refs --verbose --pretty false" });
 });
