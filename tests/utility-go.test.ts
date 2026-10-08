@@ -328,6 +328,31 @@ test("Go binds multiline diagnostics to full test context; same names allowed on
   accepted(input, expected, anchors, c.command, nativeObservation(c, input));
 });
 
+test("Go package-count scope: no RUN package, unbound diagnostics and nested transitions refuse", () => {
+  for (const id of ["cold", "cached"]) {
+    const c = entry(id);
+    positive(c);
+    const base = nativeObservation(c), input = base.output;
+    const firstPass = input.indexOf("\nPASS\n") + 1;
+    assert.ok(firstPass > 0);
+    const diagnostic = c.required[1]!.text;
+    const variants = [
+      input.slice(firstPass), // PASS/ok cannot stand in for an empty test package.
+      diagnostic + input,
+      input.slice(0, firstPass) + diagnostic + input.slice(firstPass),
+      input.replace("--- PASS:", "        === RUN   TestNested/child\n--- PASS:"),
+      input.replace("--- PASS:", "        --- PASS: TestNested/child (0.00s)\n--- PASS:"),
+      input.replace("--- PASS:", "        === CONT  TestParallel\n--- PASS:"),
+      input.replace("(0.00s)", `(${"9".repeat(400)}s)`),
+      input.replace(/\t(?:\d+\.\d+s|\(cached\))\n/, `\t${"9".repeat(400)}s\n`),
+    ];
+    for (const output of variants) {
+      assert.notEqual(output, input);
+      rejected(output, { ...base, output });
+    }
+  }
+});
+
 function forgedCapture(c: Case, mutate: (copy: Case, receipt: NativeReceipt) => void): { copy: Case; read: ReadArtifact } {
   const copy = structuredClone(c), receipt = JSON.parse(text(c.capture)) as NativeReceipt;
   mutate(copy, receipt);
