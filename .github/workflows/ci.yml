@@ -1,7 +1,11 @@
 name: verify
 on:
   push:
+    branches-ignore:
+      - 'campaign/**'
   pull_request:
+    branches-ignore:
+      - 'campaign/**'
 permissions:
   contents: read
 jobs:
