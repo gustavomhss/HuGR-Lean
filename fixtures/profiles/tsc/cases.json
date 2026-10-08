@@ -36,18 +36,18 @@
     {
       "name": "T01/build-initial", "family": "tsc",
       "command": ["/usr/local/bin/node", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01/node_modules/typescript/bin/tsc", "-b", "refs", "--verbose", "--pretty", "false"],
-      "file": "build-initial/native.txt", "status": "reduced", "expectedFile": "build-initial/independent.expected.txt",
+      "file": "build-initial/native.txt", "status": "passthrough",
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
-      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 5, "disposition": "proposal-only"}
+      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 5, "reason": "unsupported original Node launcher; historical proposal golden retained separately"}
     },
     {
       "name": "T01/build-up-to-date", "family": "tsc",
       "command": ["/usr/local/bin/node", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01/node_modules/typescript/bin/tsc", "-b", "refs", "--verbose", "--pretty", "false"],
-      "file": "build-up-to-date/native.txt", "status": "reduced", "expectedFile": "build-up-to-date/independent.expected.txt",
+      "file": "build-up-to-date/native.txt", "status": "passthrough",
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
-      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 6, "disposition": "proposal-only"}
+      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 6, "reason": "unsupported original Node launcher; historical proposal golden retained separately"}
     },
     {
       "name": "T01/diagnostics", "family": "tsc",
@@ -108,10 +108,10 @@
     {
       "name": "T01/build-incremental", "family": "tsc",
       "command": ["/usr/local/bin/node", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01/node_modules/typescript/bin/tsc", "-b", "refs", "--verbose", "--pretty", "false"],
-      "file": "build-incremental/native.txt", "status": "reduced", "expectedFile": "build-incremental/independent.expected.txt",
+      "file": "build-incremental/native.txt", "status": "passthrough",
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
-      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 14, "disposition": "proposal-only"}
+      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 14, "reason": "unsupported original Node launcher; historical proposal golden retained separately"}
     },
     {
       "name": "T01/build-metrics-lists", "family": "tsc",
@@ -119,7 +119,7 @@
       "file": "build-metrics-lists/native.txt", "status": "passthrough",
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
-      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 15, "reason": "unsafe/ambiguous requested timing and evidence combination; no approved reduction policy"}
+      "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 15, "reason": "unsupported combined metric/list grammar; lead approved exact refusal; original Node launcher also unsupported"}
     },
     {
       "name": "T01/build-error", "family": "tsc",
@@ -144,6 +144,54 @@
       "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
       "provenance": {"kind": "native", "record": "CASES.md#capture-boundary", "sequence": 18}
+    },
+    {
+      "name": "T01/direct-build-initial", "family": "tsc",
+      "command": ["tsc", "-b", "refs", "--verbose", "--pretty", "false"],
+      "file": "direct-build-initial/native.txt", "status": "reduced", "expectedFile": "direct-build-initial/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 19, "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct"}
+    },
+    {
+      "name": "T01/direct-build-up-to-date", "family": "tsc",
+      "command": ["tsc", "-b", "refs", "--verbose", "--pretty", "false"],
+      "file": "direct-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "direct-build-up-to-date/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 20, "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct"}
+    },
+    {
+      "name": "T01/direct-build-incremental", "family": "tsc",
+      "command": ["tsc", "-b", "refs", "--verbose", "--pretty", "false"],
+      "file": "direct-build-incremental/native.txt", "status": "reduced", "expectedFile": "direct-build-incremental/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 21, "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct"}
+    },
+    {
+      "name": "T01/npx-build-up-to-date", "family": "tsc",
+      "command": ["npx", "tsc", "-b", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs", "--verbose", "--pretty", "false"],
+      "file": "npx-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "npx-build-up-to-date/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 22, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01"}
+    },
+    {
+      "name": "T01/npx-no-install-build-up-to-date", "family": "tsc",
+      "command": ["npx", "--no-install", "tsc", "-b", "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs", "--verbose", "--pretty", "false"],
+      "file": "npx-no-install-build-up-to-date/native.txt", "status": "reduced", "expectedFile": "npx-no-install-build-up-to-date/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 23, "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-T01"}
+    },
+    {
+      "name": "T01/direct-build-force", "family": "tsc",
+      "command": ["tsc", "-b", "refs", "--verbose", "--pretty", "false", "--force"],
+      "file": "direct-build-force/native.txt", "status": "reduced", "expectedFile": "direct-build-force/independent.expected.txt",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "TypeScript 5.9.3", "platform": "darwin-x64; Darwin 24.3.0; Node v22.17.1",
+      "provenance": {"kind": "native", "record": "CASES.md#direct-launcher-captures", "sequence": 24, "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct"}
     }
   ]
 }

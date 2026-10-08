@@ -1,10 +1,12 @@
 # T01: native TypeScript capture packet
 
-State: CAPTURED, proposal only. Base `07ffe15`, branch `campaign/native-v2/T01`.
-This packet stops before parser work. `status: reduced` describes the independent
-proposed golden, not a public-filter result. The current `formats.ts` diagnostic
-stub returns `undefined`; `tsc.ts` delegates to it. Every public-filter case remains
-exact at this baseline. No reduction support or campaign completion is claimed.
+State: IMPLEMENTED CHECKPOINT, pending production mutation probe and lead review.
+Base `07ffe15`, branch `campaign/native-v2/T01`. The original capture-only checkpoint
+is `81b6c78`; its historical receipts below are preserved and superseded by the
+implementation receipt at the end. `formats.ts` retains its diagnostic-only stub.
+`tsc.ts` now provides the scoped family profile; registry integration is lead-owned.
+Manifest reduction statuses now correspond to genuine direct/npx native commands;
+all original Node argv remain unmodified and are exact-only witnesses.
 
 ## Capture boundary
 
@@ -82,7 +84,7 @@ those argv as replay stages. Replay will change wall clocks, timings, memory,
 filesystem timestamps and possibly absolute paths. The committed fixtures are
 original observations, not replay output edited to resemble them.
 
-## Finite variants and dispositions
+## Historical finite variants and dispositions (capture checkpoint)
 
 Each row corresponds to `T01/<name>` in `cases.json`. Native path is
 `<name>/native.txt`; reduction goldens are `<name>/independent.expected.txt`.
@@ -115,7 +117,7 @@ Native aggregate: 14,408 bytes. Proposed golden aggregate: 14,304 bytes.
 Potential saving: 104 bytes; current public-filter saving: 0 bytes.
 This is a corpus-specific measurement, not a performance or broad reduction claim.
 
-## Proposed evidence policy and blockers
+## Historical proposed evidence policy and blockers (capture checkpoint)
 
 1. For successful, complete, plain verbose reference builds only, retain the first
    timestamp prefix in each consecutive timestamp group. Later identical prefixes
@@ -151,7 +153,7 @@ This is a corpus-specific measurement, not a performance or broad reduction clai
    unchanged files, not newly executed legacy tests. Unknown-text collision
    witnesses and cross-platform captures remain explicit parser-scope work.
 
-## Checks recorded
+## Historical checks recorded (capture checkpoint)
 
 `npm run typecheck` exited 0. Native compiler positive controls produced exit 2
 with real TS2322/TS2304 diagnostics; silent success cases exited 0 with zero bytes.
@@ -176,3 +178,120 @@ controls, not parser tests or a claimed parser mutation probe.
 native terminal blank lines as new blank lines at EOF. Those reported bytes are
 intentional capture evidence and remain exact; the whitespace check is not claimed
 green. No Git whitespace policy or hook was changed to suppress the findings.
+
+## Direct launcher captures
+
+Compiler/package/platform pin is unchanged: TypeScript 5.9.3 from the local lock.
+`capture-direct.mjs` runs the genuine command `tsc`, not a rewritten Node argv.
+Its isolated PATH is the assigned worktree's `node_modules/.bin`, followed by
+`/usr/local/bin:/usr/bin:/bin`. A real `tsc --version` returned `Version 5.9.3`
+before each capture stage. `npm_config_offline=true` and `npm_config_yes=false`
+prevent package acquisition for the npx stages. stdout is a complete pipe Buffer,
+stderr is separately captured and empty for every successful compiler case. All
+six compiler cases exited 0; presentation stays unknown. No path/newline/ANSI
+normalization is performed. Original argv and each CWD are in `cases.json`.
+
+The fresh disposable project is
+`/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct`.
+It contains only the five `refs/**` inputs from the original project table, with
+identical initial contents. Stage `initial` captures initial and immediately
+up-to-date reference builds. Change only lib's value from `42` to `43`; stage
+`incremental` captures the unchanged-declaration incremental build. Stage `npx`
+then invokes `npx tsc` and `npx --no-install tsc` from the assigned worktree, using
+the actual absolute project argument to the disposable refs. Stage `force` captures
+`tsc -b refs --verbose --pretty false --force` in the disposable project's CWD.
+
+Replay from the assigned worktree:
+
+```sh
+T01_PROJECT=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct node fixtures/profiles/tsc/capture-direct.mjs initial
+# Change refs/lib/index.ts from 42 to 43 after the initial build.
+T01_PROJECT=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct node fixtures/profiles/tsc/capture-direct.mjs incremental
+T01_PROJECT=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct node fixtures/profiles/tsc/capture-direct.mjs npx
+T01_PROJECT=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct node fixtures/profiles/tsc/capture-direct.mjs force
+```
+
+The first npx attempt from the isolated project failed before executing the
+compiler. The recorder surfaced stderr and stopped instead of inventing a native
+compiler capture:
+
+```text
+npm error code ENOTCACHED
+npm error request to https://registry.npmjs.org/tsc failed: cache mode is 'only-if-cached' but no cached response is available.
+npm error A complete log of this run can be found in: /Users/gustavoschneiter/.npm/_logs/2026-10-08T18_55_28_092Z-debug-0.log
+```
+
+The subsequent genuine worktree-local npx invocations succeeded using the installed
+package, as recorded. No failed argv was relabeled as a successful direct command.
+
+## Approved implementation receipt
+
+Lead instruction (2026-10-08): "APPROVE repeated identical timestamp-prefix removal
+for COMPLETE success plain verbose referencebuild: firsttimestamp retained,
+identical subsequentgroup timestamps omitted; body/projectpath/statusreason/metrics/order
+newline stayexact." Also explicitly authorized exact refusal of build-metrics-lists
+until that combined grammar is fully bound. The earlier policy/launcher blockers
+are superseded by this approval and the genuine launcher captures above.
+
+| Native case | Test name suffix | Native → independent expected bytes | Actual saving |
+| --- | --- | ---: | ---: |
+| direct-build-initial | direct-build-initial | 671 → 645 | 26 |
+| direct-build-up-to-date | direct-build-up-to-date | 443 → 417 | 26 |
+| direct-build-incremental | direct-build-incremental | 679 → 653 | 26 |
+| npx-build-up-to-date | npx-build-up-to-date | 1307 → 1294 | 13 |
+| npx-no-install-build-up-to-date | npx-no-install-build-up-to-date | 1307 → 1281 | 26 |
+| direct-build-force | direct-build-force | 551 → 512 | 39 |
+
+Every positive runs `T01 public-filter native golden: <suffix>` in
+`tests/profile-tsc.test.ts`, through the real core `filter` with `familyProfiles`.
+The independently hand-authored source-only goldens retain all event bodies,
+explicit timestamp changes, ordered list paths, reasons and original line endings.
+Independent assertions also bind literal required project paths, all original
+event bodies/newlines and first timestamps of each group to required source spans.
+The original 18 Node cases retain their exact argv and passthrough status; their
+public-filter test names are `T01 original Node capture stays exact: <name>`.
+Historical proposal goldens remain separate artifacts, not executable expectations
+for unsupported Node commands. Original metrics/list/error/silent content is also
+tested against the admitted direct build command with a forged exit 0, so argv
+refusal alone cannot conceal missing grammar preservation.
+
+Closed argv: direct `tsc`, `npx tsc`, `npx --no-install tsc`; first build flag
+`-b` or `--build`; exactly one project argument; exactly one `--verbose` and one
+`--pretty false`; optional single `--force`. No watch, project compilation,
+incremental flags, clean, dry, shorthand verbose, extra projects, metric/list flags,
+unknown switches or added launchers are admitted. Plain successful reference
+solutions only: unique ordered default `tsconfig.json` paths, final listed solution
+root bound to the requested project, every earlier project ending in one recognized
+state. States cover missing build-info, changed input, up-to-date, forced rebuild,
+dependency declarations unchanged and corresponding output timestamp update.
+Rebuild/update actions must agree with the immediately preceding state and project;
+absolute action origins must agree across the report. Missing events, unexpected
+lines/contexts, inconsistent paths, unknown version text, duplicates, reordered
+statuses or missing/extra terminal blank lines refuse the entire output.
+
+Scope limits: a solution root with its own compile event, non-default config names,
+other out-of-date reasons, metrics/list combinations and diagnostic output remain
+exact. `Observation` has no producer-version field; the fixture pin is 5.9.3 and
+unknown version/banner/cache-version grammars are refused, but another binary
+emitting identical admitted text cannot be distinguished. No core/type/renderer
+change or producer-authentication claim is made. Unknown presentation with ANSI
+and nonzero failures stays exact; dynamic text is emitted only as source spans.
+Only the captured `presentation: unknown` boundary is admitted. A terminal-rendered
+observation is refused too, so the existing core normalizer cannot turn original
+ANSI into a reduction through this profile. Project-list aliases are checked for
+canonical duplicate identities; emitted evidence remains original source text.
+
+Baseline red: the new focused suite against the original delegated stub had all
+six positive native golden assertions fail (30 tests, 10 failures including other
+new admission assertions). Each positive continues to assert that unchanged legacy
+`formatProfiles` cannot satisfy the same reduction golden. Implementation checkpoint:
+30 focused tests passed, no skips; `npm run typecheck` exited 0. Initial implementation
+checks exposed a no-op missing-header test mutation and a CRLF terminal refusal;
+the mutation was made non-vacuous and CRLF terminal recognition was corrected.
+Production body-loss mutation and restoration receipts will follow in this file.
+
+Actual family-local corpus economy: six reductions total 4,958 → 4,802 UTF-8 bytes
+(156 bytes saved). Including the 18 exact-only original Node cases: 19,366 → 19,210
+bytes. These measurements use the six direct-launcher goldens, not the historical
+104-byte proposal subtotal. Default registry is unchanged, so no default-registry
+reduction or installed-package integration claim is made.

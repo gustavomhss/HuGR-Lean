@@ -1,0 +1,13 @@
+3:55:16 PM - Projects in this build: 
+    * refs/lib/tsconfig.json
+    * refs/app/tsconfig.json
+    * refs/tsconfig.json
+
+3:55:17 PM - Project 'refs/lib/tsconfig.json' is out of date because output 'refs/lib/out/tsconfig.tsbuildinfo' is older than input 'refs/lib/index.ts'
+
+Building project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs/lib/tsconfig.json'...
+
+3:55:24 PM - Project 'refs/app/tsconfig.json' is up to date with .d.ts files from its dependencies
+
+Updating output timestamps of project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc-direct/refs/app/tsconfig.json'...
+
