@@ -160,7 +160,7 @@ function sourceMatch(refs, wanted, context) {
   demand(matches.length === 1, "UNBOUND_SOURCE_RECORD", `${context}: ${wanted.file}`);
   return matches[0];
 }
-function bindIndexedCapture(row, receipt, references, context) {
+function bindIndexedCapture(row, receipt, references, context, family) {
   demand(record(row), "MISSING_INDEXED_CAPTURE", context);
   const facts = receipt.facts ?? receipt, indexed = row.facts ?? row;
   for (const key of ["command", "cwd", "exitCode", "complete", "signal", "timedOut", "nativeSpawned", "nativeExitObserved"]) {
@@ -170,6 +170,9 @@ function bindIndexedCapture(row, receipt, references, context) {
   for (const key of ["original", "stdout", "stderr"]) sameDigest(streams[key], { ...references[key], file: references[key].sourceFile ?? references[key].file }, `${context}: ${key}`);
   const capture = row.capture ?? (record(row.receipt) ? row.receipt : undefined);
   if (capture) sameDigest(capture, { ...references.capture, file: references.capture.sourceFile ?? references.capture.file }, `${context}: capture`);
+  const receiptFile = typeof row.receipt === "string" ? row.receipt : family === "cargo" ? `captures/${row.id}/receipt.json` : undefined;
+  if (receiptFile !== undefined) demand((references.capture.sourceFile ?? references.capture.file) === receiptFile, "INDEX_RECEIPT_PATH_MISMATCH", `${context}: capture`);
+  if (typeof receipt.receipt === "string") demand(receipt.receipt === (references.capture.sourceFile ?? references.capture.file), "RECEIPT_SELF_PATH_MISMATCH", `${context}: receipt`);
   for (const key of ["fixtureSources", "fixtureSourcesBefore", "fixtureSourcesAfter", "helpers", "versions", "sourceHead", "sourceInventorySHA256",
     "baseline", "baselineSourceSHA", "errors", "encodingError", "launchError", "killErrors", "cleanupErrors"]) {
     if (row[key] !== undefined) demand(isEqual(row[key], receipt[key]), "INDEX_CAPTURE_METADATA_MISMATCH", `${context}: ${key}`);
@@ -215,7 +218,7 @@ function declaredProvenance(files, used, manifest) {
       demand([facts.launchError, facts.encodingError, receipt.errors?.launch, receipt.errors?.encoding, receipt.errors?.preparation].every((error) => error === undefined || error === null)
         && [facts.killErrors, facts.cleanupErrors, receipt.cleanupErrors, receipt.errors?.cleanup].every((errors) => errors === undefined || (Array.isArray(errors) && errors.length === 0)), "VERSION_CAPTURE_ERRORS", context);
       demand(version.original.bytes === version.stdout.bytes + version.stderr.bytes, "VERSION_STREAM_LENGTH_MISMATCH", context);
-      bindIndexedCapture(rows.find((row) => row.id === version.id), receipt, version, `${context}: ${version.id}`);
+      bindIndexedCapture(rows.find((row) => row.id === version.id), receipt, version, `${context}: ${version.id}`, manifest.family);
       versions.set(version.id, { ...version, receipt, text: texts.original });
     }
     roots.set(entry.id, { entry, index, sources, refs, rows, versions, linked: 0 });
@@ -228,10 +231,20 @@ function declaredProvenance(files, used, manifest) {
       if (prior.sourceHead !== undefined) demand(prior.sourceHead === matches[0].entry.sourceHead, "PRIOR_SOURCE_HEAD_MISMATCH", root.entry.id);
       if (prior.inventorySHA256 !== undefined) demand(prior.inventorySHA256 === matches[0].entry.sourceInventory.sha256, "PRIOR_SOURCE_INVENTORY_MISMATCH", root.entry.id);
     }
+    for (const version of root.versions.values()) {
+      const context = `${manifest.family}/${root.entry.id}/version/${version.id}`, facts = version.receipt.facts ?? version.receipt;
+      const rawSources = version.receipt.fixtureSources ?? [];
+      demand(Array.isArray(rawSources), "INVALID_VERSION_SOURCES", context);
+      const candidates = [...root.refs, ...manifest.cases.filter((item) => item.provenanceRoot === root.entry.id).flatMap((item) => item.fixtureSources)];
+      const unique = [...new Map(candidates.map((ref) => [`${ref.sourceFile ?? ref.file}:${ref.sha256}`, ref])).values()];
+      const fixtureSources = rawSources.map((source) => sourceMatch(unique, source, context));
+      receiptCheck(version.receipt, { ...version, producer: root.entry.producer, provenanceRoot: root.entry.id,
+        command: facts.command, role: "exact", exitCode: 0, complete: true, signal: null, timedOut: false, fixtureSources }, manifest, context, roots, true);
+    }
   }
   return roots;
 }
-function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
+function receiptCheck(receipt, item, manifest, context, roots = new Map(), versionCapture = false) {
   const root = item.provenanceRoot === undefined ? undefined : roots.get(item.provenanceRoot);
   demand(item.provenanceRoot === undefined || root !== undefined, "MISSING_PROVENANCE_ROOT", context);
   keys(receipt, [], [...FACT_FIELDS, ...RECEIPT_FIELDS, ...RECEIPT_VARIANTS[manifest.family]], `${context}: receipt`);
@@ -288,7 +301,7 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
   if (root) {
     demand(isEqual(declaredProducer, root.entry.producer), "ROOT_CASE_PRODUCER_MISMATCH", context);
     demand(receipt.sourceHead === undefined || receipt.sourceHead === root.entry.sourceHead, "ROOT_RECEIPT_SOURCE_HEAD_MISMATCH", context);
-    bindIndexedCapture(root.rows.find((row) => row.id === item.id), receipt, item, context);
+    bindIndexedCapture(root.rows.find((row) => row.id === item.id), receipt, item, context, manifest.family);
     const snapshot = sourceMatch(root.refs, { file: declaredProducer.script, sha256: declaredProducer.sourceSHA256, bytes: receipt.producer.bytes }, context);
     if (receipt.producer.snapshot !== undefined) {
       descriptor(receipt.producer.snapshot, context);
@@ -296,8 +309,8 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
         && (root.index.producer.snapshot === undefined || receipt.producer.snapshot.file === root.index.producer.snapshot.file), "PRODUCER_SNAPSHOT_MISMATCH", context);
     }
     if (receipt.amendedProducer) sourceMatch(root.refs, { file: receipt.amendedProducer.script, sha256: receipt.amendedProducer.sha256, bytes: receipt.amendedProducer.bytes }, context);
-    root.linked++; root.caseRefs ??= []; root.caseRefs.push(...item.fixtureSources);
-    if (receipt.versions !== undefined) demand(isEqual(receipt.versions, root.index.versions), "INDEX_VERSIONS_MISMATCH", context);
+    if (!versionCapture) { root.linked++; root.caseRefs ??= []; root.caseRefs.push(...item.fixtureSources); }
+    if (receipt.versions !== undefined && !(versionCapture && receipt.versions === null)) demand(isEqual(receipt.versions, root.index.versions), "INDEX_VERSIONS_MISMATCH", context);
     root.snapshot = snapshot;
   }
   const streamSets = [receipt.artifacts, receipt.streams, receipt.original === undefined ? undefined : receipt].filter((v) => v !== undefined);
@@ -314,8 +327,8 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
   demand(!phased || receipt.fixtureSources === undefined, "AMBIGUOUS_SOURCE_INVENTORY", context);
   demand(!phased || (manifest.family === "cargo" && ["before", "after"].includes(item.sourcePhase)), "SOURCE_PHASE_REQUIRED", context);
   demand(phased || item.sourcePhase === undefined, "UNEXPECTED_SOURCE_PHASE", context);
-  const sources = list(phased ? receipt[item.sourcePhase === "before" ? "fixtureSourcesBefore" : "fixtureSourcesAfter"] : receipt.fixtureSources,
-    `${context}: receipt.fixtureSources`), mapped = new Set();
+  const rawSources = phased ? receipt[item.sourcePhase === "before" ? "fixtureSourcesBefore" : "fixtureSourcesAfter"] : receipt.fixtureSources ?? (versionCapture ? [] : undefined);
+  const sources = versionCapture && Array.isArray(rawSources) ? rawSources : list(rawSources, `${context}: receipt.fixtureSources`), mapped = new Set();
   demand(sources.length === item.fixtureSources.length, "SOURCE_INVENTORY_MISMATCH", context);
   for (const source of sources) {
     keys(source, ["file", "sha256", "bytes"], ["originalSource", "license", "origin"], `${context}: receipt source`);
@@ -335,7 +348,7 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
       sameDigest(originalSource, { ...source, file: originalSource.file }, `${context}: originalSource`);
     }
   }
-  const receiptTools = list(receipt.tools, `${context}: receipt.tools`);
+  const receiptTools = versionCapture && Array.isArray(receipt.tools) ? receipt.tools : list(receipt.tools, `${context}: receipt.tools`);
   demand(receiptTools.every(record), "INVALID_RECEIPT_TOOL", context);
   for (const tool of receiptTools) {
     keys(tool, ["name", "executable"], ["version", "realpath", "launcherSHA256", "bytes", "sha256", "receipt", "lockedIntegrity", "installation"], `${context}: receipt.tools`);
@@ -348,11 +361,11 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
         && version.capture.sha256 === tool.receipt.sha256 && version.capture.bytes === tool.receipt.bytes), "UNBOUND_TOOL_VERSION_RECEIPT", context);
     }
   }
-  for (const tool of manifest.tools) {
+  for (const tool of manifest.tools.filter((tool) => !versionCapture || receiptTools.some((entry) => entry.name === tool.name))) {
     const direct = receiptTools.filter((entry) => entry.name === tool.name);
     const version = direct[0]?.version ?? receipt.versions?.[tool.name];
     const executable = direct[0]?.executable ?? receipt.versions?.[`${tool.name}Executable`] ?? receipt.versions?.[`${tool.name}Module`];
-    demand(direct.length <= 1 && version === tool.version && executable === tool.executable, "TOOL_PROVENANCE_MISMATCH", `${context}: ${tool.name}`);
+    demand(direct.length <= 1 && (version === tool.version || (versionCapture && version === undefined)) && executable === tool.executable, "TOOL_PROVENANCE_MISMATCH", `${context}: ${tool.name}`);
     for (const key of ["lockedIntegrity", "installation"]) if (tool[key] !== undefined) demand(direct[0]?.[key] === tool[key], "TOOL_DIAGNOSTIC_MISMATCH", `${context}: ${tool.name}/${key}`);
   }
   for (const tool of receiptTools) {
