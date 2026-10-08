@@ -442,3 +442,403 @@
         {
           "text": "TAP version 13",
           "occurrence": 0
+        },
+        {
+          "text": "# Subtest: UTILITY_SERIAL_PARENT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "    # Subtest: UTILITY_SKIP_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "    ok 13 - UTILITY_SKIP_CHILD # SKIP UTILITY_SKIP_REASON Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "      ---",
+          "occurrence": 12
+        },
+        {
+          "text": "      duration_ms: 0.311513",
+          "occurrence": 0
+        },
+        {
+          "text": "      type: 'test'",
+          "occurrence": 12
+        },
+        {
+          "text": "      ...",
+          "occurrence": 12
+        },
+        {
+          "text": "    # Subtest: UTILITY_TODO_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "    ok 14 - UTILITY_TODO_CHILD # TODO UTILITY_TODO_REASON Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "      ---",
+          "occurrence": 13
+        },
+        {
+          "text": "      duration_ms: 0.718264",
+          "occurrence": 0
+        },
+        {
+          "text": "      type: 'test'",
+          "occurrence": 13
+        },
+        {
+          "text": "      ...",
+          "occurrence": 13
+        },
+        {
+          "text": "    # Subtest: UTILITY_DIAGNOSTIC_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "    ok 15 - UTILITY_DIAGNOSTIC_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "      ---",
+          "occurrence": 14
+        },
+        {
+          "text": "      duration_ms: 0.759763",
+          "occurrence": 0
+        },
+        {
+          "text": "      type: 'test'",
+          "occurrence": 14
+        },
+        {
+          "text": "      ...",
+          "occurrence": 14
+        },
+        {
+          "text": "    # UTILITY_CRITICAL_DIAGNOSTIC_SENTINEL Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "    1..15",
+          "occurrence": 0
+        },
+        {
+          "text": "ok 1 - UTILITY_SERIAL_PARENT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "  ---",
+          "occurrence": 15
+        },
+        {
+          "text": "  duration_ms: 151.793811",
+          "occurrence": 0
+        },
+        {
+          "text": "  type: 'test'",
+          "occurrence": 15
+        },
+        {
+          "text": "  ...",
+          "occurrence": 15
+        },
+        {
+          "text": "1..2",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 17",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 15",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 6898.341726",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "node-failure-default",
+      "profile": "node-test",
+      "command": "node --test fixture.mjs",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/node-failure-default/capture.json",
+        "bytes": 3452,
+        "sha256": "acb47e04520e879fbccbeeff57c44664906a4d8a661a031425f1f553c9932283"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/failure/fixture.mjs",
+          "sha256": "55cd1ad94f7cd216e2e786ec4cf3a98b106fc308e253d5437d98ae8a975cde7f",
+          "bytes": 301
+        }
+      ],
+      "original": {
+        "file": "captures/node-failure-default/original.log",
+        "bytes": 1114,
+        "sha256": "efe8690a6975a5ea78d32541d7e602698389bdb7ae6c2917bc6bfabebaa429fa"
+      },
+      "stdout": {
+        "file": "captures/node-failure-default/stdout.log",
+        "bytes": 1114,
+        "sha256": "efe8690a6975a5ea78d32541d7e602698389bdb7ae6c2917bc6bfabebaa429fa"
+      },
+      "stderr": {
+        "file": "captures/node-failure-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/node-failure-default/output.expected.log",
+        "bytes": 1114,
+        "sha256": "efe8690a6975a5ea78d32541d7e602698389bdb7ae6c2917bc6bfabebaa429fa"
+      },
+      "material": false,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "# Subtest: UTILITY_FAILURE_CONTEXT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "not ok 1 - UTILITY_FAILURE_CONTEXT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "  ---",
+          "occurrence": 0
+        },
+        {
+          "text": "  duration_ms: 78.178744",
+          "occurrence": 0
+        },
+        {
+          "text": "  type: 'test'",
+          "occurrence": 0
+        },
+        {
+          "text": "  location: '/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure/fixture.mjs:4:1'",
+          "occurrence": 0
+        },
+        {
+          "text": "  failureType: 'testCodeFailure'",
+          "occurrence": 0
+        },
+        {
+          "text": "  error: |-",
+          "occurrence": 0
+        },
+        {
+          "text": "    UTILITY_ASSERT_FAILURE_SENTINEL Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "    + actual - expected",
+          "occurrence": 0
+        },
+        {
+          "text": "    ",
+          "occurrence": 2
+        },
+        {
+          "text": "    + 'observed'",
+          "occurrence": 0
+        },
+        {
+          "text": "    - 'expected'",
+          "occurrence": 0
+        },
+        {
+          "text": "    ",
+          "occurrence": 5
+        },
+        {
+          "text": "  code: 'ERR_ASSERTION'",
+          "occurrence": 0
+        },
+        {
+          "text": "  name: 'AssertionError'",
+          "occurrence": 0
+        },
+        {
+          "text": "  expected: 'expected'",
+          "occurrence": 0
+        },
+        {
+          "text": "  actual: 'observed'",
+          "occurrence": 0
+        },
+        {
+          "text": "  operator: 'strictEqual'",
+          "occurrence": 0
+        },
+        {
+          "text": "  stack: |-",
+          "occurrence": 0
+        },
+        {
+          "text": "    TestContext.<anonymous> (file:///Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure/fixture.mjs:5:10)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Test.runInAsyncScope (node:async_hooks:214:14)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Test.run (node:internal/test_runner/test:1047:25)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Test.start (node:internal/test_runner/test:944:17)",
+          "occurrence": 0
+        },
+        {
+          "text": "    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)",
+          "occurrence": 0
+        },
+        {
+          "text": "  ...",
+          "occurrence": 0
+        },
+        {
+          "text": "1..1",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 2307.031896",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "tsx-failure-default",
+      "profile": "node-test",
+      "command": "tsx --test fixture.test.ts",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/tsx-failure-default/capture.json",
+        "bytes": 3456,
+        "sha256": "920baa9e95750c9d22a1804508f3eba4c93b23fd7f973cb006b64d19e085c27b"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/failure/fixture.test.ts",
+          "sha256": "43688d7d805901746aa8fa3ce614de5261e0290e90c51f68e67b8400b3058e88",
+          "bytes": 354
+        }
+      ],
+      "original": {
+        "file": "captures/tsx-failure-default/original.log",
+        "bytes": 1114,
+        "sha256": "1f2c64f66fc85d7467a067b80db555eb8c24b5a4981ba8c8a2174054a47d820d"
+      },
+      "stdout": {
+        "file": "captures/tsx-failure-default/stdout.log",
+        "bytes": 1114,
+        "sha256": "1f2c64f66fc85d7467a067b80db555eb8c24b5a4981ba8c8a2174054a47d820d"
+      },
+      "stderr": {
+        "file": "captures/tsx-failure-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/tsx-failure-default/output.expected.log",
+        "bytes": 1114,
+        "sha256": "1f2c64f66fc85d7467a067b80db555eb8c24b5a4981ba8c8a2174054a47d820d"
+      },
+      "material": false,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "# Subtest: UTILITY_FAILURE_CONTEXT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "not ok 1 - UTILITY_FAILURE_CONTEXT Ω 🚀",
+          "occurrence": 0
+        },
+        {
