@@ -1,0 +1,20 @@
+     Locking 2 packages to latest Rust 1.98.0 compatible versions
+   Compiling atlas-service v1.2.3-alpha.2 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-structural/app)
+   Compiling atlas-core v1.9.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-structural/core-old)
+   Compiling atlas-core v2.4.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-structural/core-new)
+warning: function `latent_café` is never used
+ --> src/engine.rs:3:4
+  |
+3 | fn latent_café() {}
+  |    ^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `spare_worker` is never used
+ --> src/engine.rs:5:4
+  |
+5 | fn spare_worker() {}
+  |    ^^^^^^^^^^^^
+
+warning: `atlas-service` (lib) generated 2 warnings
+    Finished `ship` profile [unoptimized] target(s) in 2.06s

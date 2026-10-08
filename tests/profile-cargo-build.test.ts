@@ -45,7 +45,7 @@ for (const c of packet.cases) {
 }
 
 test("finite packet IDs and family subcommands have no overlap", () => {
-  const required = "release-workspace custom-package-lib release-bin-target release-example check-workspace check-custom-all-targets check-lib-target check-bin-examples build-warnings check-warnings build-collision build-cached check-cached build-failure check-custom-targets-success build-cached-clean check-collision build-all-features-targets".split(" ");
+  const required = "structural-build structural-check structural-check-buildscript release-workspace custom-package-lib release-bin-target release-example check-workspace check-custom-all-targets check-lib-target check-bin-examples build-warnings check-warnings build-collision build-cached check-cached build-failure check-custom-targets-success build-cached-clean check-collision build-all-features-targets".split(" ");
   assert.deepEqual(packet.cases.map(c => c.name).sort(), required.map(n => `C01/${n}`).sort());
   assert.deepEqual(familyProfiles.map(p => p.id), ["cargo-build", "cargo-check"]);
   for (const c of packet.cases) {
@@ -101,17 +101,16 @@ test("closed argv rejects unknown flags, missing values, duplicate flags and con
     "cargo build --offline --workspace yes", "cargo build --offline --no-default-features true",
     "cargo build --offline --all-features extra", "cargo build --offline --all-targets lib",
     "cargo build --offline --bins bin", "cargo build --offline --examples tiny",
-    "cargo build --offline -p", "cargo build --offline -p --lib", "cargo build --offline -p unknown",
+    "cargo build --offline -p", "cargo build --offline -p --lib", "cargo build --offline -p bad/name",
     "cargo build --offline --exclude", "cargo build --offline --exclude c01-peer",
     "cargo build --offline --features", "cargo build --offline --features --lib",
     "cargo build --offline --features extra,", "cargo build --offline --features extra,extra",
-    "cargo build --offline --features unseen", "cargo build --offline --target",
-    "cargo build --offline --target wasm32-unknown-unknown", "cargo build --offline --bin",
-    "cargo build --offline --bin other", "cargo build --offline --example",
-    "cargo build --offline --example other", "cargo build --offline --profile",
-    "cargo build --offline --profile --lib", "cargo build --offline --profile other",
-    "cargo build --offline --release --profile small", "cargo build --offline --lib --bin c01-app",
-    "cargo build --offline --all-targets --lib", "cargo build --offline --workspace -p c01-app",
+    "cargo build --offline --features bad//name", "cargo build --offline --target",
+    "cargo build --offline --target --lib", "cargo build --offline --bin",
+    "cargo build --offline --bin bad/name", "cargo build --offline --example",
+    "cargo build --offline --example bad/name", "cargo build --offline --profile",
+    "cargo build --offline --profile --lib", "cargo build --offline --profile bad/name",
+    "cargo build --offline --release --profile small",
     "cargo build --offline --features warn --features extra", "cargo build --offline --color",
     "cargo build --offline --color always", "cargo build --offline --color never --color=never",
     "cargo build --offline --offline", "cargo build --offline -- --verbose",
@@ -142,9 +141,8 @@ test("counterfeit warning/context/totals cannot masquerade as supported compiler
     ["(lib test) generated 1 warning", "(lib test) generated 2 warnings"],
     ["(lib) generated 1 warning (1 duplicate)", "(lib) generated 1 warning (2 duplicates)"],
     ["(lib) generated 1 warning (1 duplicate)", "(lib) generated 1 warning"],
-    ["warning: `c01-app`", "warning: `other-package`"],
     ["warning: `c01-app` (lib test) generated 1 warning\n", ""],
-    ["warning: `c01-app` (lib) generated 1 warning (1 duplicate)\n", ""],
+    ["warning: `c01-app` (lib) generated 1 warning (1 duplicate)\n", "warning: `c01-app` (lib) generated 1 warning (1 duplicate)\nwarning: `c01-app` (lib) generated 1 warning (1 duplicate)\n"],
   ]) {
     assert.ok(observation.output.includes(from!));
     exact({ ...observation, output: observation.output.replaceAll(from!, to!) });
@@ -158,11 +156,65 @@ test("counterfeit warning/context/totals cannot masquerade as supported compiler
 test("wrong profile/optimization/duration/progress association and late progress refuse", () => {
   const observation = input(find("release-workspace"));
   for (const [from, to] of [
-    ["`release`", "`dev`"], ["[optimized]", "[optimized + debuginfo]"],
+    ["`release`", "`dev`"], ["[optimized]", "[ultraoptimized]"],
     ["2.67s", "NaNs"], ["2.67s", "1m 02s"], ["target(s)", "targets"],
-    ["v0.1.0", "vbad"], ["c01-app", "unknown"],
+    ["v0.1.0", "vbad"], ["v0.1.0", "v0.1.0-alpha.01"], ["v0.1.0", "v00.1.0"],
+    ["c01-app", "invalid/name"],
   ]) exact({ ...observation, output: observation.output.replaceAll(from!, to!) });
   exact({ ...observation, output: observation.output + observation.output.split("\n")[0] + "\n" });
   const warning = input(find("build-warnings"));
   exact({ ...warning, output: warning.output.replace("warning: function", "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s\nwarning: function") });
+});
+
+test("synthetic property inputs: project values, versions, settings, dependency names are structural", () => {
+  const c = find("structural-build"), observation = input(c);
+  const pairs = [["atlas-service", "koi-api"], ["atlas-core", "delta-math"], ["ship", "debug-fast"],
+    ["spark", "vector_math"], ["1.2.3-alpha.2", "7.8.9-beta.4+local"], ["1.9.0", "3.0.2"],
+    ["2.4.0", "4.5.6"], ["src/engine.rs", "C:\\work repo\\logic.rs"],
+    ["latent_café", "latent_δelt"], ["[unoptimized]", "[optimized + debuginfo]"]];
+  const rename = (text: string) => pairs.reduce((value, [from, to]) => value.replaceAll(from!, to!), text);
+  accepted({ ...observation, command: rename(observation.command), output: rename(observation.output) }, rename(read(c.expectedFile)), c.family);
+  for (const description of ["unoptimized", "optimized", "unoptimized + debuginfo", "optimized + debuginfo"]) {
+    accepted({ ...observation, output: observation.output.replace("[unoptimized]", `[${description}]`) },
+      read(c.expectedFile).replace("[unoptimized]", `[${description}]`), c.family);
+  }
+  const warned = find("build-warnings");
+  accepted({ ...input(warned), command: warned.command.replace(" --features warn", "") }, read(warned.expectedFile), warned.family);
+});
+
+test("synthetic argv properties: additive selectors, workspace packages, structural feature/target paths", () => {
+  const c = find("structural-check"), observation = input(c), expected = read(c.expectedFile);
+  for (const suffix of ["--examples --bins --all-targets --example another_demo", "--workspace --exclude other-package",
+    "--target wasm32-unknown-unknown", "--target ./targets/custom.json", "--target targets/custom.json", "--target custom.json", "--target ../target specs/custom.json"]) {
+    const addition = suffix === "--target ../target specs/custom.json" ? "--target '../target specs/custom.json'" : suffix;
+    accepted({ ...observation, command: `${observation.command} ${addition}` }, expected, c.family);
+  }
+  for (const features of ["unseen", "other/fast", "vector_math,extra-mode"]) {
+    accepted({ ...observation, command: observation.command.replace("--features spark", `--features '${features}'`) }, expected, c.family);
+  }
+  exact({ ...observation, command: observation.command.replace("--features spark", "--features 'other?/fast'") });
+});
+
+test("synthetic diagnostic properties: positions and counters derive from text, not fixture settings", () => {
+  const c = find("structural-check"), observation = input(c);
+  const moved = (text: string) => text.replace("src/engine.rs:3:4", "/work repo/module.rs:33:4")
+    .replace("  |\n3 |", "   |\n33 |")
+    .replace("  |    ^^^^^^^^^^^\n  |\n", "   |    ^^^^^^^^^^^\n   |\n")
+    .replace("  = note:", "   = note:");
+  accepted({ ...observation, output: moved(observation.output) }, moved(read(c.expectedFile)), c.family);
+  accepted({ ...observation, output: observation.output.replaceAll("src/engine.rs", "../generated/code.inc") },
+    read(c.expectedFile).replaceAll("src/engine.rs", "../generated/code.inc"), c.family);
+  for (const [from, to] of [["generated 2 warnings", "generated 3 warnings"],
+    ["generated 2 warnings", "generated 2 warning"], ["src/engine.rs:5:4", "src/engine.rs:5:0"],
+    ["    Finished", "warning: atlas-service@1.2.3: native-shaped user log\n    Finished"]]) {
+    exact({ ...observation, output: observation.output.replace(from!, to!) });
+  }
+  // A legal dependency can report diagnostics/progress between other package groups.
+  const warning = find("build-warnings"), source = input(warning), required = read(warning.expectedFile);
+  const first = source.output.replaceAll("c01-app", "first-dep").replace(/^    Finished .*\n/m, "");
+  const second = source.output.replaceAll("c01-app", "second-dep");
+  const golden = required.replaceAll("c01-app", "first-dep").replace(/^    Finished .*\n/m, "") + required.replaceAll("c01-app", "second-dep");
+  accepted({ ...source, output: first + second }, golden, warning.family);
+  accepted({ ...source, output: (first + second).replaceAll("first-dep", "shared-dep").replaceAll("second-dep", "shared-dep") },
+    golden.replaceAll("first-dep", "shared-dep").replaceAll("second-dep", "shared-dep"), warning.family);
 });
