@@ -1,0 +1,22 @@
+{
+  "formatter": {
+    "indentStyle": "tab"
+  },
+  "linter": {
+    "rules": {
+      "recommended": false,
+      "correctness": {
+        "noUnusedVariables": "warn"
+      },
+      "style": {
+        "useConst": "info"
+      },
+      "suspicious": {
+        "noDebugger": "error"
+      }
+    }
+  },
+  "assist": {
+    "enabled": false
+  }
+}
