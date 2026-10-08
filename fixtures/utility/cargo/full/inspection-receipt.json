@@ -1,0 +1,34 @@
+{
+  "schema": "hugr-lean/private-native-inspection/1",
+  "state": "blocked-awaiting-lead",
+  "producerCommit": "582784f752f1d827a460dbab063c0423628d7c09",
+  "captureIndex": {
+    "file": "capture-index.json",
+    "sha256": "9f16140d5d3aa8f9f5169e1c3322d3ac236232554424caf5318aaeb46c5b378c"
+  },
+  "collectorExitCode": 1,
+  "collectorError": "NATIVE_MINUTE_DURATION_MISSING",
+  "nativeExitCode": 0,
+  "nativeSpawned": true,
+  "nativeExitObserved": true,
+  "complete": true,
+  "timedOut": false,
+  "signal": null,
+  "nativeFinishedRow": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 01s",
+  "reason": "Producer required literal 1m; genuine observed native row is 2m. Raw bytes and original capture index retained unchanged. No capture rerun or later Cargo invocation.",
+  "pendingCases": ["lib", "failure", "warning"],
+  "sourcePostCaptureInspection": {
+    "Cargo.lock": {
+      "beforeSHA256": "c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb",
+      "afterSHA256": "37c075e3a501a668c75cbbf0831ab4a084f28ab26f763bd2b9b605262da58908",
+      "change": "Cargo added its two generated-file header comments.",
+      "beforeSnapshot": "source-snapshots/Cargo.lock",
+      "snapshotProvenance": "Reconstructed exact original bytes from committed producer literal; SHA-256 matches original recorded inventory."
+    },
+    "otherFixtureSourceHashes": "Cargo.toml, build.rs, src/lib.rs and tests/native_integration.rs match original inventory after capture."
+  },
+  "measurementControl": "shasum -a 256 /dev/null returned expected e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; raw/source hashes independently recomputed; stat byte sizes match receipts.",
+  "streamOrdering": "Native stderr contains compiler/Finished/executable/doc headers; stdout contains test rows. Original is observed chunk arrival order, not stdout+stderr concatenation. No cross-stream causal guarantee.",
+  "filterLatencyMeasured": false,
+  "focusedPreservationTests": "Not run; preparation blocked before completion. No parser/preservation changes authored."
+}

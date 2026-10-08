@@ -1,0 +1,6 @@
+# Original MIT dependency-free lockfile.
+version = 4
+
+[[package]]
+name = "hugr_utility_cargo"
+version = "0.1.0"
