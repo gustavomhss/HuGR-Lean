@@ -156,3 +156,35 @@ test("C03 malformed observation fields never supply replacement", () => {
     assert.equal("replacement" in result, false);
   }
 });
+test("C03 cold Unicode format controls refuse before leading progress scan", () => {
+  // U+202E reproduces the cold-review prefix deletion; remaining controls exercise Cf breadth.
+  for (const control of ["\u202e", "\u202a", "\u202b", "\u202c", "\u202d", "\u2066", "\u2067", "\u2068", "\u2069", "\u200e", "\u200f", "\u061c", "\u200b", "\u200c", "\u200d", "\u2060", "\ufeff", "\u00ad", "\u{e0001}"]) {
+    for (const output of [
+      workspace.replace("(/private/", `(/private/${control}`),
+      workspace.replace("warning: this", `warning: ${control}this`),
+      workspace.replace("values.get", `${control}values.get`),
+      workspace.replace("/beta)", `/${control}beta)`),
+    ]) for (const presentation of ["unknown", "terminal-rendered"] as const) exact(output, { presentation });
+  }
+});
+test("C03 cold numeric dotted and generic producer prefixes refuse otherwise valid frames", () => {
+  for (const prefix of ["123.pkg@0.1.0:", "123pkg@0.1.0:", "9@1.2.3:", "pkg.name@1.2.3-beta.1+build:", "包名@0.1.0:", "producer@future-version:"]) {
+    for (const title of ["warning: this", "warning: called", "warning: using"]) {
+      const output = workspace.replace(title, `warning: ${prefix}${title.slice("warning:".length)}`);
+      for (const presentation of ["unknown", "terminal-rendered"] as const) exact(output, { presentation });
+    }
+  }
+});
+test("C03 unknown raw ANSI exact; declared terminal-rendered supported SGR legitimate", () => {
+  const output = workspace.replace("(/private/", "(\x1b[31m/private/\x1b[0m")
+    .replace("values.get", "\x1b[32mvalues.get\x1b[0m");
+  exact(output, { presentation: "unknown" });
+  const obs = observation(output);
+  assert.equal(familyProfiles[0]!.reduce(output, obs), undefined, "direct profile rejects raw ESC");
+  const rendered = filter(obs, { profiles: familyProfiles });
+  assert.equal(rendered.status, "reduced");
+  if (rendered.status !== "reduced") assert.fail("missing rendered reduction");
+  assert.equal(rendered.replacement, golden);
+  assert.equal(rendered.inputBytes, Buffer.byteLength(output));
+  assert.equal(rendered.outputBytes, Buffer.byteLength(golden));
+});
