@@ -6,7 +6,7 @@ focused tests supplied; shared registry remains lead-owned. `cases.json` uses
 Original full `native-cases1` record remains byte-exact in `capture-receipt.json`.
 `expectedFile` references independent literal goldens authored before parser.
 
-| ID suffix | Native combination | Required evidence / proposed disposition |
+| ID suffix | Native combination | Required evidence / current disposition |
 | --- | --- | --- |
 | version | Direct PATH-resolved binary | Actual v9.37.0, exit 0; exact |
 | stylish-warnings | Default stylish, two files, warning-only exit 0 | Five warnings, rules, paths, positions, Unicode identifier/path, multiline message, totals, one fixable warning |
@@ -17,6 +17,7 @@ Original full `native-cases1` record remains byte-exact in `capture-receipt.json
 | fix-applied | Same config/file with `--fix` | Zero output; actual before/after source proves two edits, not a printed success claim |
 | ignored-warning | Global ignore, explicit file | Position 0:0, absent rule, complete ignore reason/advice and warning total |
 | empty-config-warning | Empty flat config, clean file | Node warning class/PID, config path, whole message and trace advice exact |
+| ascii-stylish / absolute-stylish / npx-stylish / npx-no-install-stylish | Four actual launchers, ASCII argv, Unicode messages | Identical output hash; each public-filter result reduced by two boundary bytes |
 
 ## Approved material policy
 
@@ -54,3 +55,8 @@ metadata, unknown commands/output, false summaries/duplicates/fix slots, C0/C1/C
 Unicode/spaces/continuations and complete interior required spans. Empty-family
 baseline ran red before implementation. Measured native sizes: 724→722 (four
 launcher captures share byte-identical output), 310→308, 304→302. No profit claim.
+
+Preservation probes edited only owned parser: delete first diagnostic (declaration
+and renderer), delete first position, delete fixable count, bypass grammar to admit
+unknown interior text. Each probe produced focused RED. Parser restored exactly to
+compiling checkpoint; all focused tests and typecheck rerun after restoration.

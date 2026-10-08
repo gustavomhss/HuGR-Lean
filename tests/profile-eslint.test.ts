@@ -102,6 +102,10 @@ test("all C0/C1 controls, CRLF, ANSI, formatting controls refuse", () => {
   exact(observe(native.replace("café", "ca\u200dfé")));
 });
 
+test("unknown text between native diagnostic section and footer is not admitted", () => {
+  exact(observe(native.replace("\n\n✖", "\nextra user log\n\n✖")));
+});
+
 test("generic paths/rules, UTF-16 spans, multiline spaces and repeated records stay exact", () => {
   const output = "\n/tmp/雪 café.js\n  12:34  warning  message α 🚀 with spaces.\n continuation with  internal spaces  scope/custom-rule\n  12:34  warning  second message  scope/custom-rule\n\n✖ 2 problems (0 errors, 2 warnings)\n\n";
   const result = run(observe(output, "eslint input.js"));
@@ -113,4 +117,55 @@ test("generic paths/rules, UTF-16 spans, multiline spaces and repeated records s
   assert.deepEqual(reduction?.pieces, [[1, output.length - 1]]);
   assert.deepEqual(reduction?.required, [[1, output.length - 1]]);
   assert.ok(profile.reduce(fixture("stylish-warnings.txt"), observe(fixture("stylish-warnings.txt"))));
+});
+
+test("flat native cases reconcile with measured public-filter outputs and original receipt", () => {
+  type NativeCase = Omit<Observation, "output"> & {
+    id: string; file: string; expectedFile?: string; status: string;
+    inputBytes: number; outputBytes: number; sha256: string; provenance: string;
+  };
+  const manifest = JSON.parse(fixture("cases.json")) as { schema: string; cases: NativeCase[] };
+  assert.equal(manifest.schema, "hugr-lean/native-cases/1");
+  assert.deepEqual(manifest.cases.map(c => c.id).sort(), [
+    "version", "stylish-warnings", "json-warnings", "stylish-error", "silent-clean", "fix-before", "fix-applied",
+    "ignored-warning", "empty-config-warning", "ascii-stylish", "absolute-stylish", "npx-stylish", "npx-no-install-stylish",
+  ].map(id => `L01-${id}`).sort());
+  assert.equal(createHash("sha256").update(fixture("capture-receipt.json")).digest("hex"),
+    "4fb9167df70e52a8fdd9567295eb15818e8c170fe40ad27e54f1c45049157d75");
+  for (const c of manifest.cases) {
+    const output = fixture(c.file);
+    assert.equal(createHash("sha256").update(output).digest("hex"), c.sha256, c.id);
+    assert.ok(c.provenance.length > 0);
+    const result = run({ ...c, output });
+    assert.equal(result.status, c.status, c.id);
+    assert.equal(result.inputBytes, c.inputBytes, c.id);
+    assert.equal(result.outputBytes, c.outputBytes, c.id);
+    if (c.expectedFile) {
+      assert.equal(result.status, "reduced", c.id);
+      assert.equal("replacement" in result && result.replacement, fixture(c.expectedFile), c.id);
+      assert.equal(output, `\n${fixture(c.expectedFile)}\n`, c.id);
+    } else assert.equal("replacement" in result, false, c.id);
+  }
+});
+
+test("finite grammar limits, large positions and raw reducer metadata are conservative", () => {
+  const row = "  1:1  warning  message  custom-rule\n";
+  const profile = familyProfiles[0]!;
+  const huge = `\n/tmp/file.js\n${row.repeat(16385)}\n✖ 16385 problems (0 errors, 16385 warnings)\n\n`;
+  exact(observe(huge));
+  const files = Array.from({ length: 4097 }, (_, i) => `/tmp/file-${i}.js\n${row}\n`).join("");
+  exact(observe(`\n${files}✖ 4097 problems (0 errors, 4097 warnings)\n\n`));
+  exact(observe(`\n/tmp/file.js\n  1:1  warning  ${"x".repeat(1024 * 1024)}  custom-rule\n\n✖ 1 problem (0 errors, 1 warning)\n\n`));
+  exact(observe(`\n/tmp/file.js\n  1:1  warning  first line\n${"continue\n".repeat(257)}end  custom-rule\n\n✖ 1 problem (0 errors, 1 warning)\n\n`));
+  exact(observe(native.replace("1:5", "9007199254740992:5")));
+  exact(observe(native.replace("5 problems", "9007199254740992 problems")));
+  exact(observe(native.replace("1 warning potentially", "9007199254740992 warnings potentially")));
+  for (const patch of [{ completeness: "unknown" }, { source: "other" }, { termination: { kind: "exited", code: 1 } }] as Partial<Observation>[])
+    assert.equal(profile.reduce(native, observe(native, undefined, patch)), undefined);
+  // Ambiguous row-shaped message/log cannot establish a second record; total mismatch refuses.
+  exact(observe(native.replace("\nKeep café", "\n  8:9  warning  log-shaped message  custom-rule\nKeep café")));
+  const whitespace = "\n/tmp/other.js\n  1:1  warning  leading and trailing spaces   scope/other\n\n✖ 1 problem (0 errors, 1 warning)\n\n";
+  const result = run(observe(whitespace));
+  assert.equal("replacement" in result && result.replacement,
+    "/tmp/other.js\n  1:1  warning  leading and trailing spaces   scope/other\n\n✖ 1 problem (0 errors, 1 warning)\n");
 });

@@ -42,8 +42,8 @@ period stripping and absent rule handling. Source inspected, not copied or modif
    Node `spawnSync`, UTF-8 decoding, 1 MiB maxBuffer; all children exited without
    signal, spawn/buffer error or residual stderr. No timeout/truncation occurred.
 5. Keep fix source before and after execution. Hash output as UTF-8 SHA-256,
-including every LF. Original exit/byte/hash facts live in `capture-receipt.json`;
-normalized observations and current measured statuses live in `cases.json`.
+   including every LF. Original exit/byte/hash facts live in `capture-receipt.json`;
+   normalized observations and current measured statuses live in `cases.json`.
 
 Platform darwin-x64, Node v22.17.1, npm 10.9.2. Packet capture completed
 2026-10-08T20:22:03.245Z. No start-time/duration measurement was taken.
