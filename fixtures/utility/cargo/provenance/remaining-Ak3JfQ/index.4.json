@@ -1,0 +1,160 @@
+          "sha256": "4bda7da885f4603e5e3f0d249ce57ffacc7cea0d56541a9d5e23fd1a76b8a25b",
+          "bytes": 957
+        }
+      },
+      "fixtureSourcesAfter": [
+        {
+          "file": "Cargo.lock",
+          "sha256": "b33cbd207587b574632650f502eab83b135487ee20517fa55d88dc7a856b0f76",
+          "bytes": 195
+        },
+        {
+          "file": "Cargo.toml",
+          "sha256": "8f9d60d36465e96a580d7d393237c47ef89f698e4f4db705bd9b284e7fc922a2",
+          "bytes": 137
+        },
+        {
+          "file": "src/lib.rs",
+          "sha256": "50f09a191f4a40a6e91c3d2044ecb4da7bc5b663555c4ce3df2a296d4bac2665",
+          "bytes": 194
+        }
+      ],
+      "sourceChanges": [
+        {
+          "file": "Cargo.lock",
+          "sha256": "b33cbd207587b574632650f502eab83b135487ee20517fa55d88dc7a856b0f76",
+          "bytes": 195
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "prior": {
+    "file": "../capture-index.json",
+    "sha256": "9f16140d5d3aa8f9f5169e1c3322d3ac236232554424caf5318aaeb46c5b378c",
+    "producerCommit": "582784f752f1d827a460dbab063c0423628d7c09",
+    "full": {
+      "command": "cargo test --color never",
+      "artifacts": {
+        "original": {
+          "file": "captures/full/original.log",
+          "sha256": "de588a236150859c4fa563f6a735fc350a451f3ad04f94d397c966387c452762",
+          "bytes": 2931
+        },
+        "stdout": {
+          "file": "captures/full/stdout.log",
+          "sha256": "8b69c2f0f060845d2e1d669569d5a103fd6065ea12b7d9a6cc3f0d747fd6be95",
+          "bytes": 2235
+        },
+        "stderr": {
+          "file": "captures/full/stderr.log",
+          "sha256": "40208acb33cae1649aa8c93653b2ffc9b96824dec0c45e65ce268b27c1021a80",
+          "bytes": 696
+        }
+      },
+      "nativeFacts": {
+        "available": true,
+        "finishedRows": [
+          "    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 01s"
+        ],
+        "executableHeaders": [
+          "     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/hugr_utility_cargo-d33d504b26e55d28)",
+          "     Running tests/native_integration.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/native_integration-f4e869b263189acd)"
+        ],
+        "doctestHeaders": [
+          "   Doc-tests hugr_utility_cargo"
+        ],
+        "runningRows": [
+          "running 8 tests",
+          "running 7 tests",
+          "running 1 test"
+        ],
+        "summaries": [
+          "test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+          "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.61s"
+        ],
+        "ignoredRows": [
+          "test tests::ignored_unicode_reason ... ignored, original ignored reason: café 🦀 — native Unicode"
+        ],
+        "passingRows": [
+          "test tests::duplicate_suite_identity ... ok",
+          "test tests::passing_00_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_01_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_02_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_03_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_04_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_05_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::duplicate_suite_identity ... ok",
+          "test tests::passing_06_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_07_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_08_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_09_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_10_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test tests::passing_11_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+          "test src/lib.rs - add (line 4) ... ok"
+        ],
+        "warningRows": [],
+        "errorRows": [],
+        "opaqueRows": [],
+        "streamOrdering": "Observed stdout/stderr chunk arrival order only; no cross-stream causal ordering guarantee."
+      }
+    },
+    "immutableBefore": [
+      {
+        "file": "captures/full/original.live",
+        "sha256": "de588a236150859c4fa563f6a735fc350a451f3ad04f94d397c966387c452762",
+        "bytes": 2931
+      },
+      {
+        "file": "captures/full/original.log",
+        "sha256": "de588a236150859c4fa563f6a735fc350a451f3ad04f94d397c966387c452762",
+        "bytes": 2931
+      },
+      {
+        "file": "captures/full/receipt.json",
+        "sha256": "800882cc0c1d6ee679e560e13dfbf1beef60fdf70df776d54334cfb7b1f2b0b3",
+        "bytes": 10300
+      },
+      {
+        "file": "captures/full/running.json",
+        "sha256": "b05d52451efdd6b63301b74003cc58a816a558f4de0ede28f7331581197272f6",
+        "bytes": 243
+      },
+      {
+        "file": "captures/full/stderr.live",
+        "sha256": "40208acb33cae1649aa8c93653b2ffc9b96824dec0c45e65ce268b27c1021a80",
+        "bytes": 696
+      },
+      {
+        "file": "captures/full/stderr.log",
+        "sha256": "40208acb33cae1649aa8c93653b2ffc9b96824dec0c45e65ce268b27c1021a80",
+        "bytes": 696
+      },
+      {
+        "file": "captures/full/stdout.live",
+        "sha256": "8b69c2f0f060845d2e1d669569d5a103fd6065ea12b7d9a6cc3f0d747fd6be95",
+        "bytes": 2235
+      },
+      {
+        "file": "captures/full/stdout.log",
+        "sha256": "8b69c2f0f060845d2e1d669569d5a103fd6065ea12b7d9a6cc3f0d747fd6be95",
+        "bytes": 2235
+      },
+      {
+        "file": "captures/version-cargo/original.live",
+        "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-cargo/original.log",
+        "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+        "bytes": 36
+      },
+      {
+        "file": "captures/version-cargo/receipt.json",
+        "sha256": "7f47c980a0a16b7c90f5da92f609270f4b4ba46f9a8080e5db8dc4b1c436e794",
+        "bytes": 5974
+      },
+      {
+        "file": "captures/version-cargo/running.json",
