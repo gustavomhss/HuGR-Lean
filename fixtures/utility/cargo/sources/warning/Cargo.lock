@@ -1,0 +1,6 @@
+# Original MIT lockfile.
+version = 4
+
+[[package]]
+name = "hugr_utility_cargo_warning"
+version = "0.1.0"
