@@ -65,3 +65,11 @@ are exact, with zero economy. JSON is already compact; experimental prefix and
 failure suffix make whole-output passthrough the approved safety disposition.
 Clean summaries and silent output are no-noise witnesses, not fake reductions.
 Provider `6b36dcd` JSON helper remains separate, unused and unedited.
+
+Cold-review boundary fix after `ba5877f`: every diagnostic block must end with
+exactly two blank rows in order: padded `  `, then empty. Missing padding and
+extra terminal blank before either the next header or summary refuse whole output.
+New before-fix witnesses both went red; native lint/check controls stayed green.
+Reverting the boundary guard to its former permissive condition made both new
+witnesses fail again; guard restored. Owned test file and typecheck rerun afterward.
+Goldens, retained body/blank bytes and native byte economy remain unchanged.

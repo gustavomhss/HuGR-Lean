@@ -86,7 +86,7 @@ function reduce(output: string, observation: Observation): Reduction | undefined
       keep(cursor++);
     }
     // Native blocks finish with a padded blank and an empty line, not pending text.
-    if (blanks < 2 || rows[cursor - 1]?.text !== "") return undefined;
+    if (blanks !== 2 || rows[cursor - 2]?.text !== "  " || rows[cursor - 1]?.text !== "") return undefined;
   }
   const footer = summary.exec(rows[cursor]?.text ?? "");
   if (!footer || diagnostics === 0) return undefined;
