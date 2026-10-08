@@ -1,0 +1,24 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/failure
+configfile: pytest.ini
+collected 1 item
+
+test_failure.py F                                                        [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_assertion_failure ____________________________
+
+    def test_assertion_failure():
+        actual = "HUGR_PYTEST_ASSERTION_ACTUAL café 雪 🧪"
+        expected = "HUGR_PYTEST_ASSERTION_EXPECTED café 雪 🧪"
+>       assert actual == expected
+E       AssertionError: assert 'HUGR_PYTEST_...TUAL café 雪 🧪' == 'HUGR_PYTEST_...CTED café 雪 🧪'
+E         
+E         - HUGR_PYTEST_ASSERTION_EXPECTED café 雪 🧪
+E         ?                       ^^^^  ^^
+E         + HUGR_PYTEST_ASSERTION_ACTUAL café 雪 🧪
+E         ?                       ^  ^^^
+
+test_failure.py:5: AssertionError
+============================== 1 failed in 0.82s ===============================
