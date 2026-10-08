@@ -156,5 +156,46 @@ then passed with the corrected production grammar. Value/path transforms are lab
 not native executions: they rename profiles/triples, cover all four supported optimization/debug details,
 keep original source-backed headers, and reject argv/output identity mismatches. Exact-prefix skip is a positive;
 an emitted fully skipped identity remains a refusal, with substring matching retained when exact is absent.
-All original 23 native cases remain in the owned full-file run. New native review witnesses and restored
-production mutation receipts will be appended after collection/probes; no shared files or legacy fixtures are edited.
+All original 23 native cases remain byte-unchanged in the owned full-file run. Correction checkpoint `1b62ab5`
+was pushed after the named red-to-green tests, full owned-file run and typecheck.
+
+### Tiny native review witnesses
+
+Eight additional native Cargo 1.98 captures use a separate dependency-free project in the disposable native root.
+`provenance/review-receipt.json` records source text/hash, exact argv, complete exit-zero/merged boundary facts,
+collector hash and generated lock; source files were unchanged during capture. `provenance/review-capture.mjs`
+is original MIT evidence, not a golden producer. Expected files were authored with `apply_patch` from full native reads.
+The corpus now has 31 native cases, retaining all existing 23; cross-target renames remain labeled properties, not native builds.
+
+| Stem / stable ID `C02/<stem>` | Native fact | Independent keep rows |
+| --- | --- | --- |
+| review-main-bin | `--bin app` executes `src/main.rs`, basename `app-HASH` | 2,3,9 |
+| review-custom-bin | `--bin worker-tool` executes `code/entry.rs`, basename `worker_tool-HASH` | 2,3,9 |
+| review-custom-test | `--test verify` executes `checks/custom.rs`, basename `verify-HASH` | 2,3,9 |
+| review-custom-example | `--example showroom` executes `code/example.rs`, example artifact | 2,3,9 |
+| review-renamed-profile | `--profile review_fast --lib`, custom `code/library.rs`, native `[unoptimized]` | 2,3,10 |
+| review-exact-prefix | exact skip `tests::alpha` leaves `alpha_one`, `alpha_two`, `other`; 0 filtered | 2,3,10 |
+| review-exact-full | exact skip `tests::alpha_one` removes only that identity; 1 filtered | 1,2,8 |
+| review-substring-prefix | non-exact skip `tests::alpha` removes both alpha identities; 2 filtered | 1,2,7 |
+
+Each new case uses its native `.txt` and independent `.expected.txt`, with the same public-filter test naming as above.
+The exact-full native output is a valid positive reduction; applying its argv to the prefix capture that still emits
+the fully skipped name is the requested negative/refusal witness (`REVIEW-C02-exact-skip`).
+
+### Cold-review production probes, all restored
+
+Each command ran as `node --import tsx --test --test-name-pattern="<name>" tests/profile-cargo-test.test.ts`.
+No native capture or golden was mutated. Each probe exited 1 with the named failure, then its production edit was restored.
+
+| Name | Production mutation | Observed red |
+| --- | --- | --- |
+| REVIEW-C02-exact-skip | Replace exact equality/substring switch with substring-only skips | exact-prefix positive becomes passthrough |
+| REVIEW-C02-values | Delete argv versus Finished profile-name comparison | mismatched profile banner incorrectly reduces |
+| REVIEW-C02-paths | Delete selected target versus executable-name comparison | mismatched artifact incorrectly reduces |
+| C02/review-main-bin: unknown | Delete passing-counter reconciliation | inconsistent summary incorrectly reduces |
+| C02/review-renamed-profile: public | Emit spans with empty required declarations | public filter fails_open instead of valid reduction |
+
+Final scoped checks after restoration: complete owned-file suite **92 passed, 0 failed/skipped**, and
+`npm run typecheck` exited 0. Bounds tests additionally
+exercise a 64-character project-profile rename, invalid/overlong names and triples, and unsupported Finished detail syntax.
+Production/test code remains below the 400-line target. No shared files, legacy fixtures/tests, registry/core or CI edits.
