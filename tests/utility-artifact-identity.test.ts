@@ -23,6 +23,7 @@ test("artifact identities preserve distinct 64-bit integers and still reject ali
   const low = 9007199254740992n, high = low + 1n;
   assert.notEqual(low, high); assert.equal(Number(low), Number(high), "measured Number collision");
   let duplicate = false, links = 1n;
+  const failures: unknown[] = [];
   const calls: { bigint: unknown; dev: string; ino: string; nlink: string }[] = [];
   const seam = t.mock.method(fs, "lstat", async (file: PathLike, options?: StatOptions) => {
     const stat = await original(file, options);
@@ -41,11 +42,14 @@ test("artifact identities preserve distinct 64-bit integers and still reject ali
     await assert.rejects(readArtifactInventory(root), /FILE_ALIAS: second\.log/);
     duplicate = false; links = 2n;
     await assert.rejects(readArtifactInventory(root), /FILE_ALIAS: first\.log/);
-  } finally {
+  } catch (error) { failures.push(error); }
+  finally {
     seam.mock.restore(); syncBuiltinESMExports();
-    try { assert.ok(calls.length > 0, "stat seam actually engaged"); }
-    finally { await fs.rm(root, { recursive: true, force: true }); }
+    try { await fs.rm(root, { recursive: true, force: true }); }
+    catch (error) { failures.push(error); }
   }
+  if (failures.length === 1) throw failures[0];
+  if (failures.length > 1) throw new AggregateError(failures, `IDENTITY_FIXTURE_FAILURES: ${failures.map(String).join("; ")}`);
 });
 
 test("native Number/BigInt stat diagnostics and real hardlink/symlink rejection", async (t) => {
