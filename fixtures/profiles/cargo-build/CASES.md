@@ -4,6 +4,8 @@ State: REVIEW. Lead approved the 11 candidate reductions on 2026-10-08. Baseline
 `07ffe15e2263c2925778022194c5385807216603`. `cases.json` status is the acceptance
 disposition for the isolated public filter with `{ profiles: familyProfiles }`.
 Registry integration remains lead-owned; paths stay relative to this packet directory.
+Cold review FIX-FIRST requested structural project values; three genuinely renamed-project
+captures extend the matrix below. Native provenance: `STRUCTURAL-SOURCES.md`.
 
 ## Finite mandatory variants
 
@@ -32,6 +34,9 @@ all bytes required; A = unsafe/ambiguous, exact refusal witness, **not** N or co
 | build-cached-clean | build + release + -p + lib + all-features + warm cache | N | none: summary only |
 | check-collision | check + cached build-script logs + new Checking row | A | none under refusal proposal |
 | build-all-features-targets | build + custom + -p + all-targets + all-features | R | Compiling row |
+| structural-build | renamed build + ship profile + spark + additive lib/bin/example + two dependency versions + two warnings | R | three Compiling rows; Locking required |
+| structural-check | renamed check + ship profile + spark + additive lib/bin + dependency versions + two warnings | R | three Checking rows |
+| structural-check-buildscript | renamed release check + build script Compiling + dependencies Checking + two warnings | R | three Compiling/Checking rows |
 
 Existing dev build and full/lib/unit/integration/doctest corpus are regression anchors:
 reuse `fixtures/utility/cargo/**` and existing runner fixtures. No recapture of those variants.
@@ -64,7 +69,8 @@ Measured UTF-8 byte accounting from the disposable integrity audit:
 
 ## Required versus removable — proposed evidence contract
 
-For R cases, remove only the complete leading Compiling/Checking source rows listed above.
+For R cases, remove only complete Compiling/Checking source rows at native block boundaries.
+Warning blocks, totals, finish and the captured native Locking row are retained intact.
 Preserve exact Finished row including profile, optimization/debug description, target(s),
 duration and newline. Preserve every diagnostic byte: severity, Unicode name/message,
 path, line/column, gutters, source snippet, underline, blank lines, note/help if present,
@@ -98,17 +104,32 @@ remains historical; all native inputs and goldens stay unchanged.
 
 ## Closed implementation boundary
 
-New grammar requires `--offline`. Flags are exactly the captured spellings plus the existing
-`--color=never` spelling; duplicate flags, bool values, missing option arguments and incompatible
-selectors refuse. Argument values are deliberately pinned to packet evidence: packages
-`c01-app`, `c01-peer`, `c01-collision`; exclusion `c01-collision`; profile `small`; target
-`x86_64-apple-darwin`; bin `c01-app`; example `tiny`; features `extra`, `warn`, `fail` with a
-nonempty unique comma list. No expanded package/profile/target/feature support is claimed.
+New grammar requires `--offline`. Flags are exactly captured spellings plus existing
+`--color=never`; duplicate flags, bool values, missing arguments, release/profile conflicts
+and exclude-without-workspace refuse. Selectors are additive, including lib/bin/example,
+all-targets and workspace/package combinations. Package/exclusion/profile/bin/example values
+use structural Unicode identifier grammar with hyphens/underscores. Features use unique
+nonempty comma-separated identifiers, including package/feature.
+Target values are structural names or JSON source paths, including relative paths and spaces
+when quoted. No literal project/package/profile/feature/version/path whitelist remains.
+The unchanged core literal-command tokenizer still rejects non-ASCII argv, backslashes and
+`?` even when quoted; those public invocations remain exact. Source output paths/Unicode are
+not subject to that argv tokenizer. No core-boundary expansion is claimed.
 The original no-new-grammar build argv delegates directly to the unchanged original profile.
 
-Native finish grammar admits only captured dev/release/small descriptions and finite decimal
-seconds. Warnings admit one bounded `function NAME is never used` dead_code diagnostic with
-captured app source location/snippet/underline/note, then exact one-warning lib totals or paired
-lib-test/lib duplicate totals for all-targets. Unseen warning kinds/help/context formats refuse;
-recognized bytes are retained intact. Package-prefixed build-script warnings refuse the whole
-stream. Core metadata refusal is backed by direct reducer checks for nonzero/incomplete facts.
+Native progress uses structural package/SemVer/source-path fields. Dependencies, repeated
+package names at different versions, and Compiling within check are valid. Build does not
+admit Checking. Complete stream validation permits progress only outside diagnostic bodies.
+Native finish compares profile with argv name (default dev or release) and parses optimization
+syntactically: optimized/unoptimized with optional debuginfo, finite two-decimal seconds.
+It never infers optimization from profile name.
+
+Warnings admit bounded `function NAME is never used` dead_code blocks: structural source paths,
+positive source positions, corresponding source line/name/highlight, optional native default-lint
+note and terminating blank row. Multiple diagnostics and per-package/target native totals use
+printed counts, plural forms and known duplicate counts; no warning inferred from feature names.
+New diagnostics allow repeated package/target totals (distinct versions have the same printed
+name); replayed duplicate-only totals for an already completed context refuse. Unseen warning
+kinds/help/context layouts refuse instead of silently accepting arbitrary producer rows.
+All recognized warning bytes survive. Package-prefixed build-script warnings refuse the whole
+stream. Metadata refusal is backed by direct reducer checks for nonzero/incomplete facts.
