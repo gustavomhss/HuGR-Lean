@@ -19,7 +19,7 @@ export function runWindowsProcess(file, args, { cwd, env, timeout, onStdout, onS
     const maybeFinish = () => {
       if (pipes === 2 && (nativeExitObserved || failedSpawn)) finish(timedOut ? "timeout-cleanup" : failedSpawn ? "launch-error" : "pipe-close");
     };
-    const timer = setTimeout(() => {
+    const beginTimeout = () => {
       timedOut = true;
       killErrors.push("SETUP_TREE_CLEANUP_UNSUPPORTED: authenticated Windows tree identity unavailable");
       if (nativeSpawned && !nativeExitObserved) {
@@ -29,7 +29,8 @@ export function runWindowsProcess(file, args, { cwd, env, timeout, onStdout, onS
       child.stdout.destroy(); child.stderr.destroy();
       settlement = setTimeout(() => finish("bounded-timeout-settlement"), 250);
       maybeFinish();
-    }, timeout);
+    };
+    const timer = setTimeout(beginTimeout, timeout);
     child.stdout.on("data", (chunk) => onStdout?.(chunk));
     child.stderr.on("data", (chunk) => onStderr?.(chunk));
     for (const stream of [child.stdout, child.stderr]) stream.once("close", () => { pipes++; maybeFinish(); });
