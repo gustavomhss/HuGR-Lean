@@ -16,7 +16,7 @@ interface Case {
   provenance: { argv: string[]; sha256: string };
 }
 const cases: Case[] = JSON.parse(raw("cases.json")).cases;
-const safe = ["safe-cold", "safe-cache", "safe-offline", "safe-workspace", "safe-peer", "safe-deprecated"];
+const safe = ["safe-cold", "safe-cache", "safe-offline", "safe-workspace", "safe-peer", "safe-deprecated", "safe-frozen-fresh"];
 const command = "pnpm install --ignore-scripts --ignore-pnpmfile";
 function observation(output: string, cmd = command): Observation {
   return { source: "shell", command: cmd, output, termination: { kind: "exited", code: 0 },
@@ -34,12 +34,13 @@ function exact(output: string, cmd = command) {
 }
 
 test("P02/native index authenticates actual argv and unchanged raw captures", () => {
-  assert.equal(cases.length, 26);
+  assert.equal(cases.length, 27);
   assert.equal(new Set(cases.map(c => c.name)).size, cases.length);
   for (const c of cases) {
     assert.deepEqual(tokenizeCommand(c.command), c.provenance.argv, c.name);
     assert.equal(createHash("sha256").update(raw(c.file)).digest("hex"), c.provenance.sha256, c.name);
     assert.notEqual(createHash("sha256").update(raw(c.file) + "mutation").digest("hex"), c.provenance.sha256);
+    assert.equal(c.status, safe.some(name => c.name === `P02/${name}`) ? "reduced" : "passthrough", c.name);
   }
 });
 for (const name of safe) test(`P02/${name} direct native golden reduces baseline`, () => {
@@ -50,7 +51,8 @@ for (const name of safe) test(`P02/${name} direct native golden reduces baseline
   assert.equal(result.status, "reduced");
   if (result.status !== "reduced") return;
   assert.equal(result.profile, "pnpm-install");
-  assert.equal(result.replacement, raw(`${name}.expected.txt`));
+  assert.equal(c.expectedFile, `${name}.expected.txt`);
+  assert.equal(result.replacement, raw(c.expectedFile!));
   assert.equal(result.inputBytes - result.outputBytes, 114);
 });
 
@@ -65,6 +67,7 @@ test("P02/old Node metadata, scripts-only producer safety and native lifecycle h
   exact(output, "pnpm install --ignore-pnpmfile");
   exact(raw("lifecycle-enabled.txt"));
   exact(raw("hook-enabled.txt"));
+  exact(raw("local-install.txt")); // Unknown update advice refuses whole transcript.
   assert.ok(raw("hook-enabled.txt").includes("opaque pnpmfile evidence λ"));
   assert.ok(raw("hook-enabled.txt").includes("Progress: resolved 6, reused 6, downloaded 0, added 6, done\n"));
 });
@@ -98,6 +101,8 @@ test("P02/malformed progress, final counters, phase, end and unknown lines refus
     output.replace("dependencies:", "Progress: resolved 6, reused 0, downloaded 6, added 6, done\ndependencies:"),
     output.replace("\n", "\r\n"), output.replace("Packages:", "\x1b[32mPackages:"),
     output.replace("Packages:", "\u202ePackages:"), output.replace("Progress:", "progress:"),
+    output.replace("v10.18.3", "v11.0.0"), output.replace("+ chalk 4.1.2", "+ chalk invalid-version"),
+    output.replace("Packages: +6", "opaque progress-phase log\nPackages: +6"),
   ]) exact(altered);
   for (const metadata of [{ completeness: "truncated" as const }, { completeness: "unknown" as const },
     { termination: { kind: "exited" as const, code: 1 } }, { termination: { kind: "timed_out" as const } },

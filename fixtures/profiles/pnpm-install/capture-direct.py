@@ -5,12 +5,13 @@ import os
 from pathlib import Path
 import platform
 import subprocess
+import sys
 import tempfile
 
 HERE = Path(__file__).resolve().parent
 TOOL = Path("/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p02-pnpm-83cb9upg/tool")
-ROOT = Path(tempfile.mkdtemp(prefix="p02-direct-", dir=HERE.parents[3]))
-(ROOT / "home").mkdir()
+ROOT = Path(sys.argv[1]) if len(sys.argv) == 2 else Path(tempfile.mkdtemp(prefix="p02-direct-", dir=HERE.parents[3]))
+(ROOT / "home").mkdir(exist_ok=True)
 ENV = {**os.environ, "PATH": str(TOOL / "node_modules/.bin") + os.pathsep + os.environ["PATH"],
        "HOME": str(ROOT / "home"), "XDG_CONFIG_HOME": str(ROOT / "home"),
        "npm_config_registry": "https://registry.npmjs.org/", "npm_config_fetch_retries": "0",
@@ -53,6 +54,24 @@ def capture(name, project, extra=(), safe=True, store="chalk-store"):
     print(name, result.returncode, len(result.stdout), "bytes", flush=True)
 
 
+def save_index():
+    write(HERE / "cases.json", '{\n  "schema": "hugr-lean/native-cases/1",\n  "cases": [\n' +
+          ',\n'.join('    ' + json.dumps(case, ensure_ascii=False, separators=(',', ':')) for case in INDEX["cases"]) + '\n  ]\n}\n')
+
+
+def frozen_fresh():
+    package(ROOT / "frozen-fresh", {"name": "p02-frozen-fresh", "private": True,
+                                    "dependencies": {"chalk": "4.1.2"}})
+    (ROOT / "frozen-fresh/pnpm-lock.yaml").write_bytes((ROOT / "cold/pnpm-lock.yaml").read_bytes())
+    capture("safe-frozen-fresh", "frozen-fresh", ["--offline", "--frozen-lockfile"])
+
+
+if len(sys.argv) == 2:
+    frozen_fresh()
+    save_index()
+    sys.exit(0)
+
+
 for project in ("cold", "cache", "offline"):
     package(ROOT / project, {"name": "p02-safe-" + project, "version": "1.0.0", "private": True,
                              "dependencies": {"chalk": "4.1.2"}})
@@ -61,6 +80,7 @@ capture("safe-cold", "cold")
 capture("safe-cache", "cache")
 capture("safe-offline", "offline", ["--offline"])
 capture("safe-frozen", "offline", ["--offline", "--frozen-lockfile"])
+frozen_fresh()
 
 workspace = ROOT / "workspace"
 package(workspace, {"name": "p02-safe-workspace", "private": True,
@@ -85,6 +105,5 @@ for project, deprecated in (("peer", False), ("deprecated", True)):
 package(ROOT / "hook", {"name": "p02-malicious-hook", "private": True, "dependencies": {"chalk": "4.1.2"}})
 write(ROOT / "hook/.pnpmfile.cjs", "module.exports = { hooks: { readPackage(pkg) { console.log('Progress: resolved 6, reused 6, downloaded 0, added 6, done'); console.log('opaque pnpmfile evidence λ'); return pkg; } } };\n")
 capture("hook-enabled", "hook", ["--offline"], safe=False)
-write(HERE / "cases.json", '{\n  "schema": "hugr-lean/native-cases/1",\n  "cases": [\n' +
-      ',\n'.join('    ' + json.dumps(case, ensure_ascii=False, separators=(',', ':')) for case in INDEX["cases"]) + '\n  ]\n}\n')
+save_index()
 print("ROOT", ROOT)

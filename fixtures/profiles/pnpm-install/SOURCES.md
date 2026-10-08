@@ -66,3 +66,8 @@ Fresh HOME/XDG_CONFIG_HOME; same public registry and bounded network policy.
 `safe-chalk-lock.yaml` records direct cold dependency graph/integrities.
 New output argv/hash/termination records append to existing minimal cases.json.
 Hash recipe additionally includes `capture-direct.py safe-chalk-lock.yaml`.
+Fresh frozen follow-up argv/cwd/hash is indexed as safe-frozen-fresh; original
+project source and cold-lock copy are in capture-direct.py. Actual follow-up:
+`python3 fixtures/profiles/pnpm-install/capture-direct.py /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p02-direct-ch9oyios`.
+Default source recipe now includes this case. Golden files transcribe every
+nonprogress row intact, including original completion timings and Unicode tokens.
