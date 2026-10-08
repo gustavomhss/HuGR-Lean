@@ -1,0 +1,160 @@
+    {
+      "id": "tsx-opaque-default",
+      "command": "tsx --test fixture.test.ts",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/opaque",
+      "capture": {
+        "file": "captures/tsx-opaque-default/capture.json",
+        "sha256": "3b8c226a5d38451bc6b9d52b569e11064c4707a0b82c44c209419577f9a73433",
+        "bytes": 3448
+      },
+      "original": {
+        "file": "captures/tsx-opaque-default/original.log",
+        "sha256": "c0edc04bdec1823bcb63ab78fe8d5ab74ebaff7865399a694433324840d16e99",
+        "bytes": 348
+      },
+      "stdout": {
+        "file": "captures/tsx-opaque-default/stdout.log",
+        "sha256": "c0edc04bdec1823bcb63ab78fe8d5ab74ebaff7865399a694433324840d16e99",
+        "bytes": 348
+      },
+      "stderr": {
+        "file": "captures/tsx-opaque-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/opaque/fixture.test.ts",
+          "sha256": "8158686cd7019a5c7be1f68bc6bc8f7d029c9193fe2807bc43e329f4478329fd",
+          "bytes": 444
+        }
+      ],
+      "intent": "exact-control",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# UTILITY_OPAQUE_OUTPUT_SENTINEL user-owned output Ω 🚀",
+        "# UTILITY_OPAQUE_STDERR_SENTINEL exact stderr Ω 🚀",
+        "# Subtest: UTILITY_OPAQUE_CONTEXT",
+        "ok 1 - UTILITY_OPAQUE_CONTEXT",
+        "  ---",
+        "  ...",
+        "1..1",
+        "# tests 1",
+        "# suites 0",
+        "# pass 1",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 4192.151673"
+      ],
+      "progressNameRows": 0,
+      "progressNameRowBytes": 0,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    },
+    {
+      "id": "node-diagnostic-default",
+      "command": "node --test fixture.mjs",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/diagnostic",
+      "capture": {
+        "file": "captures/node-diagnostic-default/capture.json",
+        "sha256": "cf7086c658b87a1f93fe3d435ffa1a62b91da118b3352f1c514891edd4851cb1",
+        "bytes": 3464
+      },
+      "original": {
+        "file": "captures/node-diagnostic-default/original.log",
+        "sha256": "e8829fa9be4afe615fda7f1a65d139e367995b355998f11d8c49cc3851d049ac",
+        "bytes": 296
+      },
+      "stdout": {
+        "file": "captures/node-diagnostic-default/stdout.log",
+        "sha256": "e8829fa9be4afe615fda7f1a65d139e367995b355998f11d8c49cc3851d049ac",
+        "bytes": 296
+      },
+      "stderr": {
+        "file": "captures/node-diagnostic-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/diagnostic/fixture.mjs",
+          "sha256": "ddf72552a61315384874d6401b02f5e9fec931996f522020d08016127d0fc9b1",
+          "bytes": 305
+        }
+      ],
+      "intent": "exact-control",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "# Subtest: UTILITY_DIAGNOSTIC_ONLY_CONTEXT",
+        "ok 1 - UTILITY_DIAGNOSTIC_ONLY_CONTEXT",
+        "  ---",
+        "  ...",
+        "# UTILITY_DIAGNOSTIC_ONLY_SENTINEL Ω 🚀",
+        "1..1",
+        "# tests 1",
+        "# suites 0",
+        "# pass 1",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 1637.871574"
+      ],
+      "progressNameRows": 0,
+      "progressNameRowBytes": 0,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    },
+    {
+      "id": "tsx-diagnostic-default",
+      "command": "tsx --test fixture.test.ts",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/diagnostic",
+      "capture": {
+        "file": "captures/tsx-diagnostic-default/capture.json",
+        "sha256": "bb66bef6fa99509a4ab872a55b186774c5f1a2e55688fd81ab284e7858cc0079",
+        "bytes": 3469
+      },
+      "original": {
+        "file": "captures/tsx-diagnostic-default/original.log",
+        "sha256": "db778cd75272ca2764522805021b4d829b18f043c99273652bc79cd661607f34",
+        "bytes": 296
+      },
+      "stdout": {
+        "file": "captures/tsx-diagnostic-default/stdout.log",
+        "sha256": "db778cd75272ca2764522805021b4d829b18f043c99273652bc79cd661607f34",
+        "bytes": 296
+      },
+      "stderr": {
+        "file": "captures/tsx-diagnostic-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/diagnostic/fixture.test.ts",
+          "sha256": "305e639e4347e7b1403ff06cdecdcb22c194a71c8e18e323fa6d60db72361930",
+          "bytes": 358
+        }
+      ],
