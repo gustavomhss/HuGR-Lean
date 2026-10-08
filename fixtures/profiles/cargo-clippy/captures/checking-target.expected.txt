@@ -1,0 +1,11 @@
+warning: using `contains()` instead of `iter().any()` is more efficient
+ --> beta/src/lib.rs:2:5
+  |
+2 |     values.iter().any(|item| *item == value)
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `values.contains(&value)`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#manual_contains
+  = note: `#[warn(clippy::manual_contains)]` on by default
+
+warning: `capture_beta` (lib) generated 1 warning (run `cargo clippy --fix --lib -p capture_beta -- ` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
