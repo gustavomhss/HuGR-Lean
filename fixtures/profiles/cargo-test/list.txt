@@ -1,0 +1,10 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/c02_alpha-dca8643900cca1fe)
+tests::alpha_one: test
+tests::alpha_two: test
+tests::default_feature: test
+tests::deferred: test
+tests::fails: test
+tests::logs: test
+
+6 tests, 0 benchmarks

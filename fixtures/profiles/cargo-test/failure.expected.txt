@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.19s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/c02_alpha-dca8643900cca1fe)
+
+running 1 test
+test tests::fails ... FAILED
+
+failures:
+
+---- tests::fails stdout ----
+
+thread 'tests::fails' (11824806) panicked at alpha/src/lib.rs:19:18:
+native diagnostic: café 🦀 — preserve
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tests::fails
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p c02-alpha --lib`
