@@ -1,0 +1,160 @@
+{
+  "schema": "hugr-lean/utility-native-prep-extra/1",
+  "family": "pytest",
+  "stage": "supplemental-native-inspection-pending",
+  "privateRoot": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph",
+  "createdAt": "2026-10-08T00:03:01.063Z",
+  "timeoutMs": 120000,
+  "baseline": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "sourceHead": "a8068deb32e8ce9b88dd28a6b2a753765eabfdcf",
+  "producer": {
+    "script": "scripts/utility-native-pytest-extra.mjs",
+    "sourceSHA256": "d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"
+  },
+  "prior": {
+    "index": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/capture-index.json",
+    "sha256": "fd62178eaa08e6d711c16bd8ac768b9ad6b220fb4c38e1099857315da0250f49",
+    "sourceHead": "8eb1600703096cf2c23348e159ad1daa82f8b580",
+    "inventorySHA256": "a55ff12b7ad678b64b31f8200356d33a2e6e098f570c58c8f008e3b94585cedb",
+    "unchangedVerification": {
+      "verifiedAt": "2026-10-08T00:03:04.389Z",
+      "files": [
+        {
+          "file": "capture-index.json",
+          "bytes": 34760,
+          "sha256": "fd62178eaa08e6d711c16bd8ac768b9ad6b220fb4c38e1099857315da0250f49"
+        },
+        {
+          "file": "source/utility-native-pytest.mjs",
+          "bytes": 12517,
+          "sha256": "56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"
+        },
+        {
+          "file": "source/capture.mjs",
+          "bytes": 4473,
+          "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3"
+        },
+        {
+          "file": "source/owned-process.mjs",
+          "bytes": 6278,
+          "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5"
+        },
+        {
+          "file": "source/process-guardian.mjs",
+          "bytes": 3314,
+          "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1"
+        },
+        {
+          "file": "source/windows-process.mjs",
+          "bytes": 2803,
+          "sha256": "7e51f3b5a986a84f5bf97fd7912116fc97ae704072d6761c3f3194f4d7c93772"
+        },
+        {
+          "file": "source/opencode-boundary.mjs",
+          "bytes": 22037,
+          "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432"
+        },
+        {
+          "file": "projects/noise/test_native.py",
+          "bytes": 677,
+          "sha256": "8234c613211d29cc08e0ebdc211ba7932a41169201f81507702e868426345b75"
+        },
+        {
+          "file": "projects/failure/test_failure.py",
+          "bytes": 213,
+          "sha256": "7621639a25ab2d50ca5507b5af571275def07857d0f38e432e40fdc140a65400"
+        },
+        {
+          "file": "projects/opaque/test_opaque.py",
+          "bytes": 81,
+          "sha256": "ef78be98d04c80d2c38756be43ebcc0e8a7121b01d0e709c48c3f4f6c6505808"
+        },
+        {
+          "file": "projects/opaque/conftest.py",
+          "bytes": 184,
+          "sha256": "2433b58beafefc6997ed5a891c0654331eb47f04f908e54e639e4e7e96e7dfbf"
+        },
+        {
+          "file": "projects/noise/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+        },
+        {
+          "file": "projects/noise/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+        },
+        {
+          "file": "projects/failure/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+        },
+        {
+          "file": "projects/failure/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+        },
+        {
+          "file": "projects/opaque/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+        },
+        {
+          "file": "projects/opaque/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+        },
+        {
+          "file": "projects/version-proof.py",
+          "bytes": 310,
+          "sha256": "2cddd8b613d21f0a37ae2fd1e3cc5840716c850949026925170eb2220cc158e0"
+        },
+        {
+          "file": "captures/versions/receipt.json",
+          "bytes": 4295,
+          "sha256": "582712110dfa77fc0ed000d35b85388548251197cafccf0fcd38040a31449406"
+        },
+        {
+          "file": "captures/versions/original.log",
+          "bytes": 368,
+          "sha256": "cd1e8e00cbaf3094c5899b734538787659ddb3cf2d5399f4bb19b464c35db0a0"
+        },
+        {
+          "file": "captures/versions/live/original.live",
+          "bytes": 368,
+          "sha256": "cd1e8e00cbaf3094c5899b734538787659ddb3cf2d5399f4bb19b464c35db0a0"
+        },
+        {
+          "file": "captures/versions/stdout.log",
+          "bytes": 368,
+          "sha256": "cd1e8e00cbaf3094c5899b734538787659ddb3cf2d5399f4bb19b464c35db0a0"
+        },
+        {
+          "file": "captures/versions/live/stdout.live",
+          "bytes": 368,
+          "sha256": "cd1e8e00cbaf3094c5899b734538787659ddb3cf2d5399f4bb19b464c35db0a0"
+        },
+        {
+          "file": "captures/versions/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/versions/live/stderr.live",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/versions/live/running.json",
+          "bytes": 409,
+          "sha256": "876434a44c3930c0a739e5b65280663e6ae683fde2dab6bc893ae09073242572"
+        },
+        {
+          "file": "captures/pytest-version/receipt.json",
+          "bytes": 4292,
+          "sha256": "9e22ea3649886365737af5a325682b9555a6a40e731184de4fbf20b8aec85e42"
+        },
+        {
+          "file": "captures/pytest-version/original.log",
+          "bytes": 13,
+          "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518"
