@@ -12,7 +12,7 @@ Source files were authored for this packet, not copied from the existing utility
 - Non-PTY native pipes, no shell, no command rewriting. Remaining environment inherited.
 - Every invocation exited 0, signal null, no spawn error, empty stderr. Capture ends at process exit.
 - `presentation: unknown` deliberately makes no host-presentation claim.
-- Captures ran once, sequentially, in manifest order. No normalization, duration editing,
+- Initial nine captures ran once, sequentially, in manifest order. No normalization, duration editing,
   trimming, deduplication or parser/filter execution. Terminal JSON stdout was transcribed
   byte-exact into `.txt`, including tabs, indentation and final LF.
 - Since stderr is empty, `.txt` is the complete native output boundary; no stream-order merge needed.
@@ -37,3 +37,27 @@ Scheduling and native durations are observations, not reproducibility/performanc
 
 Modification record: authored tiny native project; captured native stdout; authored independent
 goldens, manifest and fixture-local policy. Archived programs and native output were not modified.
+
+## Implementation-phase supplemental captures
+
+The frozen core literal tokenizer rejects `^` and `$`, including quoted arguments. Initial anchored
+goldens remain policy proposals; their commands currently pass through before profile matching.
+To exercise the public filter without modifying core, supplemental literal selectors were executed
+on 2026-10-08 with the same tool, cwd, native pipe method, environment and exit boundaries above.
+No original native capture was replaced or normalized.
+
+Added original MIT source `native/parallel_quiet_test.go`, SHA-256
+`b8428e5998c327bd4b4057718ec898432d30b749744f0f273e9e7e85a95b1941`.
+Supplemental commands executed the three original archived files plus this new file; archived source
+matches executed source. The first capture phase did not contain the supplemental file.
+
+Execution order: `literal-selector`, `literal-nested`, `name-switch`,
+`literal-race-cover-count-run`, `literal-count`, `literal-collision`, `quiet-parallel`,
+then `mixed-parallel`. Every process exited 0 with no signal, spawn error or stderr.
+`name-switch` used literal argv token `-run=TestParallel$` (native capture, core-blocked command).
+It witnesses native NAME context switching and reversed parallel result order. Its native output is
+exact-only; the focused test labels a composition of its logged scope and the mixed fixture's quiet
+scope as synthetic, not a new native capture.
+
+Supplemental goldens were independently authored by removing quiet completed scopes only. Literal
+selectors avoid shell/core metacharacters; they were not rewritten from anchored commands at runtime.
