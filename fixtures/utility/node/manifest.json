@@ -1,4 +1,4 @@
-{"schema":"hugr-lean/utility-corpus/1","family":"node","tools":[{"name":"node","version":"v22.17.1","executable":"/usr/local/bin/node"},{"name":"tsx","version":"4.23.15","executable":"/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs","lockedIntegrity":"sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==","installation":"existing pinned project; never installed"}],"producer":{"script":"scripts/utility-native-node.mjs","sourceSHA256":"5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"},"cases":[
+{"schema":"hugr-lean/utility-corpus/1","family":"node","tools":[{"name":"node","version":"v22.17.1","executable":"/usr/local/bin/node"},{"name":"tsx","version":"4.23.15","executable":"/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs"}],"producer":{"script":"scripts/utility-native-node.mjs","sourceSHA256":"5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"},"cases":[
   {
     "id": "node-flat-default", "profile": "node-test",
     "command": "node --test fixture.mjs", "role": "noise",

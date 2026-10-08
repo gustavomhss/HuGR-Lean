@@ -78,7 +78,7 @@ if (operation === 'copy') {
       required: required(item, original), material: saved >= 1024 && saved >= item.original.bytes * 0.1 };
   });
   // One physical line per field/anchor: decoded evidence remains visible to review budgets.
-  const header = { schema: 'hugr-lean/utility-corpus/1', family: 'node', tools: index.tools,
+  const header = { schema: 'hugr-lean/utility-corpus/1', family: 'node', tools: index.tools.map(({ name, version, executable }) => ({ name, version, executable })),
     producer: { script: index.producer.file, sourceSHA256: index.producer.sha256 } };
   const body = cases.map(({ required, ...item }) => `  {\n${Object.entries(item).map(([key, value], i) =>
     `${i % 2 ? '' : '    '}${JSON.stringify(key)}: ${JSON.stringify(value)},${i % 2 ? '\n' : ' '}`).join('').trimEnd()}\n    "required": [\n${required.map((anchor) =>
