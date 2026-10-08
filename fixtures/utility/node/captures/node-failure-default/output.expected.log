@@ -1,0 +1,36 @@
+TAP version 13
+# Subtest: UTILITY_FAILURE_CONTEXT Ω 🚀
+not ok 1 - UTILITY_FAILURE_CONTEXT Ω 🚀
+  ---
+  duration_ms: 78.178744
+  type: 'test'
+  location: '/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure/fixture.mjs:4:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    UTILITY_ASSERT_FAILURE_SENTINEL Ω 🚀
+    + actual - expected
+    
+    + 'observed'
+    - 'expected'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'expected'
+  actual: 'observed'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure/fixture.mjs:5:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2307.031896
