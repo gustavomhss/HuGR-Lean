@@ -1,0 +1,178 @@
+{
+  "schema": "hugr-lean/utility-corpus/1",
+  "family": "go",
+  "tools": [
+    {"name":"node","version":"v22.17.1","executable":"/usr/local/bin/node"},
+    {"name":"go","version":"go version go1.27.1 darwin/amd64","executable":"/usr/local/Cellar/go/1.27.1/libexec/bin/go"}
+  ],
+  "producer": {
+    "script": "scripts/utility-native-go.mjs",
+    "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+  },
+  "cases": [
+    {
+      "id": "cold",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {"file":"captures/cold/receipt.json","sha256":"619e5f99aae8c79001bed8e0c05983d1c7e4f32811bdcb44adb8a74d3e491f2f","bytes":7182},
+      "fixtureSources": [
+        {"file":"fixture-programs/noise/go.mod","sha256":"726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d","bytes":46},
+        {"file":"fixture-programs/noise/LICENSE","sha256":"3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53","bytes":1089},
+        {"file":"fixture-programs/noise/alpha/alpha_test.go","sha256":"33c38fc95385a3506e942c13a72b33c20321f72f4ca2a2bb0bd0d041a7a53e4d","bytes":1356},
+        {"file":"fixture-programs/noise/beta/beta_test.go","sha256":"5b39691b39b94efd8d358bdeb8e3c45656a3594c5a93f779ebd3ff9cb0b62e81","bytes":1171},
+        {"file":"fixture-programs/noise/empty/empty.go","sha256":"7a0f592c721c83152c3dac2d82020360c950689f48aca4566810306b0b8455c0","bytes":110}
+      ],
+      "original": {"file":"captures/cold/original.log","sha256":"187733d835e0cb98c79621629e6f6ce4dc9da222951cf1af48deecccac10227f","bytes":3228},
+      "stdout": {"file":"captures/cold/stdout.log","sha256":"187733d835e0cb98c79621629e6f6ce4dc9da222951cf1af48deecccac10227f","bytes":3228},
+      "stderr": {"file":"captures/cold/stderr.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},
+      "expected": {"file":"captures/cold/cold.expected.log","sha256":"e163bee7e5496762206c08cff46df15e5ac85470620acefb572fa12da569b8a3","bytes":632},
+      "required": [
+        {"text":"=== RUN   TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting\n","occurrence":0},
+        {"text":"    alpha_test.go:8: HUGR_GO_CRITICAL_SENTINEL: retain diagnostic context café 🧭\n","occurrence":0},
+        {"text":"--- PASS: TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)\n","occurrence":0},
+        {"text":"=== RUN   TestNativeUnicodeSkipReason\n","occurrence":0},
+        {"text":"    alpha_test.go:32: HUGR_GO_SKIP_SENTINEL: indisponível café 🧭\n","occurrence":0},
+        {"text":"--- SKIP: TestNativeUnicodeSkipReason (0.00s)\n","occurrence":0},
+        {"text":"PASS\n","occurrence":0},
+        {"text":"ok  \texample.com/hugr-utility-go/alpha\t12.576s\n","occurrence":0},
+        {"text":"PASS\n","occurrence":1},
+        {"text":"ok  \texample.com/hugr-utility-go/beta\t6.018s\n","occurrence":0},
+        {"text":"?   \texample.com/hugr-utility-go/empty\t[no test files]\n","occurrence":0}
+      ],
+      "material": true
+    },
+    {
+      "id": "cached",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {"file":"captures/cached/receipt.json","sha256":"e4fdd505b0adbe57d378ae94e03e8773b027462eaec0bd9ab72213a76f8753f9","bytes":7184},
+      "fixtureSources": [
+        {"file":"fixture-programs/noise/go.mod","sha256":"726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d","bytes":46},
+        {"file":"fixture-programs/noise/LICENSE","sha256":"3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53","bytes":1089},
+        {"file":"fixture-programs/noise/alpha/alpha_test.go","sha256":"33c38fc95385a3506e942c13a72b33c20321f72f4ca2a2bb0bd0d041a7a53e4d","bytes":1356},
+        {"file":"fixture-programs/noise/beta/beta_test.go","sha256":"5b39691b39b94efd8d358bdeb8e3c45656a3594c5a93f779ebd3ff9cb0b62e81","bytes":1171},
+        {"file":"fixture-programs/noise/empty/empty.go","sha256":"7a0f592c721c83152c3dac2d82020360c950689f48aca4566810306b0b8455c0","bytes":110}
+      ],
+      "original": {"file":"captures/cached/original.log","sha256":"63a5e9863360b852859f53b146697ed4077be32c3bd8bc543d285a598d0d9c76","bytes":3231},
+      "stdout": {"file":"captures/cached/stdout.log","sha256":"63a5e9863360b852859f53b146697ed4077be32c3bd8bc543d285a598d0d9c76","bytes":3231},
+      "stderr": {"file":"captures/cached/stderr.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},
+      "expected": {"file":"captures/cached/cached.expected.log","sha256":"ab7d1936b0a53497750694c6577542955ee4c82fd67a7bcd2140a9ac20158e8e","bytes":635},
+      "required": [
+        {"text":"=== RUN   TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting\n","occurrence":0},
+        {"text":"    alpha_test.go:8: HUGR_GO_CRITICAL_SENTINEL: retain diagnostic context café 🧭\n","occurrence":0},
+        {"text":"--- PASS: TestNativePackageEvidence01PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting (0.00s)\n","occurrence":0},
+        {"text":"=== RUN   TestNativeUnicodeSkipReason\n","occurrence":0},
+        {"text":"    alpha_test.go:32: HUGR_GO_SKIP_SENTINEL: indisponível café 🧭\n","occurrence":0},
+        {"text":"--- SKIP: TestNativeUnicodeSkipReason (0.00s)\n","occurrence":0},
+        {"text":"PASS\n","occurrence":0},
+        {"text":"ok  \texample.com/hugr-utility-go/alpha\t(cached)\n","occurrence":0},
+        {"text":"PASS\n","occurrence":1},
+        {"text":"ok  \texample.com/hugr-utility-go/beta\t(cached)\n","occurrence":0},
+        {"text":"?   \texample.com/hugr-utility-go/empty\t[no test files]\n","occurrence":0}
+      ],
+      "material": true
+    },
+    {
+      "id": "failure",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {"file":"captures/failure/receipt.json","sha256":"673147870fdb02cb7d92ad94166f802f9cb9a10d9c5e7910fc195a7698b25565","bytes":6353},
+      "fixtureSources": [
+        {"file":"fixture-programs/failure/go.mod","sha256":"726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d","bytes":46},
+        {"file":"fixture-programs/failure/LICENSE","sha256":"3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53","bytes":1089},
+        {"file":"fixture-programs/failure/failure/failure_test.go","sha256":"2844d7b6b8ae7273905f2fd08b288531c0d1c3b0ae0d8518b94572449eb7de99","bytes":252}
+      ],
+      "original": {"file":"captures/failure/original.log","sha256":"3dfec663bb89598afb9a270557f2e80c46f53bc251cef940a83fc3f67a172e2c","bytes":270},
+      "stdout": {"file":"captures/failure/stdout.log","sha256":"3dfec663bb89598afb9a270557f2e80c46f53bc251cef940a83fc3f67a172e2c","bytes":270},
+      "stderr": {"file":"captures/failure/stderr.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},
+      "expected": {"file":"captures/failure/failure.expected.log","sha256":"3dfec663bb89598afb9a270557f2e80c46f53bc251cef940a83fc3f67a172e2c","bytes":270},
+      "required": [
+        {"text":"=== RUN   TestNativeFailureContext\n","occurrence":0},
+        {"text":"    failure_test.go:5: HUGR_GO_FAILURE_CONTEXT: café 🧭\n","occurrence":0},
+        {"text":"    failure_test.go:6: HUGR_GO_FAILURE_SENTINEL: original nonzero evidence\n","occurrence":0},
+        {"text":"--- FAIL: TestNativeFailureContext (0.00s)\n","occurrence":0},
+        {"text":"FAIL\n","occurrence":0},
+        {"text":"FAIL\texample.com/hugr-utility-go/failure\t6.082s\n","occurrence":0},
+        {"text":"FAIL\n","occurrence":1}
+      ],
+      "material": false
+    },
+    {
+      "id": "diagnostic",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {"file":"captures/diagnostic/receipt.json","sha256":"98e38e6baab4f066a2f79311fccee13cbbc7bdd919e488cd719e38c05e29d34c","bytes":6392},
+      "fixtureSources": [
+        {"file":"fixture-programs/diagnostic/go.mod","sha256":"726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d","bytes":46},
+        {"file":"fixture-programs/diagnostic/LICENSE","sha256":"3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53","bytes":1089},
+        {"file":"fixture-programs/diagnostic/diagnostic/diagnostic_test.go","sha256":"5a1bf5b6790d403b0d54ad6b9a63ac3bfe400742d877bf7d5079283ddc624f94","bytes":227}
+      ],
+      "original": {"file":"captures/diagnostic/original.log","sha256":"8a1edcaebcd23b6f98f14e03d0910f9128ca7066471daf2188eb5ca6f948fff7","bytes":232},
+      "stdout": {"file":"captures/diagnostic/stdout.log","sha256":"8a1edcaebcd23b6f98f14e03d0910f9128ca7066471daf2188eb5ca6f948fff7","bytes":232},
+      "stderr": {"file":"captures/diagnostic/stderr.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},
+      "expected": {"file":"captures/diagnostic/diagnostic.expected.log","sha256":"8a1edcaebcd23b6f98f14e03d0910f9128ca7066471daf2188eb5ca6f948fff7","bytes":232},
+      "required": [
+        {"text":"=== RUN   TestNativeDiagnosticOnly\n","occurrence":0},
+        {"text":"    diagnostic_test.go:5: HUGR_GO_DIAGNOSTIC_SENTINEL: successful log remains evidence café 🧭\n","occurrence":0},
+        {"text":"--- PASS: TestNativeDiagnosticOnly (0.00s)\n","occurrence":0},
+        {"text":"PASS\n","occurrence":0},
+        {"text":"ok  \texample.com/hugr-utility-go/diagnostic\t5.158s\n","occurrence":0}
+      ],
+      "material": false
+    },
+    {
+      "id": "opaque",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {"file":"captures/opaque/receipt.json","sha256":"230f9c730e6ef91c1a41a765192e2367628b600c7416cb47dd3cf5d4bfb49ee2","bytes":6336},
+      "fixtureSources": [
+        {"file":"fixture-programs/opaque/go.mod","sha256":"726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d","bytes":46},
+        {"file":"fixture-programs/opaque/LICENSE","sha256":"3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53","bytes":1089},
+        {"file":"fixture-programs/opaque/opaque/opaque_test.go","sha256":"3f33e5f58cef75c1891e1b7692e7ef6f93cad44a46bd1dfa8a6598b7ff0dc4f5","bytes":300}
+      ],
+      "original": {"file":"captures/opaque/original.log","sha256":"55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae","bytes":228},
+      "stdout": {"file":"captures/opaque/stdout.log","sha256":"55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae","bytes":228},
+      "stderr": {"file":"captures/opaque/stderr.log","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","bytes":0},
+      "expected": {"file":"captures/opaque/opaque.expected.log","sha256":"55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae","bytes":228},
+      "required": [
+        {"text":"=== RUN   TestNativeOpaqueOutput\n","occurrence":0},
+        {"text":"HUGR_GO_OPAQUE_SENTINEL: unframed stdout café 🧭\n","occurrence":0},
+        {"text":"HUGR_GO_STDERR_SENTINEL: native stderr café 🧭\n","occurrence":0},
+        {"text":"--- PASS: TestNativeOpaqueOutput (0.00s)\n","occurrence":0},
+        {"text":"PASS\n","occurrence":0},
+        {"text":"ok  \texample.com/hugr-utility-go/opaque\t4.750s\n","occurrence":0}
+      ],
+      "material": false
+    }
+  ]
+}
