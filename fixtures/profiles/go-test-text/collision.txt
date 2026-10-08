@@ -1,0 +1,10 @@
+=== RUN   TestCollision
+    arith_test.go:28: === RUN   TestPretend
+        --- PASS: TestPretend (0.00s)
+        PASS
+        ok  	example.com/pretend	0.001s
+    arith_test.go:29: === PAUSE TestCollision/pretend
+        === CONT  TestCollision/pretend
+--- PASS: TestCollision (0.00s)
+PASS
+ok  	example.com/g01	2.637s
