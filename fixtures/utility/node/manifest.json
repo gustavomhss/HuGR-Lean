@@ -42,3 +42,403 @@
       ],
       "original": {
         "file": "captures/node-flat-default/original.log",
+        "bytes": 5132,
+        "sha256": "d3366f5dc12861d5130a600efb07f5ce953ddde804f7697e5b4f71620738965f"
+      },
+      "stdout": {
+        "file": "captures/node-flat-default/stdout.log",
+        "bytes": 5132,
+        "sha256": "d3366f5dc12861d5130a600efb07f5ce953ddde804f7697e5b4f71620738965f"
+      },
+      "stderr": {
+        "file": "captures/node-flat-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/node-flat-default/output.expected.log",
+        "bytes": 123,
+        "sha256": "b880a886b86c44b53e057e961be73993086e700e1fa352d602c74c299d6215c8"
+      },
+      "material": true,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "1..12",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 12",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 12",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 3030.783128",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "tsx-flat-default",
+      "profile": "node-test",
+      "command": "tsx --test fixture.test.ts",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/tsx-flat-default/capture.json",
+        "bytes": 3444,
+        "sha256": "c8a486c8c2e30dd40921de0be3038b009f577b523614c0076c7872fcd02edc6b"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/flat/fixture.test.ts",
+          "sha256": "907502ef7cf251abdeaae2ac15e229b84695c17026ba74557a8efb663ba254b8",
+          "bytes": 2775
+        }
+      ],
+      "original": {
+        "file": "captures/tsx-flat-default/original.log",
+        "bytes": 5133,
+        "sha256": "f4e9c75fade116ed3bd334d1277ffb5929f6290cd790d7babd84f35ce871863b"
+      },
+      "stdout": {
+        "file": "captures/tsx-flat-default/stdout.log",
+        "bytes": 5133,
+        "sha256": "f4e9c75fade116ed3bd334d1277ffb5929f6290cd790d7babd84f35ce871863b"
+      },
+      "stderr": {
+        "file": "captures/tsx-flat-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/tsx-flat-default/output.expected.log",
+        "bytes": 123,
+        "sha256": "8afa21d7918d1402390bb85e58d77aaf1844ef26532fd3c78216394b6a877426"
+      },
+      "material": true,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "1..12",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 12",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 12",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 7364.958093",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "node-nested-default",
+      "profile": "node-test",
+      "command": "node --test fixture.mjs",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/node-nested-default/capture.json",
+        "bytes": 3448,
+        "sha256": "16e3761f92cfd5661eb69c133c9ff6e69b0b2954c7259f357084902e5e0132ac"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/nested/fixture.mjs",
+          "sha256": "498874800131fa811ec0ab029c75d36ae9cd5c447690a5c824e8d6f88eddecfe",
+          "bytes": 3297
+        }
+      ],
+      "original": {
+        "file": "captures/node-nested-default/original.log",
+        "bytes": 6197,
+        "sha256": "fba98ce35f044dfce86d057023ae2dbcb62f27165f697a2cda8a9d83e4fe7453"
+      },
+      "stdout": {
+        "file": "captures/node-nested-default/stdout.log",
+        "bytes": 6197,
+        "sha256": "fba98ce35f044dfce86d057023ae2dbcb62f27165f697a2cda8a9d83e4fe7453"
+      },
+      "stderr": {
+        "file": "captures/node-nested-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/node-nested-default/output.expected.log",
+        "bytes": 792,
+        "sha256": "9131f552afbe60fef5553d421d0ddd20a2cb9832ec5281253edb093a388f4492"
+      },
+      "material": true,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "# Subtest: UTILITY_SERIAL_PARENT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "    # Subtest: UTILITY_SKIP_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "    ok 13 - UTILITY_SKIP_CHILD # SKIP UTILITY_SKIP_REASON Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "      ---",
+          "occurrence": 12
+        },
+        {
+          "text": "      duration_ms: 0.516588",
+          "occurrence": 0
+        },
+        {
+          "text": "      type: 'test'",
+          "occurrence": 12
+        },
+        {
+          "text": "      ...",
+          "occurrence": 12
+        },
+        {
+          "text": "    # Subtest: UTILITY_TODO_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "    ok 14 - UTILITY_TODO_CHILD # TODO UTILITY_TODO_REASON Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "      ---",
+          "occurrence": 13
+        },
+        {
+          "text": "      duration_ms: 0.428074",
+          "occurrence": 0
+        },
+        {
+          "text": "      type: 'test'",
+          "occurrence": 13
+        },
+        {
+          "text": "      ...",
+          "occurrence": 13
+        },
+        {
+          "text": "    # Subtest: UTILITY_DIAGNOSTIC_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "    ok 15 - UTILITY_DIAGNOSTIC_CHILD",
+          "occurrence": 0
+        },
+        {
+          "text": "      ---",
+          "occurrence": 14
+        },
+        {
+          "text": "      duration_ms: 40.102691",
+          "occurrence": 0
+        },
+        {
+          "text": "      type: 'test'",
+          "occurrence": 14
+        },
+        {
+          "text": "      ...",
+          "occurrence": 14
+        },
+        {
+          "text": "    # UTILITY_CRITICAL_DIAGNOSTIC_SENTINEL Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "    1..15",
+          "occurrence": 0
+        },
+        {
+          "text": "ok 1 - UTILITY_SERIAL_PARENT Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "  ---",
+          "occurrence": 15
+        },
+        {
+          "text": "  duration_ms: 219.17975",
+          "occurrence": 0
+        },
+        {
+          "text": "  type: 'test'",
+          "occurrence": 15
+        },
+        {
+          "text": "  ...",
+          "occurrence": 15
+        },
+        {
+          "text": "1..2",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 17",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 15",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 1941.394242",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "tsx-nested-default",
+      "profile": "node-test",
+      "command": "tsx --test fixture.test.ts",
+      "role": "noise",
+      "expectedStatus": "reduced",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/tsx-nested-default/capture.json",
+        "bytes": 3453,
+        "sha256": "e33e6fd002e3e818a72913da0d35e10890876c83d131ac1dcaf91f2b6cadb82f"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/nested/fixture.test.ts",
+          "sha256": "25b94b4c98f66661f656fbeac634f41f6e3f16021b44b54725df035cb46fe339",
+          "bytes": 3350
+        }
+      ],
+      "original": {
+        "file": "captures/tsx-nested-default/original.log",
+        "bytes": 6198,
+        "sha256": "8960a731db04b76cd358b82b96d559cef02982d2ec6d6899b35fd2801b5a8bf6"
+      },
+      "stdout": {
+        "file": "captures/tsx-nested-default/stdout.log",
+        "bytes": 6198,
+        "sha256": "8960a731db04b76cd358b82b96d559cef02982d2ec6d6899b35fd2801b5a8bf6"
+      },
+      "stderr": {
+        "file": "captures/tsx-nested-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/tsx-nested-default/output.expected.log",
+        "bytes": 792,
+        "sha256": "5122bc1babf616f26cf642328cb364c647a59c1e61daeaa73abba3eee146f1b0"
+      },
+      "material": true,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
