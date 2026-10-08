@@ -1,0 +1,154 @@
+{
+  "command": "go test -v ./...",
+  "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/programs/opaque",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "nativeSpawned": true,
+  "nativeExitObserved": true,
+  "complete": true,
+  "durationMs": 7663.779678,
+  "guardianElapsedMs": 8773.570455,
+  "durationBoundary": "pipe-close",
+  "exitDurationMs": 7663.529685,
+  "bookkeepingMs": 0.05872000000090338,
+  "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+  "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+  "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+  "baseline": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "fixtureSources": [
+    {
+      "file": "fixture-programs/opaque/go.mod",
+      "bytes": 46,
+      "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d",
+      "originalSource": {
+        "file": "programs/opaque/go.mod",
+        "bytes": 46,
+        "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    },
+    {
+      "file": "fixture-programs/opaque/LICENSE",
+      "bytes": 1089,
+      "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53",
+      "originalSource": {
+        "file": "programs/opaque/LICENSE",
+        "bytes": 1089,
+        "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    },
+    {
+      "file": "fixture-programs/opaque/opaque/opaque_test.go",
+      "bytes": 300,
+      "sha256": "3f33e5f58cef75c1891e1b7692e7ef6f93cad44a46bd1dfa8a6598b7ff0dc4f5",
+      "originalSource": {
+        "file": "programs/opaque/opaque/opaque_test.go",
+        "bytes": 300,
+        "sha256": "3f33e5f58cef75c1891e1b7692e7ef6f93cad44a46bd1dfa8a6598b7ff0dc4f5"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    }
+  ],
+  "environmentPolicy": {
+    "helper": "isolatedEnvironment(privateRoot)",
+    "inherited": [
+      "PATH only for executable discovery"
+    ],
+    "variables": {
+      "HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/home",
+      "XDG_CONFIG_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/config",
+      "XDG_DATA_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/data",
+      "XDG_CACHE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/cache",
+      "XDG_STATE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/state",
+      "TMPDIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh",
+      "GOENV": "off",
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local",
+      "GOPROXY": "off",
+      "GOSUMDB": "off",
+      "GOCACHE": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-cache",
+      "GOMODCACHE": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-mod-cache",
+      "GOPATH": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-path",
+      "GOTMPDIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-tmp"
+    },
+    "goFlags": "unset",
+    "network": "no dependency fetch; proxy/sumdb off; local toolchain",
+    "configuration": "No caller Go settings, Git writes, credential files or global installs; no cleanup deletes.",
+    "selectedGo": {
+      "selected": "/usr/local/bin/go",
+      "resolved": "/usr/local/Cellar/go/1.27.1/libexec/bin/go"
+    },
+    "executionPathPrefix": "/usr/local/Cellar/go/1.27.1/libexec/bin"
+  },
+  "tools": [
+    {
+      "name": "node",
+      "version": "v22.17.1",
+      "executable": "/usr/local/bin/node"
+    },
+    {
+      "name": "go",
+      "version": "go version go1.27.1 darwin/amd64",
+      "executable": "/usr/local/Cellar/go/1.27.1/libexec/bin/go",
+      "receipt": {
+        "file": "captures/go-version/receipt.json",
+        "bytes": 4719,
+        "sha256": "6bc3a72ff972538edeb0844aea1d0d3e60e4490b65c24d32e76d0ab95d61bba7"
+      }
+    }
+  ],
+  "producer": {
+    "script": "scripts/utility-native-go.mjs",
+    "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc",
+    "dependencies": [
+      {
+        "file": "scripts/opencode-boundary.mjs",
+        "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432"
+      },
+      {
+        "file": "scripts/real-world/capture.mjs",
+        "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3"
+      },
+      {
+        "file": "scripts/real-world/owned-process.mjs",
+        "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5"
+      },
+      {
+        "file": "scripts/real-world/process-guardian.mjs",
+        "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1"
+      }
+    ],
+    "snapshot": {
+      "file": "producer-source.mjs",
+      "bytes": 15666,
+      "sha256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+    }
+  },
+  "original": {
+    "file": "captures/opaque/original.log",
+    "bytes": 228,
+    "sha256": "55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae"
+  },
+  "stdout": {
+    "file": "captures/opaque/stdout.log",
+    "bytes": 228,
+    "sha256": "55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae"
+  },
+  "stderr": {
+    "file": "captures/opaque/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "errors": {
+    "launch": null,
+    "encoding": null,
+    "cleanup": [],
+    "preparation": null
+  },
+  "timeout": 300000
+}

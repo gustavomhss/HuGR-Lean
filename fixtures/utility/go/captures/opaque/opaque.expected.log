@@ -1,0 +1,6 @@
+=== RUN   TestNativeOpaqueOutput
+HUGR_GO_OPAQUE_SENTINEL: unframed stdout café 🧭
+HUGR_GO_STDERR_SENTINEL: native stderr café 🧭
+--- PASS: TestNativeOpaqueOutput (0.00s)
+PASS
+ok  	example.com/hugr-utility-go/opaque	4.750s
