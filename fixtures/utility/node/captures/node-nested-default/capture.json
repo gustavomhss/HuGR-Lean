@@ -1,0 +1,88 @@
+{
+  "command": "node --test fixture.mjs",
+  "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/nested",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "nativeSpawned": true,
+  "nativeExitObserved": true,
+  "complete": true,
+  "durationMs": 3667.978891,
+  "guardianElapsedMs": 5263.589111,
+  "durationBoundary": "pipe-close",
+  "exitDurationMs": 3664.394408,
+  "bookkeepingMs": 0.32400800000323215,
+  "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+  "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+  "encodingError": null,
+  "launchError": null,
+  "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+  "cleanupErrors": [],
+  "baselineSourceSHA": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "sourceHead": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "startedAt": "2026-10-07T21:39:34.483Z",
+  "recordedAt": "2026-10-07T21:39:39.762Z",
+  "timeoutMs": 120000,
+  "producer": {
+    "file": "scripts/utility-native-node.mjs",
+    "sha256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19",
+    "bytes": 14960
+  },
+  "environmentPolicy": {
+    "constructor": "isolatedEnvironment(privateRoot)",
+    "inherited": [],
+    "PATH": "/usr/local/bin:/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/.bin:/usr/bin:/bin",
+    "NODE_OPTIONS": "absent",
+    "NODE_PATH": "absent",
+    "HOME": "home",
+    "XDG_CONFIG_HOME": "config",
+    "XDG_DATA_HOME": "data",
+    "XDG_CACHE_HOME": "cache",
+    "XDG_STATE_HOME": "state",
+    "TMPDIR": ".",
+    "npmUserConfig": "npmrc (fresh empty private file)",
+    "npmGlobalConfig": "global-npmrc (fresh empty private file)",
+    "npmOffline": true,
+    "reporterOverride": "none on default cases",
+    "io": "non-TTY stdout/stderr pipes; stdin ignored; captureCommand arrival order"
+  },
+  "tools": [
+    {
+      "name": "node",
+      "version": "v22.17.1",
+      "executable": "/usr/local/bin/node"
+    },
+    {
+      "name": "tsx",
+      "version": "4.23.15",
+      "executable": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs",
+      "lockedIntegrity": "sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==",
+      "installation": "existing pinned project; never installed"
+    }
+  ],
+  "fixtureSources": [
+    {
+      "file": "sources/nested/fixture.mjs",
+      "sha256": "498874800131fa811ec0ab029c75d36ae9cd5c447690a5c824e8d6f88eddecfe",
+      "bytes": 3297
+    }
+  ],
+  "streams": {
+    "original": {
+      "file": "captures/node-nested-default/original.log",
+      "sha256": "fba98ce35f044dfce86d057023ae2dbcb62f27165f697a2cda8a9d83e4fe7453",
+      "bytes": 6197
+    },
+    "stdout": {
+      "file": "captures/node-nested-default/stdout.log",
+      "sha256": "fba98ce35f044dfce86d057023ae2dbcb62f27165f697a2cda8a9d83e4fe7453",
+      "bytes": 6197
+    },
+    "stderr": {
+      "file": "captures/node-nested-default/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "artifactCleanup": "not attempted; private root retained"
+}
