@@ -100,13 +100,22 @@ interface TestState {
   phase: Phase; duration?: number; parent: string | undefined;
   parallel: boolean; childrenReleased: boolean; children: Set<string>;
 }
-interface PackageState { closed: boolean; rootsReleased: boolean; tests: Map<string, TestState>; outputs: Event[] }
+interface PackageState {
+  phase: "active" | "summary" | "terminal" | "closed";
+  rootsReleased: boolean; tests: Map<string, TestState>; outputs: Event[];
+}
 const closed = (t: TestState): boolean => t.phase === "pass" || t.phase === "skip";
+
+function summary(e: Event | undefined, packageName: string): boolean {
+  const prefix = `ok  \t${packageName}\t`;
+  return e?.OutputType === undefined && e?.Output?.startsWith(prefix) === true &&
+    /^(?:\d+\.\d{3}s|\(cached\))\n$/.test(e.Output.slice(prefix.length));
+}
 
 function frame(e: Event, t: TestState): boolean {
   const name = e.Test!, output = e.Output!;
   if (output === `=== RUN   ${name}\n` && t.phase === "runFrame") { t.phase = "running"; return true; }
-  if (output === `=== PAUSE ${name}\n` && t.phase === "running") { t.phase = "pauseFrame"; return true; }
+  if (output === `=== PAUSE ${name}\n` && t.phase === "running" && !t.parallel) { t.phase = "pauseFrame"; return true; }
   if (output === `=== CONT  ${name}\n` && t.phase === "contFrame") { t.phase = "running"; return true; }
   for (const action of ["PASS", "SKIP"] as const) {
     const prefix = `--- ${action}: ${name} (`;
@@ -131,31 +140,39 @@ function reduce(output: string): Reduction | undefined {
     const packageName = e.Package!;
     if (e.Action === "start") {
       if (packages.has(packageName)) return undefined;
-      packages.set(packageName, { closed: false, rootsReleased: false, tests: new Map(), outputs: [] });
+      packages.set(packageName, { phase: "active", rootsReleased: false, tests: new Map(), outputs: [] });
       continue;
     }
     const p = packages.get(packageName);
-    if (!p || p.closed) return undefined;
+    if (!p || p.phase === "closed" || (e.Test !== undefined && p.phase !== "active")) return undefined;
     if (e.Test === undefined) {
       if (e.Action === "output") {
-        if (e.OutputType === "frame" && e.Output !== "PASS\n") return undefined;
+        if (p.phase === "terminal") return undefined;
+        if (p.phase === "summary") {
+          if (!summary(e, packageName)) return undefined;
+          p.phase = "terminal";
+        } else if (e.OutputType === "frame") {
+          if (e.Output !== "PASS\n" || !p.tests.size || [...p.tests.values()].some(t => !closed(t))) return undefined;
+          p.phase = "summary";
+        } else if (e.Output === `?   \t${packageName}\t[no test files]\n`) {
+          if (p.tests.size || p.outputs.length) return undefined;
+          p.phase = "terminal";
+        }
         p.outputs.push(e);
         continue;
       }
-      if (e.Action !== "pass" && e.Action !== "skip") return undefined;
+      if (p.phase !== "terminal" || (e.Action !== "pass" && e.Action !== "skip")) return undefined;
       if ([...p.tests.values()].some(t => !closed(t))) return undefined;
       const last = p.outputs.at(-1), before = p.outputs.at(-2);
       if (e.Action === "skip") {
         if (p.tests.size || p.outputs.length !== 1 || last?.OutputType !== undefined ||
             last?.Output !== `?   \t${packageName}\t[no test files]\n`) return undefined;
       } else {
-        const prefix = `ok  \t${packageName}\t`;
-        if (!p.tests.size || last?.OutputType !== undefined || !last?.Output?.startsWith(prefix) ||
-            !/^(?:\d+\.\d{3}s|\(cached\))\n$/.test(last.Output.slice(prefix.length)) ||
+        if (!p.tests.size || !summary(last, packageName) ||
             before?.OutputType !== "frame" || before.Output !== "PASS\n" ||
             p.outputs.filter(x => x.OutputType === "frame").length !== 1) return undefined;
       }
-      p.closed = true;
+      p.phase = "closed";
       continue;
     }
     // Only captured Test lifecycles are admitted. Benchmark run has no test terminal event.
@@ -184,13 +201,13 @@ function reduce(output: string): Reduction | undefined {
         if (!frame(e, t)) return undefined;
       } else if (t.phase !== "running") return undefined;
     } else if (e.Action === "pause") {
-      if (t.phase !== "pauseFrame") return undefined;
+      if (t.phase !== "pauseFrame" || t.parallel) return undefined;
       if ([...t.children].some(child => !closed(p.tests.get(child)!) && p.tests.get(child)!.phase !== "paused")) return undefined;
       t.phase = "paused";
       t.parallel = true;
       removed.add(i);
     } else if (e.Action === "cont") {
-      if (t.phase !== "paused") return undefined;
+      if (t.phase !== "paused" || !t.parallel) return undefined;
       if ([...p.tests.values()].some(s => s.parent === t.parent && !closed(s) && s.phase !== "paused" && !s.parallel)) return undefined;
       if (t.parent === undefined) p.rootsReleased = true;
       else {
@@ -207,7 +224,7 @@ function reduce(output: string): Reduction | undefined {
       if (e.Action === "pass" && e.Elapsed === 0) removed.add(i);
     } else return undefined;
   }
-  if (!packages.size || [...packages.values()].some(p => !p.closed) || !removed.size) return undefined;
+  if (!packages.size || [...packages.values()].some(p => p.phase !== "closed") || !removed.size) return undefined;
   const kept = rows.filter((_, i) => !removed.has(i)).map(row => row.span);
   return { pieces: kept, required: kept };
 }
