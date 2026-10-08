@@ -1,0 +1,51 @@
+# L02 sources and replay
+
+Native captures generated locally on 2026-10-08 from original tiny sources in
+`capture.mjs`; no donor parser, fixture, or implementation copied. Modifications
+to producer output: none. Sources/configurations are generated inputs, saved
+before and after each command. Output retained as complete binary pipe bytes,
+including ANSI, line endings, non-ASCII, experimental warnings, and failures.
+
+Producer: public npm `@biomejs/biome@2.2.6`, MIT OR Apache-2.0.
+Pinned path: package `bin/biome` launcher and optional
+`@biomejs/cli-darwin-x64@2.2.6/biome` binary. Package tarball:
+`https://registry.npmjs.org/@biomejs/biome/-/biome-2.2.6.tgz`.
+Integrity: `sha512-yKTCNGhek0rL5OEW1jbLeZX8LHaM8yk7+3JRGv08my+gkpmtb5dDE+54r2ZjZx0ediFEn1pYBOJSmOdDP9xtFw==`.
+Native x64 binary tarball:
+`https://registry.npmjs.org/@biomejs/cli-darwin-x64/-/cli-darwin-x64-2.2.6.tgz`.
+Integrity: `sha512-HOUIquhHVgh/jvxyClpwlpl/oeMqntlteL89YqjuFDiZ091P0vhHccwz+8muu3nTyHWM5FQslt+4Jdcd67+xWQ==`.
+No upstream commit claimed: these are immutable npm artifact pins, not copied
+upstream source. Capture version verified by original `biome --version`.
+
+Replay in a disposable directory containing this package.json:
+
+```json
+{"private":true,"dependencies":{"@biomejs/biome":"2.2.6"}}
+```
+
+```sh
+npm install --registry=https://registry.npmjs.org --no-audit --no-fund
+node /absolute/worktree/fixtures/profiles/biome/capture.mjs \
+  /absolute/disposable /absolute/disposable/project /absolute/replay-output
+```
+
+No global install. `capture.mjs` prepends isolated `node_modules/.bin` to PATH;
+Python's subprocess executes original `biome` argv directly and merges stderr
+onto stdout pipe before reading. Node drives captures only; observations record
+Biome command identity. No shell chains, node-command relabeling, daemon, or npx
+download fallback. Actual platform/release/Node version and original cwd appear
+per case. Duration and diagnostic ordering may vary on replay; captures stay raw.
+
+Hash recipe: SHA-256 over raw file bytes using `createHash("sha256").update(bytes)`.
+Check `outputSha256`, UTF-8/raw `outputBytes`, every before/after `sourceSha256`,
+and `configSha256` from cases.json. Validation must fail after changing one output
+byte; restore afterward. Capture-only packet has no production mutation claim.
+
+Verification receipt: repo `npm ci --ignore-scripts --no-audit --no-fund` and
+`npm run typecheck` completed. Same compiler rejected an external intentional
+number/string mismatch with TS2322. Disposable verifier checks every capture,
+source/config hash, JSON line plus prefix/failure suffix, ANSI presence, and all
+three fix-source transitions. Appending bytes to one warning capture must fail;
+the verifier restores original bytes in finally and reruns validation.
+`git diff --cached --check` reports native whitespace padding and final blank
+lines in output.txt; these bytes are intentional producer evidence, retained.

@@ -1,0 +1,25 @@
+error.js:2:2 lint/suspicious/noDebugger  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × This is an unexpected use of the debugger statement.
+  
+    1 │ export function broken() {
+  > 2 │ 	debugger;
+      │ 	^^^^^^^^^
+    3 │ }
+    4 │ 
+  
+  i Unsafe fix: Remove debugger statement
+  
+    1 1 │   export function broken() {
+    2   │ - → debugger;
+    3 2 │   }
+    4 3 │   
+  
+
+Checked 1 file in 30ms. No fixes applied.
+Found 1 error.
+lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Some errors were emitted while running checks.
+  
+
