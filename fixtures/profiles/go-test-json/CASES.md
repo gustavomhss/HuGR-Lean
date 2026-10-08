@@ -101,3 +101,31 @@ and Package. FailedBuild occurs on package fail, not test fail. No additional bu
 - Blockers within assigned implementation scope: none. Lead owns default registry integration,
   independent review and campaign-wide CI. No CI dispatched, full checks/build/smoke/benchmark run,
   broad version/platform compatibility claim, or merge.
+
+## Cold-review P1 grammar correction receipt
+
+- Review found invalid complete streams admitted at `468065d`: early package PASS/summary followed
+  by pending test completion, later test activity after package completion, and a second full parallel
+  cycle. All three were reproduced before the fix: refusal tests failed because status was `reduced`.
+- Exact new test names in `tests/profile-go-test-json.test.ts`:
+  - `G02 review regression: early package PASS and summary before test closure`
+  - `G02 review regression: test activity after package completion`
+  - `G02 review regression: second complete parallel cycle`
+- Package phases now progress irreversibly: `active → summary → terminal → closed` for test packages;
+  no-test packages take `active → terminal → closed`. All tests must already be closed at the package
+  PASS frame, not merely at the later terminal event. After PASS, only the finite same-package native
+  summary footer is permitted, then its package terminal. Test lifecycle and test-associated Output
+  are forbidden after package completion begins. Other packages may still interleave independently.
+- Parallel PAUSE frame and pause event both reject an already-parallel test. Cont requires paused
+  state plus the first-pause flag; it moves to contFrame, then running. No second pause can recreate
+  paused state, so no second complete cont transition is admitted.
+- Compiling fix checkpoint `c2c8841` pushed after all three new refusals and five unchanged native
+  goldens passed, with typecheck successful.
+- Production mutation probe 1 removed the package pre-frame closure check and completion barrier:
+  both package regressions failed; five native goldens passed. Restored both checks with apply_patch.
+- Production mutation probe 2 removed both already-parallel pause guards: second-cycle regression
+  failed; five native goldens passed. Restored both guards with apply_patch.
+- Restoration verified by `git diff --exit-code -- src/profiles/go-test-json.ts` against checkpoint.
+  Final owned suite: 109 passed, none skipped; `npm run typecheck` passed. Original native goldens,
+  Output retention, byte savings and Go 1.27.1/darwin evidence scope remain unchanged.
+- Assigned-scope blockers: none. Independent cold re-review pending; no CI dispatch or merge.
