@@ -45,7 +45,7 @@ for (const c of packet.cases) {
 }
 
 test("finite packet IDs and family subcommands have no overlap", () => {
-  const required = "structural-build structural-check structural-check-buildscript release-workspace custom-package-lib release-bin-target release-example check-workspace check-custom-all-targets check-lib-target check-bin-examples build-warnings check-warnings build-collision build-cached check-cached build-failure check-custom-targets-success build-cached-clean check-collision build-all-features-targets".split(" ");
+  const required = "conditional-test-warning structural-build structural-check structural-check-buildscript release-workspace custom-package-lib release-bin-target release-example check-workspace check-custom-all-targets check-lib-target check-bin-examples build-warnings check-warnings build-collision build-cached check-cached build-failure check-custom-targets-success build-cached-clean check-collision build-all-features-targets".split(" ");
   assert.deepEqual(packet.cases.map(c => c.name).sort(), required.map(n => `C01/${n}`).sort());
   assert.deepEqual(familyProfiles.map(p => p.id), ["cargo-build", "cargo-check"]);
   for (const c of packet.cases) {
@@ -213,8 +213,65 @@ test("synthetic diagnostic properties: positions and counters derive from text, 
   const warning = find("build-warnings"), source = input(warning), required = read(warning.expectedFile);
   const first = source.output.replaceAll("c01-app", "first-dep").replace(/^    Finished .*\n/m, "");
   const second = source.output.replaceAll("c01-app", "second-dep");
-  const golden = required.replaceAll("c01-app", "first-dep").replace(/^    Finished .*\n/m, "") + required.replaceAll("c01-app", "second-dep");
+  // Deletion phase closed at the first diagnostic: second package progress stays source-backed.
+  const golden = required.replaceAll("c01-app", "first-dep").replace(/^    Finished .*\n/m, "") + second;
   accepted({ ...source, output: first + second }, golden, warning.family);
   accepted({ ...source, output: (first + second).replaceAll("first-dep", "shared-dep").replaceAll("second-dep", "shared-dep") },
     golden.replaceAll("first-dep", "shared-dep").replaceAll("second-dep", "shared-dep"), warning.family);
+});
+
+for (const stem of ["build-warnings", "check-warnings"]) {
+  test(`phase preservation ${stem}: progress before total and after total remains exact`, () => {
+    const c = find(stem), observation = input(c), required = read(c.expectedFile);
+    const late = `${stem === "build-warnings" ? "   Compiling" : "    Checking"} audit-dep v3.2.1 (/work/🦀café/dep)\n`;
+    for (const boundary of ["warning: `c01-app`", "    Finished"]) {
+      accepted({ ...observation, output: observation.output.replace(boundary, late + boundary) },
+        required.replace(boundary, late + boundary), c.family);
+      accepted({ ...observation, output: observation.output.replace(boundary, late + boundary).replaceAll("\n", "\r\n") },
+        required.replace(boundary, late + boundary).replaceAll("\n", "\r\n"), c.family);
+      exact({ ...observation, output: observation.output.replace(boundary, late.replace("v3.2.1", "vbroken") + boundary) });
+      exact({ ...observation, output: required.replace(boundary, late + boundary) }); // no leading removable bytes
+    }
+    exact({ ...observation, output: observation.output.replace("  |\n", late + "  |\n") });
+  });
+}
+
+test("selector semantics: lib-only refuses counterfeit lib-test/bin-test and other selected targets", () => {
+  const c = find("build-warnings"), observation = input(c), required = read(c.expectedFile);
+  for (const context of ["lib test", 'bin "worker" test', 'bin "worker"', 'example "demo"']) {
+    exact({ ...observation, output: observation.output.replace("(lib)", `(${context})`) });
+  }
+  for (const patch of ["--bin worker", "--bins", "--example demo", "--examples"]) {
+    const command = observation.command.replace("--lib", patch);
+    accepted({ ...observation, command }, required, c.family); // dependency libraries are always allowed
+  }
+  for (const [selector, context] of [["--bin worker", 'bin "worker"'], ["--bins", 'bin "worker"'],
+    ["--example demo", 'example "demo"'], ["--examples", 'example "demo"'],
+    ["--all-targets", "lib test"], ["--all-targets", 'bin "worker" test']]) {
+    const command = observation.command.replace("--lib", selector!);
+    accepted({ ...observation, command, output: observation.output.replace("(lib)", `(${context})`) },
+      required.replace("(lib)", `(${context})`), c.family);
+  }
+  exact({ ...observation, command: observation.command.replace("--lib", "--bin chosen"),
+    output: observation.output.replace("(lib)", '(bin "different")') });
+  exact({ ...observation, command: observation.command.replace("--lib", "--example chosen"),
+    output: observation.output.replace("(lib)", '(example "different")') });
+  const foreign = observation.output.replaceAll("c01-app", "dependency-pkg");
+  accepted({ ...observation, output: foreign }, required.replaceAll("c01-app", "dependency-pkg"), c.family);
+  exact({ ...observation, command: observation.command.replace("--lib", "--all-targets"), output: foreign.replace("(lib)", "(lib test)") });
+  accepted({ ...observation, command: observation.command.replace("--lib", "--all-targets --workspace"), output: foreign.replace("(lib)", "(lib test)") },
+    required.replaceAll("c01-app", "dependency-pkg").replace("(lib)", "(lib test)"), c.family);
+});
+
+test("conditional summaries: native unpaired lib-test valid; pending diagnostics need totals", () => {
+  const c = find("conditional-test-warning"), observation = input(c), required = read(c.expectedFile);
+  accepted(observation, required, c.family);
+  assert.equal(input(find("check-custom-targets-success")).output.includes("(lib) generated"), true, "normal-lib summary detector positive control");
+  assert.equal(observation.output.includes("(lib) generated"), false, "native cfg(test) control has no normal-lib total");
+  exact({ ...observation, command: "cargo check --lib --offline --color never" });
+  exact({ ...observation, output: observation.output.replace("warning: `conditional-warning` (lib test) generated 1 warning\n", "") });
+  const paired = find("check-custom-targets-success"), pair = input(paired);
+  // Optional duplicate-only summary is independent evidence; no fabricated absence guarantee.
+  const duplicate = "warning: `c01-app` (lib) generated 1 warning (1 duplicate)\n";
+  accepted({ ...pair, output: pair.output.replace(duplicate, "") }, read(paired.expectedFile).replace(duplicate, ""), paired.family);
 });

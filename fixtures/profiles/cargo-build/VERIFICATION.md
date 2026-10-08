@@ -110,3 +110,61 @@ This includes all 21 native cases (14 reduced, 7 exact), original delegated buil
 new-property positive controls and the counter-consistency assertion that killed the mutant.
 All source/test modules remain below 400 lines. No full CI/core/registry/legacy writes or tests.
 Cold lead review/probes remain pending.
+
+## Second cold-review FIX-FIRST: leading phase and selector semantics
+
+Pre-fix commit: `4718c0d1d50d77df6afe8fd101f9afeed5186cc3`.
+The native cfg(test) control and independent golden are documented in `CONDITIONAL-SOURCES.md`.
+It actually emits an unpaired lib-test total under all-targets: no invented paired-summary rule.
+All earlier native inputs/goldens remain unchanged. Synthetic interleaving goldens now retain
+the second package's progress because the first diagnostic already closed deletion.
+
+Before production edits:
+
+```sh
+node --import tsx --test --test-name-pattern='phase preservation|selector semantics' tests/profile-cargo-build.test.ts
+```
+
+Actual exit 1, tests 3, pass 0, fail 3, skipped 0. Both build/check phase tests lost the
+late source progress row before a warning total in the independent byte-exact golden.
+The selector test admitted a fake lib-test total under a lib-only invocation: actual
+`reduced`, expected `passthrough`, reason `profile_reduction`.
+
+Before mutations, the whole owned test file passed: tests/pass 65, fail/skipped 0, exit 0;
+typecheck exit 0. Source-backed later progress is checked before/after totals, in LF/CRLF
+with Unicode paths. Malformed progress and progress inside diagnostic bodies refuse.
+Selector tests include valid bin/example/default/dependency-lib contexts and test-target
+refusals, package/target identity checks, and valid all-targets test contexts. A removed total
+for the actual pending cfg(test) warning refuses; optional independent summaries are not inferred.
+
+Production evidence-loss mutation removed `if (!deletionOpen) kept.push(row)`:
+
+```sh
+node --import tsx --test --test-name-pattern='phase preservation' tests/profile-cargo-build.test.ts
+```
+
+Actual exit 1, tests 2, pass 0, fail 2, skipped 0. Both independent goldens rejected the lost
+late Compiling/Checking source row. Mutation restored before the second probe.
+
+Production admission mutation removed the `targetAllowed` check from summary validation:
+
+```sh
+node --import tsx --test --test-name-pattern='selector semantics' tests/profile-cargo-build.test.ts
+```
+
+Actual exit 1, tests 1, pass 0, fail 1, skipped 0. Lib-only again admitted fake lib-test output:
+actual `reduced`, expected `passthrough`. Target check restored with apply_patch. No native
+input/golden was mutated.
+
+Final restored commands:
+
+```sh
+node --import tsx --test --test-reporter=spec tests/profile-cargo-build.test.ts
+npm run typecheck
+```
+
+Actual results: test exit 0, tests/pass 65, fail 0, skipped 0; typecheck exit 0.
+All 22 native cases (15 reduced, 7 exact), independent phase goldens, target-selector controls,
+native conditional-summary control and original delegated build witness executed. Source and
+test files remain below 400 lines. No full CI/core/registry/legacy modifications or full suite.
+Stop for cold lead review/probes; shared registry integration remains lead-owned.

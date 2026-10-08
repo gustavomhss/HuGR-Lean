@@ -84,11 +84,27 @@ function diagnostic(rows: readonly Line[], start: number): number | undefined {
   return cursor;
 }
 
+function targetAllowed(call: Invocation, packageName: string, context: string): boolean {
+  if (context === "lib") return true; // Dependency libraries need not equal the selected package.
+  const all = call.flags.has("--all-targets");
+  if (context.endsWith(" test") && !all) return false; // --tests is outside this closed argv vocabulary.
+  if (!call.flags.has("--workspace") && call.flags.has("-p") && call.flags.get("-p") !== packageName) return false;
+  if (context === "lib test") return all;
+  const bin = /^bin "([^"]+)"(?: test)?$/.exec(context);
+  if (bin) {
+    const explicit = ["--lib", "--bin", "--bins", "--example", "--examples", "--all-targets"]
+      .some(flag => call.flags.has(flag));
+    return all || call.flags.has("--bins") || call.flags.get("--bin") === bin[1] || !explicit;
+  }
+  const example = /^example "([^"]+)"$/.exec(context);
+  return example !== null && (all || call.flags.has("--examples") || call.flags.get("--example") === example[1]);
+}
+
 function parse(output: string, observation: Observation): Reduction | undefined {
   const argv = tokenizeCommand(observation.command), call = argv && invocation(argv);
   if (!call) return undefined;
   const rows = lines(output), kept: Line[] = [], prior = new Map<string, number>(), contexts = new Set<string>();
-  let cursor = 0, pending = 0;
+  let cursor = 0, pending = 0, deletionOpen = true;
   const lock = locking.exec(rows[0]?.text ?? "");
   if (lock) {
     const count = uint(lock[1]);
@@ -99,9 +115,11 @@ function parse(output: string, observation: Observation): Reduction | undefined 
     const row = rows[cursor]!, progressRow = progress.exec(row.text);
     if (progressRow) {
       if (call.mode === "build" && progressRow[1] !== "   Compiling") return undefined;
+      if (!deletionOpen) kept.push(row); // Once diagnostics start, all later progress is required evidence.
       cursor++; continue; // Dependencies, version-disjoint packages and check build scripts are valid.
     }
     if (row.text.startsWith("warning: function ")) {
+      deletionOpen = false;
       const end = diagnostic(rows, cursor);
       if (end === undefined) return undefined;
       kept.push(...rows.slice(cursor, end)); cursor = end; pending++; continue;
@@ -110,7 +128,8 @@ function parse(output: string, observation: Observation): Reduction | undefined 
     if (summary) {
       const count = uint(summary[3]), duplicates = summary[5] === undefined ? 0 : uint(summary[5]);
       const context = `${summary[1]}:${summary[2]}`;
-      if (count === undefined || duplicates === undefined || count !== pending + duplicates ||
+      if (!targetAllowed(call, summary[1]!, summary[2]!) ||
+          count === undefined || duplicates === undefined || count !== pending + duplicates ||
           duplicates > (prior.get(summary[1]!) ?? 0) || (pending === 0 && contexts.has(context)) ||
           summary[4] !== (count === 1 ? "warning" : "warnings") ||
           (duplicates > 0 && summary[6] !== (duplicates === 1 ? "duplicate" : "duplicates"))) return undefined;
