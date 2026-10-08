@@ -1,0 +1,13 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/c02_alpha-dca8643900cca1fe)
+
+running 6 tests
+test tests::alpha_one ... ok
+test tests::deferred ... ignored, native skip: café 🦀 — retained
+test tests::fails ... ignored, deliberate failure witness
+test tests::alpha_two ... ok
+test tests::logs ... ok
+test tests::default_feature ... ok
+
+test result: ok. 4 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

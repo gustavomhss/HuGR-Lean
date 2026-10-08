@@ -1,0 +1,22 @@
+   Compiling c02-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/beta)
+   Compiling c02-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/alpha)
+    Finished `release` profile [optimized] target(s) in 3.97s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/x86_64-apple-darwin/release/deps/c02_alpha-5109a472542ccf55)
+
+running 6 tests
+test tests::deferred ... ignored, native skip: café 🦀 — retained
+test tests::alpha_one ... ok
+test tests::alpha_two ... ok
+test tests::fails ... ignored, deliberate failure witness
+test tests::default_feature ... ok
+test tests::logs ... ok
+
+test result: ok. 4 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/x86_64-apple-darwin/release/deps/c02_beta-e5c765162d24ee39)
+
+running 1 test
+test tests::beta_one ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
