@@ -1,0 +1,2 @@
+go: downloading golang.org/x/text v0.29.0
+unused example.com/g05/unused
