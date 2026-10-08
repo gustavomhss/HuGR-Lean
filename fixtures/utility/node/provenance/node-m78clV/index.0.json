@@ -1,0 +1,160 @@
+{
+  "schema": "hugr-lean/private-native-prep/1",
+  "family": "node",
+  "stage": "native-evidence-prep-only",
+  "baselineSourceSHA": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "sourceHead": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "branch": "utility/node-native",
+  "privateRoot": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV",
+  "producer": {
+    "file": "scripts/utility-native-node.mjs",
+    "sha256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19",
+    "bytes": 14960
+  },
+  "environmentPolicy": {
+    "constructor": "isolatedEnvironment(privateRoot)",
+    "inherited": [],
+    "PATH": "/usr/local/bin:/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/.bin:/usr/bin:/bin",
+    "NODE_OPTIONS": "absent",
+    "NODE_PATH": "absent",
+    "HOME": "home",
+    "XDG_CONFIG_HOME": "config",
+    "XDG_DATA_HOME": "data",
+    "XDG_CACHE_HOME": "cache",
+    "XDG_STATE_HOME": "state",
+    "TMPDIR": ".",
+    "npmUserConfig": "npmrc (fresh empty private file)",
+    "npmGlobalConfig": "global-npmrc (fresh empty private file)",
+    "npmOffline": true,
+    "reporterOverride": "none on default cases",
+    "io": "non-TTY stdout/stderr pipes; stdin ignored; captureCommand arrival order"
+  },
+  "tools": [
+    {
+      "name": "node",
+      "version": "v22.17.1",
+      "executable": "/usr/local/bin/node"
+    },
+    {
+      "name": "tsx",
+      "version": "4.23.15",
+      "executable": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs",
+      "lockedIntegrity": "sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==",
+      "installation": "existing pinned project; never installed"
+    }
+  ],
+  "toolReceipts": [
+    {
+      "id": "node-version",
+      "command": "node --version",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV",
+      "capture": {
+        "file": "captures/node-version/capture.json",
+        "sha256": "c5ae88a0d5a6f888d01cc73bcfa568255c7fc7d72d236a72672b7c15a5998edf",
+        "bytes": 3232
+      },
+      "original": {
+        "file": "captures/node-version/original.log",
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+        "bytes": 9
+      },
+      "stdout": {
+        "file": "captures/node-version/stdout.log",
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+        "bytes": 9
+      },
+      "stderr": {
+        "file": "captures/node-version/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": []
+    },
+    {
+      "id": "tsx-version",
+      "command": "tsx --version",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV",
+      "capture": {
+        "file": "captures/tsx-version/capture.json",
+        "sha256": "5a5a8126928e2630ec6524be33ee867b75d7165b74f4aac4ae9df6cade2ca6bf",
+        "bytes": 3231
+      },
+      "original": {
+        "file": "captures/tsx-version/original.log",
+        "sha256": "b06e55123995f6e1dfa9809cc39509d28e7c3a6a259bd4a10c4c66cfe2be4694",
+        "bytes": 27
+      },
+      "stdout": {
+        "file": "captures/tsx-version/stdout.log",
+        "sha256": "b06e55123995f6e1dfa9809cc39509d28e7c3a6a259bd4a10c4c66cfe2be4694",
+        "bytes": 27
+      },
+      "stderr": {
+        "file": "captures/tsx-version/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": []
+    }
+  ],
+  "sourceInventory": [
+    {
+      "file": "scripts/utility-native-node.mjs",
+      "sha256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19",
+      "bytes": 14960,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/utility-native-node.mjs"
+    },
+    {
+      "file": "scripts/opencode-boundary.mjs",
+      "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+      "bytes": 22037,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/opencode-boundary.mjs"
+    },
+    {
+      "file": "scripts/real-world/capture.mjs",
+      "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+      "bytes": 4473,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/real-world/capture.mjs"
+    },
+    {
+      "file": "scripts/real-world/owned-process.mjs",
+      "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+      "bytes": 6278,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/real-world/owned-process.mjs"
+    },
+    {
+      "file": "scripts/real-world/process-guardian.mjs",
+      "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+      "bytes": 3314,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/real-world/process-guardian.mjs"
+    },
+    {
+      "file": "pinned-tsx-project/package-lock.json",
+      "sha256": "a01a495dd6e22eab9e518786218688d3def37a0e847264ccc9b30df08e7cc3f6",
+      "bytes": 16753,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/package-lock.json"
+    },
+    {
+      "file": "pinned-tsx-project/node_modules/tsx/package.json",
+      "sha256": "ab5f14c4251638844ade3905d3cfc52fc1c833644694d655a05f6d0ca746b83c",
+      "bytes": 1663,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/package.json"
+    },
+    {
+      "file": "pinned-tsx-project/tsx-executable",
+      "sha256": "8690135061bc49d187143493b82d26a09b7fb71d6dd817d2242cc9dc52506de9",
+      "bytes": 124418,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs"
+    },

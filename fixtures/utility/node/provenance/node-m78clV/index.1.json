@@ -1,0 +1,160 @@
+    {
+      "file": "native-node-executable",
+      "sha256": "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541",
+      "bytes": 224341744,
+      "absolutePath": "/usr/local/bin/node"
+    },
+    {
+      "file": "sources/flat/fixture.mjs",
+      "sha256": "9aef7e6916f968ffbe8bc3e909a8aa9fa964de37b5386653b6af0e0c559a8e2a",
+      "bytes": 2722,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/flat/fixture.test.ts",
+      "sha256": "907502ef7cf251abdeaae2ac15e229b84695c17026ba74557a8efb663ba254b8",
+      "bytes": 2775,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/nested/fixture.mjs",
+      "sha256": "498874800131fa811ec0ab029c75d36ae9cd5c447690a5c824e8d6f88eddecfe",
+      "bytes": 3297,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/nested/fixture.test.ts",
+      "sha256": "25b94b4c98f66661f656fbeac634f41f6e3f16021b44b54725df035cb46fe339",
+      "bytes": 3350,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/failure/fixture.mjs",
+      "sha256": "55cd1ad94f7cd216e2e786ec4cf3a98b106fc308e253d5437d98ae8a975cde7f",
+      "bytes": 301,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/failure/fixture.test.ts",
+      "sha256": "43688d7d805901746aa8fa3ce614de5261e0290e90c51f68e67b8400b3058e88",
+      "bytes": 354,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/opaque/fixture.mjs",
+      "sha256": "99dab40087738ed9350608920cfdd0f07fd8519ea8ebe938464e60d65c42fe4d",
+      "bytes": 391,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/opaque/fixture.test.ts",
+      "sha256": "8158686cd7019a5c7be1f68bc6bc8f7d029c9193fe2807bc43e329f4478329fd",
+      "bytes": 444,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/diagnostic/fixture.mjs",
+      "sha256": "ddf72552a61315384874d6401b02f5e9fec931996f522020d08016127d0fc9b1",
+      "bytes": 305,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/diagnostic/fixture.test.ts",
+      "sha256": "305e639e4347e7b1403ff06cdecdcb22c194a71c8e18e323fa6d60db72361930",
+      "bytes": 358,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    }
+  ],
+  "cases": [
+    {
+      "id": "node-flat-default",
+      "command": "node --test fixture.mjs",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/flat",
+      "capture": {
+        "file": "captures/node-flat-default/capture.json",
+        "sha256": "30f1d7104ce4ac54c502196f98da36a8db2ef8267587e952390a27d62fb9ae04",
+        "bytes": 3438
+      },
+      "original": {
+        "file": "captures/node-flat-default/original.log",
+        "sha256": "d3366f5dc12861d5130a600efb07f5ce953ddde804f7697e5b4f71620738965f",
+        "bytes": 5132
+      },
+      "stdout": {
+        "file": "captures/node-flat-default/stdout.log",
+        "sha256": "d3366f5dc12861d5130a600efb07f5ce953ddde804f7697e5b4f71620738965f",
+        "bytes": 5132
+      },
+      "stderr": {
+        "file": "captures/node-flat-default/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "nativeSpawned": true,
+      "nativeExitObserved": true,
+      "fixtureSources": [
+        {
+          "file": "sources/flat/fixture.mjs",
+          "sha256": "9aef7e6916f968ffbe8bc3e909a8aa9fa964de37b5386653b6af0e0c559a8e2a",
+          "bytes": 2722
+        }
+      ],
+      "intent": "noise-candidate",
+      "reporter": "default-non-TTY",
+      "nativeRows": [
+        "TAP version 13",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "  ---",
+        "  ...",
+        "1..12",
+        "# tests 12",
+        "# suites 0",
+        "# pass 12",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 3030.783128"
+      ],
+      "progressNameRows": 24,
+      "progressNameRowBytes": 4395,
+      "hasTAPVersionRow": true,
+      "nativeFailureMarkerPresent": false
+    },
+    {
+      "id": "tsx-flat-default",
