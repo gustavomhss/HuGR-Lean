@@ -125,7 +125,7 @@ test("filter and hook errors retain named failed records", async (t) => {
     assert.equal(report.checked, 8);
     assert.equal(report.passed, 0);
     assert.equal(report.failures.length, 8);
-    assert.equal(report.failures[0].id, "go-noise");
+    assert.equal(report.failures[0].id, "go/go-noise");
     assert.equal(report.failures[0].stage, stage);
     assert.match(report.failures[0].error, /_SENTINEL/);
   }
