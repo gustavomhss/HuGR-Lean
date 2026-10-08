@@ -249,11 +249,11 @@ test("source fixture inventory and default production registry are nonempty and 
   assert.ok(profiles.length > 0, "Empty production registry");
   const ids = profiles.map((profile) => profile.id).sort();
   assert.equal(new Set(ids).size, ids.length, "Duplicate production profile IDs");
+  assert.equal(ids.length, 10, "Default registry must ship ten real profiles");
+  assert.equal(profiles.filter((profile) => profile === nodeTestProfile).length, 1, "Node profile must register exactly once");
   const utility = await utilityReader.readUtilityCorpus(join(fixtureRoot, "utility"));
   assert.deepEqual(utility.families.map((entry: { family: string }) => entry.family).sort(), ["cargo", "go", "node", "pytest"]);
   assert.equal(utility.cases.length, 25, "Independent native corpus contract changed");
-  assert.equal(ids.length, 10, "Default registry must ship ten real profiles");
-  assert.equal(profiles.filter((profile) => profile === nodeTestProfile).length, 1, "Node profile must register exactly once");
   assert.deepEqual(ids, [...new Set([...corpus, ...utility.cases].map((entry) => entry.profile))].sort(), "Every shipped profile needs a corpus case");
   for (const family of utility.families) {
     assert.ok(family.cases.length > 0, `${family.family}: empty native family`);
