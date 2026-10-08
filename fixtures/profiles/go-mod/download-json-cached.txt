@@ -1,0 +1,16 @@
+{
+	"Path": "golang.org/x/text",
+	"Version": "v0.29.0",
+	"Info": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/G05-native-final/download-cache/cache/download/golang.org/x/text/@v/v0.29.0.info",
+	"GoMod": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/G05-native-final/download-cache/cache/download/golang.org/x/text/@v/v0.29.0.mod",
+	"Zip": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/G05-native-final/download-cache/cache/download/golang.org/x/text/@v/v0.29.0.zip",
+	"Dir": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/G05-native-final/download-cache/golang.org/x/text@v0.29.0",
+	"Sum": "h1:1neNs90w9YzJ9BocxfsQNHKuAT4pkghyXc4nhZ6sJvk=",
+	"GoModSum": "h1:7MhJOA9CD2qZyOKYazxdYMF85OwPdEr9jTtBpO7ydH4=",
+	"Origin": {
+		"VCS": "git",
+		"URL": "https://go.googlesource.com/text",
+		"Hash": "e69f31bf9cf2f46bd3325bc9bad37fe9001731c2",
+		"Ref": "refs/tags/v0.29.0"
+	}
+}
