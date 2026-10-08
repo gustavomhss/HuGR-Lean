@@ -1,9 +1,10 @@
 # Native fixture utility evaluation
 
-This inventory describes the utility candidate based on `b2af5300567e6f4fc96c77a81f599fbdc665916b`.
-It is not a final execution receipt. All four parser cold reviews were approved; current full-suite,
-installed-package, real-host and latency verification is still being completed by the lead.
-The final integrated public code SHA belongs in the delivery PR's external receipt, avoiding a self-hash cycle.
+Dated local proof: **2026-10-08 UTC**, code baseline `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`.
+All four parser cold reviews were approved; private receipts record full-suite, normal installed-package,
+actual host and latency outcomes. This docs head is not yet packed; final scoped package binding is pending.
+Source/runtime hash bindings belong in the external final receipt, avoiding a self-hash cycle; the lead
+must compare runtime blobs before claiming equivalence. [Delivery status](DELIVERY.md) owns that handoff.
 
 ## What the corpus measures
 
@@ -13,15 +14,17 @@ long test names and many passing tests to expose removable progress. Savings dem
 on these inputs; they do not establish token/cost savings, adoption value or general workload prevalence.
 
 The frozen inventory is **25 cases: 12 noise, 13 exact**, in four families and six provenance roots.
+Dated evaluation passed **25/25: 12 reduced, 11 material, 13 exact**.
 The artifact inventory is **439 files / 1,193,627 bytes** (about 1.193 MB), including sources and receipts,
 not just process output. [Inventory tests](../tests/utility-inventory.test.ts) pin this closed inventory.
 The [combined tests](../tests/combined.test.ts) and [installed inspector](../scripts/package-smoke.mjs)
-declare **39 cases / 10 profile IDs**: nine reducers plus inert `tsc`. These are coverage inventories,
-not fresh passing counts. Earlier family `SOURCES.md` checkpoint status is not current release status.
+cover **39 cases / 10 profile IDs**: nine reducers plus inert `tsc`; normal installed proof passed
+that matrix at the dated code baseline. Earlier family `SOURCES.md` checkpoint status is not release status.
 
 ## Native bytes and independent expected output
 
-The numbers below are frozen original/expected UTF-8 bytes, not newly measured results from this docs lane.
+The numbers below are frozen original/expected UTF-8 bytes, matched by the dated local evaluation;
+this docs lane does not rerun it.
 Expected logs were authored from inspected source positions, not production parser output.
 Material means **at least 1,024 bytes saved AND at least 10% of input**; core acceptance only requires
 strictly smaller output, so the nonmaterial Cargo library case can still reduce.
@@ -83,9 +86,14 @@ node scripts/utility-evaluation.mjs --clean-build --root fixtures/utility
 ```
 
 The evaluator checks compiled identity, core goldens and the raw-off `bash` after-hook without native
-execution, historical replay or latency sampling. Private composed-branch proof reports five smoke
-passes; final SHA/package checksum, host, full-suite and latency receipts remain pending. This docs
-change runs static checks only. [Delivery status](DELIVERY.md) owns the pending operational decisions.
+execution, historical replay or latency sampling. Private `.closure-proof/final-f9d2/summary.json`
+records 1,026 passes (0 failures/cancellations/skips/todo), 25 utility passes and normal installed 39/10 proof;
+`.closure-proof/host-f9d2-sdk/receipt.json` records actual OpenCode 1.18.17 macOS x64 legacy host proof.
+Its 23 scenarios comprise 7 file, 5 preinstalled/cached package-name, 8 four-family baseline/on text replays
+and 3 raw scenarios with exact CLI recovery, all using the same normal artifact identified in delivery status.
+These private receipts are not public downloads; replay is not upstream recapture or model-quality proof,
+and package-name routing does not establish npm availability. This docs change runs static checks only.
+Final docs-artifact scoped binding, disabled CI/three-OS runs and human decisions remain pending.
 
 Jest/Vitest still use the existing prefix/per-file-timing strategy; no utility improvement is claimed.
 Actual argv, reporter grammar, colors and npm child identity constrain admission. The after-hook handles

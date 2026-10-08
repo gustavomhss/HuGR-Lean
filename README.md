@@ -41,7 +41,7 @@ directory on `PATH`. The package version remains `0.2.0` pending a human release
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for dated baseline proof, pending utility-candidate verification, deferred CI and human decisions.
+for dated code-baseline proof, pending final docs-artifact binding, deferred CI and human decisions.
 The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
@@ -55,16 +55,19 @@ Copy `pluginURL` from doctor into your OpenCode configuration:
 ```
 
 Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Historically verified local host route at the earlier delivery baseline:
+Verified local host route on **2026-10-08**, code baseline `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`:
 **OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
-The utility candidate's final SHA, installed artifact, host and latency receipts remain pending;
-Linux/macOS/Windows CI also remains pending.
-Linux/Windows were not run locally. Actions stays deferred until final candidate verification
+Private local receipts record 1,026 passing tests, installed-package/latency proof and 23 host scenarios:
+7 file, 5 package-name, 8 baseline/on replays across four native families, and 3 raw scenarios with exact CLI recovery.
+File/package-name routes use the same preinstalled normal tarball, not npm registry availability.
+Native fixture text replay proves model-bound bytes, not upstream recapture or model quality.
+This docs head is not yet packed; scoped package/runtime-blob binding remains pending before claiming equivalence.
+Linux/macOS/Windows CI is unrun. Actions stays disabled until complete candidate verification
 is recorded and the lead explicitly declares completion.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
 Npm registry installation is not currently available. If publication is authorized, the package
-name can be used as the plugin entry; historical package-name proof used a locally installed tarball.
+name can be used as the plugin entry; dated package-name proof used a locally installed/cached tarball.
 
 ## Behavior and coverage
 
@@ -80,9 +83,9 @@ English Git status and numbered ripgrep. Coverage is deliberately format-specifi
 - The OpenCode after-hook filters only `bash` results; it never rewrites command argv or performs core/profile I/O.
 
 [Native utility evaluation](docs/UTILITY_EVALUATION.md) records original local fixture projects:
-25 cases (12 noise, 13 exact), with deliberate long names and many tests. These are not
-representative real-agent sessions. The 39-case combined/installed matrix covers 10 IDs
-(nine reducers and inert `tsc`); matrix membership is not a fresh passing receipt.
+25 cases (12 reduced, 11 material, 13 exact) passed at the dated code baseline, with deliberate
+long names and many tests. These are not representative real-agent sessions. Normal installed
+proof passed 39 cases / 10 IDs (nine reducers and inert `tsc`); final docs-artifact binding is pending.
 Jest/Vitest retain their existing prefix/per-file-timing strategy; no utility improvement is claimed.
 
 ## Options and raw recovery
