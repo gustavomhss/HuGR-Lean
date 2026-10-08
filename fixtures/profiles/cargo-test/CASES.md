@@ -3,7 +3,7 @@
 State: REVIEW, awaiting independent lead review. Baseline `07ffe15e2263c2925778022194c5385807216603`;
 branch `campaign/native-v2/C02`; PR base `campaign/native-integration`.
 Lead approved reductions for workspace/package/features/targets/release/controlled-libtest goldens.
-`src/profiles/cargo-test.ts` exports only `cargo-test`, delegates legacy-admitted argv unchanged, and owns
+`src/profiles/cargo-test.ts` exports only `cargo-test`, prefers valid legacy reductions unchanged, and owns
 the bounded delta grammar. Registry integration remains lead-owned. `cases.json.status` is now exercised
 through public `filter(observation, { profiles: familyProfiles })`; original `cargoProfiles` stays passthrough
 on each new exact argv. The owned acceptance suite ran red before implementation, then passed at checkpoint.
@@ -84,11 +84,14 @@ Independent expected files were hand-authored before the implementation. Keep ro
 
 Delta flags before `--`: one `--offline`, one color-never spelling, workspace/excludes or up to eight unique `-p`
 names, one selector (`--lib`, `--doc`, `--all-targets`, `--examples`, `--test NAME`, `--bin NAME`, `--example NAME`),
-one feature name/`--no-default-features`/`--all-features`, one `--release` or `--profile IDENTIFIER`,
+one `--features LIST`/`--no-default-features`/`--all-features`, one `--release` or `--profile IDENTIFIER`,
 and `--target TRIPLE`. Identifiers are ASCII letters/underscore followed by letters/digits/underscore/hyphen,
 at most 64 characters. Triples contain 2–6 alphanumeric/underscore segments, at most 32 characters each
-and 128 overall; JSON target paths remain unclaimed. Features plus all-features, conflicting/repeated selectors and
-workspace plus package selection refuse. Named exact filter goes before `--`; `--exact` goes afterward,
+and 128 overall; JSON target paths remain unclaimed. Features plus all-features, conflicting/repeated selectors,
+workspace plus package selection, and feature lists above 16 entries/1024 characters refuse.
+Lists contain identifiers or `PACKAGE/FEATURE`, separated
+by commas or ASCII spaces within one argv value; quoted space lists keep their exact native command spelling.
+Named exact filter goes before `--`; `--exact` goes afterward,
 and may also occur without a positional filter to control skip equality. Without `--exact`, skip matching uses substring.
 After `--`: `--ignored` or `--include-ignored`, up to eight unique `--skip NAME`, and serial threads exactly
 `--test-threads=1` or `--test-threads 1`. `--doc` plus harness arguments is unclaimed and refused.
@@ -144,7 +147,7 @@ checks; no global suite/build/smoke/benchmark or CI dispatch. No mutation is par
 
 **Missing variants (explicitly unclaimed):** benches, standalone native debug `--target` witness (target/release
 combination captured), native cross-target or JSON target,
-workspace feature forwarding, substring filters and unrecorded libtest
+positional substring filters and unrecorded libtest
 formats/flags (`--format`, JSON, shuffle, timing). No broader or Cartesian coverage claim; lead owns scope decisions.
 Capture collection itself has no tool/version/offline/termination blocker. CI was not dispatched; repository's
 candidate-wide manual workflow remains lead-owned and needs one final authorized run after campaign integration.
@@ -199,3 +202,31 @@ Final scoped checks after restoration: complete owned-file suite **92 passed, 0 
 `npm run typecheck` exited 0. Bounds tests additionally
 exercise a 64-character project-profile rename, invalid/overlong names and triples, and unsupported Finished detail syntax.
 Production/test code remains below the 400-line target. No shared files, legacy fixtures/tests, registry/core or CI edits.
+
+## Lead default-path and feature-list gap closure
+
+Legacy success remains preferred, including exact legacy required spans. A legacy refusal now proceeds through the
+**complete** closed delta parser instead of ending recognition. Unknown output, pre-Finished warnings, incomplete
+metadata, failures and user logs still refuse; refusal is not preserved merely because the old parser lacks a valid variant.
+
+`provenance/default-features-receipt.json` records four new original native cases. The first command is literally
+**`cargo test`**, spawned with argv **`["test"]`** in the tiny workspace. No `--workspace`, `--offline` or color flags
+were added; offline/color configuration is environment evidence only. This is the missing default-workspace case,
+not a recapture of admitted default single-package behavior. Independent keep rows retain every library/bin/test/doc
+header, summary, skip reason and native merged-doctest metric, including both distinct `src/lib.rs` executables.
+
+| Stable stem `C02/<stem>` | Native combination / observed evidence | Independent keep rows |
+| --- | --- | --- |
+| default-workspace | bare default workspace: four executable suites plus two doctest suites; original parser refuses | 3,4,7,9,14,16,21,23,29,31,36,38,44,46,47,51 |
+| workspace-feature-comma | workspace/lib/no-default + comma-separated qualified alpha extra/more and beta extra; both members' feature tests run | 3,4,7,8,15,17,23 |
+| workspace-feature-space | workspace/lib/no-default + one quoted space-list value; alpha extra/more and beta more run | 2,3,6,7,14,16,22 |
+| package-feature-list | package/lib + comma unqualified extra/more and no-default; both feature tests run | 1,2,5,6,13 |
+
+All prior native/expected files remain untouched; corpus now contains 35 cases. Command-to-native-argv equality is
+checked explicitly for every case, including quoted space values. Collectors never emit expected files.
+Workspace-qualified forwarding is now an explicit native positive. Labeled full-flag properties use different
+project names and mixed list separators without imposing fixture-specific names; malformed/overlong entries refuse.
+
+`LEAD-C02-default-fallback` and `LEAD-C02-feature-lists` both went red before the production fix, then passed.
+The default test compares legacy successes directly, and rejects warnings before Finished plus genuine log/failure
+witnesses even under bare argv. Production guard probes and restored final verification are recorded below after execution.
