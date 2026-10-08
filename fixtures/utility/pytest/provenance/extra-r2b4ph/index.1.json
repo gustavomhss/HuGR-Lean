@@ -1,0 +1,160 @@
+        },
+        {
+          "file": "captures/pytest-version/live/original.live",
+          "bytes": 13,
+          "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518"
+        },
+        {
+          "file": "captures/pytest-version/stdout.log",
+          "bytes": 13,
+          "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518"
+        },
+        {
+          "file": "captures/pytest-version/live/stdout.live",
+          "bytes": 13,
+          "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518"
+        },
+        {
+          "file": "captures/pytest-version/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/pytest-version/live/stderr.live",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/pytest-version/live/running.json",
+          "bytes": 236,
+          "sha256": "e37d2f5051803cee11b449bc15640640019cdc29c4db9ad79ab0aa3dab19a29e"
+        },
+        {
+          "file": "captures/default/receipt.json",
+          "bytes": 8634,
+          "sha256": "5821a40c65bf6a7e433b435ad4188918cac7eaa62628f5a112c7d93cdc2a5858"
+        },
+        {
+          "file": "captures/default/original.log",
+          "bytes": 2422,
+          "sha256": "19a7b3fab0019f50d88ac9a4da0ca0fc3b9ccf01c3bbcbb5fc2e31a3c979e870"
+        },
+        {
+          "file": "captures/default/live/original.live",
+          "bytes": 2422,
+          "sha256": "19a7b3fab0019f50d88ac9a4da0ca0fc3b9ccf01c3bbcbb5fc2e31a3c979e870"
+        },
+        {
+          "file": "captures/default/stdout.log",
+          "bytes": 2422,
+          "sha256": "19a7b3fab0019f50d88ac9a4da0ca0fc3b9ccf01c3bbcbb5fc2e31a3c979e870"
+        },
+        {
+          "file": "captures/default/live/stdout.live",
+          "bytes": 2422,
+          "sha256": "19a7b3fab0019f50d88ac9a4da0ca0fc3b9ccf01c3bbcbb5fc2e31a3c979e870"
+        },
+        {
+          "file": "captures/default/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/default/live/stderr.live",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/default/live/running.json",
+          "bytes": 232,
+          "sha256": "6603dd188a195fed79065a4e4913c3413da64a206856c17e0538dc1adc220a4f"
+        },
+        {
+          "file": "captures/quiet/receipt.json",
+          "bytes": 8107,
+          "sha256": "89d7ff50da4fe8ded7f49f740912641dbfb879415a9d845a1c1ea395d6f55476"
+        },
+        {
+          "file": "captures/quiet/original.log",
+          "bytes": 2181,
+          "sha256": "ee3768cf4adad099dc83e1877bc831ceb2e8b34a56aa85d167ec03ebb61b3270"
+        },
+        {
+          "file": "captures/quiet/live/original.live",
+          "bytes": 2181,
+          "sha256": "ee3768cf4adad099dc83e1877bc831ceb2e8b34a56aa85d167ec03ebb61b3270"
+        },
+        {
+          "file": "captures/quiet/stdout.log",
+          "bytes": 2181,
+          "sha256": "ee3768cf4adad099dc83e1877bc831ceb2e8b34a56aa85d167ec03ebb61b3270"
+        },
+        {
+          "file": "captures/quiet/live/stdout.live",
+          "bytes": 2181,
+          "sha256": "ee3768cf4adad099dc83e1877bc831ceb2e8b34a56aa85d167ec03ebb61b3270"
+        },
+        {
+          "file": "captures/quiet/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/quiet/live/stderr.live",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/quiet/live/running.json",
+          "bytes": 235,
+          "sha256": "96f089f72c5bf8caab0fd854f149fcb152546e279d1238b6a3f717f8dd23c777"
+        },
+        {
+          "file": "captures/assertion-failure/receipt.json",
+          "bytes": 7063,
+          "sha256": "7fe2619fff7628f4ae710cbaf31d8df8c2adace41329720722292a93e61f670a"
+        },
+        {
+          "file": "captures/assertion-failure/original.log",
+          "bytes": 1202,
+          "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+        },
+        {
+          "file": "captures/assertion-failure/live/original.live",
+          "bytes": 1202,
+          "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+        },
+        {
+          "file": "captures/assertion-failure/stdout.log",
+          "bytes": 1202,
+          "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+        },
+        {
+          "file": "captures/assertion-failure/live/stdout.live",
+          "bytes": 1202,
+          "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+        },
+        {
+          "file": "captures/assertion-failure/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/assertion-failure/live/stderr.live",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/assertion-failure/live/running.json",
+          "bytes": 234,
+          "sha256": "e7e549ee875d4cf995adb50988db8e965f86066d317a2bdac8649d2bf906cb11"
+        },
+        {
+          "file": "captures/opaque-summary/receipt.json",
+          "bytes": 5873,
+          "sha256": "760d998664335d5523b472d5932a1ca0dc6e3bacbb378e960248cfb875662bae"
+        },
+        {
+          "file": "captures/opaque-summary/original.log",
+          "bytes": 539,
+          "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19"

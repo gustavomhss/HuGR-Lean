@@ -1,0 +1,160 @@
+        },
+        {
+          "file": "captures/opaque-summary/live/original.live",
+          "bytes": 539,
+          "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19"
+        },
+        {
+          "file": "captures/opaque-summary/stdout.log",
+          "bytes": 539,
+          "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19"
+        },
+        {
+          "file": "captures/opaque-summary/live/stdout.live",
+          "bytes": 539,
+          "sha256": "f7eca5e15b29198860311cecbd8a3168df3f23443d5334bd10a1953b7d45da19"
+        },
+        {
+          "file": "captures/opaque-summary/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/opaque-summary/live/stderr.live",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "file": "captures/opaque-summary/live/running.json",
+          "bytes": 233,
+          "sha256": "1b40ce62e36d7ea56792c395fcd0760f4f17f1fe446114de687cd5acf5cb61bf"
+        }
+      ]
+    }
+  },
+  "policy": {
+    "originalMIT": true,
+    "historicalCorpus": false,
+    "expectedProofFrozen": false,
+    "capture": "captureCommand; raw stdout/stderr arrival order; no rewriting",
+    "environment": "isolatedEnvironment allowlist; private HOME/XDG/cache/TMPDIR; no caller pytest/Python options",
+    "disabledPluginAutoload": true,
+    "inheritedPYTEST_ADDOPTS": false,
+    "inheritedPYTHONPATH": false,
+    "fixtureAddopts": "-rs (show native skipped/subskipped reasons)",
+    "columns": 80,
+    "supplementalOnly": true,
+    "commands": [
+      "pytest test_native.py --color=no",
+      "pytest --doctest-modules test_native.py --color=no"
+    ]
+  },
+  "versions": {
+    "python": "3.14.5",
+    "pythonFull": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "pythonExecutable": "/usr/local/opt/python@3.14/bin/python3.14",
+    "pytest": "9.0.3",
+    "pluggy": "1.6.0",
+    "pytestModule": "/usr/local/lib/python3.14/site-packages/pytest/__init__.py",
+    "pluggyModule": "/usr/local/lib/python3.14/site-packages/pluggy/__init__.py"
+  },
+  "versionProof": {
+    "kind": "linked-prior-native-captures",
+    "captures": [
+      {
+        "id": "versions",
+        "artifacts": {
+          "original": {
+            "file": "captures/versions/original.log",
+            "bytes": 368,
+            "sha256": "cd1e8e00cbaf3094c5899b734538787659ddb3cf2d5399f4bb19b464c35db0a0"
+          },
+          "stdout": {
+            "file": "captures/versions/stdout.log",
+            "bytes": 368,
+            "sha256": "cd1e8e00cbaf3094c5899b734538787659ddb3cf2d5399f4bb19b464c35db0a0"
+          },
+          "stderr": {
+            "file": "captures/versions/stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "receipt": "captures/versions/receipt.json"
+      },
+      {
+        "id": "pytest-version",
+        "artifacts": {
+          "original": {
+            "file": "captures/pytest-version/original.log",
+            "bytes": 13,
+            "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518"
+          },
+          "stdout": {
+            "file": "captures/pytest-version/stdout.log",
+            "bytes": 13,
+            "sha256": "e143bc467f4d4f6fb89158f8b30f8849791aa5a5f25cca52c735880897645518"
+          },
+          "stderr": {
+            "file": "captures/pytest-version/stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "receipt": "captures/pytest-version/receipt.json"
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "pytest",
+      "executable": "/usr/local/bin/pytest",
+      "realpath": "/usr/local/bin/pytest",
+      "launcherSHA256": "1096908037029ecbaebc29b0708a7cccda589ba7329ecd916354b1a0aaedea34"
+    },
+    {
+      "name": "python",
+      "executable": "/usr/local/opt/python@3.14/bin/python3.14",
+      "realpath": "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/bin/python3.14"
+    },
+    {
+      "name": "pytestModule",
+      "executable": "/usr/local/lib/python3.14/site-packages/pytest/__init__.py",
+      "bytes": 5582,
+      "sha256": "7be7a1e2218dc59a19d1ad131e4abe21172a295087efc72898938248782e8766"
+    },
+    {
+      "name": "pluggyModule",
+      "executable": "/usr/local/lib/python3.14/site-packages/pluggy/__init__.py",
+      "bytes": 811,
+      "sha256": "0fa769d609840e3b43a7c840c1073eaab81aba59cbe2296daea90b0ddfa0f6d8"
+    }
+  ],
+  "sourceInventory": [
+    {
+      "file": "source/utility-native-pytest-extra.mjs",
+      "bytes": 10859,
+      "sha256": "d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"
+    },
+    {
+      "file": "source/capture.mjs",
+      "bytes": 4473,
+      "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3"
+    },
+    {
+      "file": "source/owned-process.mjs",
+      "bytes": 6278,
+      "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5"
+    },
+    {
+      "file": "source/process-guardian.mjs",
+      "bytes": 3314,
+      "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1"
+    },
+    {
+      "file": "source/windows-process.mjs",
+      "bytes": 2803,
+      "sha256": "7e51f3b5a986a84f5bf97fd7912116fc97ae704072d6761c3f3194f4d7c93772"
+    },
+    {
+      "file": "source/opencode-boundary.mjs",
