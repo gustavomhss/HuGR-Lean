@@ -1,10 +1,10 @@
-# G01 capture-only acceptance packet
+# G01 native text acceptance packet
 
-State: implementation under review for literal selectors; anchored-command admission blocked.
+State: corrected implementation under lead review; anchored commands are unsupported negatives.
 Frozen seam: `goMode` text; JSON and benchmark belong to G02/G03.
 Manifest family remains `go-test-verbose` per packet contract, including nonverbose commands.
-For initial anchored captures, `status` still describes the preserved proposed independent golden,
-not current public-filter results. Literal supplemental reductions have focused public-filter proof.
+Every manifest `status` and `expectedFile` now describes actual public custom-profile filter behavior.
+Shorter original proposals are historical files only, linked separately through `historicalProposalFile`.
 Only owned parser/test files and this fixture directory changed; original `go.ts` delegates unchanged.
 Initial table test names describe acceptance intentions; focused assertions live in
 `tests/profile-go-test-text.test.ts`.
@@ -14,19 +14,19 @@ Initial table test names describe acceptance intentions; focused assertions live
 Files are `<id>.txt` and independently authored `<id>.expected.txt` below this directory.
 Each full stable ID is `G01/<id>`. Byte counts are UTF-8, including final LF.
 
-| ID | Required variant / combination | Required evidence | Proposed disposition / reason | Input → expected; removable bytes | Future test name |
+| ID | Required variant / combination | Required evidence | Actual disposition / reason | Input → expected; removable bytes | Acceptance intent |
 | --- | --- | --- | --- | --- | --- |
 | default | `go test`, nonverbose local package mode | PASS and package/time summary | passthrough: no removable material | 33 → 33; 0 | G01 default summary exact |
-| selector | split `-run`, slash selector, explicit `.` | PASS and package/time summary | reduced: all selected tests quiet | 231 → 33; 198 | G01 slash selector quiet reduction |
-| nested | inline `-run`, two subtest levels and skip | parent/group/skip RUN/results, exact skip reason/source, PASS/package summary | reduced: quiet sibling only | 366 → 284; 82 | G01 nested skip association |
-| parallel | `-parallel 2`, nested parallel lifecycle/interleaving | both exact linked worker logs, parent/child RUN/PAUSE/CONT/results, PASS/package summary | passthrough: no removable material under association policy | 422 → 422; 0 | G01 parallel linked logs exact |
-| race-cover-count-run | `-v -race -cover -count=2 -run=... .` | PASS, both coverage records, exact package/time/coverage summary | reduced: two quiet iterations | 191 → 95; 96 | G01 race coverage repeated iterations |
-| count | split `-count 2` and split slash `-run` | final PASS/package summary; repeated quiet scopes validated before removal | reduced: both complete quiet nested iterations | 429 → 33; 396 | G01 count nested name reuse |
-| cover-default | nonverbose `-cover` with selector | entire package/time/coverage summary | passthrough: no removable material | 59 → 59; 0 | G01 nonverbose coverage exact |
-| collision | `t.Log` with RUN/PASS/package and PAUSE/CONT shapes | entire linked multiline logs and enclosing real RUN/result/PASS/package | passthrough: unsafe-to-remove collision evidence, not a no-material waiver | 318 → 318; 0 | G01 progress-shaped linked log collision |
-| selector-empty | selector matches nothing | warning, PASS, package/time `[no tests to run]` | passthrough: no removable material | 85 → 85; 0 | G01 empty selector warning exact |
+| selector | anchored split `-run`, slash selector, explicit `.` | complete original | passthrough: unsupported command | 231 → 231; 0 | G01 anchored selector negative |
+| nested | anchored inline `-run`, two subtest levels and skip | complete original | passthrough: unsupported command | 366 → 366; 0 | G01 anchored nested negative |
+| parallel | anchored selector, parallel linked lifecycle | complete original | passthrough: unsupported command; logged lifecycle also has no removable scope | 422 → 422; 0 | G01 parallel linked logs exact |
+| race-cover-count-run | anchored selector with race/cover/count | complete original | passthrough: unsupported command | 191 → 191; 0 | G01 anchored combination negative |
+| count | anchored split count and slash run | complete original | passthrough: unsupported command | 429 → 429; 0 | G01 anchored count negative |
+| cover-default | nonverbose coverage, anchored selector | complete original | passthrough: unsupported command | 59 → 59; 0 | G01 anchored coverage negative |
+| collision | anchored selector, linked progress-shaped t.Log | complete original | passthrough: unsupported command; linked log removal also unsafe | 318 → 318; 0 | G01 anchored collision negative |
+| selector-empty | anchored selector matches nothing | complete original | passthrough: unsupported command | 85 → 85; 0 | G01 anchored empty selector negative |
 
-## Required / removable policy proposal
+## Approved required / removable policy
 
 - Retain every package summary exactly: package identity, elapsed time, cache marker and requested
   metrics are evidence. Retain final PASS, coverage records, warning and empty-selection marker.
@@ -56,14 +56,16 @@ Each full stable ID is `G01/<id>`. Byte counts are UTF-8, including final LF.
 failure/opaque exact output. Reuse `captures/cold/` and existing manifest cases; do not recapture
 or clone them. Existing disposition is BASELINE_PRESERVED, not new G01 reduction evidence.
 
-## Review and deferred work
+## Review and command boundary
 
 Native source and exact capture facts are in `SOURCES.md` and `cases.json`. Goldens are source-backed
-ordered subsets, with exact originals for passthrough. Proposed reduction byte savings are fixture
+ordered subsets, with exact originals for passthrough. Reduction byte savings are fixture
 deltas. Literal supplemental native fixtures are now compared against the public custom-profile filter
 and the original `goProfile` baseline. Exact-only captures do not substitute for mandatory reductions.
 The anchored commands cannot reach a profile: frozen `tokenizeCommand` rejects `^` and `$` even quoted.
-No core edit or human scope waiver recorded. Lead must resolve this precise seam/scope blocker.
+These are unsupported-command negative witnesses outside the campaign literal contract, not mandatory
+reduction waivers. No core tokenizer change is requested. Their four former smaller goldens remain
+historical `.proposal.txt` files only; the manifest and runtime expected files are exact passthrough.
 
 ## Approved implementation policy and supplemental acceptance
 
@@ -81,21 +83,25 @@ lifecycle exact. Logged parallel exact fixtures are preservation witnesses, not 
 | G01/mixed-parallel | literal prefix selects logged+quiet parallel roots | entire logged root/lifecycle retained chronologically; quiet root reduced | 766 → 422; 344 |
 | G01/name-switch | native NAME context with anchored selector | native log context exact; core-blocked passthrough | 450 → 450; 0 |
 
-Closed delta argv uses only literal captured selectors, bare `-v/-race/-cover`, count 1/2 and parallel 2.
+Closed delta argv uses structural ASCII literal selectors, bare `-v/-race/-cover`, count 1–100 and
+parallel 1–256. Selectors are nonempty slash-separated `[A-Za-z0-9_][A-Za-z0-9_-]*` components.
+Go's unanchored literal matching is substring-based at each path level; matching ancestors remain
+eligible so native child discovery works. Selection derives entirely from argv, never fixture names.
 Split and inline valued flags are validated; duplicates, missing/unknown values, extra positionals and
-uncaptured combinations refuse. Race requires the captured verbose cover/count=2/quiet combination.
-Coverage-only nonverbose has no removable material. JSON/bench routing is frozen and excluded.
+nonliteral selectors refuse. Race/coverage/parallel/count combinations are name-independent; count
+occurrences and coverage output must agree with flags. Absent `-run` selects all supported test names.
+Summary-only nonverbose has no removable material. JSON/bench routing is frozen and excluded.
 
 Parser validates RUN parent paths, child creation, pause/resume/NAME active scopes, indentation,
 parent-first result closure, serial sibling result order, complete repeated count occurrences, final
 PASS/package boundaries and matching coverage records. Results and linked source rows stay in observed
 order. Dynamic material is emitted only through ordered UTF-16 source spans. No log sorting/dedup.
 
-Unseen Example/Fuzz, top-level parallel tests, cached delta summaries, extra delta packages, new selectors,
+Unseen Example/Fuzz, top-level parallel tests, cached delta summaries, extra delta packages, regex selectors,
 unknown lines and invalid lifecycle transitions remain exact. Existing serial/cache/./... admission
 comes exclusively from the unchanged original delegate and reused utility fixtures.
 
-## Focused verification receipt
+## Prior implementation verification receipt
 
 - `npx --no-install tsx --test tests/profile-go-test-text.test.ts`: 34 passed, zero skipped,
   after production mutations were restored. Six native positive fixtures prove baseline original
@@ -109,4 +115,24 @@ comes exclusively from the unchanged original delegate and reused utility fixtur
 - Existing utility manifest cases compare original and extended public-filter results exactly.
   Native corpus checks bind output SHA-256, file correspondence and independent ordered goldens.
 - No full tests/build/smoke/benchmark or CI dispatch. No claim of default registry extension or
-  universal Go grammar. Lead cold-check and anchored-command seam decision remain required.
+  universal Go grammar. Lead cold-check remains required; no tokenizer change or scope waiver is requested.
+
+## Cold-review FIX-FIRST correction
+
+- Added explicit synthetic renamed properties before changing production code. The renamed selector
+  `go test -v -run TestLedger/group/quiet .` failed: actual passthrough versus required reduction.
+- Replaced all test-name branches with structural literal selector parsing, substring path selection,
+  bounded canonical positive integers and independent flags. Renamed nested/skip/log/parallel scopes
+  and race/coverage combinations use three unrelated roots; partial literal path matching is covered.
+- Synthetic repetitions cover count 1, 3 and 100; parallel values 1, 3 and 256 are accepted; out-of-bound,
+  zero, noncanonical or unsafe integers are rejected at matcher admission.
+- Every manifest case now checks public-filter status and exact emitted golden. Initial anchored
+  cases have full-original expected files. Four prior smaller proposals are archived separately.
+- Original serial/cache captures reused, not recaptured. Native positive supplemental goldens unchanged.
+- Corrected focused suite: 36 passed, zero skipped after fresh production mutations were restored;
+  `npm run typecheck` exited 0. Every manifest runtime disposition and expected file was asserted.
+- Fresh admission mutation removed the numeric maximum; matcher test failed on admitted `-count=101`.
+  Fresh evidence mutation set ancestor protection to `keep=false`; nested and mixed-parallel native
+  golden tests both failed on actual lost evidence. Both edits restored before final suite/typecheck.
+- The four historical proposals were compared byte-exact with their prior committed goldens at
+  `2a521f4`. This correction introduces no new native captures or tokenizer/registry/shared changes.

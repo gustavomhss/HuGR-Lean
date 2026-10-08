@@ -10,14 +10,14 @@
     },
     {
       "name": "G01/selector", "family": "go-test-verbose", "command": "go test -v -run '^TestNested/group/quiet$' .",
-      "file": "selector.txt", "status": "reduced", "expectedFile": "selector.expected.txt",
+      "file": "selector.txt", "status": "passthrough", "expectedFile": "selector.expected.txt", "historicalProposalFile": "selector.proposal.txt",
       "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
       "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
       "provenance": { "source": "SOURCES.md", "capture": "native spawnSync stdout; stderr empty", "sha256": "4ee2630af607fe9daf902737189d92ae90154dd09817a90daeec6dc9730c70b2" }
     },
     {
       "name": "G01/nested", "family": "go-test-verbose", "command": "go test -v -run=^TestNested$ .",
-      "file": "nested.txt", "status": "reduced", "expectedFile": "nested.expected.txt",
+      "file": "nested.txt", "status": "passthrough", "expectedFile": "nested.expected.txt", "historicalProposalFile": "nested.proposal.txt",
       "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
       "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
       "provenance": { "source": "SOURCES.md", "capture": "native spawnSync stdout; stderr empty", "sha256": "2f8fba66ad1b1bbb2bf4180b777e2046cf0656b21b70d04df3bc62bf5415099e" }
@@ -31,14 +31,14 @@
     },
     {
       "name": "G01/race-cover-count-run", "family": "go-test-verbose", "command": "go test -v -race -cover -count=2 -run=^TestQuiet$ .",
-      "file": "race-cover-count-run.txt", "status": "reduced", "expectedFile": "race-cover-count-run.expected.txt",
+      "file": "race-cover-count-run.txt", "status": "passthrough", "expectedFile": "race-cover-count-run.expected.txt", "historicalProposalFile": "race-cover-count-run.proposal.txt",
       "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
       "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
       "provenance": { "source": "SOURCES.md", "capture": "native spawnSync stdout; stderr empty", "sha256": "2be7029bbbaf34fc8df0252084fad3c83776f8285fc0bc36b1f61c42a09a794e" }
     },
     {
       "name": "G01/count", "family": "go-test-verbose", "command": "go test -v -count 2 -run '^TestNested/group/quiet$' .",
-      "file": "count.txt", "status": "reduced", "expectedFile": "count.expected.txt",
+      "file": "count.txt", "status": "passthrough", "expectedFile": "count.expected.txt", "historicalProposalFile": "count.proposal.txt",
       "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
       "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
       "provenance": { "source": "SOURCES.md", "capture": "native spawnSync stdout; stderr empty", "sha256": "d0e0a50be8f9bb0d1c22270d75416b474c79f0faf7eb578f844dbcfe3a75470f" }

@@ -1,2 +1,8 @@
+=== RUN   TestNested
+=== RUN   TestNested/group
+=== RUN   TestNested/group/quiet
+--- PASS: TestNested (0.00s)
+    --- PASS: TestNested/group (0.00s)
+        --- PASS: TestNested/group/quiet (0.00s)
 PASS
 ok  	example.com/g01	1.859s
