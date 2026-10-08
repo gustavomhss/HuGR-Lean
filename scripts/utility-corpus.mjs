@@ -376,6 +376,67 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map(), versi
   return facts;
 }
 
+// Cargo-only typed preservation evidence: immutable lineage/inspection plus explicit after-lock descriptors.
+function cargoEvidence(files, used, manifest, roots, rows, notes) {
+  const context = "cargo: evidence", evidence = manifest.cargoEvidence;
+  demand(record(evidence), "MISSING_CARGO_EVIDENCE", context);
+  keys(evidence, ["lineage", "inspection", "afterSources"], [], context);
+  for (const ref of [evidence.lineage, evidence.inspection]) demand(notes.includes(ref.file), "MISSING_CARGO_SOURCES_REFERENCE", ref.file);
+  const lineage = json(artifactBytes(files, used, evidence.lineage, context), context);
+  keys(lineage, ["schema", "sourceRecovery", "producer", "inspection", "index", "sourceRecords", "fullAfterStorage", "runtimeRustSources"], [], context);
+  demand(lineage.schema === "hugr-lean/cargo-lineage-proof/1", "INVALID_CARGO_LINEAGE", context);
+  const original = [...roots.values()].find((root) => root.index.schema === "hugr-lean/private-native-prep/1");
+  const remaining = [...roots.values()].find((root) => root.index.schema === "hugr-lean/private-native-continuation/1");
+  demand(original && remaining, "MISSING_CARGO_LINEAGE_ROOTS", context);
+  demand(lineage.index.sha256 === original.entry.index.sha256 && lineage.index.bytes === original.entry.index.bytes, "CARGO_LINEAGE_INDEX_MISMATCH", context);
+  demand(isEqual(series(files, used, lineage.index, context), original.index), "CARGO_LINEAGE_INDEX_MISMATCH", context);
+  keys(lineage.producer, ["file", "sourceFile", "sha256", "bytes", "commit", "license", "modifications"], [], context);
+  const producerRef = Object.fromEntries(["file", "sourceFile", "sha256", "bytes"].map((key) => [key, lineage.producer[key]]));
+  artifactBytes(files, used, producerRef, context);
+  demand(producerRef.sourceFile === original.entry.producer.script && producerRef.sha256 === original.entry.producer.sourceSHA256
+    && lineage.producer.commit === remaining.index.prior.producerCommit && lineage.producer.license === "MIT" && nonempty(lineage.producer.modifications), "CARGO_LINEAGE_PRODUCER_MISMATCH", context);
+  sameDigest(lineage.inspection, { ...evidence.inspection, file: evidence.inspection.file }, context);
+  const inspection = json(artifactBytes(files, used, evidence.inspection, context), context);
+  const inspectionPin = remaining.index.prior.immutableBefore.find((ref) => ref.file === (evidence.inspection.sourceFile ?? evidence.inspection.file));
+  sameDigest(inspectionPin, { ...evidence.inspection, file: evidence.inspection.sourceFile ?? evidence.inspection.file }, context);
+  keys(inspection, ["schema", "state", "producerCommit", "captureIndex", "collectorExitCode", "collectorError", "nativeExitCode", "nativeSpawned",
+    "nativeExitObserved", "complete", "timedOut", "signal", "nativeFinishedRow", "reason", "pendingCases", "sourcePostCaptureInspection", "measurementControl",
+    "streamOrdering", "filterLatencyMeasured", "focusedPreservationTests"], [], context);
+  const full = rows.find((row) => row.id === "full");
+  demand(full && inspection.schema === "hugr-lean/private-native-inspection/1" && inspection.captureIndex.sha256 === original.entry.index.sha256
+    && inspection.producerCommit === lineage.producer.commit && inspection.collectorExitCode === 1 && inspection.collectorError === "NATIVE_MINUTE_DURATION_MISSING"
+    && inspection.nativeExitCode === full.exitCode && inspection.complete === full.complete && inspection.nativeSpawned === true
+    && inspection.nativeExitObserved === true && inspection.timedOut === false && inspection.signal === null && inspection.filterLatencyMeasured === false
+    && full.originalText.includes(inspection.nativeFinishedRow), "CARGO_INSPECTION_FACT_MISMATCH", context);
+  const sourceRecords = list(lineage.sourceRecords, context), identities = new Set();
+  demand(sourceRecords.length === rows.length, "CARGO_SOURCE_RECORD_COUNT_MISMATCH", context);
+  for (const record of sourceRecords) {
+    keys(record, ["case", "sourceFile", "origin", "originalExpectedHash", "recordedBeforeSatisfied"], ["producer"], context);
+    demand(!identities.has(record.case) && record.sourceFile === "Cargo.lock", "CARGO_SOURCE_LABEL_MISMATCH", context); identities.add(record.case);
+    const row = rows.find((item) => item.id === record.case), lock = row?.fixtureSources.find((ref) => (ref.sourceFile ?? ref.file) === record.sourceFile);
+    demand(lock && lock.sha256 === record.originalExpectedHash, "CARGO_SOURCE_RECORD_HASH_MISMATCH", `${context}: ${record.case}`);
+    demand(record.case === "full" ? record.origin === "reconstructed-producer-literal" && record.recordedBeforeSatisfied === false && record.producer !== undefined
+      : record.origin === "recorded-before" && record.recordedBeforeSatisfied === true && record.producer === undefined, "CARGO_SOURCE_LABEL_MISMATCH", `${context}: ${record.case}`);
+    if (record.producer) sameDigest(record.producer, { ...producerRef, file: producerRef.file }, context);
+  }
+  keys(lineage.fullAfterStorage, ["file", "sourceFile", "origin", "receipt", "inventory"], [], context);
+  const lib = rows.find((row) => row.id === "lib"), storage = lineage.fullAfterStorage, afterHash = inspection.sourcePostCaptureInspection["Cargo.lock"].afterSHA256;
+  const stored = lib?.fixtureSources.find((ref) => ref.file === storage.file && (ref.sourceFile ?? ref.file) === storage.sourceFile);
+  demand(stored && stored.sha256 === afterHash && storage.origin === "recorded-later-before-lib" && storage.receipt === lib.capture.file
+    && storage.inventory === "fixtureSourcesBefore" && inspection.sourcePostCaptureInspection["Cargo.lock"].beforeSHA256 === sourceRecords.find((item) => item.case === "full").originalExpectedHash,
+    "CARGO_AFTER_FULL_BINDING_MISMATCH", context);
+  const afterSources = list(evidence.afterSources, context), afterCases = new Set();
+  demand(afterSources.length === 2, "MISSING_CARGO_AFTER_SNAPSHOT", context);
+  for (const snapshot of afterSources) {
+    keys(snapshot, ["case", "phase", "artifact"], [], context);
+    demand(["failure", "warning"].includes(snapshot.case) && snapshot.phase === "after" && !afterCases.has(snapshot.case), "CARGO_AFTER_SNAPSHOT_LABEL_MISMATCH", context);
+    afterCases.add(snapshot.case); artifactBytes(files, used, snapshot.artifact, context);
+    const row = rows.find((item) => item.id === snapshot.case), wanted = row?.captureReceipt.fixtureSourcesAfter.find((ref) => ref.file === "Cargo.lock");
+    sameDigest(wanted, { ...snapshot.artifact, file: snapshot.artifact.sourceFile ?? snapshot.artifact.file }, `${context}: ${snapshot.case}`);
+  }
+  return { ...evidence, sourceRecords, inspectionState: inspection.state, collectorError: inspection.collectorError };
+}
+
 /** Root is fixtures/utility, not a historical producer cwd. Reads only family-local plain artifacts. */
 export async function readUtilityCorpus(root) {
   root = path.resolve(root);
@@ -392,7 +453,8 @@ export async function readUtilityCorpus(root) {
     demand(files.has("SOURCES.md") && files.get("SOURCES.md").length > 0, "MISSING_SOURCES_NOTE", family);
     decode(files.get("SOURCES.md"), `${family}: SOURCES.md`);
     const manifest = json(files.get("manifest.json"), `${family}: manifest.json`);
-    keys(manifest, ["schema", "family", "tools", "producer", "cases"], ["provenance"], family);
+    keys(manifest, ["schema", "family", "tools", "producer", "cases"], ["provenance", "cargoEvidence"], family);
+    demand(manifest.cargoEvidence === undefined || family === "cargo", "UNEXPECTED_CARGO_EVIDENCE", family);
     demand(manifest.schema === SCHEMA && manifest.family === family, "INVALID_SCHEMA_OR_FAMILY", family);
     tools(manifest.tools, family);
     demand(manifest.tools.some((tool) => tool.name === family), "MISSING_FAMILY_TOOL", family);
@@ -478,8 +540,9 @@ export async function readUtilityCorpus(root) {
         demand(witnessed, "MISSING_NATIVE_TOOL_VERSION_PROOF", `${family}: ${tool.name}`);
       }
     }
+    const cargoProof = family === "cargo" && roots.size ? cargoEvidence(files, used, manifest, roots, rows, decode(files.get("SOURCES.md"), family)) : undefined;
     for (const file of files.keys()) demand(used.has(file), "UNMAPPED_ARTIFACT", `${family}: ${file}`);
-    families.push({ family, tools: manifest.tools, producer: manifest.producer, cases: rows,
+    families.push({ family, tools: manifest.tools, producer: manifest.producer, cases: rows, ...(cargoProof ? { cargoEvidence: cargoProof } : {}),
       provenance: [...roots.values()].map(({ entry, index }) => ({ ...entry, collectorState: index.state ?? index.stage,
         collectorFailures: index.errors ?? index.failedCaptures ?? index.failures ?? index.failure ?? [],
         sourceHeadBinding: "recorded sourceHead or baseline declaration; publisher source bytes are separately hash-bound" })) });

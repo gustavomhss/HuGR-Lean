@@ -80,9 +80,9 @@ export async function evaluateUtilityCorpus({ root, filter, createAfterHook }) {
     }
     report.records.push(row); report.checked++;
   }
-  report.families = corpus.families.map(({ family, tools, producer, provenance }) => {
+  report.families = corpus.families.map(({ family, tools, producer, provenance, cargoEvidence }) => {
     const rows = report.records.filter((row) => row.family === family);
-    return { family, tools, producer, provenance, cases: rows.length, passed: rows.filter((row) => row.ok).length,
+    return { family, tools, producer, provenance, ...(cargoEvidence ? { cargoEvidence } : {}), cases: rows.length, passed: rows.filter((row) => row.ok).length,
       exact: rows.filter((row) => row.role === "exact").length, material: rows.filter((row) => row.material).length,
       inputBytes: rows.reduce((sum, row) => sum + row.inputBytes, 0), expectedBytes: rows.reduce((sum, row) => sum + row.expectedBytes, 0) };
   });
