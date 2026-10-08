@@ -1,0 +1,14 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +2
+++
+Progress: resolved 2, reused 2, downloaded 0, added 2, done
+ ERR_PNPM_PEER_DEP_ISSUES  Unmet peer dependencies
+
+.
+└─┬ p02-peer 1.0.0
+  └── ✕ unmet peer p02-host@^2.0.0: found 1.0.0
+hint: To disable failing on peer dependency issues, add the following to pnpm-workspace.yaml in your project root:
+
+  strictPeerDependencies: false
+
+
