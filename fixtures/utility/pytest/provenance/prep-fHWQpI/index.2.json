@@ -1,0 +1,160 @@
+        {
+          "line": 1,
+          "text": "============================= test session starts =============================="
+        },
+        {
+          "line": 2,
+          "text": "platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0"
+        },
+        {
+          "line": 3,
+          "text": "rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise"
+        },
+        {
+          "line": 4,
+          "text": "configfile: pytest.ini"
+        },
+        {
+          "line": 5,
+          "text": "collected 1203 items"
+        },
+        {
+          "line": 6,
+          "text": ""
+        },
+        {
+          "line": 7,
+          "text": "test_native.py ......................................................... [  4%]"
+        },
+        {
+          "line": 8,
+          "text": "........................................................................ [ 10%]"
+        },
+        {
+          "line": 9,
+          "text": "........................................................................ [ 16%]"
+        },
+        {
+          "line": 10,
+          "text": "........................................................................ [ 22%]"
+        },
+        {
+          "line": 11,
+          "text": "........................................................................ [ 28%]"
+        },
+        {
+          "line": 12,
+          "text": "........................................................................ [ 34%]"
+        },
+        {
+          "line": 13,
+          "text": "........................................................................ [ 40%]"
+        },
+        {
+          "line": 14,
+          "text": "........................................................................ [ 46%]"
+        },
+        {
+          "line": 15,
+          "text": "........................................................................ [ 52%]"
+        },
+        {
+          "line": 16,
+          "text": "........................................................................ [ 58%]"
+        },
+        {
+          "line": 17,
+          "text": "........................................................................ [ 64%]"
+        },
+        {
+          "line": 18,
+          "text": "........................................................................ [ 70%]"
+        },
+        {
+          "line": 19,
+          "text": "........................................................................ [ 76%]"
+        },
+        {
+          "line": 20,
+          "text": "........................................................................ [ 82%]"
+        },
+        {
+          "line": 21,
+          "text": "........................................................................ [ 88%]"
+        },
+        {
+          "line": 22,
+          "text": "........................................................................ [ 94%]"
+        },
+        {
+          "line": 23,
+          "text": "................................................................s.       [100%]"
+        },
+        {
+          "line": 24,
+          "text": ""
+        },
+        {
+          "line": 25,
+          "text": "=============================== warnings summary ==============================="
+        },
+        {
+          "line": 26,
+          "text": "test_native.py::test_warning_context"
+        },
+        {
+          "line": 27,
+          "text": "  /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise/test_native.py:26: UserWarning: HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪"
+        },
+        {
+          "line": 28,
+          "text": "    warnings.warn(\"HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪\", UserWarning)"
+        },
+        {
+          "line": 29,
+          "text": ""
+        },
+        {
+          "line": 30,
+          "text": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html"
+        },
+        {
+          "line": 31,
+          "text": "=========================== short test summary info ============================"
+        },
+        {
+          "line": 32,
+          "text": "SKIPPED [1] test_native.py:20: HUGR_PYTEST_SKIP_SENTINEL café 雪 🧪"
+        },
+        {
+          "line": 33,
+          "text": "================= 1202 passed, 1 skipped, 1 warning in 15.53s =================="
+        },
+        {
+          "line": 34,
+          "text": ""
+        }
+      ],
+      "role": "native-noise-candidate"
+    },
+    {
+      "id": "quiet",
+      "command": "pytest -q",
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/noise",
+      "fixtureSources": [
+        {
+          "file": "projects/noise/test_native.py",
+          "bytes": 677,
+          "sha256": "8234c613211d29cc08e0ebdc211ba7932a41169201f81507702e868426345b75"
+        },
+        {
+          "file": "projects/noise/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+        },
+        {
+          "file": "projects/noise/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+        }
+      ],
