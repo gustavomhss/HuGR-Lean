@@ -1,0 +1,178 @@
+{
+  "command": "go test -v ./...",
+  "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/programs/noise",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "nativeSpawned": true,
+  "nativeExitObserved": true,
+  "complete": true,
+  "durationMs": 1861.267175,
+  "guardianElapsedMs": 3237.172568,
+  "durationBoundary": "pipe-close",
+  "exitDurationMs": 1859.748855,
+  "bookkeepingMs": 0.4232259999989765,
+  "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+  "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+  "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+  "baseline": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+  "fixtureSources": [
+    {
+      "file": "fixture-programs/noise/go.mod",
+      "bytes": 46,
+      "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d",
+      "originalSource": {
+        "file": "programs/noise/go.mod",
+        "bytes": 46,
+        "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    },
+    {
+      "file": "fixture-programs/noise/LICENSE",
+      "bytes": 1089,
+      "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53",
+      "originalSource": {
+        "file": "programs/noise/LICENSE",
+        "bytes": 1089,
+        "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    },
+    {
+      "file": "fixture-programs/noise/alpha/alpha_test.go",
+      "bytes": 1356,
+      "sha256": "33c38fc95385a3506e942c13a72b33c20321f72f4ca2a2bb0bd0d041a7a53e4d",
+      "originalSource": {
+        "file": "programs/noise/alpha/alpha_test.go",
+        "bytes": 1356,
+        "sha256": "33c38fc95385a3506e942c13a72b33c20321f72f4ca2a2bb0bd0d041a7a53e4d"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    },
+    {
+      "file": "fixture-programs/noise/beta/beta_test.go",
+      "bytes": 1171,
+      "sha256": "5b39691b39b94efd8d358bdeb8e3c45656a3594c5a93f779ebd3ff9cb0b62e81",
+      "originalSource": {
+        "file": "programs/noise/beta/beta_test.go",
+        "bytes": 1171,
+        "sha256": "5b39691b39b94efd8d358bdeb8e3c45656a3594c5a93f779ebd3ff9cb0b62e81"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    },
+    {
+      "file": "fixture-programs/noise/empty/empty.go",
+      "bytes": 110,
+      "sha256": "7a0f592c721c83152c3dac2d82020360c950689f48aca4566810306b0b8455c0",
+      "originalSource": {
+        "file": "programs/noise/empty/empty.go",
+        "bytes": 110,
+        "sha256": "7a0f592c721c83152c3dac2d82020360c950689f48aca4566810306b0b8455c0"
+      },
+      "license": "MIT",
+      "origin": "original; no donor"
+    }
+  ],
+  "environmentPolicy": {
+    "helper": "isolatedEnvironment(privateRoot)",
+    "inherited": [
+      "PATH only for executable discovery"
+    ],
+    "variables": {
+      "HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/home",
+      "XDG_CONFIG_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/config",
+      "XDG_DATA_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/data",
+      "XDG_CACHE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/cache",
+      "XDG_STATE_HOME": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/state",
+      "TMPDIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh",
+      "GOENV": "off",
+      "GOWORK": "off",
+      "GOTOOLCHAIN": "local",
+      "GOPROXY": "off",
+      "GOSUMDB": "off",
+      "GOCACHE": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-cache",
+      "GOMODCACHE": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-mod-cache",
+      "GOPATH": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-path",
+      "GOTMPDIR": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-go-native/.native-captures/go-zHh7jh/go-tmp"
+    },
+    "goFlags": "unset",
+    "network": "no dependency fetch; proxy/sumdb off; local toolchain",
+    "configuration": "No caller Go settings, Git writes, credential files or global installs; no cleanup deletes.",
+    "selectedGo": {
+      "selected": "/usr/local/bin/go",
+      "resolved": "/usr/local/Cellar/go/1.27.1/libexec/bin/go"
+    },
+    "executionPathPrefix": "/usr/local/Cellar/go/1.27.1/libexec/bin"
+  },
+  "tools": [
+    {
+      "name": "node",
+      "version": "v22.17.1",
+      "executable": "/usr/local/bin/node"
+    },
+    {
+      "name": "go",
+      "version": "go version go1.27.1 darwin/amd64",
+      "executable": "/usr/local/Cellar/go/1.27.1/libexec/bin/go",
+      "receipt": {
+        "file": "captures/go-version/receipt.json",
+        "bytes": 4719,
+        "sha256": "6bc3a72ff972538edeb0844aea1d0d3e60e4490b65c24d32e76d0ab95d61bba7"
+      }
+    }
+  ],
+  "producer": {
+    "script": "scripts/utility-native-go.mjs",
+    "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc",
+    "dependencies": [
+      {
+        "file": "scripts/opencode-boundary.mjs",
+        "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432"
+      },
+      {
+        "file": "scripts/real-world/capture.mjs",
+        "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3"
+      },
+      {
+        "file": "scripts/real-world/owned-process.mjs",
+        "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5"
+      },
+      {
+        "file": "scripts/real-world/process-guardian.mjs",
+        "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1"
+      }
+    ],
+    "snapshot": {
+      "file": "producer-source.mjs",
+      "bytes": 15666,
+      "sha256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+    }
+  },
+  "original": {
+    "file": "captures/cached/original.log",
+    "bytes": 3231,
+    "sha256": "63a5e9863360b852859f53b146697ed4077be32c3bd8bc543d285a598d0d9c76"
+  },
+  "stdout": {
+    "file": "captures/cached/stdout.log",
+    "bytes": 3231,
+    "sha256": "63a5e9863360b852859f53b146697ed4077be32c3bd8bc543d285a598d0d9c76"
+  },
+  "stderr": {
+    "file": "captures/cached/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "errors": {
+    "launch": null,
+    "encoding": null,
+    "cleanup": [],
+    "preparation": null
+  },
+  "timeout": 300000
+}
