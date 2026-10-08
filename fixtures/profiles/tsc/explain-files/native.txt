@@ -1,0 +1,8 @@
+../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts
+  Library 'lib.es5.d.ts' specified in compilerOptions
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.d.ts
+  Library referenced via 'decorators' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.legacy.d.ts
+  Library referenced via 'decorators.legacy' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+ok.ts
+  Part of 'files' list in tsconfig.json
