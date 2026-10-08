@@ -1,0 +1,32 @@
+      "TestNativePackageEvidence02PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting",
+      "TestNativePackageEvidence03PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting",
+      "TestNativePackageEvidence04PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting",
+      "TestNativePackageEvidence05PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting",
+      "TestNativePackageEvidence06PreservesOriginalCommandBoundariesAndLongASCIIIdentityWithoutOutputRewriting"
+    ],
+    "passingInstances": 12,
+    "repeatedAcrossPackages": [
+      "alpha",
+      "beta"
+    ],
+    "skipInstances": 1,
+    "criticalLogInstances": 1,
+    "sequentialTests": true
+  },
+  "state": "captured-awaiting-lead-inspection",
+  "failedInventory": {
+    "file": "failed-captures.json",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "sourceInventory": {
+    "file": "source-inventory.json",
+    "bytes": 5613,
+    "sha256": "0ed2d81daa636d2316c067d35bd5b460e760e3f4900baa0c7f83c2926264e3e8"
+  },
+  "provenance": {
+    "file": "SOURCES.md",
+    "bytes": 1044,
+    "sha256": "b5211bbf1aa62e60aa405a7b8208315795a3b66c5fa81da4e81e4c244417dfaf"
+  }
+}
