@@ -8,6 +8,15 @@ import { nodeTestProfile } from "../src/profiles/node-test.js";
 
 type Artifact = { file: string; sha256: string; bytes: number };
 type Anchor = { text: string; occurrence: number };
+type Tool = { name: string; version: string; executable: string };
+type Capture = {
+  command: string; cwd: string; exitCode: number; complete: boolean; signal: string | null; timedOut: boolean;
+  nativeSpawned: boolean; nativeExitObserved: boolean; encodingError: string | null; launchError: string | null;
+  cleanupErrors: string[]; baselineSourceSHA: string; environmentPolicy: { reporterOverride: string };
+  producer: { file: string; sha256: string; bytes: number }; fixtureSources: Artifact[];
+  streams: { original: Artifact; stdout: Artifact; stderr: Artifact };
+  tools: (Tool & { lockedIntegrity?: string; installation?: string })[];
+};
 type Case = {
   id: string; profile: string; command: string; role: "noise" | "exact";
   expectedStatus: "reduced" | "passthrough"; exitCode: number; complete: boolean;
@@ -16,7 +25,7 @@ type Case = {
 };
 const root = new URL("../fixtures/utility/node/", import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", root), "utf8")) as {
-  schema: string; family: string; tools: { name: string; version: string; executable: string }[];
+  schema: string; family: string; tools: Tool[];
   producer: { script: string; sourceSHA256: string }; cases: Case[];
 };
 const sha = (data: Uint8Array) => createHash("sha256").update(data).digest("hex");
@@ -71,6 +80,7 @@ function evidence(source: string, expected: string, anchors: readonly Span[], va
     let previous = 0;
     for (const [first, last] of spans) {
       assert.ok(Number.isSafeInteger(first) && Number.isSafeInteger(last) && first >= previous && last > first && last <= source.length);
+      for (const boundary of [first, last]) assert.ok(!(source.codePointAt(boundary - 1)! > 0xffff), "surrogate boundary");
       previous = last;
     }
   }
@@ -86,19 +96,22 @@ function preserved(obs: Observation, profile: Profile = nodeTestProfile): void {
   assert.equal(result.inputBytes, Buffer.byteLength(obs.output));
   assert.equal(result.outputBytes, result.inputBytes);
 }
-function positive(item: Case, source = text(item.original), expected = text(item.expected), command = item.command): void {
-  const obs = { ...observation(item, source), command };
-  const result = filter(obs, { profiles: [nodeTestProfile] });
-  assert.equal(result.status, "reduced", `NODE-TAP ${item.id}: baseline must be RED`);
+function accepted(obs: Observation, expected: string, spans: Span[], profile = nodeTestProfile): Reduction {
+  const result = filter(obs, { profiles: [profile] });
+  assert.equal(result.status, "reduced", "NODE-TAP accepted baseline must be RED before implementation");
   assert.ok("replacement" in result);
   assert.equal(result.replacement, expected);
   assert.equal(result.profile, "node-test");
-  assert.equal(result.inputBytes, Buffer.byteLength(source));
+  assert.equal(result.inputBytes, Buffer.byteLength(obs.output));
   assert.equal(result.outputBytes, Buffer.byteLength(expected));
-  const reduction = nodeTestProfile.reduce(source, obs);
+  const reduction = profile.reduce(obs.output, obs);
   assert.ok(reduction, "Profile.reduce must return source evidence");
-  evidence(source, expected, kept(item, source), reduction);
-  for (const anchor of item.required) {
+  evidence(obs.output, expected, spans, reduction);
+  return reduction;
+}
+function positive(item: Case, source = text(item.original), expected = text(item.expected), command = item.command, profile = nodeTestProfile, anchors = item.required): void {
+  const reduction = accepted({ ...observation(item, source), command }, expected, kept(item, source), profile);
+  for (const anchor of anchors) {
     const adjusted = { ...anchor, text: anchor.text.replace(/\r$/, "") };
     evidence(source, expected, [anchorSpan(source, adjusted)], reduction);
   }
@@ -116,14 +129,18 @@ test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact 
     sourceSHA256: "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19" });
   assert.equal(noise.length, 4);
   for (const item of manifest.cases) {
-    const receipt = JSON.parse(text(item.capture));
+    const receipt = JSON.parse(text(item.capture)) as Capture;
     assert.equal(item.capture.file, `captures/${item.id}/capture.json`);
     assert.equal(item.command, item.id.startsWith("node-") ? "node --test fixture.mjs" : "tsx --test fixture.test.ts");
     for (const key of ["command", "exitCode", "complete", "signal", "timedOut"] as const) assert.equal(receipt[key], item[key]);
     assert.equal(receipt.nativeSpawned, true); assert.equal(receipt.nativeExitObserved, true);
     assert.equal(receipt.encodingError, null); assert.equal(receipt.launchError, null);
-    assert.deepEqual(receipt.cleanupErrors, []); assert.deepEqual(receipt.tools, manifest.tools);
-    assert.equal(receipt.producer.sha256, manifest.producer.sourceSHA256);
+    assert.deepEqual(receipt.cleanupErrors, []);
+    assert.deepEqual(receipt.tools.map(({ name, version, executable }) => ({ name, version, executable })), manifest.tools);
+    for (const tool of manifest.tools) assert.deepEqual(Object.keys(tool).sort(), ["executable", "name", "version"]);
+    assert.equal(receipt.tools[1]!.installation, "existing pinned project; never installed");
+    assert.match(receipt.tools[1]!.lockedIntegrity!, /^sha512-/);
+    assert.deepEqual(receipt.producer, { file: manifest.producer.script, sha256: manifest.producer.sourceSHA256, bytes: 14960 });
     assert.equal(receipt.baselineSourceSHA, "882585e5f916821a482d14bc7bfe7d6a102b772a");
     assert.equal(receipt.environmentPolicy.reporterOverride, "none on default cases");
     for (const key of ["original", "stdout", "stderr"] as const) assert.deepEqual(receipt.streams[key], item[key]);
@@ -244,9 +261,47 @@ const corruptions: [string, Case, string | RegExp, string][] = [
   ["hierarchy todo", nested, "# todo 1", "# todo 0"],
   ["unknown YAML parent", nested, "  duration_ms: 219.17975", "  duration_ms: 219.17975\n  arbitrary: 1"],
 ];
-for (const [name, item, before, after] of corruptions) test(`NODE-MALFORMED ${name}: whole output exact`, () => {
+const coldCounterexamples: typeof corruptions = [
+  ["EOF midfooter missing duration value", flat, /# duration_ms[^\n]+\n$/, "# duration_ms"],
+  ["parent duration NaN", nested, "  duration_ms: 219.17975", "  duration_ms: NaN"],
+  ["footer duration NaN", flat, /# duration_ms [\d.]+/, "# duration_ms NaN"],
+  ["footer duration negative", flat, /# duration_ms [\d.]+/, "# duration_ms -1"],
+  ["flat todo inconsistent", flat, "# todo 0", "# todo 1"],
+  ["flat skipped inconsistent", flat, "# skipped 0", "# skipped 1"],
+  ["unknown YAML type", flat, "type: 'test'", "type: 'unknown'"],
+  ["nested root plan 3", nested, "\n1..2\n", "\n1..3\n"],
+  ["child zero plan", nested, "    1..15", "    1..0"],
+  ["root sibling index 3", nested, "ok 2 - UTILITY_ROOT_SIBLING", "ok 3 - UTILITY_ROOT_SIBLING"],
+];
+corruptions.push(...coldCounterexamples);
+function refusalCase(item: Case, before: string | RegExp, after: string, profile = nodeTestProfile): void {
+  positive(item, undefined, undefined, undefined, profile); // accepted correct native baseline in this same test
   const output = changed(text(item.original), before, after);
-  preserved(observation(item, output)); assert.equal(nodeTestProfile.reduce(output, observation(item, output)), undefined);
+  preserved(observation(item, output), profile); assert.equal(profile.reduce(output, observation(item, output)), undefined);
+}
+for (const [name, item, before, after] of corruptions) test(`NODE-MALFORMED ${name}: whole output exact`, () => {
+  refusalCase(item, before, after);
+});
+test("NODE-ORACLE: cold counterfeit accepting all ten new malformed inputs fails each refusal case", () => {
+  for (const [, item, before, after] of coldCounterexamples) {
+    const counterfeit: Profile = { id: "node-test", match: nodeTestProfile.match, reduce: (source) => {
+      const spans = kept(item, source); return { pieces: spans, required: spans };
+    } };
+    assert.throws(() => refusalCase(item, before, after, counterfeit), /reduced/);
+  }
+});
+test("NODE-ORACLE: unchanged replacement cannot hide required spans splitting a surrogate pair", () => {
+  const source = text(nested.original), expected = text(nested.expected), spans = kept(nested, source);
+  const valid: Reduction = { pieces: spans, required: spans }, emoji = source.indexOf("🚀");
+  const profile = (value: Reduction): Profile => ({ id: "node-test", match: () => true, reduce: () => value });
+  accepted(observation(nested), expected, spans, profile(valid));
+  for (const split of [[emoji, emoji + 1], [emoji + 1, emoji + 2]] as const) {
+    const broken = { ...valid, required: [split] };
+    assert.equal(renderPrivate(source, broken), expected);
+    assert.throws(() => evidence(source, expected, [], broken), /surrogate boundary/);
+    assert.equal(filter(observation(nested), { profiles: [profile(broken)] }).status, "failed_open");
+  }
+  evidence(source, expected, spans, valid);
 });
 
 test("NODE-ORACLE: refusal assertion catches private count-guard bypass", () => {
@@ -261,26 +316,39 @@ test("NODE-NAMES: duplicate descriptions stay valid when numeric scope is unambi
   const source = changed(text(flat.original), /utility passing item 02/g, "utility passing item 01");
   positive(flat, source);
 });
-test("NODE-HIERARCHY: valid-shaped recursion beyond 32 scopes remains exact", () => {
-  function block(depth: number): string {
+test("NODE-SYNTHETIC HIERARCHY: accepted depth 32 baseline precedes depth 33 refusal", () => {
+  function block(depth: number, maximum: number): string {
     const indent = "    ".repeat(depth), name = `depth ${depth}`;
-    return `${indent}# Subtest: ${name}\n${depth < 33 ? `${block(depth + 1)}${indent}    1..1\n` : ""}` +
+    return `${indent}# Subtest: ${name}\n${depth < maximum ? `${block(depth + 1, maximum)}${indent}    1..1\n` : ""}` +
       `${indent}ok 1 - ${name}\n${indent}  ---\n${indent}  duration_ms: 0\n${indent}  type: 'test'\n${indent}  ...\n`;
   }
-  const output = `TAP version 13\n${block(0)}1..1\n# tests 34\n# suites 0\n# pass 34\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 0\n`;
+  const outputAt = (depth: number) => `TAP version 13\n${block(0, depth)}1..1\n# tests ${depth + 1}\n# suites 0\n# pass ${depth + 1}\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 0\n`;
+  const baseline = outputAt(32), leaf = block(32, 32), start = baseline.indexOf(leaf);
+  assert.ok(start >= 0);
+  const spans: Span[] = [[0, start], [start + leaf.length, baseline.length]];
+  accepted(observation(flat, baseline), spans.map((span) => baseline.slice(...span)).join(""), spans);
+  const output = outputAt(33);
   preserved(observation(flat, output)); assert.equal(nodeTestProfile.reduce(output, observation(flat, output)), undefined);
 });
+for (const [item, before] of [[flat, "utility passing item 01"], [nested, "UTILITY_TODO_CHILD"]] as const) {
+  test(`NODE-SYNTHETIC directive-shaped full name: ${item.id}`, () => {
+    const rename = (source: string) => source.replaceAll(before, "utility # TODO literal description");
+    positive(item, rename(text(item.original)), rename(text(item.expected)), undefined, undefined,
+      item.required.map((anchor) => ({ ...anchor, text: rename(anchor.text) })));
+  });
+}
 for (const runner of ["node", "tsx"]) {
   const item = noise.find((entry) => entry.id === `${runner}-flat-default`)!;
   const file = runner === "node" ? "fixture.mjs" : "fixture.test.ts";
   for (const tail of ["", file, `--test-reporter=tap ${file}`, `--test-concurrency=2 ${file}`,
-    `--test-reporter=tap --test-concurrency=2 ${file}`]) test(`NODE-ARGV admit ${runner} --test ${tail}`, () => {
+    `--test-reporter=tap --test-concurrency=2 ${file}`]) test(`NODE-SYNTHETIC command replay admit ${runner} --test ${tail}`, () => {
     const command = `${runner} --test${tail ? ` ${tail}` : ""}`;
     assert.equal(nodeTestProfile.match(command.split(" ")), true); positive(item, undefined, undefined, command);
   });
   for (const tail of [`--test-reporter=spec ${file}`, `--test-reporter=json ${file}`, `--eval x`,
     `--unknown ${file}`, `--test-concurrency=0 ${file}`, `--test-concurrency=x ${file}`,
-    `--test-reporter=tap --test-reporter=tap ${file}`, `*.mjs`]) test(`NODE-ARGV refuse ${runner} --test ${tail}`, () => {
+    `--test-reporter=tap --test-reporter=tap ${file}`, `*.mjs`]) test(`NODE-SYNTHETIC command replay refuse ${runner} --test ${tail}`, () => {
+    positive(item);
     const command = `${runner} --test ${tail}`;
     assert.equal(nodeTestProfile.match(command.split(" ")), false); preserved({ ...observation(item), command });
   });
