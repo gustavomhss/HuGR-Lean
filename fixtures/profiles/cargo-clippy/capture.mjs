@@ -1,4 +1,4 @@
-// Capture only: never imports the filter or claims parser support.
+// Native capture only: never imports the filter or synthesizes negative output.
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { cpSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -35,6 +35,7 @@ const specs = [
   ["two-packages", ["-p", "capture_alpha", "-p", "capture_beta", "--lib"], 0],
   ["deny-warnings", ["--workspace", "--", "-D", "warnings"], 101],
   ["collision", ["-p", "capture_alpha", "--features", "collision"], 0],
+  ["profile-dev", ["--workspace", "--profile", "dev"], 0],
 ];
 const cases = [];
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -60,33 +61,16 @@ for (const [id, flags, exitCode] of specs) {
     policy: reducible ? "PROPOSED_REDUCTION" : exitCode ? "FAILED_EXACT" : id === "collision" ? "AMBIGUOUS_EXACT" : "NO_REMOVABLE_MATERIAL",
   });
 }
-const base = cases[0];
-const original = readFileSync(join(root, base.file), "utf8");
-for (const [id, output, completeness, termination] of [
-  ["unknown-line", `${original}opaque producer sentinel\n`, "complete", base.termination],
-  ["new-format", original.replace("warning:", "warning[future-format]:"), "complete", base.termination],
-  ["incomplete", original.slice(0, original.lastIndexOf("    Finished")), "truncated", base.termination],
-  ["unknown-boundary", original, "unknown", { kind: "unknown" }],
-]) {
-  const file = `captures/${id}.txt`;
-  writeFileSync(join(root, file), output);
-  cases.push({ ...base, id: `C03-${id}`, file, expectedFile: undefined, status: "passthrough",
-    completeness, termination, removableBytes: 0, policy: "DERIVED_EXACT",
-    boundary: "derived negative witness; source native stderr boundary recorded on C03-workspace",
-    provenance: { derivedFrom: base.file, modification: id, sha256: hash(output) } });
-}
-const regressionFile = "../../utility/cargo/warning/original.log";
-cases.push({ id: "C03-existing-warning-regression", command: "cargo test --color never", file: regressionFile,
-  status: "passthrough", termination: { kind: "exited", code: 0 }, completeness: "complete",
-  presentation: "terminal-rendered", policy: "BASELINE_PRESERVED_REGRESSION_ONLY",
-  provenance: { commit: "07ffe15e2263c2925778022194c5385807216603", receipt: "../../utility/cargo/warning/receipt.json",
-    sha256: hash(readFileSync(join(root, regressionFile))) } });
-writeFileSync(join(root, "cases.json"), JSON.stringify({ schema: "native-cases-1", stage: "CAPTURED",
-  expectationScope: "proposed policy, not executed filter results", nativeVersion,
-  provenance: { cwd, capturedAt: new Date().toISOString(), platform: `${process.platform}/${process.arch}`,
+const provenance = { cwd, capturedAt: new Date().toISOString(), platform: `${process.platform}/${process.arch}`,
     recipe: "capture.mjs", environment: { CARGO_TERM_COLOR: "never", CARGO_BUILD_JOBS: "1" },
     clearedEnvironment: ["RUSTFLAGS", "CARGO_ENCODED_RUSTFLAGS", "RUSTC_WRAPPER", "RUSTC_WORKSPACE_WRAPPER", "CARGO_TARGET_DIR"],
-    license: "MIT", baseline: "07ffe15e2263c2925778022194c5385807216603" }, cases }, null, 2) + "\n");
+    license: "MIT", baseline: "07ffe15e2263c2925778022194c5385807216603" };
+const nativeCases = cases.map(c => ({ name: c.id.replace("C03-", "C03/"), family: "cargo-clippy",
+  command: c.command, file: c.file, status: c.status, ...(c.expectedFile ? { expectedFile: c.expectedFile } : {}),
+  termination: c.termination, completeness: c.completeness, presentation: c.presentation,
+  version: nativeVersion.clippy, platform: provenance.platform,
+  provenance: { ...provenance, ...c.provenance, boundary: c.boundary } }));
+writeFileSync(join(root, "cases.json"), JSON.stringify({ schema: "hugr-lean/native-cases/1", cases: nativeCases }, null, 2) + "\n");
 cpSync(join(cwd, "Cargo.lock"), join(root, "project/Cargo.lock"));
 const sources = [];
 function inventory(dir, relative = "") {
