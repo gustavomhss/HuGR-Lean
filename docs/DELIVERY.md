@@ -1,4 +1,4 @@
-# Public GitHub delivery candidate — 2026-10-07
+# Public GitHub delivery candidate — utility update 2026-10-08
 
 **Candidate pending human approval; not a new release or a completed gate.**
 Local Git is canonical. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
@@ -6,13 +6,12 @@ This is the single operational status record; historical release/benchmark repor
 
 ## Identity and evidence boundary
 
-Frozen code baseline: `56cd420190506e495b6446daf6ec6e4f95c94da2`.
-It contains the independently reviewed format C1 fix, manual exact-SHA Actions guard,
-new-owner package/module contact identity and retirement of previous-provider execution configs.
-Documentation changes are based on that tree. Full local macOS proof at this baseline is now
-independently verified. Aggregate blob comparison from that baseline to the first documentation
-commit found only the four owned docs changed: source/scripts/tests/package/workflow are identical.
-This proves code identity, not identity of the final documentation-bearing tarball or release approval.
+Utility documentation base: `b2af5300567e6f4fc96c77a81f599fbdc665916b`.
+All four native parser cold reviews are approved. The integrated source declares 10 profile IDs
+(nine reducers plus inert `tsc`) and a 39-case combined/installed matrix. Current full-suite,
+installed-package, host and latency verification remains pending; no passing outcome is inferred.
+Earlier delivery baseline `56cd420190506e495b6446daf6ec6e4f95c94da2` has dated private proof below,
+not a receipt for the utility candidate. [Utility evaluation](UTILITY_EVALUATION.md) defines the new corpus.
 
 The delivery PR and candidate evidence receipt must record the exact full 40-character head
 after documentation integration. Use that approved head as `FULL_REVIEWED_DELIVERY_SHA` in
@@ -27,16 +26,16 @@ and existing witnesses, not fresh executions by this documentation change.
 | PLAN item | Actual implementation / witnesses | Current evidence and remaining decision |
 | --- | --- | --- |
 | 1. Foundation | [Manifest](../package.json), [types](../src/core/types.ts), [LICENSE](../LICENSE), [build](../scripts/build.mjs), [structure tests](../tests/structure.test.ts) | One MIT TypeScript package, Node 22+, five modules. Baseline local structure/typecheck/build passed. |
-| 2. Pure core | [Engine](../src/core/engine.ts), [command identity](../src/core/command.ts), [lines](../src/core/lines.ts), [core tests](../tests/core.test.ts), [normalization tests](../tests/normalize.test.ts) | Bounded input, fail-open, UTF-16 spans and UTF-8 byte metrics implemented. Baseline full suite and temporary compiled-copy mutation controls passed/restored. |
+| 2. Pure core | [Engine](../src/core/engine.ts), [command identity](../src/core/command.ts), [lines](../src/core/lines.ts), [core tests](../tests/core.test.ts), [normalization tests](../tests/normalize.test.ts) | Bounded input, fail-open, UTF-16 spans and UTF-8 byte metrics. Earlier baseline mutation controls passed/restored; current candidate full-suite receipt pending. |
 | 3. OpenCode | [Adapter](../src/opencode/index.ts), [plugin tests](../tests/plugin.test.ts), [host proof](OPENCODE.md) | Historical file/preinstalled package-name proof plus fresh installed model-bound proof at baseline: 1.18.17 legacy CLI, macOS x64. Final docs-artifact proof pending; V2/other routes unproved. |
-| 4. Profiles | [Registry](../src/profiles/index.ts), [runners](../src/profiles/runners.ts), [formats](../src/profiles/formats.ts), [runner tests](../tests/runners.test.ts), [format tests](../tests/formats.test.ts), [combined tests](../tests/combined.test.ts), [coverage](COVERAGE.md) | Native admitted grammars only; diagnostics/install progress remain passthrough. Final C1 fix is in this baseline; historical `ae4c3b5` lacks it. Baseline suite/installed fixture replay passed. |
+| 4. Profiles | [Registry](../src/profiles/index.ts), [runner barrel](../src/profiles/runners.ts), [Node TAP](../src/profiles/node-test.ts), [formats](../src/profiles/formats.ts), [combined tests](../tests/combined.test.ts), [coverage](COVERAGE.md) | Cargo/Go/pytest expansion and Node TAP cold reviews approved. Closed diagnostic contexts are preserved; unsupported diagnostics/install progress pass through. Jest/Vitest utility strategy unchanged. Final integrated receipts pending. |
 | 5. UX | [Options](../src/opencode/config.ts), [CLI](../src/cli/index.ts), [CLI tests](../tests/cli.test.ts), [README lifecycle](../README.md#lifecycle) | Baseline installed CLI/doctor and normal lifecycle installation passed. Upgrade/rollback/remove documented; final docs-artifact installation pending; no registry availability claim. |
 | 6. Optional raw | [Store](../src/raw/index.ts), [raw tests](../tests/raw.test.ts), [TTL tests](../tests/raw-ttl.test.ts), [real-host raw script](../scripts/opencode-raw-smoke.mjs) | Raw off by default; exact captured boundary, byte/TTL limits and safe IDs implemented. Fresh baseline raw off/on host and exact CLI recovery passed. |
-| 7. Proof/release | [Combined corpus tests](../tests/combined.test.ts), [installed smoke](../scripts/package-smoke.mjs), [smoke controls](../tests/package-smoke.test.ts), [benchmarks](BENCHMARK.md), [native evaluation](BENCHMARK_REAL.md), [NOTICE](../NOTICE), [distribution](DISTRIBUTION.md) | Baseline local mechanical/installed/host proof passed. Final docs-artifact proof, three-OS CI, retained corpus verification and human publication/usefulness decisions remain pending. |
+| 7. Proof/release | [Combined corpus tests](../tests/combined.test.ts), [installed smoke](../scripts/package-smoke.mjs), [smoke controls](../tests/package-smoke.test.ts), [historical benchmarks](BENCHMARK.md), [historical native evaluation](BENCHMARK_REAL.md), [utility evaluation](UTILITY_EVALUATION.md), [distribution](DISTRIBUTION.md) | Private composed branch reports five smoke passes. Final SHA/package/host/full-suite/latency receipt, three-OS CI, historical replay and human publication/usefulness decisions remain pending. |
 
-## Verified baseline local proof; final artifact receipt pending
+## Dated baseline proof; utility candidate receipt pending
 
-The independently verified private receipt covers exactly the frozen baseline above on Darwin
+The earlier independently verified private receipt covers exactly `56cd420190506e495b6446daf6ec6e4f95c94da2` on Darwin
 24.3.0 x64, Node 22.17.1/npm 10.9.2. Structure/typecheck/build, the full suite at file concurrency 2,
 installed smoke and pack inspection passed: **688 passes, 0 failures, 0 skips**. Four structure
 LOC warnings remain recorded. Existing mutation controls rejected altered temporary compiled
@@ -52,20 +51,24 @@ Fresh mechanical p95 core/raw-off adapter: **4.326/3.849 ms at 256 KiB** (limits
 samples, fixture/control/synthetic workloads, no upstream recapture. Start load averages:
 3.457/3.437/3.343. These local measurements do not certify another OS or practical usefulness.
 
-The receipt is private, not a public downloadable bundle. Final documentation changes affect
-packed bytes: final repacking, installation, document inspection and exact-head evidence are
-forthcoming. Record that receipt outside the candidate commit to avoid a self-hash cycle, with
-the full integrated SHA, artifact checksum, outcomes and retained logs. CI and human review
-remain pending; the baseline artifact is not the final docs artifact.
+The earlier receipt is private, not a public downloadable bundle or current utility result.
+Private composed-branch smoke is partial evidence only. Final repacking, installation, host/model-bound
+checks, full suite, latency and document inspection must bind the integrated public head and tarball.
+Record the full SHA, package SHA-256, environment, outcomes and retained failures/logs in the external
+PR receipt to avoid a self-hash cycle. The final code SHA is supplied by the lead, not guessed here.
 
 Installed package proof, actual host/model-bound proof and raw off/on recovery are separate
 checks. Smoke without `--opencode` can prove package paths but reports incomplete release proof;
 it is not real-host compatibility. Latency acceptance must retain declared budgets, environment,
 load and failures; historic timing is not a measurement of this head. This documentation lane
-runs static checks and controlled install-recipe fail-stop probes only, not product tests,
-npm installation, benchmarks or remote CI.
+runs static checks only; it does not supply product-test, installation, native-run or latency receipts.
 
-The historical native corpus is not recovered for a fresh pass. Do not fabricate captures,
+The new native corpus contains 25 original local fixture cases (12 noise, 13 exact), with deliberate
+long names/many tests; it is not representative real-agent-session evidence. Its frozen inventory is
+439 files / 1,193,627 bytes. Cargo's deliberate 61-second build delay and native `2m 01s` are outside
+filter latency. Recorded Node/tsx runtime fingerprints do not vendor binaries or revalidate them locally.
+
+The historical corpus tarball is missing for fresh replay verification. Do not fabricate captures,
 rerun upstream commands as replacement historical evidence or erase failed reports.
 Recorded primary savings remain **471 / 1,272,795 UTF-8 bytes = 0.037005%**, with zero material
 primary cases: **the practical noise-reduction criterion failed on that corpus**.
