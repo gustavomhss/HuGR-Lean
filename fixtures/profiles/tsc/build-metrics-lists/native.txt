@@ -1,0 +1,128 @@
+3:28:39 PM - Projects in this build: 
+    * refs/lib/tsconfig.json
+    * refs/app/tsconfig.json
+    * refs/tsconfig.json
+
+3:28:39 PM - Project 'refs/lib/tsconfig.json' is being forcibly rebuilt
+
+3:28:39 PM - Building project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/lib/tsconfig.json'...
+
+TSFILE: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/lib/out/index.js
+TSFILE: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/lib/out/index.d.ts
+TSFILE: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/lib/out/tsconfig.tsbuildinfo
+../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts
+  Library 'lib.es5.d.ts' specified in compilerOptions
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.d.ts
+  Library referenced via 'decorators' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.legacy.d.ts
+  Library referenced via 'decorators.legacy' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+refs/lib/index.ts
+  Part of 'files' list in tsconfig.json
+Files:                          4
+Lines of Library:            5010
+Lines of Definitions:           0
+Lines of TypeScript:            2
+Lines of JavaScript:            0
+Lines of JSON:                  0
+Lines of Other:                 0
+Identifiers:                 4352
+Symbols:                     3878
+Types:                       1512
+Instantiations:               411
+Memory used:               27426K
+Assignability cache size:      85
+Identity cache size:            0
+Subtype cache size:             0
+Strict subtype cache size:      0
+I/O Read time:              0.01s
+Parse time:                 0.99s
+ResolveLibrary time:        0.08s
+Program time:               1.18s
+Bind time:                  0.40s
+Check time:                 3.42s
+transformTime time:         0.41s
+commentTime time:           0.00s
+I/O Write time:             0.00s
+printTime time:             0.59s
+Emit time:                  0.67s
+Total time:                 5.67s
+3:28:45 PM - Project 'refs/app/tsconfig.json' is being forcibly rebuilt
+
+3:28:45 PM - Building project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/app/tsconfig.json'...
+
+TSFILE: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/app/out/index.js
+TSFILE: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/app/out/index.d.ts
+TSFILE: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/app/out/tsconfig.tsbuildinfo
+../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts
+  Library 'lib.es5.d.ts' specified in compilerOptions
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.d.ts
+  Library referenced via 'decorators' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.legacy.d.ts
+  Library referenced via 'decorators.legacy' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+refs/lib/out/index.d.ts
+  Imported via "../lib" from file 'refs/app/index.ts'
+  File is output of project reference source 'refs/lib/index.ts'
+refs/app/index.ts
+  Part of 'files' list in tsconfig.json
+Files:                          5
+Lines of Library:            5010
+Lines of Definitions:           2
+Lines of TypeScript:            3
+Lines of JavaScript:            0
+Lines of JSON:                  0
+Lines of Other:                 0
+Identifiers:                 4355
+Symbols:                     3882
+Types:                       1510
+Instantiations:               411
+Memory used:               32011K
+Assignability cache size:      85
+Identity cache size:            0
+Subtype cache size:             0
+Strict subtype cache size:      0
+I/O Read time:              0.00s
+Parse time:                 0.01s
+ResolveModule time:         0.01s
+ResolveLibrary time:        0.00s
+Program time:               0.07s
+Bind time:                  0.00s
+Check time:                 2.38s
+transformTime time:         0.02s
+commentTime time:           0.00s
+I/O Write time:             0.00s
+printTime time:             0.11s
+Emit time:                  0.11s
+Total time:                 2.56s
+Projects in scope:                        3
+Projects built:                           2
+Aggregate Files:                          9
+Aggregate Lines of Library:           10020
+Aggregate Lines of Definitions:           2
+Aggregate Lines of TypeScript:            5
+Aggregate Lines of JavaScript:            0
+Aggregate Lines of JSON:                  0
+Aggregate Lines of Other:                 0
+Aggregate Identifiers:                 8707
+Aggregate Symbols:                     7760
+Aggregate Types:                       3022
+Aggregate Instantiations:               822
+Aggregate Memory used:               32011K
+Aggregate Assignability cache size:     170
+Aggregate Identity cache size:            0
+Aggregate Subtype cache size:             0
+Aggregate Strict subtype cache size:      0
+Aggregate I/O Read time:              0.01s
+Aggregate Parse time:                 1.00s
+Aggregate ResolveLibrary time:        0.09s
+Aggregate Program time:               1.25s
+Aggregate Bind time:                  0.40s
+Aggregate Check time:                 5.79s
+Aggregate transformTime time:         0.42s
+Aggregate commentTime time:           0.00s
+Aggregate I/O Write time:             0.01s
+Aggregate printTime time:             0.70s
+Aggregate Emit time:                  0.78s
+Aggregate ResolveModule time:         0.01s
+Config file parsing time:             0.42s
+Up-to-date check time:                0.00s
+Build time:                           9.89s
