@@ -14,18 +14,18 @@ type NativeCase = {
   original: Artifact; stdout: Artifact; stderr: Artifact; expected: Artifact; capture: Artifact;
   fixtureSources: Artifact[]; required: { text: string; occurrence: number }[];
 };
-type Runtime = Artifact & { kind: string; tool: string; version: string; executable: string };
+type Runtime = Artifact & { kind: string; tool: string; version: string; executable: string; lockedIntegrity?: string };
 type Manifest = { cases: NativeCase[]; provenance: { id: string; index: { parts: Artifact[] }; externalRuntimes?: Runtime[] }[] };
 const root = fileURLToPath(new URL("../fixtures/utility/", import.meta.url));
 const hash = (bytes: Buffer | string) => createHash("sha256").update(bytes).digest("hex");
 const format = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 
-// Pinned, byte-exact import from candidate-GtJZlt/corpus, normalizer commit 07aeddc.
+// Pinned import: candidate-nzGIOf/corpus, normalizer 570593df0d8464578ace48004a14fbf130fdc84e.
 // Protected case/source fingerprints were compared against all four parser actors AND
 // pre-import base 9e3c87a24dec7a3206f6232938696eccda5cb6dd; no source modifications.
-// Node executable is an external fingerprint, not vendored bytes or binary reverification.
-// Its recorded v22.17.1 identity binds the original index/source inventory/version capture.
-// Runtime reader tests require the lead's 07aeddc/09934e1 reader integration.
+// Node and tsx runtimes are external fingerprints, not vendored executable/module bytes.
+// Their recorded v22.17.1 / 4.23.15 identities bind the original index, source inventory,
+// captured versions and tsx lockedIntegrity. Reader integration is lead-owned.
 // Full old tree retained in Git backup ref and private snapshot with per-file retirement ledger.
 // Go's 20 retired extras: 14 duplicate programs/* files, four relocated go-version artifacts,
 // producer-source.mjs and source-inventory.json. Node retires prepare-corpus.mjs.
@@ -37,7 +37,7 @@ const pins = {
   go: { count: 61, all: "22a0dbc8522bc879961face8b52ad8cfd16d345a620a9713cffea172e0c6b468",
     protectedCount: 25, protected: "973f478c6875be0c918c224eda023b7f8d4850681ecb840f82210e0165ff235c",
     sourceCount: 14, sources: "801ea68fde8ba1f14586e04c87de66afc196ecb6239abf9c525c53a0295c95df" },
-  node: { count: 86, all: "c58a42579bdaf6bc6c824cbcddb00e76b2b36eed2015ce39aeb5de67c73f3e30",
+  node: { count: 85, all: "0663481849ff565a2365e1e0e2cd7da08c1ef176863a2ce5460500741a6b21df",
     protectedCount: 50, protected: "58eb1cd79c18f1e4ae519fe35f5d2ad027cca5dcc0aba9fdb0a5c724d451e616",
     sourceCount: 10, sources: "c504cfb3098f98f3d9b337f62165fbfc4270364786fa8851a67f859a36a88e3d" },
   pytest: { count: 214, all: "0e8fbcfe28409d53714d388c238d0a40672c9822994b2eb67f03b282f5ce5dff",
@@ -47,10 +47,11 @@ const pins = {
 const MAX_BLOB_BYTES = 1_000_000;
 
 function smallInventory(files: Map<string, Buffer>): void {
-  assert.equal(files.size, 440, "small corpus file count");
-  assert.equal([...files.values()].reduce((sum, bytes) => sum + bytes.length, 0), 1_317_834, "small corpus UTF-8/artifact bytes");
+  assert.equal(files.size, 439, "small corpus file count");
+  assert.equal([...files.values()].reduce((sum, bytes) => sum + bytes.length, 0), 1_193_627, "small corpus UTF-8/artifact bytes");
   for (const [file, bytes] of files) assert.ok(bytes.length < MAX_BLOB_BYTES, `oversized blob: ${file}`);
-  assert.equal(Math.max(...[...files.values()].map(bytes => bytes.length)), 124_418, "largest pinned artifact");
+  assert.equal(Math.max(...[...files.values()].map(bytes => bytes.length)), 63_450, "largest pinned artifact");
+  assert.ok([...files.keys()].every(file => !file.endsWith("/tsx-executable") && !file.endsWith("/native-node-executable")), "runtime payload must not be vendored");
 }
 
 // Independent filesystem enumeration and frozen inventory, not a manifest-derived oracle.
@@ -113,8 +114,11 @@ test("UTILITY-INVENTORY size teeth: missing files, byte drift and 1 MB blobs can
   const oversized = new Map(files);
   const names = [...files.keys()]; names.forEach(name => oversized.set(name, Buffer.alloc(0)));
   oversized.set(names[0]!, Buffer.alloc(MAX_BLOB_BYTES));
-  oversized.set(names[1]!, Buffer.alloc(317_834));
+  oversized.set(names[1]!, Buffer.alloc(193_627));
   assert.throws(() => smallInventory(oversized), /oversized blob/);
+  const payload = new Map(files), first = [...files][0]!;
+  payload.delete(first[0]); payload.set("node/provenance/forbidden/tsx-executable", first[1]);
+  assert.throws(() => smallInventory(payload), /runtime payload must not be vendored/);
 });
 
 test("UTILITY-INVENTORY: current fixtures bind 25 cases, 12 noise, 13 exact and six lineage roots", async () => {
@@ -192,7 +196,9 @@ test("UTILITY-INVENTORY runtime teeth: wrong runtime and external fixture-source
   await readUtilityCorpus(scratch); // Positive control: base reader without externalRuntimes must fail here.
   const absolute = path.join(scratch, "node/manifest.json"), before = await readFile(absolute);
   const pristine = JSON.parse(before.toString()) as Manifest;
-  const runtime = pristine.provenance[0]!.externalRuntimes![0]!;
+  const runtimes = pristine.provenance[0]!.externalRuntimes!;
+  assert.deepEqual(runtimes.map(row => row.tool).sort(), ["node", "tsx"]);
+  const runtime = runtimes.find(row => row.tool === "node")!;
   assert.deepEqual(runtime, { file: "native-node-executable", sha256: "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541",
     bytes: 224_341_744, kind: "tool-executable", tool: "node", version: "v22.17.1", executable: "/usr/local/bin/node" });
   for (const [patch, error] of [
@@ -204,7 +210,26 @@ test("UTILITY-INVENTORY runtime teeth: wrong runtime and external fixture-source
     [{ executable: "/wrong/node" }, /EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH/],
   ] as const) {
     const changed = structuredClone(pristine);
-    Object.assign(changed.provenance[0]!.externalRuntimes![0]!, patch);
+    Object.assign(changed.provenance[0]!.externalRuntimes!.find(row => row.tool === "node")!, patch);
+    try {
+      await writeFile(absolute, format(changed));
+      await assert.rejects(readUtilityCorpus(scratch), error);
+    } finally { await writeFile(absolute, before); }
+  }
+  const tsx = runtimes.find(row => row.tool === "tsx")!;
+  assert.equal(tsx.file, "pinned-tsx-project/tsx-executable"); assert.equal(tsx.kind, "tool-module");
+  assert.equal(tsx.version, "4.23.15"); assert.equal(tsx.bytes, 124_418);
+  assert.equal(tsx.sha256, "8690135061bc49d187143493b82d26a09b7fb71d6dd817d2242cc9dc52506de9");
+  assert.equal(tsx.lockedIntegrity, "sha512-Yiex1Ovn8z2xPpOWckIiysV1SSyRMY9BkLF++q0yKiDxCqRhosKfMg3janKkiLBwZ5c/YryloKwGZcrEmtwxKw==");
+  for (const [patch, error] of [
+    [{ version: "4.23.16" }, /EXTERNAL_RUNTIME_NOT_ALLOWED/],
+    [{ kind: "tool-executable" }, /EXTERNAL_RUNTIME_NOT_ALLOWED/],
+    [{ file: "sources/flat/fixture.test.ts" }, /EXTERNAL_RUNTIME_NOT_ALLOWED/],
+    [{ lockedIntegrity: "sha512-forged" }, /EXTERNAL_RUNTIME_INTEGRITY_MISMATCH/],
+    [{ sha256: "0".repeat(64) }, /EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH/],
+  ] as const) {
+    const changed = structuredClone(pristine);
+    Object.assign(changed.provenance[0]!.externalRuntimes!.find(row => row.tool === "tsx")!, patch);
     try {
       await writeFile(absolute, format(changed));
       await assert.rejects(readUtilityCorpus(scratch), error);
