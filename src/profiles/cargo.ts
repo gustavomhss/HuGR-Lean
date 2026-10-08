@@ -1,4 +1,3 @@
-import { iterateLines } from "../core/lines.js";
 import { tokenizeCommand } from "../core/command.js";
 import type { Line, Observation, Profile, Reduction } from "../core/types.js";
 import { nativeProfile, reduction, uint } from "./runner-utils.js";
@@ -34,28 +33,33 @@ function cargo(output: string, observation: Observation, testing: boolean): Redu
   const argv = tokenizeCommand(observation.command);
   if (!argv || !cargoIdentity(argv, testing ? "test" : "build")) return undefined;
   const libraryOnly = testing && argv.includes("--lib");
-  const rows = iterateLines(output);
-  let current = rows.next().value ?? undefined;
-  function take(): Line | undefined {
-    const line = current;
-    current = rows.next().value ?? undefined;
-    return line;
+  let start = 0, end = 0, current: string | undefined;
+  function advance(): void {
+    start = end;
+    if (start === output.length) { current = undefined; return; }
+    const newline = output.indexOf("\n", start);
+    end = newline === -1 ? output.length : newline + 1;
+    let textEnd = newline === -1 ? end : newline;
+    if (output.charCodeAt(textEnd - 1) === 13) textEnd--;
+    current = output.slice(start, textEnd);
   }
-  while (current && compiling.test(current.text)) take();
-  const finished = take();
+  // Only retained evidence needs a Line and its UTF-16 span.
+  const retain = (): Line => ({ text: current!, span: [start, end] });
+  advance();
+  while (current !== undefined && compiling.test(current)) advance();
   const mode = testing ? "test" : "dev";
-  const finish = finishRow.exec(finished?.text ?? "");
-  if (!finished || !finish || finish[1] !== mode || !finiteSeconds(finish[3]!, finish[2] !== undefined) ||
-      (finish[2] !== undefined && (uint(finish[2]) === undefined || Number(finish[2]) < 1))) return undefined;
-  const kept: Line[] = [finished];
+  const finish = finishRow.exec(current ?? "");
+  if (!finish || finish[1] !== mode || !finiteSeconds(finish[3]!, finish[2] !== undefined) ||
+       (finish[2] !== undefined && (uint(finish[2]) === undefined || Number(finish[2]) < 1))) return undefined;
+  const kept: Line[] = [retain()];
+  advance();
   if (!testing) return current === undefined ? reduction(kept) : undefined;
 
   const contexts = new Set<string>(), executables = new Set<string>();
   let suites = 0;
-  while (current?.text === "") take();
+  while (current === "") advance();
   while (current !== undefined) {
-    const header = take()!;
-    const executable = executableHeader.exec(header.text), doc = docHeader.exec(header.text);
+    const executable = executableHeader.exec(current), doc = docHeader.exec(current);
     if (!executable && !doc) return undefined;
     const context = executable ? `exec:${executable[1]}` : `doc:${doc![1]}`;
     if (contexts.has(context)) return undefined;
@@ -68,28 +72,30 @@ function cargo(output: string, observation: Observation, testing: boolean): Redu
       executables.add(target);
     }
     suites++;
-    kept.push(header);
-    while (current?.text === "") take();
-    const count = /^running (\d+) (test|tests)$/.exec(take()?.text ?? "");
+    kept.push(retain());
+    advance();
+    while (current === "") advance();
+    const count = /^running (\d+) (test|tests)$/.exec(current ?? "");
     const total = uint(count?.[1]);
     if (total === undefined || count?.[2] !== (total === 1 ? "test" : "tests")) return undefined;
+    advance();
     let passed = 0, ignored = 0;
     const names = new Set<string>();
-    while (current?.text.startsWith("test ") && !current.text.startsWith("test result:")) {
-      const line = take()!;
-      const test = (doc ? docTest : rustTest).exec(line.text);
+    while (current?.startsWith("test ") && !current.startsWith("test result:")) {
+      const test = (doc ? docTest : rustTest).exec(current);
       if (!test || names.has(test[1]!) || (doc && (uint(test[2]) === undefined || Number(test[2]) < 1))) return undefined;
       names.add(test[1]!);
       if (test[doc ? 3 : 2] === "ok") passed++;
-      else { ignored++; kept.push(line); }
+      else { ignored++; kept.push(retain()); }
+      advance();
     }
-    while (current?.text === "") take();
-    const summary = take();
-    const result = summaryRow.exec(summary?.text ?? "");
-    if (!summary || !result || uint(result[1]) !== passed || uint(result[2]) !== ignored ||
+    while (current === "") advance();
+    const result = summaryRow.exec(current ?? "");
+    if (!result || uint(result[1]) !== passed || uint(result[2]) !== ignored ||
         uint(result[3]) === undefined || passed + ignored !== total || !finiteSeconds(result[4]!)) return undefined;
-    kept.push(summary);
-    while (current?.text === "") take();
+    kept.push(retain());
+    advance();
+    while (current === "") advance();
   }
   if (suites === 0) return undefined;
   return reduction(kept);
