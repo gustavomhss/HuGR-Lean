@@ -46,7 +46,7 @@ function invocation(argv: readonly string[]): Invocation | undefined {
       flags.set(key, value);
     }
   }
-  if (!flags.has("--offline") || (flags.has("--release") && flags.has("--profile")) ||
+  if ((flags.has("--release") && flags.has("--profile")) ||
       (flags.has("--exclude") && !flags.has("--workspace"))) return undefined;
   return { mode: argv[1], profile: flags.get("--profile") ?? (flags.has("--release") ? "release" : "dev"), flags };
 }
@@ -149,7 +149,8 @@ export const familyProfiles: readonly Profile[] = [
   nativeProfile("cargo-build", argv => original.match(argv) || invocation(argv)?.mode === "build",
     (output, observation) => {
       const argv = tokenizeCommand(observation.command);
-      return argv && original.match(argv) ? original.reduce(output, observation) : parse(output, observation);
+      const legacy = argv && original.match(argv) ? original.reduce(output, observation) : undefined;
+      return legacy ?? parse(output, observation);
     }),
   nativeProfile("cargo-check", argv => invocation(argv)?.mode === "check", parse),
 ];

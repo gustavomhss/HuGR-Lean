@@ -45,7 +45,7 @@ for (const c of packet.cases) {
 }
 
 test("finite packet IDs and family subcommands have no overlap", () => {
-  const required = "conditional-test-warning structural-build structural-check structural-check-buildscript release-workspace custom-package-lib release-bin-target release-example check-workspace check-custom-all-targets check-lib-target check-bin-examples build-warnings check-warnings build-collision build-cached check-cached build-failure check-custom-targets-success build-cached-clean check-collision build-all-features-targets".split(" ");
+  const required = "default-build-warning default-check-warning default-release-build default-release-check conditional-test-warning structural-build structural-check structural-check-buildscript release-workspace custom-package-lib release-bin-target release-example check-workspace check-custom-all-targets check-lib-target check-bin-examples build-warnings check-warnings build-collision build-cached check-cached build-failure check-custom-targets-success build-cached-clean check-collision build-all-features-targets".split(" ");
   assert.deepEqual(packet.cases.map(c => c.name).sort(), required.map(n => `C01/${n}`).sort());
   assert.deepEqual(familyProfiles.map(p => p.id), ["cargo-build", "cargo-check"]);
   for (const c of packet.cases) {
@@ -122,9 +122,11 @@ test("closed argv rejects unknown flags, missing values, duplicate flags and con
   }
 });
 
-test("new reduction requires captured offline boundary; selector/profile arity valid", () => {
+test("synthetic property: offline is optional execution data, not an admission boundary", () => {
   for (const c of packet.cases.filter(c => c.status === "reduced")) {
-    exact({ ...input(c), command: c.command.replace(" --offline", "") });
+    const without = c.command.replace(" --offline", ""), expected = read(c.expectedFile);
+    accepted({ ...input(c), command: without }, expected, c.family);
+    accepted({ ...input(c), command: `${without} --offline` }, expected, c.family);
   }
 });
 
@@ -274,4 +276,33 @@ test("conditional summaries: native unpaired lib-test valid; pending diagnostics
   // Optional duplicate-only summary is independent evidence; no fabricated absence guarantee.
   const duplicate = "warning: `c01-app` (lib) generated 1 warning (1 duplicate)\n";
   accepted({ ...pair, output: pair.output.replace(duplicate, "") }, read(paired.expectedFile).replace(duplicate, ""), paired.family);
+});
+
+test("default build legacy decline enters only the complete bounded warning grammar", () => {
+  const c = find("default-build-warning"), observation = input(c);
+  const legacy = cargoProfiles.find(p => p.id === "cargo-build")!;
+  assert.equal(legacy.match(["cargo", "build"]), true);
+  assert.equal(legacy.reduce(observation.output, observation), undefined, "original formatter does not recognize warnings");
+  accepted(observation, read(c.expectedFile), c.family);
+  for (const prefix of ["    Updating crates.io index\n", " Downloading crates ...\n", "  Downloaded dependency v1.0.0\n",
+    "C01 new producer row\n", "\n"]) {
+    exact({ ...observation, output: prefix + observation.output });
+  }
+  exact({ ...observation, output: observation.output.replace("warning: function `dormant_café` is never used", "warning: constant `UNUSED_VALUE` is never used") });
+  const errors = readFileSync(new URL("../fixtures/runners/build_cargo_errors.txt", import.meta.url), "utf8");
+  exact({ ...observation, output: errors }); // even falsely successful metadata cannot admit compiler errors
+  exact({ ...observation, output: errors, termination: { kind: "exited", code: 101 } });
+});
+
+test("synthetic default/package/default-feature variants remain structural without offline", () => {
+  for (const stem of ["default-build-warning", "default-check-warning"]) {
+    const c = find(stem), observation = input(c), expected = read(c.expectedFile);
+    for (const suffix of ["-p ridge-lib", "--features standard,detail", "-p ridge-lib --no-default-features",
+      "-p ridge-lib --all-features", "-p ridge-lib --features detail"]) {
+      accepted({ ...observation, command: `${observation.command} ${suffix}` }, expected, c.family);
+    }
+    const renamed = (text: string) => text.replaceAll("ridge-lib", "mesa-util").replaceAll("dormant_café", "retired_café");
+    accepted({ ...observation, command: `${observation.command} -p mesa-util --features vector_math`, output: renamed(observation.output) },
+      renamed(expected), c.family);
+  }
 });
