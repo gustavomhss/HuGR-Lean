@@ -1,10 +1,13 @@
 # G01 capture-only acceptance packet
 
-State: CAPTURED. Frozen seam: `goMode` text; JSON and benchmark belong to G02/G03.
+State: implementation under review for literal selectors; anchored-command admission blocked.
+Frozen seam: `goMode` text; JSON and benchmark belong to G02/G03.
 Manifest family remains `go-test-verbose` per packet contract, including nonverbose commands.
-`status` describes the proposed independent golden, not current public-filter results.
-No parser, registry, legacy test or shared-file changes. No admission/red-to-green claim.
-Test names below reserve future focused acceptance assertions; none exist in this capture PR.
+For initial anchored captures, `status` still describes the preserved proposed independent golden,
+not current public-filter results. Literal supplemental reductions have focused public-filter proof.
+Only owned parser/test files and this fixture directory changed; original `go.ts` delegates unchanged.
+Initial table test names describe acceptance intentions; focused assertions live in
+`tests/profile-go-test-text.test.ts`.
 
 ## Delta cases
 
@@ -57,6 +60,53 @@ or clone them. Existing disposition is BASELINE_PRESERVED, not new G01 reduction
 
 Native source and exact capture facts are in `SOURCES.md` and `cases.json`. Goldens are source-backed
 ordered subsets, with exact originals for passthrough. Proposed reduction byte savings are fixture
-deltas, not measured public-filter savings. Parser admission, focused acceptance tests and their
-preservation mutation probes are deferred to lead-approved implementation work. Exact-only captures
-do not substitute for unimplemented mandatory reduction coverage; no human scope waiver recorded.
+deltas. Literal supplemental native fixtures are now compared against the public custom-profile filter
+and the original `goProfile` baseline. Exact-only captures do not substitute for mandatory reductions.
+The anchored commands cannot reach a profile: frozen `tokenizeCommand` rejects `^` and `$` even quoted.
+No core edit or human scope waiver recorded. Lead must resolve this precise seam/scope blocker.
+
+## Approved implementation policy and supplemental acceptance
+
+Lead approval: reduce validated quiet completed scopes only; retain entire log/skip/ancestor linked
+lifecycle exact. Logged parallel exact fixtures are preservation witnesses, not compression proof.
+
+| Stable ID | Captured variant | Required evidence / actual disposition | UTF-8 input → expected; removable |
+| --- | --- | --- | --- |
+| G01/literal-selector | split literal slash `-run`, `.` | PASS/package summary; reduced | 231 → 33; 198 |
+| G01/literal-nested | literal `-run=TestNested`, nested skip | skip/log/ancestors exact; quiet sibling reduced | 367 → 285; 82 |
+| G01/literal-race-cover-count-run | literal run, race+cover+count=2 | PASS/both coverage records/package exact; quiet occurrences reduced | 192 → 96; 96 |
+| G01/literal-count | split count=2 and literal slash run | PASS/package exact; complete repeated scopes reduced | 430 → 34; 396 |
+| G01/literal-collision | literal selector, linked progress-shaped t.Log | all log/lifecycle exact; passthrough unsafe-removal witness | 318 → 318; 0 |
+| G01/quiet-parallel | literal selector, parallel=2 | PASS/package exact; complete quiet parallel scopes reduced | 377 → 33; 344 |
+| G01/mixed-parallel | literal prefix selects logged+quiet parallel roots | entire logged root/lifecycle retained chronologically; quiet root reduced | 766 → 422; 344 |
+| G01/name-switch | native NAME context with anchored selector | native log context exact; core-blocked passthrough | 450 → 450; 0 |
+
+Closed delta argv uses only literal captured selectors, bare `-v/-race/-cover`, count 1/2 and parallel 2.
+Split and inline valued flags are validated; duplicates, missing/unknown values, extra positionals and
+uncaptured combinations refuse. Race requires the captured verbose cover/count=2/quiet combination.
+Coverage-only nonverbose has no removable material. JSON/bench routing is frozen and excluded.
+
+Parser validates RUN parent paths, child creation, pause/resume/NAME active scopes, indentation,
+parent-first result closure, serial sibling result order, complete repeated count occurrences, final
+PASS/package boundaries and matching coverage records. Results and linked source rows stay in observed
+order. Dynamic material is emitted only through ordered UTF-16 source spans. No log sorting/dedup.
+
+Unseen Example/Fuzz, top-level parallel tests, cached delta summaries, extra delta packages, new selectors,
+unknown lines and invalid lifecycle transitions remain exact. Existing serial/cache/./... admission
+comes exclusively from the unchanged original delegate and reused utility fixtures.
+
+## Focused verification receipt
+
+- `npx --no-install tsx --test tests/profile-go-test-text.test.ts`: 34 passed, zero skipped,
+  after production mutations were restored. Six native positive fixtures prove baseline original
+  `goProfile` refusal followed by exact independent-golden reduction through public custom profiles.
+- Production evidence probe: changed `protect` to set `keep=false`; targeted native nested,
+  mixed-parallel and Unicode/progress-linked tests all failed on missing actual golden evidence.
+- Production admission probe: bypassed the all-scopes-ended predicate; targeted closure test failed
+  when an unfinished parallel child was reduced. Both source edits restored via patch before rerun.
+- `npm run typecheck` passed initially and after restoration. One post-restoration parallel invocation
+  timed out at 120 seconds; explicit retry with 240-second allowance exited 0. No timeout concealed.
+- Existing utility manifest cases compare original and extended public-filter results exactly.
+  Native corpus checks bind output SHA-256, file correspondence and independent ordered goldens.
+- No full tests/build/smoke/benchmark or CI dispatch. No claim of default registry extension or
+  universal Go grammar. Lead cold-check and anchored-command seam decision remain required.

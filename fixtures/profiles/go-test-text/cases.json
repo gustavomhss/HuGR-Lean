@@ -63,6 +63,62 @@
       "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
       "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
       "provenance": { "source": "SOURCES.md", "capture": "native spawnSync stdout; stderr empty", "sha256": "51bfc5c45ea81a493918c623f8efe48ac37ef9febabdb101b3d65aa2a51548f1" }
+    },
+    {
+      "name": "G01/literal-selector", "family": "go-test-verbose", "command": "go test -v -run TestNested/group/quiet .",
+      "file": "literal-selector.txt", "status": "reduced", "expectedFile": "literal-selector.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "b4e536656b6f664f203eb99c5e47727774dbeac489d95078bdfbe2573025db14" }
+    },
+    {
+      "name": "G01/literal-nested", "family": "go-test-verbose", "command": "go test -v -run=TestNested .",
+      "file": "literal-nested.txt", "status": "reduced", "expectedFile": "literal-nested.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "705d9dedbfe06b3e8265f814273fd3f3202635d99bd2f9dd1faa41c8c82b585f" }
+    },
+    {
+      "name": "G01/literal-race-cover-count-run", "family": "go-test-verbose", "command": "go test -v -race -cover -count=2 -run=TestQuiet .",
+      "file": "literal-race-cover-count-run.txt", "status": "reduced", "expectedFile": "literal-race-cover-count-run.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "2d3301def76ac3d9b9cadc6f7ae0dc0524eec9e6281611687f6e501d7e651b60" }
+    },
+    {
+      "name": "G01/literal-count", "family": "go-test-verbose", "command": "go test -v -count 2 -run TestNested/group/quiet .",
+      "file": "literal-count.txt", "status": "reduced", "expectedFile": "literal-count.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "7a75dc29561d61aefeea20a0ae5a522990c43f90e974eabb69d2b1d027e2ec59" }
+    },
+    {
+      "name": "G01/literal-collision", "family": "go-test-verbose", "command": "go test -v -run=TestCollision .",
+      "file": "literal-collision.txt", "status": "passthrough", "expectedFile": "literal-collision.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "6e2d94b6092427b134f5599e6c78a64c2e81085c0758e21a26dd31d7edb3aca9" }
+    },
+    {
+      "name": "G01/quiet-parallel", "family": "go-test-verbose", "command": "go test -v -parallel 2 -run=TestParallelQuiet .",
+      "file": "quiet-parallel.txt", "status": "reduced", "expectedFile": "quiet-parallel.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "6a12ead3c6e4242f1ed92272616b70957de55c7aa71f43bc5d6ce249bb309e92" }
+    },
+    {
+      "name": "G01/mixed-parallel", "family": "go-test-verbose", "command": "go test -v -parallel 2 -run=TestParallel .",
+      "file": "mixed-parallel.txt", "status": "reduced", "expectedFile": "mixed-parallel.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "e180cd8705405bd9df8f605a48aaec5765d3ca317955b24832102bfdde1c92ff" }
+    },
+    {
+      "name": "G01/name-switch", "family": "go-test-verbose", "command": "go test -v -parallel 2 -run=TestParallel$ .",
+      "file": "name-switch.txt", "status": "passthrough", "expectedFile": "name-switch.expected.txt",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "source": "SOURCES.md", "sha256": "7a555ea58b4faafbbf54251e676edfba55c2ddea3e87e89b078d63c9be3b7d4a" }
     }
   ]
 }

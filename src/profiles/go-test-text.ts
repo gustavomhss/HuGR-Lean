@@ -1,3 +1,246 @@
 import { goProfile } from "./go.js";
-import type { Profile } from "../core/types.js";
-export const familyProfiles: readonly Profile[] = [goProfile];
+import { goMode } from "./go-mode.js";
+import { tokenizeCommand } from "../core/command.js";
+import { lines } from "../core/lines.js";
+import type { Line, Profile, Reduction } from "../core/types.js";
+import { nativeProfile, reduction } from "./runner-utils.js";
+
+interface Options {
+  verbose: boolean;
+  cover: boolean;
+  count: number;
+  run: string;
+}
+
+const selectors = new Set([
+  "TestNested/group/quiet", "TestNested", "TestParallel", "TestParallelQuiet",
+  "TestQuiet", "TestCollision", "TestAbsent",
+]);
+
+/** Closed delta argv. Anchored regexes cannot cross the frozen literal command tokenizer. */
+function options(argv: readonly string[]): Options | undefined {
+  if (goMode(argv) !== "text") return undefined;
+  const seen = new Map<string, string>();
+  let packageSeen = false;
+  for (let i = 2; i < argv.length; i++) {
+    const arg = argv[i]!;
+    if (arg === ".") {
+      if (packageSeen || i !== argv.length - 1) return undefined;
+      packageSeen = true;
+      continue;
+    }
+    const equal = arg.indexOf("=");
+    const key = equal < 0 ? arg : arg.slice(0, equal);
+    if (seen.has(key)) return undefined;
+    if (["-v", "-race", "-cover"].includes(key)) {
+      if (equal >= 0) return undefined;
+      seen.set(key, "true");
+    } else if (["-run", "-count", "-parallel"].includes(key)) {
+      const value = equal < 0 ? argv[++i] : arg.slice(equal + 1);
+      if (!value || (key === "-run" ? !selectors.has(value) :
+        key === "-count" ? !["1", "2"].includes(value) : value !== "2")) return undefined;
+      seen.set(key, value);
+    } else return undefined;
+  }
+  const run = seen.get("-run") ?? "";
+  const verbose = seen.has("-v"), cover = seen.has("-cover");
+  const count = Number(seen.get("-count") ?? "1");
+  if (seen.size && (!packageSeen || !run)) return undefined;
+  if (seen.has("-parallel") && (!verbose || !["TestParallel", "TestParallelQuiet"].includes(run))) return undefined;
+  if (seen.has("-race") && (!verbose || !cover || count !== 2 || run !== "TestQuiet")) return undefined;
+  if (cover && (run !== "TestQuiet" || (verbose && !seen.has("-race")))) return undefined;
+  if (!verbose && seen.size && !(cover && seen.size === 2)) return undefined;
+  return { verbose, cover, count, run };
+}
+
+interface Scope {
+  name: string;
+  parent: Scope | undefined;
+  children: Scope[];
+  rows: number[];
+  parallel: boolean;
+  paused: boolean;
+  resumed: boolean;
+  ended: boolean;
+  keep: boolean;
+}
+
+const testName = /^Test[\p{L}\p{N}_]+(?:\/[\p{L}\p{N}_.-]+)*$/u;
+const seconds = "(?:0|[1-9]\\d*)(?:\\.\\d+)?";
+const resultRow = new RegExp(`^( *)(?:--- (PASS|SKIP):) (\\S+) \\((${seconds})s\\)$`, "u");
+
+function ancestors(scope: Scope): Scope[] {
+  const path: Scope[] = [];
+  for (let node: Scope | undefined = scope; node; node = node.parent) path.push(node);
+  return path.reverse();
+}
+
+function protect(scope: Scope): void {
+  for (let node: Scope | undefined = scope; node; node = node.parent) node.keep = true;
+}
+
+function finished(scope: Scope): boolean {
+  return scope.ended && scope.children.every(finished);
+}
+
+class Lifecycle {
+  readonly scopes: Scope[] = [];
+  readonly occurrences = new Map<string, number>();
+  private current = new Map<string, Scope>();
+  private stack: Scope[] = [];
+  private diagnostic: Scope | undefined;
+
+  constructor(private readonly config: Options) {}
+
+  private selected(name: string): boolean {
+    const path = name.split("/"), selected = this.config.run.split("/");
+    if (selected[0] === "TestParallel") {
+      if (!["TestParallel", "TestParallelQuiet"].includes(path[0]!)) return false;
+    } else if (path[0] !== selected[0]) return false;
+    return selected.slice(1).every((part, i) => path[i + 1] === undefined || path[i + 1] === part);
+  }
+
+  private run(name: string, index: number): boolean {
+    if (!testName.test(name) || !this.selected(name) || name.split("/").length > 128) return false;
+    const slash = name.lastIndexOf("/");
+    let parent: Scope | undefined;
+    if (slash < 0) {
+      if ([...this.current.values()].some(node => !node.ended)) return false;
+      this.current = new Map();
+      this.stack = [];
+      const count = (this.occurrences.get(name) ?? 0) + 1;
+      if (count > this.config.count) return false;
+      this.occurrences.set(name, count);
+    } else {
+      parent = this.current.get(name.slice(0, slash));
+      if (!parent || parent.ended || parent.paused || !this.stack.includes(parent) ||
+        [...this.current.values()].some(node => node.resumed)) return false;
+      this.stack = this.stack.slice(0, this.stack.indexOf(parent) + 1);
+    }
+    if (this.current.has(name)) return false;
+    const scope: Scope = { name, parent, children: [], rows: [index], parallel: false,
+      paused: false, resumed: false, ended: false, keep: false };
+    parent?.children.push(scope);
+    this.scopes.push(scope);
+    this.current.set(name, scope);
+    this.stack.push(scope);
+    return true;
+  }
+
+  private switch(kind: string, name: string, index: number): boolean {
+    const scope = this.current.get(name);
+    if (!scope || scope.ended || scope.parent?.ended) return false;
+    if (kind === "PAUSE") {
+      // Captured support is subtest parallelism, not top-level parallel tests.
+      if (!scope.parent || scope.parallel || this.stack.at(-1) !== scope) return false;
+      scope.parallel = scope.paused = true;
+      this.stack.pop();
+    } else {
+      if (kind === "CONT") {
+        if (!scope.paused || scope.resumed) return false;
+        scope.paused = false;
+        scope.resumed = true;
+      } else if (!scope.parallel || !scope.resumed || scope.paused) return false;
+      this.stack = ancestors(scope);
+    }
+    scope.rows.push(index);
+    return true;
+  }
+
+  private close(match: RegExpExecArray, index: number): boolean {
+    const scope = this.current.get(match[3]!);
+    if (!scope || scope.ended || scope.paused || !Number.isFinite(Number(match[4])) ||
+      (scope.parent && !scope.parent.ended)) return false;
+    if (match[1]!.length !== (ancestors(scope).length - 1) * 4) return false;
+    if ([...this.current.values()].some(node => node.paused)) return false;
+    const siblings = scope.parent?.children ?? [];
+    for (const previous of siblings.slice(0, siblings.indexOf(scope))) {
+      if (!finished(previous) && !(previous.parallel && scope.parallel)) return false;
+    }
+    if (match[2] === "SKIP") {
+      if (scope.children.length) return false;
+      protect(scope);
+    }
+    scope.ended = true;
+    scope.rows.push(index);
+    this.stack = [];
+    return true;
+  }
+
+  consume(row: string, index: number): boolean {
+    const event = /^=== (RUN  |PAUSE|CONT |NAME ) (\S+)$/.exec(row);
+    if (event) {
+      this.diagnostic = undefined;
+      return event[1] === "RUN  " ? this.run(event[2]!, index) :
+        this.switch(event[1]!.trim(), event[2]!, index);
+    }
+    // A log continuation may itself spell a nested result. Linkage wins over text shape.
+    if (/^ {8}/.test(row) && this.diagnostic) {
+      this.diagnostic.rows.push(index);
+      return true;
+    }
+    const result = resultRow.exec(row);
+    if (result) {
+      this.diagnostic = undefined;
+      return this.close(result, index);
+    }
+    const header = /^ {4}[^\s:]+\.go:([1-9]\d*):(?: .*)?$/.exec(row);
+    if (header) {
+      const active = this.stack.at(-1);
+      if (!active || active.ended || active.paused || !Number.isSafeInteger(Number(header[1]))) return false;
+      this.diagnostic = active;
+      protect(active);
+      active.rows.push(index);
+      return true;
+    }
+    return false;
+  }
+
+  complete(): boolean {
+    return this.scopes.length > 0 && this.scopes.every(node => node.ended) &&
+      [...this.occurrences.values()].every(count => count === this.config.count);
+  }
+}
+
+function summary(rows: readonly Line[], start: number, config: Options): boolean {
+  if (rows[start]?.text !== "PASS") return false;
+  let i = start + 1;
+  let coverage: string | undefined;
+  if (config.cover) {
+    const match = /^coverage: (\d+\.\d%) of statements$/.exec(rows[i++]?.text ?? "");
+    if (!match || Number(match[1]!.slice(0, -1)) > 100) return false;
+    coverage = match[1];
+  }
+  const match = new RegExp(`^ok {2}\\t([^\\s]+)\\t(${seconds})s(?:\\tcoverage: (\\d+\\.\\d%) of statements)?$`).exec(rows[i++]?.text ?? "");
+  return i === rows.length && !!match && Number.isFinite(Number(match[2])) &&
+    match[3] === coverage;
+}
+
+function parse(output: string, config: Options): Reduction | undefined {
+  // Summary-only nonverbose output has no removable material.
+  if (!config.verbose) return undefined;
+  const rows = lines(output), lifecycle = new Lifecycle(config);
+  let i = 0;
+  while (i < rows.length && rows[i]!.text !== "PASS") {
+    if (!lifecycle.consume(rows[i]!.text, i)) return undefined;
+    i++;
+  }
+  if (!lifecycle.complete() || !summary(rows, i, config)) return undefined;
+  const retained = new Set<number>();
+  for (const scope of lifecycle.scopes) if (scope.keep) for (const index of scope.rows) retained.add(index);
+  const kept = rows.filter((_, index) => index >= i || retained.has(index));
+  return kept.length < rows.length ? reduction(kept) : undefined;
+}
+
+const textProfile = nativeProfile("go-test-verbose",
+  argv => goMode(argv) === "text" && (goProfile.match(argv) || options(argv) !== undefined),
+  (output, observation) => {
+    const argv = tokenizeCommand(observation.command);
+    if (!argv || goMode(argv) !== "text") return undefined;
+    // Keep the original serial/package/cache parser as the unmodified delegate.
+    if (goProfile.match(argv)) return goProfile.reduce(output, observation);
+    const config = options(argv);
+    return config ? parse(output, config) : undefined;
+  });
+
+export const familyProfiles: readonly Profile[] = [textProfile];
