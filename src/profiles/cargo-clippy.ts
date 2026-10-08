@@ -83,8 +83,10 @@ function diagnostic(rows: readonly Line[], start: number, knownCodes: ReadonlySe
 function parse(output: string, observation: Observation): Reduction | undefined {
   const argv = tokenizeCommand(observation.command);
   const profile = argv && command(argv);
-  if (!profile || !output.endsWith("\n") || output.includes("\t") ||
-      /^warning: [A-Za-z_][A-Za-z0-9_-]*@\S+: /m.test(output)) return undefined;
+  // Refuse format controls before any leading progress could erase them.
+  // Producer labels are tokens, not Rust identifiers: numeric/dotted names are untrusted too.
+  if (!profile || !output.endsWith("\n") || output.includes("\t") || /\p{Cf}/u.test(output) ||
+      /^warning: [^\s@:]+@[^\s@:]+:/mu.test(output)) return undefined;
   const rows = lines(output);
   let i = 0;
   while (progress.test(rows[i]?.text ?? "")) i++;

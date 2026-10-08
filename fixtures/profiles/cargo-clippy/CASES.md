@@ -47,6 +47,12 @@ Mutation probes removed help, warning rows and later progress separately; indepe
 golden preservation test went RED each time. Bypassing pending diagnostic count check made
 inflated-count refusal test RED. All mutations restored before focused suite and typecheck.
 
-Known shared boundary: core strips supported terminal-rendered SGR before profile sees it.
-Direct profile refuses raw ESC; public filter can reduce the stripped form. C0/C1 rejection
-is verified for controls delivered to profile. Raw-SGR exactness needs lead-owned core decision.
+Cold-review delta: Unicode format controls (`Cf`, including bidi markers) refuse before
+leading progress scanning. Generic package/version warning-prefix tokens, including numeric,
+dotted and Unicode names, refuse even when the remaining diagnostic frame is valid.
+Both cold reproducers went RED before fixes; guard-removal mutations went RED, then restored.
+
+Presentation scope: unknown raw ANSI remains exact, and direct profile refuses raw ESC.
+Declared terminal-rendered supported SGR is normalized by existing core contract; public
+filter may reduce that rendered form against the independent plain golden. This is legitimate
+existing behavior, not a blocker. Format controls refuse under either presentation mode.
