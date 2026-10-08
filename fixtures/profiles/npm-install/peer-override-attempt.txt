@@ -1,0 +1,24 @@
+npm warn using --force Recommended protections disabled.
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: p01-plugin@1.0.0
+npm warn Found: p01-host@1.0.0
+npm warn node_modules/p01-host
+npm warn   p01-host@"file:./host" from the root project
+npm warn
+npm warn Could not resolve dependency:
+npm warn peerOptional p01-host@"^2.0.0" from p01-plugin@1.0.0
+npm warn node_modules/p01-plugin
+npm warn   p01-plugin@"file:./plugin/p01-plugin-1.0.0.tgz" from the root project
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: p01-plugin@1.0.0
+npm warn Found: p01-host@undefined
+npm warn node_modules/p01-host
+npm warn   p01-host@"file:./host" from the root project
+npm warn
+npm warn Could not resolve dependency:
+npm warn peerOptional p01-host@"^2.0.0" from p01-plugin@1.0.0
+npm warn node_modules/p01-plugin
+npm warn   p01-plugin@"file:./plugin/p01-plugin-1.0.0.tgz" from the root project
+npm error code ENOTCACHED
+npm error request to https://registry.npmjs.org/p01-host failed: cache mode is 'only-if-cached' but no cached response is available.
+npm error A complete log of this run can be found in: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-registry-2gdswoac/peer-cache/_logs/2026-10-08T18_56_44_242Z-debug-0.log
