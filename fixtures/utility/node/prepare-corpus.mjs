@@ -80,8 +80,8 @@ if (operation === 'copy') {
   // One physical line per field/anchor: decoded evidence remains visible to review budgets.
   const header = { schema: 'hugr-lean/utility-corpus/1', family: 'node', tools: index.tools,
     producer: { script: index.producer.file, sourceSHA256: index.producer.sha256 } };
-  const body = cases.map(({ required, ...item }) => `  {\n${Object.entries(item).map(([key, value]) =>
-    `    ${JSON.stringify(key)}: ${JSON.stringify(value)},`).join('\n')}\n    "required": [\n${required.map((anchor) =>
+  const body = cases.map(({ required, ...item }) => `  {\n${Object.entries(item).map(([key, value], i) =>
+    `${i % 2 ? '' : '    '}${JSON.stringify(key)}: ${JSON.stringify(value)},${i % 2 ? '\n' : ' '}`).join('').trimEnd()}\n    "required": [\n${required.map((anchor) =>
     `      ${JSON.stringify(anchor)}`).join(',\n')}\n    ]\n  }`).join(',\n');
   writeFileSync(join(root, 'manifest.json'), `${JSON.stringify(header).slice(0, -1)},"cases":[\n${body}\n]}\n`, { flag: 'wx' });
   console.log(cases.map((item) => ({ id: item.id, input: item.original.bytes, expected: item.expected.bytes,
