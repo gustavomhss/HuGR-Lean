@@ -10,13 +10,25 @@ const record = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
 const nonempty = (v) => typeof v === "string" && v.length > 0;
 const digest = (v) => typeof v === "string" && /^[a-f0-9]{64}$/.test(v);
 const sha = (v) => typeof v === "string" && /^[a-f0-9]{40}$/.test(v);
+const FACT_FIELDS = ["command", "cwd", "exitCode", "signal", "timedOut", "nativeSpawned", "nativeExitObserved", "complete",
+  "durationMs", "guardianElapsedMs", "durationBoundary", "exitDurationMs", "bookkeepingMs", "durationDefinition", "guardianElapsedDefinition",
+  "captureDefinition", "encodingError", "launchError", "killErrors", "cleanupErrors"];
+const RECEIPT_FIELDS = ["id", "state", "baseline", "baselineSourceSHA", "sourceHead", "producer", "tools", "fixtureSources",
+  "artifacts", "streams", "original", "stdout", "stderr", "environmentPolicy", "environment", "errors", "sourceInventorySHA256"];
+const RECEIPT_VARIANTS = {
+  go: ["timeout"], node: ["startedAt", "recordedAt", "timeoutMs", "artifactCleanup"],
+  pytest: ["facts", "receipt", "retainedLiveDirectory", "observedRows", "versions", "timeoutMs", "sourceInventorySHA256", "prior", "role", "versionProof", "transformation"],
+  cargo: ["expectedExit", "timeoutMs", "runtime", "helpers", "amendedProducer", "priorIndexSHA256", "originalProducerCommit",
+    "fixtureSourcesBefore", "fixtureSourcesAfter", "checkedAbsentConfigs", "sourceChanges", "deliberateBuildDelaySeconds", "nativeFacts"],
+};
 function demand(ok, code, context) {
   if (!ok) throw new Error(`${code}: ${context}`);
 }
 function keys(value, required, optional, context) {
   demand(record(value), "INVALID_OBJECT", context);
   demand(required.every((key) => Object.hasOwn(value, key)), "MISSING_FIELD", context);
-  demand(Object.keys(value).every((key) => required.includes(key) || optional.includes(key)), "UNKNOWN_FIELD", context);
+  const unknown = Object.keys(value).filter((key) => !required.includes(key) && !optional.includes(key));
+  demand(unknown.length === 0, "UNKNOWN_FIELD", `${context}: ${unknown.join(",")}`);
 }
 function list(value, context) {
   demand(Array.isArray(value) && value.length > 0, "EMPTY_OR_INVALID_LIST", context);
@@ -125,10 +137,25 @@ function producer(value, context, raw = false) {
   if (value.bytes !== undefined) demand(Number.isSafeInteger(value.bytes) && value.bytes > 0, "INVALID_PRODUCER_BYTES", context);
   return normalized;
 }
+function declaredProvenance(value, context) {
+  const roots = new Set();
+  for (const entry of list(value, `${context}: provenance`)) {
+    keys(entry, ["root", "sourceHead", "indexSHA256", "sourceInventorySHA256", "producer"], [], context);
+    safe(entry.root, context);
+    demand(!roots.has(entry.root), "DUPLICATE_PROVENANCE_ROOT", `${context}: ${entry.root}`);
+    roots.add(entry.root);
+    demand(sha(entry.sourceHead) && digest(entry.indexSHA256) && digest(entry.sourceInventorySHA256), "INVALID_PROVENANCE_ROOT", `${context}: ${entry.root}`);
+    producer(entry.producer, `${context}: ${entry.root}`);
+  }
+  // Hash-shaped metadata is not a binding. Mapped index/source/version contract is awaiting lead freeze.
+  demand(false, "UNBOUND_PROVENANCE_INDEX", `${context}: provenance roots require mapped immutable indexes, complete sources and version captures`);
+}
 function receiptCheck(receipt, item, manifest, context) {
-  demand(record(receipt), "INVALID_RECEIPT", context);
+  keys(receipt, [], [...FACT_FIELDS, ...RECEIPT_FIELDS, ...RECEIPT_VARIANTS[manifest.family]], `${context}: receipt`);
   const facts = receipt.facts ?? receipt;
   demand(record(facts), "INVALID_RECEIPT_FACTS", context);
+  if (receipt.facts !== undefined) keys(facts, [], FACT_FIELDS, `${context}: receipt.facts`);
+  if (receipt.id !== undefined) demand(receipt.id === item.id, "RECEIPT_ID_MISMATCH", context);
   for (const key of ["command", "exitCode", "complete", "signal", "timedOut"]) {
     demand(facts[key] === item[key], "RECEIPT_FACT_MISMATCH", `${context}: ${key}`);
     if (Object.hasOwn(receipt, key)) demand(receipt[key] === facts[key], "CONFLICTING_RECEIPT_FACTS", `${context}: ${key}`);
@@ -138,34 +165,51 @@ function receiptCheck(receipt, item, manifest, context) {
   }
   demand(nonempty(facts.cwd) && path.isAbsolute(facts.cwd), "INVALID_CAPTURE_CWD", context);
   demand(facts.nativeSpawned === true && typeof facts.nativeExitObserved === "boolean", "INVALID_NATIVE_FACTS", context);
-  const errors = [facts.launchError, facts.encodingError, receipt.errors?.launch, receipt.errors?.encoding, receipt.errors?.preparation];
-  const cleanup = [facts.killErrors, facts.cleanupErrors, receipt.cleanupErrors, receipt.errors?.cleanup];
+  const errors = [facts.launchError, facts.encodingError, receipt.launchError, receipt.encodingError, receipt.errors?.launch, receipt.errors?.encoding, receipt.errors?.preparation];
+  if (receipt.errors !== undefined) keys(receipt.errors, [], ["launch", "encoding", "cleanup", "preparation"], `${context}: errors`);
+  const cleanup = [facts.killErrors, facts.cleanupErrors, receipt.killErrors, receipt.cleanupErrors, receipt.errors?.cleanup];
   demand(errors.every((v) => v === undefined || v === null)
     && cleanup.every((v) => v === undefined || (Array.isArray(v) && v.length === 0)), "CAPTURE_ERRORS", context);
   const complete = !facts.timedOut && Number.isSafeInteger(facts.exitCode) && facts.signal === null;
   demand(facts.complete === complete && (!complete || facts.nativeExitObserved), "INCOHERENT_CAPTURE_FACTS", context);
   demand(!facts.timedOut || item.role === "exact", "TIMED_OUT_NOISE", context);
   demand(Number.isFinite(facts.durationMs) && facts.durationMs >= 0 && nonempty(facts.durationBoundary), "INVALID_DURATION_PROVENANCE", context);
+  for (const key of ["guardianElapsedMs", "bookkeepingMs", "exitDurationMs"]) if (facts[key] !== undefined && facts[key] !== null) demand(Number.isFinite(facts[key]) && facts[key] >= 0, "INVALID_DURATION_PROVENANCE", `${context}: ${key}`);
+  demand(facts.captureDefinition === "stdout/stderr arrival order; no text rewriting", "INVALID_CAPTURE_DEFINITION", context);
   demand(sha(receipt.baseline ?? receipt.baselineSourceSHA)
     && (receipt.sourceHead === undefined || sha(receipt.sourceHead)), "INVALID_SOURCE_PROVENANCE", context);
   demand(receipt.baseline === undefined || receipt.baselineSourceSHA === undefined
     || receipt.baseline === receipt.baselineSourceSHA, "CONFLICTING_SOURCE_PROVENANCE", context);
   demand(receipt.sourceInventorySHA256 === undefined || digest(receipt.sourceInventorySHA256), "INVALID_SOURCE_INVENTORY_DIGEST", context);
+  demand(receipt.sourceInventorySHA256 === undefined, "UNBOUND_SOURCE_INVENTORY", `${context}: full source index mapping required`);
+  demand(receipt.priorIndexSHA256 === undefined && receipt.prior === undefined, "UNBOUND_PRIOR_INDEX", context);
+  demand(receipt.versionProof === undefined, "UNBOUND_VERSION_CAPTURES", context);
   demand(nonempty(receipt.environmentPolicy) || record(receipt.environmentPolicy) || record(receipt.environment), "MISSING_ENVIRONMENT_PROVENANCE", context);
   const declaredProducer = producer(item.producer ?? manifest.producer, context), observedProducer = producer(receipt.producer, context, true);
   demand(isEqual(declaredProducer, observedProducer), "PRODUCER_MISMATCH", context);
+  demand(receipt.producer.dependencies === undefined && receipt.helpers === undefined, "UNBOUND_PRODUCER_HELPERS", `${context}: immutable helper source mapping required`);
   const streamSets = [receipt.artifacts, receipt.streams, receipt.original === undefined ? undefined : receipt].filter((v) => v !== undefined);
   demand(streamSets.length > 0, "MISSING_RECEIPT_STREAMS", context);
   for (const streams of streamSets) {
     demand(record(streams), "INVALID_RECEIPT_STREAMS", context);
-    for (const key of ["original", "stdout", "stderr"]) sameDigest(streams[key], { ...item[key], file: item[key].sourceFile ?? item[key].file }, `${context}: ${key}`);
+    if (streams !== receipt) keys(streams, ["original", "stdout", "stderr"], [], `${context}: streams`);
+    for (const key of ["original", "stdout", "stderr"]) {
+      descriptor(streams[key], `${context}: receipt.${key}`);
+      sameDigest(streams[key], { ...item[key], file: item[key].sourceFile ?? item[key].file }, `${context}: ${key}`);
+    }
   }
   const phased = receipt.fixtureSourcesBefore !== undefined || receipt.fixtureSourcesAfter !== undefined;
+  demand(!phased || receipt.fixtureSources === undefined, "AMBIGUOUS_SOURCE_INVENTORY", context);
   demand(!phased || (manifest.family === "cargo" && ["before", "after"].includes(item.sourcePhase)), "SOURCE_PHASE_REQUIRED", context);
   demand(phased || item.sourcePhase === undefined, "UNEXPECTED_SOURCE_PHASE", context);
   const sources = list(phased ? receipt[item.sourcePhase === "before" ? "fixtureSourcesBefore" : "fixtureSourcesAfter"] : receipt.fixtureSources,
     `${context}: receipt.fixtureSources`), mapped = new Set();
   demand(sources.length === item.fixtureSources.length, "SOURCE_INVENTORY_MISMATCH", context);
+  for (const source of sources) {
+    keys(source, ["file", "sha256", "bytes"], ["originalSource", "license", "origin"], `${context}: receipt source`);
+    safe(source.file, context);
+    demand(digest(source.sha256) && Number.isSafeInteger(source.bytes) && source.bytes >= 0, "INVALID_DIGEST_DESCRIPTOR", context);
+  }
   for (const source of item.fixtureSources) {
     const name = source.sourceFile ?? source.file;
     demand(!mapped.has(name), "DUPLICATE_SOURCE_MAPPING", `${context}: ${name}`);
@@ -181,6 +225,13 @@ function receiptCheck(receipt, item, manifest, context) {
   }
   const receiptTools = list(receipt.tools, `${context}: receipt.tools`);
   demand(receiptTools.every(record), "INVALID_RECEIPT_TOOL", context);
+  for (const tool of receiptTools) {
+    keys(tool, ["name", "executable"], ["version", "realpath", "launcherSHA256", "bytes", "sha256", "receipt", "lockedIntegrity", "installation"], `${context}: receipt.tools`);
+    for (const key of ["version", "realpath", "lockedIntegrity", "installation"]) if (tool[key] !== undefined) demand(nonempty(tool[key]), "INVALID_RECEIPT_TOOL", `${context}: ${key}`);
+    for (const key of ["sha256", "launcherSHA256"]) if (tool[key] !== undefined) demand(digest(tool[key]), "INVALID_RECEIPT_TOOL", `${context}: ${key}`);
+    if (tool.bytes !== undefined) demand(Number.isSafeInteger(tool.bytes) && tool.bytes > 0, "INVALID_RECEIPT_TOOL", context);
+    demand(tool.receipt === undefined, "UNBOUND_TOOL_VERSION_RECEIPT", context);
+  }
   for (const tool of manifest.tools) {
     const direct = receiptTools.filter((entry) => entry.name === tool.name);
     const version = direct[0]?.version ?? receipt.versions?.[tool.name];
@@ -212,11 +263,12 @@ export async function readUtilityCorpus(root) {
     demand(files.has("SOURCES.md") && files.get("SOURCES.md").length > 0, "MISSING_SOURCES_NOTE", family);
     decode(files.get("SOURCES.md"), `${family}: SOURCES.md`);
     const manifest = json(files.get("manifest.json"), `${family}: manifest.json`);
-    keys(manifest, ["schema", "family", "tools", "producer", "cases"], [], family);
+    keys(manifest, ["schema", "family", "tools", "producer", "cases"], ["provenance"], family);
     demand(manifest.schema === SCHEMA && manifest.family === family, "INVALID_SCHEMA_OR_FAMILY", family);
     tools(manifest.tools, family);
     demand(manifest.tools.some((tool) => tool.name === family), "MISSING_FAMILY_TOOL", family);
     producer(manifest.producer, family);
+    if (manifest.provenance !== undefined) declaredProvenance(manifest.provenance, family);
     const rows = [], ids = new Set();
     for (const item of list(manifest.cases, `${family}: cases`)) {
       keys(item, ["id", "profile", "command", "role", "expectedStatus", "exitCode", "complete", "signal", "timedOut",
@@ -264,6 +316,9 @@ export async function readUtilityCorpus(root) {
         used.add("producer-source.mjs");
         snapshotPaths.add("producer-source.mjs");
       }
+      demand(receipt.producer.snapshot !== undefined || files.has("producer-source.mjs"), "MISSING_PRODUCER_SNAPSHOT", context);
+      const producerBytes = files.get(receipt.producer.snapshot?.file ?? "producer-source.mjs");
+      demand(receipt.producer.bytes === undefined || receipt.producer.bytes === producerBytes.length, "PRODUCER_BYTES_MISMATCH", context);
       const saved = item.original.bytes - item.expected.bytes;
       demand(item.material === (saved >= 1024 && saved >= item.original.bytes * 0.1), "MATERIAL_FLAG_MISMATCH", context);
       demand(item.role === "exact" ? texts.expected === texts.original : saved > 0

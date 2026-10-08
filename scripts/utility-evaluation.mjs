@@ -24,6 +24,7 @@ function safe(file, context) {
 export async function evaluateUtilityCorpus({ root, filter, createAfterHook }) {
   const report = { schema: "hugr-lean/utility-evaluation/1", scope: "new native fixture utility; no upstream execution or historical replay",
     oracle: "independent golden bytes and ordered rendered anchors; Profile.required and emitted-span declarations checked by parser tests",
+    streamOracle: "declared arrival-order capture, immutable receipt/artifact digests and stream lengths; cross-stream chunk ordering not independently authenticated",
     ok: false, expectedCases: null, checked: 0, passed: 0, records: [], failures: [], families: [] };
   let corpus;
   try {
