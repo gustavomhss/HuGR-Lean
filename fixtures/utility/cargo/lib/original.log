@@ -1,0 +1,15 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/target/debug/deps/hugr_utility_cargo-d33d504b26e55d28)
+
+running 8 tests
+test tests::ignored_unicode_reason ... ignored, original ignored reason: café 🦀 — native Unicode
+test tests::passing_00_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok
+test tests::passing_05_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok
+test tests::passing_03_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok
+test tests::passing_02_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok
+test tests::duplicate_suite_identity ... ok
+test tests::passing_01_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok
+test tests::passing_04_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok
+
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
