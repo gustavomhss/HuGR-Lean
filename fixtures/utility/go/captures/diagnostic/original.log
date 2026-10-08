@@ -1,0 +1,5 @@
+=== RUN   TestNativeDiagnosticOnly
+    diagnostic_test.go:5: HUGR_GO_DIAGNOSTIC_SENTINEL: successful log remains evidence café 🧭
+--- PASS: TestNativeDiagnosticOnly (0.00s)
+PASS
+ok  	example.com/hugr-utility-go/diagnostic	5.158s
