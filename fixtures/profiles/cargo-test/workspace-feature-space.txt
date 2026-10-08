@@ -1,0 +1,23 @@
+   Compiling c02-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/beta)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/c02_alpha-13c6944691c2d613)
+
+running 7 tests
+test tests::deferred ... ignored, native skip: café 🦀 — retained
+test tests::fails ... ignored, deliberate failure witness
+test tests::alpha_one ... ok
+test tests::alpha_two ... ok
+test tests::more_feature ... ok
+test tests::logs ... ok
+test tests::extra_feature ... ok
+
+test result: ok. 5 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/c02_beta-2e08ab9e147762aa)
+
+running 2 tests
+test tests::beta_one ... ok
+test tests::beta_more ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
