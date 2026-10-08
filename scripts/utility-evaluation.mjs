@@ -35,46 +35,47 @@ export async function evaluateUtilityCorpus({ root, filter, createAfterHook }) {
   }
   report.expectedCases = corpus.cases.length;
   for (const item of corpus.cases) {
-    const row = { id: item.id, family: item.family, role: item.role, command: item.command,
+    const id = item.qualifiedID;
+    const row = { id, family: item.family, role: item.role, command: item.command,
       exitCode: item.exitCode, signal: item.signal, complete: item.complete, timedOut: item.timedOut,
       expectedStatus: item.expectedStatus, expectedProfile: item.profile, material: item.material,
       inputBytes: item.original.bytes, expectedBytes: item.expected.bytes, expectedSavedBytes: item.original.bytes - item.expected.bytes,
-      capture: item.capture, original: item.original, expected: item.expected, fixtureSources: item.fixtureSources,
+      capture: item.capture, original: item.original, expected: item.expected, fixtureSources: item.fixtureSources, captureReceipt: item.captureReceipt,
       ok: false, result: null };
     let stage = "filter";
     try {
       const observation = structuredClone(item.observation), before = structuredClone(observation);
       const actual = await filter(observation);
       row.result = actual;
-      demand(isDeepStrictEqual(observation, before), "OBSERVATION_CHANGED", item.id);
-      demand(record(actual) && actual.status === item.expectedStatus, "STATUS_MISMATCH", item.id);
-      demand(actual.inputBytes === item.original.bytes && actual.outputBytes === item.expected.bytes, "BYTE_METRIC_MISMATCH", item.id);
-      demand(nonempty(actual.reason), "MISSING_RESULT_REASON", item.id);
+      demand(isDeepStrictEqual(observation, before), "OBSERVATION_CHANGED", id);
+      demand(record(actual) && actual.status === item.expectedStatus, "STATUS_MISMATCH", id);
+      demand(actual.inputBytes === item.original.bytes && actual.outputBytes === item.expected.bytes, "BYTE_METRIC_MISMATCH", id);
+      demand(nonempty(actual.reason), "MISSING_RESULT_REASON", id);
       demand(item.role === "noise" ? actual.profile === item.profile && actual.replacement === item.expectedText
-        : !Object.hasOwn(actual, "replacement") && !Object.hasOwn(actual, "profile"), "CORE_GOLDEN_OR_PROFILE_MISMATCH", item.id);
+        : !Object.hasOwn(actual, "replacement") && !Object.hasOwn(actual, "profile"), "CORE_GOLDEN_OR_PROFILE_MISMATCH", id);
       stage = "evidence";
       const outputText = item.role === "noise" ? actual.replacement : item.originalText;
       for (const anchor of item.required) {
         const [start, end] = anchor.expectedSpan;
         demand(item.originalText.slice(...anchor.sourceSpan) === anchor.text && outputText.slice(start, end) === anchor.text,
-          "RENDERED_ANCHOR_LOSS", item.id);
+          "RENDERED_ANCHOR_LOSS", id);
       }
       stage = "hook";
-      const input = { tool: "bash", args: { command: item.command }, callID: item.id };
-      const output = { title: item.id, output: item.originalText, metadata: {
+      const input = { tool: "bash", args: { command: item.command }, callID: id };
+      const output = { title: id, output: item.originalText, metadata: {
         exit: item.timedOut || item.signal !== null ? null : item.exitCode,
         truncated: item.complete ? false : undefined, output: item.originalText,
       } };
       const inputBefore = structuredClone(input), outputBefore = structuredClone(output);
       const hook = createAfterHook({ raw: false });
-      demand(typeof hook === "function", "INVALID_AFTER_HOOK", item.id);
+      demand(typeof hook === "function", "INVALID_AFTER_HOOK", id);
       await hook(input, output);
-      demand(output.output === item.expectedText, "HOOK_GOLDEN_MISMATCH", item.id);
+      demand(output.output === item.expectedText, "HOOK_GOLDEN_MISMATCH", id);
       demand(isDeepStrictEqual(input, inputBefore)
-        && isDeepStrictEqual(output, { ...outputBefore, output: output.output }), "EXECUTION_FACTS_CHANGED", item.id);
+        && isDeepStrictEqual(output, { ...outputBefore, output: output.output }), "EXECUTION_FACTS_CHANGED", id);
       row.ok = true; report.passed++;
     } catch (error) {
-      report.failures.push({ id: item.id, stage, error: error instanceof Error ? error.message : String(error) });
+      report.failures.push({ id, stage, error: error instanceof Error ? error.message : String(error) });
     }
     report.records.push(row); report.checked++;
   }
