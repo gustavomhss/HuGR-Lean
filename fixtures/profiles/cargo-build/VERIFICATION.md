@@ -168,3 +168,56 @@ All 22 native cases (15 reduced, 7 exact), independent phase goldens, target-sel
 native conditional-summary control and original delegated build witness executed. Source and
 test files remain below 400 lines. No full CI/core/registry/legacy modifications or full suite.
 Stop for cold lead review/probes; shared registry integration remains lead-owned.
+
+## Ordinary invocation scope extension after landed 9e797c4
+
+Pre-extension parser SHA: `9e797c42a17c717540e0a0f2560fe84130789243`. Four genuine default
+build/check and release/package calls executed without offline, with original MIT provenance
+and independent goldens in `DEFAULT-SOURCES.md`. This is new command coverage, not a relabel
+or recapture of earlier cases. Lead requested a later cherry-pick delta after landing 9e797c4.
+
+Actual pre-fix red before production edits:
+
+```sh
+node --import tsx --test --test-name-pattern='C01/default-.*: reduced independent native golden' tests/profile-cargo-build.test.ts
+```
+
+Exit 1, tests 4, pass 0, fail 4, skipped 0. Default build saw `unsupported_output` because
+the original profile matched but declined its warning stream. Default check and both release
+package calls saw `no_profile` because offline was incorrectly mandatory. All asserted actual
+`passthrough`, expected `reduced` against independent native goldens.
+
+After the two production changes, before mutations: whole owned-file tests/pass 79,
+fail/skipped 0, exit 0; typecheck exit 0. New properties cover optional offline across every
+candidate, generic package/default-feature variants and renamed warning/project data. Direct
+default-build fallback tests retain original successful fixture behavior, and refuse unknown
+warnings, download/update/resolver rows, extra leading newline and existing compiler-error
+fixture data even with falsely successful metadata. Earlier phase/selector rules still execute.
+
+Production mutation reintroduced the mandatory offline check, then reran the same four-native
+command above: exit 1, tests 4, pass 0, fail 4, skipped 0, with the same observed refusal reasons.
+That check was restored before the second mutation.
+
+Production mutation restored the old matched-legacy short-circuit, returning its undefined
+result instead of trying the complete new grammar:
+
+```sh
+node --import tsx --test --test-name-pattern='C01/default-build-warning: reduced independent native golden' tests/profile-cargo-build.test.ts
+```
+
+Actual exit 1, tests 1, pass 0, fail 1, skipped 0; `cargo build: unsupported_output`, actual
+`passthrough`, expected `reduced`. Nullish legacy-success preference followed by full bounded
+parse was restored with apply_patch. Native inputs/goldens were never mutated. Final owned-file
+and typecheck gate ran after restoration:
+
+```sh
+node --import tsx --test --test-reporter=spec tests/profile-cargo-build.test.ts
+npm run typecheck
+```
+
+Actual restored results: test exit 0, tests/pass 79, fail 0, skipped 0; typecheck exit 0.
+All 26 native cases (19 reductions, 7 exact), optional-offline/package/default-feature
+properties, successful-original preference, bounded legacy-decline parsing, prior deletion
+phase/selector/conditional-summary rules and unknown/error refusal controls executed.
+Source/test modules remain below 400 lines. No full suite, build, smoke, benchmark or CI
+dispatch; no core/registry/shared/legacy edits. New delta is for lead cherry-pick/review.

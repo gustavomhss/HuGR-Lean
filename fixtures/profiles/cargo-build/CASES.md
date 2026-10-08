@@ -8,6 +8,9 @@ Cold review FIX-FIRST requested structural project values; three genuinely renam
 captures extend the matrix below. Native provenance: `STRUCTURAL-SOURCES.md`.
 Second cold review freezes deletion after the first diagnostic and validates summary target
 contexts against selectors. Native unpaired test-warning control: `CONDITIONAL-SOURCES.md`.
+Lead-requested scope extension admits ordinary invocations without `--offline` and retries
+the complete bounded grammar when the original build profile declines. Genuine direct
+build/check/release-package capture provenance: `DEFAULT-SOURCES.md`.
 
 ## Finite mandatory variants
 
@@ -40,6 +43,10 @@ all bytes required; A = unsafe/ambiguous, exact refusal witness, **not** N or co
 | structural-check | renamed check + ship profile + spark + additive lib/bin + dependency versions + two warnings | R | three Checking rows |
 | structural-check-buildscript | renamed release check + build script Compiling + dependencies Checking + two warnings | R | three Compiling/Checking rows |
 | conditional-test-warning | check + all-targets + cfg(test)-only unused function; unpaired lib-test warning | R | leading Checking row only |
+| default-build-warning | genuine direct cargo build, default features, bounded warning, no offline | R | leading Compiling row only |
+| default-check-warning | genuine direct cargo check, default features, bounded warning, no offline | R | leading Checking row only |
+| default-release-build | genuine build + release + package, no offline | R | leading Compiling row only |
+| default-release-check | genuine check + release + package, no offline | R | leading Checking row only |
 
 Existing dev build and full/lib/unit/integration/doctest corpus are regression anchors:
 reuse `fixtures/utility/cargo/**` and existing runner fixtures. No recapture of those variants.
@@ -110,7 +117,8 @@ remains historical; all native inputs and goldens stay unchanged.
 
 ## Closed implementation boundary
 
-New grammar requires `--offline`. Flags are exactly captured spellings plus existing
+`--offline` is optional execution data, not a producer-safety or admission boundary.
+Flags are exactly captured spellings plus existing
 `--color=never`; duplicate flags, bool values, missing arguments, release/profile conflicts
 and exclude-without-workspace refuse. Selectors are additive, including lib/bin/example,
 all-targets and workspace/package combinations. Package/exclusion/profile/bin/example values
@@ -121,7 +129,13 @@ when quoted. No literal project/package/profile/feature/version/path whitelist r
 The unchanged core literal-command tokenizer still rejects non-ASCII argv, backslashes and
 `?` even when quoted; those public invocations remain exact. Source output paths/Unicode are
 not subject to that argv tokenizer. No core-boundary expansion is claimed.
-The original no-new-grammar build argv delegates directly to the unchanged original profile.
+For original build argv, a successful original reduction is preferred intact. If that profile
+returns undefined, the same full output and argv enter the bounded new grammar, with all its
+completion/control/diagnostic/selector rules. This is not a generic fallback: the whole stream
+must validate. Original unknown rows and compiler errors still refuse. Download/update/resolver
+rows or new blank-row layouts outside the explicitly captured retained Locking preamble and
+diagnostic spacing refuse whole streams. Unknown compiler warnings outside the bounded
+`function NAME is never used` layout remain exact, including direct default build invocations.
 
 Native progress uses structural package/SemVer/source-path fields. Dependencies, repeated
 package names at different versions, and Compiling within check are valid. Build does not
