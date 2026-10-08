@@ -1,12 +1,12 @@
-# C02 Cargo test: capture packet, pending lead approval
+# C02 Cargo test: approved bounded implementation
 
-State: CAPTURED only. Baseline `07ffe15e2263c2925778022194c5385807216603`;
+State: implementation checkpoint, awaiting independent lead review. Baseline `07ffe15e2263c2925778022194c5385807216603`;
 branch `campaign/native-v2/C02`; PR base `campaign/native-integration`.
-No parser implementation, routing change, baseline red/green, or production admission claim.
-`cases.json.status` describes the proposed acceptance disposition, not measured current public-filter behavior.
-Baseline `cargo.ts` accepts only default/`--lib` and color flags; all new exact argv contain unadmitted flags,
-including `--offline`. Current public-filter disposition is therefore **not implemented / passthrough** by source inspection.
-Do not register these proposed reduced goldens as baseline runtime expectations before lead approval.
+Lead approved reductions for workspace/package/features/targets/release/controlled-libtest goldens.
+`src/profiles/cargo-test.ts` exports only `cargo-test`, delegates legacy-admitted argv unchanged, and owns
+the bounded delta grammar. Registry integration remains lead-owned. `cases.json.status` is now exercised
+through public `filter(observation, { profiles: familyProfiles })`; original `cargoProfiles` stays passthrough
+on each new exact argv. The owned acceptance suite ran red before implementation, then passed at checkpoint.
 
 ## Native evidence and boundary
 
@@ -40,7 +40,8 @@ Native compile/summary/finish-looking user logs are never removable merely becau
 Do not transplant this source-known-producer proof to arbitrary host logs without adequate boundaries.
 
 All stems below mean native `<stem>.txt`, independent `<stem>.expected.txt`, stable ID `C02/<stem>`.
-Exact argv and proposed status live in `cases.json`; test name is **PENDING_LEAD_APPROVAL** for every case.
+Exact argv/status live in `cases.json`; test name is `<stable ID>: public filter native golden; original baseline red or exact witness`
+in `tests/profile-cargo-test.test.ts` for every case.
 Byte metrics are raw / expected / proposed removed UTF-8 bytes, not runtime performance measurements.
 
 | Stem | New variant / boundary combination | Native counts | Keep rows | Bytes | Proposed disposition |
@@ -57,11 +58,42 @@ Byte metrics are raw / expected / proposed removed UTF-8 bytes, not runtime perf
 | zero-filter | absent exact name; all six tests filtered, native zero run | 0/0/6 | ALL | 343/343/0 | passthrough: no removable material under this policy |
 | ignored | select one ignored test + `--ignored --exact`; deferred test executes successfully | 1/0/5 | 1,2,7 | 370/324/46 | reduced |
 | include-ignored-skip | `--include-ignored`; two `--skip` selectors; `--test-threads 1` | 4/0/2 | 1,2,10 | 464/324/140 | reduced |
-| quiet | `--quiet --test-threads=1`; native `...ii.` has no ignored identity/reason rows | 4/2/0 | ALL | 349/349/0 | passthrough: unsafe/incomplete identity grammar; scope decision needed for reduction |
+| quiet | `--quiet --test-threads=1`; native `...ii.` has no ignored identity/reason rows | 4/2/0 | ALL | 349/349/0 | negative/refusal: unsafe identity grammar, not promised reduction or no-noise |
 | list | `--list`; six requested identities and native `6 tests, 0 benchmarks` | listing, no executed suite | ALL | 387/387/0 | passthrough: requested identities, no removable material |
 | nocapture-collision | `--exact --nocapture --test-threads=1`; arbitrary Unicode log and forged progress/finish/pass/summary | real 1/0/5; fake 99/0/0 | ALL | 660/660/0 | passthrough: ambiguous user log; mandatory exact witness |
 | show-output-collision | `--exact --show-output`; same logs inside successes section | real 1/0/5; fake 99/0/0 | ALL | 731/731/0 | passthrough: emitted log retention; mandatory exact witness |
 | failure | selected ignored failure + `--ignored --exact`; exit 101, panic span/thread/message/help/rerun argv | 0 passed, 1 failed, 5 filtered | ALL | 692/692/0 | passthrough: nonzero, complete diagnostics |
+
+## Approved scope continuation
+
+`provenance/scope-receipt.json` records six new tiny captures, original collector hash, changed source text/hash
+before capture, unchanged-after confirmation, actual argv/tool/exit/boundary facts. The disposable project added two
+ordinary doctests, a two-test example and `[profile.c02]`; original captures/receipts remained unchanged.
+Independent expected files were hand-authored before the implementation. Keep rows:
+
+| Stem | New scope | Keep rows | Required evidence |
+| --- | --- | --- | --- |
+| doc-target | `-p c02-alpha --doc` | 2,3,9,11 | Finished, Doc-tests, summary, native merged-doctest timing metrics |
+| all-targets | `-p c02-alpha --all-targets` | 2,3,7,8,13,15,20,22,28,30,36 | Four distinct lib/bin/integration/example executables, skips, each summary |
+| examples | `-p c02-alpha --examples` | 1,2,8 | Finished, example executable, summary |
+| example-target | `-p c02-alpha --example selected` | 1,2,8 | Finished, selected example executable, summary |
+| custom-profile | `-p c02-beta --lib --profile c02` | 2,3,8 | Exact custom Finished detail, `target/c02/deps` executable, summary |
+| multi-package | `-p c02-alpha -p c02-beta --lib` | 1,2,5,6,12,14,19 | Both package executables, skips, suite-local summaries |
+
+### Finite identity and grammar limits
+
+Delta flags before `--`: one `--offline`, one color-never spelling, workspace/excludes or up to eight unique `-p`
+names, one selector (`--lib`, `--doc`, `--all-targets`, `--examples`, `--test NAME`, `--bin NAME`, `--example NAME`),
+one feature name/`--no-default-features`/`--all-features`, one `--release` or pinned `--profile c02`,
+and pinned `--target x86_64-apple-darwin`. Features plus all-features, conflicting/repeated selectors and
+workspace plus package selection refuse. Named exact filter goes before `--`; `--exact` goes afterward.
+After `--`: `--ignored` or `--include-ignored`, up to eight unique `--skip NAME`, and serial threads exactly
+`--test-threads=1` or `--test-threads 1`. `--doc` plus harness arguments is unclaimed and refused.
+Quiet/list/nocapture/show-output refuse at identity, even if output appears otherwise reducible.
+Unknown argv/lines, duplicate identities/executables, malformed or inconsistent suite totals, unmatched selected
+source contexts, profile/target paths, filter identity and unsupported metadata refuse complete output.
+Unicode Rust identities remain valid; punctuation-invalid passing names remain refused.
+Zero-filter has no removable passing identity/compile progress and returns undefined, preserving original framing.
 
 ## Existing evidence reused, not recaptured
 
@@ -82,13 +114,15 @@ The first audit caught missing final blank EOF rows in four hand-authored exact 
 with `apply_patch`, leaving native captures unchanged. Restored audit completed successfully.
 These are capture-fidelity probes, not production parser preservation/admission tests or baseline red/green.
 
-**Blocking implementation:** lead approval of finite argv and proposed deletions; production focused tests and mutation
-probes deferred by capture-only instruction. `quiet` reduction needs an explicit scope decision; ambiguous log cases
-require exact retention. No claimed support beyond recorded argv/version/platform.
+Production checks: only `node --import tsx --test tests/profile-cargo-test.test.ts` and `npm run typecheck`.
+The owned file references existing utility full/lib/warning/failure fixtures without copying or editing them.
+It checks every native golden, original baseline rejection, UTF-16/CRLF/Unicode, required emitted/declaration spans,
+unknown insertions, counters, headers, partial summaries, failed/incomplete metadata, control characters,
+closed argv/arity and native-shaped logs. Mutation receipt will be recorded after production probes restore.
 
-**Missing variants (explicitly unclaimed):** `--all-targets`, examples/benches, explicit `--doc` selector (baseline
-doctest output reused), standalone debug `--target` (target/release combination captured), cross-target or JSON target,
-custom profiles, multi-package selections, workspace feature forwarding, substring filters and unrecorded libtest
+**Missing variants (explicitly unclaimed):** benches, standalone native debug `--target` witness (target/release
+combination captured), cross-target or JSON target, custom profiles other than pinned `c02`,
+workspace feature forwarding, substring filters and unrecorded libtest
 formats/flags (`--format`, JSON, shuffle, timing). No broader or Cartesian coverage claim; lead owns scope decisions.
 Capture collection itself has no tool/version/offline/termination blocker. CI was not dispatched; repository's
 candidate-wide manual workflow remains lead-owned and needs one final authorized run after campaign integration.

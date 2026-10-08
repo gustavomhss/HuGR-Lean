@@ -1,0 +1,11 @@
+   Compiling c02-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/alpha)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.17s
+   Doc-tests c02_alpha
+
+running 2 tests
+test alpha/src/lib.rs - identity (line 1) ... ok
+test alpha/src/lib.rs - identity (line 5) ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+all doctests ran in 19.58s; merged doctests compilation took 11.93s
