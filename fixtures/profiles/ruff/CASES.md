@@ -1,12 +1,16 @@
 # L03 Ruff capture packet
 
-State: CAPTURED, capture-only. Baseline `07ffe15e2263c2925778022194c5385807216603`.
+State: IMPLEMENTED_CHECKPOINT, externalization blocked as noted below.
+Capture baseline `07ffe15e2263c2925778022194c5385807216603`.
 Native producer: Ruff **0.14.0**, direct binary, complete combined pipe boundary.
-`cases.json` uses `native-cases1`: merge `receiptDefaults` with each case receipt;
-resolve source/output references through embedded dictionaries. Source names are executed names,
+Original `native-cases1` record is preserved unchanged as `capture-receipt.json`;
+merge its `receiptDefaults` with each case receipt and resolve embedded source/output references.
+`cases.json` is now `hugr-lean/native-cases/1`, flat per-case metadata and original argv.
+Source names are executed names,
 not aliases. Every `argv` is the actual executable and unchanged arguments passed to `Popen`.
-`expectedDefaults` defines full exact golden and required evidence for every case.
-No parser, routing, public-filter admission or runtime savings claim.
+All but successful check JSON retain full exact goldens. The approved case uses an independent
+790-byte compact literal in `tests/profile-ruff.test.ts`. No registry change or default routing claim.
+Lead provider `eea12ae` supplies frozen `jsonLayout`; helper and shared tests remain untouched.
 
 | Stable case ID | Variant / combination | Exit | Required source evidence / disposition |
 | --- | --- | --- | --- |
@@ -15,7 +19,7 @@ No parser, routing, public-filter admission or runtime savings claim.
 | L03-check-exit-zero | Explicit exit-zero, same violations | 0 | Both messages/codes/positions, snippets/carets/help, 2 errors, 1 fixable |
 | L03-check-full | Explicit full + exit-zero | 0 | Same native evidence; exact comparison anchor |
 | L03-check-json-failed | Explicit JSON, violations | 1 | Entire 1163-byte JSON exact, all fields/fix edits retained |
-| L03-check-json-exit-zero | Explicit JSON + exit-zero | 0 | Same JSON evidence; whitespace-only proposal below |
+| L03-check-json-exit-zero | Explicit JSON + exit-zero | 0 | Same JSON evidence; whitespace-only reduction below |
 | L03-check-fix | Safe fix, before/after tiny source | 0 | 1 error, 1 fixed, 0 remaining; import deletion source evidence |
 | L03-check-syntax | Syntax diagnostics + exit-zero | 0 | Two invalid-syntax messages, positions, snippets/carets, count |
 | L03-format-check | Unformatted + clean file | 1 | File path, 1 would reformat, 1 formatted; whole exact |
@@ -29,17 +33,27 @@ No parser, routing, public-filter admission or runtime savings claim.
 
 ## Material policy
 
-All capture goldens remain exact, removable bytes **0**. Nonzero cases must stay whole exact.
+All original capture bytes remain intact. Nonzero cases must stay whole exact.
 `--exit-zero` is explicit original argv only; never inject it during filtering.
 Native snippets, carets, context, repeated Unicode lines, help and counts are required evidence;
 this packet proposes no removal from those outputs.
 
-Only proposal: JSON grammar's insignificant whitespace outside strings for
-`L03-check-json-exit-zero`: **1163 -> 790 UTF-8 bytes**, **373 candidate bytes**.
+Only approved reduction: JSON grammar's insignificant whitespace outside strings for
+`L03-check-json-exit-zero`: **1163 -> 790 UTF-8 bytes**, **373 removed bytes** in selected-profile filter.
 Retain every original token and all fields, positions, messages, paths, edits and URLs.
-Measurement deleted only whitespace outside strings and compared parsed JSON equality;
-this is not an implemented golden or observed runtime saving. Parser acceptance and UTF-16
-source-span preservation need separate work. Failed JSON remains exact regardless of redundancy.
+Full finite diagnostic/fix/edit/position schema validates first; shared helper supplies ordered
+UTF-16 token spans as both pieces and required evidence. Unknown/missing fields, invalid/reversed
+positions, overlapping or unordered edits, empty arrays, duplicate keys, alternate spellings and tails
+decline. Values/rule IDs/paths vary generically. Failed JSON remains exact regardless of redundancy.
+
+## Frozen identity
+
+Direct `ruff` or absolute Unix literal executable ending `/ruff`; no wrappers or relative executables.
+`check`, explicit `--exit-zero`, explicit `--output-format=json` or `--output-format json` required.
+Optional `--isolated`, `--no-cache` once each. Options precede paths; optional `--` terminates options.
+Paths may vary; no path required (Ruff's default current directory). All other flags/formats exact.
+Original command tokenization is core-owned. Structural absolute identity is lead-approved new matrix,
+not a claim that every absolute executable was natively captured.
 
 ## Checks / scope
 
@@ -50,8 +64,13 @@ Disposable capture validator checked all declared IDs, source/output UTF-8 byte 
 SHA-256 digests, argv/source-name correspondence and native JSON codes/fix positions.
 In-memory missing-caret mutation was rejected by byte/digest checks; original files untouched,
 then original validation completed. This probes capture integrity, not runtime preservation.
-No full tests/build/smoke/benchmark or CI dispatch. Public-filter test names are deferred.
+Native positive failed against empty baseline profile (`passthrough` instead of `reduced`), then passed
+independent compact golden. `tests/profile-ruff.test.ts` covers the case IDs above via selected-profile
+public filter; schema, identity, metadata, Unicode/body whitespace/UTF-16, duplicates and tails covered.
+No full tests/build/smoke/benchmark or CI dispatch.
 
-Blockers for implementation: public-filter admission and grammar tests not implemented;
-native-text material has no proposed removable evidence. No version/install/capture blocker.
-No claim that exact-only corpus finishes campaign reduction requirements.
+Externalization blocker: this session's `apply_patch` appends final LF even with the standard
+no-newline marker. Ten LF-terminated/empty native outputs externalized unchanged to `.txt` and verified.
+Three no-final-LF JSON blobs (`lint-json`, `format-json`, `empty-json`) stay exact in original receipt,
+with `outputFile: null` and named blockers. A narrowly approved byte-write exception is needed to finish
+those `.txt` files without recapture, normalization or envelope bytes. Implementation itself is verified.

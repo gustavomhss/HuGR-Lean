@@ -1,7 +1,9 @@
 # Ruff native provenance
 
 Original tiny source authored for this packet; no donor source copied. Source snapshots and
-native output are embedded verbatim in `cases.json`, each with UTF-8 size and SHA-256.
+native output are embedded verbatim in unchanged `capture-receipt.json`, each with UTF-8 size and SHA-256.
+Flat `cases.json` retains actual original argv and bindings. Ten output blobs also reside byte-exact
+in `.txt`; three JSON blobs await a no-final-LF write-tool exception (see CASES.md).
 Ruff output is unmodified, including absolute `/private/var/...` JSON filenames, Unicode,
 trailing-newline presence/absence, warnings and nonzero results. Source names match original argv.
 

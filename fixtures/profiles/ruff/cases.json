@@ -1,92 +1,86 @@
 {
-  "schema": "native-cases1",
+  "schema": "hugr-lean/native-cases/1",
   "family": "ruff",
-  "owner": "L03",
-  "baselineSHA": "07ffe15e2263c2925778022194c5385807216603",
-  "captureDate": "2026-10-08",
-  "producer": {
-    "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-capture.py",
-    "bytes": 4824,
-    "sha256": "ce4ba5eba72d5aa09edb5d404f94ea6a7056ec2f3185984c771c98bc2f1eb358",
-    "policy": "Disposable direct subprocess capture; no runtime collector added. Source/output texts and digests are embedded."
-  },
-  "proposedMaterial": {
-    "case": "L03-check-json-exit-zero",
-    "grammar": "JSON insignificant whitespace outside strings only; retain every original token, order, string spelling, field, null and numeric literal. Do not reserialize or normalize path/position data.",
-    "inputBytes": 1163,
-    "candidateBytes": 790,
-    "candidateRemovableBytes": 373,
-    "status": "proposal only; public-filter admission, source spans and preservation tests not implemented",
-    "restriction": "Never applies to nonzero captures, native context, warning output, empty JSON or silence. --exit-zero must exist in original argv."
-  },
-  "tool": {
-    "version": "ruff 0.14.0\n",
-    "versionSHA256": "4c19d978a40e405035f16d9c5ae54e3a29a88823e31420d53764c0f64259dbb7",
-    "executable": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff",
-    "binarySHA256": "52b2bda1dc20d5c781eb43a90f6e5f228d448f2c93f6a8117e3f6751cd59a30b",
-    "installation": "uv 0.11.18; isolated venv; ruff==0.14.0; https://pypi.org/simple; --only-binary :all:"
-  },
-  "receiptDefaults": {
-    "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
-    "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project",
-    "nativeSpawned": true,
-    "nativeExitObserved": true,
-    "signal": null,
-    "timedOut": false,
-    "completeness": "complete",
-    "presentation": "unknown",
-    "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF",
-    "encodingError": null,
-    "launchError": null,
-    "environment": "Inherited environment; RUFF_OUTPUT_FORMAT, RUFF_CONFIG, FORCE_COLOR and CLICOLOR_FORCE removed. No reporter override; --isolated and --no-cache explicit original argv."
-  },
-  "expectedDefaults": {
-    "disposition": "CAPTURED_EXACT_WITNESS",
-    "golden": "Same artifact as output; full byte-exact boundary",
-    "required": "Entire output: messages, codes, file associations, positions, snippets, caret, help, fix edits/context, counts, warnings and diff. sourceBefore/sourceAfter are external evidence, never output replacement.",
-    "removableBytes": 0,
-    "test": "CAPTUREONLY; parser and public-filter tests deferred to lead"
-  },
-  "sources": {
-    "clean": {"name":"clean.py","text":"print(\"ok\")\n","bytes":12,"sha256":"3a66aebdedbad3cf107d24e72a07d4b735819b1cf4020fdd922f63c064708172"},
-    "lint": {"name":"lint.py","text":"import os\n\nmessage = \"café 🧪\"\nprint(missing)\n","bytes":49,"sha256":"f6612503ab50be92b4e68e149429afd5910cd1f637c4ae119e85f95db05a0d92"},
-    "fix-before": {"name":"fix.py","text":"import os\n\nprint(\"ok\")\n","bytes":23,"sha256":"8a58d4bd5c1ef120913b6ab1f4e8eb90871fcd6aa303f230a49422c3275b8201"},
-    "fix-after": {"name":"fix.py","text":"\nprint(\"ok\")\n","bytes":13,"sha256":"14e33557fe33a41dc1600475e4befdf2b1cea6397e08db5143a010a75bcc8941"},
-    "syntax": {"name":"syntax.py","text":"def broken(:\n    pass\n","bytes":22,"sha256":"6b8c8a725c23dc076d9a2c185ce4e02435746bc3b4f99906d13de360e56898c7"},
-    "format-before": {"name":"format.py","text":"values={\"café 🧪\":[1,2,3]}\nprint( values )\n","bytes":46,"sha256":"d45514179eaf1509b5cdc0f9c7f779305fc77e7204eafd022a3b386fce3f55d8"},
-    "format-after": {"name":"format.py","text":"values = {\"café 🧪\": [1, 2, 3]}\nprint(values)\n","bytes":49,"sha256":"5a07c80aec70257f97e2f77592cd76dc4b63a8ebbef77bc3fb028af2a7e82d9a"}
-  },
-  "outputs": {
-    "clean": {"text":"All checks passed!\n","bytes":19,"sha256":"82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"},
-    "lint": {"text":"F401 [*] `os` imported but unused\n --> lint.py:1:8\n  |\n1 | import os\n  |        ^^\n2 |\n3 | message = \"café 🧪\"\n  |\nhelp: Remove unused import: `os`\n\nF821 Undefined name `missing`\n --> lint.py:4:7\n  |\n3 | message = \"café 🧪\"\n4 | print(missing)\n  |       ^^^^^^^\n  |\n\nFound 2 errors.\n[*] 1 fixable with the `--fix` option.\n","bytes":327,"sha256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96"},
-    "lint-json": {"text":"[\n  {\n    \"cell\": null,\n    \"code\": \"F401\",\n    \"end_location\": {\n      \"column\": 10,\n      \"row\": 1\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\n    \"fix\": {\n      \"applicability\": \"safe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 1,\n            \"row\": 2\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 1\n          }\n        }\n      ],\n      \"message\": \"Remove unused import: `os`\"\n    },\n    \"location\": {\n      \"column\": 8,\n      \"row\": 1\n    },\n    \"message\": \"`os` imported but unused\",\n    \"noqa_row\": 1,\n    \"url\": \"https://docs.astral.sh/ruff/rules/unused-import\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"F821\",\n    \"end_location\": {\n      \"column\": 14,\n      \"row\": 4\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 7,\n      \"row\": 4\n    },\n    \"message\": \"Undefined name `missing`\",\n    \"noqa_row\": 4,\n    \"url\": \"https://docs.astral.sh/ruff/rules/undefined-name\"\n  }\n]","bytes":1163,"sha256":"66e9b97476abac0d9d0d168cb11a02d7d365ab1fa37bf6961bb421d9129415e5"},
-    "fix": {"text":"Found 1 error (1 fixed, 0 remaining).\n","bytes":38,"sha256":"aac3a0503d8b95052cc85fb9f1717dc82b74aa55853a5aa9749b41e30275d472"},
-    "syntax": {"text":"invalid-syntax: Expected a parameter or the end of the parameter list\n --> syntax.py:1:12\n  |\n1 | def broken(:\n  |            ^\n2 |     pass\n  |\n\ninvalid-syntax: Expected ')', found newline\n --> syntax.py:1:13\n  |\n1 | def broken(:\n  |             ^\n2 |     pass\n  |\n\nFound 2 errors.\n","bytes":283,"sha256":"d8c414ff3be6ba34992a0e4bcd98d259c30d2c5078c4ce04422691731cdf7093"},
-    "format-check": {"text":"Would reformat: format.py\n1 file would be reformatted, 1 file already formatted\n","bytes":80,"sha256":"6dbc3bcddf3cf052a328e40dfdf304c0f4646bfe2af0cfa383e02dab7747b1f3"},
-    "format-diff": {"text":"--- format.py\n+++ format.py\n@@ -1,2 +1,2 @@\n-values={\"café 🧪\":[1,2,3]}\n-print( values )\n+values = {\"café 🧪\": [1, 2, 3]}\n+print(values)\n\n1 file would be reformatted\n","bytes":172,"sha256":"41d980bac57b6fc5559db428aaf73a70ca1e54dc8e825b15898f30826be2c9d0"},
-    "format-json": {"text":"[\n  {\n    \"cell\": null,\n    \"code\": \"unformatted\",\n    \"end_location\": {\n      \"column\": 15,\n      \"row\": 2\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/format.py\",\n    \"fix\": {\n      \"applicability\": \"safe\",\n      \"edits\": [\n        {\n          \"content\": \" = {\\\"café 🧪\\\": [1, 2, 3]}\\nprint(values\",\n          \"end_location\": {\n            \"column\": 15,\n            \"row\": 2\n          },\n          \"location\": {\n            \"column\": 7,\n            \"row\": 1\n          }\n        }\n      ],\n      \"message\": null\n    },\n    \"location\": {\n      \"column\": 7,\n      \"row\": 1\n    },\n    \"message\": \"File would be reformatted\",\n    \"noqa_row\": null,\n    \"url\": null\n  }\n]","bytes":731,"sha256":"456a54b705a94ad6a408e05e968da99eb8c4cbb16019bc93d8a21e953a6a5308"},
-    "format-write": {"text":"1 file reformatted, 1 file left unchanged\n","bytes":42,"sha256":"10869b88a75066aa23546ef1f95fcd4678c3fb92a56ed46ef91688052b67976a"},
-    "format-warning": {"text":"warning: The --output-format flag for the formatter is unstable and requires preview mode to use.\n1 file left unchanged\n","bytes":120,"sha256":"20212ad17dc3d0891649b397722654a3c13c6ce4d8bf25e9ef5b18d262bd1a3f"},
-    "empty-json": {"text":"[]","bytes":2,"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"},
-    "format-clean": {"text":"2 files already formatted\n","bytes":26,"sha256":"3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938"},
-    "silent": {"text":"","bytes":0,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
-  },
   "cases": [
-    {"id":"L03-check-clean","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","clean.py"],"sourceBefore":["clean"],"sourceAfter":["clean"],"output":"clean","receipt":{"exitCode":0},"policy":"no-removable-material"},
-    {"id":"L03-check-failed","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","lint.py"],"sourceBefore":["lint"],"sourceAfter":["lint"],"output":"lint","receipt":{"exitCode":1},"policy":"nonzero-whole-exact"},
-    {"id":"L03-check-exit-zero","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","lint.py"],"sourceBefore":["lint"],"sourceAfter":["lint"],"output":"lint","receipt":{"exitCode":0},"policy":"retain-context-no-proposed-material"},
-    {"id":"L03-check-full","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","--output-format","full","lint.py"],"sourceBefore":["lint"],"sourceAfter":["lint"],"output":"lint","receipt":{"exitCode":0},"policy":"retain-context-no-proposed-material"},
-    {"id":"L03-check-json-failed","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--output-format","json","lint.py"],"sourceBefore":["lint"],"sourceAfter":["lint"],"output":"lint-json","receipt":{"exitCode":1},"policy":"nonzero-whole-exact"},
-    {"id":"L03-check-json-exit-zero","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","--output-format","json","lint.py"],"sourceBefore":["lint"],"sourceAfter":["lint"],"output":"lint-json","receipt":{"exitCode":0},"policy":"JSON-whitespace-candidate-only; not implemented"},
-    {"id":"L03-check-fix","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--fix","fix.py"],"sourceBefore":["fix-before"],"sourceAfter":["fix-after"],"output":"fix","receipt":{"exitCode":0},"policy":"preserve-fixed-and-remaining-counts"},
-    {"id":"L03-check-syntax","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","syntax.py"],"sourceBefore":["syntax"],"sourceAfter":["syntax"],"output":"syntax","receipt":{"exitCode":0},"policy":"retain-context-no-proposed-material"},
-    {"id":"L03-format-check","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--check","format.py","clean.py"],"sourceBefore":["format-before","clean"],"sourceAfter":["format-before","clean"],"output":"format-check","receipt":{"exitCode":1},"policy":"nonzero-whole-exact"},
-    {"id":"L03-format-diff","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--diff","format.py"],"sourceBefore":["format-before"],"sourceAfter":["format-before"],"output":"format-diff","receipt":{"exitCode":1},"policy":"nonzero-whole-exact"},
-    {"id":"L03-format-json-preview-check","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--preview","--check","--output-format","json","format.py","clean.py"],"sourceBefore":["format-before","clean"],"sourceAfter":["format-before","clean"],"output":"format-json","receipt":{"exitCode":1},"policy":"nonzero-whole-exact"},
-    {"id":"L03-format-write","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","format.py","clean.py"],"sourceBefore":["format-before","clean"],"sourceAfter":["format-after","clean"],"output":"format-write","receipt":{"exitCode":0},"policy":"preserve-reformatted-and-unchanged-counts"},
-    {"id":"L03-format-json-warning","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--output-format","json","format.py"],"sourceBefore":["format-after"],"sourceAfter":["format-after"],"output":"format-warning","receipt":{"exitCode":0},"policy":"preserve-warning-and-count; not JSON"},
-    {"id":"L03-format-json-preview-clean","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--preview","--check","--output-format","json","format.py"],"sourceBefore":["format-after"],"sourceAfter":["format-after"],"output":"empty-json","receipt":{"exitCode":0},"policy":"no-removable-material"},
-    {"id":"L03-format-clean","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--check","format.py","clean.py"],"sourceBefore":["format-after","clean"],"sourceAfter":["format-after","clean"],"output":"format-clean","receipt":{"exitCode":0},"policy":"no-removable-material"},
-    {"id":"L03-format-silent","argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--quiet","format.py"],"sourceBefore":["format-after"],"sourceAfter":["format-after"],"output":"silent","receipt":{"exitCode":0},"policy":"silence-exact-witness-no-saving"}
+    {
+      "id":"L03-check-clean","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","clean.py"],
+      "outputFile":"clean.txt","outputBytes":19,"outputSHA256":"82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18","receiptFile":"capture-receipt.json","receiptCase":"L03-check-clean","receiptOutput":"clean","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-check-failed","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":1,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","lint.py"],
+      "outputFile":"lint.txt","outputBytes":327,"outputSHA256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96","receiptFile":"capture-receipt.json","receiptCase":"L03-check-failed","receiptOutput":"lint","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-check-exit-zero","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","lint.py"],
+      "outputFile":"lint.txt","outputBytes":327,"outputSHA256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96","receiptFile":"capture-receipt.json","receiptCase":"L03-check-exit-zero","receiptOutput":"lint","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-check-full","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","--output-format","full","lint.py"],
+      "outputFile":"lint.txt","outputBytes":327,"outputSHA256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96","receiptFile":"capture-receipt.json","receiptCase":"L03-check-full","receiptOutput":"lint","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-check-json-failed","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":1,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--output-format","json","lint.py"],
+      "outputFile":null,"outputBytes":1163,"outputSHA256":"66e9b97476abac0d9d0d168cb11a02d7d365ab1fa37bf6961bb421d9129415e5","receiptFile":"capture-receipt.json","receiptCase":"L03-check-json-failed","receiptOutput":"lint-json","expected":"byte-exact","removableBytes":0,"externalizationBlocker":"apply_patch appends LF; original JSON has no final LF"
+    },
+    {
+      "id":"L03-check-json-exit-zero","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","--output-format","json","lint.py"],
+      "outputFile":null,"outputBytes":1163,"outputSHA256":"66e9b97476abac0d9d0d168cb11a02d7d365ab1fa37bf6961bb421d9129415e5","receiptFile":"capture-receipt.json","receiptCase":"L03-check-json-exit-zero","receiptOutput":"lint-json","expected":"reduced","expectedBytes":790,"removableBytes":373,"golden":"tests/profile-ruff.test.ts independent literal","externalizationBlocker":"apply_patch appends LF; original JSON has no final LF"
+    },
+    {
+      "id":"L03-check-fix","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--fix","fix.py"],
+      "outputFile":"fix.txt","outputBytes":38,"outputSHA256":"aac3a0503d8b95052cc85fb9f1717dc82b74aa55853a5aa9749b41e30275d472","receiptFile":"capture-receipt.json","receiptCase":"L03-check-fix","receiptOutput":"fix","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-check-syntax","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","check","--isolated","--no-cache","--exit-zero","syntax.py"],
+      "outputFile":"syntax.txt","outputBytes":283,"outputSHA256":"d8c414ff3be6ba34992a0e4bcd98d259c30d2c5078c4ce04422691731cdf7093","receiptFile":"capture-receipt.json","receiptCase":"L03-check-syntax","receiptOutput":"syntax","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-format-check","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":1,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--check","format.py","clean.py"],
+      "outputFile":"format-check.txt","outputBytes":80,"outputSHA256":"6dbc3bcddf3cf052a328e40dfdf304c0f4646bfe2af0cfa383e02dab7747b1f3","receiptFile":"capture-receipt.json","receiptCase":"L03-format-check","receiptOutput":"format-check","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-format-diff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":1,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--diff","format.py"],
+      "outputFile":"format-diff.txt","outputBytes":172,"outputSHA256":"41d980bac57b6fc5559db428aaf73a70ca1e54dc8e825b15898f30826be2c9d0","receiptFile":"capture-receipt.json","receiptCase":"L03-format-diff","receiptOutput":"format-diff","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-format-json-preview-check","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":1,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--preview","--check","--output-format","json","format.py","clean.py"],
+      "outputFile":null,"outputBytes":731,"outputSHA256":"456a54b705a94ad6a408e05e968da99eb8c4cbb16019bc93d8a21e953a6a5308","receiptFile":"capture-receipt.json","receiptCase":"L03-format-json-preview-check","receiptOutput":"format-json","expected":"byte-exact","removableBytes":0,"externalizationBlocker":"apply_patch appends LF; original JSON has no final LF"
+    },
+    {
+      "id":"L03-format-write","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","format.py","clean.py"],
+      "outputFile":"format-write.txt","outputBytes":42,"outputSHA256":"10869b88a75066aa23546ef1f95fcd4678c3fb92a56ed46ef91688052b67976a","receiptFile":"capture-receipt.json","receiptCase":"L03-format-write","receiptOutput":"format-write","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-format-json-warning","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--output-format","json","format.py"],
+      "outputFile":"format-warning.txt","outputBytes":120,"outputSHA256":"20212ad17dc3d0891649b397722654a3c13c6ce4d8bf25e9ef5b18d262bd1a3f","receiptFile":"capture-receipt.json","receiptCase":"L03-format-json-warning","receiptOutput":"format-warning","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-format-json-preview-clean","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--preview","--check","--output-format","json","format.py"],
+      "outputFile":null,"outputBytes":2,"outputSHA256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945","receiptFile":"capture-receipt.json","receiptCase":"L03-format-json-preview-clean","receiptOutput":"empty-json","expected":"byte-exact","removableBytes":0,"externalizationBlocker":"apply_patch appends LF; original JSON has no final LF"
+    },
+    {
+      "id":"L03-format-clean","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--check","format.py","clean.py"],
+      "outputFile":"format-clean.txt","outputBytes":26,"outputSHA256":"3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938","receiptFile":"capture-receipt.json","receiptCase":"L03-format-clean","receiptOutput":"format-clean","expected":"byte-exact","removableBytes":0
+    },
+    {
+      "id":"L03-format-silent","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","exitCode":0,
+      "argv":["/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff","format","--isolated","--no-cache","--quiet","format.py"],
+      "outputFile":"silent.txt","outputBytes":0,"outputSHA256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","receiptFile":"capture-receipt.json","receiptCase":"L03-format-silent","receiptOutput":"silent","expected":"byte-exact","removableBytes":0
+    }
   ]
 }

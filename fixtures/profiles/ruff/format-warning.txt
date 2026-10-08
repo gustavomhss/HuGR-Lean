@@ -1,0 +1,2 @@
+warning: The --output-format flag for the formatter is unstable and requires preview mode to use.
+1 file left unchanged

@@ -1,0 +1,2 @@
+Would reformat: format.py
+1 file would be reformatted, 1 file already formatted
