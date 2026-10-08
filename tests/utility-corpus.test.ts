@@ -145,3 +145,89 @@ test("observation mutation fails independently of matching core bytes and hook",
   assert.equal(report.ok, false); assert.equal(report.checked, 8);
   assert.ok(report.failures.every((row: Json) => row.error.includes("OBSERVATION_CHANGED")));
 });
+
+test("known raw tool diagnostics are closed and agree when manifest declares them", async (t) => {
+  const f = await mockCorpus(t);
+  for (const row of f.manifests.node.cases) {
+    f.receipts[`node/${row.id}`].tools = [{ ...f.receipts[`node/${row.id}`].tools[0], lockedIntegrity: "sha512-MOCK", installation: "mock local" }];
+    await f.saveReceipt("node", row.id);
+  }
+  assert.equal((await readUtilityCorpus(f.root)).cases.length, 8);
+  f.manifests.node.tools[0] = { ...f.manifests.node.tools[0], lockedIntegrity: "sha512-MOCK", installation: "mock local" };
+  await f.save("node");
+  assert.equal((await readUtilityCorpus(f.root)).cases.length, 8);
+  f.receipts["node/noise"].tools[0].lockedIntegrity = "sha512-FORGED";
+  await f.saveReceipt("node");
+  await assert.rejects(readUtilityCorpus(f.root), /TOOL_DIAGNOSTIC_MISMATCH/);
+});
+
+test("unknown receipt, nested facts, raw tool and stream descriptor metadata fail by field name", async (t) => {
+  for (const location of ["receipt", "facts", "tool", "artifact"]) {
+    const f = await mockCorpus(t), receipt = f.receipts["pytest/noise"];
+    const target = location === "receipt" ? receipt : location === "facts" ? receipt.facts : location === "tool" ? receipt.tools[0] : receipt.artifacts.original;
+    target.injectedUnknownMetadata = true;
+    await f.saveReceipt("pytest");
+    await assert.rejects(readUtilityCorpus(f.root), /UNKNOWN_FIELD: .*injectedUnknownMetadata/);
+  }
+});
+
+test("top-level pytest error is retained even if nested facts omit error key", async (t) => {
+  const f = await mockCorpus(t);
+  f.receipts["pytest/noise"].launchError = "ORIGINAL_FAILURE";
+  await f.saveReceipt("pytest");
+  const report = await evaluateUtilityCorpus({ root: f.root, filter, createAfterHook: hook });
+  assert.equal(report.ok, false); assert.equal(report.expectedCases, null);
+  assert.match(report.failures[0].error, /CAPTURE_ERRORS/);
+});
+
+test("valid-shaped source inventory hash cannot masquerade as bound source index", async (t) => {
+  const f = await mockCorpus(t);
+  f.receipts["pytest/noise"].sourceInventorySHA256 = hash("WRONG full source inventory");
+  await f.saveReceipt("pytest");
+  await assert.rejects(readUtilityCorpus(f.root), /UNBOUND_SOURCE_INVENTORY/);
+});
+
+test("all pytest provenance roots are typed; shaped index hashes remain blocked pending mapped proof", async (t) => {
+  const f = await mockCorpus(t), declaration = (root: string) => ({ root, sourceHead: "1".repeat(40),
+    indexSHA256: hash(`${root} index`), sourceInventorySHA256: hash(`${root} inventory`), producer: f.manifests.pytest.producer });
+  f.manifests.pytest.provenance = [declaration("prep"), declaration("extra")];
+  await f.save("pytest");
+  await assert.rejects(readUtilityCorpus(f.root), /UNBOUND_PROVENANCE_INDEX/);
+  f.manifests.pytest.provenance[1].sourceHead = "malformed";
+  await f.save("pytest");
+  await assert.rejects(readUtilityCorpus(f.root), /INVALID_PROVENANCE_ROOT: pytest: extra/);
+  f.manifests.pytest.provenance[1] = declaration("prep");
+  await f.save("pytest");
+  await assert.rejects(readUtilityCorpus(f.root), /DUPLICATE_PROVENANCE_ROOT/);
+  f.manifests.pytest.provenance = [declaration("prep")];
+  f.manifests.pytest.provenance[0].indexSHA256 = hash("WRONG actual artifact bytes");
+  await f.put("pytest", "unmapped-index.json", JSON.stringify({ sourceInventory: [] }));
+  await f.save("pytest");
+  await assert.rejects(readUtilityCorpus(f.root), /UNBOUND_PROVENANCE_INDEX/);
+});
+
+test("producer source bytes are mandatory and hash/length bound; helpers need explicit mapping", async (t) => {
+  const f = await mockCorpus(t);
+  await rm(path.join(f.root, "node/producer-source.mjs"));
+  await assert.rejects(readUtilityCorpus(f.root), /MISSING_PRODUCER_SNAPSHOT/);
+  await f.put("node", "producer-source.mjs", "mock producer");
+  f.receipts["node/noise"].producer = { ...f.receipts["node/noise"].producer, bytes: 1000 };
+  await f.saveReceipt("node");
+  await assert.rejects(readUtilityCorpus(f.root), /PRODUCER_BYTES_MISMATCH/);
+  delete f.receipts["node/noise"].producer.bytes;
+  await f.saveReceipt("node");
+  f.receipts["go/noise"].producer = { ...f.receipts["go/noise"].producer, dependencies: [{ file: "scripts/helper.mjs", sha256: hash("mock helper") }] };
+  await f.saveReceipt("go");
+  await assert.rejects(readUtilityCorpus(f.root), /UNBOUND_PRODUCER_HELPERS/);
+});
+
+test("missing root is named read failure; declared capture definition is not merge-authenticity proof", async (t) => {
+  const f = await mockCorpus(t);
+  const missing = await evaluateUtilityCorpus({ root: path.join(f.root, "missing-root"), filter, createAfterHook: hook });
+  assert.equal(missing.ok, false); assert.equal(missing.checked, 0);
+  assert.match(missing.failures[0].error, /ENOENT.*missing-root/);
+  assert.match(missing.streamOracle, /chunk ordering not independently authenticated/);
+  f.receipts["go/noise"].captureDefinition = "rewritten stream";
+  await f.saveReceipt("go");
+  await assert.rejects(readUtilityCorpus(f.root), /INVALID_CAPTURE_DEFINITION/);
+});

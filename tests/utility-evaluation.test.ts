@@ -28,6 +28,7 @@ async function synthetic(t: { after: (fn: () => Promise<void>) => void }) {
     };
     const tools = [{ name: family, version: "mock-1", executable: `/mock/${family}` }];
     const producer = { script: `scripts/mock-${family}.mjs`, sourceSHA256: hash("mock producer") };
+    await put("producer-source.mjs", "mock producer");
     const source = await put("fixture.mjs", "// mock fixture\n");
     const cases = [];
     for (const role of ["noise", "exact"]) {
@@ -35,7 +36,7 @@ async function synthetic(t: { after: (fn: () => Promise<void>) => void }) {
       const streams = { original: await put(`${role}.log`, original), stdout: await put(`${role}.stdout.log`, original), stderr: await put(`${role}.stderr.log`, "") };
       const facts = { command: `mock-${family}`, cwd: "/historical/never-read", exitCode: role === "noise" ? 0 : 1,
         signal: null, timedOut: false, complete: true, nativeSpawned: true, nativeExitObserved: true,
-        durationMs: 1, durationBoundary: "pipe-close" };
+        durationMs: 1, durationBoundary: "pipe-close", captureDefinition: "stdout/stderr arrival order; no text rewriting" };
       const receipt = { ...(family === "pytest" ? { facts } : facts), producer, tools, fixtureSources: [source],
         artifacts: streams, baseline: "1".repeat(40), environmentPolicy: "mock isolation" };
       receipts[id] = receipt;
@@ -43,7 +44,7 @@ async function synthetic(t: { after: (fn: () => Promise<void>) => void }) {
         capture: await put(`${role}.json`, JSON.stringify(receipt)), fixtureSources: [source], ...streams,
         expected: await put(`${role}.expected.log`, expected), required: [{ text: expected, occurrence: 0 }], material: role === "noise" });
       // Manifest contains only its frozen case fields; native provenance stays in receipt.
-      for (const key of ["cwd", "nativeSpawned", "nativeExitObserved", "durationMs", "durationBoundary"]) delete cases.at(-1)![key as keyof typeof cases[number]];
+      for (const key of ["cwd", "nativeSpawned", "nativeExitObserved", "durationMs", "durationBoundary", "captureDefinition"]) delete cases.at(-1)![key as keyof typeof cases[number]];
     }
     manifests[family] = { schema: "hugr-lean/utility-corpus/1", family, tools, producer, cases };
     await put("manifest.json", JSON.stringify(manifests[family]));
