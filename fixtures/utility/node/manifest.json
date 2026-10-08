@@ -842,3 +842,403 @@
           "occurrence": 0
         },
         {
+          "text": "  ---",
+          "occurrence": 0
+        },
+        {
+          "text": "  duration_ms: 6.421463",
+          "occurrence": 0
+        },
+        {
+          "text": "  type: 'test'",
+          "occurrence": 0
+        },
+        {
+          "text": "  location: '/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure/fixture.test.ts:5:1'",
+          "occurrence": 0
+        },
+        {
+          "text": "  failureType: 'testCodeFailure'",
+          "occurrence": 0
+        },
+        {
+          "text": "  error: |-",
+          "occurrence": 0
+        },
+        {
+          "text": "    UTILITY_ASSERT_FAILURE_SENTINEL Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "    + actual - expected",
+          "occurrence": 0
+        },
+        {
+          "text": "    ",
+          "occurrence": 2
+        },
+        {
+          "text": "    + 'observed'",
+          "occurrence": 0
+        },
+        {
+          "text": "    - 'expected'",
+          "occurrence": 0
+        },
+        {
+          "text": "    ",
+          "occurrence": 5
+        },
+        {
+          "text": "  code: 'ERR_ASSERTION'",
+          "occurrence": 0
+        },
+        {
+          "text": "  name: 'AssertionError'",
+          "occurrence": 0
+        },
+        {
+          "text": "  expected: 'expected'",
+          "occurrence": 0
+        },
+        {
+          "text": "  actual: 'observed'",
+          "occurrence": 0
+        },
+        {
+          "text": "  operator: 'strictEqual'",
+          "occurrence": 0
+        },
+        {
+          "text": "  stack: |-",
+          "occurrence": 0
+        },
+        {
+          "text": "    TestContext.<anonymous> (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/.native-captures/node-m78clV/sources/failure/fixture.test.ts:6:10)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Test.runInAsyncScope (node:async_hooks:214:14)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Test.run (node:internal/test_runner/test:1047:25)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Test.start (node:internal/test_runner/test:944:17)",
+          "occurrence": 0
+        },
+        {
+          "text": "    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)",
+          "occurrence": 0
+        },
+        {
+          "text": "  ...",
+          "occurrence": 0
+        },
+        {
+          "text": "1..1",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 5393.956884",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "node-opaque-default",
+      "profile": "node-test",
+      "command": "node --test fixture.mjs",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/node-opaque-default/capture.json",
+        "bytes": 3445,
+        "sha256": "4e8ff3911e56c12869b8c1a29714fd542aaceb4ca3925aabee7b07c28fb25ddb"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/opaque/fixture.mjs",
+          "sha256": "99dab40087738ed9350608920cfdd0f07fd8519ea8ebe938464e60d65c42fe4d",
+          "bytes": 391
+        }
+      ],
+      "original": {
+        "file": "captures/node-opaque-default/original.log",
+        "bytes": 349,
+        "sha256": "063f2fc7525f742b39b317372d3462d3e24aacd2be6efd7114d443194ab5f870"
+      },
+      "stdout": {
+        "file": "captures/node-opaque-default/stdout.log",
+        "bytes": 349,
+        "sha256": "063f2fc7525f742b39b317372d3462d3e24aacd2be6efd7114d443194ab5f870"
+      },
+      "stderr": {
+        "file": "captures/node-opaque-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/node-opaque-default/output.expected.log",
+        "bytes": 349,
+        "sha256": "063f2fc7525f742b39b317372d3462d3e24aacd2be6efd7114d443194ab5f870"
+      },
+      "material": false,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "# UTILITY_OPAQUE_OUTPUT_SENTINEL user-owned output Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "# UTILITY_OPAQUE_STDERR_SENTINEL exact stderr Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "# Subtest: UTILITY_OPAQUE_CONTEXT",
+          "occurrence": 0
+        },
+        {
+          "text": "ok 1 - UTILITY_OPAQUE_CONTEXT",
+          "occurrence": 0
+        },
+        {
+          "text": "  ---",
+          "occurrence": 0
+        },
+        {
+          "text": "  duration_ms: 24.479713",
+          "occurrence": 0
+        },
+        {
+          "text": "  type: 'test'",
+          "occurrence": 0
+        },
+        {
+          "text": "  ...",
+          "occurrence": 0
+        },
+        {
+          "text": "1..1",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 1906.858408",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "tsx-opaque-default",
+      "profile": "node-test",
+      "command": "tsx --test fixture.test.ts",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/tsx-opaque-default/capture.json",
+        "bytes": 3448,
+        "sha256": "3b8c226a5d38451bc6b9d52b569e11064c4707a0b82c44c209419577f9a73433"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/opaque/fixture.test.ts",
+          "sha256": "8158686cd7019a5c7be1f68bc6bc8f7d029c9193fe2807bc43e329f4478329fd",
+          "bytes": 444
+        }
+      ],
+      "original": {
+        "file": "captures/tsx-opaque-default/original.log",
+        "bytes": 348,
+        "sha256": "c0edc04bdec1823bcb63ab78fe8d5ab74ebaff7865399a694433324840d16e99"
+      },
+      "stdout": {
+        "file": "captures/tsx-opaque-default/stdout.log",
+        "bytes": 348,
+        "sha256": "c0edc04bdec1823bcb63ab78fe8d5ab74ebaff7865399a694433324840d16e99"
+      },
+      "stderr": {
+        "file": "captures/tsx-opaque-default/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/tsx-opaque-default/output.expected.log",
+        "bytes": 348,
+        "sha256": "c0edc04bdec1823bcb63ab78fe8d5ab74ebaff7865399a694433324840d16e99"
+      },
+      "material": false,
+      "required": [
+        {
+          "text": "TAP version 13",
+          "occurrence": 0
+        },
+        {
+          "text": "# UTILITY_OPAQUE_OUTPUT_SENTINEL user-owned output Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "# UTILITY_OPAQUE_STDERR_SENTINEL exact stderr Ω 🚀",
+          "occurrence": 0
+        },
+        {
+          "text": "# Subtest: UTILITY_OPAQUE_CONTEXT",
+          "occurrence": 0
+        },
+        {
+          "text": "ok 1 - UTILITY_OPAQUE_CONTEXT",
+          "occurrence": 0
+        },
+        {
+          "text": "  ---",
+          "occurrence": 0
+        },
+        {
+          "text": "  duration_ms: 2.711563",
+          "occurrence": 0
+        },
+        {
+          "text": "  type: 'test'",
+          "occurrence": 0
+        },
+        {
+          "text": "  ...",
+          "occurrence": 0
+        },
+        {
+          "text": "1..1",
+          "occurrence": 0
+        },
+        {
+          "text": "# tests 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# suites 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# pass 1",
+          "occurrence": 0
+        },
+        {
+          "text": "# fail 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# cancelled 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# skipped 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# todo 0",
+          "occurrence": 0
+        },
+        {
+          "text": "# duration_ms 4192.151673",
+          "occurrence": 0
+        }
+      ],
+      "provenanceRoot": "node-m78clV",
+      "producer": {
+        "script": "scripts/utility-native-node.mjs",
+        "sourceSHA256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19"
+      }
+    },
+    {
+      "id": "node-diagnostic-default",
+      "profile": "node-test",
+      "command": "node --test fixture.mjs",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/node-diagnostic-default/capture.json",
+        "bytes": 3464,
+        "sha256": "cf7086c658b87a1f93fe3d435ffa1a62b91da118b3352f1c514891edd4851cb1"
+      },
+      "fixtureSources": [
