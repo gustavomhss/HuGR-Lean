@@ -42,7 +42,8 @@ period stripping and absent rule handling. Source inspected, not copied or modif
    Node `spawnSync`, UTF-8 decoding, 1 MiB maxBuffer; all children exited without
    signal, spawn/buffer error or residual stderr. No timeout/truncation occurred.
 5. Keep fix source before and after execution. Hash output as UTF-8 SHA-256,
-   including every LF. Per-case exit/byte/hash facts live in `cases.json`.
+including every LF. Original exit/byte/hash facts live in `capture-receipt.json`;
+normalized observations and current measured statuses live in `cases.json`.
 
 Platform darwin-x64, Node v22.17.1, npm 10.9.2. Packet capture completed
 2026-10-08T20:22:03.245Z. No start-time/duration measurement was taken.
@@ -66,3 +67,18 @@ multiline-message truncation and fix-range corruption; original evidence recheck
 Initial fixture transcription lost final stylish LF; hash check caught it. Restored LF;
 all hashes now match original captures. These checks are capture verification, not
 public-filter admission or preservation tests.
+
+## Launcher supplements
+
+Same installed 9.37.0, platform, cwd, PATH, NO_COLOR and completed merged pipe.
+Added `project/unicode.js`, byte-identical to original `雪.js`, to use actual ASCII
+argv without changing core. Executed real `eslint alpha.js unicode.js`, absolute
+`$PREFIX/node_modules/.bin/eslint alpha.js unicode.js`, `npx eslint alpha.js unicode.js`
+and `npx --no-install eslint alpha.js unicode.js`; `npm_config_offline=true` prevented
+npx fetching. Exact command/argv and completion times are in normalized cases.
+All four exited 0 with identical 724-byte output, SHA-256
+`1af411f06156ac170256e07d883184dcb2bf91ab7e5077170eec99e0db056867`.
+Stored once as `ascii-stylish.txt`; shared file records byte equality, not relabeling.
+Literal frame-stripped goldens were authored before empty-family red test run.
+Original receipt SHA-256:
+`4fb9167df70e52a8fdd9567295eb15818e8c170fe40ad27e54f1c45049157d75`.
