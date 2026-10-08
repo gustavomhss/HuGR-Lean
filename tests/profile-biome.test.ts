@@ -151,6 +151,32 @@ test("Biome boundaries: all prefixes, unknown rows at every boundary, and nonnat
     native.replace("\n\nChecked", "\n\nnew.js:1:1 lint/style/newRule  FIXABLE  ━━\n\nChecked")]) exact(input);
 });
 
+for (const [name, ending] of [["missing padded blank", "\n\n\n"], ["extra terminal blank", "\n  \n\n\n"]] as const) {
+  test(`Biome block end refuses ${name} before header and footer`, () => {
+    for (const following of [prefixes[1]!, "Checked 1 file"]) {
+      const original = `\n  \n\n${following}`;
+      assert.ok(native.includes(original), "known native boundary is present");
+      const input = native.replace(original, ending + following);
+      assert.notEqual(input, native);
+      assert.equal(run(input).status, "passthrough", `${name} before ${following}`);
+      assert.equal(profile.reduce(input, observe(input)), undefined);
+      exact(input);
+    }
+  });
+}
+
+test("Biome exact native padded-blank/empty pairs preserve all bytes in valid controls", () => {
+  for (const mode of ["lint", "check"]) {
+    const input = text(`${mode}-warning-advice/output.txt`);
+    for (const following of [prefixes[1]!, "Checked 1 file"]) assert.ok(input.includes(`\n  \n\n${following}`));
+    const result = run(input, `biome ${mode} warning.js`);
+    assert.equal(result.status, "reduced");
+    assert.ok("replacement" in result);
+    assert.equal(result.replacement, text(`${mode}-warning-advice/expected.txt`));
+    assert.equal(result.inputBytes - result.outputBytes, 285);
+  }
+});
+
 test("Biome controls C0/C1, CR and ANSI anywhere refuse without sanitizing", () => {
   const controls = [...Array.from({ length: 32 }, (_, code) => code).filter((code) => code !== 9 && code !== 10),
     ...Array.from({ length: 33 }, (_, index) => 127 + index)];
