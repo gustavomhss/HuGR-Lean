@@ -1,6 +1,7 @@
 # G01 native text acceptance packet
 
-State: corrected implementation under lead review; anchored commands are unsupported negatives.
+State: stronger ambiguous-tree preservation implementation under lead review.
+Current policy supersedes historical quiet-child/quiet-parallel removal receipts below.
 Frozen seam: `goMode` text; JSON and benchmark belong to G02/G03.
 Manifest family remains `go-test-verbose` per packet contract, including nonverbose commands.
 Every manifest `status` and `expectedFile` now describes actual public custom-profile filter behavior.
@@ -30,8 +31,11 @@ Each full stable ID is `G01/<id>`. Byte counts are UTF-8, including final LF.
 
 - Retain every package summary exactly: package identity, elapsed time, cache marker and requested
   metrics are evidence. Retain final PASS, coverage records, warning and empty-selection marker.
-- Retain skip reason and its source position exactly, with enclosing test/subtest RUN/result and
-  ancestor chain. Remove only the complete quiet sibling scope. Never flatten skip association.
+- Retain every entire enclosing nested/parallel tree, including quiet siblings, in original order.
+  Raw stdout can emit the identical child RUN/result tuple as a native subtest. Producer identity is
+  ambiguous: no decoder can distinguish identical bytes. This is ambiguous-retention, not no noise.
+- Retain skip reason/source and every linked log exactly; nested-tree protection preserves all
+  ancestor, child, header and result rows. Quiet flat roots unrelated to that tree may still be removed.
 - Retain every linked diagnostic/log line exactly, including multiline indentation and progress-shaped
   contents. Retain the real enclosing lifecycle/result. Indentation/source linkage is evidence;
   text matching RUN/PASS/CONT is not proof that a log is removable runner progress.
@@ -41,11 +45,12 @@ Each full stable ID is `G01/<id>`. Byte counts are UTF-8, including final LF.
   removable bytes under this conservative policy. It does not prove quiet-parallel reduction.
 - `-count` repeats names legitimately. Validate each complete occurrence separately; never treat
   repeated names as duplicate corruption or deduplicate native evidence.
-- Quiet successful scopes may be omitted only after full grammar/lifecycle validation, with exact
+- Only quiet successful FLAT roots may be omitted after full grammar/lifecycle validation, with exact
   required rows remaining in source order and strictly fewer bytes. No synthetic dynamic summaries.
 - Collision witness is an unsafe-removal refusal/retention case, distinct from summary-only zero
   material. Source proves these are user logs; a parser that strips indentation and treats them as
-  native progress loses required evidence. Unbound/ambiguous material requires full passthrough.
+  native progress loses required evidence. Unrecognized unbound lines require full passthrough;
+  structurally valid ambiguous nested/parallel material requires retention of the entire enclosing tree.
 - Failed, incomplete, truncated, unknown or inconsistent output remains byte-exact. These captures
   are successful complete witnesses, not additional failure/truncation coverage.
 
@@ -69,19 +74,22 @@ historical `.proposal.txt` files only; the manifest and runtime expected files a
 
 ## Approved implementation policy and supplemental acceptance
 
-Lead approval: reduce validated quiet completed scopes only; retain entire log/skip/ancestor linked
-lifecycle exact. Logged parallel exact fixtures are preservation witnesses, not compression proof.
+Latest lead approval: preserve entire ambiguous nested/parallel trees; reduce unrelated validated quiet
+flat roots. Retain all linked log/skip evidence. No stdout authenticity claim follows from grammar.
 
 | Stable ID | Captured variant | Required evidence / actual disposition | UTF-8 input → expected; removable |
 | --- | --- | --- | --- |
-| G01/literal-selector | split literal slash `-run`, `.` | PASS/package summary; reduced | 231 → 33; 198 |
-| G01/literal-nested | literal `-run=TestNested`, nested skip | skip/log/ancestors exact; quiet sibling reduced | 367 → 285; 82 |
+| G01/literal-selector | split literal slash `-run`, `.` | entire ambiguous nested tree; passthrough | 231 → 231; 0 |
+| G01/literal-nested | literal `-run=TestNested`, nested skip | entire ambiguous tree/skip/log; passthrough | 367 → 367; 0 |
 | G01/literal-race-cover-count-run | literal run, race+cover+count=2 | PASS/both coverage records/package exact; quiet occurrences reduced | 192 → 96; 96 |
-| G01/literal-count | split count=2 and literal slash run | PASS/package exact; complete repeated scopes reduced | 430 → 34; 396 |
+| G01/literal-count | split count=2 and literal slash run | complete repeated ambiguous trees; passthrough | 430 → 430; 0 |
 | G01/literal-collision | literal selector, linked progress-shaped t.Log | all log/lifecycle exact; passthrough unsafe-removal witness | 318 → 318; 0 |
-| G01/quiet-parallel | literal selector, parallel=2 | PASS/package exact; complete quiet parallel scopes reduced | 377 → 33; 344 |
-| G01/mixed-parallel | literal prefix selects logged+quiet parallel roots | entire logged root/lifecycle retained chronologically; quiet root reduced | 766 → 422; 344 |
+| G01/quiet-parallel | literal selector, parallel=2 | entire ambiguous parallel tree; passthrough | 377 → 377; 0 |
+| G01/mixed-parallel | literal prefix selects logged+quiet parallel roots | both entire ambiguous trees; passthrough | 766 → 766; 0 |
 | G01/name-switch | native NAME context with anchored selector | native log context exact; core-blocked passthrough | 450 → 450; 0 |
+| G01/raw-stdout-tree | native raw fmt.Printf tuple plus real flat root | raw tree retained; unrelated flat root reduced | 215 → 159; 56 |
+| G01/common-nested-flat | `go test -v .`, real nested plus flat roots | native tree retained; unrelated flat root reduced | 215 → 159; 56 |
+| G01/common-local-nested-flat | `go test -v`, real nested plus flat roots | native tree retained; unrelated flat root reduced | 215 → 159; 56 |
 
 Closed delta argv uses structural ASCII literal selectors, bare `-v/-race/-cover`, count 1–100 and
 parallel 1–256. Selectors are nonempty slash-separated `[A-Za-z0-9_][A-Za-z0-9_-]*` components.
@@ -96,6 +104,9 @@ Parser validates RUN parent paths, child creation, pause/resume/NAME active scop
 parent-first result closure, serial sibling result order, complete repeated count occurrences, final
 PASS/package boundaries and matching coverage records. Results and linked source rows stay in observed
 order. Dynamic material is emitted only through ordered UTF-16 source spans. No log sorting/dedup.
+Root registration sequence is validated across count rounds, not merely counted per name.
+Original delegate SUCCESS is returned unchanged. On decline, common `go test -v` / `go test -v .`
+can reach the new full grammar with original argv. No argv rewriting or legacy parser changes.
 
 Unseen Example/Fuzz, top-level parallel tests, cached delta summaries, extra delta packages, regex selectors,
 unknown lines and invalid lifecycle transitions remain exact. Existing serial/cache/./... admission
@@ -117,7 +128,7 @@ comes exclusively from the unchanged original delegate and reused utility fixtur
 - No full tests/build/smoke/benchmark or CI dispatch. No claim of default registry extension or
   universal Go grammar. Lead cold-check remains required; no tokenizer change or scope waiver is requested.
 
-## Cold-review FIX-FIRST correction
+## Historical selector FIX-FIRST receipt (quiet-tree economy superseded)
 
 - Added explicit synthetic renamed properties before changing production code. The renamed selector
   `go test -v -run TestLedger/group/quiet .` failed: actual passthrough versus required reduction.
@@ -137,7 +148,7 @@ comes exclusively from the unchanged original delegate and reused utility fixtur
 - The four historical proposals were compared byte-exact with their prior committed goldens at
   `2a521f4`. This correction introduces no new native captures or tokenizer/registry/shared changes.
 
-## P1 count-round correction
+## P1 count-round receipt (validation retained; quiet Beta is now a flat root)
 
 - Independent synthetic complete-root transcript `Alpha,Alpha,Beta,Beta` with `-count=2 -run Test`
   failed before the fix: public filter reduced instead of preserving the malformed disjoint loops.
@@ -150,3 +161,29 @@ comes exclusively from the unchanged original delegate and reused utility fixtur
   then reduced and the negative assertion failed. Guard restored before verification.
 - Corrected owned suite: 38 passed, zero skipped; typecheck exited 0 after restoration. Existing
   manifests, native goldens, original delegate and top-level-parallel refusal scope remain intact.
+
+## Latest ambiguity review correction and honesty boundary
+
+- Genuine native raw-stdout capture failed before fix: complete fmt.Printf tree was lost as progress.
+  Genuine common `go test -v .` capture also failed before fix: wrapper stopped at legacy decline.
+- Raw `TestMain` prints a complete parent/child tuple before running a real flat test. Another tiny
+  native project emits the identical tuple through `testing.T.Run`; exact bytes are compared in tests.
+  Both trees survive. Synthetic tree-only versions stay byte-exact; only unrelated flat root is removed.
+- Five formerly smaller supplemental goldens are archived in `.proposal.txt` files linked separately.
+  Actual statuses and expected files for those ambiguous-only cases are now complete originals.
+  They are retention witnesses, not compression/no-removable-material claims. All manifest cases
+  assert actual public-filter status and output; race/cover/count flat-root reduction remains native proof.
+- Residual authenticity limit: raw `TestMain` or another source can fabricate an entire well-formed
+  FLAT root transcript too. Plain text plus process metadata does not authenticate its producer.
+  Flat-root reductions (including preserved legacy successes) remain structural, not universal stdout
+  authenticity guarantees. This limitation is disclosed for lead review, not hidden by a synthetic decoder.
+- Top-level parallel, Example/Fuzz, shuffle, extra delta packages and regex selectors remain exact.
+  No tokenizer/JSON runtime change is requested. Prior source/receipt history stays in git; current
+  approved retention policy and manifest take precedence over earlier savings proposals.
+- Current focused verification: 52 passed, zero skipped; typecheck exited 0 after restoration.
+  Production probe disabled whole-tree protection: genuine raw collision and common-default golden
+  tests failed on lost tree bytes. Separate order-guard probe again admitted reordered count rounds
+  and failed the independent negative test. Both restored before final owned suite and typecheck.
+- Five newly rejected proposals match previous committed goldens at `0d94847` byte-exact. Native
+  artifacts/source pins and every actual manifest disposition/golden remain checked. No full checks
+  or CI dispatch; stop for lead cold-review. No claim of universal stdout authentication.

@@ -17,7 +17,7 @@ interface Case {
   historicalProposalFile?: string;
 }
 const manifest: { schema: string; cases: Case[] } = JSON.parse(read("cases.json"));
-const positives = ["literal-selector", "literal-nested", "literal-count", "literal-race-cover-count-run", "quiet-parallel", "mixed-parallel"];
+const exercised = ["literal-selector", "literal-nested", "literal-count", "literal-race-cover-count-run", "quiet-parallel", "mixed-parallel", "raw-stdout-tree", "common-nested-flat", "common-local-nested-flat"];
 function entry(id: string): Case {
   const found = manifest.cases.find(c => c.name === "G01/" + id);
   assert.ok(found, id);
@@ -61,6 +61,11 @@ function accepted(id: string, output = read(entry(id).file), expected = read(ent
   spans(output, reduced, expected);
 }
 
+function checked(id: string, output = read(entry(id).file), expected = read(entry(id).expectedFile)): void {
+  if (entry(id).status === "reduced") accepted(id, output, expected);
+  else { assert.equal(expected, output); exact(observation(output, entry(id).command)); }
+}
+
 test("G01 native corpus pins and independent goldens are complete and nonvacuous", () => {
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
   assert.equal(new Set(manifest.cases.map(c => c.name)).size, manifest.cases.length);
@@ -85,7 +90,7 @@ test("G01 native corpus pins and independent goldens are complete and nonvacuous
     if (c.historicalProposalFile) {
       const proposal = read(c.historicalProposalFile);
       assert.ok(Buffer.byteLength(proposal) < Buffer.byteLength(output));
-      assert.equal(tokenizeCommand(c.command), undefined, "historical proposals are unsupported-command witnesses");
+      assert.equal(c.status, "passthrough", "historical proposals must not advertise runtime reduction");
       let position = 0;
       for (const row of lines(proposal)) {
         const source = lines(output).find(line => line.span[0] >= position && line.text === row.text);
@@ -96,11 +101,11 @@ test("G01 native corpus pins and independent goldens are complete and nonvacuous
   }
 });
 
-for (const id of positives) {
-  test(`G01 ${id}: original delegate red, public custom profile native golden green`, () => {
+for (const id of exercised) {
+  test(`G01 ${id}: original delegate decline, public custom profile native golden conformance`, () => {
     const c = entry(id), obs = observation(read(c.file), c.command);
     assert.equal(filter(obs, { profiles: [goProfile] }).status, "passthrough", "baseline must not already admit delta");
-    accepted(id);
+    checked(id);
   });
   test(`G01 ${id}: failed/incomplete/unknown metadata exact`, () => {
     const c = entry(id), obs = observation(read(c.file), c.command);
@@ -129,13 +134,13 @@ for (const id of positives) {
       ...["\0", "\x1b[32m", "\x85", "\r"].map(prefix => prefix + output)]) {
       exact(observation(changed, c.command));
     }
-    accepted(id, output.replaceAll("\n", "\r\n"), read(c.expectedFile).replaceAll("\n", "\r\n"));
+    checked(id, output.replaceAll("\n", "\r\n"), read(c.expectedFile).replaceAll("\n", "\r\n"));
   });
 }
 
 test("G01 frozen routing validates literal selectors, numeric bounds and flag arities", () => {
   assert.deepEqual(familyProfiles.map(p => p.id), ["go-test-verbose"]);
-  for (const id of positives) assert.equal(familyProfiles[0]!.match(tokenizeCommand(entry(id).command)!), true);
+  for (const id of exercised) assert.equal(familyProfiles[0]!.match(tokenizeCommand(entry(id).command)!), true);
   const input = read(entry("literal-selector").file);
   const commands = ["go test -json -v -run TestNested/group/quiet .", "go test -v -bench TestNested .",
     "go test -v -run Other .", "go test -v -run", "go test -v -run= .", "go test -v -run TestNested . -count 2",
@@ -208,9 +213,9 @@ test("G01 linked progress-shaped log retained with ancestors; Unicode source spa
   const old = "G01 optional backend unavailable";
   const message = "skip café 🧭\n        === RUN   TestPretend\n        --- PASS: TestPretend (0.00s)";
   const output = input.replaceAll("group/quiet", "group/quiet𐐀").replace(old, message);
-  const expected = golden.replace(old, message);
-  accepted("literal-nested", output, expected);
-  accepted("literal-nested", output.replaceAll("\n", "\r\n"), expected.replaceAll("\n", "\r\n"));
+  const expected = golden.replaceAll("group/quiet", "group/quiet𐐀").replace(old, message);
+  checked("literal-nested", output, expected);
+  checked("literal-nested", output.replaceAll("\n", "\r\n"), expected.replaceAll("\n", "\r\n"));
 });
 
 test("G01 parallel NAME context preserves observed chronology, never sorts linked logs", () => {
@@ -218,8 +223,7 @@ test("G01 parallel NAME context preserves observed chronology, never sorts linke
   const c = entry("mixed-parallel"), original = read(c.file);
   const switched = read(entry("name-switch").file).split("\nPASS\n")[0]! + "\n";
   const suffix = original.slice(original.indexOf("=== RUN   TestParallelQuiet"));
-  const expected = switched + original.slice(original.lastIndexOf("\nPASS\n") + 1);
-  accepted("mixed-parallel", switched + suffix, expected);
+  exact(observation(switched + suffix, c.command));
   exact(observation(switched.replace("=== NAME  TestParallel/left", "=== NAME  TestParallelQuiet/one") + suffix, c.command));
 });
 
@@ -250,7 +254,7 @@ test("G01 original serial/cache/multi-package utility captures reused byte-exact
 });
 
 test("G01 evidence oracle rejects goldens with lost skip/ancestor/log/summary rows", () => {
-  const c = entry("literal-nested"), input = read(c.file), golden = read(c.expectedFile);
+  const c = entry("common-nested-flat"), input = read(c.file), golden = read(c.expectedFile);
   const valid = familyProfiles[0]!.reduce(input, observation(input, c.command));
   assert.ok(valid);
   for (const row of lines(golden)) {
@@ -270,29 +274,28 @@ test("G01 synthetic renamed properties: argv literals and flag combinations have
       const output = rename(read(c.file)), expected = rename(read(c.expectedFile));
       const command = rename(c.command);
       const result = filter(observation(output, command), { profiles: familyProfiles });
-      assert.equal(result.status, "reduced", command);
-      if (result.status !== "reduced") assert.fail("renamed literal must reduce");
-      assert.equal(result.replacement, expected);
+      assert.equal(result.status, c.status, command);
+      if (result.status === "reduced") assert.equal(result.replacement, expected);
+      else { assert.equal(expected, output); assert.equal("replacement" in result, false); }
     }
     const partial = name.slice(4);
     const quiet = read(entry("literal-selector").file).replaceAll("TestNested", name);
     const result = filter(observation(quiet, `go test -v -run ${partial}/rou/iet .`), { profiles: familyProfiles });
-    assert.equal(result.status, "reduced", "literal Go selectors match substrings at each path level");
-    if (result.status !== "reduced") assert.fail("partial literal selector must reduce");
-    assert.equal(result.replacement, read(entry("literal-selector").expectedFile));
-    const expected = read(entry("literal-selector").expectedFile);
+    assert.equal(familyProfiles[0]!.match(tokenizeCommand(`go test -v -run ${partial}/rou/iet .`)!), true);
+    assert.equal(result.status, "passthrough", "selected nested tree is ambiguous, not removable progress");
+    const expected = read(entry("literal-selector").expectedFile).replaceAll("TestNested", name);
     for (const flags of ["-race", "-parallel 1", "-parallel=3", "-parallel=256", "-count 1", ""]) {
       const result = filter(observation(quiet, `go test -v ${flags} -run ${name}/group/quiet .`), { profiles: familyProfiles });
-      assert.equal(result.status, "reduced", flags);
-      if (result.status !== "reduced") assert.fail("name-independent flags must reduce");
-      assert.equal(result.replacement, expected);
+      assert.equal(familyProfiles[0]!.match(tokenizeCommand(`go test -v ${flags} -run ${name}/group/quiet .`)!), true);
+      assert.equal(result.status, "passthrough", "flags must not weaken ambiguous-tree retention: " + flags);
+      assert.equal(expected, quiet);
     }
   }
 });
 
 test("G01 synthetic count bounds and independent coverage/race flags", () => {
   const quiet = "=== RUN   TestRenamed\n--- PASS: TestRenamed (0.00s)\n";
-  const summary = read(entry("literal-selector").expectedFile);
+  const summary = read("literal-selector.proposal.txt");
   for (const count of [1, 3, 100]) {
     const result = filter(observation(quiet.repeat(count) + summary,
       `go test -v -race -count=${count} -run Renamed .`), { profiles: familyProfiles });
@@ -331,8 +334,7 @@ test("G01 count rounds admit ordered two-root rounds with occurrence-local child
   const alpha = "=== RUN   TestAlpha\n=== RUN   TestAlpha/shared\n" +
     "    rounds_test.go:7: linked Alpha 🧭\n--- PASS: TestAlpha (0.00s)\n" +
     "    --- PASS: TestAlpha/shared (0.00s)\n";
-  const beta = "=== RUN   TestBeta\n=== RUN   TestBeta/shared\n--- PASS: TestBeta (0.00s)\n" +
-    "    --- PASS: TestBeta/shared (0.00s)\n";
+  const beta = "=== RUN   TestBeta\n--- PASS: TestBeta (0.00s)\n";
   const summary = "PASS\nok  \texample.com/rounds\t0.001s\n";
   const obs = observation(alpha + beta + alpha + beta + summary, "go test -v -count=2 -run Test .");
   const expected = alpha + alpha + summary;
@@ -343,4 +345,28 @@ test("G01 count rounds admit ordered two-root rounds with occurrence-local child
   const reduced = familyProfiles[0]!.reduce(obs.output, obs);
   assert.ok(reduced);
   spans(obs.output, reduced, expected);
+});
+
+test("G01 genuine raw stdout producer collision preserves complete ambiguous tree", () => {
+  const output = read("raw-stdout-tree.txt");
+  const result = filter(observation(output, "go test -v -count=1 -run Test ."), { profiles: familyProfiles });
+  assert.equal(result.status, "reduced");
+  if (result.status !== "reduced") assert.fail("unrelated quiet flat root remains removable");
+  assert.equal(result.replacement, read("raw-stdout-tree.expected.txt"), "raw fmt.Printf userdata must survive");
+  const tree = (text: string): string => text.slice(0, text.indexOf("=== RUN   TestQuietFlat"));
+  assert.equal(tree(output), tree(read("common-nested-flat.txt")), "raw and native nested bytes are identical");
+  // Synthetic removal of the unrelated flat root: ambiguous tree alone must stay exact.
+  exact(observation(read("raw-stdout-tree.expected.txt"), "go test -v -count=1 -run Test ."));
+  exact(observation(read("common-nested-flat.expected.txt"), "go test -v ."));
+});
+
+test("G01 common verbose commands fallback after legacy decline preserves tree and reduces flat sibling", () => {
+  for (const [id, command] of [["common-nested-flat", "go test -v ."], ["common-local-nested-flat", "go test -v"]]) {
+    const obs = observation(read(id + ".txt"), command!);
+    assert.equal(goProfile.reduce(obs.output, obs), undefined, "original delegate declines nested grammar");
+    const result = filter(obs, { profiles: familyProfiles });
+    assert.equal(result.status, "reduced", command);
+    if (result.status !== "reduced") assert.fail("common command must reach validated fallback");
+    assert.equal(result.replacement, read(id + ".expected.txt"));
+  }
 });

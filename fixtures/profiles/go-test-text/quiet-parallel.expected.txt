@@ -1,2 +1,12 @@
+=== RUN   TestParallelQuiet
+=== RUN   TestParallelQuiet/one
+=== PAUSE TestParallelQuiet/one
+=== RUN   TestParallelQuiet/two
+=== PAUSE TestParallelQuiet/two
+=== CONT  TestParallelQuiet/one
+=== CONT  TestParallelQuiet/two
+--- PASS: TestParallelQuiet (0.00s)
+    --- PASS: TestParallelQuiet/one (0.00s)
+    --- PASS: TestParallelQuiet/two (0.00s)
 PASS
 ok  	example.com/g01	5.402s

@@ -62,10 +62,41 @@ It witnesses native NAME context switching and reversed parallel result order. I
 exact-only; the focused test labels a composition of its logged scope and the mixed fixture's quiet
 scope as synthetic, not a new native capture.
 
-Supplemental goldens were independently authored by removing quiet completed scopes only. Literal
+Earlier supplemental goldens removed quiet completed scopes; five nested/parallel savings proposals
+are now separately archived because stronger producer-ambiguity preservation supersedes them. Literal
 selectors avoid shell/core metacharacters; they were not rewritten from anchored commands at runtime.
 
 Cold-review correction adds explicitly synthetic renamed properties (no native recapture): three unrelated
 test roots, literal substring/slash selectors, renamed nested/skip/parallel/race/coverage scopes and bounded
 flag combinations. The renamed acceptance assertion failed before the selector fix. Existing native inputs
-and supplemental positive native goldens remain unchanged.
+remain unchanged. Current runtime expected files for ambiguous trees equal full originals; prior smaller
+goldens are preserved byte-exact separately, not advertised as runtime outputs.
+
+## Raw-stdout ambiguity and common-command native captures
+
+Captured 2026-10-08, same `go version go1.27.1 darwin/amd64`, native spawnSync pipes, inherited environment
+plus `GOTOOLCHAIN=local`, 120-second timeout, complete process-exit boundary, and unknown presentation.
+All three processes exited 0 with signal null, no spawn error, and empty stderr. No output normalization.
+
+- `raw-stdout-tree`: cwd is the disposable root above plus `/raw-ambiguity`; argv is
+  `["go","test","-v","-count=1","-run","Test","."]`. Original MIT `TestMain` calls raw `fmt.Printf`
+  at source line 12, emitting an entire parent/child RUN/result tuple; `m.Run()` emits the real flat test.
+- `common-nested-flat`: cwd is the disposable root plus `/real-ambiguity`; argv `["go","test","-v","."]`.
+- `common-local-nested-flat`: same real project, subsequent argv `["go","test","-v"]`.
+  The real source uses `t.Run("child", ...)` at line 7 and a separate quiet flat root at line 10.
+  The native child tuple is byte-identical to the raw tuple, including indentation and duration spelling.
+- Raw and real projects were independent captures; the two real invocations ran in the listed order.
+  Archived executed sources match disposable sources byte-exact. No serial/cache utility recapture.
+
+| Archived original MIT source | SHA-256 |
+| --- | --- |
+| `native/raw-ambiguity/go.mod` | `7f8792babceffe6988b9da035977aa536d66c959946e075a4d8a26fdb07735c9` |
+| `native/raw-ambiguity/ambiguity_test.go` | `2b2bbdb38b2cb57368c67f3e6f04a45d11860c47e4800d52fcc248bd9fd77202` |
+| `native/real-ambiguity/go.mod` | `7f8792babceffe6988b9da035977aa536d66c959946e075a4d8a26fdb07735c9` |
+| `native/real-ambiguity/ambiguity_test.go` | `8f9cecc0c42a1a13c9ba402fd6282c6ba37abe845a88515af4efe8ee921b3e0e` |
+
+Independent expected files keep the entire ambiguous tree and final PASS/package summary, omitting only
+the unrelated real quiet flat root. Capture/source hashes do not let a runtime text parser authenticate
+which rows originated in testing versus raw stdout. Entire fake FLAT roots remain an explicit authenticity
+limit in CASES.md. Modification record: new original native producers/captures/goldens; stronger runtime
+expected files; historical proposals archived separately without edits to original captures or go.ts.
