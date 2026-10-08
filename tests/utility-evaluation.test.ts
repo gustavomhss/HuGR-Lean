@@ -207,6 +207,9 @@ test("receipt teeth: provenance, native facts, source versions and errors stay b
     ["UNMAPPED_RECEIPT_TOOL", (r) => { r.tools = [...r.tools, { name: "hidden", version: "1", executable: "/mock/hidden" }]; }],
     ["SOURCE_MAPPING_MISMATCH", (r) => { r.fixtureSources = [{ ...r.fixtureSources[0], file: "different-version.mjs" }]; }],
     ["RECEIPT_ARTIFACT_MISMATCH", (r) => { r.fixtureSources = [{ ...r.fixtureSources[0], sha256: "0".repeat(64) }]; }],
+    ["RECEIPT_ARTIFACT_MISMATCH", (r) => { r.fixtureSources = [{ ...r.fixtureSources[0], originalSource: {
+      ...r.fixtureSources[0], file: "historical/fixture.mjs", sha256: "0".repeat(64),
+    } }]; }],
     ["EMPTY_OR_INVALID_LIST", (r) => { r.fixtureSources = []; }],
     ["SOURCE_INVENTORY_MISMATCH", (r) => { r.fixtureSources = [...r.fixtureSources, { ...r.fixtureSources[0], file: "hidden-source.mjs" }]; }],
     ["RECEIPT_ARTIFACT_MISMATCH", (r) => { r.artifacts = { ...r.artifacts, original: { ...r.artifacts.original, bytes: 0 } }; }],
@@ -310,4 +313,10 @@ test("material needs BOTH 1024 saved bytes AND 10 percent; each family needs one
     await f.saveReceipt("go", "noise");
     await assert.rejects(readUtilityCorpus(f.root), new RegExp(error));
   }
+});
+
+test("hardlink aliases outside family fail too", async (t) => {
+  const f = await synthetic(t);
+  await link(path.join(f.root, "go/noise.log"), path.join(f.root, "node/outside-alias.log"));
+  await assert.rejects(readUtilityCorpus(f.root), /FILE_ALIAS/);
 });

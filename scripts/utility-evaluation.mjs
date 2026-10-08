@@ -62,7 +62,7 @@ async function inventory(root) {
       else {
         demand(stat.isFile(), "NOT_PLAIN_FILE", file);
         const identity = `${stat.dev}:${stat.ino}`;
-        demand(!identities.has(identity), "FILE_ALIAS", file);
+        demand(stat.nlink === 1 && !identities.has(identity), "FILE_ALIAS", file);
         identities.add(identity);
         demand(await realpath(absolute) === absolute, "PATH_ALIAS", file);
         files.set(file, await readFile(absolute));
@@ -156,6 +156,11 @@ function receiptCheck(receipt, item, manifest, context) {
     const matches = sources.filter((entry) => entry.file === name);
     demand(matches.length === 1, "SOURCE_MAPPING_MISMATCH", `${context}: ${name}`);
     sameDigest(matches[0], { ...source, file: name }, `${context}: ${name}`);
+    if (matches[0].originalSource !== undefined) {
+      const originalSource = matches[0].originalSource;
+      descriptor(originalSource, `${context}: originalSource`);
+      sameDigest(originalSource, { ...source, file: originalSource.file }, `${context}: originalSource`);
+    }
   }
   const receiptTools = list(receipt.tools, `${context}: receipt.tools`);
   demand(receiptTools.every(record), "INVALID_RECEIPT_TOOL", context);
