@@ -1,0 +1,4 @@
+   Compiling doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+ Documenting doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.33s
+   Generated /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/explicit-target/x86_64-apple-darwin/doc/doc_alpha/index.html
