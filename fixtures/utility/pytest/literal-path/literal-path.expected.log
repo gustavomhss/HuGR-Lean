@@ -1,0 +1,14 @@
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise
+configfile: pytest.ini
+test_native.py ......................................................... [  4%]
+................................................................s.       [100%]
+=============================== warnings summary ===============================
+test_native.py::test_warning_context
+  /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/extra-r2b4ph/projects/noise/test_native.py:31: UserWarning: HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪
+    warnings.warn("HUGR_PYTEST_WARNING_CRITICAL_SENTINEL café 雪 🧪", UserWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] test_native.py:25: HUGR_PYTEST_SKIP_SENTINEL café 雪 🧪
+================== 1202 passed, 1 skipped, 1 warning in 1.01s ==================
