@@ -1,0 +1,714 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "owner": "G04",
+  "baseline": "07ffe15e2263c2925778022194c5385807216603",
+  "sources": [
+    {
+      "file": "project/cmd/noisy/main.go",
+      "sha256": "535a78da5bcaaa11ea876f9cd948fae1e5757650e7cdf4a547972d427f062d73"
+    },
+    {
+      "file": "project/cmd/quiet/main.go",
+      "sha256": "f4d4a4184b451ea9324853b460ebbd59b2bd43e7b00b4dbf4c50e457c8cce1f7"
+    },
+    {
+      "file": "project/go.mod",
+      "sha256": "103af9fcfaa3e425fe3af29d9dcc8cdbff29cda2f5006e4858f08abbdee4fe29"
+    },
+    {
+      "file": "project/lib/broken.go",
+      "sha256": "b2f295c2b9130444807f8bba0431e501f03a204042aaa7ce4634ee4dfaf625d0"
+    },
+    {
+      "file": "project/lib/tagged.go",
+      "sha256": "daa0aad2cf3e9c23bf3b85e12fdbbb5a9d8f9c586cb6487868338061c99fea57"
+    },
+    {
+      "file": "project/lib/value.go",
+      "sha256": "17e902b83bf4d00442541c1d00695d1ad946e52dfa116c166c6c38dca74e73df"
+    },
+    {
+      "file": "project/lib/vetbad.go",
+      "sha256": "a53bdf8f1da9a93df0122249f206ec3cfd0d2e9e52aeb7151ccea9f39de24b4d"
+    },
+    {
+      "file": "capture.mjs",
+      "sha256": "5b2c402ec0d3be5b8323c14d632a619965076d23b04a3db83509f0c454841b9a"
+    }
+  ],
+  "cases": [
+    {
+      "id": "G04-build-verbose",
+      "command": "go build -v ./...",
+      "commandSha256": "4e7f68cf26c2ff26989715c4bbf23f715c4e0923a4f7bf66ed82c4fa536456b4",
+      "argv": [
+        "go",
+        "build",
+        "-v",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/build-verbose.output",
+        "sha256": "aebe645d1e2f06f69cffba1f00868f537737301133b3876bc330958620f00c41",
+        "bytes": 108
+      },
+      "stdout": {
+        "file": "captures/build-verbose.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-verbose.stderr",
+        "sha256": "aebe645d1e2f06f69cffba1f00868f537737301133b3876bc330958620f00c41",
+        "bytes": 108
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:19.407Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "requested-package-list",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-build-all",
+      "command": "go build ./...",
+      "commandSha256": "854004a0c269ca4993dad170dc3f7d6e996493547b7c6b5c5c83cf20d113b42a",
+      "argv": [
+        "go",
+        "build",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/build-all.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/build-all.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-all.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:21.260Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-build-packages",
+      "command": "go build ./lib ./cmd/quiet",
+      "commandSha256": "3b31ba61fe9edb4afaa3ecea189889bdc078a824dda43901a6deffdf7449912d",
+      "argv": [
+        "go",
+        "build",
+        "./lib",
+        "./cmd/quiet"
+      ],
+      "output": {
+        "file": "captures/build-packages.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/build-packages.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-packages.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:22.795Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-build-tag-verbose",
+      "command": "go build -v -tags=capturetag ./...",
+      "commandSha256": "98fd362cfee9454d53d1cf0923e00c53b2c6fd550ecc638b80057f67d1396e23",
+      "argv": [
+        "go",
+        "build",
+        "-v",
+        "-tags=capturetag",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/build-tag-verbose.output",
+        "sha256": "aebe645d1e2f06f69cffba1f00868f537737301133b3876bc330958620f00c41",
+        "bytes": 108
+      },
+      "stdout": {
+        "file": "captures/build-tag-verbose.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-tag-verbose.stderr",
+        "sha256": "aebe645d1e2f06f69cffba1f00868f537737301133b3876bc330958620f00c41",
+        "bytes": 108
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:23.871Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "requested-package-list",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-build-tag",
+      "command": "go build -tags=capturetag ./...",
+      "commandSha256": "acf4f8687b6827eb5933755cd9554c8a0ca16aab23162e3833d619da2064655a",
+      "argv": [
+        "go",
+        "build",
+        "-tags=capturetag",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/build-tag.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/build-tag.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-tag.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:25.464Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-build-target-output",
+      "command": "go build -o quiet-native ./cmd/quiet",
+      "commandSha256": "0c33ee128f26d7333fd65dba54cef67f743a02e7210adb2c98c55d6115dca926",
+      "argv": [
+        "go",
+        "build",
+        "-o",
+        "quiet-native",
+        "./cmd/quiet"
+      ],
+      "output": {
+        "file": "captures/build-target-output.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/build-target-output.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-target-output.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:26.837Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise-artifact",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-vet-all",
+      "command": "go vet ./...",
+      "commandSha256": "3d4b424f6fcd11f530525ddea9a46aeaffec7c883b6c04b6baf7df36bf47800b",
+      "argv": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/vet-all.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/vet-all.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/vet-all.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:28.067Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-vet-packages",
+      "command": "go vet ./lib ./cmd/quiet",
+      "commandSha256": "f05448564f84f2ddc63c9bb950af58ea9c56753d9b7c0a0dd9f4d1cd9f1555f3",
+      "argv": [
+        "go",
+        "vet",
+        "./lib",
+        "./cmd/quiet"
+      ],
+      "output": {
+        "file": "captures/vet-packages.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/vet-packages.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/vet-packages.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:29.363Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-vet-tag",
+      "command": "go vet -tags=capturetag ./...",
+      "commandSha256": "06139eb7c2b8576b311e8aa6ab0b4d1874330f8d58e87db87671a1895d514044",
+      "argv": [
+        "go",
+        "vet",
+        "-tags=capturetag",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/vet-tag.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/vet-tag.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/vet-tag.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:30.229Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-build-error",
+      "command": "go build -tags=buildbad ./...",
+      "commandSha256": "903d3a5533ee3ea136b008171fe3208686e8ac68e9c09780b76ccb669a62810b",
+      "argv": [
+        "go",
+        "build",
+        "-tags=buildbad",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/build-error.output",
+        "sha256": "86938cb851c55858e7d73cacc118a5485c15d741519b500732cc7f8ea7df6c1f",
+        "bytes": 85
+      },
+      "stdout": {
+        "file": "captures/build-error.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/build-error.stderr",
+        "sha256": "86938cb851c55858e7d73cacc118a5485c15d741519b500732cc7f8ea7df6c1f",
+        "bytes": 85
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:38.648Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "nonzero-diagnostic",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-vet-error",
+      "command": "go vet -tags=vetbad ./...",
+      "commandSha256": "de5072fa1e85c3d7ed786a5b0df053a433a730abc0169c924a8b1f48a6234da7",
+      "argv": [
+        "go",
+        "vet",
+        "-tags=vetbad",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/vet-error.output",
+        "sha256": "13bf10b95021ea1112298b17a59dc28b9d40a27e4cfc669ca579aa4fb6adaca0",
+        "bytes": 94
+      },
+      "stdout": {
+        "file": "captures/vet-error.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/vet-error.stderr",
+        "sha256": "13bf10b95021ea1112298b17a59dc28b9d40a27e4cfc669ca579aa4fb6adaca0",
+        "bytes": 94
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:40.971Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "nonzero-diagnostic",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-explicit-goos-unsupported",
+      "command": "go build -GOOS=linux ./...",
+      "commandSha256": "86734ddafd149aedd7a27fd4c44241985b20785987554e1f23b5177d50d84012",
+      "argv": [
+        "go",
+        "build",
+        "-GOOS=linux",
+        "./..."
+      ],
+      "output": {
+        "file": "captures/explicit-goos-unsupported.output",
+        "sha256": "5941ab39fc017bd2bda31ba6bd9a897c4bd908242777143303b87f4d0a7bceaa",
+        "bytes": 123
+      },
+      "stdout": {
+        "file": "captures/explicit-goos-unsupported.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/explicit-goos-unsupported.stderr",
+        "sha256": "5941ab39fc017bd2bda31ba6bd9a897c4bd908242777143303b87f4d0a7bceaa",
+        "bytes": 123
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:49.479Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "unsupported-native-flag",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-run-quiet",
+      "command": "go run ./cmd/quiet",
+      "commandSha256": "6d12918515b3999bc12e8758409293524d1732ea3ba2dd39f75fe95309b2c2cb",
+      "argv": [
+        "go",
+        "run",
+        "./cmd/quiet"
+      ],
+      "output": {
+        "file": "captures/run-quiet.output",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stdout": {
+        "file": "captures/run-quiet.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "file": "captures/run-quiet.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:49.555Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "no-noise",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-run-arbitrary",
+      "command": "go run ./cmd/noisy",
+      "commandSha256": "68bd425209b1f684079487b19674c921e54a275fd5f88f03cb6eb264caffc46b",
+      "argv": [
+        "go",
+        "run",
+        "./cmd/noisy"
+      ],
+      "output": {
+        "file": "captures/run-arbitrary.output",
+        "sha256": "ccba1512614da779327ace243bf07ff4da04d0157bc439bfb0bcb3fefd7365a4",
+        "bytes": 2731
+      },
+      "stdout": {
+        "file": "captures/run-arbitrary.stdout",
+        "sha256": "f07356fe17d828a871acded39187320500e479f109887f2d534934d9d78b2c65",
+        "bytes": 2553
+      },
+      "stderr": {
+        "file": "captures/run-arbitrary.stderr",
+        "sha256": "0e5c0487fa9012d37d9acbb85557441704b638171aa4f2dd0238217c328e1e96",
+        "bytes": 178
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:21:56.006Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "opaque-application-streams",
+      "removableBytes": 0
+    },
+    {
+      "id": "G04-run-arbitrary-nonzero",
+      "command": "go run ./cmd/noisy fail",
+      "commandSha256": "e7f677ddfd2ab28252c02d7ca52e6cdfc351fe702e70385e5d2e5b137e4e446a",
+      "argv": [
+        "go",
+        "run",
+        "./cmd/noisy",
+        "fail"
+      ],
+      "output": {
+        "file": "captures/run-arbitrary-nonzero.output",
+        "sha256": "0f4131a68a76345c3ecc1a464f8f1e32e1642ad074f6c8194a4e6d6ece4f4d72",
+        "bytes": 2746
+      },
+      "stdout": {
+        "file": "captures/run-arbitrary-nonzero.stdout",
+        "sha256": "f07356fe17d828a871acded39187320500e479f109887f2d534934d9d78b2c65",
+        "bytes": 2553
+      },
+      "stderr": {
+        "file": "captures/run-arbitrary-nonzero.stderr",
+        "sha256": "ebe3f527d9ad523689d8925760d3d4fc99fb581a9f3b7a0a40bf833bfc824a97",
+        "bytes": 193
+      },
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "toolVersion": "go version go1.27.1 darwin/amd64",
+      "platform": "darwin/amd64",
+      "provenance": {
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/g04-native-vJb2ZJ",
+        "started": "2026-10-08T23:22:04.482Z",
+        "boundary": "native child streams; arrival-order concatenation",
+        "environment": "inherited; no per-command assignments",
+        "producer": "capture.mjs"
+      },
+      "expectedDisposition": "exact",
+      "exactReason": "nonzero-opaque-application-streams",
+      "removableBytes": 0
+    }
+  ]
+}
