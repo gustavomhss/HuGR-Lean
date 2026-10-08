@@ -1,0 +1,126 @@
+[
+    {
+      "file": "scripts/utility-native-node.mjs",
+      "sha256": "5b9f2059081fb482ff059ea71dbda1372206a1dafd57e1d1d57965c8cfac8d19",
+      "bytes": 14960,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/utility-native-node.mjs"
+    },
+    {
+      "file": "scripts/opencode-boundary.mjs",
+      "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+      "bytes": 22037,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/opencode-boundary.mjs"
+    },
+    {
+      "file": "scripts/real-world/capture.mjs",
+      "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+      "bytes": 4473,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/real-world/capture.mjs"
+    },
+    {
+      "file": "scripts/real-world/owned-process.mjs",
+      "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+      "bytes": 6278,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/real-world/owned-process.mjs"
+    },
+    {
+      "file": "scripts/real-world/process-guardian.mjs",
+      "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+      "bytes": 3314,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-node-native/scripts/real-world/process-guardian.mjs"
+    },
+    {
+      "file": "pinned-tsx-project/package-lock.json",
+      "sha256": "a01a495dd6e22eab9e518786218688d3def37a0e847264ccc9b30df08e7cc3f6",
+      "bytes": 16753,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/package-lock.json"
+    },
+    {
+      "file": "pinned-tsx-project/node_modules/tsx/package.json",
+      "sha256": "ab5f14c4251638844ade3905d3cfc52fc1c833644694d655a05f6d0ca746b83c",
+      "bytes": 1663,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/package.json"
+    },
+    {
+      "file": "pinned-tsx-project/tsx-executable",
+      "sha256": "8690135061bc49d187143493b82d26a09b7fb71d6dd817d2242cc9dc52506de9",
+      "bytes": 124418,
+      "absolutePath": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-resume-proof/node_modules/tsx/dist/cli.mjs"
+    },
+    {
+      "file": "native-node-executable",
+      "sha256": "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541",
+      "bytes": 224341744,
+      "absolutePath": "/usr/local/bin/node"
+    },
+    {
+      "file": "sources/flat/fixture.mjs",
+      "sha256": "9aef7e6916f968ffbe8bc3e909a8aa9fa964de37b5386653b6af0e0c559a8e2a",
+      "bytes": 2722,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/flat/fixture.test.ts",
+      "sha256": "907502ef7cf251abdeaae2ac15e229b84695c17026ba74557a8efb663ba254b8",
+      "bytes": 2775,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/nested/fixture.mjs",
+      "sha256": "498874800131fa811ec0ab029c75d36ae9cd5c447690a5c824e8d6f88eddecfe",
+      "bytes": 3297,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/nested/fixture.test.ts",
+      "sha256": "25b94b4c98f66661f656fbeac634f41f6e3f16021b44b54725df035cb46fe339",
+      "bytes": 3350,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/failure/fixture.mjs",
+      "sha256": "55cd1ad94f7cd216e2e786ec4cf3a98b106fc308e253d5437d98ae8a975cde7f",
+      "bytes": 301,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/failure/fixture.test.ts",
+      "sha256": "43688d7d805901746aa8fa3ce614de5261e0290e90c51f68e67b8400b3058e88",
+      "bytes": 354,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/opaque/fixture.mjs",
+      "sha256": "99dab40087738ed9350608920cfdd0f07fd8519ea8ebe938464e60d65c42fe4d",
+      "bytes": 391,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/opaque/fixture.test.ts",
+      "sha256": "8158686cd7019a5c7be1f68bc6bc8f7d029c9193fe2807bc43e329f4478329fd",
+      "bytes": 444,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/diagnostic/fixture.mjs",
+      "sha256": "ddf72552a61315384874d6401b02f5e9fec931996f522020d08016127d0fc9b1",
+      "bytes": 305,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    },
+    {
+      "file": "sources/diagnostic/fixture.test.ts",
+      "sha256": "305e639e4347e7b1403ff06cdecdcb22c194a71c8e18e323fa6d60db72361930",
+      "bytes": 358,
+      "license": "MIT",
+      "origin": "original; no donor material"
+    }
+  ]
