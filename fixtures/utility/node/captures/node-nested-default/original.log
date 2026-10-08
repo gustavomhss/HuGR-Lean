@@ -1,0 +1,114 @@
+TAP version 13
+# Subtest: UTILITY_SERIAL_PARENT Ω 🚀
+    # Subtest: utility passing item 01 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 1 - utility passing item 01 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 9.237606
+      type: 'test'
+      ...
+    # Subtest: utility passing item 02 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 2 - utility passing item 02 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 1.217172
+      type: 'test'
+      ...
+    # Subtest: utility passing item 03 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 3 - utility passing item 03 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 6.273966
+      type: 'test'
+      ...
+    # Subtest: utility passing item 04 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 4 - utility passing item 04 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 1.56119
+      type: 'test'
+      ...
+    # Subtest: utility passing item 05 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 5 - utility passing item 05 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 82.069291
+      type: 'test'
+      ...
+    # Subtest: utility passing item 06 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 6 - utility passing item 06 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 3.031617
+      type: 'test'
+      ...
+    # Subtest: utility passing item 07 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 7 - utility passing item 07 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 1.109832
+      type: 'test'
+      ...
+    # Subtest: utility passing item 08 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 8 - utility passing item 08 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 3.760229
+      type: 'test'
+      ...
+    # Subtest: utility passing item 09 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 9 - utility passing item 09 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 3.057955
+      type: 'test'
+      ...
+    # Subtest: utility passing item 10 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 10 - utility passing item 10 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 4.593105
+      type: 'test'
+      ...
+    # Subtest: utility passing item 11 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 11 - utility passing item 11 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 1.988279
+      type: 'test'
+      ...
+    # Subtest: utility passing item 12 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+    ok 12 - utility passing item 12 Ω 🚀 original local serial native progress evidence original local serial native progress evidence original local serial native progress evidence 
+      ---
+      duration_ms: 1.339167
+      type: 'test'
+      ...
+    # Subtest: UTILITY_SKIP_CHILD
+    ok 13 - UTILITY_SKIP_CHILD # SKIP UTILITY_SKIP_REASON Ω 🚀
+      ---
+      duration_ms: 0.516588
+      type: 'test'
+      ...
+    # Subtest: UTILITY_TODO_CHILD
+    ok 14 - UTILITY_TODO_CHILD # TODO UTILITY_TODO_REASON Ω 🚀
+      ---
+      duration_ms: 0.428074
+      type: 'test'
+      ...
+    # Subtest: UTILITY_DIAGNOSTIC_CHILD
+    ok 15 - UTILITY_DIAGNOSTIC_CHILD
+      ---
+      duration_ms: 40.102691
+      type: 'test'
+      ...
+    # UTILITY_CRITICAL_DIAGNOSTIC_SENTINEL Ω 🚀
+    1..15
+ok 1 - UTILITY_SERIAL_PARENT Ω 🚀
+  ---
+  duration_ms: 219.17975
+  type: 'test'
+  ...
+# Subtest: UTILITY_ROOT_SIBLING
+ok 2 - UTILITY_ROOT_SIBLING
+  ---
+  duration_ms: 0.88455
+  type: 'test'
+  ...
+1..2
+# tests 17
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 1
+# duration_ms 1941.394242
