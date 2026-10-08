@@ -6,6 +6,8 @@ disposition for the isolated public filter with `{ profiles: familyProfiles }`.
 Registry integration remains lead-owned; paths stay relative to this packet directory.
 Cold review FIX-FIRST requested structural project values; three genuinely renamed-project
 captures extend the matrix below. Native provenance: `STRUCTURAL-SOURCES.md`.
+Second cold review freezes deletion after the first diagnostic and validates summary target
+contexts against selectors. Native unpaired test-warning control: `CONDITIONAL-SOURCES.md`.
 
 ## Finite mandatory variants
 
@@ -37,6 +39,7 @@ all bytes required; A = unsafe/ambiguous, exact refusal witness, **not** N or co
 | structural-build | renamed build + ship profile + spark + additive lib/bin/example + two dependency versions + two warnings | R | three Compiling rows; Locking required |
 | structural-check | renamed check + ship profile + spark + additive lib/bin + dependency versions + two warnings | R | three Checking rows |
 | structural-check-buildscript | renamed release check + build script Compiling + dependencies Checking + two warnings | R | three Compiling/Checking rows |
+| conditional-test-warning | check + all-targets + cfg(test)-only unused function; unpaired lib-test warning | R | leading Checking row only |
 
 Existing dev build and full/lib/unit/integration/doctest corpus are regression anchors:
 reuse `fixtures/utility/cargo/**` and existing runner fixtures. No recapture of those variants.
@@ -69,8 +72,11 @@ Measured UTF-8 byte accounting from the disposable integrity audit:
 
 ## Required versus removable — proposed evidence contract
 
-For R cases, remove only complete Compiling/Checking source rows at native block boundaries.
-Warning blocks, totals, finish and the captured native Locking row are retained intact.
+For R cases, remove only leading Compiling/Checking source rows. A retained Locking preamble
+does not end the leading deletion phase. The first diagnostic permanently closes that phase:
+recognized progress before totals, after totals or between later diagnostic blocks stays exact
+as required source evidence. Unknown progress grammar and progress inside a diagnostic body
+refuse the whole stream. Warning blocks, totals, finish and native Locking stay intact.
 Preserve exact Finished row including profile, optimization/debug description, target(s),
 duration and newline. Preserve every diagnostic byte: severity, Unicode name/message,
 path, line/column, gutters, source snippet, underline, blank lines, note/help if present,
@@ -119,7 +125,8 @@ The original no-new-grammar build argv delegates directly to the unchanged origi
 
 Native progress uses structural package/SemVer/source-path fields. Dependencies, repeated
 package names at different versions, and Compiling within check are valid. Build does not
-admit Checking. Complete stream validation permits progress only outside diagnostic bodies.
+admit Checking. Complete stream validation permits progress only outside diagnostic bodies;
+only the leading phase can delete it, and the first diagnostic closes deletion permanently.
 Native finish compares profile with argv name (default dev or release) and parses optimization
 syntactically: optimized/unoptimized with optional debuginfo, finite two-decimal seconds.
 It never infers optimization from profile name.
@@ -133,3 +140,21 @@ name); replayed duplicate-only totals for an already completed context refuse. U
 kinds/help/context layouts refuse instead of silently accepting arbitrary producer rows.
 All recognized warning bytes survive. Package-prefixed build-script warnings refuse the whole
 stream. Metadata refusal is backed by direct reducer checks for nonzero/incomplete facts.
+
+## Conditional summary/selector contract
+
+Normal `(lib)` totals can belong to dependencies regardless of `-p` or target selectors.
+Test contexts require `--all-targets` within this closed build/check vocabulary; `--tests`
+is not an admitted flag. A lib-only invocation cannot admit lib-test/bin-test totals.
+Ordinary bin totals require default selection or matching `--bin`, `--bins`, `--all-targets`;
+example totals require matching `--example`, `--examples`, `--all-targets`. Non-dependency
+contexts must match `-p` when selecting one package without `--workspace`; workspace/package
+union retains generic workspace target identities. Selectors remain additive.
+
+Actual pending diagnostic blocks must have consistent printed totals before Finished.
+Native `conditional-test-warning` proves an all-targets lib-test total can legitimately stand
+alone when the warning exists only under cfg(test). No universally paired lib-test/lib totals
+are inferred. Optional duplicate-only summaries absent from complete input are not claimed
+missing evidence; when present they are validated and retained byte-exact. The tests explicitly
+accept the valid unpaired control and the paired case with its optional final duplicate-only
+summary omitted, while refusing a missing total for a pending actual warning block.
