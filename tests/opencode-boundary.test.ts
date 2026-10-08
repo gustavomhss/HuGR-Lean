@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
+import { boundaryDeadline, boundedReadiness, waitForFile } from "./boundary-readiness.js";
 
 // Computed URL imports exercise the executable JS harness without a second TS package.
 const boundary = await import(new URL("../scripts/opencode-boundary.mjs", import.meta.url).href);
@@ -43,6 +44,14 @@ test("missing binary and stalled process are loud failures", async () => {
 
 // This fake host tests harness failure paths only. Real-host compatibility is a separate executable proof.
 const HOST = `import { readFile, writeFile } from "node:fs/promises";
+if (process.env.LAUNCH_GATE) {
+  await writeFile(process.env.PID_FILE + ".waiting", "HUGR_LAUNCH_HELD");
+  for (;;) {
+    try { await readFile(process.env.LAUNCH_GATE); break; }
+    catch (error) { if (error.code !== "ENOENT") throw error; }
+    await new Promise(resolve => setTimeout(resolve, 10));
+  }
+}
 const cfg = JSON.parse(await readFile(process.env.OPENCODE_CONFIG, "utf8"));
 const url = cfg.provider["hugr-mock"].options.baseURL + "/chat/completions";
 const messages = [{role: "user", content: "HUGR_BOUNDARY"}];
@@ -114,21 +123,38 @@ test("scenario copies a normal isolated SDK and dereferences an absolute interna
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
-test("timeout settles despite detached descendant pipes and cleans the mock/root", async () => {
+async function heldPipeTimeout(delayed: boolean): Promise<void> {
   const root = await mkdtemp(path.join(tmpdir(), "hugr-held-pipes-"));
   const pidFile = path.join(root, "descendant.json");
   let isolatedRoot = "";
   let watchdog: NodeJS.Timeout | undefined;
+  let deadline: ReturnType<typeof boundaryDeadline> | undefined;
   try {
     const host = path.join(root, "host.mjs");
     await writeFile(host, HOST);
+    deadline = boundaryDeadline(host, 2500);
+    const launchGate = path.join(root, "launch");
     const execution = boundary.runScenario({ binary: process.execPath, binaryArgs: [host], timeout: 2500, dependencies: false, keep: false, setup: async ({ root, env }: { root: string; env: NodeJS.ProcessEnv }) => {
       isolatedRoot = root;
       assert.ok((await stat(root)).isDirectory());
       env.PROBE = "detached-hold";
       env.PID_FILE = pidFile;
       env.HOLD_CWD = path.dirname(pidFile); // Keep the pipe owner outside the scenario root, including on Windows.
+      if (delayed) env.LAUNCH_GATE = launchGate;
     } });
+    let settled = false;
+    void execution.then(() => { settled = true; }, () => { settled = true; });
+    if (delayed) {
+      await deadline.registered();
+      assert.equal(await waitForFile(pidFile + ".waiting"), "HUGR_LAUNCH_HELD");
+      await delay(2600); // Cross the unchanged 2500ms wall deadline while native launch is explicitly held.
+      assert.equal(deadline.ready, false, "Held launch was mistaken for pipe readiness");
+      assert.equal(deadline.fired, false, "Timeout fired before native evidence");
+      assert.equal(settled, false, "Execution settled before native readiness");
+      await assert.rejects(stat(pidFile), { code: "ENOENT" });
+      await writeFile(launchGate, "release");
+    }
+    await boundedReadiness(Promise.race([deadline.fire(pidFile), execution.then(() => { throw new Error("Host returned before timeout readiness"); })]), "BOUNDARY_HOST_READINESS_MISSING");
     await assert.rejects(Promise.race([execution, new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error("Timeout stayed pending while detached descendant retained pipes")), 7500); })]), (error: unknown) => {
       assert.ok(error instanceof Error);
       assert.match(error.message, /OpenCode timeout after 2500 ms/);
@@ -143,13 +169,21 @@ test("timeout settles despite detached descendant pipes and cleans the mock/root
     await assert.rejects(stat(isolatedRoot), { code: "ENOENT" });
     await assert.rejects(fetch(held.url, { signal: AbortSignal.timeout(1000) }), (error: unknown) => error instanceof Error && error.cause instanceof Error && "code" in error.cause && error.cause.code === "ECONNREFUSED");
   } finally {
+    deadline?.restore();
     clearTimeout(watchdog);
     try {
       const { pid } = JSON.parse(await readFile(pidFile, "utf8")) as { pid: number };
       try { process.kill(pid, "SIGKILL"); } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error; }
     } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error; }
+    if (isolatedRoot) await rm(isolatedRoot, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 });
     await rm(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 });
   }
+}
+
+test("timeout settles despite detached descendant pipes and cleans the mock/root", async (t) => {
+  for (const delayed of [false, true]) await t.test(delayed ? "delayed launch cannot imply timeout readiness" : "ready child holds both pipes", async () => {
+    await heldPipeTimeout(delayed);
+  });
 });
 
 test("immediately next model request rejects intervening traffic and mismatched tool calls", async () => {
