@@ -1,0 +1,1 @@
+{"python": "3.14.5", "pythonFull": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 17.0.0 (clang-1700.6.4.2)]", "pythonExecutable": "/usr/local/opt/python@3.14/bin/python3.14", "pytest": "9.0.3", "pluggy": "1.6.0", "pytestModule": "/usr/local/lib/python3.14/site-packages/pytest/__init__.py", "pluggyModule": "/usr/local/lib/python3.14/site-packages/pluggy/__init__.py"}
