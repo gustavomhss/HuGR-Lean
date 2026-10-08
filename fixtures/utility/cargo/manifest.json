@@ -671,3 +671,113 @@
             "bytes": 8286,
             "sha256": "b45225b0756789dba33e452fc0e37bb83ac288efc691f7931b5e1d9d6b01baa6"
           },
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.3.json",
+            "bytes": 10023,
+            "sha256": "bbaf46b8daf3ab533c75f8716bd5fab815cb5315d79e54e91f8bc7a3805574df"
+          },
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.4.json",
+            "bytes": 7337,
+            "sha256": "0ff81b5da0b973856a471ff3150df84358e0d67fdcc0c7abc60c7eb5ddc8db05"
+          },
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.5.json",
+            "bytes": 5670,
+            "sha256": "1844db4a1d96bf80dd9269f81b66d131b318ccd8edb03ca6033d7494fcaa4b72"
+          },
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.6.json",
+            "bytes": 2034,
+            "sha256": "0515376690d34ed9817e6ea105ea67a2255033623488f3766b30e58c1096bdd7"
+          }
+        ]
+      },
+      "sourceInventory": {
+        "bytes": 845,
+        "sha256": "dbf30ff15ae213efff9f6b51d25f4a27648db01dd74cfb7b3bca820fe6dd362a",
+        "parts": [
+          {
+            "file": "provenance/remaining-Ak3JfQ/sources.0.json",
+            "bytes": 845,
+            "sha256": "dbf30ff15ae213efff9f6b51d25f4a27648db01dd74cfb7b3bca820fe6dd362a"
+          }
+        ]
+      },
+      "producerSources": [
+        {
+          "file": "provenance/remaining-Ak3JfQ/source/d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f/utility-native-cargo-remaining.mjs",
+          "bytes": 13924,
+          "sha256": "d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f",
+          "sourceFile": "scripts/utility-native-cargo-remaining.mjs"
+        },
+        {
+          "file": "provenance/remaining-Ak3JfQ/source/d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3/capture.mjs",
+          "bytes": 4473,
+          "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+          "sourceFile": "scripts/real-world/capture.mjs"
+        },
+        {
+          "file": "provenance/remaining-Ak3JfQ/source/5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5/owned-process.mjs",
+          "bytes": 6278,
+          "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+          "sourceFile": "scripts/real-world/owned-process.mjs"
+        },
+        {
+          "file": "provenance/remaining-Ak3JfQ/source/c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1/process-guardian.mjs",
+          "bytes": 3314,
+          "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+          "sourceFile": "scripts/real-world/process-guardian.mjs"
+        },
+        {
+          "file": "provenance/remaining-Ak3JfQ/source/c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432/opencode-boundary.mjs",
+          "bytes": 22037,
+          "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+          "sourceFile": "scripts/opencode-boundary.mjs"
+        },
+        {
+          "file": "provenance/remaining-Ak3JfQ/source/eac558ce29c3bf8e028d9a40bb25e095426bfb1c5a6d7af40453923149dfb218/utility-native-cargo.mjs",
+          "bytes": 13509,
+          "sha256": "eac558ce29c3bf8e028d9a40bb25e095426bfb1c5a6d7af40453923149dfb218",
+          "sourceFile": "scripts/utility-native-cargo.mjs"
+        }
+      ],
+      "versionCaptures": []
+    }
+  ],
+  "cargoEvidence": {
+    "lineage": {
+      "file": "provenance/lineage.json",
+      "bytes": 2689,
+      "sha256": "026c0343f30e0977cad3408e1849f39fc6acab0c0cba1aa50c7f8095e0c1dc17"
+    },
+    "inspection": {
+      "file": "full/inspection-receipt.json",
+      "bytes": 2088,
+      "sha256": "d78e73af9f45ad6baab3d4923498d6ac35eee3f4dfc0d49be9b09cd991eee95b",
+      "sourceFile": "inspection-receipt.json"
+    },
+    "afterSources": [
+      {
+        "case": "failure",
+        "phase": "after",
+        "artifact": {
+          "file": "sources/failure-after/Cargo.lock",
+          "bytes": 195,
+          "sha256": "95d38633892ac7529f616132fffd0d420f7c68d77a7a1e49b424cf38ee9d4af5",
+          "sourceFile": "Cargo.lock"
+        }
+      },
+      {
+        "case": "warning",
+        "phase": "after",
+        "artifact": {
+          "file": "sources/warning-after/Cargo.lock",
+          "bytes": 195,
+          "sha256": "b33cbd207587b574632650f502eab83b135487ee20517fa55d88dc7a856b0f76",
+          "sourceFile": "Cargo.lock"
+        }
+      }
+    ]
+  }
+}
