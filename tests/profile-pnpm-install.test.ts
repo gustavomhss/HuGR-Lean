@@ -44,7 +44,7 @@ test("P02/native index authenticates actual argv and unchanged raw captures", ()
   }
 });
 test("P02/manifest walk includes every native text input and golden, omission control fails", () => {
-  const disk = readdirSync(root, { recursive: true }).filter(file => file.endsWith(".txt")).sort();
+  const disk = readdirSync(root, { recursive: true, encoding: "utf8" }).filter(file => file.endsWith(".txt")).sort();
   const declared = (index: readonly Case[]) => index.flatMap(c => c.expectedFile ? [c.file, c.expectedFile] : [c.file]).sort();
   assert.ok(disk.includes("install-help.txt"));
   assert.deepEqual(declared(cases), disk);
