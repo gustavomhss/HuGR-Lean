@@ -1642,3 +1642,10 @@
           "bytes": 224341744,
           "kind": "tool-executable",
           "tool": "node",
+          "version": "v22.17.1",
+          "executable": "/usr/local/bin/node"
+        }
+      ]
+    }
+  ]
+}
