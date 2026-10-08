@@ -220,3 +220,403 @@
           "text": "--- SKIP: TestNativeUnicodeSkipReason (0.00s)\n",
           "occurrence": 0
         },
+        {
+          "text": "PASS\n",
+          "occurrence": 0
+        },
+        {
+          "text": "ok  \texample.com/hugr-utility-go/alpha\t(cached)\n",
+          "occurrence": 0
+        },
+        {
+          "text": "PASS\n",
+          "occurrence": 1
+        },
+        {
+          "text": "ok  \texample.com/hugr-utility-go/beta\t(cached)\n",
+          "occurrence": 0
+        },
+        {
+          "text": "?   \texample.com/hugr-utility-go/empty\t[no test files]\n",
+          "occurrence": 0
+        }
+      ],
+      "material": true,
+      "provenanceRoot": "go-zHh7jh",
+      "producer": {
+        "script": "scripts/utility-native-go.mjs",
+        "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+      }
+    },
+    {
+      "id": "failure",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 1,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/failure/receipt.json",
+        "bytes": 6353,
+        "sha256": "673147870fdb02cb7d92ad94166f802f9cb9a10d9c5e7910fc195a7698b25565"
+      },
+      "fixtureSources": [
+        {
+          "file": "fixture-programs/failure/go.mod",
+          "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d",
+          "bytes": 46
+        },
+        {
+          "file": "fixture-programs/failure/LICENSE",
+          "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53",
+          "bytes": 1089
+        },
+        {
+          "file": "fixture-programs/failure/failure/failure_test.go",
+          "sha256": "2844d7b6b8ae7273905f2fd08b288531c0d1c3b0ae0d8518b94572449eb7de99",
+          "bytes": 252
+        }
+      ],
+      "original": {
+        "file": "captures/failure/original.log",
+        "bytes": 270,
+        "sha256": "3dfec663bb89598afb9a270557f2e80c46f53bc251cef940a83fc3f67a172e2c"
+      },
+      "stdout": {
+        "file": "captures/failure/stdout.log",
+        "bytes": 270,
+        "sha256": "3dfec663bb89598afb9a270557f2e80c46f53bc251cef940a83fc3f67a172e2c"
+      },
+      "stderr": {
+        "file": "captures/failure/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/failure/failure.expected.log",
+        "bytes": 270,
+        "sha256": "3dfec663bb89598afb9a270557f2e80c46f53bc251cef940a83fc3f67a172e2c"
+      },
+      "required": [
+        {
+          "text": "=== RUN   TestNativeFailureContext\n",
+          "occurrence": 0
+        },
+        {
+          "text": "    failure_test.go:5: HUGR_GO_FAILURE_CONTEXT: café 🧭\n",
+          "occurrence": 0
+        },
+        {
+          "text": "    failure_test.go:6: HUGR_GO_FAILURE_SENTINEL: original nonzero evidence\n",
+          "occurrence": 0
+        },
+        {
+          "text": "--- FAIL: TestNativeFailureContext (0.00s)\n",
+          "occurrence": 0
+        },
+        {
+          "text": "FAIL\n",
+          "occurrence": 0
+        },
+        {
+          "text": "FAIL\texample.com/hugr-utility-go/failure\t6.082s\n",
+          "occurrence": 0
+        },
+        {
+          "text": "FAIL\n",
+          "occurrence": 1
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "go-zHh7jh",
+      "producer": {
+        "script": "scripts/utility-native-go.mjs",
+        "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+      }
+    },
+    {
+      "id": "diagnostic",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/diagnostic/receipt.json",
+        "bytes": 6392,
+        "sha256": "98e38e6baab4f066a2f79311fccee13cbbc7bdd919e488cd719e38c05e29d34c"
+      },
+      "fixtureSources": [
+        {
+          "file": "fixture-programs/diagnostic/go.mod",
+          "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d",
+          "bytes": 46
+        },
+        {
+          "file": "fixture-programs/diagnostic/LICENSE",
+          "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53",
+          "bytes": 1089
+        },
+        {
+          "file": "fixture-programs/diagnostic/diagnostic/diagnostic_test.go",
+          "sha256": "5a1bf5b6790d403b0d54ad6b9a63ac3bfe400742d877bf7d5079283ddc624f94",
+          "bytes": 227
+        }
+      ],
+      "original": {
+        "file": "captures/diagnostic/original.log",
+        "bytes": 232,
+        "sha256": "8a1edcaebcd23b6f98f14e03d0910f9128ca7066471daf2188eb5ca6f948fff7"
+      },
+      "stdout": {
+        "file": "captures/diagnostic/stdout.log",
+        "bytes": 232,
+        "sha256": "8a1edcaebcd23b6f98f14e03d0910f9128ca7066471daf2188eb5ca6f948fff7"
+      },
+      "stderr": {
+        "file": "captures/diagnostic/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/diagnostic/diagnostic.expected.log",
+        "bytes": 232,
+        "sha256": "8a1edcaebcd23b6f98f14e03d0910f9128ca7066471daf2188eb5ca6f948fff7"
+      },
+      "required": [
+        {
+          "text": "=== RUN   TestNativeDiagnosticOnly\n",
+          "occurrence": 0
+        },
+        {
+          "text": "    diagnostic_test.go:5: HUGR_GO_DIAGNOSTIC_SENTINEL: successful log remains evidence café 🧭\n",
+          "occurrence": 0
+        },
+        {
+          "text": "--- PASS: TestNativeDiagnosticOnly (0.00s)\n",
+          "occurrence": 0
+        },
+        {
+          "text": "PASS\n",
+          "occurrence": 0
+        },
+        {
+          "text": "ok  \texample.com/hugr-utility-go/diagnostic\t5.158s\n",
+          "occurrence": 0
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "go-zHh7jh",
+      "producer": {
+        "script": "scripts/utility-native-go.mjs",
+        "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+      }
+    },
+    {
+      "id": "opaque",
+      "profile": "go-test-verbose",
+      "command": "go test -v ./...",
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "captures/opaque/receipt.json",
+        "bytes": 6336,
+        "sha256": "230f9c730e6ef91c1a41a765192e2367628b600c7416cb47dd3cf5d4bfb49ee2"
+      },
+      "fixtureSources": [
+        {
+          "file": "fixture-programs/opaque/go.mod",
+          "sha256": "726ca628a83675dffdde3dbb7a813df9995de520997c6bc6a00bfbef18980c5d",
+          "bytes": 46
+        },
+        {
+          "file": "fixture-programs/opaque/LICENSE",
+          "sha256": "3638b84678d20c3fbe8ab54972db33e8f371b9403965645dfe7e927994e33e53",
+          "bytes": 1089
+        },
+        {
+          "file": "fixture-programs/opaque/opaque/opaque_test.go",
+          "sha256": "3f33e5f58cef75c1891e1b7692e7ef6f93cad44a46bd1dfa8a6598b7ff0dc4f5",
+          "bytes": 300
+        }
+      ],
+      "original": {
+        "file": "captures/opaque/original.log",
+        "bytes": 228,
+        "sha256": "55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae"
+      },
+      "stdout": {
+        "file": "captures/opaque/stdout.log",
+        "bytes": 228,
+        "sha256": "55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae"
+      },
+      "stderr": {
+        "file": "captures/opaque/stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "expected": {
+        "file": "captures/opaque/opaque.expected.log",
+        "bytes": 228,
+        "sha256": "55ddb13f7cb23b17397957938990c52e9702cc5ba39ade80feeac2d7e55518ae"
+      },
+      "required": [
+        {
+          "text": "=== RUN   TestNativeOpaqueOutput\n",
+          "occurrence": 0
+        },
+        {
+          "text": "HUGR_GO_OPAQUE_SENTINEL: unframed stdout café 🧭\n",
+          "occurrence": 0
+        },
+        {
+          "text": "HUGR_GO_STDERR_SENTINEL: native stderr café 🧭\n",
+          "occurrence": 0
+        },
+        {
+          "text": "--- PASS: TestNativeOpaqueOutput (0.00s)\n",
+          "occurrence": 0
+        },
+        {
+          "text": "PASS\n",
+          "occurrence": 0
+        },
+        {
+          "text": "ok  \texample.com/hugr-utility-go/opaque\t4.750s\n",
+          "occurrence": 0
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "go-zHh7jh",
+      "producer": {
+        "script": "scripts/utility-native-go.mjs",
+        "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "id": "go-zHh7jh",
+      "sourceHead": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+      "producer": {
+        "script": "scripts/utility-native-go.mjs",
+        "sourceSHA256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc"
+      },
+      "index": {
+        "bytes": 53603,
+        "sha256": "c9b0f02ddf20bc1a3316af4173fba20882f668de85fb41f72e27dc7244ce35cc",
+        "parts": [
+          {
+            "file": "provenance/go-zHh7jh/index.0.json",
+            "bytes": 5539,
+            "sha256": "1f00445a1d92910944978729f502376e52e60858768eb8c0549c6f228a9450e8"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.1.json",
+            "bytes": 6743,
+            "sha256": "923c5cb1d07a85195dc62bc2587855230ac6052c569b6fcedebd48463ca38cab"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.2.json",
+            "bytes": 6584,
+            "sha256": "d5cb4d31f152c569d70ff3321d314bbeadcd08e0d693fba2d96be559242523ea"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.3.json",
+            "bytes": 6637,
+            "sha256": "ca6d503be61b772af93166e78fbc817e600cff222b74449bb7804231a61a9c0f"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.4.json",
+            "bytes": 6522,
+            "sha256": "8d3204c4fb9e2304b4557448fe0cf71830faa5134fe85810fc07e3e4f64013a5"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.5.json",
+            "bytes": 6354,
+            "sha256": "f7913c96da0a545e00004d9cf34d713c2b0ddb55e1f6169bf8c94af940c95396"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.6.json",
+            "bytes": 6552,
+            "sha256": "0c5be4f249aec5b6be30bead025bc3fdb686f25ef22b8a99ea53b7bc80e070e3"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.7.json",
+            "bytes": 7394,
+            "sha256": "d2b522a99beb5830b557bf6266a7b5ea584e7d4797b3e1faab8fd8be156db635"
+          },
+          {
+            "file": "provenance/go-zHh7jh/index.8.json",
+            "bytes": 1278,
+            "sha256": "713b8103cae3bc41d825f58e7cdbd0249ed9bda5d692421f4d44d237a21c43c1"
+          }
+        ]
+      },
+      "sourceInventory": {
+        "bytes": 5613,
+        "sha256": "0ed2d81daa636d2316c067d35bd5b460e760e3f4900baa0c7f83c2926264e3e8",
+        "parts": [
+          {
+            "file": "provenance/go-zHh7jh/sources.0.json",
+            "bytes": 5279,
+            "sha256": "040390641517a33edc731818a9435843dc77160b218287441941b4d4453ac9f7"
+          },
+          {
+            "file": "provenance/go-zHh7jh/sources.1.json",
+            "bytes": 334,
+            "sha256": "d2fec7aac15273ea285d4f5f90580e14204fc960a6565b1896f61d8291175205"
+          }
+        ]
+      },
+      "producerSources": [
+        {
+          "file": "provenance/go-zHh7jh/source/6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc/utility-native-go.mjs",
+          "bytes": 15666,
+          "sha256": "6baace859cc099780cce0b561f96c6f7af310f9e739378813846894fca53ecfc",
+          "sourceFile": "scripts/utility-native-go.mjs"
+        },
+        {
+          "file": "provenance/go-zHh7jh/source/c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432/opencode-boundary.mjs",
+          "bytes": 22037,
+          "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+          "sourceFile": "scripts/opencode-boundary.mjs"
+        },
+        {
+          "file": "provenance/go-zHh7jh/source/d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3/capture.mjs",
+          "bytes": 4473,
+          "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+          "sourceFile": "scripts/real-world/capture.mjs"
+        },
+        {
+          "file": "provenance/go-zHh7jh/source/5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5/owned-process.mjs",
+          "bytes": 6278,
+          "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+          "sourceFile": "scripts/real-world/owned-process.mjs"
+        },
+        {
+          "file": "provenance/go-zHh7jh/source/c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1/process-guardian.mjs",
+          "bytes": 3314,
+          "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+          "sourceFile": "scripts/real-world/process-guardian.mjs"
+        }
+      ],
+      "versionCaptures": [
+        {
+          "id": "go-version",
+          "capture": {
+            "file": "provenance/go-zHh7jh/versions/go-version/receipt.json",
+            "bytes": 4719,
+            "sha256": "6bc3a72ff972538edeb0844aea1d0d3e60e4490b65c24d32e76d0ab95d61bba7",
+            "sourceFile": "captures/go-version/receipt.json"
+          },
