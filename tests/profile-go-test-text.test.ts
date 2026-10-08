@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, lstatSync } from "node:fs";
 import { test } from "node:test";
 import { filter } from "../src/core/engine.js";
 import { tokenizeCommand } from "../src/core/command.js";
@@ -13,10 +13,10 @@ const root = new URL("../fixtures/profiles/go-test-text/", import.meta.url);
 const read = (file: string): string => readFileSync(new URL(file, root), "utf8");
 interface Case {
   name: string; command: string; file: string; expectedFile: string;
-  status: "reduced" | "passthrough"; provenance: { sha256: string };
+  status: "reduced" | "passthrough"; provenance: { sha256: string; record: string; capture?: string };
   historicalProposalFile?: string;
 }
-const manifest: { schema: string; cases: Case[] } = JSON.parse(read("cases.json"));
+const manifest: { schema: string; archives: string[]; cases: Case[] } = JSON.parse(read("cases.json"));
 const exercised = ["literal-selector", "literal-nested", "literal-count", "literal-race-cover-count-run", "quiet-parallel", "mixed-parallel", "raw-stdout-tree", "common-nested-flat", "common-local-nested-flat"];
 function entry(id: string): Case {
   const found = manifest.cases.find(c => c.name === "G01/" + id);
@@ -69,9 +69,21 @@ function checked(id: string, output = read(entry(id).file), expected = read(entr
 test("G01 native corpus pins and independent goldens are complete and nonvacuous", () => {
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
   assert.equal(new Set(manifest.cases.map(c => c.name)).size, manifest.cases.length);
+  assert.equal(new Set(manifest.archives).size, manifest.archives.length);
+  const historical = manifest.cases.flatMap(c => c.historicalProposalFile ? [c.historicalProposalFile] : []);
+  assert.deepEqual([...manifest.archives].sort(), historical.sort(), "every rejected proposal explicitly declared");
   assert.deepEqual(readdirSync(root).filter(name => name.endsWith(".txt")).sort(),
-    manifest.cases.flatMap(c => [c.file, c.expectedFile, ...(c.historicalProposalFile ? [c.historicalProposalFile] : [])]).sort());
+    [...manifest.cases.flatMap(c => [c.file, c.expectedFile]), ...manifest.archives].sort());
+  assert.throws(() => assert.deepEqual(manifest.archives.slice(1).sort(), historical));
+  for (const file of manifest.archives) {
+    assert.ok(lstatSync(new URL(file, root)).isFile(), "archive must be regular, not a symlink");
+    assert.ok(read(file).length > 0, "archive must be nonempty");
+  }
   for (const c of manifest.cases) {
+    for (const file of [c.provenance.record, ...(c.provenance.capture ? [c.provenance.capture] : [])]) {
+      assert.equal(file, "SOURCES.md", "provenance reference must name local source documentation");
+      assert.ok(lstatSync(new URL(file, root)).isFile() && read(file).length > 0);
+    }
     const output = read(c.file), expected = read(c.expectedFile);
     assert.ok(output.length && expected.length);
     assert.equal(createHash("sha256").update(output).digest("hex"), c.provenance.sha256);
