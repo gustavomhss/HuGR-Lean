@@ -3,7 +3,6 @@
   "family": "pytest",
   "tools": [{"name":"python","version":"3.14.5","executable":"/usr/local/opt/python@3.14/bin/python3.14"},{"name":"pytest","version":"9.0.3","executable":"/usr/local/bin/pytest"},{"name":"pluggy","version":"1.6.0","executable":"/usr/local/lib/python3.14/site-packages/pluggy/__init__.py"}],
   "producer": {"script":"scripts/utility-native-pytest.mjs","sourceSHA256":"56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"},
-  "provenance": [{"root":"prep-fHWQpI","sourceHead":"8eb1600703096cf2c23348e159ad1daa82f8b580","indexSHA256":"fd62178eaa08e6d711c16bd8ac768b9ad6b220fb4c38e1099857315da0250f49","sourceInventorySHA256":"a55ff12b7ad678b64b31f8200356d33a2e6e098f570c58c8f008e3b94585cedb","producer":{"script":"scripts/utility-native-pytest.mjs","sourceSHA256":"56e4f3dc2296ca12bb4db36446de605d38f97fb91ddc6132f4f89418fb03bf1e"}},{"root":"extra-r2b4ph","sourceHead":"a8068deb32e8ce9b88dd28a6b2a753765eabfdcf","indexSHA256":"8accd91cab35e4cdd46a5d6ea1e5210e5d0534a607fe9b1645688b6470aa3d1c","sourceInventorySHA256":"ea5205483ce2be62f5432ce7a5400da80b8eea463af64fbcb94794c3e2ca9817","producer":{"script":"scripts/utility-native-pytest-extra.mjs","sourceSHA256":"d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"}}],
   "cases": [
     {
       "id": "default",
@@ -129,6 +128,7 @@
     },
     {
       "id": "literal-path",
+      "producer": {"script":"scripts/utility-native-pytest-extra.mjs","sourceSHA256":"d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"},
       "profile": "pytest",
       "command": "pytest test_native.py --color=no",
       "role": "noise",
@@ -166,6 +166,7 @@
     },
     {
       "id": "doctest-path",
+      "producer": {"script":"scripts/utility-native-pytest-extra.mjs","sourceSHA256":"d2e3353714322b548096a1159d5bc523983de946eae1b7ba96d907be339ca473"},
       "profile": "pytest",
       "command": "pytest --doctest-modules test_native.py --color=no",
       "role": "noise",

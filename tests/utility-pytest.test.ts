@@ -10,6 +10,7 @@ interface Artifact { file: string; bytes: number; sha256: string }
 interface Anchor { text: string; occurrence: number }
 interface NativeCase {
   id: string; profile: string; command: string; role: "noise" | "exact";
+  producer?: Receipt["producer"];
   expectedStatus: "reduced" | "passthrough"; exitCode: number; complete: boolean;
   signal: string | null; timedOut: boolean; material: boolean;
   capture: Artifact; original: Artifact; stdout: Artifact; stderr: Artifact; expected: Artifact;
@@ -27,8 +28,6 @@ interface Receipt {
 interface Manifest {
   schema: string; family: string; tools: { name: string; version: string; executable: string }[];
   producer: Receipt["producer"];
-  provenance: { root: string; sourceHead: string; indexSHA256: string;
-    sourceInventorySHA256: string; producer: Receipt["producer"] }[];
   cases: NativeCase[];
 }
 const base = new URL("../fixtures/utility/pytest/", import.meta.url);
@@ -99,8 +98,8 @@ test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independ
   assert.equal(manifest.schema, "hugr-lean/utility-corpus/1"); assert.equal(manifest.family, "pytest");
   assert.deepEqual(manifest.cases.map(c => c.id).sort(), ["assertion-failure", "default", "doctest-path", "literal-path", "opaque-summary", "quiet"]);
   assert.deepEqual(manifest.tools.map(t => [t.name, t.version]), [["python", "3.14.5"], ["pytest", "9.0.3"], ["pluggy", "1.6.0"]]);
-  assert.ok(manifest.tools.every(t => t.executable.length > 0)); assert.equal(manifest.provenance.length, 2);
-  assert.deepEqual(manifest.producer, manifest.provenance[0]!.producer);
+  assert.ok(manifest.tools.every(t => t.executable.length > 0));
+  assert.equal("provenance" in manifest, false, "unmapped index digests are not artifact bindings");
   assert.ok(noise.length > 0); assert.ok(noise.some(c => c.material));
   const payloadPaths = new Set<string>();
   for (const c of manifest.cases) {
@@ -117,9 +116,10 @@ test("PY-CORPUS: typed statuses, receipts, relocated sources, versions, independ
     assert.equal(receipt.facts.launchError, null); assert.equal(receipt.facts.encodingError, null); assert.deepEqual(receipt.facts.killErrors, []);
     assert.equal(receipt.environment.originalMIT, true); assert.equal(receipt.environment.historicalCorpus, false);
     assert.equal(receipt.environment.disabledPluginAutoload, true);
-    const provenance = manifest.provenance.find(p => p.sourceHead === receipt.sourceHead); assert.ok(provenance);
-    assert.match(provenance.indexSHA256, /^[a-f0-9]{64}$/); assert.deepEqual(receipt.producer, provenance.producer);
-    assert.equal(receipt.sourceInventorySHA256, provenance.sourceInventorySHA256);
+    const supplemental = c.id === "literal-path" || c.id === "doctest-path";
+    assert.equal(Object.hasOwn(c, "producer"), supplemental, "only actual extra-helper cases override producer");
+    assert.deepEqual(receipt.producer, c.producer ?? manifest.producer);
+    assert.equal(receipt.sourceHead, supplemental ? "a8068deb32e8ce9b88dd28a6b2a753765eabfdcf" : "8eb1600703096cf2c23348e159ad1daa82f8b580");
     for (const tool of manifest.tools) assert.equal(receipt.versions[tool.name], tool.version);
     for (const k of ["original", "stdout", "stderr"] as const) {
       assert.equal(receipt.artifacts[k].file, `captures/${c.id}/${k}.log`);
@@ -154,9 +154,11 @@ for (const c of noise) {
       assert.throws(() => evidence(o.output, text(c.expected.file), c.required, { ...r, pieces }));
     }
   });
-  test(`PY-CRLF-${c.id}: native source spans retain CRLF`, () => reduced(c, text(c.original.file).replaceAll("\n", "\r\n"), text(c.expected.file).replaceAll("\n", "\r\n")));
+  test(`PY-CRLF-${c.id}: native source spans retain CRLF`, () => {
+    reduced(c); reduced(c, text(c.original.file).replaceAll("\n", "\r\n"), text(c.expected.file).replaceAll("\n", "\r\n"));
+  });
   test(`PY-PRESERVE-${c.id}: nonzero/incomplete/source/control/unknown`, () => {
-    const o = observation(c);
+    reduced(c); const o = observation(c);
     for (const patch of [{ termination: { kind: "exited", code: 1 } }, { termination: { kind: "unknown" } },
       { termination: { kind: "timed_out" } }, { completeness: "unknown" }, { completeness: "truncated" }, { source: "other" }] satisfies Partial<Observation>[]) exact({ ...o, ...patch });
     for (const code of [...Array.from({ length: 32 }, (_, i) => i), ...Array.from({ length: 33 }, (_, i) => i + 127)].filter(n => ![9, 10, 13].includes(n))) {
@@ -185,7 +187,7 @@ test("PY-ORACLE: declaration-only, emit-only, forged text, wrong occurrence cann
 });
 
 for (const mode of ["default", "quiet"] as const) test(`PY-IDENTITY-${mode}: literal paths/color/python/doctest`, () => {
-  const c = find(mode);
+  const c = find(mode); reduced(c);
   for (const launcher of ["pytest", "python -m pytest", "python3 -m pytest"]) {
     for (const flags of ["", " --color=no", " test_native.py", " ./tests", " --doctest-modules test_native.py --color=no"]) {
       const command = launcher + (mode === "quiet" ? " -q" : "") + flags;
@@ -194,10 +196,12 @@ for (const mode of ["default", "quiet"] as const) test(`PY-IDENTITY-${mode}: lit
   }
 });
 test("PY-IDENTITY-REFUSE: closed flags, launchers, expansions and incompatible mode", () => {
+  reduced(find("default")); reduced(find("quiet"));
   const quiet = observation(find("quiet"));
   assert.equal(filter({ ...quiet, command: "pytest" }).status, "passthrough");
   assert.equal(pytestProfile.reduce(quiet.output, { ...quiet, command: "pytest" }), undefined);
   const native = observation(find("default"));
+  exact({ ...native, command: "pytest -q" }); // Reverse binding: default body cannot masquerade as quiet.
   for (const command of ["pytest -v", "pytest -s", "pytest --junitxml=x", "pytest -p custom", "pytest --unknown", "pytest -qq",
     "python3.14 -m pytest", "uv run pytest", "pytest *.py", "pytest; echo ok", "pytest && echo ok", "X=1 pytest", "pytest --color=yes"]) {
     assert.equal(filter({ ...native, command }).status, "passthrough", command);
@@ -205,7 +209,7 @@ test("PY-IDENTITY-REFUSE: closed flags, launchers, expansions and incompatible m
 });
 
 for (const id of ["default", "quiet"]) test(`PY-MALFORMED-${id}: summary/skip/warnings/progress reject whole output`, () => {
-  const c = find(id), o = observation(c), rows = o.output.split("\n");
+  const c = find(id); reduced(c); const o = observation(c), rows = o.output.split("\n");
   const warning = rows.find(r => r.includes("warnings summary"))!, short = rows.find(r => r.includes("short test summary info"))!;
   const record = rows.find(r => r.startsWith("SKIPPED") || r.startsWith("SUBSKIPPED"))!, footer = rows.at(-2)!;
   const warningContext = rows.find(r => r.includes("::test_warning_context"))!, docs = rows.find(r => r.startsWith("-- Docs:"))!;
@@ -214,7 +218,7 @@ for (const id of ["default", "quiet"]) test(`PY-MALFORMED-${id}: summary/skip/wa
     ["[1] test_native.py:", "[9007199254740992] test_native.py:"], [record, record + "\n" + record],
     [record, record.replace(/test_native\.py:\d+:/, "invalid-location:")], [record, "OPAQUE SUMMARY"], [record + "\n", ""],
     [warning, warning + "\n" + warning], [warningContext, warningContext + "\n" + warningContext],
-    [warningContext + "\n", ""], ["UserWarning:", "UnknownThing:"], [docs + "\n", ""],
+    [warningContext + "\n", ""], ["UserWarning:", "UnknownThing:"], ["UserWarning:", "CustomWarning:"], [docs + "\n", ""],
     [docs, "-- Docs: https://unknown.invalid/warnings"], [short, short + "\n" + short],
     [footer + "\n", ""], [footer, footer + "\n" + footer], ["[100%]", "[99%]"], ["[100%]", "[101%]"],
     ["1 warning", "2 warnings"], ["1 warning", "0 warnings"], [" in ", " in NaN"],
@@ -226,6 +230,28 @@ for (const id of ["default", "quiet"]) test(`PY-MALFORMED-${id}: summary/skip/wa
   }
 });
 
+test("PY-UNBOUND-DEFAULT: filename deletion leaves valid wrapped marks/counts but loses association", () => {
+  const c = find("default"); reduced(c); const o = observation(c);
+  const output = o.output.replace("test_native.py ", ""); assert.notEqual(output, o.output);
+  assert.ok(output.includes("......................................................... [  4%]"));
+  assert.ok(output.includes("1202 passed, 1 skipped, 1 warning"));
+  exact({ ...o, output });
+});
+for (const id of ["default", "quiet"]) test(`PY-SKIP-FORGERY-${id}: matching reason/footer counts still contradict progress`, () => {
+  const c = find(id); reduced(c); const o = observation(c), rows = o.output.split("\n");
+  const record = rows.find(r => r.startsWith("SKIPPED") || r.startsWith("SUBSKIPPED"))!;
+  const output = o.output.replace(record, record.replace("[1]", "[2]")).replace(id === "quiet" ? "2 skipped" : "1 skipped", id === "quiet" ? "3 skipped" : "2 skipped").replace("1202 passed", "1201 passed");
+  assert.notEqual(output, o.output); assert.ok(output.includes("[2] test_native.py:"));
+  const summaryRecords = output.split("\n").filter(r => r.startsWith("SKIPPED") || r.startsWith("SUBSKIPPED"));
+  const total = summaryRecords.reduce((n, r) => n + Number(/\[(\d+)\]/.exec(r)![1]), 0);
+  assert.equal(total, id === "quiet" ? 3 : 2); assert.ok(output.includes(`${total} skipped`));
+  assert.equal(1201 + total, id === "quiet" ? 1204 : 1203, "aggregate parent/subskip total still matches native");
+  const progressEnd = o.output.indexOf("=============================== warnings");
+  assert.equal(output.slice(0, progressEnd), o.output.slice(0, progressEnd), "progress s/- counts untouched");
+  if (id === "quiet") assert.equal(summaryRecords.filter(r => r.startsWith("SUBSKIPPED(case='skip')")).length, 2);
+  exact({ ...o, output });
+});
+
 test("PY-QUIET-COUNTS: dots/s parent counts exclude u/- for percentage, retain native SUBSKIPPED", () => {
   const c = find("quiet"); reduced(c);
   const raw = text(c.original.file), progress = raw.slice(0, raw.indexOf("=============================== warnings"));
@@ -235,6 +261,7 @@ test("PY-QUIET-COUNTS: dots/s parent counts exclude u/- for percentage, retain n
 });
 
 test("PY-QUIET-PARENT-PERCENT: u/- excluded before 100%, skip/subtest counts reconciled", () => {
+  reduced(find("quiet"));
   // Original MIT grammar control, supplemental to frozen native captures.
   const tail = [".uu- [ 90%]", "s [100%]", "=========================== short test summary info ============================",
     "SUBSKIPPED(case='skip') [1] test_control.py:17: subtest café 雪 🧪",
@@ -249,7 +276,7 @@ test("PY-QUIET-PARENT-PERCENT: u/- excluded before 100%, skip/subtest counts rec
   }
 });
 for (const id of ["default", "quiet"]) test(`PY-NO-SHORT-${id}: mixed progress still required without reasons section`, () => {
-  const c = find(id), raw = text(c.original.file), expected = text(c.expected.file);
+  const c = find(id); reduced(c); const raw = text(c.original.file), expected = text(c.expected.file);
   const short = raw.indexOf("=========================== short test summary info"), footer = raw.lastIndexOf("\n", raw.length - 2) + 1;
   const removed = raw.slice(short, footer), output = raw.replace(removed, ""), golden = expected.replace(removed, "");
   assert.notEqual(output, raw); assert.notEqual(golden, expected);
