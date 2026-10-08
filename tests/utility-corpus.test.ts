@@ -12,7 +12,7 @@ import { createAfterHook } from "../src/opencode/index.js";
 import type { Observation, FilterResult } from "../src/types.js";
 
 type Json = Record<string, any>;
-const hash = (value: string) => createHash("sha256").update(value).digest("hex");
+const hash = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
 const profiles: Json = { go: "go-test-verbose", pytest: "pytest", node: "node-test", cargo: "cargo-test" };
 const keep = "KEEP café 🧪\n", captureDefinition = "stdout/stderr arrival order; no text rewriting";
 // MOCK metadata grammar/plumbing only; never native CLI conformance or merge-authenticity proof.
@@ -20,7 +20,7 @@ async function mockCorpus(t: { after: (fn: () => Promise<void>) => void }) {
   const root = await mkdtemp(path.join(os.tmpdir(), "hugr-corpus-fix-"));
   t.after(() => rm(root, { recursive: true, force: true }));
   const manifests: Json = {}, receipts: Json = {};
-  async function put(family: string, file: string, value: string) {
+  async function put(family: string, file: string, value: string | Buffer) {
     await writeFile(path.join(root, family, file), value);
     return { file, bytes: Buffer.byteLength(value), sha256: hash(value) };
   }
@@ -250,6 +250,43 @@ test("series teeth: wrong valid hash, swapped/missing/repeated parts and wrong s
     await f.save("go");
     await assert.rejects(readUtilityCorpus(f.root), /SERIES_DIGEST_MISMATCH|MISSING_ARTIFACT|DUPLICATE_SERIES_PART|ARTIFACT_DIGEST_MISMATCH|UNBOUND_SOURCE_RECORD/);
   });
+});
+
+test("source-array self-consistent forgery still fails immutable index relation", async (t) => {
+  const f = await mockCorpus(t), { entry } = await bindMockRoot(f);
+  const forged = [{ ...f.manifests.go.cases[0].fixtureSources[0], sha256: "0".repeat(64) }];
+  const bytes = Buffer.from(`${JSON.stringify(forged, null, 2)}\n`);
+  const part = await f.put("go", "source-array.json", bytes);
+  entry.sourceInventory = { sha256: part.sha256, bytes: part.bytes, parts: [part] };
+  await f.save("go");
+  await assert.rejects(readUtilityCorpus(f.root), /INDEX_SOURCE_INVENTORY_MISMATCH/);
+});
+
+test("bound snapshot, nested source metadata and case facts cannot contradict publisher index", async (t) => {
+  for (const mutation of ["snapshot", "fixtureSources", "facts", "sourceHead"]) await t.test(mutation, async (t) => {
+    const f = await mockCorpus(t);
+    await bindMockRoot(f);
+    const receipt = f.receipts["go/noise"];
+    if (mutation === "snapshot") receipt.producer = { ...receipt.producer, snapshot: { file: "producer-source.mjs", sha256: "0".repeat(64), bytes: 13 } };
+    if (mutation === "fixtureSources") receipt.fixtureSources = [{ ...receipt.fixtureSources[0], sha256: "0".repeat(64) }];
+    if (mutation === "facts") { receipt.nativeExitObserved = false; }
+    if (mutation === "sourceHead") receipt.sourceHead = "2".repeat(40);
+    await f.saveReceipt("go");
+    await assert.rejects(readUtilityCorpus(f.root), /PRODUCER_SNAPSHOT_MISMATCH|INDEX_CAPTURE_METADATA_MISMATCH|INCOHERENT_CAPTURE_FACTS|ROOT_RECEIPT_SOURCE_HEAD_MISMATCH/);
+  });
+});
+
+test("series concatenate bytes before UTF-8 decode, even across split Unicode scalar", async (t) => {
+  const f = await mockCorpus(t), item = f.manifests.go.cases[0];
+  item.command = "mock-go café 🧪"; f.receipts["go/noise"].command = item.command;
+  await f.saveReceipt("go");
+  const { entry, index } = await bindMockRoot(f), bytes = Buffer.from(`${JSON.stringify(index, null, 2)}\n`);
+  const cut = bytes.indexOf(Buffer.from("🧪")) + 1;
+  assert.ok(cut > 0);
+  entry.index.parts = [await f.put("go", "index-first.json", bytes.subarray(0, cut)), await f.put("go", "index-second.json", bytes.subarray(cut))];
+  entry.index.bytes = bytes.length; entry.index.sha256 = hash(bytes);
+  await f.save("go");
+  assert.equal((await readUtilityCorpus(f.root)).cases.length, 8);
 });
 
 test("producer source bytes are mandatory and hash/length bound; helpers need explicit mapping", async (t) => {

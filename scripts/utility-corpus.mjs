@@ -170,6 +170,11 @@ function bindIndexedCapture(row, receipt, references, context) {
   for (const key of ["original", "stdout", "stderr"]) sameDigest(streams[key], { ...references[key], file: references[key].sourceFile ?? references[key].file }, `${context}: ${key}`);
   const capture = row.capture ?? (record(row.receipt) ? row.receipt : undefined);
   if (capture) sameDigest(capture, { ...references.capture, file: references.capture.sourceFile ?? references.capture.file }, `${context}: capture`);
+  for (const key of ["fixtureSources", "fixtureSourcesBefore", "fixtureSourcesAfter", "helpers", "versions", "sourceHead", "sourceInventorySHA256",
+    "baseline", "baselineSourceSHA", "errors", "encodingError", "launchError", "killErrors", "cleanupErrors"]) {
+    if (row[key] !== undefined) demand(isEqual(row[key], receipt[key]), "INDEX_CAPTURE_METADATA_MISMATCH", `${context}: ${key}`);
+  }
+  if (row.producer !== undefined) demand(isEqual(producer(row.producer, context, true), producer(receipt.producer, context, true)), "INDEX_CAPTURE_PRODUCER_MISMATCH", context);
 }
 function declaredProvenance(files, used, manifest) {
   const roots = new Map();
@@ -207,6 +212,8 @@ function declaredProvenance(files, used, manifest) {
       for (const key of ["original", "stdout", "stderr"]) texts[key] = artifact(files, used, version[key], context);
       demand(facts.nativeSpawned === true && facts.nativeExitObserved === true && facts.complete === true && facts.exitCode === 0
         && facts.signal === null && facts.timedOut === false && texts.original.length > 0, "INVALID_VERSION_CAPTURE_FACTS", context);
+      demand([facts.launchError, facts.encodingError, receipt.errors?.launch, receipt.errors?.encoding, receipt.errors?.preparation].every((error) => error === undefined || error === null)
+        && [facts.killErrors, facts.cleanupErrors, receipt.cleanupErrors, receipt.errors?.cleanup].every((errors) => errors === undefined || (Array.isArray(errors) && errors.length === 0)), "VERSION_CAPTURE_ERRORS", context);
       demand(version.original.bytes === version.stdout.bytes + version.stderr.bytes, "VERSION_STREAM_LENGTH_MISMATCH", context);
       bindIndexedCapture(rows.find((row) => row.id === version.id), receipt, version, `${context}: ${version.id}`);
       versions.set(version.id, { ...version, receipt, text: texts.original });
@@ -283,6 +290,11 @@ function receiptCheck(receipt, item, manifest, context, roots = new Map()) {
     demand(receipt.sourceHead === undefined || receipt.sourceHead === root.entry.sourceHead, "ROOT_RECEIPT_SOURCE_HEAD_MISMATCH", context);
     bindIndexedCapture(root.rows.find((row) => row.id === item.id), receipt, item, context);
     const snapshot = sourceMatch(root.refs, { file: declaredProducer.script, sha256: declaredProducer.sourceSHA256, bytes: receipt.producer.bytes }, context);
+    if (receipt.producer.snapshot !== undefined) {
+      descriptor(receipt.producer.snapshot, context);
+      demand(receipt.producer.snapshot.sha256 === snapshot.sha256 && receipt.producer.snapshot.bytes === snapshot.bytes
+        && (root.index.producer.snapshot === undefined || receipt.producer.snapshot.file === root.index.producer.snapshot.file), "PRODUCER_SNAPSHOT_MISMATCH", context);
+    }
     if (receipt.amendedProducer) sourceMatch(root.refs, { file: receipt.amendedProducer.script, sha256: receipt.amendedProducer.sha256, bytes: receipt.amendedProducer.bytes }, context);
     root.linked++; root.caseRefs ??= []; root.caseRefs.push(...item.fixtureSources);
     if (receipt.versions !== undefined) demand(isEqual(receipt.versions, root.index.versions), "INDEX_VERSIONS_MISMATCH", context);
@@ -456,7 +468,8 @@ export async function readUtilityCorpus(root) {
     for (const file of files.keys()) demand(used.has(file), "UNMAPPED_ARTIFACT", `${family}: ${file}`);
     families.push({ family, tools: manifest.tools, producer: manifest.producer, cases: rows,
       provenance: [...roots.values()].map(({ entry, index }) => ({ ...entry, collectorState: index.state ?? index.stage,
-        collectorFailures: index.errors ?? index.failedCaptures ?? index.failures ?? index.failure ?? [] })) });
+        collectorFailures: index.errors ?? index.failedCaptures ?? index.failures ?? index.failure ?? [],
+        sourceHeadBinding: "recorded sourceHead or baseline declaration; publisher source bytes are separately hash-bound" })) });
   }
   return { schema: SCHEMA, root, families, cases };
 }
