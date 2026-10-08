@@ -620,3 +620,26 @@
             "sha256": "6bc3a72ff972538edeb0844aea1d0d3e60e4490b65c24d32e76d0ab95d61bba7",
             "sourceFile": "captures/go-version/receipt.json"
           },
+          "original": {
+            "file": "provenance/go-zHh7jh/versions/go-version/original.log",
+            "bytes": 33,
+            "sha256": "ab0490d1c0783577296b0efc446afd00b7b93f30e310b07ff77ee9d2631237e3",
+            "sourceFile": "captures/go-version/original.log"
+          },
+          "stdout": {
+            "file": "provenance/go-zHh7jh/versions/go-version/stdout.log",
+            "bytes": 33,
+            "sha256": "ab0490d1c0783577296b0efc446afd00b7b93f30e310b07ff77ee9d2631237e3",
+            "sourceFile": "captures/go-version/stdout.log"
+          },
+          "stderr": {
+            "file": "provenance/go-zHh7jh/versions/go-version/stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sourceFile": "captures/go-version/stderr.log"
+          }
+        }
+      ]
+    }
+  ]
+}
