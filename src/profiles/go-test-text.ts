@@ -12,10 +12,12 @@ interface Options {
   run: string;
 }
 
-const selectors = new Set([
-  "TestNested/group/quiet", "TestNested", "TestParallel", "TestParallelQuiet",
-  "TestQuiet", "TestCollision", "TestAbsent",
-]);
+// A Go -run regex with no metacharacters: slash-separated literal substring selectors.
+const literalSelector = /^[A-Za-z0-9_][A-Za-z0-9_-]*(?:\/[A-Za-z0-9_][A-Za-z0-9_-]*)*$/;
+
+function boundedPositive(value: string, maximum: number): boolean {
+  return /^[1-9]\d*$/.test(value) && Number.isSafeInteger(Number(value)) && Number(value) <= maximum;
+}
 
 /** Closed delta argv. Anchored regexes cannot cross the frozen literal command tokenizer. */
 function options(argv: readonly string[]): Options | undefined {
@@ -37,19 +39,15 @@ function options(argv: readonly string[]): Options | undefined {
       seen.set(key, "true");
     } else if (["-run", "-count", "-parallel"].includes(key)) {
       const value = equal < 0 ? argv[++i] : arg.slice(equal + 1);
-      if (!value || (key === "-run" ? !selectors.has(value) :
-        key === "-count" ? !["1", "2"].includes(value) : value !== "2")) return undefined;
+      if (!value || (key === "-run" ? !literalSelector.test(value) :
+        !boundedPositive(value, key === "-count" ? 100 : 256))) return undefined;
       seen.set(key, value);
     } else return undefined;
   }
   const run = seen.get("-run") ?? "";
   const verbose = seen.has("-v"), cover = seen.has("-cover");
   const count = Number(seen.get("-count") ?? "1");
-  if (seen.size && (!packageSeen || !run)) return undefined;
-  if (seen.has("-parallel") && (!verbose || !["TestParallel", "TestParallelQuiet"].includes(run))) return undefined;
-  if (seen.has("-race") && (!verbose || !cover || count !== 2 || run !== "TestQuiet")) return undefined;
-  if (cover && (run !== "TestQuiet" || (verbose && !seen.has("-race")))) return undefined;
-  if (!verbose && seen.size && !(cover && seen.size === 2)) return undefined;
+  if (seen.size && !packageSeen) return undefined;
   return { verbose, cover, count, run };
 }
 
@@ -93,11 +91,10 @@ class Lifecycle {
   constructor(private readonly config: Options) {}
 
   private selected(name: string): boolean {
+    if (!this.config.run) return true;
     const path = name.split("/"), selected = this.config.run.split("/");
-    if (selected[0] === "TestParallel") {
-      if (!["TestParallel", "TestParallelQuiet"].includes(path[0]!)) return false;
-    } else if (path[0] !== selected[0]) return false;
-    return selected.slice(1).every((part, i) => path[i + 1] === undefined || path[i + 1] === part);
+    // Go runs matching ancestors to discover selected descendants; unanchored literals match substrings.
+    return selected.every((part, i) => path[i] === undefined || path[i]!.includes(part));
   }
 
   private run(name: string, index: number): boolean {

@@ -14,6 +14,7 @@ const read = (file: string): string => readFileSync(new URL(file, root), "utf8")
 interface Case {
   name: string; command: string; file: string; expectedFile: string;
   status: "reduced" | "passthrough"; provenance: { sha256: string };
+  historicalProposalFile?: string;
 }
 const manifest: { schema: string; cases: Case[] } = JSON.parse(read("cases.json"));
 const positives = ["literal-selector", "literal-nested", "literal-count", "literal-race-cover-count-run", "quiet-parallel", "mixed-parallel"];
@@ -64,7 +65,7 @@ test("G01 native corpus pins and independent goldens are complete and nonvacuous
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
   assert.equal(new Set(manifest.cases.map(c => c.name)).size, manifest.cases.length);
   assert.deepEqual(readdirSync(root).filter(name => name.endsWith(".txt")).sort(),
-    manifest.cases.flatMap(c => [c.file, c.expectedFile]).sort());
+    manifest.cases.flatMap(c => [c.file, c.expectedFile, ...(c.historicalProposalFile ? [c.historicalProposalFile] : [])]).sort());
   for (const c of manifest.cases) {
     const output = read(c.file), expected = read(c.expectedFile);
     assert.ok(output.length && expected.length);
@@ -77,6 +78,21 @@ test("G01 native corpus pins and independent goldens are complete and nonvacuous
     }
     if (c.status === "passthrough") assert.equal(expected, output);
     else assert.ok(Buffer.byteLength(expected) < Buffer.byteLength(output));
+    const result = filter(observation(output, c.command), { profiles: familyProfiles });
+    assert.equal(result.status, c.status, c.name + ": runtime disposition must match manifest");
+    if (result.status === "reduced") assert.equal(result.replacement, expected);
+    else { assert.equal("replacement" in result, false); assert.equal(expected, output); }
+    if (c.historicalProposalFile) {
+      const proposal = read(c.historicalProposalFile);
+      assert.ok(Buffer.byteLength(proposal) < Buffer.byteLength(output));
+      assert.equal(tokenizeCommand(c.command), undefined, "historical proposals are unsupported-command witnesses");
+      let position = 0;
+      for (const row of lines(proposal)) {
+        const source = lines(output).find(line => line.span[0] >= position && line.text === row.text);
+        assert.ok(source, "historical proposal remains an ordered source-backed subset");
+        position = source.span[1];
+      }
+    }
   }
 });
 
@@ -117,18 +133,24 @@ for (const id of positives) {
   });
 }
 
-test("G01 frozen routing admits only captured literal flag values and arities", () => {
+test("G01 frozen routing validates literal selectors, numeric bounds and flag arities", () => {
   assert.deepEqual(familyProfiles.map(p => p.id), ["go-test-verbose"]);
   for (const id of positives) assert.equal(familyProfiles[0]!.match(tokenizeCommand(entry(id).command)!), true);
   const input = read(entry("literal-selector").file);
   const commands = ["go test -json -v -run TestNested/group/quiet .", "go test -v -bench TestNested .",
     "go test -v -run Other .", "go test -v -run", "go test -v -run= .", "go test -v -run TestNested . -count 2",
-    "go test -v -run TestNested -count=0 .", "go test -v -run TestNested -count=02 .", "go test -v -run TestNested -count=3 .",
-    "go test -v -run TestNested -count=9007199254740993 .", "go test -v -run TestNested -parallel=3 .",
+    "go test -v -run TestNested -count=0 .", "go test -v -run TestNested -count=02 .", "go test -v -run TestNested -count=101 .",
+    "go test -v -run TestNested -count=9007199254740993 .", "go test -v -run TestNested -parallel=257 .",
+    "go test -v -run TestNested -parallel=0 .", "go test -v -run TestNested -parallel=01 .",
+    "go test -v -run TestNested//quiet .", "go test -v -run TestNested.group .",
     "go test -v -run TestNested -count .", "go test -v -v -run TestNested .", "go test -v=true -run TestNested .",
-    "go test -v -run TestNested -unknown .", "go test -v -race -run TestNested .", "go test -v -run TestNested ./...",
+    "go test -v -run TestNested -unknown .", "go test -v -run TestNested ./...",
     "env go test -v -run TestNested .", "go test -v -run TestNested . && echo done"];
-  for (const command of commands) exact(observation(input, command));
+  for (const command of commands) {
+    exact(observation(input, command));
+    const argv = tokenizeCommand(command);
+    if (argv) assert.equal(familyProfiles[0]!.match(argv), command === "go test -v -run Other .", command);
+  }
   for (const c of manifest.cases.filter(c => /[\^$]/.test(c.command))) {
     assert.equal(tokenizeCommand(c.command), undefined, "lead-owned tokenizer boundary");
     exact(observation(read(c.file), c.command));
@@ -234,5 +256,55 @@ test("G01 evidence oracle rejects goldens with lost skip/ancestor/log/summary ro
   for (const row of lines(golden)) {
     const bad: Reduction = { pieces: valid.pieces.filter(piece => !Array.isArray(piece) || input.slice(...piece) !== golden.slice(...row.span)), required: valid.required };
     assert.throws(() => spans(input, bad, golden));
+  }
+});
+
+test("G01 synthetic renamed properties: argv literals and flag combinations have no fixture-name branches", () => {
+  // Explicit synthetic renaming of pinned captures, not a native recapture claim.
+  const names = ["TestLedger", "TestInvoice_42", "TestNetworkCache"];
+  for (const name of names) {
+    for (const id of ["literal-selector", "literal-nested", "literal-race-cover-count-run", "quiet-parallel", "mixed-parallel"]) {
+      const c = entry(id);
+      const rename = (value: string): string => value.replaceAll("TestParallelQuiet", name + "Quiet")
+        .replaceAll("TestParallel", name).replaceAll("TestNested", name).replaceAll("TestQuiet", name);
+      const output = rename(read(c.file)), expected = rename(read(c.expectedFile));
+      const command = rename(c.command);
+      const result = filter(observation(output, command), { profiles: familyProfiles });
+      assert.equal(result.status, "reduced", command);
+      if (result.status !== "reduced") assert.fail("renamed literal must reduce");
+      assert.equal(result.replacement, expected);
+    }
+    const partial = name.slice(4);
+    const quiet = read(entry("literal-selector").file).replaceAll("TestNested", name);
+    const result = filter(observation(quiet, `go test -v -run ${partial}/rou/iet .`), { profiles: familyProfiles });
+    assert.equal(result.status, "reduced", "literal Go selectors match substrings at each path level");
+    if (result.status !== "reduced") assert.fail("partial literal selector must reduce");
+    assert.equal(result.replacement, read(entry("literal-selector").expectedFile));
+    const expected = read(entry("literal-selector").expectedFile);
+    for (const flags of ["-race", "-parallel 1", "-parallel=3", "-parallel=256", "-count 1", ""]) {
+      const result = filter(observation(quiet, `go test -v ${flags} -run ${name}/group/quiet .`), { profiles: familyProfiles });
+      assert.equal(result.status, "reduced", flags);
+      if (result.status !== "reduced") assert.fail("name-independent flags must reduce");
+      assert.equal(result.replacement, expected);
+    }
+  }
+});
+
+test("G01 synthetic count bounds and independent coverage/race flags", () => {
+  const quiet = "=== RUN   TestRenamed\n--- PASS: TestRenamed (0.00s)\n";
+  const summary = read(entry("literal-selector").expectedFile);
+  for (const count of [1, 3, 100]) {
+    const result = filter(observation(quiet.repeat(count) + summary,
+      `go test -v -race -count=${count} -run Renamed .`), { profiles: familyProfiles });
+    assert.equal(result.status, "reduced", "bounded repeat count " + count);
+    if (result.status !== "reduced") assert.fail("complete repeated renamed scopes must reduce");
+    assert.equal(result.replacement, summary);
+  }
+  const coverage = read(entry("literal-race-cover-count-run").expectedFile);
+  for (const flags of ["-cover", "-race -cover", "-cover -parallel=3"]) {
+    const result = filter(observation(quiet + coverage, `go test -v ${flags} -run Renamed .`), { profiles: familyProfiles });
+    assert.equal(result.status, "reduced", flags);
+    if (result.status !== "reduced") assert.fail("valid flags independent of names/count must reduce");
+    assert.equal(result.replacement, coverage);
   }
 });
