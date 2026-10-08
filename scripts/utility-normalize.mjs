@@ -209,6 +209,19 @@ export async function normalizeUtilityCorpus() {
     await put("manifest.json", Buffer.from(format(manifest)));
   }
   await writeFile(path.join(directory, "normalization-plan.json"), format({ schema: "hugr-lean/utility-normalization/1", corpusRoot, plan, origins, normalizations, seriesOrigins }), { flag: "wx" });
+  const reviewScopes = [];
+  for (const item of plan) {
+    const bytes = await readFile(path.join(corpusRoot, item.family, item.file));
+    ensure(bytes.length === item.bytes && hash(bytes) === item.sha256, `REVIEW_INVENTORY_CHANGED: ${item.family}/${item.file}`);
+    let decodedLines = null, ranges = [];
+    try {
+      const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
+      decodedLines = text.length === 0 ? 0 : text.split("\n").length - (text.endsWith("\n") ? 1 : 0);
+      for (let start = 1; start <= decodedLines; start += 400) ranges.push([start, Math.min(start + 399, decodedLines)]);
+    } catch { /* Binary source evidence is byte/hash-reviewed, never counted as zero lines. */ }
+    reviewScopes.push({ ...item, decodedLines, ranges, review: decodedLines === null ? "binary source byte/hash evidence" : "decoded physical lines" });
+  }
+  await writeFile(path.join(directory, "review-scopes.json"), format(reviewScopes), { flag: "wx" });
   const corpus = await readUtilityCorpus(corpusRoot);
   const result = { directory, corpusRoot, cases: corpus.cases.length, families: corpus.families.map(({ family, cases, provenance }) => ({ family, cases: cases.length, provenance })),
     inventorySHA256: hash(Buffer.from(format(plan))), sourceScope: "publisher byte/hash snapshots; sourceHead binds recorded index sourceHead or baseline, not an inferred execution commit" };
