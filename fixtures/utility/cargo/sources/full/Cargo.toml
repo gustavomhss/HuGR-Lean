@@ -1,0 +1,7 @@
+# Original MIT fixture; no external dependencies.
+[package]
+name = "hugr_utility_cargo"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+build = "build.rs"
