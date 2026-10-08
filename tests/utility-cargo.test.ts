@@ -1,0 +1,347 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+import { filter } from "../src/core/engine.js";
+import { cargoProfiles } from "../src/profiles/cargo.js";
+import type { Observation, Profile, Reduction, Span } from "../src/types.js";
+
+const root = new URL("../fixtures/utility/cargo/", import.meta.url);
+const read = (file: string) => readFileSync(new URL(file, root), "utf8");
+const raw = (id: string) => read(`${id}/original.log`);
+const golden = (id: string) => read(`${id}/${id}.expected.log`);
+const profile = cargoProfiles.find((entry) => entry.id === "cargo-test")!;
+const obs = (output: string, command = "cargo test --color never"): Observation => ({
+  source: "shell", command, output, termination: { kind: "exited", code: 0 },
+  completeness: "complete", presentation: "unknown",
+});
+// Independent UTF-16 row boundaries; no production line reader or parser-derived goldens.
+function rows(input: string): { text: string; span: Span }[] {
+  const result: { text: string; span: Span }[] = [];
+  for (let start = 0; start < input.length;) {
+    const lf = input.indexOf("\n", start), end = lf < 0 ? input.length : lf + 1;
+    result.push({ text: input.slice(start, end).replace(/\r?\n$/, ""), span: [start, end] });
+    start = end;
+  }
+  return result;
+}
+type Anchor = { text: string; occurrence: number };
+function anchors(input: string): Anchor[] {
+  const seen = new Map<string, number>();
+  return rows(input).filter((row) => row.text !== "").map(({ text }) => {
+    const occurrence = seen.get(text) ?? 0;
+    seen.set(text, occurrence + 1);
+    return { text, occurrence };
+  });
+}
+function evidence(input: string, reduction: Reduction, required: readonly Anchor[]): string {
+  assert.ok(required.length > 0, "independent evidence must be nonempty");
+  const spans: Span[] = [];
+  let previous = 0;
+  for (const piece of reduction.pieces) {
+    assert.ok(!("text" in piece), "native evidence must use source spans");
+    assert.ok(Number.isInteger(piece[0]) && Number.isInteger(piece[1]) &&
+      previous <= piece[0] && piece[0] < piece[1] && piece[1] <= input.length, "valid ordered UTF-16 pieces");
+    spans.push(piece); previous = piece[1];
+  }
+  const covers = (list: readonly Span[], span: Span) => list.some(([a, b]) => a <= span[0] && b >= span[1]);
+  for (const span of reduction.required) {
+    assert.ok(Number.isInteger(span[0]) && Number.isInteger(span[1]) &&
+      0 <= span[0] && span[0] < span[1] && span[1] <= input.length, "valid UTF-16 required span");
+    assert.ok(covers(spans, span), "declared evidence must be emitted");
+  }
+  for (const anchor of required) {
+    assert.ok(Number.isSafeInteger(anchor.occurrence) && anchor.occurrence >= 0);
+    const row = rows(input).filter((entry) => entry.text === anchor.text)[anchor.occurrence];
+    assert.ok(row, `missing occurrence ${anchor.occurrence}: ${anchor.text}`);
+    assert.ok(covers(reduction.required, row.span), `missing declaration: ${anchor.text}`);
+    assert.ok(covers(spans, row.span), `missing emission: ${anchor.text}`);
+  }
+  return spans.map((span) => input.slice(...span)).join("");
+}
+function accepted(input: string, expected: string, command = "cargo test --color never"): void {
+  const observation = obs(input, command);
+  assert.equal(profile.match(command.split(" ")), true, `admitted argv: ${command}`);
+  const result = profile.reduce(input, observation);
+  assert.ok(result, "Cargo must accept complete supported grammar");
+  assert.equal(evidence(input, result, anchors(expected)), expected);
+  const filtered = filter(observation);
+  assert.equal(filtered.status, "reduced");
+  if (filtered.status !== "reduced") assert.fail("missing reduction");
+  assert.equal(filtered.profile, "cargo-test");
+  assert.equal(filtered.replacement, expected);
+  assert.equal(filtered.inputBytes, Buffer.byteLength(input));
+  assert.equal(filtered.outputBytes, Buffer.byteLength(expected));
+}
+function exact(observation: Observation, candidate?: Profile): void {
+  assert.equal((candidate ?? profile).reduce(observation.output, observation), undefined, "grammar/metadata must decline");
+  const result = candidate ? filter(observation, { profiles: [candidate] }) : filter(observation);
+  assert.equal(result.status, "passthrough", observation.output);
+  assert.equal("replacement" in result, false);
+  assert.equal(result.inputBytes, Buffer.byteLength(observation.output));
+  assert.equal(result.outputBytes, result.inputBytes);
+}
+
+test("CARGO-SUITES: native absolute executable headers, 2m 01s, integration and doctest", () => {
+  accepted(raw("full"), golden("full"));
+});
+test("CARGO-LIB: native --lib retains Finished, Running, ignored Unicode and summary", () => {
+  accepted(raw("lib"), golden("lib"), "cargo test --lib --color never");
+});
+test("independent native golden positions, occurrence-zero anchors and honest MATERIAL", () => {
+  for (const [id, keep] of [["full", [2, 3, 6, 15, 17, 28, 30, 35]], ["lib", [1, 2, 5, 14]]] as const) {
+    const input = raw(id), expected = golden(id), source = rows(input);
+    assert.equal(keep.map((line) => input.slice(...source[line - 1]!.span)).join(""), expected);
+    assert.ok(anchors(expected).every((anchor) => anchor.occurrence === 0));
+    const saved = Buffer.byteLength(input) - Buffer.byteLength(expected);
+    assert.equal(saved >= 1024 && saved / Buffer.byteLength(input) >= 0.1, id === "full");
+  }
+  assert.equal(createHash("sha256").update(raw("full")).digest("hex"),
+    "de588a236150859c4fa563f6a735fc350a451f3ad04f94d397c966387c452762");
+});
+test("CARGO-LIB: admitted color forms in both orders", () => {
+  for (const command of ["cargo test --lib", "cargo test --lib --color=never", "cargo test --color=never --lib",
+    "cargo test --lib --color never", "cargo test --color never --lib"]) accepted(raw("lib"), golden("lib"), command);
+});
+test("closed command identity rejects duplicate/missing/unknown options and shell syntax", () => {
+  for (const command of ["cargo test --lib --lib", "cargo test --color never --color=never", "cargo test --lib=1",
+    "cargo test --lib --color", "cargo test --color always --lib", "cargo test --color auto --lib",
+    "cargo test --tests", "cargo test --doc", "cargo test --release", "cargo test --message-format=json",
+    "cargo test -- --nocapture", "cargo test --lib extra", "cargo test --lib && echo", "cargo test --lib | cat"]) {
+    assert.equal(profile.match(command.split(" ")), false, command);
+    assert.equal(filter(obs(raw("lib"), command)).status, "passthrough", command);
+  }
+});
+test("CARGO-LIB: full integration/doc suites cannot masquerade as library-only", () => {
+  exact(obs(raw("full"), "cargo test --lib --color never"));
+  exact(obs(raw("full").slice(0, raw("full").indexOf("   Doc-tests")), "cargo test --lib"));
+});
+for (const id of ["full", "lib"] as const) {
+  const command = id === "lib" ? "cargo test --lib --color never" : "cargo test --color never";
+  test(`${id}: CRLF, Unicode before retained rows, complete unterminated summary`, () => {
+    accepted(raw(id).replaceAll("\n", "\r\n"), golden(id).replaceAll("\n", "\r\n"), command);
+    accepted(raw(id).trimEnd(), golden(id).trimEnd(), command);
+    accepted(raw(id).replaceAll("/Documents/HuGR/", "/Documents/🦀café/HuGR/"),
+      golden(id).replaceAll("/Documents/HuGR/", "/Documents/🦀café/HuGR/"), command);
+  });
+  test(`${id}: false nonzero, unknown, timeout, incomplete and foreign-source facts preserve`, () => {
+    const base = obs(raw(id), command);
+    for (const variant of [{ ...base, termination: { kind: "exited", code: 101 } },
+      { ...base, termination: { kind: "unknown" } }, { ...base, termination: { kind: "timed_out" } },
+      { ...base, completeness: "truncated" }, { ...base, completeness: "unknown" },
+      { ...base, source: "other" }] as Observation[]) exact(variant);
+  });
+  test(`${id}: unknown rows/warnings at every boundary preserve whole output`, () => {
+    for (const offset of [0, ...rows(raw(id)).map((row) => row.span[1])]) {
+      for (const extra of ["opaque invoice café 🦀\n", "warning: unfamiliar compiler diagnostic\n"]) {
+        exact(obs(raw(id).slice(0, offset) + extra + raw(id).slice(offset), command));
+      }
+    }
+  });
+  test(`${id}: C0/C1/DEL, ANSI and bare CR cannot disappear with removable progress`, () => {
+    const controls = [...Array.from({ length: 32 }, (_, n) => n).filter((n) => n !== 9 && n !== 10 && n !== 13),
+      ...Array.from({ length: 33 }, (_, n) => n + 127)];
+    for (const code of controls) exact(obs(raw(id).replace("running 8 tests", `running 8 tests${String.fromCharCode(code)}`), command));
+    for (const extra of ["\r", "\x1b[32m"]) exact(obs(extra + raw(id), command));
+  });
+}
+test("native warning exact under bare/admitted color commands; failure exact under 101 and incorrect zero", () => {
+  for (const id of ["failure", "warning"]) {
+    assert.equal(golden(id), raw(id));
+    for (const command of ["cargo test", "cargo test --color never", "cargo test --color=never"]) {
+      exact(obs(raw(id), command));
+      exact({ ...obs(raw(id), command), termination: { kind: "exited", code: id === "failure" ? 101 : 0 } });
+    }
+  }
+});
+test("CARGO-SUITES: names reset across suites, relative headers and seconds isolate new grammar", () => {
+  const relative = (input: string) => input.replace(/\([^()]+\/target\/debug\/deps\//g, "(target/debug/deps/").replace("2m 01s", "12.31s");
+  accepted(relative(raw("full")), relative(golden("full")));
+  const firstEnd = raw("full").indexOf("     Running tests/");
+  accepted(raw("full").slice(0, firstEnd), golden("full").split("\n").slice(0, 4).join("\n") + "\n");
+});
+test("CARGO-SUITES: valid duplicate identities/ignored rows/summaries reset in distinct contexts", () => {
+  const input = raw("lib"), expected = golden("lib");
+  const next = input.slice(input.indexOf("     Running")).replace("unittests src/lib.rs", "tests/other.rs")
+    .replace("hugr_utility_cargo-d33d504b26e55d28)", "other-d33d504b26e55d28)");
+  const kept = expected.slice(expected.indexOf("     Running")).replace("unittests src/lib.rs", "tests/other.rs")
+    .replace("hugr_utility_cargo-d33d504b26e55d28)", "other-d33d504b26e55d28)");
+  accepted(input + next, expected + kept);
+});
+test("malformed durations, counts, duplicate/missing suites and unknown headers preserve", () => {
+  const input = raw("full"), source = rows(input);
+  const remove = (index: number) => input.slice(0, source[index]!.span[0]) + input.slice(source[index]!.span[1]);
+  const variants = [input + input, "", "\n", input.replace("running 8 tests", "running 9 tests"),
+    input.replace("running 7 tests", "running 6 tests"), input.replace("running 1 test", "running 1 tests"),
+    input.replace("running 8 tests", "running 08 tests"), input.replace("7 passed;", "8 passed;"),
+    input.replace("1 ignored;", "0 ignored;"), input.replace("0 failed;", "1 failed;"),
+    input.replace("0 measured;", "1 measured;"), input.replace("0 filtered out;", "9007199254740993 filtered out;"),
+    input.replace("7 passed;", "07 passed;"), input.replace("5.61s", "NaNs"),
+    input.replace("test tests::passing_00_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+      "test tests::duplicate_suite_identity ... ok"),
+    input.replace("test tests::passing_06_original_dependency_free_native_evidence_keeps_suite_context_and_long_identity_without_external_dependencies ... ok",
+      "test tests::duplicate_suite_identity ... ok"),
+    input.replace(source[16]!.text, source[2]!.text), input.replace("   Doc-tests hugr_utility_cargo", source[2]!.text),
+    input.replace("     Running tests/", "     Running examples/"), input.replace("   Doc-tests", "   Unknown-tests"),
+    input.replace("test src/lib.rs - add (line 4)", "test opaque invoice"), input.replace(" ... ok", " ... FAILED"),
+    input.replace(source[1]!.text, source[1]!.text + "\n" + source[1]!.text),
+    ...[2, 4, 14, 16, 18, 27, 29, 31, 34].map(remove),
+    ...[14, 27, 34].flatMap((index) => [
+      source[index]!.text.replace(/\d+ passed;/, "99 passed;"),
+      source[index]!.text.replace("0 failed;", "1 failed;"),
+      source[index]!.text.replace(/\d+ ignored;/, "99 ignored;"),
+      source[index]!.text.replace("0 measured;", "1 measured;"),
+    ].map((summary) => input.replace(source[index]!.text, summary))),
+    ...["0m 01s", "2m 60s", "2m 99s", "-2m 01s", "2m NaNs", "2m 1e2s", "Infinitys", "2m", "NaNs",
+      `2m ${"9".repeat(400)}s`].map((duration) => input.replace("2m 01s", duration))];
+  for (const variant of variants) { assert.notEqual(variant, input); exact(obs(variant)); }
+});
+test("streaming 1,000 Unicode tests, count guards and complete EOF", () => {
+  const input = raw("lib"), expected = golden("lib"), passing = rows(input).filter((row) => row.text.endsWith(" ... ok"));
+  let large = input;
+  for (const row of passing) large = large.replace(input.slice(...row.span), "");
+  large = large.replace("running 8 tests\n", "running 1001 tests\n" +
+    Array.from({ length: 1000 }, (_, i) => `test tests::𐐀café_${i} ... ok\n`).join(""))
+    .replace("7 passed;", "1000 passed;");
+  const command = "cargo test --lib", kept = expected.replace("7 passed;", "1000 passed;");
+  accepted(large + "\n".repeat(1000), kept, command);
+  accepted(large.replaceAll("\n", "\r\n"), kept.replaceAll("\n", "\r\n"), command);
+  for (const invalid of [large.replace("𐐀café_999", "𐐀café_0"), large.replace("1001 tests", "1002 tests"),
+    large.replace("1000 passed;", "999 passed;"), large.slice(0, large.indexOf("test result:")),
+    large + "\n".repeat(1000) + "test tests::late ... ok\n"]) exact(obs(invalid, command));
+});
+test("cargo-build seconds/minutes keep exact Finished; EOF and test grammars remain strict", () => {
+  const build = cargoProfiles.find((entry) => entry.id === "cargo-build")!;
+  const compile = "   Compiling fixture v0.1.0\n";
+  for (const duration of ["0.46s", "2m 01s"]) {
+    const finished = `    Finished \`dev\` profile [unoptimized + debuginfo] target(s) in ${duration}\n`;
+    const input = compile + finished, observation = obs(input, "cargo build --color never");
+    const reduction = build.reduce(input, observation);
+    assert.ok(reduction); assert.equal(evidence(input, reduction, anchors(finished)), finished);
+    for (const tail of ["\n", raw("lib"), "opaque\n"]) {
+      assert.equal(build.reduce(input + tail, obs(input + tail, observation.command)), undefined);
+      assert.equal(filter(obs(input + tail, observation.command)).status, "passthrough");
+    }
+  }
+  assert.equal(build.match(["cargo", "build", "--lib"]), false);
+});
+test("DECLARED-EVIDENCE teeth: declaration-only and emission-only forged reductions fail", () => {
+  const input = "noise 🦀\nsummary\nsummary\n", retained = rows(input).slice(1).map((row) => row.span);
+  const required = [{ text: "summary", occurrence: 0 }, { text: "summary", occurrence: 1 }];
+  const valid: Reduction = { pieces: retained, required: retained };
+  assert.equal(evidence(input, valid, required), "summary\nsummary\n");
+  for (let index = 0; index < retained.length; index++) {
+    assert.throws(() => evidence(input, { ...valid, required: retained.filter((_, i) => i !== index) }, required), /missing declaration/);
+    assert.throws(() => evidence(input, { ...valid, pieces: retained.filter((_, i) => i !== index) }, required), /declared evidence must be emitted/);
+  }
+  assert.throws(() => evidence(input, { pieces: [{ text: "summary\nsummary\n" }], required: retained }, required), /source spans/);
+  const byteOffsets = retained.map(([a, b]) => [Buffer.byteLength(input.slice(0, a)), Buffer.byteLength(input.slice(0, b))] as Span);
+  assert.throws(() => evidence(input, { pieces: byteOffsets, required: byteOffsets }, required), /UTF-16/);
+});
+
+type Artifact = { file: string; sha256: string; bytes: number; sourceFile?: string };
+type NativeCase = {
+  id: string; profile: string; command: string; role: string; expectedStatus: string;
+  exitCode: number; complete: boolean; signal: null; timedOut: boolean; material: boolean;
+  capture: Artifact; original: Artifact; stdout: Artifact; stderr: Artifact; expected: Artifact;
+  fixtureSources: Artifact[]; required: Anchor[];
+};
+function verified(artifact: Artifact): Buffer {
+  assert.ok(artifact.file.split("/").every((part) => /^[A-Za-z0-9_.-]+$/.test(part) && part !== "." && part !== ".."), "safe stored path");
+  const bytes = readFileSync(new URL(artifact.file, root));
+  assert.equal(bytes.length, artifact.bytes, `byte binding: ${artifact.file}`);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), artifact.sha256, `hash binding: ${artifact.file}`);
+  assert.equal(Buffer.from(bytes.toString("utf8")).equals(bytes), true, "lossless UTF-8");
+  return bytes;
+}
+function sourceBinding(stored: readonly Artifact[], recorded: readonly Artifact[]): void {
+  assert.ok(stored.length > 0 && recorded.length > 0);
+  const signature = (item: Artifact, relocated: boolean) => JSON.stringify([
+    relocated ? item.sourceFile ?? item.file : item.file, item.sha256, item.bytes,
+  ]);
+  assert.deepEqual(stored.map((item) => signature(item, true)).sort(),
+    recorded.map((item) => signature(item, false)).sort(), "source name/hash/byte binding");
+  for (const item of stored) verified(item);
+}
+test("native manifest binds raw/receipt/source facts, tool versions, expected bytes and all anchors", () => {
+  const manifest = JSON.parse(read("manifest.json"));
+  assert.equal(manifest.schema, "hugr-lean/utility-corpus/1"); assert.equal(manifest.family, "cargo");
+  const cases: NativeCase[] = manifest.cases;
+  assert.deepEqual(cases.map((entry) => entry.id), ["full", "lib", "failure", "warning"]);
+  assert.ok(cases.some((entry) => entry.role === "noise" && entry.material));
+  for (const entry of cases) {
+    const receipt = JSON.parse(verified(entry.capture).toString("utf8"));
+    assert.equal(receipt.id, entry.id); assert.equal(receipt.command, entry.command);
+    assert.equal(entry.profile, "cargo-test"); assert.equal(receipt.baseline, "882585e5f916821a482d14bc7bfe7d6a102b772a");
+    assert.equal(receipt.nativeSpawned, true); assert.equal(receipt.nativeExitObserved, true);
+    assert.equal(receipt.runtime.node, "v22.17.1"); assert.deepEqual(receipt.tools, manifest.tools);
+    for (const key of ["exitCode", "complete", "signal", "timedOut"] as const) assert.equal(receipt[key], entry[key]);
+    assert.equal(receipt.producer.sourceSHA256 ?? receipt.producer.sha256, entry.id === "full" ? manifest.producer.sourceSHA256 :
+      "d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f");
+    for (const key of ["original", "stdout", "stderr"] as const) {
+      verified(entry[key]);
+      assert.equal(entry[key].sha256, receipt.artifacts[key].sha256); assert.equal(entry[key].bytes, receipt.artifacts[key].bytes);
+    }
+    assert.equal(entry.original.bytes, entry.stdout.bytes + entry.stderr.bytes);
+    sourceBinding(entry.fixtureSources, receipt.fixtureSources ?? receipt.fixtureSourcesBefore);
+    const expected = verified(entry.expected).toString("utf8");
+    assert.equal(expected, golden(entry.id)); assert.deepEqual(entry.required, anchors(expected));
+    const source = raw(entry.id), spans = rows(source).filter((row) => row.text !== "").map((row) => row.span);
+    evidence(source, { pieces: spans, required: spans }, entry.required);
+    const saved = entry.original.bytes - entry.expected.bytes;
+    assert.equal(entry.material, saved >= 1024 && saved / entry.original.bytes >= 0.1);
+    assert.equal(entry.expectedStatus, entry.role === "noise" ? "reduced" : "passthrough");
+    if (entry.role === "exact") assert.equal(source, expected);
+  }
+});
+test("source lock snapshots retain distinct receipt-bound before/after generated comments", () => {
+  for (const [id, after] of [["full", "lib"], ["failure", "failure-after"], ["warning", "warning-after"]]) {
+    const before = read(`sources/${id}/Cargo.lock`), changed = read(`sources/${after}/Cargo.lock`);
+    assert.notEqual(before, changed);
+    assert.equal(changed, "# This file is automatically @generated by Cargo.\n# It is not intended for manual editing.\n" + before);
+    const receipt = JSON.parse(read(`${id}/receipt.json`));
+    const sources: Artifact[] = receipt.fixtureSources ?? receipt.fixtureSourcesBefore;
+    const prior = sources.find((entry) => entry.file === "Cargo.lock")!;
+    verified({ ...prior, file: `sources/${id}/Cargo.lock` });
+    const post: Artifact = id === "full" ? { file: "Cargo.lock", bytes: 203,
+      sha256: "37c075e3a501a668c75cbbf0831ab4a084f28ab26f763bd2b9b605262da58908" } :
+      receipt.fixtureSourcesAfter.find((entry: Artifact) => entry.file === "Cargo.lock");
+    verified({ ...post, file: `sources/${after}/Cargo.lock` });
+  }
+});
+test("binding oracle teeth reject digest/byte/path and source-name substitutions", () => {
+  assert.equal(createHash("sha256").update("").digest("hex"), "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+  const artifact: Artifact = { file: "sources/full/Cargo.lock", sourceFile: "Cargo.lock", bytes: 112,
+    sha256: "c979d625775116140efcb86e25b0785f3959ce3cc8660f5a969b7d0d5d38c0cb" };
+  verified(artifact);
+  assert.throws(() => verified({ ...artifact, sha256: "0".repeat(64) }), /hash binding/);
+  assert.throws(() => verified({ ...artifact, bytes: 113 }), /byte binding/);
+  assert.throws(() => verified({ ...artifact, file: "../Cargo.lock" }), /safe stored path/);
+  const recorded = [{ ...artifact, file: "Cargo.lock" }];
+  sourceBinding([artifact], recorded);
+  assert.throws(() => sourceBinding([{ ...artifact, sourceFile: "build.rs" }], recorded), /source name\/hash\/byte binding/);
+});
+test("native golden declaration-only and emission-only omissions fail for every retained line", () => {
+  for (const id of ["full", "lib"]) {
+    const input = raw(id), required = anchors(golden(id));
+    const spans = required.map((anchor) => rows(input).filter((row) => row.text === anchor.text)[anchor.occurrence]!.span);
+    assert.equal(evidence(input, { pieces: spans, required: spans }, required), golden(id));
+    for (let index = 0; index < spans.length; index++) {
+      assert.throws(() => evidence(input, { pieces: spans, required: spans.filter((_, i) => i !== index) }, required), /missing declaration/);
+      assert.throws(() => evidence(input, { pieces: spans.filter((_, i) => i !== index), required: spans }, required), /declared evidence must be emitted/);
+    }
+  }
+});
+test("PRESERVE positive control and forged shrink mutant bite without production edits", () => {
+  const input = readFileSync(new URL("../fixtures/runners/cargo_test_success.txt", import.meta.url), "utf8");
+  const expected = rows(input).filter((row) => row.text.startsWith("    Finished") || row.text.startsWith("     Running") ||
+    row.text.includes(" ... ignored") || row.text.startsWith("test result:")).map((row) => input.slice(...row.span)).join("");
+  accepted(input, expected);
+  exact(obs(input.replace("running 3 tests", "running 4 tests")));
+  exact({ ...obs(input), termination: { kind: "exited", code: 101 } });
+  const kept = rows(input).filter((row) => row.text.startsWith("test result:")).map((row) => row.span);
+  const mutant: Profile = { ...profile, reduce: () => ({ pieces: kept, required: kept }) };
+  assert.throws(() => exact(obs(input + "unknown compiler warning\n"), mutant), /grammar\/metadata must decline/);
+  assert.throws(() => exact({ ...obs(input), termination: { kind: "exited", code: 101 } }, mutant), /grammar\/metadata must decline/);
+  accepted(input, expected);
+});
