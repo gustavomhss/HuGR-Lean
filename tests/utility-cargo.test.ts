@@ -6,11 +6,12 @@ import ts from "typescript";
 import { filter } from "../src/core/engine.js";
 import { cargoProfiles } from "../src/profiles/cargo.js";
 import type { Observation, Profile, Reduction, Span } from "../src/types.js";
+import { loadUtility } from "./utility-fixtures.js";
 
-const root = new URL("../fixtures/utility/cargo/", import.meta.url);
-const read = (file: string) => readFileSync(new URL(file, root), "utf8");
-const raw = (id: string) => read(`${id}/original.log`);
-const golden = (id: string) => read(`${id}/${id}.expected.log`);
+const native = await loadUtility();
+const read = (file: string) => native.read("cargo", file).toString("utf8");
+const raw = (id: string) => native.case("cargo", id).originalText;
+const golden = (id: string) => native.case("cargo", id).expectedText;
 const profile = cargoProfiles.find((entry) => entry.id === "cargo-test")!;
 const obs = (output: string, command = "cargo test --color never"): Observation => ({
   source: "shell", command, output, termination: { kind: "exited", code: 0 },
@@ -28,12 +29,26 @@ function rows(input: string): { text: string; span: Span }[] {
 }
 type Anchor = { text: string; occurrence: number };
 function anchors(input: string): Anchor[] {
-  const seen = new Map<string, number>();
-  return rows(input).filter((row) => row.text !== "").map(({ text }) => {
-    const occurrence = seen.get(text) ?? 0;
-    seen.set(text, occurrence + 1);
+  return rows(input).filter((row) => row.text !== "").map(({ text, span }) => {
+    let occurrence = 0, cursor = 0;
+    for (;;) {
+      const at = input.indexOf(text, cursor);
+      assert.ok(at >= 0, "physical row anchor must exist");
+      if (at === span[0]) break;
+      assert.ok(at < span[0], "anchor must begin at physical row");
+      occurrence++; cursor = at + text.length;
+    }
     return { text, occurrence };
   });
+}
+function anchoredRow(input: string, anchor: Anchor): { text: string; span: Span } {
+  let at = -1, cursor = 0;
+  for (let i = 0; i <= anchor.occurrence; i++) {
+    at = input.indexOf(anchor.text, cursor); assert.ok(at >= 0, `missing occurrence ${anchor.occurrence}: ${anchor.text}`);
+    cursor = at + anchor.text.length;
+  }
+  const row = rows(input).find(row => row.span[0] === at && row.text === anchor.text);
+  assert.ok(row, "anchor must identify full physical row"); return row;
 }
 function evidence(input: string, reduction: Reduction, required: readonly Anchor[]): string {
   assert.ok(required.length > 0, "independent evidence must be nonempty");
@@ -53,8 +68,7 @@ function evidence(input: string, reduction: Reduction, required: readonly Anchor
   }
   for (const anchor of required) {
     assert.ok(Number.isSafeInteger(anchor.occurrence) && anchor.occurrence >= 0);
-    const row = rows(input).filter((entry) => entry.text === anchor.text)[anchor.occurrence];
-    assert.ok(row, `missing occurrence ${anchor.occurrence}: ${anchor.text}`);
+    const row = anchoredRow(input, anchor);
     assert.ok(covers(reduction.required, row.span), `missing declaration: ${anchor.text}`);
     assert.ok(covers(spans, row.span), `missing emission: ${anchor.text}`);
   }
@@ -306,7 +320,7 @@ type NativeCase = {
 };
 function verified(artifact: Artifact): Buffer {
   assert.ok(artifact.file.split("/").every((part) => /^[A-Za-z0-9_.-]+$/.test(part) && part !== "." && part !== ".."), "safe stored path");
-  const bytes = readFileSync(new URL(artifact.file, root));
+  const bytes = native.read("cargo", artifact.file);
   assert.equal(bytes.length, artifact.bytes, `byte binding: ${artifact.file}`);
   assert.equal(createHash("sha256").update(bytes).digest("hex"), artifact.sha256, `hash binding: ${artifact.file}`);
   assert.equal(Buffer.from(bytes.toString("utf8")).equals(bytes), true, "lossless UTF-8");
@@ -321,14 +335,14 @@ function sourceBinding(stored: readonly Artifact[], recorded: readonly Artifact[
     recorded.map((item) => signature(item, false)).sort(), "source name/hash/byte binding");
   for (const item of stored) verified(item);
 }
-test("native manifest binds raw/receipt/source facts, tool versions, expected bytes and all anchors", () => {
+test("native manifest binds raw/receipt/source facts, tool versions, expected bytes and all anchors", async () => {
   const manifest = JSON.parse(read("manifest.json"));
   assert.equal(manifest.schema, "hugr-lean/utility-corpus/1"); assert.equal(manifest.family, "cargo");
   const cases: NativeCase[] = manifest.cases;
   assert.deepEqual(cases.map((entry) => entry.id), ["full", "lib", "failure", "warning"]);
   assert.ok(cases.some((entry) => entry.role === "noise" && entry.material));
   for (const entry of cases) {
-    const receipt = JSON.parse(verified(entry.capture).toString("utf8"));
+    const receipt = native.case("cargo", entry.id).captureReceipt;
     assert.equal(receipt.id, entry.id); assert.equal(receipt.command, entry.command);
     assert.equal(entry.profile, "cargo-test"); assert.equal(receipt.baseline, "882585e5f916821a482d14bc7bfe7d6a102b772a");
     assert.equal(receipt.nativeSpawned, true); assert.equal(receipt.nativeExitObserved, true);
@@ -340,6 +354,7 @@ test("native manifest binds raw/receipt/source facts, tool versions, expected by
     for (const key of ["original", "stdout", "stderr"] as const) {
       verified(entry[key]);
       assert.equal(entry[key].sha256, receipt.artifacts[key].sha256); assert.equal(entry[key].bytes, receipt.artifacts[key].bytes);
+      assert.equal(entry[key].sourceFile ?? entry[key].file, receipt.artifacts[key].file);
     }
     assert.equal(entry.original.bytes, entry.stdout.bytes + entry.stderr.bytes);
     sourceBinding(entry.fixtureSources, receipt.fixtureSources ?? receipt.fixtureSourcesBefore);
@@ -347,11 +362,16 @@ test("native manifest binds raw/receipt/source facts, tool versions, expected by
     assert.equal(expected, golden(entry.id)); assert.deepEqual(entry.required, anchors(expected));
     const source = raw(entry.id), spans = rows(source).filter((row) => row.text !== "").map((row) => row.span);
     evidence(source, { pieces: spans, required: spans }, entry.required);
+    assert.deepEqual(native.case("cargo", entry.id).required.map(a => a.sourceSpan), entry.required.map(anchor => {
+      const row = anchoredRow(source, anchor);
+      return [row.span[0], row.span[1] - (source.slice(...row.span).endsWith("\n") ? 1 : 0)];
+    }), "reader UTF-16 anchors agree with independent row oracle");
     const saved = entry.original.bytes - entry.expected.bytes;
     assert.equal(entry.material, saved >= 1024 && saved / entry.original.bytes >= 0.1);
     assert.equal(entry.expectedStatus, entry.role === "noise" ? "reduced" : "passthrough");
     if (entry.role === "exact") assert.equal(source, expected);
   }
+  await native.descriptorTeeth("cargo", "full");
 });
 test("source lock reconstructed-full / recorded-control bytes bind generated-comment changes", () => {
   for (const [id, after] of [["full", "lib"], ["failure", "failure-after"], ["warning", "warning-after"]]) {
