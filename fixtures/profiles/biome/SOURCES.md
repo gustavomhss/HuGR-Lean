@@ -38,8 +38,9 @@ per case. Duration and diagnostic ordering may vary on replay; captures stay raw
 
 Hash recipe: SHA-256 over raw file bytes using `createHash("sha256").update(bytes)`.
 Check `outputSha256`, UTF-8/raw `outputBytes`, every before/after `sourceSha256`,
-and `configSha256` from capture-receipt.json. Validation must fail after changing one output
-byte; restore afterward. Capture-only packet has no production mutation claim.
+and `configSha256` from capture-receipt.json. Validation must fail after changing
+one output byte; restore afterward. Initial capture-only verification did not
+claim production mutation coverage.
 
 Verification receipt: repo `npm ci --ignore-scripts --no-audit --no-fund` and
 `npm run typecheck` completed. Same compiler rejected an external intentional
@@ -56,3 +57,23 @@ existing fixture paths and dispositions; provenance links each full receipt row.
 Replay writes a fresh capture-receipt.json only; it does not author goldens or
 overwrite normalized cases. Independently authored expected.txt files remove only
 the two approved terminal header bars. No shared JSON helper is used.
+
+Implementation verification: `tsx --test tests/profile-biome.test.ts` and repo
+`npm run typecheck`; only this owned test file is run. Initial empty-profile
+scaffold failed both independent native golden assertions (`passthrough` vs
+`reduced`); complete implementation passes them. Focused probes mutate only
+owned `src/profiles/biome.ts`, then restore through explicit patches:
+
+| Probe | Named test | Observed failure |
+| --- | --- | --- |
+| Drop info/warning message rows from kept spans | native oracle | primary body row not required |
+| Drop source caret rows from kept spans | native oracle | `│ \t^^^` row not required |
+| Drop safe/unsafe fix/help rows from kept spans | native oracle | Safe fix row not required |
+| Remove numeric primary-warning/footer equality | primary warning counts | inconsistent `Found 2 warning.` reduced instead of passthrough |
+
+Each probe exited 1; each mutation restored. Final focused suite and typecheck
+rerun after restoration. Generic synthetic coverage additionally varies paths,
+rules/messages, multiple warnings/files, wrapped paragraphs, and gutter widths.
+All strict prefixes and every line boundary reject incomplete or unknown output.
+Tests assert every original prefix/body/blank/footer row is a required source span;
+independent goldens assert the exact only-two-bar complement.
