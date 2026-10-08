@@ -87,6 +87,9 @@ class Lifecycle {
   private current = new Map<string, Scope>();
   private stack: Scope[] = [];
   private diagnostic: Scope | undefined;
+  private firstRound: string[] = [];
+  private repeating = false;
+  private repeatStarts = 0;
 
   constructor(private readonly config: Options) {}
 
@@ -97,12 +100,26 @@ class Lifecycle {
     return selected.every((part, i) => path[i] === undefined || path[i]!.includes(part));
   }
 
+  private registerRoot(name: string): boolean {
+    if (!this.repeating && !this.occurrences.has(name)) {
+      this.firstRound.push(name);
+      return true;
+    }
+    // First repeated root freezes registration order; -shuffle is outside this argv grammar.
+    this.repeating = true;
+    const expected = this.firstRound[this.repeatStarts % this.firstRound.length];
+    if (name !== expected || this.repeatStarts >= this.firstRound.length * (this.config.count - 1)) return false;
+    this.repeatStarts++;
+    return true;
+  }
+
   private run(name: string, index: number): boolean {
     if (!testName.test(name) || !this.selected(name) || name.split("/").length > 128) return false;
     const slash = name.lastIndexOf("/");
     let parent: Scope | undefined;
     if (slash < 0) {
       if ([...this.current.values()].some(node => !node.ended)) return false;
+      if (!this.registerRoot(name)) return false;
       this.current = new Map();
       this.stack = [];
       const count = (this.occurrences.get(name) ?? 0) + 1;
@@ -195,6 +212,7 @@ class Lifecycle {
 
   complete(): boolean {
     return this.scopes.length > 0 && this.scopes.every(node => node.ended) &&
+      this.repeatStarts === this.firstRound.length * (this.config.count - 1) &&
       [...this.occurrences.values()].every(count => count === this.config.count);
   }
 }

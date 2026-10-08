@@ -308,3 +308,39 @@ test("G01 synthetic count bounds and independent coverage/race flags", () => {
     assert.equal(result.replacement, coverage);
   }
 });
+
+test("G01 count rounds refuse independent malformed disjoint loops and reordered registrations", () => {
+  // Independent synthetic producer transcripts: complete roots, native-looking final boundary.
+  const root = (name: string): string => `=== RUN   Test${name}\n--- PASS: Test${name} (0.00s)\n`;
+  const summary = "PASS\nok  \texample.com/rounds\t0.001s\n";
+  const malformed = [
+    ["Alpha", "Alpha", "Beta", "Beta"], // Disjoint per-root loops satisfy the old counters.
+    ["Alpha", "Beta", "Beta", "Alpha"], // Second round reordered.
+    ["Alpha", "Beta", "Alpha"], // Incomplete second round.
+    ["Alpha", "Beta", "Alpha", "Beta", "Alpha"], // Extra round/root occurrence.
+    ["Alpha", "Beta", "Alpha", "Gamma", "Beta", "Gamma"], // New root after repetition starts.
+    ["Alpha", "Beta", "Gamma", "Alpha", "Gamma", "Beta"],
+  ];
+  for (const sequence of malformed) {
+    exact(observation(sequence.map(root).join("") + summary, "go test -v -count=2 -run Test ."));
+  }
+});
+
+test("G01 count rounds admit ordered two-root rounds with occurrence-local child evidence", () => {
+  // Explicit synthetic positive, no native capture claim and no sorting/deduplication oracle.
+  const alpha = "=== RUN   TestAlpha\n=== RUN   TestAlpha/shared\n" +
+    "    rounds_test.go:7: linked Alpha 🧭\n--- PASS: TestAlpha (0.00s)\n" +
+    "    --- PASS: TestAlpha/shared (0.00s)\n";
+  const beta = "=== RUN   TestBeta\n=== RUN   TestBeta/shared\n--- PASS: TestBeta (0.00s)\n" +
+    "    --- PASS: TestBeta/shared (0.00s)\n";
+  const summary = "PASS\nok  \texample.com/rounds\t0.001s\n";
+  const obs = observation(alpha + beta + alpha + beta + summary, "go test -v -count=2 -run Test .");
+  const expected = alpha + alpha + summary;
+  const result = filter(obs, { profiles: familyProfiles });
+  assert.equal(result.status, "reduced");
+  if (result.status !== "reduced") assert.fail("ordered native-shaped rounds must reduce");
+  assert.equal(result.replacement, expected, "both chronological linked occurrences survive");
+  const reduced = familyProfiles[0]!.reduce(obs.output, obs);
+  assert.ok(reduced);
+  spans(obs.output, reduced, expected);
+});

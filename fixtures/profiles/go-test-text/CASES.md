@@ -136,3 +136,17 @@ comes exclusively from the unchanged original delegate and reused utility fixtur
   golden tests both failed on actual lost evidence. Both edits restored before final suite/typecheck.
 - The four historical proposals were compared byte-exact with their prior committed goldens at
   `2a521f4`. This correction introduces no new native captures or tokenizer/registry/shared changes.
+
+## P1 count-round correction
+
+- Independent synthetic complete-root transcript `Alpha,Alpha,Beta,Beta` with `-count=2 -run Test`
+  failed before the fix: public filter reduced instead of preserving the malformed disjoint loops.
+- Root RUN registrations establish first-round order. First repetition freezes that sequence; every
+  subsequent round must repeat it exactly, with the requested number of complete rounds. Duplicate,
+  reordered, incomplete or extra registrations refuse. Child maps remain occurrence-local.
+- Ordered `Alpha,Beta,Alpha,Beta` positive retains both linked Alpha child occurrences chronologically
+  while removing quiet Beta scopes. No event sorting or native recapture is involved.
+- Production probe removed the expected-root order comparison. Reordered `Alpha,Beta,Beta,Alpha`
+  then reduced and the negative assertion failed. Guard restored before verification.
+- Corrected owned suite: 38 passed, zero skipped; typecheck exited 0 after restoration. Existing
+  manifests, native goldens, original delegate and top-level-parallel refusal scope remain intact.
