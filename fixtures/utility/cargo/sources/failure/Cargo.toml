@@ -1,0 +1,6 @@
+# Original MIT dependency-free fixture.
+[package]
+name = "hugr_utility_cargo_failure"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
