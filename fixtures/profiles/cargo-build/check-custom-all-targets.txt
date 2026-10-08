@@ -1,0 +1,10 @@
+    Checking c01-app v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-tiny/app)
+error: C01 required diagnostic café 🦀
+ --> app/src/lib.rs:4:1
+  |
+4 | compile_error!("C01 required diagnostic café 🦀");
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: could not compile `c01-app` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `c01-app` (lib test) due to 1 previous error

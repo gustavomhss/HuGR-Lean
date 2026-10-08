@@ -1,0 +1,2 @@
+   Compiling c01-peer v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-tiny/peer)
+    Finished `small` profile [optimized + debuginfo] target(s) in 1.11s
