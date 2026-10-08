@@ -41,7 +41,7 @@ directory on `PATH`. The package version remains `0.2.0` pending a human release
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for verified baseline local proof, pending final artifact inspection, deferred CI and human decisions.
+for dated baseline proof, pending utility-candidate verification, deferred CI and human decisions.
 The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
@@ -55,19 +55,20 @@ Copy `pluginURL` from doctor into your OpenCode configuration:
 ```
 
 Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Historically and freshly verified local host route at the frozen code baseline:
+Historically verified local host route at the earlier delivery baseline:
 **OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
-Final documentation-bearing artifact proof and Linux/macOS/Windows CI remain pending;
+The utility candidate's final SHA, installed artifact, host and latency receipts remain pending;
+Linux/macOS/Windows CI also remains pending.
 Linux/Windows were not run locally. Actions stays deferred until final candidate verification
 is recorded and the lead explicitly declares completion.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
-When npm registry publication is available, `hugr-lean@0.2.0` can be used as the plugin package name;
-the package-name loading route has been tested with a locally installed tarball.
+Npm registry installation is not currently available. If publication is authorized, the package
+name can be used as the plugin entry; historical package-name proof used a locally installed tarball.
 
 ## Behavior and coverage
 
-Supported native grammars: Cargo test/build, pytest, Go verbose tests, Jest, Vitest,
+Supported native grammars: Cargo test/build, pytest, Go verbose tests, Node/tsx TAP tests, Jest, Vitest,
 English Git status and numbered ripgrep. Coverage is deliberately format-specific; see
 [coverage matrix](docs/COVERAGE.md).
 
@@ -76,6 +77,13 @@ English Git status and numbered ripgrep. Coverage is deliberately format-specifi
 - Original summaries remain exact; supported passing-test progress can disappear after count validation.
 - The adapter changes only model-visible text. Native command, title, metadata and attachments remain host-owned.
 - Host truncation happens before the hook: raw recovery means the exact captured boundary, not full process stdout.
+- The OpenCode after-hook filters only `bash` results; it never rewrites command argv or performs core/profile I/O.
+
+[Native utility evaluation](docs/UTILITY_EVALUATION.md) records original local fixture projects:
+25 cases (12 noise, 13 exact), with deliberate long names and many tests. These are not
+representative real-agent sessions. The 39-case combined/installed matrix covers 10 IDs
+(nine reducers and inert `tsc`); matrix membership is not a fresh passing receipt.
+Jest/Vitest retain their existing prefix/per-file-timing strategy; no utility improvement is claimed.
 
 ## Options and raw recovery
 
