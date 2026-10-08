@@ -271,3 +271,403 @@
           "sha256": "e89842279f2725fa77cfe7a52b7d76fe56889e6b463d01eff056169ab15ee492",
           "bytes": 118
         }
+      ],
+      "original": {
+        "file": "failure/original.log",
+        "bytes": 642,
+        "sha256": "d58e0b3e09316da82c38cb4a26e50234aaea8a7bd386f7bb87f303c040d1f685",
+        "sourceFile": "captures/failure/original.log"
+      },
+      "stdout": {
+        "file": "failure/stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceFile": "captures/failure/stdout.log"
+      },
+      "stderr": {
+        "file": "failure/stderr.log",
+        "bytes": 642,
+        "sha256": "d58e0b3e09316da82c38cb4a26e50234aaea8a7bd386f7bb87f303c040d1f685",
+        "sourceFile": "captures/failure/stderr.log"
+      },
+      "expected": {
+        "file": "failure/failure.expected.log",
+        "bytes": 642,
+        "sha256": "d58e0b3e09316da82c38cb4a26e50234aaea8a7bd386f7bb87f303c040d1f685"
+      },
+      "required": [
+        {
+          "text": "   Compiling hugr_utility_cargo_failure v0.1.0 (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/remaining-Ak3JfQ/projects/failure)",
+          "occurrence": 0
+        },
+        {
+          "text": "error: HUGR_CARGO_COMPILE_ERROR_SENTINEL café 🦀",
+          "occurrence": 0
+        },
+        {
+          "text": " --> src/lib.rs:2:1",
+          "occurrence": 0
+        },
+        {
+          "text": "  |",
+          "occurrence": 0
+        },
+        {
+          "text": "2 | compile_error!(\"HUGR_CARGO_COMPILE_ERROR_SENTINEL café 🦀\");",
+          "occurrence": 0
+        },
+        {
+          "text": "  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "occurrence": 0
+        },
+        {
+          "text": "error: could not compile `hugr_utility_cargo_failure` (lib) due to 1 previous error",
+          "occurrence": 0
+        },
+        {
+          "text": "warning: build failed, waiting for other jobs to finish...",
+          "occurrence": 0
+        },
+        {
+          "text": "error: could not compile `hugr_utility_cargo_failure` (lib test) due to 1 previous error",
+          "occurrence": 0
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "remaining-Ak3JfQ",
+      "sourcePhase": "before"
+    },
+    {
+      "id": "warning",
+      "profile": "cargo-test",
+      "command": "cargo test --color never",
+      "producer": {
+        "script": "scripts/utility-native-cargo-remaining.mjs",
+        "sourceSHA256": "d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f"
+      },
+      "role": "exact",
+      "expectedStatus": "passthrough",
+      "exitCode": 0,
+      "complete": true,
+      "signal": null,
+      "timedOut": false,
+      "capture": {
+        "file": "warning/receipt.json",
+        "bytes": 11436,
+        "sha256": "6d9646957d15bc3b8ad52c16a40d23ca02284b614479b54fa437fb3639270f5f",
+        "sourceFile": "captures/warning/receipt.json"
+      },
+      "fixtureSources": [
+        {
+          "file": "sources/warning/Cargo.lock",
+          "sourceFile": "Cargo.lock",
+          "sha256": "d07b1301efad9b51b53621c065a6545191fad3aeb6620816e5cbb26d01a93608",
+          "bytes": 104
+        },
+        {
+          "file": "sources/warning/Cargo.toml",
+          "sourceFile": "Cargo.toml",
+          "sha256": "8f9d60d36465e96a580d7d393237c47ef89f698e4f4db705bd9b284e7fc922a2",
+          "bytes": 137
+        },
+        {
+          "file": "sources/warning/src/lib.rs",
+          "sourceFile": "src/lib.rs",
+          "sha256": "50f09a191f4a40a6e91c3d2044ecb4da7bc5b663555c4ce3df2a296d4bac2665",
+          "bytes": 194
+        }
+      ],
+      "original": {
+        "file": "warning/original.log",
+        "bytes": 1226,
+        "sha256": "5b6c11654de17ab77137edfe98f5d41abb410170711d9a3964c974f3192a0f0c",
+        "sourceFile": "captures/warning/original.log"
+      },
+      "stdout": {
+        "file": "warning/stdout.log",
+        "bytes": 269,
+        "sha256": "3e07351a55801724fb4111d718203873c48423ecbd4bc19e277e598f69c1a687",
+        "sourceFile": "captures/warning/stdout.log"
+      },
+      "stderr": {
+        "file": "warning/stderr.log",
+        "bytes": 957,
+        "sha256": "4bda7da885f4603e5e3f0d249ce57ffacc7cea0d56541a9d5e23fd1a76b8a25b",
+        "sourceFile": "captures/warning/stderr.log"
+      },
+      "expected": {
+        "file": "warning/warning.expected.log",
+        "bytes": 1226,
+        "sha256": "5b6c11654de17ab77137edfe98f5d41abb410170711d9a3964c974f3192a0f0c"
+      },
+      "required": [
+        {
+          "text": "   Compiling hugr_utility_cargo_warning v0.1.0 (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/remaining-Ak3JfQ/projects/warning)",
+          "occurrence": 0
+        },
+        {
+          "text": "warning: function `original_unused_warning_sentinel` is never used",
+          "occurrence": 0
+        },
+        {
+          "text": " --> src/lib.rs:2:4",
+          "occurrence": 0
+        },
+        {
+          "text": "  |",
+          "occurrence": 0
+        },
+        {
+          "text": "2 | fn original_unused_warning_sentinel() {}",
+          "occurrence": 0
+        },
+        {
+          "text": "  |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "occurrence": 0
+        },
+        {
+          "text": "  |",
+          "occurrence": 2
+        },
+        {
+          "text": "  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default",
+          "occurrence": 0
+        },
+        {
+          "text": "warning: `hugr_utility_cargo_warning` (lib) generated 1 warning",
+          "occurrence": 0
+        },
+        {
+          "text": "warning: `hugr_utility_cargo_warning` (lib test) generated 1 warning (1 duplicate)",
+          "occurrence": 0
+        },
+        {
+          "text": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.90s",
+          "occurrence": 0
+        },
+        {
+          "text": "     Running unittests src/lib.rs (/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-cargo-native/private.native-captures/cargo-AAzRUV/remaining-Ak3JfQ/target-controls/debug/deps/hugr_utility_cargo_warning-c25b74d3f334118f)",
+          "occurrence": 0
+        },
+        {
+          "text": "running 1 test",
+          "occurrence": 0
+        },
+        {
+          "text": "test tests::compiler_warning_control ... ok",
+          "occurrence": 0
+        },
+        {
+          "text": "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          "occurrence": 0
+        },
+        {
+          "text": "   Doc-tests hugr_utility_cargo_warning",
+          "occurrence": 0
+        },
+        {
+          "text": "running 0 tests",
+          "occurrence": 0
+        },
+        {
+          "text": "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+          "occurrence": 0
+        }
+      ],
+      "material": false,
+      "provenanceRoot": "remaining-Ak3JfQ",
+      "sourcePhase": "before"
+    }
+  ],
+  "provenance": [
+    {
+      "id": "cargo-AAzRUV",
+      "sourceHead": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+      "producer": {
+        "script": "scripts/utility-native-cargo.mjs",
+        "sourceSHA256": "a2996b182210fee3a591edb7e60b15f9979402b48021a3e687ca53cf0bca27da"
+      },
+      "index": {
+        "bytes": 41526,
+        "sha256": "9f16140d5d3aa8f9f5169e1c3322d3ac236232554424caf5318aaeb46c5b378c",
+        "parts": [
+          {
+            "file": "provenance/cargo-AAzRUV/index.0.json",
+            "bytes": 7702,
+            "sha256": "abbf9ff6bfc3ee0b4a855a0f88e0f34750a4d4e2036536ccced67511b1e9eb8b"
+          },
+          {
+            "file": "provenance/cargo-AAzRUV/index.1.json",
+            "bytes": 8371,
+            "sha256": "cfdae13a1c91ff709437e784d26eee108a2c9a6cab1a5e6010cb975ed98b82b8"
+          },
+          {
+            "file": "provenance/cargo-AAzRUV/index.2.json",
+            "bytes": 7897,
+            "sha256": "c78168a3dbbd4e71833f0c658d91a087d01b8b9d7f50fc4f9ccaed0392b1de21"
+          },
+          {
+            "file": "provenance/cargo-AAzRUV/index.3.json",
+            "bytes": 9983,
+            "sha256": "c260acedcbb8689478a3aa95d42bb58ed25857a57be7c4483e674c5ae0e3d1fc"
+          },
+          {
+            "file": "provenance/cargo-AAzRUV/index.4.json",
+            "bytes": 7573,
+            "sha256": "ca10b210d38f6c91e215cae4172a41285ac3871fed3df5c206596781e2ebe791"
+          }
+        ]
+      },
+      "sourceInventory": {
+        "bytes": 845,
+        "sha256": "db273fb1b77bb0ef7cc95b65c78ad879d75099b356e5276617febf971b8b750e",
+        "parts": [
+          {
+            "file": "provenance/cargo-AAzRUV/sources.0.json",
+            "bytes": 845,
+            "sha256": "db273fb1b77bb0ef7cc95b65c78ad879d75099b356e5276617febf971b8b750e"
+          }
+        ]
+      },
+      "producerSources": [
+        {
+          "file": "provenance/cargo-AAzRUV/source/a2996b182210fee3a591edb7e60b15f9979402b48021a3e687ca53cf0bca27da/utility-native-cargo.mjs",
+          "bytes": 13502,
+          "sha256": "a2996b182210fee3a591edb7e60b15f9979402b48021a3e687ca53cf0bca27da",
+          "sourceFile": "scripts/utility-native-cargo.mjs"
+        },
+        {
+          "file": "provenance/cargo-AAzRUV/source/d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3/capture.mjs",
+          "bytes": 4473,
+          "sha256": "d47eebf1a8947fa97f97f6f9fc70d4c893883b8c0b418105bb44cd91ac24cef3",
+          "sourceFile": "scripts/real-world/capture.mjs"
+        },
+        {
+          "file": "provenance/cargo-AAzRUV/source/5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5/owned-process.mjs",
+          "bytes": 6278,
+          "sha256": "5a72fd82520d4935dc3bfcc84b0560978bb8e27d7ac805625318599d0f8f56b5",
+          "sourceFile": "scripts/real-world/owned-process.mjs"
+        },
+        {
+          "file": "provenance/cargo-AAzRUV/source/c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1/process-guardian.mjs",
+          "bytes": 3314,
+          "sha256": "c6755b4aa2c40e148e3384dbe08b35d412e6c75d49bee1586021b81eaf8ef8f1",
+          "sourceFile": "scripts/real-world/process-guardian.mjs"
+        },
+        {
+          "file": "provenance/cargo-AAzRUV/source/c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432/opencode-boundary.mjs",
+          "bytes": 22037,
+          "sha256": "c1063aa109452608330871e161fd3b0d8e99d63afad9717dcf5c9338f72e4432",
+          "sourceFile": "scripts/opencode-boundary.mjs"
+        }
+      ],
+      "versionCaptures": [
+        {
+          "id": "version-cargo",
+          "capture": {
+            "file": "provenance/cargo-AAzRUV/versions/version-cargo/receipt.json",
+            "bytes": 5974,
+            "sha256": "7f47c980a0a16b7c90f5da92f609270f4b4ba46f9a8080e5db8dc4b1c436e794",
+            "sourceFile": "captures/version-cargo/receipt.json"
+          },
+          "original": {
+            "file": "provenance/cargo-AAzRUV/versions/version-cargo/original.log",
+            "bytes": 36,
+            "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+            "sourceFile": "captures/version-cargo/original.log"
+          },
+          "stdout": {
+            "file": "provenance/cargo-AAzRUV/versions/version-cargo/stdout.log",
+            "bytes": 36,
+            "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+            "sourceFile": "captures/version-cargo/stdout.log"
+          },
+          "stderr": {
+            "file": "provenance/cargo-AAzRUV/versions/version-cargo/stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sourceFile": "captures/version-cargo/stderr.log"
+          }
+        },
+        {
+          "id": "version-rustc",
+          "capture": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustc/receipt.json",
+            "bytes": 6170,
+            "sha256": "555ca38155f5c5aa7feb847cf59c30da1bd448b309f666a9203873f8cfa23f7e",
+            "sourceFile": "captures/version-rustc/receipt.json"
+          },
+          "original": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustc/original.log",
+            "bytes": 36,
+            "sha256": "785f1364c0d5bf077f7bfb885fd4bde99899dfd80ce0fb6226a4527d9b27724c",
+            "sourceFile": "captures/version-rustc/original.log"
+          },
+          "stdout": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustc/stdout.log",
+            "bytes": 36,
+            "sha256": "785f1364c0d5bf077f7bfb885fd4bde99899dfd80ce0fb6226a4527d9b27724c",
+            "sourceFile": "captures/version-rustc/stdout.log"
+          },
+          "stderr": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustc/stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sourceFile": "captures/version-rustc/stderr.log"
+          }
+        },
+        {
+          "id": "version-rustdoc",
+          "capture": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustdoc/receipt.json",
+            "bytes": 6375,
+            "sha256": "00cfba8fff2291084399933a0e22eebeb39fe882ade39464642e3626d11191eb",
+            "sourceFile": "captures/version-rustdoc/receipt.json"
+          },
+          "original": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustdoc/original.log",
+            "bytes": 38,
+            "sha256": "dc6d1b6cc89b9e1c477136939098c81a9f02c60e83f637d4ed32178a819edb1d",
+            "sourceFile": "captures/version-rustdoc/original.log"
+          },
+          "stdout": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustdoc/stdout.log",
+            "bytes": 38,
+            "sha256": "dc6d1b6cc89b9e1c477136939098c81a9f02c60e83f637d4ed32178a819edb1d",
+            "sourceFile": "captures/version-rustdoc/stdout.log"
+          },
+          "stderr": {
+            "file": "provenance/cargo-AAzRUV/versions/version-rustdoc/stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "sourceFile": "captures/version-rustdoc/stderr.log"
+          }
+        }
+      ]
+    },
+    {
+      "id": "remaining-Ak3JfQ",
+      "sourceHead": "882585e5f916821a482d14bc7bfe7d6a102b772a",
+      "producer": {
+        "script": "scripts/utility-native-cargo-remaining.mjs",
+        "sourceSHA256": "d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f"
+      },
+      "index": {
+        "bytes": 50255,
+        "sha256": "402082179ceb609008ee111606daad26a356b2b668a34c5e2cbcb5144c4bdf0e",
+        "parts": [
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.0.json",
+            "bytes": 9004,
+            "sha256": "54024997d35bc2f4320e5163f824d94cd77c960a0814b9e776f638ae803f9b06"
+          },
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.1.json",
+            "bytes": 7901,
+            "sha256": "0ce7f9255d94b5d4faf03311ab665ce191342dbc6b3cdb1f024b1de9b1e2bce5"
+          },
+          {
+            "file": "provenance/remaining-Ak3JfQ/index.2.json",
+            "bytes": 8286,
+            "sha256": "b45225b0756789dba33e452fc0e37bb83ac288efc691f7931b5e1d9d6b01baa6"
+          },
