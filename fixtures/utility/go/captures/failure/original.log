@@ -1,0 +1,7 @@
+=== RUN   TestNativeFailureContext
+    failure_test.go:5: HUGR_GO_FAILURE_CONTEXT: café 🧭
+    failure_test.go:6: HUGR_GO_FAILURE_SENTINEL: original nonzero evidence
+--- FAIL: TestNativeFailureContext (0.00s)
+FAIL
+FAIL	example.com/hugr-utility-go/failure	6.082s
+FAIL
