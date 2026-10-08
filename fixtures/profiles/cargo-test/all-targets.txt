@@ -1,0 +1,37 @@
+   Compiling c02-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/alpha)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.46s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/c02_alpha-dca8643900cca1fe)
+
+running 6 tests
+test tests::alpha_one ... ok
+test tests::deferred ... ignored, native skip: café 🦀 — retained
+test tests::fails ... ignored, deliberate failure witness
+test tests::alpha_two ... ok
+test tests::logs ... ok
+test tests::default_feature ... ok
+
+test result: ok. 4 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/selected.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/selected-a2ea87779a70b9c7)
+
+running 1 test
+test tests::binary_one ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/selected.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/deps/selected-152858914ab51563)
+
+running 2 tests
+test selected_one ... ok
+test selected_two ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/selected.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/debug/examples/selected-c8a7aa0be9f82b8d)
+
+running 2 tests
+test tests::example_one ... ok
+test tests::example_two ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
