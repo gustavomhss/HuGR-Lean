@@ -125,9 +125,9 @@ test("C02 closed argv: flag boundaries, arity, duplicates, selectors, finite tar
   const invalid = ["--workspace --exclude", "-p", "--features", "--target", "--profile", "--test", "--bin", "--example",
     "--workspace --workspace --lib", "--lib --lib", "--lib --doc", "--all-targets --examples", "--lib --release --profile c02",
     "--color always --lib", "--color never --color=never --lib", "--offline --offline --lib", "--exclude c02-beta --lib",
-    "-p c02-alpha -p c02-alpha --lib", "--features extra --all-features --lib", "--target aarch64-apple-darwin --lib",
-    "--profile future --lib", "--lib -- --test-threads=0", "--lib -- --test-threads=2", "--lib -- --test-threads",
-    "--lib -- --exact", "--lib tests::alpha_one", "--lib -- --ignored --include-ignored", "--lib -- --skip",
+    "-p c02-alpha -p c02-alpha --lib", "--features extra --all-features --lib", "--target target.json --lib",
+    "--profile ../future --lib", "--lib -- --test-threads=0", "--lib -- --test-threads=2", "--lib -- --test-threads",
+    "--lib -- --exact --exact", "--lib tests::alpha_one", "--lib -- --ignored --include-ignored", "--lib -- --skip",
     "--lib -- --skip tests::logs --skip tests::logs", "--lib -- --offline", "--lib --exact", "--lib --",
     "--lib -- --quiet", "--lib -- --list", "--lib -- --nocapture", "--lib -- --show-output", "--doc -- --ignored",
     "--lib --message-format=json", "--benches", "--locked", "--lib && echo", "--lib | cat", "--lib -- --format=json"];
@@ -146,8 +146,8 @@ test("C02 suite-local identities, selected contexts, target/profile paths and fi
     input.replace("c02_beta-d56e829566416e7f)", "c02_alpha-dca8643900cca1fe)"),
     input.replace("0.00s", "NaNs"), input.replace("3.63s", "1m 60s")];
   for (const output of mutations) { assert.notEqual(output, input); exact(observation(c, output)); }
-  for (const [stem, replacement] of [["package", "unittests src/bin/other.rs"], ["test-target", "tests/other.rs"],
-    ["bin-target", "unittests src/lib.rs"], ["examples", "unittests src/lib.rs"]]) {
+  for (const [stem, replacement] of [["package", "tests/other.rs"], ["test-target", "unittests tests/selected.rs"],
+    ["bin-target", "src/main.rs"], ["examples", "tests/selected.rs"]]) {
     const selected = cases.find(c => c.name === `C02/${stem}`)!;
     const output = read(selected.file).replace(/(unittests [^\s]+\.rs|tests\/[^\s]+\.rs)/, replacement!);
     exact(observation(selected, output));
@@ -188,4 +188,46 @@ test("C02 passing Rust Unicode identities remain admitted; invalid identifiers r
   for (const value of ["test tests::bad-name ... ok", "test tests::beta_one ... ok extra", "test invoice ... ok\x01"]) {
     exact(observation(c, input.replace("test tests::beta_one ... ok", value)));
   }
+});
+test("REVIEW-C02-values: labeled property transforms rename profiles/triples without inventing build details", () => {
+  const custom = cases.find(c => c.name === "C02/custom-profile")!;
+  for (const name of ["review_fast", "other-profile"]) {
+    for (const detail of ["unoptimized", "unoptimized + debuginfo", "optimized", "optimized + debuginfo"]) {
+      const change = (s: string) => s.replaceAll("`c02`", `\`${name}\``).replaceAll("/c02/", `/${name}/`)
+        .replaceAll("[optimized + debuginfo]", `[${detail}]`);
+      const obs = { ...observation(custom, change(read(custom.file))), command: custom.command.replace("--profile c02", `--profile ${name}`) };
+      accepted(obs, change(read(custom.expectedFile)));
+      exact({ ...obs, output: obs.output.replace(`\`${name}\``, "`wrong_profile`") });
+      exact({ ...obs, output: obs.output.replaceAll(`/${name}/`, "/wrong_profile/") });
+    }
+  }
+  const target = cases.find(c => c.name === "C02/target-release")!;
+  for (const triple of ["aarch64-apple-darwin", "x86_64-unknown-linux-gnu", "wasm32-wasip1"]) {
+    const change = (s: string) => s.replaceAll("x86_64-apple-darwin", triple);
+    const obs = { ...observation(target, change(read(target.file))), command: change(target.command) };
+    accepted(obs, change(read(target.expectedFile)));
+    exact({ ...obs, output: obs.output.replaceAll(`/${triple}/`, "/different-unknown-target/") });
+  }
+});
+test("REVIEW-C02-paths: labeled property transforms keep arbitrary manifest source paths and correlate executable names", () => {
+  for (const [stem, path] of [["package", "code/library.rs"], ["bin-target", "src/main.rs"],
+    ["test-target", "checks/contract.rs"], ["example-target", "tools/demo.rs"]]) {
+    const c = cases.find(c => c.name === `C02/${stem}`)!;
+    const change = (s: string) => s.replace(stem === "package" ? "src/lib.rs" : stem === "bin-target" ? "src/bin/selected.rs" :
+      stem === "test-target" ? "tests/selected.rs" : "examples/selected.rs", path!);
+    accepted(observation(c, change(read(c.file))), change(read(c.expectedFile)));
+    if (stem !== "package") {
+      exact(observation(c, change(read(c.file)).replace(/\/(selected)-([0-9a-f]+)\)/, "/different-$2)")));
+    }
+  }
+});
+test("REVIEW-C02-exact-skip: exact prefix skip preserves full identities; exact full-name and substring skips exclude", () => {
+  const c = cases.find(c => c.name === "C02/exact-filter")!, obs = observation(c), expected = read(c.expectedFile);
+  const command = obs.command.replace("--exact", "--exact --skip tests::alpha");
+  accepted({ ...obs, command }, expected);
+  exact({ ...obs, command: obs.command.replace("--exact", "--exact --skip tests::alpha_one") });
+  const pkg = cases.find(c => c.name === "C02/package")!, plain = observation(pkg);
+  accepted({ ...plain, command: plain.command + " -- --exact --skip tests::beta" }, read(pkg.expectedFile));
+  exact({ ...plain, command: plain.command + " -- --exact --skip tests::beta_one" });
+  exact({ ...plain, command: plain.command + " -- --skip tests::beta" });
 });
