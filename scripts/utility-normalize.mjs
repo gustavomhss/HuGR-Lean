@@ -1,6 +1,6 @@
 // Offline metadata normalizer: copies published bytes into a fresh own .normalized-corpus directory.
 // Exposure is captured fixture evidence only; stream chunk arrival is declared, not independently authenticated.
-// Native Node binary is not copied or published; externalRuntimes retains its original collector fingerprint only.
+// Native Node binary and observed tsx CLI module are not copied/published; only collector fingerprints retained.
 import { createHash } from "node:crypto";
 import { lstat, readFile, mkdir, mkdtemp, writeFile, realpath } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
@@ -191,13 +191,15 @@ export async function normalizeUtilityCorpus() {
         if (receipt.amendedProducer) await retain({ file: receipt.amendedProducer.script, sha256: receipt.amendedProducer.sha256, bytes: receipt.amendedProducer.bytes });
       }
       for (const source of root.sources) {
-        if (family === "node" && source.file === "native-node-executable") {
-          const tool = root.index.tools.find((entry) => entry.name === "node");
-          ensure(tool?.version === "v22.17.1" && tool.executable === source.absolutePath, "EXTERNAL_RUNTIME_NOT_ALLOWED");
-          root.entry.externalRuntimes = [{ file: source.file, sha256: source.sha256, bytes: source.bytes,
-            kind: "tool-executable", tool: "node", version: tool.version, executable: tool.executable }];
-          normalizations.push({ family, externalRuntime: root.entry.externalRuntimes[0],
-            scope: "original collector fingerprint; runtime binary is neither read nor copied nor reverified" });
+        if (family === "node" && ["native-node-executable", "pinned-tsx-project/tsx-executable"].includes(source.file)) {
+          const tsx = source.file === "pinned-tsx-project/tsx-executable", tool = root.index.tools.find((entry) => entry.name === (tsx ? "tsx" : "node"));
+          ensure(tool?.version === (tsx ? "4.23.15" : "v22.17.1") && tool.executable === source.absolutePath, "EXTERNAL_RUNTIME_NOT_ALLOWED");
+          const fingerprint = { file: source.file, sha256: source.sha256, bytes: source.bytes,
+            kind: tsx ? "tool-module" : "tool-executable", tool: tool.name, version: tool.version, executable: tool.executable,
+            ...(tsx ? { lockedIntegrity: tool.lockedIntegrity } : {}) };
+          root.entry.externalRuntimes ??= []; root.entry.externalRuntimes.push(fingerprint);
+          normalizations.push({ family, externalRuntime: fingerprint,
+            scope: "original collector fingerprint; runtime bytes are neither read nor copied nor reverified" });
           continue;
         }
         const covered = manifest.cases.filter((item) => item.provenanceRoot === root.id).some((item) => item.fixtureSources.some((ref) =>

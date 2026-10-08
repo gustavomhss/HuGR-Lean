@@ -164,21 +164,27 @@ function externalRuntimes(entry, index, sources, versions, family, refs) {
   const external = new Map(), records = entry.externalRuntimes ?? [];
   demand(Array.isArray(records), "INVALID_EXTERNAL_RUNTIMES", entry.id);
   for (const runtime of records) {
-    keys(runtime, ["file", "sha256", "bytes", "kind", "tool", "version", "executable"], [], entry.id);
-    demand(family === "node" && runtime.file === "native-node-executable" && runtime.kind === "tool-executable"
-      && runtime.tool === "node" && runtime.version === "v22.17.1", "EXTERNAL_RUNTIME_NOT_ALLOWED", `${entry.id}: ${runtime.file}`);
+    keys(runtime, ["file", "sha256", "bytes", "kind", "tool", "version", "executable"], ["lockedIntegrity"], entry.id);
+    const tsx = runtime.file === "pinned-tsx-project/tsx-executable";
+    demand(family === "node" && (tsx ? runtime.kind === "tool-module" && runtime.tool === "tsx" && runtime.version === "4.23.15"
+      : runtime.file === "native-node-executable" && runtime.kind === "tool-executable" && runtime.tool === "node" && runtime.version === "v22.17.1"),
+      "EXTERNAL_RUNTIME_NOT_ALLOWED", `${entry.id}: ${runtime.file}`);
     demand(!external.has(runtime.file), "DUPLICATE_EXTERNAL_RUNTIME", entry.id);
     const originals = sources.filter((source) => source.file === runtime.file), tools = index.tools.filter((tool) => tool.name === runtime.tool);
     demand(originals.length === 1 && tools.length === 1 && originals[0].sha256 === runtime.sha256 && originals[0].bytes === runtime.bytes
       && originals[0].absolutePath === runtime.executable && tools[0].executable === runtime.executable && tools[0].version === runtime.version,
       "EXTERNAL_RUNTIME_FINGERPRINT_MISMATCH", entry.id);
-    const version = versions.get("node-version"), indexed = index.toolReceipts.find((capture) => capture.id === "node-version");
-    demand(version?.text.trim() === runtime.version && indexed?.command === "node --version", "EXTERNAL_RUNTIME_VERSION_PROOF_MISMATCH", entry.id);
+    const id = tsx ? "tsx-version" : "node-version", version = versions.get(id), indexed = index.toolReceipts.find((capture) => capture.id === id);
+    demand(version?.text.trim() === (tsx ? "tsx v4.23.15\nnode v22.17.1" : runtime.version)
+      && indexed?.command === (tsx ? "tsx --version" : "node --version"), "EXTERNAL_RUNTIME_VERSION_PROOF_MISMATCH", entry.id);
+    if (tsx) demand(nonempty(runtime.lockedIntegrity) && runtime.lockedIntegrity === tools[0].lockedIntegrity
+      && version.receipt.tools.find((tool) => tool.name === "tsx")?.lockedIntegrity === runtime.lockedIntegrity, "EXTERNAL_RUNTIME_INTEGRITY_MISMATCH", entry.id);
+    else demand(runtime.lockedIntegrity === undefined, "EXTERNAL_RUNTIME_NOT_ALLOWED", entry.id);
     demand(!refs.some((ref) => (ref.sourceFile ?? ref.file) === runtime.file), "EXTERNAL_RUNTIME_BYTES_VENDORED", entry.id);
     external.set(runtime.file, runtime);
   }
-  for (const source of sources) if (family === "node" && source.file === "native-node-executable") {
-    demand(external.has(source.file), "UNBOUND_SOURCE_RECORD", `${entry.id}: native-node-executable requires external runtime fingerprint`);
+  for (const source of sources) if (family === "node" && ["native-node-executable", "pinned-tsx-project/tsx-executable"].includes(source.file)) {
+    demand(external.has(source.file), "UNBOUND_SOURCE_RECORD", `${entry.id}: ${source.file} requires external runtime fingerprint`);
   }
   return external;
 }
