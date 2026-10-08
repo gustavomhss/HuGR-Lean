@@ -2,8 +2,10 @@
 
 Original tiny source authored for this packet; no donor source copied. Source snapshots and
 native output are embedded verbatim in unchanged `capture-receipt.json`, each with UTF-8 size and SHA-256.
-Flat `cases.json` retains actual original argv and bindings. Ten output blobs also reside byte-exact
-in `.txt`; three JSON blobs await a no-final-LF write-tool exception (see CASES.md).
+Flat `cases.json` retains commands matching actual original argv and bindings. Ten output blobs also
+reside byte-exact in `.txt`; three no-final-LF JSON blobs use exact inline `output` strings with raw
+SHA-256 and receipt/case provenance. Independent reduced golden is inline `expected`. JSON-string
+encoding preserves raw EOF; decoded bytes match original capture, without normalization or recapture.
 Ruff output is unmodified, including absolute `/private/var/...` JSON filenames, Unicode,
 trailing-newline presence/absence, warnings and nonzero results. Source names match original argv.
 

@@ -1,15 +1,16 @@
 # L03 Ruff capture packet
 
-State: IMPLEMENTED_CHECKPOINT, externalization blocked as noted below.
+State: READY_FOR_LEAD_REVIEW; lossless fixture encoding complete.
 Capture baseline `07ffe15e2263c2925778022194c5385807216603`.
 Native producer: Ruff **0.14.0**, direct binary, complete combined pipe boundary.
 Original `native-cases1` record is preserved unchanged as `capture-receipt.json`;
 merge its `receiptDefaults` with each case receipt and resolve embedded source/output references.
-`cases.json` is now `hugr-lean/native-cases/1`, flat per-case metadata and original argv.
+`cases.json` is now `hugr-lean/native-cases/1`, flat per-case metadata and commands matching original argv.
 Source names are executed names,
 not aliases. Every `argv` is the actual executable and unchanged arguments passed to `Popen`.
 All but successful check JSON retain full exact goldens. The approved case uses an independent
-790-byte compact literal in `tests/profile-ruff.test.ts`. No registry change or default routing claim.
+790-byte independent compact literal in both flat `expected` and `tests/profile-ruff.test.ts`.
+No registry change or default routing claim.
 Lead provider `eea12ae` supplies frozen `jsonLayout`; helper and shared tests remain untouched.
 
 | Stable case ID | Variant / combination | Exit | Required source evidence / disposition |
@@ -70,10 +71,15 @@ public filter; schema, identity, metadata, Unicode/body whitespace/UTF-16, dupli
 Preservation mutations in owned `ruff.ts`: drop `fix`, `message`, then `code` token spans from both
 pieces and required evidence. Each native-positive probe failed independent golden equality.
 All three mutations restored to provider call; full owned test file and typecheck rerun afterward.
+Encoding follow-up: appending LF in owned inline-output accessor failed original raw-EOF comparison;
+dropping `fix` token spans in owned profile failed independent native golden. Both restored before
+rerunning full owned tests and typecheck. No receipt/capture bytes changed during these probes.
 No full tests/build/smoke/benchmark or CI dispatch.
 
-Externalization blocker: this session's `apply_patch` appends final LF even with the standard
-no-newline marker. Ten LF-terminated/empty native outputs externalized unchanged to `.txt` and verified.
-Three no-final-LF JSON blobs (`lint-json`, `format-json`, `empty-json`) stay exact in original receipt,
-with `outputFile: null` and named blockers. A narrowly approved byte-write exception is needed to finish
-those `.txt` files without recapture, normalization or envelope bytes. Implementation itself is verified.
+Ten LF-terminated/empty native outputs reside unchanged in `.txt`. Three no-final-LF JSON blobs
+(`lint-json`, `format-json`, `empty-json`) use lead-approved inline `output` strings in four cases.
+Each inline artifact has mandatory raw SHA-256, original receipt/case provenance and exact EOF.
+Reduced case has independent inline `expected` with no appended LF. Passthrough cases omit `expected`.
+Tests resolve exactly one `file` or inline `output`, verify raw bytes/hash against unchanged receipt,
+and check every captured command, termination, status and metadata. No shell writes or recapture.
+No encoding blocker remains.

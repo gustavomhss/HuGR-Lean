@@ -8,7 +8,20 @@ import type { Observation } from "../src/types.js";
 
 const root = new URL("../fixtures/profiles/ruff/", import.meta.url);
 const receipt = JSON.parse(readFileSync(new URL("capture-receipt.json", root), "utf8"));
-const manifest = JSON.parse(readFileSync(new URL("cases.json", root), "utf8"));
+type FixtureCase = {
+  name: string; family: string; command: string; expected?: string; status: "reduced" | "passthrough";
+  version: string; platform: string; termination: Observation["termination"];
+  completeness: Observation["completeness"]; presentation: Observation["presentation"];
+  provenance: { sha256: string; record: string; originalCase: string };
+} & ({ file: string; output?: never } | { output: string; file?: never });
+const manifest: { schema: string; family: string; cases: FixtureCase[] } = JSON.parse(readFileSync(new URL("cases.json", root), "utf8"));
+function fixtureOutput(item: FixtureCase): string {
+  assert.notEqual(Object.hasOwn(item, "file"), Object.hasOwn(item, "output"), "Exactly one file or inline output");
+  assert.match(item.provenance.sha256, /^[a-f0-9]{64}$/u);
+  if (typeof item.file === "string") return readFileSync(new URL(item.file, root), "utf8");
+  assert.equal(typeof item.output, "string");
+  return item.output!;
+}
 const input: string = receipt.outputs["lint-json"].text;
 // Independent explicit golden: every native token, field and value retained, no JSON.stringify oracle.
 const golden = '[{"cell":null,"code":"F401","end_location":{"column":10,"row":1},"filename":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py","fix":{"applicability":"safe","edits":[{"content":"","end_location":{"column":1,"row":2},"location":{"column":1,"row":1}}],"message":"Remove unused import: `os`"},"location":{"column":8,"row":1},"message":"`os` imported but unused","noqa_row":1,"url":"https://docs.astral.sh/ruff/rules/unused-import"},{"cell":null,"code":"F821","end_location":{"column":14,"row":4},"filename":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py","fix":null,"location":{"column":7,"row":4},"message":"Undefined name `missing`","noqa_row":4,"url":"https://docs.astral.sh/ruff/rules/undefined-name"}]';
@@ -65,18 +78,40 @@ test("L03 capture sources/hashes and external native text retain original byte b
     "L03-format-json-warning", "L03-format-json-preview-clean", "L03-format-clean", "L03-format-silent",
   ]);
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
-  assert.deepEqual(manifest.cases.map((item: any) => item.id), receipt.cases.map((item: any) => item.id));
+  assert.deepEqual(manifest.cases.map((item) => item.name), receipt.cases.map((item: any) => item.id));
   for (const [index, item] of manifest.cases.entries()) {
-    assert.deepEqual(item.argv, receipt.cases[index].argv);
-    assert.equal(item.exitCode, receipt.cases[index].receipt.exitCode);
+    const original = receipt.cases[index], artifact = receipt.outputs[original.output];
+    assert.equal(item.command, original.argv.join(" "));
+    assert.equal(item.family, "ruff");
+    assert.deepEqual(item.termination, { kind: "exited", code: original.receipt.exitCode });
     assert.equal(item.version + "\n", receipt.tool.version);
     assert.equal(item.platform, receipt.receiptDefaults.platform);
     assert.equal(item.completeness, "complete"); assert.equal(item.presentation, "unknown");
-    assert.equal(item.outputSHA256, receipt.outputs[item.receiptOutput].sha256);
-    assert.equal(item.outputBytes, receipt.outputs[item.receiptOutput].bytes);
-    const result = run(receipt.outputs[item.receiptOutput].text, { command: item.argv.join(" "), termination: { kind: "exited", code: item.exitCode } });
-    assert.equal(result.status, item.expected === "reduced" ? "reduced" : "passthrough");
-    assert.equal(result.inputBytes - result.outputBytes, item.removableBytes);
+    assert.equal(item.provenance.record, "capture-receipt.json");
+    assert.equal(item.provenance.originalCase, original.id);
+    assert.equal(item.provenance.sha256, artifact.sha256);
+    const output = fixtureOutput(item);
+    assert.equal(output, artifact.text, `${item.name}: exact raw EOF and data`);
+    assert.equal(Buffer.byteLength(output), artifact.bytes);
+    assert.equal(createHash("sha256").update(output).digest("hex"), item.provenance.sha256);
+    const result = run(output, { command: item.command, termination: item.termination,
+      completeness: item.completeness, presentation: item.presentation });
+    assert.equal(result.status, item.status);
+    if (item.status === "reduced") {
+      assert.equal(item.expected, golden); assert.ok("replacement" in result);
+      assert.equal(result.replacement, item.expected);
+      assert.equal(result.inputBytes - result.outputBytes, 373);
+    } else {
+      assert.equal(item.expected ?? output, output); assert.equal("replacement" in result, false);
+      assert.equal(result.inputBytes, result.outputBytes);
+    }
+  }
+  assert.deepEqual(manifest.cases.filter((item) => Object.hasOwn(item, "output")).map((item) => item.name), [
+    "L03-check-json-failed", "L03-check-json-exit-zero", "L03-format-json-preview-check", "L03-format-json-preview-clean",
+  ]);
+  for (const item of manifest.cases.filter((item) => Object.hasOwn(item, "output"))) {
+    assert.equal(fixtureOutput(item).endsWith("\n"), false);
+    assert.equal(fixtureOutput(item).endsWith("]"), true);
   }
 });
 
