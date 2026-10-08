@@ -1,9 +1,9 @@
-# C01 — capture-only policy packet
+# C01 — approved native build/check packet
 
-State: CAPTURED, pending lead approval before parser work. Baseline:
-`07ffe15e2263c2925778022194c5385807216603`. `cases.json` status means **proposed**
-public-filter disposition, not implemented support. `cargo-check` is a proposed family;
-its files stay relative to this cargo-build packet directory.
+State: REVIEW. Lead approved the 11 candidate reductions on 2026-10-08. Baseline:
+`07ffe15e2263c2925778022194c5385807216603`. `cases.json` status is the acceptance
+disposition for the isolated public filter with `{ profiles: familyProfiles }`.
+Registry integration remains lead-owned; paths stay relative to this packet directory.
 
 ## Finite mandatory variants
 
@@ -88,12 +88,27 @@ Lead must approve any scope/boundary decision before implementing these proposal
 
 ## Verification and next gate
 
-Capture-only: `npm ci` and `npm run typecheck` completed. No parser admission test, baseline
-red/green, preservation-test mutation, registry integration or runtime support claimed.
-No parser/test source was changed. Disposable integrity audit checks finite IDs, file
-correspondence, source-backed goldens, exact passthrough, positive byte savings and retained
-warnings/summaries; its in-memory destructive control drops Finished and must fail.
-Parser phase must add named focused acceptance/preservation tests for every ID, mutate
-required evidence and unsupported argv/boundaries, restore and rerun after lead approval.
-Missing completion, truncation, timeout, unsupported argv and new diagnostics remain exact;
-these metadata mutations are future tests, not falsely labelled native captures here.
+`tests/profile-cargo-build.test.ts` names every case ID against independent byte-exact goldens
+using the public filter. It also tests unknown insertion at every row boundary, missing/extra
+finish, counterfeit warning/context/totals, arity/duplicates/conflicts, wrong native profile,
+Unicode/CRLF/control bytes, metadata refusal and one delegated original default-build fixture.
+Actual original-profile red and production-mutation/restoration receipts: `VERIFICATION.md`.
+No registry integration or installed-runtime support claimed. Capture-only integrity audit
+remains historical; all native inputs and goldens stay unchanged.
+
+## Closed implementation boundary
+
+New grammar requires `--offline`. Flags are exactly the captured spellings plus the existing
+`--color=never` spelling; duplicate flags, bool values, missing option arguments and incompatible
+selectors refuse. Argument values are deliberately pinned to packet evidence: packages
+`c01-app`, `c01-peer`, `c01-collision`; exclusion `c01-collision`; profile `small`; target
+`x86_64-apple-darwin`; bin `c01-app`; example `tiny`; features `extra`, `warn`, `fail` with a
+nonempty unique comma list. No expanded package/profile/target/feature support is claimed.
+The original no-new-grammar build argv delegates directly to the unchanged original profile.
+
+Native finish grammar admits only captured dev/release/small descriptions and finite decimal
+seconds. Warnings admit one bounded `function NAME is never used` dead_code diagnostic with
+captured app source location/snippet/underline/note, then exact one-warning lib totals or paired
+lib-test/lib duplicate totals for all-targets. Unseen warning kinds/help/context formats refuse;
+recognized bytes are retained intact. Package-prefixed build-script warnings refuse the whole
+stream. Core metadata refusal is backed by direct reducer checks for nonzero/incomplete facts.
