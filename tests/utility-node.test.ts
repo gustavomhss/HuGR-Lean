@@ -175,11 +175,13 @@ test("NODE-CORPUS: ten native receipts, commands, source names/hashes and exact 
 for (const item of manifest.cases) test(`NODE-NATIVE ${item.id}: ${item.expectedStatus}`, () => {
   if (item.role === "noise") {
     positive(item);
-    const unregistered = filter(observation(item));
-    assert.equal(unregistered.status, "passthrough", "Node remains selected-profile only; default registry is unchanged");
-    assert.equal("replacement" in unregistered, false);
-    assert.equal(unregistered.inputBytes, item.original.bytes);
-    assert.equal(unregistered.outputBytes, item.original.bytes);
+    const registered = filter(observation(item));
+    assert.equal(registered.status, "reduced", "Default registry must dispatch the reviewed Node profile");
+    assert.ok(registered.status === "reduced");
+    assert.equal(registered.profile, "node-test");
+    assert.equal(registered.replacement, text(item.expected));
+    assert.equal(registered.inputBytes, item.original.bytes);
+    assert.equal(registered.outputBytes, item.expected.bytes);
   }
   else {
     preserved(observation(item));
