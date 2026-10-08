@@ -32,7 +32,44 @@ const { profiles } = await import(pathToFileURL(path.join(packageRoot, "dist/pro
 assert.ok(Array.isArray(profiles) && profiles.length, "Installed default profile registry is empty");
 const profileIds = profiles.map((item) => item.id);
 assert.equal(new Set(profileIds).size, profileIds.length, "Installed profile IDs are duplicated");
+assert.equal(profileIds.length, 10, "Installed default registry must ship ten real profiles");
+assert.equal(evidence.cases.length, 39, "Installed fixture matrix must include legacy and independent native cases");
 assert.deepEqual([...new Set(evidence.cases.map((item) => item.family))].sort(), profileIds.toSorted(), "Installed profile/corpus coverage differs");
+function covers(spans, [start, end]) {
+  let cursor = start;
+  for (const [from, to] of spans) {
+    if (to <= cursor) continue;
+    if (from > cursor) return false;
+    cursor = to;
+    if (cursor >= end) return true;
+  }
+  return false;
+}
+function requiredEvidence(entry) {
+  assert.ok(entry.required.length, entry.name + ": empty independent required evidence");
+  const profile = profiles.find((item) => item.id === entry.family);
+  assert.ok(profile && typeof profile.match === "function" && typeof profile.reduce === "function", entry.name + ": missing real profile");
+  const reduction = profile.reduce(entry.observation.output, entry.observation);
+  assert.ok(reduction, entry.name + ": installed native grammar rejected");
+  const emitted = [];
+  let adjacent = false;
+  for (const piece of reduction.pieces) {
+    if ("text" in piece) { if (piece.text.length) adjacent = false; continue; }
+    const previous = emitted.at(-1);
+    if (adjacent && previous?.[1] === piece[0]) emitted[emitted.length - 1] = [previous[0], piece[1]];
+    else emitted.push(piece);
+    adjacent = true;
+  }
+  for (const span of [...reduction.required, ...emitted]) {
+    assert.ok(Number.isSafeInteger(span[0]) && Number.isSafeInteger(span[1]) && span[0] >= 0 && span[0] < span[1] && span[1] <= entry.observation.output.length,
+      entry.name + ": invalid UTF-16 source span");
+  }
+  for (const anchor of entry.required) {
+    assert.equal(entry.observation.output.slice(...anchor.sourceSpan), anchor.text, entry.name + ": independent source anchor differs");
+    assert.ok(covers(reduction.required, anchor.sourceSpan), entry.name + ": independent critical anchor missing from required: " + anchor.text);
+    assert.ok(emitted.some(([from, to]) => from <= anchor.sourceSpan[0] && to >= anchor.sourceSpan[1]), entry.name + ": independent critical anchor not emitted intact: " + anchor.text);
+  }
+}
 const rows = [];
 for (const entry of evidence.cases) {
   const result = filter(entry.observation);
@@ -45,6 +82,7 @@ for (const entry of evidence.cases) {
     assert.equal(result.outputBytes, Buffer.byteLength(result.replacement, "utf8"));
     assert.ok(result.outputBytes > 0 && result.outputBytes < inputBytes, entry.name + ": fixture did not reduce");
     assert.equal(result.replacement, entry.expected, entry.name + ": independent golden/evidence differs");
+    if (entry.required) requiredEvidence(entry);
   } else {
     assert.equal(Object.hasOwn(result, "replacement"), false, entry.name + ": passthrough supplied replacement");
     assert.equal(result.outputBytes, inputBytes, entry.name + ": passthrough bytes changed");
@@ -66,6 +104,19 @@ for (const exit of [0, 101]) {
   assert.equal(output.title, before.title, "Installed plugin changed title");
   assert.equal(input.args.command, cargo.observation.command, "Installed plugin changed command");
 }
+for (const entry of evidence.cases) {
+  const obs = entry.observation;
+  const input = { tool: "bash", args: { command: obs.command } }, beforeInput = structuredClone(input);
+  const metadata = { exit: obs.termination.kind === "exited" ? obs.termination.code : null,
+    truncated: obs.completeness === "complete" ? false : obs.completeness === "truncated" ? true : undefined, output: obs.output };
+  const output = { title: "Installed matrix " + entry.name, output: obs.output, metadata }, before = structuredClone(output);
+  await hooks["tool.execute.after"](input, output);
+  assert.equal(output.output, entry.expected, entry.name + ": installed after-hook differs from independent golden");
+  assert.deepEqual(input, beforeInput, entry.name + ": installed after-hook changed native args");
+  assert.equal(output.metadata, metadata, entry.name + ": installed after-hook replaced metadata");
+  assert.deepEqual(output.metadata, before.metadata, entry.name + ": installed after-hook changed metadata");
+  assert.equal(output.title, before.title, entry.name + ": installed after-hook changed title");
+}
 const rawDirectory = path.resolve("raw");
 const raw = new RawStore({ directory: rawDirectory });
 const text = "exact café 🔥\r\n\u001b[31mwarning\u001b[0m\r\n\u0000\ud800 end";
@@ -79,7 +130,7 @@ assert.equal(entries[0].id, id);
 await raw.purge();
 assert.equal(await raw.get(id), undefined, "Installed /raw purge failed");
 console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, fixtureCount: rows.length, fixtures: rows,
-  plugin: { loaded: true, reduced: true, nonzeroExitExact: true }, raw: { exact: true, inputBytes: Buffer.byteLength(text, "utf8"), tempfile: true, purged: true } }));
+  plugin: { loaded: true, reduced: true, nonzeroExitExact: true, fixtureCount: evidence.cases.length }, raw: { exact: true, inputBytes: Buffer.byteLength(text, "utf8"), tempfile: true, purged: true } }));
 `;
 
 const inside = (parent, child) => {
@@ -172,6 +223,11 @@ async function snapshotArtifact(root, destination) {
       const target = path.join(destination, "fixtures", family); await mkdir(target, { recursive: true });
       await cp(path.join(root, "fixtures", family, "SOURCES.md"), path.join(target, "SOURCES.md"));
     }
+    const utility = path.join(destination, "fixtures", "utility");
+    for (const family of ["cargo", "go", "node", "pytest"]) {
+      const target = path.join(utility, family); await mkdir(target, { recursive: true });
+      await cp(path.join(root, "fixtures", "utility", family, "SOURCES.md"), path.join(target, "SOURCES.md"));
+    }
   }
 }
 
@@ -226,6 +282,12 @@ export async function runPackageSmoke({ root = ROOT, cli = true, opencode = fals
       assert.ok(contents.trim().length, `Installed notice/license is empty: ${file}`);
       assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed notice/license differs: ${file}`);
       notices.push({ file, bytes: Buffer.byteLength(contents, "utf8") });
+    }
+    for (const family of ["runners", "formats", "utility/cargo", "utility/go", "utility/node", "utility/pytest"]) {
+      const file = `fixtures/${family}/SOURCES.md`;
+      const contents = await readFile(path.join(installed, file), "utf8");
+      assert.ok(contents.trim().length, `Installed fixture sources note is empty: ${file}`);
+      assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed fixture sources note differs: ${file}`);
     }
     const evidence = path.join(consumer, "evidence.json");
     await writeFile(evidence, JSON.stringify({ cases }));

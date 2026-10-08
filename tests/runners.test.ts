@@ -125,14 +125,14 @@ test("identities use exact argv and closed flag support", () => {
   const positive: Record<string, string[][]> = {
     "cargo-test": [["cargo", "test"], ["cargo", "test", "--color", "never"], ["cargo", "test", "--color=never"]],
     "cargo-build": [["cargo", "build"], ["cargo", "build", "--color=never"]],
-    pytest: [["pytest"], ["python", "-m", "pytest"], ["python3", "-m", "pytest", "--color=no"]],
-    "go-test-verbose": [["go", "test", "-v"], ["go", "test", "-v", "."]],
+    pytest: [["pytest"], ["python", "-m", "pytest"], ["python3", "-m", "pytest", "--color=no"], ["pytest", "-q"]],
+    "go-test-verbose": [["go", "test", "-v"], ["go", "test", "-v", "."], ["go", "test", "-v", "./..."]],
   };
   const negative = [[], ["echo", "cargo test"], ["echo", "pytest"], ["cargo-test"], ["cargo", "check"],
     ["cargo", "test", "--message-format=json"], ["cargo", "build", "--release"], ["cargo", "test", "--", "--nocapture"],
-    ["cargo", "test", "--color", "always"], ["pytest", "-q"], ["pytest", "-v"], ["pytest", "--version"],
+    ["cargo", "test", "--color", "always"], ["pytest", "-v"], ["pytest", "--version"],
     ["pytest", "--junitxml=out.xml"], ["python", "-m", "other", "pytest"], ["python3", "-c", "pytest"],
-    ["go", "test"], ["go", "test", "-json", "-v"], ["go", "test", "-v", "./..."], ["go", "test", "-v", "-race"],
+    ["go", "test"], ["go", "test", "-json", "-v"], ["go", "test", "-v", "-race"],
     ["cargo", "test", "&&", "echo"], ["pytest", "|", "cat"], ["/tmp/pytest"], ["notcargo", "test"]];
   for (const entry of runnerProfiles) {
     for (const argv of positive[entry.id]!) assert.equal(entry.match(argv), true, argv.join(" "));
@@ -240,16 +240,27 @@ test("pytest rejects malformed summaries, percentages, versions, reporters and p
   for (const variant of variants) { assert.notEqual(variant, input); rejected("pytest", variant); }
 });
 
-test("go rejects PASS-test logs, skip reasons, failure, nesting, parallel and cached output", () => {
+test("go rejects failure, nesting, parallel and malformed output", () => {
   const input = fixture("go_test_success");
-  const variants = [input.replace("--- PASS: TestArithmetic", "    runners_test.go:8: saved invoice 🔥\n--- PASS: TestArithmetic"),
-    input.replace("--- SKIP: TestSkipped", "    runners_test.go:15: needs network 🔥\n--- SKIP: TestSkipped"),
-    input.replace("--- PASS: TestArithmetic", "--- FAIL: TestArithmetic"), input.replace("\nPASS\n", "\nFAIL\n"),
+  const variants = [input.replace("--- PASS: TestArithmetic", "--- FAIL: TestArithmetic"), input.replace("\nPASS\n", "\nFAIL\n"),
     input.replace("--- PASS: TestArithmetic", "--- PASS: TestWrong"), input.replace(/TestCafé/g, "TestArithmetic"),
     input.replace(/TestCafé/g, "TestCafé/subtest"), input.replace("--- PASS: TestArithmetic", "=== PAUSE TestArithmetic\n--- PASS: TestArithmetic"),
-    input.replace("1.755s", "(cached)"), input.replace("\nPASS\n", "\n"), input.replace("ok  \t", "ok "),
+    input.replace("\nPASS\n", "\n"), input.replace("ok  \t", "ok "),
     input.slice(0, input.indexOf("\nok  \t"))];
   for (const variant of variants) { assert.notEqual(variant, input); rejected("go-test-verbose", variant); }
+});
+
+test("go retains diagnostic RUN/result context, skip reasons and cached summary as required source", () => {
+  const entry = cases[3], input = fixture(entry.file);
+  const passing = "=== RUN   TestArithmetic\n    runners_test.go:8: saved invoice 🔥\n--- PASS: TestArithmetic (0.00s)\n";
+  const diagnostic = input.replace("=== RUN   TestArithmetic\n--- PASS: TestArithmetic (0.00s)\n", passing)
+    .replace("--- SKIP: TestSkipped", "    runners_test.go:15: needs network 🔥\n--- SKIP: TestSkipped")
+    .replace("1.755s", "(cached)");
+  const expected = passing + entry.expected.replace("--- SKIP: TestSkipped", "    runners_test.go:15: needs network 🔥\n--- SKIP: TestSkipped")
+    .replace("1.755s", "(cached)");
+  accepted(entry.id, diagnostic, expected);
+  accepted(entry.id, diagnostic.replaceAll("\n", "\r\n"), expected.replaceAll("\n", "\r\n"));
+  accepted(entry.id, input.replace("1.755s", "(cached)"), entry.expected.replace("1.755s", "(cached)"));
 });
 
 test("cargo accepted Unicode prefix uses UTF-16 spans, not byte offsets", () => {

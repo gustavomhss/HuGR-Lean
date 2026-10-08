@@ -6,6 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { readUtilityCorpus } from "./utility-corpus.mjs";
 
 export const ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const WARMUPS = 20;
@@ -59,6 +60,14 @@ export async function readCorpus(root = ROOT) {
     if (status === "reduced" && file.startsWith("runners/") && output.includes("\r\n") && !/(?<!\r)\n/.test(output)) expected = expected.replaceAll("\n", "\r\n");
     cases.push({ name: file, family, status, provenance, expected, observation: observation(output, command) });
   }
+  const utility = await readUtilityCorpus(path.join(root, "fixtures", "utility"));
+  assert.deepEqual(utility.families.map((entry) => entry.family).sort(), ["cargo", "go", "node", "pytest"], "Native family coverage differs");
+  assert.equal(utility.cases.length, 25, "Independent native corpus contract changed");
+  for (const entry of utility.cases) {
+    cases.push({ name: `utility/${entry.qualifiedID}`, family: entry.profile, status: entry.expectedStatus,
+      provenance: "new native fixture", expected: entry.expectedText, observation: entry.observation, required: entry.required });
+  }
+  assert.equal(new Set(cases.map((entry) => entry.name)).size, cases.length, "Duplicate fixture case names");
   return cases;
 }
 
@@ -73,6 +82,7 @@ export function assertCoverage(profiles, cases) {
   assert.ok(cases.length, "Workload corpus is empty");
   assert.deepEqual([...new Set(cases.map((entry) => entry.family))].sort(), ids.toSorted(),
     "Default profile/corpus coverage differs (missing profile or fixture)");
+  assert.equal(ids.length, 10, "Default registry must ship ten real profiles");
   return ids;
 }
 

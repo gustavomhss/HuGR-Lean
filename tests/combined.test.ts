@@ -4,8 +4,10 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { filter } from "../src/core/engine.js";
+import { tokenizeCommand } from "../src/core/command.js";
 import { profiles } from "../src/profiles/index.js";
 import { formatProfiles } from "../src/profiles/formats.js";
+import { nodeTestProfile } from "../src/profiles/node-test.js";
 import type { FilterResult, Observation, Reduction, Span } from "../src/types.js";
 
 // Replay existing captures without rewriting bytes. Provenance, pinned donor
@@ -115,6 +117,7 @@ const fixtureRoot = fileURLToPath(new URL("../fixtures/", import.meta.url));
 function listFixtures(path = ""): string[] {
   const files: string[] = [];
   for (const item of readdirSync(join(fixtureRoot, path), { withFileTypes: true })) {
+    if (path === "" && item.name === "utility") continue; // Authenticated separately by readUtilityCorpus.
     const name = path ? `${path}/${item.name}` : item.name;
     assert.ok(item.isDirectory() || item.isFile(), `Cannot enumerate fixture entry: ${name}`);
     if (item.isDirectory()) files.push(...listFixtures(name));
@@ -122,7 +125,9 @@ function listFixtures(path = ""): string[] {
   }
   return files.sort();
 }
+// Historical .txt closure stays independent of native utility artifacts/source files.
 const fixtureFiles = listFixtures();
+const utilityReader = await import(new URL("../scripts/utility-corpus.mjs", import.meta.url).href);
 const corpus = fixtureFiles.map((path) => {
   const golden = goldens[path];
   assert.ok(golden, `Fixture has no declared golden: ${path}`);
@@ -237,14 +242,38 @@ test("critical evidence oracle rejects missing declarations even with unchanged 
   assert.throws(() => criticalRequired(output, { pieces: [[boundary, split], { text: " " }, [split, output.length]], required: [[boundary, output.length]] }, anchors, "broken control"), /not emitted intact by source pieces/);
 });
 
-test("source fixture inventory and default production registry are nonempty and closed", (t) => {
+test("source fixture inventory and default production registry are nonempty and closed", async (t) => {
   assert.ok(fixtureFiles.length > 0, "Empty source fixture collection");
   assert.deepEqual(fixtureFiles, Object.keys(goldens).sort(), "Missing fixture or undeclared corpus case");
   assert.ok(accepted.length > 0, "Empty accepted corpus cannot prove production filtering");
   assert.ok(profiles.length > 0, "Empty production registry");
   const ids = profiles.map((profile) => profile.id).sort();
   assert.equal(new Set(ids).size, ids.length, "Duplicate production profile IDs");
-  assert.deepEqual(ids, [...new Set(corpus.map((entry) => entry.profile))].sort(), "Every shipped profile needs a corpus case");
+  assert.equal(ids.length, 10, "Default registry must ship ten real profiles");
+  assert.equal(profiles.filter((profile) => profile === nodeTestProfile).length, 1, "Node profile must register exactly once");
+  const utility = await utilityReader.readUtilityCorpus(join(fixtureRoot, "utility"));
+  assert.deepEqual(utility.families.map((entry: { family: string }) => entry.family).sort(), ["cargo", "go", "node", "pytest"]);
+  assert.equal(utility.cases.length, 25, "Independent native corpus contract changed");
+  assert.deepEqual(ids, [...new Set([...corpus, ...utility.cases].map((entry) => entry.profile))].sort(), "Every shipped profile needs a corpus case");
+  for (const family of utility.families) {
+    assert.ok(family.cases.length > 0, `${family.family}: empty native family`);
+    for (const entry of family.cases) {
+      const profile = profiles.find((item) => item.id === entry.profile);
+      assert.ok(profile, `${entry.qualifiedID}: missing real default profile`);
+      const result = run(entry.observation);
+      assert.equal(result.status, entry.expectedStatus, entry.qualifiedID);
+      assert.equal(visible(entry.observation, result), entry.expectedText, entry.qualifiedID);
+      if (entry.expectedStatus === "reduced") {
+        const argv = tokenizeCommand(entry.command);
+        assert.ok(argv, `${entry.qualifiedID}: unsupported literal command`);
+        assert.equal(profile.match(argv), true, entry.qualifiedID);
+        assert.equal(result.status === "reduced" && result.profile, entry.profile);
+        const reduction = profile.reduce(entry.originalText, entry.observation);
+        assert.ok(reduction, `${entry.qualifiedID}: missing native reduction`);
+        criticalRequired(entry.originalText, reduction, entry.required, entry.qualifiedID);
+      }
+    }
+  }
   t.diagnostic(`Existing capture replay: ${corpus.length} source fixtures, ${accepted.length} reduction goldens; profiles: ${ids.join(", ")}`);
 });
 

@@ -20,6 +20,8 @@ before(async () => {
   seed = path.join(temporary, "seed");
   await mkdir(seed);
   await cp(path.join(root, "fixtures"), path.join(seed, "fixtures"), { recursive: true });
+  await mkdir(path.join(seed, "scripts"));
+  await cp(path.join(root, "scripts/utility-corpus.mjs"), path.join(seed, "scripts/utility-corpus.mjs"));
   await cp(path.join(root, "docs"), path.join(seed, "docs"), { recursive: true });
   await cp(path.join(root, "src"), path.join(seed, "src"), { recursive: true });
   for (const file of ["LICENSE", "NOTICE", "licenses", "README.md"]) await cp(path.join(root, file), path.join(seed, file), { recursive: true });
@@ -80,11 +82,63 @@ test("installed positive control packs/installs actual engine, loads default, fi
     assert.ok(!result.cli.target.startsWith(root + path.sep), "Consumer must live outside source ancestry");
     const corpus = await benchmark.readCorpus(directory);
     assert.equal(result.fixtureCount, corpus.length);
+    assert.equal(result.fixtureCount, 39);
+    assert.equal(result.profileIds.length, 10);
+    assert.equal(result.plugin.fixtureCount, corpus.length, "Every fixture must traverse installed after-hook");
     assert.deepEqual(result.fixtures.map((item: { name: string }) => item.name), corpus.map((item: { name: string }) => item.name));
     assert.ok(result.fixtures.some((item: { status: string }) => item.status === "reduced"));
     assert.ok(result.fixtures.some((item: { status: string }) => item.status === "passthrough"));
     assert.deepEqual(result.notices.map((item: { file: string }) => item.file), ["LICENSE", "NOTICE", "licenses/TRS-MIT.txt"]);
   });
+});
+
+test("installed Node omission mutates actual compiled registry; restored artifact passes", async () => {
+  await fixture(async (directory) => {
+    const file = path.join(directory, "dist/profiles/index.js"), original = await readFile(file, "utf8");
+    assert.equal((await smoke.runPackageSmoke({ root: directory })).profileIds.length, 10);
+    const mutant = original.replace(", nodeTestProfile]", "]");
+    assert.notEqual(mutant, original, "Control must omit actual compiled Node registration");
+    await writeFile(file, mutant);
+    await assert.rejects(smoke.runPackageSmoke({ root: directory }), /Installed default registry must ship ten real profiles/);
+    await writeFile(file, original);
+    assert.equal((await smoke.runPackageSmoke({ root: directory })).profileIds.length, 10);
+  });
+});
+
+test("installed required-context loss fails despite unchanged pieces; restored artifact passes", async () => {
+  await fixture(async (directory) => {
+    const file = path.join(directory, "dist/profiles/go.js"), original = await readFile(file, "utf8");
+    assert.equal((await smoke.runPackageSmoke({ root: directory })).fixtureCount, 39);
+    const mutant = original.replace("reduction(kept) : undefined", '{ ...reduction(kept), required: kept.filter(line => !line.text.startsWith("=== RUN")).map(line => line.span) } : undefined');
+    assert.notEqual(mutant, original, "Control must remove actual compiled Go required RUN context, retaining emitted pieces");
+    await writeFile(file, mutant);
+    await assert.rejects(smoke.runPackageSmoke({ root: directory }), /utility\/go\/.*independent critical anchor missing from required: === RUN/);
+    await writeFile(file, original);
+    assert.equal((await smoke.runPackageSmoke({ root: directory })).fixtureCount, 39);
+  });
+});
+
+test("native fixture folder is required; missing or empty corpus cannot fall back to legacy", async () => {
+  for (const empty of [false, true]) await fixture(async (directory) => {
+    const native = path.join(directory, "fixtures/utility");
+    await rm(native, { recursive: true });
+    if (empty) await mkdir(native);
+    await assert.rejects(benchmark.readCorpus(directory), empty ? /EMPTY_CORPUS/ : /ENOENT.*utility/);
+  });
+});
+
+test("compiled default inventory includes Node once and dispatches real source capture", async () => {
+  const { filter, profiles } = await benchmark.compiled(seed);
+  assert.equal(profiles.length, 10, "Compiled default inventory must contain ten profiles");
+  assert.equal(profiles.filter((item: { id: string }) => item.id === "node-test").length, 1);
+  // Narrow registration control reads independent bytes; authenticated full-corpus proof remains mandatory above.
+  const directory = path.join(seed, "fixtures/utility/node/captures/node-flat-default");
+  const original = await readFile(path.join(directory, "original.log"), "utf8");
+  const expected = await readFile(path.join(directory, "output.expected.log"), "utf8");
+  const result = filter(benchmark.observation(original, "node --test fixture.mjs"));
+  assert.equal(result.status, "reduced");
+  assert.equal(result.profile, "node-test");
+  assert.equal(result.replacement, expected);
 });
 
 test("tarball missing compiled dist and notices fails with each exact artifact name", async (t) => {
