@@ -6,7 +6,9 @@ import path from "node:path";
 import test from "node:test";
 // Script is intentionally outside runtime TypeScript modules.
 // @ts-expect-error No declaration is shipped for developer-only scripts.
-import { readUtilityCorpus } from "../scripts/utility-evaluation.mjs";
+import { readUtilityCorpus, evaluateUtilityCorpus } from "../scripts/utility-evaluation.mjs";
+import { createAfterHook } from "../src/opencode/index.js";
+import type { Observation, FilterResult } from "../src/types.js";
 
 const hash = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
 const profiles = { go: "go-test-verbose", pytest: "pytest", node: "node-test", cargo: "cargo-test" };
@@ -62,4 +64,76 @@ test("reader rejects empty cases instead of checking zero", async (t) => {
   fixture.manifests.go!.cases = [];
   await fixture.save("go");
   await assert.rejects(readUtilityCorpus(fixture.root), /EMPTY_OR_INVALID_LIST: go: cases/);
+});
+
+// Mock filter uses fixture-only text, not a production-derived golden. Real adapter plumbing is exercised.
+const mockFilter = (observation: Observation): FilterResult => {
+  const inputBytes = Buffer.byteLength(observation.output);
+  if (observation.termination.kind === "exited" && observation.termination.code === 0) {
+    const replacement = "KEEP café 🧪\n";
+    return { status: "reduced", profile: profiles[observation.command.slice(5) as keyof typeof profiles],
+      replacement, inputBytes, outputBytes: Buffer.byteLength(replacement), reason: "MOCK_PLUMBING" };
+  }
+  return { status: "passthrough", inputBytes, outputBytes: inputBytes, reason: "MOCK_EXACT" };
+};
+const mockHook = () => createAfterHook({ raw: false }, { filter: mockFilter });
+
+test("evaluation counts exact and reduced mock cases; real adapter preserves facts", async (t) => {
+  const fixture = await synthetic(t);
+  const report = await evaluateUtilityCorpus({ root: fixture.root, filter: mockFilter, createAfterHook: mockHook });
+  assert.equal(report.ok, true);
+  assert.equal(report.checked, 8);
+  assert.equal(report.passed, 8);
+  assert.equal(report.records.filter((row: Json) => row.role === "exact").length, 4);
+  assert.match(report.oracle, /declarations checked by parser tests/);
+});
+
+test("forged filter cannot set its own expected status, bytes, profile or output", async (t) => {
+  const fixture = await synthetic(t);
+  for (const [name, forge] of Object.entries({
+    status: (result: Json) => ({ ...result, status: "normalized" }),
+    bytes: (result: Json) => ({ ...result, outputBytes: 0 }),
+    profile: (result: Json) => ({ ...result, profile: "forged" }),
+    loss: (result: Json) => ({ ...result, replacement: "LOST", outputBytes: 4 }),
+  })) {
+    const filter = (observation: Observation) => forge(mockFilter(observation));
+    const report = await evaluateUtilityCorpus({ root: fixture.root, filter, createAfterHook: mockHook });
+    assert.equal(report.ok, false, name);
+    assert.equal(report.checked, 8);
+    assert.equal(report.failures.length, 8, name);
+  }
+});
+
+test("filter and hook errors retain named failed records", async (t) => {
+  const fixture = await synthetic(t);
+  for (const stage of ["filter", "hook"]) {
+    const report = await evaluateUtilityCorpus({ root: fixture.root,
+      filter: stage === "filter" ? () => { throw new Error("FILTER_SENTINEL"); } : mockFilter,
+      createAfterHook: () => async () => { throw new Error("HOOK_SENTINEL"); } });
+    assert.equal(report.ok, false);
+    assert.equal(report.checked, 8);
+    assert.equal(report.passed, 0);
+    assert.equal(report.failures.length, 8);
+    assert.equal(report.failures[0].id, "go-noise");
+    assert.equal(report.failures[0].stage, stage);
+    assert.match(report.failures[0].error, /_SENTINEL/);
+  }
+});
+
+test("hook cannot alter native input, title, metadata or add output fields", async (t) => {
+  const fixture = await synthetic(t);
+  for (const field of ["command", "title", "metadata", "extra", "loss"]) {
+    const createAfterHook = () => async (input: Json, output: Json) => {
+      await mockHook()(input, output);
+      if (field === "command") input.args.command = "forged";
+      if (field === "title") output.title = "forged";
+      if (field === "metadata") output.metadata.exit = 0;
+      if (field === "extra") output.extra = true;
+      if (field === "loss") output.output = "LOST";
+    };
+    const report = await evaluateUtilityCorpus({ root: fixture.root, filter: mockFilter, createAfterHook });
+    assert.equal(report.ok, false, field);
+    assert.ok(report.failures.every((row: Json) => row.stage === "hook"));
+    assert.match(report.failures[0].error, /EXECUTION_FACTS_CHANGED|HOOK_GOLDEN_MISMATCH/);
+  }
 });
