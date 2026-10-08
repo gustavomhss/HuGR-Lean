@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import ts from "typescript";
 import { filter } from "../src/core/engine.js";
 import { cargoProfiles } from "../src/profiles/cargo.js";
 import type { Observation, Profile, Reduction, Span } from "../src/types.js";
@@ -104,6 +105,7 @@ test("CARGO-LIB: admitted color forms in both orders", () => {
     "cargo test --lib --color never", "cargo test --color never --lib"]) accepted(raw("lib"), golden("lib"), command);
 });
 test("closed command identity rejects duplicate/missing/unknown options and shell syntax", () => {
+  accepted(raw("lib"), golden("lib"), "cargo test --lib");
   for (const command of ["cargo test --lib --lib", "cargo test --color never --color=never", "cargo test --lib=1",
     "cargo test --lib --color", "cargo test --color always --lib", "cargo test --color auto --lib",
     "cargo test --tests", "cargo test --doc", "cargo test --release", "cargo test --message-format=json",
@@ -113,8 +115,12 @@ test("closed command identity rejects duplicate/missing/unknown options and shel
   }
 });
 test("CARGO-LIB: full integration/doc suites cannot masquerade as library-only", () => {
+  accepted(raw("lib"), golden("lib"), "cargo test --lib");
   exact(obs(raw("full"), "cargo test --lib --color never"));
   exact(obs(raw("full").slice(0, raw("full").indexOf("   Doc-tests")), "cargo test --lib"));
+  for (const header of ["tests/native_integration.rs", "unittests src/main.rs"]) {
+    exact(obs(raw("lib").replace("unittests src/lib.rs", header), "cargo test --lib"));
+  }
 });
 for (const id of ["full", "lib"] as const) {
   const command = id === "lib" ? "cargo test --lib --color never" : "cargo test --color never";
@@ -125,6 +131,7 @@ for (const id of ["full", "lib"] as const) {
       golden(id).replaceAll("/Documents/HuGR/", "/Documents/🦀café/HuGR/"), command);
   });
   test(`${id}: false nonzero, unknown, timeout, incomplete and foreign-source facts preserve`, () => {
+    accepted(raw(id), golden(id), command);
     const base = obs(raw(id), command);
     for (const variant of [{ ...base, termination: { kind: "exited", code: 101 } },
       { ...base, termination: { kind: "unknown" } }, { ...base, termination: { kind: "timed_out" } },
@@ -132,6 +139,7 @@ for (const id of ["full", "lib"] as const) {
       { ...base, source: "other" }] as Observation[]) exact(variant);
   });
   test(`${id}: unknown rows/warnings at every boundary preserve whole output`, () => {
+    accepted(raw(id), golden(id), command);
     for (const offset of [0, ...rows(raw(id)).map((row) => row.span[1])]) {
       for (const extra of ["opaque invoice café 🦀\n", "warning: unfamiliar compiler diagnostic\n"]) {
         exact(obs(raw(id).slice(0, offset) + extra + raw(id).slice(offset), command));
@@ -139,6 +147,7 @@ for (const id of ["full", "lib"] as const) {
     }
   });
   test(`${id}: C0/C1/DEL, ANSI and bare CR cannot disappear with removable progress`, () => {
+    accepted(raw(id), golden(id), command);
     const controls = [...Array.from({ length: 32 }, (_, n) => n).filter((n) => n !== 9 && n !== 10 && n !== 13),
       ...Array.from({ length: 33 }, (_, n) => n + 127)];
     for (const code of controls) exact(obs(raw(id).replace("running 8 tests", `running 8 tests${String.fromCharCode(code)}`), command));
@@ -169,6 +178,7 @@ test("CARGO-SUITES: valid duplicate identities/ignored rows/summaries reset in d
   accepted(input + next, expected + kept);
 });
 test("malformed durations, counts, duplicate/missing suites and unknown headers preserve", () => {
+  accepted(raw("full"), golden("full"));
   const input = raw("full"), source = rows(input);
   const remove = (index: number) => input.slice(0, source[index]!.span[0]) + input.slice(source[index]!.span[1]);
   const variants = [input + input, "", "\n", input.replace("running 8 tests", "running 9 tests"),
@@ -196,6 +206,53 @@ test("malformed durations, counts, duplicate/missing suites and unknown headers 
       `2m ${"9".repeat(400)}s`].map((duration) => input.replace("2m 01s", duration))];
   for (const variant of variants) { assert.notEqual(variant, input); exact(obs(variant)); }
 });
+for (const duration of ["1m 00s", "3m 12s"]) {
+  test(`SYNTHETIC duration ${duration}: native-shaped success; actual native remains 2m 01s`, () => {
+    accepted(raw("full").replace("2m 01s", duration), golden("full").replace("2m 01s", duration));
+  });
+}
+test("suite-local reconciliation rejects balanced count transfers and summary swaps", () => {
+  const input = raw("full"), source = rows(input);
+  const swap = (left: string, right: string) => input.replace(left, "SWAP_MARKER").replace(right, left).replace("SWAP_MARKER", right);
+  const moved = input.slice(...source[7]!.span);
+  const variants = [swap("running 8 tests", "running 7 tests"), swap(source[14]!.text, source[27]!.text),
+    input.replace(moved, "").replace(source[27]!.text, moved + source[27]!.text)];
+  const totals = (text: string) => [...text.matchAll(/^running (\d+) tests?$/gm)].reduce((sum, match) => sum + Number(match[1]), 0);
+  const summaryTotals = (text: string) => [...text.matchAll(/^test result: ok\. (\d+) passed; 0 failed; (\d+) ignored;/gm)]
+    .reduce(([passed, ignored], match) => [passed! + Number(match[1]), ignored! + Number(match[2])], [0, 0]);
+  for (const variant of variants) {
+    assert.notEqual(variant, input); assert.equal(totals(variant), totals(input));
+    assert.equal(rows(variant).filter((row) => row.text.endsWith(" ... ok")).length, 15);
+    assert.deepEqual(summaryTotals(variant), summaryTotals(input));
+  }
+  accepted(input, golden("full"));
+  for (const variant of variants) exact(obs(variant));
+});
+test("unique suite contexts reject repeated Doc-tests and same executable under changed header", () => {
+  const input = raw("full"), source = rows(input);
+  accepted(input, golden("full"));
+  const executable = (line: string) => line.slice(line.lastIndexOf(" (") + 2, -1);
+  const alias = input.replace(executable(source[16]!.text), executable(source[2]!.text));
+  assert.notEqual(source[16]!.text, source[2]!.text); assert.notEqual(alias, input);
+  exact(obs(alias));
+  exact(obs(input + input.slice(input.indexOf("   Doc-tests"))));
+});
+for (const duration of ["0.46s", "1m 00s"]) {
+  test(`SYNTHETIC build ${duration}: accepted witness before malformed finite-duration checks`, () => {
+    const compile = "   Compiling fixture v0.1.0\n", command = "cargo build --color never";
+    const finish = `    Finished \`dev\` profile [unoptimized + debuginfo] target(s) in ${duration}\n`;
+    const build = cargoProfiles.find((entry) => entry.id === "cargo-build")!;
+    const valid = compile + finish, result = build.reduce(valid, obs(valid, command));
+    assert.ok(result, "accepted build baseline before negatives");
+    assert.equal(evidence(valid, result, anchors(finish)), finish);
+    for (const malformed of [`${"9".repeat(400)}s`, `2m ${"9".repeat(400)}s`, `${"9".repeat(400)}m 00s`,
+      "2m 60s", "2m NaNs", "Infinitys", "-1s", "1e309s"]) {
+      const invalid = valid.replace(duration, malformed);
+      assert.notEqual(invalid, valid); assert.equal(build.reduce(invalid, obs(invalid, command)), undefined, malformed);
+      assert.equal(filter(obs(invalid, command)).status, "passthrough", malformed);
+    }
+  });
+}
 test("streaming 1,000 Unicode tests, count guards and complete EOF", () => {
   const input = raw("lib"), expected = golden("lib"), passing = rows(input).filter((row) => row.text.endsWith(" ... ok"));
   let large = input;
@@ -245,10 +302,12 @@ type NativeCase = {
   exitCode: number; complete: boolean; signal: null; timedOut: boolean; material: boolean;
   capture: Artifact; original: Artifact; stdout: Artifact; stderr: Artifact; expected: Artifact;
   fixtureSources: Artifact[]; required: Anchor[];
+  producer?: { script: string; sourceSHA256: string };
 };
-function verified(artifact: Artifact): Buffer {
+const projectRoot = new URL("../", import.meta.url);
+function verified(artifact: Artifact, base = root): Buffer {
   assert.ok(artifact.file.split("/").every((part) => /^[A-Za-z0-9_.-]+$/.test(part) && part !== "." && part !== ".."), "safe stored path");
-  const bytes = readFileSync(new URL(artifact.file, root));
+  const bytes = readFileSync(new URL(artifact.file, base));
   assert.equal(bytes.length, artifact.bytes, `byte binding: ${artifact.file}`);
   assert.equal(createHash("sha256").update(bytes).digest("hex"), artifact.sha256, `hash binding: ${artifact.file}`);
   assert.equal(Buffer.from(bytes.toString("utf8")).equals(bytes), true, "lossless UTF-8");
@@ -276,8 +335,9 @@ test("native manifest binds raw/receipt/source facts, tool versions, expected by
     assert.equal(receipt.nativeSpawned, true); assert.equal(receipt.nativeExitObserved, true);
     assert.equal(receipt.runtime.node, "v22.17.1"); assert.deepEqual(receipt.tools, manifest.tools);
     for (const key of ["exitCode", "complete", "signal", "timedOut"] as const) assert.equal(receipt[key], entry[key]);
-    assert.equal(receipt.producer.sourceSHA256 ?? receipt.producer.sha256, entry.id === "full" ? manifest.producer.sourceSHA256 :
-      "d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f");
+    const producer = entry.producer ?? manifest.producer;
+    assert.equal(receipt.producer.sourceSHA256 ?? receipt.producer.sha256, producer.sourceSHA256);
+    assert.equal(receipt.producer.script, producer.script);
     for (const key of ["original", "stdout", "stderr"] as const) {
       verified(entry[key]);
       assert.equal(entry[key].sha256, receipt.artifacts[key].sha256); assert.equal(entry[key].bytes, receipt.artifacts[key].bytes);
@@ -294,7 +354,7 @@ test("native manifest binds raw/receipt/source facts, tool versions, expected by
     if (entry.role === "exact") assert.equal(source, expected);
   }
 });
-test("source lock snapshots retain distinct receipt-bound before/after generated comments", () => {
+test("source lock reconstructed-full / recorded-control bytes bind generated-comment changes", () => {
   for (const [id, after] of [["full", "lib"], ["failure", "failure-after"], ["warning", "warning-after"]]) {
     const before = read(`sources/${id}/Cargo.lock`), changed = read(`sources/${after}/Cargo.lock`);
     assert.notEqual(before, changed);
@@ -303,9 +363,14 @@ test("source lock snapshots retain distinct receipt-bound before/after generated
     const sources: Artifact[] = receipt.fixtureSources ?? receipt.fixtureSourcesBefore;
     const prior = sources.find((entry) => entry.file === "Cargo.lock")!;
     verified({ ...prior, file: `sources/${id}/Cargo.lock` });
-    const post: Artifact = id === "full" ? { file: "Cargo.lock", bytes: 203,
-      sha256: "37c075e3a501a668c75cbbf0831ab4a084f28ab26f763bd2b9b605262da58908" } :
+    const post: Artifact = id === "full" ?
+      JSON.parse(read("lib/receipt.json")).fixtureSourcesBefore.find((entry: Artifact) => entry.file === "Cargo.lock") :
       receipt.fixtureSourcesAfter.find((entry: Artifact) => entry.file === "Cargo.lock");
+    if (id === "full") {
+      const inspection = boundLineage().inspection;
+      assert.equal(prior.sha256, inspection.sourcePostCaptureInspection["Cargo.lock"].beforeSHA256);
+      assert.equal(post.sha256, inspection.sourcePostCaptureInspection["Cargo.lock"].afterSHA256);
+    }
     verified({ ...post, file: `sources/${after}/Cargo.lock` });
   }
 });
@@ -344,4 +409,115 @@ test("PRESERVE positive control and forged shrink mutant bite without production
   assert.throws(() => exact(obs(input + "unknown compiler warning\n"), mutant), /grammar\/metadata must decline/);
   assert.throws(() => exact({ ...obs(input), termination: { kind: "exited", code: 101 } }, mutant), /grammar\/metadata must decline/);
   accepted(input, expected);
+});
+
+type SourceRecord = { case: string; sourceFile: string; originalExpectedHash: string } & (
+  { origin: "recorded-before"; recordedBeforeSatisfied: true } |
+  { origin: "reconstructed-producer-literal"; recordedBeforeSatisfied: false; producer: Artifact }
+);
+type Lineage = {
+  schema: string; leadDecision: string; producer: Artifact & { commit: string; license: string };
+  inspection: Artifact; index: { sha256: string; bytes: number; parts: Artifact[] }; sourceRecords: SourceRecord[];
+  fullAfterStorage: { file: string; sourceFile: string; origin: string; receipt: string; inventory: string };
+};
+const proof = (): Lineage => JSON.parse(readFileSync(new URL(".acceptance-proof/cargo/lineage.json", projectRoot), "utf8"));
+function boundLineage(lineage = proof()) {
+  assert.equal(lineage.schema, "hugr-lean/cargo-lineage-proof/1");
+  const producer = verified(lineage.producer, projectRoot);
+  const inspection = JSON.parse(verified(lineage.inspection, projectRoot).toString("utf8"));
+  assert.equal(lineage.index.parts.length, 3, "complete index fragments required");
+  const bytes = Buffer.concat(lineage.index.parts.map((part) => verified(part, projectRoot)));
+  assert.equal(bytes.length, lineage.index.bytes, "complete index byte binding");
+  const hash = createHash("sha256").update(bytes).digest("hex");
+  assert.equal(hash, lineage.index.sha256, "ordered original index digest binding");
+  assert.equal(hash, inspection.captureIndex.sha256, "independent inspection-index binding");
+  const index = JSON.parse(bytes.toString("utf8"));
+  assert.equal(index.producer.sourceSHA256, lineage.producer.sha256);
+  assert.equal(index.producer.bytes, producer.length);
+  assert.equal(index.producer.script, lineage.producer.sourceFile);
+  assert.equal(inspection.producerCommit, lineage.producer.commit);
+  assert.equal(lineage.producer.license, "MIT");
+  return { lineage, producer, inspection, index };
+}
+function lockLiteral(producer: Buffer): Buffer {
+  // Parse inert pinned source; never import, evaluate or run the native producer.
+  const ast = ts.createSourceFile("original-producer.mjs", producer.toString("utf8"), ts.ScriptTarget.ESNext, true, ts.ScriptKind.JS);
+  const literals: ts.StringLiteral[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === "sources" &&
+        node.initializer && ts.isObjectLiteralExpression(node.initializer)) {
+      for (const property of node.initializer.properties) {
+        if (ts.isPropertyAssignment(property) && ts.isStringLiteral(property.name) && property.name.text === "Cargo.lock") {
+          assert.ok(ts.isStringLiteral(property.initializer), "lock evidence must be an original literal");
+          literals.push(property.initializer);
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(ast); assert.equal(literals.length, 1, "one original Cargo.lock literal required");
+  return Buffer.from(literals[0]!.text);
+}
+function sourceRecord(record: SourceRecord, lineage = proof()): void {
+  assert.equal(record.sourceFile, "Cargo.lock", "reconstruction scope is lock metadata only");
+  const receipt = JSON.parse(read(`${record.case}/receipt.json`));
+  const inventory: Artifact[] = receipt.fixtureSources ?? receipt.fixtureSourcesBefore;
+  const expected = inventory.find((entry) => entry.file === record.sourceFile)!;
+  assert.ok(expected, "recorded source name required");
+  assert.equal(record.originalExpectedHash, expected.sha256, "sourceRecord original expected hash binding");
+  const stored = verified({ ...expected, file: `sources/${record.case}/Cargo.lock` });
+  if (record.case === "full") {
+    assert.equal(record.origin, "reconstructed-producer-literal", "full lock cannot claim recorded-before origin");
+    assert.equal(record.recordedBeforeSatisfied, false, "full pre-capture-copy requirement remains blocked");
+    if (record.origin !== "reconstructed-producer-literal") assert.fail("missing reconstruction producer");
+    assert.equal(record.producer.sha256, lineage.producer.sha256);
+    const literal = lockLiteral(verified(record.producer, projectRoot));
+    assert.equal(createHash("sha256").update(literal).digest("hex"), expected.sha256);
+    assert.equal(literal.length, expected.bytes); assert.equal(literal.equals(stored), true);
+  } else {
+    assert.equal(record.origin, "recorded-before"); assert.equal(record.recordedBeforeSatisfied, true);
+  }
+}
+test("independent original index/inspection/producer bind failure, full receipt, raw and source inventory", () => {
+  const { lineage, index, inspection } = boundLineage();
+  assert.equal(index.state, "blocked"); assert.equal(index.failures.length, 1);
+  assert.equal(index.failures[0].message, inspection.collectorError); assert.equal(inspection.collectorExitCode, 1);
+  const full = index.captures.find((entry: { id: string }) => entry.id === "full");
+  assert.deepEqual(full, JSON.parse(read("full/receipt.json")));
+  assert.deepEqual(index.projects[0].fixtureSources, full.fixtureSources);
+  assert.equal(full.exitCode, inspection.nativeExitCode); assert.equal(full.exitCode, 0);
+  assert.equal(full.nativeFacts.finishedRows[0], inspection.nativeFinishedRow);
+  assert.equal(rows(raw("full"))[1]!.text, inspection.nativeFinishedRow);
+  for (const key of ["original", "stdout", "stderr"] as const) {
+    verified({ ...full.artifacts[key], file: `full/${key}.log` });
+  }
+  for (const id of ["lib", "failure", "warning"]) {
+    const receipt = JSON.parse(read(`${id}/receipt.json`));
+    assert.equal(receipt.priorIndexSHA256, lineage.index.sha256);
+    assert.equal(receipt.originalProducerCommit, lineage.producer.commit);
+  }
+});
+test("typed source origins distinguish reconstructed lock from actual recorded later/before files", () => {
+  const { lineage } = boundLineage();
+  assert.deepEqual(lineage.sourceRecords.map((record) => record.case), ["full", "lib", "failure", "warning"]);
+  for (const record of lineage.sourceRecords) sourceRecord(record, lineage);
+  assert.match(lineage.leadDecision, /Pending.*Cargo.lock metadata only.*do not mark.*satisfied/);
+  const after = lineage.fullAfterStorage;
+  assert.equal(after.sourceFile, "Cargo.lock"); assert.equal(after.origin, "recorded-later-before-lib");
+  const inventory: Artifact[] = JSON.parse(read(after.receipt))[after.inventory];
+  const descriptor = inventory.find((item) => item.file === after.sourceFile)!;
+  verified({ ...descriptor, file: after.file }, projectRoot);
+});
+test("lineage teeth reject index order/digest, producer bytes and dishonest before-source labels", () => {
+  const original = proof(); boundLineage(original);
+  assert.throws(() => boundLineage({ ...original, index: { ...original.index, parts: [...original.index.parts].reverse() } }), /ordered original index digest binding/);
+  assert.throws(() => boundLineage({ ...original, inspection: { ...original.inspection, sha256: "0".repeat(64) } }), /hash binding/);
+  assert.throws(() => boundLineage({ ...original, producer: { ...original.producer, bytes: 13503 } }), /byte binding/);
+  assert.throws(() => boundLineage({ ...original, index: { ...original.index, parts: [] } }), /complete index fragments required/);
+  const script = verified(original.producer, projectRoot).toString("utf8");
+  assert.throws(() => lockLiteral(Buffer.from(script.replace('"Cargo.lock":', '"Cargo.alias":'))), /one original Cargo.lock literal required/);
+  const full = original.sourceRecords[0]!; sourceRecord(full, original);
+  assert.throws(() => sourceRecord({ ...full, sourceFile: "src/lib.rs" }, original), /lock metadata only/);
+  assert.throws(() => sourceRecord({ ...full, origin: "recorded-before", recordedBeforeSatisfied: true }, original), /cannot claim recorded-before/);
+  assert.throws(() => sourceRecord({ ...full, originalExpectedHash: "0".repeat(64) }, original), /original expected hash binding/);
 });

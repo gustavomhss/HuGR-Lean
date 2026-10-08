@@ -10,6 +10,7 @@
   "cases": [
     {
       "id":"full", "profile":"cargo-test", "command":"cargo test --color never",
+      "producer":{"script":"scripts/utility-native-cargo.mjs","sourceSHA256":"a2996b182210fee3a591edb7e60b15f9979402b48021a3e687ca53cf0bca27da"},
       "role":"noise", "expectedStatus":"reduced", "exitCode":0, "complete":true, "signal":null, "timedOut":false,
       "capture":{"file":"full/receipt.json","sha256":"800882cc0c1d6ee679e560e13dfbf1beef60fdf70df776d54334cfb7b1f2b0b3","bytes":10300},
       "fixtureSources": [
@@ -37,6 +38,7 @@
     },
     {
       "id":"lib", "profile":"cargo-test", "command":"cargo test --lib --color never",
+      "producer":{"script":"scripts/utility-native-cargo-remaining.mjs","sourceSHA256":"d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f"},
       "role":"noise", "expectedStatus":"reduced", "exitCode":0, "complete":true, "signal":null, "timedOut":false,
       "capture":{"file":"lib/receipt.json","sha256":"670399ba8a13f1130b4829d5e42411a3f3184a9d15d7c9d3be167f8211c95ce8","bytes":10793},
       "fixtureSources": [
@@ -60,6 +62,7 @@
     },
     {
       "id":"failure", "profile":"cargo-test", "command":"cargo test --color never",
+      "producer":{"script":"scripts/utility-native-cargo-remaining.mjs","sourceSHA256":"d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f"},
       "role":"exact", "expectedStatus":"passthrough", "exitCode":101, "complete":true, "signal":null, "timedOut":false,
       "capture":{"file":"failure/receipt.json","sha256":"d2c74e8687f65720a97f74f8fccab1254d7d18609274643d674a7af092cc988b","bytes":10865},
       "fixtureSources": [
@@ -86,6 +89,7 @@
     },
     {
       "id":"warning", "profile":"cargo-test", "command":"cargo test --color never",
+      "producer":{"script":"scripts/utility-native-cargo-remaining.mjs","sourceSHA256":"d44dab595c62ec26d8184f8a3df48f499004ae391d845f70db9272cbb5eedf2f"},
       "role":"exact", "expectedStatus":"passthrough", "exitCode":0, "complete":true, "signal":null, "timedOut":false,
       "capture":{"file":"warning/receipt.json","sha256":"6d9646957d15bc3b8ad52c16a40d23ca02284b614479b54fa437fb3639270f5f","bytes":11436},
       "fixtureSources": [
