@@ -188,22 +188,68 @@ test("valid-shaped source inventory hash cannot masquerade as bound source index
 });
 
 test("all pytest provenance roots are typed; shaped index hashes remain blocked pending mapped proof", async (t) => {
-  const f = await mockCorpus(t), declaration = (root: string) => ({ root, sourceHead: "1".repeat(40),
-    indexSHA256: hash(`${root} index`), sourceInventorySHA256: hash(`${root} inventory`), producer: f.manifests.pytest.producer });
-  f.manifests.pytest.provenance = [declaration("prep"), declaration("extra")];
+  const f = await mockCorpus(t), { entry } = await bindMockRoot(f, "pytest");
+  f.manifests.pytest.provenance = [entry, { ...entry, id: "extra", sourceHead: "malformed" }];
   await f.save("pytest");
-  await assert.rejects(readUtilityCorpus(f.root), /UNBOUND_PROVENANCE_INDEX/);
-  f.manifests.pytest.provenance[1].sourceHead = "malformed";
-  await f.save("pytest");
-  await assert.rejects(readUtilityCorpus(f.root), /INVALID_PROVENANCE_ROOT: pytest: extra/);
-  f.manifests.pytest.provenance[1] = declaration("prep");
+  await assert.rejects(readUtilityCorpus(f.root), /INVALID_PROVENANCE_ROOT: pytest\/extra/);
+  f.manifests.pytest.provenance = [entry, { ...entry }];
   await f.save("pytest");
   await assert.rejects(readUtilityCorpus(f.root), /DUPLICATE_PROVENANCE_ROOT/);
-  f.manifests.pytest.provenance = [declaration("prep")];
-  f.manifests.pytest.provenance[0].indexSHA256 = hash("WRONG actual artifact bytes");
-  await f.put("pytest", "unmapped-index.json", JSON.stringify({ sourceInventory: [] }));
+  f.manifests.pytest.provenance = [entry];
+  entry.index.sha256 = hash("WRONG actual artifact bytes");
   await f.save("pytest");
-  await assert.rejects(readUtilityCorpus(f.root), /UNBOUND_PROVENANCE_INDEX/);
+  await assert.rejects(readUtilityCorpus(f.root), /SERIES_DIGEST_MISMATCH/);
+});
+
+// Explicit mock immutable publisher index and source-array bytes; never production-derived output.
+async function bindMockRoot(f: Awaited<ReturnType<typeof mockCorpus>>, family = "go") {
+  const manifest = f.manifests[family], rows: Json[] = [];
+  const source = manifest.cases[0].fixtureSources[0];
+  const sourceText = `${JSON.stringify([source], null, 2)}\n`;
+  const inventoryPart = await f.put(family, "source-array.json", sourceText);
+  const sourceInventory = { sha256: inventoryPart.sha256, bytes: inventoryPart.bytes, parts: [inventoryPart] };
+  for (const item of manifest.cases) {
+    item.provenanceRoot = "mock-native";
+    rows.push({ ...structuredClone(f.receipts[`${family}/${item.id}`]), id: item.id });
+  }
+  const versionText = family === "pytest" ? JSON.stringify({ pytest: "MOCK-1" }) : "MOCK-1\n";
+  const streams = { original: await f.put(family, "version.log", versionText), stdout: await f.put(family, "version.stdout.log", versionText), stderr: await f.put(family, "version.stderr.log", "") };
+  const receipt = { ...structuredClone(f.receipts[`${family}/noise`]), artifacts: streams };
+  const version = { id: "version", ...streams, capture: await f.put(family, "version.json", JSON.stringify(receipt)) };
+  rows.push({ ...receipt, id: version.id, capture: version.capture });
+  const index: Json = { schema: "hugr-lean/utility-native-prep/1", family, baseline: "1".repeat(40), producer: manifest.producer,
+    sources: [source], sourceInventory: family === "go" ? inventoryPart : [source],
+    ...(family === "go" ? { receipts: rows } : { captures: rows, sourceInventorySHA256: sourceInventory.sha256 }) };
+  const indexText = `${JSON.stringify(index, null, 2)}\n`, cut = Math.floor(indexText.length / 2);
+  const parts = [await f.put(family, "index-first.json", indexText.slice(0, cut)), await f.put(family, "index-second.json", indexText.slice(cut))];
+  const entry: Json = { id: "mock-native", sourceHead: "1".repeat(40), producer: manifest.producer,
+    index: { sha256: hash(indexText), bytes: Buffer.byteLength(indexText), parts }, sourceInventory,
+    producerSources: [{ file: "producer-source.mjs", sourceFile: manifest.producer.script, bytes: 13, sha256: hash("mock producer") }], versionCaptures: [version] };
+  manifest.provenance = [entry]; await f.save(family);
+  return { entry, index };
+}
+
+test("frozen mock series join exact bytes, source inventory, producer and version capture", async (t) => {
+  const f = await mockCorpus(t);
+  await bindMockRoot(f, "go"); await bindMockRoot(f, "pytest");
+  const corpus = await readUtilityCorpus(f.root);
+  assert.equal(corpus.cases.length, 8);
+  assert.equal(corpus.families[0].provenance.length, 1);
+});
+
+test("series teeth: wrong valid hash, swapped/missing/repeated parts and wrong source-array relation", async (t) => {
+  for (const mutation of ["hash", "order", "missing", "repeat", "inventory", "producer", "sourceFile"]) await t.test(mutation, async (t) => {
+    const f = await mockCorpus(t), { entry } = await bindMockRoot(f);
+    if (mutation === "hash") entry.index.sha256 = "0".repeat(64);
+    if (mutation === "order") entry.index.parts.reverse();
+    if (mutation === "missing") await rm(path.join(f.root, "go", entry.index.parts[0].file));
+    if (mutation === "repeat") entry.index.parts.push(entry.index.parts[0]);
+    if (mutation === "inventory") entry.sourceInventory.sha256 = "0".repeat(64);
+    if (mutation === "producer") entry.producerSources[0].sha256 = "0".repeat(64);
+    if (mutation === "sourceFile") entry.producerSources[0].sourceFile = "wrong-publisher.mjs";
+    await f.save("go");
+    await assert.rejects(readUtilityCorpus(f.root), /SERIES_DIGEST_MISMATCH|MISSING_ARTIFACT|DUPLICATE_SERIES_PART|ARTIFACT_DIGEST_MISMATCH|UNBOUND_SOURCE_RECORD/);
+  });
 });
 
 test("producer source bytes are mandatory and hash/length bound; helpers need explicit mapping", async (t) => {
