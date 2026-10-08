@@ -1,0 +1,160 @@
+      "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/failure",
+      "fixtureSources": [
+        {
+          "file": "projects/failure/test_failure.py",
+          "bytes": 213,
+          "sha256": "7621639a25ab2d50ca5507b5af571275def07857d0f38e432e40fdc140a65400"
+        },
+        {
+          "file": "projects/failure/LICENSE",
+          "bytes": 1066,
+          "sha256": "f90e197430bd7cadc103298057009987a6806575c012f0c1729e3600b7642092"
+        },
+        {
+          "file": "projects/failure/pytest.ini",
+          "bytes": 23,
+          "sha256": "8cee3382992f07a89d51a6f6f1fa53877a55dc3320a711a6e1a917d0dd988267"
+        }
+      ],
+      "state": "captured",
+      "retainedLiveDirectory": "captures/assertion-failure/live",
+      "facts": {
+        "command": "pytest",
+        "cwd": "/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/failure",
+        "exitCode": 1,
+        "signal": null,
+        "timedOut": false,
+        "nativeSpawned": true,
+        "nativeExitObserved": true,
+        "complete": true,
+        "durationMs": 6221.67178,
+        "guardianElapsedMs": 7154.556377,
+        "durationBoundary": "pipe-close",
+        "exitDurationMs": 6220.460962,
+        "bookkeepingMs": 0.10998000000108732,
+        "durationDefinition": "native spawn start inside guardian to pipe close, launch failure, guardian loss or bounded timeout cleanup settlement; null until authenticated native start; excludes guardian startup, log drain and decoding",
+        "guardianElapsedDefinition": "parent start to guardian settlement, including startup; not native command runtime",
+        "encodingError": null,
+        "launchError": null,
+        "captureDefinition": "stdout/stderr arrival order; no text rewriting",
+        "killErrors": []
+      },
+      "artifacts": {
+        "original": {
+          "file": "captures/assertion-failure/original.log",
+          "bytes": 1202,
+          "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+        },
+        "stdout": {
+          "file": "captures/assertion-failure/stdout.log",
+          "bytes": 1202,
+          "sha256": "5d5bb83b6c3015faa7af02f6bc0f8ee0f609482cede4483259c2aafbddb133fd"
+        },
+        "stderr": {
+          "file": "captures/assertion-failure/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "receipt": "captures/assertion-failure/receipt.json",
+      "observedRows": [
+        {
+          "line": 1,
+          "text": "============================= test session starts =============================="
+        },
+        {
+          "line": 2,
+          "text": "platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0"
+        },
+        {
+          "line": 3,
+          "text": "rootdir: /Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-utility-pytest-native/.native-captures/pytest/prep-fHWQpI/projects/failure"
+        },
+        {
+          "line": 4,
+          "text": "configfile: pytest.ini"
+        },
+        {
+          "line": 5,
+          "text": "collected 1 item"
+        },
+        {
+          "line": 6,
+          "text": ""
+        },
+        {
+          "line": 7,
+          "text": "test_failure.py F                                                        [100%]"
+        },
+        {
+          "line": 8,
+          "text": ""
+        },
+        {
+          "line": 9,
+          "text": "=================================== FAILURES ==================================="
+        },
+        {
+          "line": 10,
+          "text": "____________________________ test_assertion_failure ____________________________"
+        },
+        {
+          "line": 11,
+          "text": ""
+        },
+        {
+          "line": 12,
+          "text": "    def test_assertion_failure():"
+        },
+        {
+          "line": 13,
+          "text": "        actual = \"HUGR_PYTEST_ASSERTION_ACTUAL café 雪 🧪\""
+        },
+        {
+          "line": 14,
+          "text": "        expected = \"HUGR_PYTEST_ASSERTION_EXPECTED café 雪 🧪\""
+        },
+        {
+          "line": 15,
+          "text": ">       assert actual == expected"
+        },
+        {
+          "line": 16,
+          "text": "E       AssertionError: assert 'HUGR_PYTEST_...TUAL café 雪 🧪' == 'HUGR_PYTEST_...CTED café 雪 🧪'"
+        },
+        {
+          "line": 17,
+          "text": "E         "
+        },
+        {
+          "line": 18,
+          "text": "E         - HUGR_PYTEST_ASSERTION_EXPECTED café 雪 🧪"
+        },
+        {
+          "line": 19,
+          "text": "E         ?                       ^^^^  ^^"
+        },
+        {
+          "line": 20,
+          "text": "E         + HUGR_PYTEST_ASSERTION_ACTUAL café 雪 🧪"
+        },
+        {
+          "line": 21,
+          "text": "E         ?                       ^  ^^^"
+        },
+        {
+          "line": 22,
+          "text": ""
+        },
+        {
+          "line": 23,
+          "text": "test_failure.py:5: AssertionError"
+        },
+        {
+          "line": 24,
+          "text": "============================== 1 failed in 0.82s ==============================="
+        },
+        {
+          "line": 25,
+          "text": ""
+        }
