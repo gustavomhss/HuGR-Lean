@@ -1,4 +1,5 @@
-// Offline metadata normalizer. Writes only a fresh directory beneath this worktree's .normalized-corpus.
+// Offline metadata normalizer: copies published bytes into a fresh own .normalized-corpus directory.
+// Exposure is captured fixture evidence only; stream chunk arrival is declared, not independently authenticated.
 import { createHash } from "node:crypto";
 import { lstat, readFile, mkdir, mkdtemp, writeFile, realpath } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
@@ -208,6 +209,22 @@ export async function normalizeUtilityCorpus() {
       root.entry.producerSources = [...refs.values()];
     }
     manifest.provenance = roots.map((root) => root.entry);
+    if (family === "cargo") {
+      const file = "provenance/lineage.json", bytes = await readFile(path.join(actor, file)), lineage = JSON.parse(bytes.toString("utf8"));
+      const lineageRef = await put(file, bytes);
+      for (const ref of [lineage.producer, ...lineage.index.parts]) await put(ref.file, await checkedRead(path.join(actor, ref.file), ref));
+      const inspection = await put(lineage.inspection.file, await checkedRead(path.join(actor, lineage.inspection.file), lineage.inspection), "inspection-receipt.json");
+      const afterSources = [];
+      for (const id of ["failure", "warning"]) {
+        const row = manifest.cases.find((item) => item.id === id), receipt = JSON.parse((await readFile(path.join(destination, row.capture.file))).toString("utf8"));
+        const ref = receipt.fixtureSourcesAfter.find((item) => item.file === "Cargo.lock"), storage = `sources/${id}-after/Cargo.lock`;
+        const artifact = await put(storage, await checkedRead(path.join(actor, storage), ref), ref.file);
+        afterSources.push({ case: id, phase: "after", artifact });
+      }
+      manifest.cargoEvidence = { lineage: lineageRef, inspection, afterSources };
+      normalizations.push({ family, evidence: manifest.cargoEvidence, sourceRecovery: lineage.sourceRecovery,
+        recordedBeforeSatisfied: lineage.sourceRecords.find((record) => record.case === "full").recordedBeforeSatisfied });
+    }
     await put("SOURCES.md", await readFile(path.join(actor, "SOURCES.md")));
     await put("manifest.json", Buffer.from(format(manifest)));
   }

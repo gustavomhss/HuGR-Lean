@@ -79,3 +79,69 @@ test("four Cargo native case receipts explicitly map original captures/id/receip
     await assert.rejects(readUtilityCorpus(result.corpusRoot), /INDEX_RECEIPT_PATH_MISMATCH: cargo\/full/);
   });
 });
+
+async function forgeLineage(mutate: (value: Json) => void, expected: RegExp) {
+  const { result, file, data } = await manifest("cargo"), lineageFile = path.join(result.corpusRoot, "cargo", data.cargoEvidence.lineage.file);
+  await editJson(lineageFile, mutate, async () => {
+    const bytes = await readFile(lineageFile);
+    await editJson(file, (meta) => { meta.cargoEvidence.lineage.bytes = bytes.length; meta.cargoEvidence.lineage.sha256 = hash(bytes); }, async () => {
+      await assert.rejects(readUtilityCorpus(result.corpusRoot), expected);
+    });
+  });
+}
+
+test("Cargo ancillary files and both after snapshots retained with independent hashes and labels", async () => {
+  const { result, data } = await manifest("cargo"), corpus = await readUtilityCorpus(result.corpusRoot);
+  const evidence = corpus.families.find((family: Json) => family.family === "cargo").cargoEvidence;
+  assert.equal(evidence.lineage.file, "provenance/lineage.json");
+  assert.equal(evidence.inspection.file, "full/inspection-receipt.json");
+  assert.equal(evidence.collectorError, "NATIVE_MINUTE_DURATION_MISSING");
+  const before = evidence.sourceRecords.find((record: Json) => record.case === "full");
+  assert.equal(before.origin, "reconstructed-producer-literal"); assert.equal(before.recordedBeforeSatisfied, false);
+  assert.deepEqual(evidence.afterSources.map((record: Json) => record.artifact.file), ["sources/failure-after/Cargo.lock", "sources/warning-after/Cargo.lock"]);
+  const actor = path.resolve(result.directory, "../../../hugr-lean-utility-cargo-parser/fixtures/utility/cargo");
+  for (const ref of [data.cargoEvidence.lineage, data.cargoEvidence.inspection, ...data.cargoEvidence.afterSources.map((record: Json) => record.artifact)]) {
+    assert.ok((await readFile(path.join(result.corpusRoot, "cargo", ref.file))).equals(await readFile(path.join(actor, ref.file))), ref.file);
+  }
+});
+
+test("Cargo omissions cannot pass by deleting declarations or after-snapshot entries", async () => {
+  const { result, file } = await manifest("cargo");
+  for (const missing of ["all", "inspection", "lineage", "afterSources", "afterEntry"]) {
+    await editJson(file, (meta) => {
+      if (missing === "all") delete meta.cargoEvidence;
+      else if (missing === "afterEntry") meta.cargoEvidence.afterSources.pop();
+      else delete meta.cargoEvidence[missing];
+    }, async () => { await assert.rejects(readUtilityCorpus(result.corpusRoot), /MISSING_CARGO_EVIDENCE|MISSING_FIELD|MISSING_CARGO_AFTER_SNAPSHOT/); });
+  }
+});
+
+test("recovered full lock cannot be relabeled recorded-before or satisfied", async () => {
+  await forgeLineage((lineage) => { lineage.sourceRecords[0].recordedBeforeSatisfied = true; }, /CARGO_SOURCE_LABEL_MISMATCH/);
+  await forgeLineage((lineage) => { lineage.sourceRecords[0].origin = "recorded-before"; }, /CARGO_SOURCE_LABEL_MISMATCH/);
+});
+
+test("after snapshot phase and digest remain bound to actual receipt after inventory", async () => {
+  const { result, file } = await manifest("cargo");
+  await editJson(file, (meta) => { meta.cargoEvidence.afterSources[0].phase = "before"; }, async () => {
+    await assert.rejects(readUtilityCorpus(result.corpusRoot), /CARGO_AFTER_SNAPSHOT_LABEL_MISMATCH/);
+  });
+  await editJson(file, (meta) => { meta.cargoEvidence.afterSources[0].artifact.sha256 = "0".repeat(64); }, async () => {
+    await assert.rejects(readUtilityCorpus(result.corpusRoot), /ARTIFACT_DIGEST_MISMATCH.*cargo: evidence/);
+  });
+});
+
+test("self-consistent inspection rewrite still rejects independent immutable prior-index pin", async () => {
+  const { result, file, data } = await manifest("cargo"), evidence = data.cargoEvidence;
+  const inspectionFile = path.join(result.corpusRoot, "cargo", evidence.inspection.file), lineageFile = path.join(result.corpusRoot, "cargo", evidence.lineage.file);
+  await editJson(inspectionFile, (inspection) => { inspection.nativeExitCode = 101; }, async () => {
+    const bytes = await readFile(inspectionFile);
+    await editJson(lineageFile, (lineage) => { lineage.inspection.bytes = bytes.length; lineage.inspection.sha256 = hash(bytes); }, async () => {
+      const lineageBytes = await readFile(lineageFile);
+      await editJson(file, (meta) => {
+        meta.cargoEvidence.inspection.bytes = bytes.length; meta.cargoEvidence.inspection.sha256 = hash(bytes);
+        meta.cargoEvidence.lineage.bytes = lineageBytes.length; meta.cargoEvidence.lineage.sha256 = hash(lineageBytes);
+      }, async () => { await assert.rejects(readUtilityCorpus(result.corpusRoot), /RECEIPT_ARTIFACT_MISMATCH: cargo: evidence/); });
+    });
+  });
+});
