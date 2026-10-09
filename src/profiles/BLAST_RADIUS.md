@@ -10,3 +10,4 @@
 - There is no persisted profile data; spans are relative to each supplied baseline. Fixture changes affect hash/provenance witnesses in both existing `SOURCES.md` records.
 - Wider support claims require new full-stream positive/negative evidence, not an extra ID or stub; keep [manual](MANUAL.md) and [coverage](../../docs/COVERAGE.md) aligned.
 - Byte savings alone do not prove preservation; follow [maintenance](MAINTENANCE.md) and review required declarations as well as emitted text.
+- Vitest whole-row retention withdraws legacy plain-stream savings (221→221 and 322→322 bytes). Affected closure is named Vitest format/combined/evidence tests and [configured-reporter regression](../../tests/vitest-preservation.test.ts); installed goldens are raw exact. Reporter-looking grammar is not producer authentication.

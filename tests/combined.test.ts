@@ -50,7 +50,7 @@ const goldens: Readonly<Record<string, Golden>> = {
   },
   "formats/vitest_all_passed.txt": {
     command: "vitest run", profile: "vitest",
-    expected: " ✓ test/utils.test.ts (3 tests)\n ✓ test/helpers.test.ts (2 tests)\n ✓ test/components.test.ts (4 tests)\n\n" +
+    expected: " ✓ test/utils.test.ts (3 tests) 200ms\n ✓ test/helpers.test.ts (2 tests) 150ms\n ✓ test/components.test.ts (4 tests) 300ms\n\n" +
       " Test Files  3 passed (3)\n      Tests  9 passed (9)\n   Start at  10:30:00\n   Duration  1.20s\n",
   },
   "formats/git_status_mixed.txt": {
@@ -73,7 +73,7 @@ const goldens: Readonly<Record<string, Golden>> = {
   "formats/vitest_native.txt": {
     command: "vitest run vitest-native.test.js --globals --no-color", profile: "vitest",
     expected: "\n RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-formats-native\n\n" +
-      " ✓ vitest-native.test.js (2 tests)\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  00:23:02\n" +
+      " ✓ vitest-native.test.js (2 tests) 5ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  00:23:02\n" +
       "   Duration  1.28s (transform 26ms, setup 0ms, collect 10ms, tests 5ms, environment 0ms, prepare 324ms)\n\n",
   },
   "formats/lint_tsc_errors.txt": { command: "tsc --pretty false", profile: "tsc" },
@@ -96,12 +96,12 @@ const formatEvidence: Readonly<Record<string, readonly Anchor[]>> = {
     "Time:        1.022 s\n", "Ran all test suites.\n",
   ],
   "formats/vitest_all_passed.txt": [
-    " ✓ test/utils.test.ts (3 tests)", " ✓ test/helpers.test.ts (2 tests)", " ✓ test/components.test.ts (4 tests)",
+    " ✓ test/utils.test.ts (3 tests) 200ms\n", " ✓ test/helpers.test.ts (2 tests) 150ms\n", " ✓ test/components.test.ts (4 tests) 300ms\n",
     " Test Files  3 passed (3)\n", "      Tests  9 passed (9)\n", "   Start at  10:30:00\n", "   Duration  1.20s\n",
   ],
   "formats/vitest_native.txt": [
     " RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-formats-native\n",
-    " ✓ vitest-native.test.js (2 tests)", " Test Files  1 passed (1)\n", "      Tests  2 passed (2)\n",
+    " ✓ vitest-native.test.js (2 tests) 5ms\n", " Test Files  1 passed (1)\n", "      Tests  2 passed (2)\n",
     "   Start at  00:23:02\n", "   Duration  1.28s (transform 26ms, setup 0ms, collect 10ms, tests 5ms, environment 0ms, prepare 324ms)\n",
   ],
   "formats/git_status_mixed.txt": [
@@ -287,6 +287,16 @@ test("source fixture inventory and default production registry are nonempty and 
 for (const entry of corpus) test(`production golden: ${entry.path}`, () => {
   const input = observation(entry.input, entry.command);
   if (entry.expected === undefined) exact(input, "unsupported_output");
+  else if (entry.profile === "vitest") {
+    assert.equal(entry.expected, entry.input, "Vitest golden must retain raw bytes");
+    exact(input, "not_smaller");
+    exact({ ...input, output: entry.input.replaceAll("\n", "\r\n") }, "not_smaller");
+    const colored = { ...input, output: `\x1b[32m${entry.input}\x1b[0m`, presentation: "terminal-rendered" as const };
+    const result = run(colored);
+    assert.equal(result.status, "normalized");
+    assert.equal(visible(colored, result), entry.expected);
+    assert.equal(result.outputBytes, Buffer.byteLength(entry.expected));
+  }
   else {
     const crlf = entry.expectedCRLF ?? entry.expected.replaceAll("\n", "\r\n");
     const expected = entry.input.includes("\r\n") ? crlf : entry.expected;
@@ -325,12 +335,14 @@ for (const [path, field, label] of c1Fields) {
   const expected = entry.expected;
   assert.ok(entry.input.includes(field) && expected.includes(field), `Missing dynamic field: ${path}`);
   const insert = (value: string) => entry.input.replace(field, field + value);
-  test(`production ${entry.profile} ${label} reduces ordinary Unicode`, () => {
+  test(`production ${entry.profile} ${label} ${entry.profile === "vitest" ? "preserves" : "reduces"} ordinary Unicode`, () => {
     const unicode = "漢字 e\u0301 🔥";
-    reduced(observation(insert(unicode), entry.command), expected.replace(field, field + unicode), entry.profile);
+    if (entry.profile === "vitest") exact(observation(insert(unicode), entry.command), "not_smaller");
+    else reduced(observation(insert(unicode), entry.command), expected.replace(field, field + unicode), entry.profile);
   });
   test(`production ${entry.profile} ${label} preserves every C1 control exactly`, () => {
-    reduced(observation(entry.input, entry.command), expected, entry.profile);
+    if (entry.profile === "vitest") exact(observation(entry.input, entry.command), "not_smaller");
+    else reduced(observation(entry.input, entry.command), expected, entry.profile);
     const failures: string[] = [];
     for (let code = 0x80; code <= 0x9f; code++) {
       const output = insert(String.fromCodePoint(code)), bytes = Buffer.byteLength(output, "utf8");

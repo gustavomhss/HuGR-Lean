@@ -112,7 +112,12 @@ test("failure diagnostics cannot borrow another test identity, assertion or fail
 for (const entry of controls) {
   test(`${entry.oracle}: actual default filter preserves independent evidence`, () => {
     const result = actual(entry.command, entry.output);
-    assert.equal(result.status, "reduced", "Positive control must exercise actual reducer");
+    assert.equal(result.status, entry.oracle === "vitest" ? "passthrough" : "reduced", "Positive control must exercise actual filter disposition");
+    if (entry.oracle === "vitest") {
+      assert.equal(result.reason, "not_smaller");
+      assert.equal("replacement" in result, false);
+      assert.equal(result.outputBytes, bytes(entry.output));
+    }
     const found = verdict(entry.oracle, entry.output, result);
     green(found); assert.ok(found.signals.includes(entry.summary + (entry.oracle === "rg" ? "\r\n" : "\n")));
     green(verdict(entry.oracle, entry.output, passthrough(entry.output)));
@@ -120,16 +125,20 @@ for (const entry of controls) {
   });
   test(`${entry.oracle}: critical evidence deletion fails with truthful byte metrics`, () => {
     const result = actual(entry.command, entry.output);
-    assert.ok("replacement" in result);
-    const stripped = entry.oracle === "rg" ? result.replacement.replace("7:https://example.org:x 🔥\r\n", "") :
-      result.replacement.replace(entry.summary + "\n", "");
-    assert.notEqual(stripped, result.replacement, "Probe must really remove evidence");
+    if (entry.oracle !== "vitest") assert.ok("replacement" in result);
+    const visible = "replacement" in result ? result.replacement : entry.output;
+    const stripped = entry.oracle === "rg" ? visible.replace("7:https://example.org:x 🔥\r\n", "") :
+      visible.replace(entry.summary + "\n", "");
+    assert.notEqual(stripped, visible, "Probe must really remove evidence");
     const mutant = replacement(entry.output, stripped);
     assert.equal(mutant.outputBytes, bytes(stripped));
     red(verdict(entry.oracle, entry.output, mutant), entry.oracle === "rg" ? /rg_records/ : /native_signal/);
   });
   test(`${entry.oracle}: actual failure metadata and incomplete observations prohibit replacement`, () => {
-    const result = actual(entry.command, entry.output);
+    const actualResult = actual(entry.command, entry.output);
+    // Vitest now stays exact; forge a damaged replacement so metadata controls
+    // still exercise the prohibition rather than vacuously accepting no output.
+    const result = entry.oracle === "vitest" ? replacement(entry.output, entry.output.replace(" 24ms", "")) : actualResult;
     for (const patch of [{ exitCode: 2 }, { exitCode: null }, { exitCode: null, signal: "SIGTERM" }, { complete: false }, { timedOut: true }] as const) {
       red(verdict(entry.oracle, entry.output, result, {}, patch), /no_replacement/);
     }
@@ -232,15 +241,16 @@ test("unsupported native shapes retain discovered summaries and whole output", (
 test("known-looking malformed native ordering/count/version/indentation needs exact fallback", () => {
   for (const oracle of ["cargo-build", "cargo-test", "pytest", "go", "jest", "vitest"]) {
     const entry = controls.find((item) => item.oracle === oracle)!, base = actual(entry.command, entry.output);
-    assert.ok("replacement" in base);
+    if (oracle !== "vitest") assert.ok("replacement" in base);
+    const baseOutput = "replacement" in base ? base.replacement : entry.output;
     const input = oracle === "cargo-build" ? entry.output + "   Compiling late v1.2.3\n" :
       oracle === "cargo-test" ? entry.output.replace("running 3 tests", "running 4 tests") :
       oracle === "pytest" ? entry.output.replace("pytest-9.0.3", "pytest-99.0.0") :
       oracle === "go" ? entry.output.replaceAll("TestRoundtrip", "TestCafé") :
       oracle === "jest" ? entry.output.replace("    ✓ name", "   ✓ name") : entry.output.replace("12:34:56", "24:34:56");
-    const forged = oracle === "pytest" ? base.replacement.replace("pytest-9.0.3", "pytest-99.0.0") :
-      oracle === "jest" ? base.replacement.replace("    - name", "   - name") : oracle === "vitest" ? base.replacement.replace("12:34:56", "24:34:56") :
-      oracle === "cargo-build" ? base.replacement + "   Compiling late v1.2.3\n" : base.replacement;
+    const forged = oracle === "pytest" ? baseOutput.replace("pytest-9.0.3", "pytest-99.0.0") :
+      oracle === "jest" ? baseOutput.replace("    - name", "   - name") : oracle === "vitest" ? baseOutput.replace("12:34:56", "24:34:56").replace(" 24ms", "") :
+      oracle === "cargo-build" ? baseOutput + "   Compiling late v1.2.3\n" : baseOutput;
     assert.equal(actual(entry.command, input).status, "passthrough");
     green(verdict(oracle, input, passthrough(input)));
     red(verdict(oracle, input, replacement(input, forged)), /no_replacement/);
@@ -286,17 +296,18 @@ test("nonverbose Jest preserves exact file and count identity without inventing 
   green(verdict("jest", input, actual("jest", input)));
 });
 
-test("Vitest file identity/count and whole duration survive; per-file timing may drop", () => {
+test("Vitest whole rows including timing stay exact; damaged replacements fail evidence controls", () => {
   const entry = controls.find((item) => item.oracle === "vitest")!, result = actual(entry.command, entry.output);
-  assert.ok("replacement" in result); assert.equal(result.replacement.includes("24ms"), false);
-  for (const output of [result.replacement.replace("tests/ledger.test.ts", "tests/other.test.ts"),
-    result.replacement.replace("(2 tests)", "(1 test)"), result.replacement.replace(" ✓ tests/reader.test.ts (1 test)\n", ""),
-    result.replacement.replace(/   Duration [^\n]*\n/, ""), " Test Files  2 passed (2)\n" + entry.summary + "\n"]) {
+  assert.equal(result.status, "passthrough"); assert.equal(result.reason, "not_smaller");
+  assert.equal("replacement" in result, false); assert.equal(result.outputBytes, bytes(entry.output));
+  for (const output of [entry.output.replace("tests/ledger.test.ts", "tests/other.test.ts").replace(" 24ms", ""),
+    entry.output.replace("(2 tests)", "(1 test)"), entry.output.replace(" ✓ tests/reader.test.ts (1 test) 7ms\n", ""),
+    entry.output.replace(/   Duration [^\n]*\n/, ""), " Test Files  2 passed (2)\n" + entry.summary + "\n"]) {
     red(verdict("vitest", entry.output, replacement(entry.output, output)), /native_(?:evidence|signal)/);
   }
   const verbose = entry.output.replace(" ✓ tests/ledger", "   ✓ full test body (1ms)\n ✓ tests/ledger");
   green(verdict("vitest", verbose, actual(entry.command, verbose)));
-  red(verdict("vitest", verbose, replacement(verbose, result.replacement)), /no_replacement/);
+  red(verdict("vitest", verbose, replacement(verbose, entry.output)), /no_replacement/);
 });
 
 test("Git every fact row survives, including branch/tracking/status/rename/submodule/path facts", () => {
@@ -362,13 +373,16 @@ test("unknown controls and cursor/presentation bytes are never treated as remova
   }
 });
 
-for (const oracle of ["jest", "vitest", "git"]) test(`${oracle}: every native blank row survives actual core reduction`, () => {
+for (const oracle of ["jest", "vitest", "git"]) test(`${oracle}: every native blank row survives actual core ${oracle === "vitest" ? "passthrough" : "reduction"}`, () => {
   const entry = controls.find((item) => item.oracle === oracle)!;
   for (const input of [entry.output, entry.output.replaceAll("\n", "\r\n")]) {
-    const result = actual(entry.command, input); assert.ok("replacement" in result);
-    const blanks = [...result.replacement.matchAll(/^\r?\n/gm)]; assert.ok(blanks.length > 0);
+    const result = actual(entry.command, input);
+    if (oracle === "vitest") { assert.equal(result.status, "passthrough"); assert.equal("replacement" in result, false); }
+    else assert.ok("replacement" in result);
+    const visible = "replacement" in result ? result.replacement : input;
+    const blanks = [...visible.matchAll(/^\r?\n/gm)]; assert.ok(blanks.length > 0);
     for (const blank of blanks) {
-      const output = result.replacement.slice(0, blank.index) + result.replacement.slice(blank.index + blank[0].length);
+      const output = visible.slice(0, blank.index) + visible.slice(blank.index + blank[0].length);
       red(verdict(oracle, input, replacement(input, output)), /native_evidence/);
     }
   }
