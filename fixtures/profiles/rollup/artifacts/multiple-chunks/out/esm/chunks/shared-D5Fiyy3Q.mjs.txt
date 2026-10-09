@@ -1,0 +1,4 @@
+const answer = 42;
+
+export { answer as a };
+//# sourceMappingURL=shared-D5Fiyy3Q.mjs.map

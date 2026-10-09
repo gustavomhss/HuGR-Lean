@@ -1,0 +1,1 @@
+{"version":3,"file":"lazy-BWDBwCKZ.mjs","sources":["../../../lazy.js"],"sourcesContent":["export const lazy = 'lazy chunk';\n"],"names":[],"mappings":"AAAY,MAAC,IAAI,GAAG;;;;"}

@@ -1,0 +1,6 @@
+
+warning.js → out/warning.mjs...
+(!) Unresolved dependencies
+https://rollupjs.org/troubleshooting/#warning-treating-module-as-external-dependency
+b04-absent-dependency (imported by "warning.js")
+created out/warning.mjs in 36ms

@@ -1,0 +1,15 @@
+[!] Error: Cannot find module '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/config-missing/missing.config.mjs' imported from /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/loadConfigFile.js
+file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/config-missing/missing.config.mjs
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/config-missing/missing.config.mjs' imported from /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/loadConfigFile.js
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:643:36)
+    at TracingChannel.tracePromise (node:diagnostics_channel:344:14)
+    at ModuleLoader.import (node:internal/modules/esm/loader:642:21)
+
+
