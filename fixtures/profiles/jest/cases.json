@@ -49,8 +49,8 @@
       },
       "completionAt": "2026-10-09T15:33:06.814287+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-snapshot-written",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-snapshot-written",
         "sha256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8"
       },
       "attachments": [],
@@ -62,8 +62,8 @@
       "version": "Jest 30.2.0",
       "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
       "file": "captures/snapshot-passed/input.txt",
-      "status": "reduced",
-      "disposition": "BASELINE_PRESERVED",
+      "status": "passthrough",
+      "disposition": "baseline-bug",
       "source": "shell",
       "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
       "argv": [
@@ -91,7 +91,7 @@
       "presentation": "unknown",
       "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
       "inputBytes": 237,
-      "outputBytes": 232,
+      "outputBytes": 237,
       "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309",
       "eof": {
         "readThroughEOF": true,
@@ -102,13 +102,16 @@
       },
       "completionAt": "2026-10-09T15:33:09.814817+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-snapshot-passed",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-snapshot-passed",
         "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309"
       },
       "attachments": [],
-      "expectedFile": "captures/snapshot-passed/expected.txt",
-      "baselineReason": "profile_reduction"
+      "baselineReason": "profile_reduction",
+      "historicalExpectedFile": "captures/snapshot-passed/expected.txt",
+      "historicalDisposition": "BASELINE_PRESERVED",
+      "historicalOutputBytes": 232,
+      "findingReason": "marker replacement cannot authenticate configured reporter; historical golden is not approved current output"
     },
     {
       "name": "R02-snapshot-failed",
@@ -158,8 +161,8 @@
       },
       "completionAt": "2026-10-09T15:33:12.416809+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-snapshot-failed",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-snapshot-failed",
         "sha256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db"
       },
       "attachments": [],
@@ -211,8 +214,8 @@
       },
       "completionAt": "2026-10-09T15:33:14.636047+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-skip-todo",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-skip-todo",
         "sha256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7"
       },
       "attachments": [],
@@ -265,8 +268,8 @@
       },
       "completionAt": "2026-10-09T15:33:16.800843+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-log-snapshot-written",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-log-snapshot-written",
         "sha256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb"
       },
       "attachments": [],
@@ -318,8 +321,8 @@
       },
       "completionAt": "2026-10-09T15:33:18.998923+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-log-snapshot-passed",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-log-snapshot-passed",
         "sha256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428"
       },
       "attachments": [],
@@ -374,8 +377,8 @@
       },
       "completionAt": "2026-10-09T15:33:22.040492+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-coverage-snapshot",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-coverage-snapshot",
         "sha256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c"
       },
       "attachments": [
@@ -487,8 +490,8 @@
       },
       "completionAt": "2026-10-09T15:33:26.281059+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-multiproject-coverage-log-skip-snapshot",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-multiproject-coverage-log-skip-snapshot",
         "sha256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5"
       },
       "attachments": [
@@ -597,8 +600,8 @@
       },
       "completionAt": "2026-10-09T15:33:28.903237+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-json-default-log-snapshot",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-json-default-log-snapshot",
         "sha256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85"
       },
       "attachments": [
@@ -657,8 +660,8 @@
       },
       "completionAt": "2026-10-09T15:33:31.478332+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-reporter-collision-default",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-reporter-collision-default",
         "sha256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f"
       },
       "attachments": [],
@@ -710,8 +713,8 @@
       },
       "completionAt": "2026-10-09T15:33:33.856401+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-reporter-collision-only",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-reporter-collision-only",
         "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9"
       },
       "attachments": [],
@@ -763,12 +766,120 @@
       },
       "completionAt": "2026-10-09T15:33:36.279690+00:00",
       "provenance": {
-        "record": "capture-receipt.json",
-        "originalCase": "R02-skipped-suite",
+        "receipt": "normalized-receipt.json",
+        "case": "R02-skipped-suite",
         "sha256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144"
       },
       "attachments": [],
       "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-config-collision",
+      "family": "jest",
+      "version": "Jest package 30.2.0; CLI 30.1.3",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/config-collision/input.txt",
+      "status": "passthrough",
+      "disposition": "baseline-bug",
+      "findingReason": "configured reporter owns native-looking markers; exact output required",
+      "source": "shell",
+      "command": "jest --config=config-collision.cjs",
+      "argv": [
+        "jest",
+        "--config=config-collision.cjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentRemoved": [
+        "FORCE_COLOR",
+        "R02_FAIL",
+        "NODE_OPTIONS",
+        "JEST_WORKERS"
+      ],
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+      "inputBytes": 160,
+      "outputBytes": 160,
+      "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+      "eof": {
+        "bytes": 160,
+        "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a"
+      },
+      "completionAt": "2026-10-09T18:40:30.820128+00:00",
+      "attachments": [],
+      "provenance": {
+        "receipt": "normalized-receipt.json",
+        "case": "R02-config-collision",
+        "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9"
+      }
+    },
+    {
+      "name": "R02-config-full-collision",
+      "family": "jest",
+      "version": "Jest package 30.2.0; CLI 30.1.3",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/config-full-collision/input.txt",
+      "status": "passthrough",
+      "disposition": "baseline-bug",
+      "findingReason": "configured reporter owns native-looking markers; exact output required",
+      "source": "shell",
+      "command": "jest --config=config-full-collision.cjs",
+      "argv": [
+        "jest",
+        "--config=config-full-collision.cjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentRemoved": [
+        "FORCE_COLOR",
+        "R02_FAIL",
+        "NODE_OPTIONS",
+        "JEST_WORKERS"
+      ],
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+      "inputBytes": 196,
+      "outputBytes": 196,
+      "sha256": "53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1",
+      "eof": {
+        "bytes": 196,
+        "sha256": "53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a"
+      },
+      "completionAt": "2026-10-09T18:40:31.715717+00:00",
+      "attachments": [],
+      "provenance": {
+        "receipt": "normalized-receipt.json",
+        "case": "R02-config-full-collision",
+        "sha256": "53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1"
+      }
     }
   ],
   "archives": [
@@ -776,6 +887,7 @@
     "BOOTSTRAP-FAILURE.md",
     "CANDIDATES.md",
     "CASES.md",
+    "CONFIG-FINDINGS.md",
     "LICENSE.code-prettify.txt",
     "LICENSE.istanbul-reports.txt",
     "LICENSE.jest.txt",
@@ -811,11 +923,28 @@
     "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov.info",
     "captures/snapshot-passed/expected.txt",
     "classify.mjs",
+    "config-capture-receipt.json",
+    "config-capture.py",
+    "config-lead-replay.json",
+    "config-provenance/config-collision.json",
+    "config-provenance/config-collision.log",
+    "config-provenance/config-full-collision.json",
+    "config-provenance/config-full-collision.log",
+    "config-provenance/install.json",
+    "config-provenance/install.log",
+    "config-provenance/version.json",
+    "config-provenance/version.log",
     "donor-pins.json",
     "finalize.py",
     "install.log",
     "jest-registry.json",
+    "normalize-receipts.py",
+    "normalized-receipt.json",
+    "replay-config.mjs",
     "source/collision-reporter.cjs",
+    "source/config-collision.cjs",
+    "source/config-full-collision.cjs",
+    "source/full-collision-reporter.cjs",
     "source/jest.config.cjs",
     "source/math.cjs",
     "source/mixed.test.cjs",

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "jest",
+    "--config=config-full-collision.cjs"
+  ],
+  "command": "jest --config=config-full-collision.cjs",
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/project",
+  "exitCode": 0,
+  "bytes": 196,
+  "sha256": "53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1",
+  "readThroughEOF": true,
+  "finalLF": true,
+  "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a",
+  "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+  "completionAt": "2026-10-09T18:40:31.715717+00:00"
+}

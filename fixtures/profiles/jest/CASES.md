@@ -1,9 +1,12 @@
 # R02 Jest: delta captures
 
-Base `248c303`; branch `campaign/native-v2/R02`; ownership `fixtures/profiles/jest/**`.
-Capture-only packet. `cases.json` uses `hugr-lean/native-cases/1`, file-only inputs,
-original argv and measured baseline dispositions. Eleven exact cases remain `pending-policy`.
-Passing snapshot is `BASELINE_PRESERVED`, not fake passthrough or new reduction support.
+Initial capture base `248c303`, checkpoint `56cc2f3`; follow-up branch
+`campaign/jest-config-captures`; ownership `fixtures/profiles/jest/**`.
+Capture-only packet. `cases.json` uses `hugr-lean/native-cases/1`, 14 file-only inputs,
+original argv and desired exact dispositions. Eleven original exact cases remain
+`pending-policy`; passing snapshot and two config-only witnesses are `baseline-bug`.
+Historical `BASELINE_PRESERVED` reduction was observed, not an approved current golden.
+Config-only witness proves its marker substitutions unsafe; current desired status is passthrough.
 
 ## Reuse
 
@@ -23,7 +26,7 @@ No acceptance test added or run; lead-owned corpus integration remains pending.
 | Suffix | Native evidence / combination | Baseline status/reason | Saved bytes |
 | --- | --- | --- | ---: |
 | snapshot-written | Native update writes snapshot; counts and update advice | passthrough / unsupported_output | 0 |
-| snapshot-passed | Passing nonempty snapshot + verbose Unicode name | reduced / profile_reduction | 5 |
+| snapshot-passed | Passing nonempty snapshot + verbose Unicode name | desired passthrough; historical reduced / profile_reduction | 0 |
 | snapshot-failed | Changed received count; snapshot name/diff/source/caret/stack/summary, exit 1 | passthrough / nonzero_exit | 0 |
 | skip-todo | Active test + named skip/todo reasons, counts | passthrough / unsupported_output | 0 |
 | log-snapshot-written | Console log/warn + source context + skip/todo + new snapshot | passthrough / unsupported_output | 0 |
@@ -34,19 +37,26 @@ No acceptance test added or run; lead-owned corpus integration remains pending.
 | reporter-collision-default | Real default reporter interleaved with custom native-looking progress | passthrough / no_profile | 0 |
 | reporter-collision-only | Custom reporter alone emits valid all-pass grammar | passthrough / no_profile | 0 |
 | skipped-suite | Entire suite skipped; skip/test/snapshot totals and no passing suite | passthrough / unsupported_output | 0 |
+| config-collision | Actual `jest --config=config-collision.cjs`; existing reporter emits 160 bytes | desired passthrough; lead incorrectly reduces to 157 | 0 |
+| config-full-collision | Actual `jest --config=config-full-collision.cjs`; reporter emits 196 bytes with ✓ body | desired passthrough; lead incorrectly reduces to 191 | 0 |
 
-## Independent golden and baseline observation
+## Historical golden and baseline observation
 
 `captures/snapshot-passed/expected.txt` was hand-authored after reading native input:
 only `PASS ` becomes `+ ` and success glyph becomes `- `. Every remaining byte stays,
 including snapshot count, Unicode, test timing, aggregate estimate and selector summary.
-Raw 237 UTF-8 bytes becomes 232. Baseline already supports this shape.
+Raw 237 UTF-8 bytes historically became 232. This remains historical bug evidence,
+not approved desired output. `historicalExpectedFile` archives it without binding it as
+current golden. Historical receipts and `baseline-observations.json` remain byte-identical.
 
-`classify.mjs` calls existing public filter once per capture and records actual results in
+Historical `classify.mjs` called existing public filter once per original capture and recorded results in
 `baseline-observations.json`. In-memory changed snapshot diff proves hash control detects
 corruption. Reporter-only text under a counterfactual `jest` command reduces: evidence that
 grammar alone cannot authenticate reporter identity. Counterfactual is explicitly marked;
-native case keeps original `--reporters` argv and exact passthrough.
+native explicit case keeps original `--reporters` argv and exact passthrough.
+Do not rerun historical classification against expanded desired-exact manifest.
+`config-lead-replay.json` now records actual config-only argv, proving the missing boundary
+without a synthetic command substitution. `CONFIG-FINDINGS.md` documents frozen lead replay.
 No suite/typecheck/fullcheck/smoke/benchmark/CI or runtime mutation performed.
 
 ## Policy and reach

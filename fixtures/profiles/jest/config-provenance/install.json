@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "npm",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--registry=https://registry.npmjs.org"
+  ],
+  "command": "npm ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org",
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/tools",
+  "exitCode": 0,
+  "bytes": 26,
+  "sha256": "b5e2c454580bcd6a21f328c5ec9dcaaeb2576c1ee8a3d688e8599a30a3061abd",
+  "readThroughEOF": true,
+  "finalLF": true,
+  "lastBytesHex": "0a616464656420323939207061636b6167657320696e2035730a",
+  "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+  "completionAt": "2026-10-09T18:40:28.233071+00:00"
+}

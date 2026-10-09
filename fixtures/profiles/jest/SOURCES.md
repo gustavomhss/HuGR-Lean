@@ -49,3 +49,27 @@ Reproduction timings/source absolute paths may vary; original captures remain au
 including licenses, candidates, scripts, snapshots, reports, receipt and golden.
 `archive.py` reconciles flat archives and hashes without native/filter replay.
 Fixture-local `.gitattributes` disables text conversion, preserving attachments on checkout.
+
+## Config-only follow-up
+
+`config-capture.py` installs pinned private Jest with `npm ci` from archived dependency lock;
+old private node_modules had been cleaned up. Parent directory was verified before install.
+New `config-capture-receipt.json` and `config-provenance/*` preserve install/version/native
+command output, environments, exits, merged EOF/hash and source hashes. Package files were
+independently verified against the same integrity-checked registry tarball. Native CLI remains
+30.1.3. Initial bootstrap/provenance failures remain unchanged in `BOOTSTRAP-FAILURE.md`.
+
+Original nine source files, including math/test/config and existing collision reporter,
+remain byte-identical to checkpoint `56cc2f3`. Existing snapshot attachments are copied into
+new private project without a seeding run. New authored sources are only two configs and
+`full-collision-reporter.cjs`; each reporter is executed by real Jest, not synthetic output.
+Direct native argv is exactly `jest --config=config-collision.cjs` or
+`jest --config=config-full-collision.cjs`; no explicit reporter option or launcher rewrite.
+
+`normalized-receipt.json` adapts all 14 original native facts to corpus receipt contract:
+name/command/termination/completeness/presentation/version/boundary bytes/SHA/EOF flags,
+with original receipt hash/case references. Manifest provenance uses receipt/case/raw hash.
+Historical receipts and reduction proof remain unchanged; current desired output is exact.
+`replay-config.mjs` extracts frozen lead `f157b388f9ffa4a46d6c19bef980f1725045cc5c` source
+from Git into temporary directory, audits only this Jest packet, records actual unsafe
+reductions, and probes/restores receipt hash binding in its copied corpus. No runtime edits.

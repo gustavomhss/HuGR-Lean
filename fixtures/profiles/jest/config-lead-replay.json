@@ -1,0 +1,202 @@
+{
+  "sourceCommit": "f157b388f9ffa4a46d6c19bef980f1725045cc5c",
+  "sourceTree": "2bfd2ac8f6c45ddebee931618eda1f0494c2641c",
+  "archiveSHA256": "77b60d68cb411a7a278e7c09896dd0d66ea2cb36fe9938b4b6e312cc3e6ad5f0",
+  "temporary": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-replay-gcMjUY",
+  "reach": "14 Jest cases only; frozen lead public filter; no suite/typecheck/build/CI; actual argv unchanged",
+  "classification": "baseline-bug; unsafe replacements are historical proof, not approved goldens",
+  "results": [
+    {
+      "name": "native/R02-snapshot-written",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --updateSnapshot",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 309,
+        "outputBytes": 309
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-snapshot-passed",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309",
+      "actual": {
+        "status": "reduced",
+        "replacement": "+ ./snapshot.test.cjs\n  - snapshot café 🔥 (15 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       1 passed, 1 total\nSnapshots:   1 passed, 1 total\nTime:        0.929 s, estimated 1 s\nRan all test suites matching snapshot.test.cjs.\n",
+        "profile": "jest",
+        "inputBytes": 237,
+        "outputBytes": 232,
+        "reason": "profile_reduction"
+      },
+      "preservationViolation": true
+    },
+    {
+      "name": "native/R02-snapshot-failed",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db",
+      "actual": {
+        "status": "passthrough",
+        "reason": "nonzero_exit",
+        "inputBytes": 985,
+        "outputBytes": 985
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-skip-todo",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=skip-todo.test.cjs --verbose",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 330,
+        "outputBytes": 330
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-log-snapshot-written",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --verbose --updateSnapshot",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 970,
+        "outputBytes": 970
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-log-snapshot-passed",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --verbose",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 898,
+        "outputBytes": 898
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-coverage-snapshot",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --coverage --coverageReporters=text --coverageReporters=json --coverageReporters=lcov",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 654,
+        "outputBytes": 654
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-multiproject-coverage-log-skip-snapshot",
+      "command": "jest --runInBand --no-color --projects project-a.cjs project-b.cjs --coverage --coverageReporters=text --coverageReporters=json --coverageReporters=lcov",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 1250,
+        "outputBytes": 1250
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-json-default-log-snapshot",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --json --outputFile=result.json",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 935,
+        "outputBytes": 935
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-reporter-collision-default",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=default --reporters=./collision-reporter.cjs",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f",
+      "actual": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 397,
+        "outputBytes": 397
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-reporter-collision-only",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=./collision-reporter.cjs",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+      "actual": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 160,
+        "outputBytes": 160
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-skipped-suite",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=skip.test.cjs --verbose",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 155,
+        "outputBytes": 155
+      },
+      "preservationViolation": false
+    },
+    {
+      "name": "native/R02-config-collision",
+      "command": "jest --config=config-collision.cjs",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+      "actual": {
+        "status": "reduced",
+        "replacement": "+ ./snapshot.test.cjs\nTest Suites: 1 passed, 1 total\nTests:       1 passed, 1 total\nSnapshots:   1 passed, 1 total\nTime:        0.001 s\nRan all test suites.\n",
+        "profile": "jest",
+        "inputBytes": 160,
+        "outputBytes": 157,
+        "reason": "profile_reduction"
+      },
+      "preservationViolation": true
+    },
+    {
+      "name": "native/R02-config-full-collision",
+      "command": "jest --config=config-full-collision.cjs",
+      "desiredStatus": "passthrough",
+      "rawSHA256": "53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1",
+      "actual": {
+        "status": "reduced",
+        "replacement": "+ ./snapshot.test.cjs\n  - custom reporter output (1 ms)\nTest Suites: 1 passed, 1 total\nTests:       1 passed, 1 total\nSnapshots:   1 passed, 1 total\nTime:        0.001 s\nRan all test suites.\n",
+        "profile": "jest",
+        "inputBytes": 196,
+        "outputBytes": 191,
+        "reason": "profile_reduction"
+      },
+      "preservationViolation": true
+    }
+  ],
+  "controls": {
+    "malformedReceiptRejected": "jest/R02-config-full-collision: receipt hash mismatch\n+ actual - expected\n\n+ '0000000000000000000000000000000000000000000000000000000000000000'\n- '53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1'\n",
+    "receiptRestored": true
+  }
+}
