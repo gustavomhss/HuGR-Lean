@@ -1,0 +1,1976 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "shellcheck",
+  "baseline": "63d3ece",
+  "cases": [
+    {
+      "name": "L10-version",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-version.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--version"
+      ],
+      "command": "/usr/local/bin/shellcheck --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 139,
+      "outputBytes": 139,
+      "sha256": "fc9eec16b4191d058a295813ca9afbe9d2b37b59975da860170726be162a3924",
+      "eof": {
+        "bytes": 139,
+        "sha256": "fc9eec16b4191d058a295813ca9afbe9d2b37b59975da860170726be162a3924",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2e7368656c6c636865636b2e6e65740a"
+      },
+      "completionAt": "2026-10-09T05:15:27.616836+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-version",
+        "sha256": "fc9eec16b4191d058a295813ca9afbe9d2b37b59975da860170726be162a3924"
+      }
+    },
+    {
+      "name": "L10-help",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-help.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--help"
+      ],
+      "command": "/usr/local/bin/shellcheck --help",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1617,
+      "outputBytes": 1617,
+      "sha256": "9e087ec8dea4c1bb176a932926d21fe32679efbb9a03af327ae5ee861d790e4e",
+      "eof": {
+        "bytes": 1617,
+        "sha256": "9e087ec8dea4c1bb176a932926d21fe32679efbb9a03af327ae5ee861d790e4e",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d6d61727920616e6420657869740a0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.642220+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-help",
+        "sha256": "9e087ec8dea4c1bb176a932926d21fe32679efbb9a03af327ae5ee861d790e4e"
+      }
+    },
+    {
+      "name": "L10-optional-checks",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-optional-checks.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--list-optional"
+      ],
+      "command": "/usr/local/bin/shellcheck --list-optional",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1756,
+      "outputBytes": 1756,
+      "sha256": "093d7ba71b6d6ece48b192cd8d5302cc03ab84ca95116a1bd989dc03ce86a2e7",
+      "eof": {
+        "bytes": 1756,
+        "sha256": "093d7ba71b6d6ece48b192cd8d5302cc03ab84ca95116a1bd989dc03ce86a2e7",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020677265702062617220666f6f0a0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.667446+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-optional-checks",
+        "sha256": "093d7ba71b6d6ece48b192cd8d5302cc03ab84ca95116a1bd989dc03ce86a2e7"
+      }
+    },
+    {
+      "name": "L10-native-clean",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-native-clean.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "completionAt": "2026-10-09T05:15:27.692131+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-native-clean",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L10-native-warnings",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-native-warnings.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 769,
+      "outputBytes": 769,
+      "sha256": "06e86b58835d2e135e64f1e5aca68a4471890660bde515e09e7e42a1f73f7410",
+      "eof": {
+        "bytes": 769,
+        "sha256": "06e86b58835d2e135e64f1e5aca68a4471890660bde515e09e7e42a1f73f7410",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.718342+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-native-warnings",
+        "sha256": "06e86b58835d2e135e64f1e5aca68a4471890660bde515e09e7e42a1f73f7410"
+      }
+    },
+    {
+      "name": "L10-native-error",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-native-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "error.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc error.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 242,
+      "outputBytes": 242,
+      "sha256": "6331e075f690ab7a6d64d1d3685668102d52764959338171fb91d9d0c5a04f71",
+      "eof": {
+        "bytes": 242,
+        "sha256": "6331e075f690ab7a6d64d1d3685668102d52764959338171fb91d9d0c5a04f71",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3d20746f2061737369676e202e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.740748+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-native-error",
+        "sha256": "6331e075f690ab7a6d64d1d3685668102d52764959338171fb91d9d0c5a04f71"
+      }
+    },
+    {
+      "name": "L10-native-multifile",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-native-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "warn.bash",
+        "error.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc warn.bash error.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 908,
+      "outputBytes": 908,
+      "sha256": "338da125b681539a0c174931e194bbab07333df9463326fa7d47c09f22d70c63",
+      "eof": {
+        "bytes": 908,
+        "sha256": "338da125b681539a0c174931e194bbab07333df9463326fa7d47c09f22d70c63",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2e20566572696679207573652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.763713+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-native-multifile",
+        "sha256": "338da125b681539a0c174931e194bbab07333df9463326fa7d47c09f22d70c63"
+      }
+    },
+    {
+      "name": "L10-native-unicode-space",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-native-unicode-space.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "path space/雪😀.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc 'path space/雪😀.sh'",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 528,
+      "outputBytes": 528,
+      "sha256": "de51a204741f7b1f81369dc7820dad58479bbd06829d01b3b5a97345e9ee7f15",
+      "eof": {
+        "bytes": 528,
+        "sha256": "de51a204741f7b1f81369dc7820dad58479bbd06829d01b3b5a97345e9ee7f15",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.787066+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-native-unicode-space",
+        "sha256": "de51a204741f7b1f81369dc7820dad58479bbd06829d01b3b5a97345e9ee7f15"
+      }
+    },
+    {
+      "name": "L10-explicit-tty-links",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-explicit-tty-links.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=tty",
+        "--color=never",
+        "--wiki-link-count=10",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=tty --color=never --wiki-link-count=10 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 850,
+      "outputBytes": 850,
+      "sha256": "05b785f1a51ffe09c82025463691126847b8153849237165ab2d18976c38c3ab",
+      "eof": {
+        "bytes": 850,
+        "sha256": "05b785f1a51ffe09c82025463691126847b8153849237165ab2d18976c38c3ab",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.811573+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-explicit-tty-links",
+        "sha256": "05b785f1a51ffe09c82025463691126847b8153849237165ab2d18976c38c3ab"
+      }
+    },
+    {
+      "name": "L10-explicit-tty-color",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-explicit-tty-color.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=tty",
+        "--color=always",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=tty --color=always warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 861,
+      "outputBytes": 861,
+      "sha256": "d6c4996f57ffd1d6ca121f804f698f765d85c5ad6cec2bda6d4a3a4ac87965c9",
+      "eof": {
+        "bytes": 861,
+        "sha256": "d6c4996f57ffd1d6ca121f804f698f765d85c5ad6cec2bda6d4a3a4ac87965c9",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.842907+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-explicit-tty-color",
+        "sha256": "d6c4996f57ffd1d6ca121f804f698f765d85c5ad6cec2bda6d4a3a4ac87965c9"
+      }
+    },
+    {
+      "name": "L10-directives",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-directives.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "directives.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc directives.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 210,
+      "outputBytes": 210,
+      "sha256": "8dc8ae69a663829497f38aeae9426a2359442ac1e9beb09c2a2736457d2561be",
+      "eof": {
+        "bytes": 210,
+        "sha256": "8dc8ae69a663829497f38aeae9426a2359442ac1e9beb09c2a2736457d2561be",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7574206e6f742061737369672e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.867900+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-directives",
+        "sha256": "8dc8ae69a663829497f38aeae9426a2359442ac1e9beb09c2a2736457d2561be"
+      }
+    },
+    {
+      "name": "L10-exclude",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-exclude.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--exclude=SC2034,SC2045,SC2086",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --exclude=SC2034,SC2045,SC2086 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 253,
+      "outputBytes": 253,
+      "sha256": "7ec030f2bd4d13bb058db443b53af247821d4fbae2094df7de464bb1590f227d",
+      "eof": {
+        "bytes": 253,
+        "sha256": "7ec030f2bd4d13bb058db443b53af247821d4fbae2094df7de464bb1590f227d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.892887+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-exclude",
+        "sha256": "7ec030f2bd4d13bb058db443b53af247821d4fbae2094df7de464bb1590f227d"
+      }
+    },
+    {
+      "name": "L10-exclude-all",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-exclude-all.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--exclude=SC2034,SC2035,SC2045,SC2086",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --exclude=SC2034,SC2035,SC2045,SC2086 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "completionAt": "2026-10-09T05:15:27.915719+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-exclude-all",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L10-include",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-include.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--include=SC2086",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --include=SC2086 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 242,
+      "outputBytes": 242,
+      "sha256": "345cef5a22129f6574d3a5157f1d202321fe491477cac3b291404a67f30216a9",
+      "eof": {
+        "bytes": 242,
+        "sha256": "345cef5a22129f6574d3a5157f1d202321fe491477cac3b291404a67f30216a9",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.939750+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-include",
+        "sha256": "345cef5a22129f6574d3a5157f1d202321fe491477cac3b291404a67f30216a9"
+      }
+    },
+    {
+      "name": "L10-dialect-sh",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-dialect-sh.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--shell=sh",
+        "dialect.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --shell=sh dialect.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 415,
+      "outputBytes": 415,
+      "sha256": "811a88e7c34b8b2234767825954df597c7ecbb753dd1efaa1370fa760de2daf3",
+      "eof": {
+        "bytes": 415,
+        "sha256": "811a88e7c34b8b2234767825954df597c7ecbb753dd1efaa1370fa760de2daf3",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "666572656e636573206172652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:27.965641+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-dialect-sh",
+        "sha256": "811a88e7c34b8b2234767825954df597c7ecbb753dd1efaa1370fa760de2daf3"
+      }
+    },
+    {
+      "name": "L10-dialect-bash",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-dialect-bash.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--shell=bash",
+        "dialect.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --shell=bash dialect.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "completionAt": "2026-10-09T05:15:27.988287+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-dialect-bash",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L10-severity-error",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-severity-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--severity=error",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --severity=error warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 236,
+      "outputBytes": 236,
+      "sha256": "a80887ae1b42a48881d3d8c9a99c6bfad7c37716dbdc8f490772e1dc1971861d",
+      "eof": {
+        "bytes": 236,
+        "sha256": "a80887ae1b42a48881d3d8c9a99c6bfad7c37716dbdc8f490772e1dc1971861d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7075742069732066726167692e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.012870+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-severity-error",
+        "sha256": "a80887ae1b42a48881d3d8c9a99c6bfad7c37716dbdc8f490772e1dc1971861d"
+      }
+    },
+    {
+      "name": "L10-severity-warning",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-severity-warning.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--severity=warning",
+        "levels.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --severity=warning levels.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 429,
+      "outputBytes": 429,
+      "sha256": "e30c03bc5de059404d17ad8c11bb4d1ea0cbb023f414ae2980196a67563fff0a",
+      "eof": {
+        "bytes": 429,
+        "sha256": "e30c03bc5de059404d17ad8c11bb4d1ea0cbb023f414ae2980196a67563fff0a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7574206e6f742061737369672e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.035594+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-severity-warning",
+        "sha256": "e30c03bc5de059404d17ad8c11bb4d1ea0cbb023f414ae2980196a67563fff0a"
+      }
+    },
+    {
+      "name": "L10-severity-info",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-severity-info.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--severity=info",
+        "levels.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --severity=info levels.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 656,
+      "outputBytes": 656,
+      "sha256": "faa55dd24be9b5ef1b63b7a1c1ed497d610454531f16c5e4bcac5ce3ced495b3",
+      "eof": {
+        "bytes": 656,
+        "sha256": "faa55dd24be9b5ef1b63b7a1c1ed497d610454531f16c5e4bcac5ce3ced495b3",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.061099+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-severity-info",
+        "sha256": "faa55dd24be9b5ef1b63b7a1c1ed497d610454531f16c5e4bcac5ce3ced495b3"
+      }
+    },
+    {
+      "name": "L10-severity-style",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-severity-style.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--severity=style",
+        "--enable=useless-use-of-cat",
+        "levels.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --severity=style --enable=useless-use-of-cat levels.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 805,
+      "outputBytes": 805,
+      "sha256": "62bdd253dde805ef9e0f3ebd3e323f92a855ff941e9549ff7bac3feb4b0090a2",
+      "eof": {
+        "bytes": 805,
+        "sha256": "62bdd253dde805ef9e0f3ebd3e323f92a855ff941e9549ff7bac3feb4b0090a2",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.083339+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-severity-style",
+        "sha256": "62bdd253dde805ef9e0f3ebd3e323f92a855ff941e9549ff7bac3feb4b0090a2"
+      }
+    },
+    {
+      "name": "L10-config",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-config.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--rcfile=good.rc",
+        "dialect.sh",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --rcfile=good.rc dialect.sh warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 630,
+      "outputBytes": 630,
+      "sha256": "58a7dc3edf5c9f0c206b9d718b13ea7bb5f5565c976bb7f5849d36e51b13405e",
+      "eof": {
+        "bytes": 630,
+        "sha256": "58a7dc3edf5c9f0c206b9d718b13ea7bb5f5565c976bb7f5849d36e51b13405e",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.114726+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-config",
+        "sha256": "58a7dc3edf5c9f0c206b9d718b13ea7bb5f5565c976bb7f5849d36e51b13405e"
+      }
+    },
+    {
+      "name": "L10-config-invalid",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-config-invalid.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--rcfile=bad.rc",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --rcfile=bad.rc clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "completionAt": "2026-10-09T05:15:28.142199+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-config-invalid",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L10-config-syntax",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-config-syntax.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--rcfile=syntax.rc",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --rcfile=syntax.rc clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 276,
+      "outputBytes": 276,
+      "sha256": "5a51777a9de621757ba9fd774a482acacceb7654e090a66bc42b980e5c643978",
+      "eof": {
+        "bytes": 276,
+        "sha256": "5a51777a9de621757ba9fd774a482acacceb7654e090a66bc42b980e5c643978",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7461782e72632c206c696e652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.163709+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-config-syntax",
+        "sha256": "5a51777a9de621757ba9fd774a482acacceb7654e090a66bc42b980e5c643978"
+      }
+    },
+    {
+      "name": "L10-config-missing",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-config-missing.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--rcfile=missing.rc",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --rcfile=missing.rc clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 44,
+      "outputBytes": 44,
+      "sha256": "277a3538d13060c376995b4687901fdecfdc819e01c78981209d74a291c4fcf1",
+      "eof": {
+        "bytes": 44,
+        "sha256": "277a3538d13060c376995b4687901fdecfdc819e01c78981209d74a291c4fcf1",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "66696c65206d697373696e672e72630a"
+      },
+      "completionAt": "2026-10-09T05:15:28.193009+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-config-missing",
+        "sha256": "277a3538d13060c376995b4687901fdecfdc819e01c78981209d74a291c4fcf1"
+      }
+    },
+    {
+      "name": "L10-syntax",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-syntax.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "syntax.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc syntax.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 604,
+      "outputBytes": 604,
+      "sha256": "a42207192542b31ebfa78ec07fa6b48e096079b0cd58b4b6743d55f24645891f",
+      "eof": {
+        "bytes": 604,
+        "sha256": "a42207192542b31ebfa78ec07fa6b48e096079b0cd58b4b6743d55f24645891f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6572726f722077617320696e2e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.221146+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-syntax",
+        "sha256": "a42207192542b31ebfa78ec07fa6b48e096079b0cd58b4b6743d55f24645891f"
+      }
+    },
+    {
+      "name": "L10-missing-file",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-missing-file.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "missing.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc missing.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 83,
+      "outputBytes": 83,
+      "sha256": "9d5dcef6b49ea81e42cf2a10758a551c8d8cf1d5bdfc9c58b592deee1a1df5d4",
+      "eof": {
+        "bytes": 83,
+        "sha256": "9d5dcef6b49ea81e42cf2a10758a551c8d8cf1d5bdfc9c58b592deee1a1df5d4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "65206f72206469726563746f7279290a"
+      },
+      "completionAt": "2026-10-09T05:15:28.245126+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-missing-file",
+        "sha256": "9d5dcef6b49ea81e42cf2a10758a551c8d8cf1d5bdfc9c58b592deee1a1df5d4"
+      }
+    },
+    {
+      "name": "L10-invalid-format",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-invalid-format.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=not-a-format",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=not-a-format clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 102,
+      "outputBytes": 102,
+      "sha256": "545a07d8971b13cc49c9a4709ef409f923bdca5d7d68636082866f0d40aa1b22",
+      "eof": {
+        "bytes": 102,
+        "sha256": "545a07d8971b13cc49c9a4709ef409f923bdca5d7d68636082866f0d40aa1b22",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "310a202071756965740a20207474790a"
+      },
+      "completionAt": "2026-10-09T05:15:28.267942+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-invalid-format",
+        "sha256": "545a07d8971b13cc49c9a4709ef409f923bdca5d7d68636082866f0d40aa1b22"
+      }
+    },
+    {
+      "name": "L10-invalid-dialect",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-invalid-dialect.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--shell=not-a-shell",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --shell=not-a-shell clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 27,
+      "outputBytes": 27,
+      "sha256": "23455f261054b5ae7922180df8a8d6390d294aebf6c921691dc31cd5e61abef9",
+      "eof": {
+        "bytes": 27,
+        "sha256": "23455f261054b5ae7922180df8a8d6390d294aebf6c921691dc31cd5e61abef9",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c6c3a206e6f742d612d7368656c6c0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.293925+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-invalid-dialect",
+        "sha256": "23455f261054b5ae7922180df8a8d6390d294aebf6c921691dc31cd5e61abef9"
+      }
+    },
+    {
+      "name": "L10-source-default",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-source-default.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "source.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc source.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 423,
+      "outputBytes": 423,
+      "sha256": "40d82e424726980ccf3a73514cf0b1690454214d3e54a13b8c9af35998dac4fa",
+      "eof": {
+        "bytes": 423,
+        "sha256": "40d82e424726980ccf3a73514cf0b1690454214d3e54a13b8c9af35998dac4fa",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20776173206e6f74207370652e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.317515+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-source-default",
+        "sha256": "40d82e424726980ccf3a73514cf0b1690454214d3e54a13b8c9af35998dac4fa"
+      }
+    },
+    {
+      "name": "L10-source-external",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-source-external.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--external-sources",
+        "--check-sourced",
+        "--enable=quote-safe-variables",
+        "source.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --external-sources --check-sourced --enable=quote-safe-variables source.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 271,
+      "outputBytes": 271,
+      "sha256": "455d01d50f5aace37fe40c93881c5beb153d41c3aac1a3f997033cd813a9d911",
+      "eof": {
+        "bytes": 271,
+        "sha256": "455d01d50f5aace37fe40c93881c5beb153d41c3aac1a3f997033cd813a9d911",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "206576656e207768656e20762e2e2e0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.340639+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-source-external",
+        "sha256": "455d01d50f5aace37fe40c93881c5beb153d41c3aac1a3f997033cd813a9d911"
+      }
+    },
+    {
+      "name": "L10-json-clean",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-clean.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3,
+      "outputBytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "eof": {
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "5b5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.364489+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-clean",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    },
+    {
+      "name": "L10-json-warnings",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-warnings.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 956,
+      "outputBytes": 956,
+      "sha256": "fcce4bbc22d0963c3828311b08633a9ea8a677b2bd7477e9104462c51ccca288",
+      "eof": {
+        "bytes": 956,
+        "sha256": "fcce4bbc22d0963c3828311b08633a9ea8a677b2bd7477e9104462c51ccca288",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d656e74223a225c22227d5d7d7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.391122+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-warnings",
+        "sha256": "fcce4bbc22d0963c3828311b08633a9ea8a677b2bd7477e9104462c51ccca288"
+      }
+    },
+    {
+      "name": "L10-json-error",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "error.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json error.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 202,
+      "outputBytes": 202,
+      "sha256": "deffe266ec1a05a27840ff5183521f7271e18ad52ef367b20cf228c9f88b76d4",
+      "eof": {
+        "bytes": 202,
+        "sha256": "deffe266ec1a05a27840ff5183521f7271e18ad52ef367b20cf228c9f88b76d4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.418701+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-error",
+        "sha256": "deffe266ec1a05a27840ff5183521f7271e18ad52ef367b20cf228c9f88b76d4"
+      }
+    },
+    {
+      "name": "L10-json-syntax",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-syntax.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "syntax.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json syntax.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 558,
+      "outputBytes": 558,
+      "sha256": "d2c1d5af4a8ac9e209fa02ac1b4276f5f3d400df1c3c0b47cf272475ec760cce",
+      "eof": {
+        "bytes": 558,
+        "sha256": "d2c1d5af4a8ac9e209fa02ac1b4276f5f3d400df1c3c0b47cf272475ec760cce",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.444356+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-syntax",
+        "sha256": "d2c1d5af4a8ac9e209fa02ac1b4276f5f3d400df1c3c0b47cf272475ec760cce"
+      }
+    },
+    {
+      "name": "L10-json-multifile",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "warn.bash",
+        "error.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json warn.bash error.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1156,
+      "outputBytes": 1156,
+      "sha256": "9a76839a9d4096d8358481e76485907d63250c3e49aa90a25f770581e5f9829d",
+      "eof": {
+        "bytes": 1156,
+        "sha256": "9a76839a9d4096d8358481e76485907d63250c3e49aa90a25f770581e5f9829d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d656e74223a225c22227d5d7d7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.468964+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-multifile",
+        "sha256": "9a76839a9d4096d8358481e76485907d63250c3e49aa90a25f770581e5f9829d"
+      }
+    },
+    {
+      "name": "L10-json-unicode-space",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-unicode-space.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "path space/雪😀.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json 'path space/雪😀.sh'",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 601,
+      "outputBytes": 601,
+      "sha256": "7b10c58440f2f924b8d9609fb54106fedcf74f260d19c8aac8544da0dca46bd3",
+      "eof": {
+        "bytes": 601,
+        "sha256": "7b10c58440f2f924b8d9609fb54106fedcf74f260d19c8aac8544da0dca46bd3",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d656e74223a225c22227d5d7d7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.492447+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-unicode-space",
+        "sha256": "7b10c58440f2f924b8d9609fb54106fedcf74f260d19c8aac8544da0dca46bd3"
+      }
+    },
+    {
+      "name": "L10-json-excluded",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-excluded.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "--exclude=SC2034,SC2045,SC2086",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json --exclude=SC2034,SC2045,SC2086 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 190,
+      "outputBytes": 190,
+      "sha256": "f079699f60995569ee3bf9e74104e5fe76a3fc083d81c7b5ef26d69e24ff8a30",
+      "eof": {
+        "bytes": 190,
+        "sha256": "f079699f60995569ee3bf9e74104e5fe76a3fc083d81c7b5ef26d69e24ff8a30",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.517456+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-excluded",
+        "sha256": "f079699f60995569ee3bf9e74104e5fe76a3fc083d81c7b5ef26d69e24ff8a30"
+      }
+    },
+    {
+      "name": "L10-json-style",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-style.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "--enable=useless-use-of-cat",
+        "levels.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json --enable=useless-use-of-cat levels.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 952,
+      "outputBytes": 952,
+      "sha256": "d573d935f46b3075b87b4658f4e78f8255418d817101ba54485a24ced17e1f24",
+      "eof": {
+        "bytes": 952,
+        "sha256": "d573d935f46b3075b87b4658f4e78f8255418d817101ba54485a24ced17e1f24",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.561321+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-style",
+        "sha256": "d573d935f46b3075b87b4658f4e78f8255418d817101ba54485a24ced17e1f24"
+      }
+    },
+    {
+      "name": "L10-json-missing-file",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json-missing-file.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json",
+        "missing.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json missing.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 86,
+      "outputBytes": 86,
+      "sha256": "7a6cabd3fb05d073b4ff6b0b7906d5bdeb3d120f57b531d65887f7e562683e7e",
+      "eof": {
+        "bytes": 86,
+        "sha256": "7a6cabd3fb05d073b4ff6b0b7906d5bdeb3d120f57b531d65887f7e562683e7e",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "72206469726563746f7279290a5b5d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.584310+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json-missing-file",
+        "sha256": "7a6cabd3fb05d073b4ff6b0b7906d5bdeb3d120f57b531d65887f7e562683e7e"
+      }
+    },
+    {
+      "name": "L10-json1-clean",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-clean.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "clean.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 clean.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 16,
+      "outputBytes": 16,
+      "sha256": "aae1b299044091d29d83b1dc51c8de8739405a6055b6a4a360c132b973ec9c83",
+      "eof": {
+        "bytes": 16,
+        "sha256": "aae1b299044091d29d83b1dc51c8de8739405a6055b6a4a360c132b973ec9c83",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7b22636f6d6d656e7473223a5b5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.606846+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-clean",
+        "sha256": "aae1b299044091d29d83b1dc51c8de8739405a6055b6a4a360c132b973ec9c83"
+      }
+    },
+    {
+      "name": "L10-json1-warnings",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-warnings.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 969,
+      "outputBytes": 969,
+      "sha256": "df6186c2c3a19ae282b7d22f5f67044f9afc7614bbb96df7177548a71ea25a90",
+      "eof": {
+        "bytes": 969,
+        "sha256": "df6186c2c3a19ae282b7d22f5f67044f9afc7614bbb96df7177548a71ea25a90",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "656e74223a225c22227d5d7d7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.633523+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-warnings",
+        "sha256": "df6186c2c3a19ae282b7d22f5f67044f9afc7614bbb96df7177548a71ea25a90"
+      }
+    },
+    {
+      "name": "L10-json1-error",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "error.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 error.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 215,
+      "outputBytes": 215,
+      "sha256": "5e0776a954cebaf0859c19e08e10153515878cc41bb7bfb8d5f0eb1b4b7fedc0",
+      "eof": {
+        "bytes": 215,
+        "sha256": "5e0776a954cebaf0859c19e08e10153515878cc41bb7bfb8d5f0eb1b4b7fedc0",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.658349+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-error",
+        "sha256": "5e0776a954cebaf0859c19e08e10153515878cc41bb7bfb8d5f0eb1b4b7fedc0"
+      }
+    },
+    {
+      "name": "L10-json1-syntax",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-syntax.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "syntax.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 syntax.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 571,
+      "outputBytes": 571,
+      "sha256": "5119148fcdfcf9c812bfe58da5b1f3fef111c7407421bb9dc5c5ef56b81e005d",
+      "eof": {
+        "bytes": 571,
+        "sha256": "5119148fcdfcf9c812bfe58da5b1f3fef111c7407421bb9dc5c5ef56b81e005d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.682005+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-syntax",
+        "sha256": "5119148fcdfcf9c812bfe58da5b1f3fef111c7407421bb9dc5c5ef56b81e005d"
+      }
+    },
+    {
+      "name": "L10-json1-multifile",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "warn.bash",
+        "error.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 warn.bash error.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1169,
+      "outputBytes": 1169,
+      "sha256": "1babdba1465d2de46c30f9b933101a75dda4bde82441b8a40e95bc475388b196",
+      "eof": {
+        "bytes": 1169,
+        "sha256": "1babdba1465d2de46c30f9b933101a75dda4bde82441b8a40e95bc475388b196",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "656e74223a225c22227d5d7d7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.709301+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-multifile",
+        "sha256": "1babdba1465d2de46c30f9b933101a75dda4bde82441b8a40e95bc475388b196"
+      }
+    },
+    {
+      "name": "L10-json1-unicode-space",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-unicode-space.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "path space/雪😀.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 'path space/雪😀.sh'",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 614,
+      "outputBytes": 614,
+      "sha256": "1a9607751e2f4dbce119ce7cf141f3f02012f59796f9e34a53b8324be4dc3012",
+      "eof": {
+        "bytes": 614,
+        "sha256": "1a9607751e2f4dbce119ce7cf141f3f02012f59796f9e34a53b8324be4dc3012",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "656e74223a225c22227d5d7d7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.736801+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-unicode-space",
+        "sha256": "1a9607751e2f4dbce119ce7cf141f3f02012f59796f9e34a53b8324be4dc3012"
+      }
+    },
+    {
+      "name": "L10-json1-excluded",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-excluded.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "--exclude=SC2034,SC2045,SC2086",
+        "warn.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 --exclude=SC2034,SC2045,SC2086 warn.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 203,
+      "outputBytes": 203,
+      "sha256": "7873520756f456312ceb36fb8f6e7206192e91d5eafad9bff451aa457d41cd80",
+      "eof": {
+        "bytes": 203,
+        "sha256": "7873520756f456312ceb36fb8f6e7206192e91d5eafad9bff451aa457d41cd80",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.761002+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-excluded",
+        "sha256": "7873520756f456312ceb36fb8f6e7206192e91d5eafad9bff451aa457d41cd80"
+      }
+    },
+    {
+      "name": "L10-json1-style",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-style.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "--enable=useless-use-of-cat",
+        "levels.bash"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 --enable=useless-use-of-cat levels.bash",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 965,
+      "outputBytes": 965,
+      "sha256": "7ffb68bb4bdad6a97c04046d17165d38644850f21dd241e469503f84b101ac05",
+      "eof": {
+        "bytes": 965,
+        "sha256": "7ffb68bb4bdad6a97c04046d17165d38644850f21dd241e469503f84b101ac05",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.785433+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-style",
+        "sha256": "7ffb68bb4bdad6a97c04046d17165d38644850f21dd241e469503f84b101ac05"
+      }
+    },
+    {
+      "name": "L10-json1-missing-file",
+      "family": "shellcheck",
+      "version": "ShellCheck 0.11.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L10-json1-missing-file.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/shellcheck",
+        "--norc",
+        "--format=json1",
+        "missing.sh"
+      ],
+      "command": "/usr/local/bin/shellcheck --norc --format=json1 missing.sh",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 99,
+      "outputBytes": 99,
+      "sha256": "9f01132b8583ab2808dd14323cd590ada5b3ee7a9db9b2b05712086f044e6eb4",
+      "eof": {
+        "bytes": 99,
+        "sha256": "9f01132b8583ab2808dd14323cd590ada5b3ee7a9db9b2b05712086f044e6eb4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7b22636f6d6d656e7473223a5b5d7d0a"
+      },
+      "completionAt": "2026-10-09T05:15:28.811295+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L10-json1-missing-file",
+        "sha256": "9f01132b8583ab2808dd14323cd590ada5b3ee7a9db9b2b05712086f044e6eb4"
+      }
+    }
+  ],
+  "archives": [
+    {
+      "file": "LICENSE.shellcheck.txt",
+      "reason": "Pinned upstream GPL-3.0 license; not command output"
+    }
+  ]
+}

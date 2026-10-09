@@ -1,0 +1,7 @@
+
+In error.sh line 2:
+foo = bar
+    ^-- SC2283 (error): Remove spaces around = to assign (or use [ ] to compare, or quote '=' if literal).
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2283 -- Remove spaces around = to assign ...

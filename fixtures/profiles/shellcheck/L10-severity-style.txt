@@ -1,0 +1,27 @@
+
+In levels.bash line 2:
+unused="unused"
+^----^ SC2034 (warning): unused appears unused. Verify use (or export if used externally).
+
+
+In levels.bash line 3:
+[ "$value" == "yes" ]
+   ^----^ SC2154 (warning): value is referenced but not assigned.
+
+
+In levels.bash line 4:
+echo $value
+     ^----^ SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+echo "$value"
+
+
+In levels.bash line 6:
+cat file.txt | grep needle
+    ^------^ SC2002 (style): Useless cat. Consider 'cmd < file | ..' or 'cmd file | ..' instead.
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2034 -- unused appears unused. Verify use...
+  https://www.shellcheck.net/wiki/SC2154 -- value is referenced but not assig...
+  https://www.shellcheck.net/wiki/SC2086 -- Double quote to prevent globbing ...

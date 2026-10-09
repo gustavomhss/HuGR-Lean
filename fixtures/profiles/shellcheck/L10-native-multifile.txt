@@ -1,0 +1,28 @@
+
+In warn.bash line 2:
+unused="unused"
+^----^ SC2034 (warning): unused appears unused. Verify use (or export if used externally).
+
+
+In warn.bash line 3:
+for f in $(ls *.txt); do
+         ^---------^ SC2045 (error): Iterating over ls output is fragile. Use globs.
+              ^-- SC2035 (info): Use ./*glob* or -- *glob* so names with dashes won't become options.
+
+
+In warn.bash line 4:
+  echo $f
+       ^-- SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+  echo "$f"
+
+
+In error.sh line 2:
+foo = bar
+    ^-- SC2283 (error): Remove spaces around = to assign (or use [ ] to compare, or quote '=' if literal).
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2045 -- Iterating over ls output is fragi...
+  https://www.shellcheck.net/wiki/SC2283 -- Remove spaces around = to assign ...
+  https://www.shellcheck.net/wiki/SC2034 -- unused appears unused. Verify use...

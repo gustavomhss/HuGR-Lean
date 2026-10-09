@@ -1,0 +1,1 @@
+[{"file":"warn.bash","line":3,"endLine":3,"column":15,"endColumn":16,"level":"info","code":2035,"message":"Use ./*glob* or -- *glob* so names with dashes won't become options.","fix":null}]
