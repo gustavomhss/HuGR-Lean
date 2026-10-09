@@ -219,11 +219,23 @@ test("cargo-test rejects malformed totals, duplicate tests, failed and incomplet
 
 test("cargo-build rejects diagnostics, unsupported finish variants and missing finish", () => {
   const input = fixture("cargo_build_success");
-  for (const variant of [input.replace("`dev`", "`release`"), input.replace("unoptimized + debuginfo", "optimized"),
+  for (const variant of [input.replace("`dev`", "`release`"), input.replace("unoptimized + debuginfo", "optimized + stripped"),
     input.slice(0, input.indexOf("    Finished")), input.replace("   Compiling", "    Checking"),
     input.replace("    Finished", "warning: unused variable\n    Finished")]) {
     assert.notEqual(variant, input); rejected("cargo-build", variant);
   }
+});
+
+test("cargo-build configured optimized dev retains full Finished in public C01 grammar", () => {
+  // C01 validates finite optimization/debug syntax independently of project profile names.
+  // Labeled property transform of the native runner capture, not a new native capture.
+  const input = fixture("cargo_build_success").replace("unoptimized + debuginfo", "optimized");
+  const expected = cases[1].expected.replace("unoptimized + debuginfo", "optimized");
+  const result = filter(supportedObservation("cargo-build", input));
+  assert.equal(result.status, "reduced");
+  if (result.status !== "reduced") assert.fail("configured dev must reduce");
+  assert.equal(result.profile, "cargo-build");
+  assert.equal(result.replacement, expected);
 });
 
 test("pytest rejects malformed summaries, percentages, versions, reporters and plugins", () => {

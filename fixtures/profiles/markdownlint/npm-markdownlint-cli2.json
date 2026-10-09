@@ -1,0 +1,26 @@
+{
+  "version": "0.23.3",
+  "gitHead": "916ad0aaa108c64d294101002066f530ea170b10",
+  "license": "MIT",
+  "repository": {
+    "url": "git+https://github.com/DavidAnson/markdownlint-cli2.git",
+    "type": "git"
+  },
+  "dist": {
+    "shasum": "67c9af873ab1c433b4e0a7c3df57e8aaadca9e38",
+    "tarball": "https://registry.npmjs.org/markdownlint-cli2/-/markdownlint-cli2-0.23.3.tgz",
+    "fileCount": 20,
+    "integrity": "sha512-xAr5o/TGpC3v6lE6cKIW4b5eOFRrRX5u7Vtjae9ix3RALv8nNOd94XMkD/1OXXBtpMcJ4uQGbpSo3hv5UqS4uQ==",
+    "signatures": [
+      {
+        "sig": "MEUCIEzgMswy7ACvNGqZjlLJK9Ka0GGFebhw8j7vyPo91NyvAiEAsXpsAzhKkUVT1eg0Ov+kae0pLgN4Ld/uQTa4JfI7cfc=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEYCIQCjQOVc0qS4n4Dp7I0RCWkifzNMcepdpLxoPG3QKYkqkwIhAN/KX5Y2l4frp0PokMVbUQOI/q2jhDL7Bce1fkvGfYbt"
+      }
+    ],
+    "unpackedSize": 234996
+  }
+}

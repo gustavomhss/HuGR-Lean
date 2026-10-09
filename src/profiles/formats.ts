@@ -1,5 +1,5 @@
 import { lines } from "../core/lines.js";
-import type { Line, Observation, Piece, Profile, Reduction, Span } from "../core/types.js";
+import type { Observation, Piece, Profile, Reduction, Span } from "../core/types.js";
 
 type Draft = { pieces: Piece[]; required: Span[] };
 const draft = (): Draft => ({ pieces: [], required: [] });
@@ -37,11 +37,6 @@ function numberedRipgrep(argv: readonly string[]): boolean {
   }
   return numbered;
 }
-function successLine(result: Draft, line: Line, length: number): void {
-  keep(result, [line.span[0], line.span[0] + length]);
-  const ending = line.span[0] + line.text.length;
-  if (ending < line.span[1]) keep(result, [ending, line.span[1]]);
-}
 function equalCounts(text: string, pattern: RegExp, expected?: number): boolean {
   const match = pattern.exec(text);
   return !!match && Number.isSafeInteger(Number(match[1])) && Number(match[1]) === Number(match[2]) &&
@@ -59,8 +54,8 @@ function jest(output: string, observation: Observation): Reduction | undefined {
     if (/^ ?PASS .+$/u.test(text)) {
       if (pending) return undefined;
       tests.push(0); headings.length = 0;
-      result.pieces.push({ text: "+ " });
-      keep(result, [line.span[0] + (text.startsWith(" ") ? 6 : 5), line.span[1]]); continue;
+      // Config-only reporters can emit native-shaped user evidence, markers included.
+      keep(result, line.span); continue;
     }
     const leaf = /^( {2,})✓ (.+)$/u.exec(text);
     const heading = /^( {2,})([^\s✓○✎].*)$/u.exec(text);
@@ -73,10 +68,7 @@ function jest(output: string, observation: Observation): Reduction | undefined {
     pending = !leaf;
     if (leaf) {
       tests[tests.length - 1]!++;
-      // A name may itself end in "(5 ms)". Keep the whole body, including timing.
-      keep(result, [line.span[0], line.span[0] + indent]);
-      result.pieces.push({ text: "- " });
-      keep(result, [line.span[0] + indent + 2, line.span[1]]);
+      keep(result, line.span);
     } else { headings.push(indent); keep(result, line.span); }
   }
   if (pending || !tests.length || !equalCounts(rows[index]?.text ?? "", /^Test Suites: +(\d+) passed, (\d+) total$/u, tests.length)) return undefined;
@@ -110,7 +102,8 @@ function vitest(output: string, observation: Observation): Reduction | undefined
     const match = /^ ✓ (.+) \(([1-9]\d*) tests?\)(?: (\d+(?:\.\d+)?)ms)?$/u.exec(text);
     if (!match) return undefined;
     files++; tests += Number(match[2]);
-    successLine(result, line, text.length - (match[3] ? match[3].length + 3 : 0));
+    // Configured reporters can emit this entire grammar as user evidence.
+    keep(result, line.span);
   }
   if (!files || !equalCounts(rows[index]?.text ?? "", /^ Test Files +(\d+) passed \((\d+)\)$/u, files)) return undefined;
   keep(result, rows[index++]!.span);

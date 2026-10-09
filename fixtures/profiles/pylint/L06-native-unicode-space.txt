@@ -1,0 +1,7 @@
+************* Module naïve
+space café/naïve.py:1:0: W2402: File name "naïve" contains a non-ASCII character. (non-ascii-file-name)
+space café/naïve.py:6:26: E0602: Undefined variable 'missing_unicode' (undefined-variable)
+
+-----------------------------------
+Your code has been rated at 0.00/10
+

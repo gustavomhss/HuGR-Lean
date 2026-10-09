@@ -1,0 +1,4 @@
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/custom.rs (target/release/build/c06-alpha/eacd31211ce641a2/out/custom-eacd31211ce641a2)
+    Finished `bench` profile [optimized] target(s) in 0.01s
+custom user log: native-looking progress; no measurement; no final LF

@@ -1,0 +1,276 @@
+{
+  "schema": "native-cases-1",
+  "stage": "CAPTURED",
+  "expectationScope": "proposed policy, not executed filter results",
+  "nativeVersion": {
+    "cargo": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+    "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+    "clippy": "clippy 0.1.98 (88d9e12ae1 2026-08-18)",
+    "components": "cargo-x86_64-apple-darwin\nclippy-x86_64-apple-darwin\nllvm-tools-x86_64-apple-darwin\nrust-docs-x86_64-apple-darwin\nrust-src\nrust-std-aarch64-apple-darwin\nrust-std-aarch64-unknown-linux-gnu\nrust-std-i686-unknown-linux-musl\nrust-std-wasm32-unknown-unknown\nrust-std-x86_64-apple-darwin\nrust-std-x86_64-pc-windows-gnu\nrust-std-x86_64-pc-windows-msvc\nrust-std-x86_64-unknown-linux-gnu\nrustc-x86_64-apple-darwin\nrustfmt-x86_64-apple-darwin"
+  },
+  "provenance": {
+    "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c03-clippy-native-project-v3",
+    "capturedAt": "2026-10-08T20:25:41.610Z",
+    "platform": "darwin/x64",
+    "recipe": "capture.mjs",
+    "environment": {
+      "CARGO_TERM_COLOR": "never",
+      "CARGO_BUILD_JOBS": "1"
+    },
+    "clearedEnvironment": [
+      "RUSTFLAGS",
+      "CARGO_ENCODED_RUSTFLAGS",
+      "RUSTC_WRAPPER",
+      "RUSTC_WORKSPACE_WRAPPER",
+      "CARGO_TARGET_DIR"
+    ],
+    "license": "MIT",
+    "baseline": "07ffe15e2263c2925778022194c5385807216603"
+  },
+  "cases": [
+    {
+      "id": "C03-workspace",
+      "command": "cargo clippy --offline --workspace",
+      "file": "captures/workspace.txt",
+      "status": "reduced",
+      "expectedFile": "captures/workspace.expected.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "13c39dee4f74d9975aa6d08df43a8f815a8feb78e2636367b3af242174ffe7af"
+      },
+      "removableBytes": 137,
+      "policy": "PROPOSED_REDUCTION"
+    },
+    {
+      "id": "C03-cache",
+      "command": "cargo clippy --offline --workspace",
+      "file": "captures/cache.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "88765ee7db53d7e444c8c2c0720e42b58726cbec3a9b206e376af229b5a332c2"
+      },
+      "removableBytes": 0,
+      "policy": "NO_REMOVABLE_MATERIAL"
+    },
+    {
+      "id": "C03-package-features-target",
+      "command": "cargo clippy --offline -p capture_alpha --features extra --target x86_64-apple-darwin --all-targets",
+      "file": "captures/package-features-target.txt",
+      "status": "reduced",
+      "expectedFile": "captures/package-features-target.expected.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "4bed9b86af6252754d76cc0effcd4f3e3d246b5928435fc1f2872eafae419c52"
+      },
+      "removableBytes": 137,
+      "policy": "PROPOSED_REDUCTION"
+    },
+    {
+      "id": "C03-checking-target",
+      "command": "cargo clippy --offline -p capture_beta --target x86_64-apple-darwin --lib",
+      "file": "captures/checking-target.txt",
+      "status": "reduced",
+      "expectedFile": "captures/checking-target.expected.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "38be0c6f3490cbe82ca024779adfa377392cf0cb3d4ec2e29d4c288a35e72036"
+      },
+      "removableBytes": 135,
+      "policy": "PROPOSED_REDUCTION"
+    },
+    {
+      "id": "C03-workspace-features-target-cache",
+      "command": "cargo clippy --offline --workspace --features capture_alpha/extra --target x86_64-apple-darwin",
+      "file": "captures/workspace-features-target-cache.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "fb034d89ff226dda8bd3e605b1fc3e9c4e6abfa414308f4417d629a8f006edbb"
+      },
+      "removableBytes": 0,
+      "policy": "NO_REMOVABLE_MATERIAL"
+    },
+    {
+      "id": "C03-two-packages",
+      "command": "cargo clippy --offline -p capture_alpha -p capture_beta --lib",
+      "file": "captures/two-packages.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "4b4a6d754be8cc78240af6787d53a38a57c667704bd631aa0f25fa31e8d4fc1e"
+      },
+      "removableBytes": 0,
+      "policy": "NO_REMOVABLE_MATERIAL"
+    },
+    {
+      "id": "C03-deny-warnings",
+      "command": "cargo clippy --offline --workspace -- -D warnings",
+      "file": "captures/deny-warnings.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 101
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "e6016da0e6acfa5f4ea369561d10d4f021c5ef7ff4b55a4a80c570ef3173b1fc"
+      },
+      "removableBytes": 0,
+      "policy": "FAILED_EXACT"
+    },
+    {
+      "id": "C03-collision",
+      "command": "cargo clippy --offline -p capture_alpha --features collision",
+      "file": "captures/collision.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "stdout empty; original stderr bytes; color disabled; no rewriting or merge ordering",
+      "provenance": {
+        "sha256": "f606522423885b0080764f82225c5cb8182c4c33498e5ef123c9126c821a3dc8"
+      },
+      "removableBytes": 0,
+      "policy": "AMBIGUOUS_EXACT"
+    },
+    {
+      "id": "C03-unknown-line",
+      "command": "cargo clippy --offline --workspace",
+      "file": "captures/unknown-line.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "derived negative witness; source native stderr boundary recorded on C03-workspace",
+      "provenance": {
+        "derivedFrom": "captures/workspace.txt",
+        "modification": "unknown-line",
+        "sha256": "1886698fffdb0d1ddb57c087796f9f407f848a50c99327a93808a5b02abc6551"
+      },
+      "removableBytes": 0,
+      "policy": "DERIVED_EXACT"
+    },
+    {
+      "id": "C03-new-format",
+      "command": "cargo clippy --offline --workspace",
+      "file": "captures/new-format.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "boundary": "derived negative witness; source native stderr boundary recorded on C03-workspace",
+      "provenance": {
+        "derivedFrom": "captures/workspace.txt",
+        "modification": "new-format",
+        "sha256": "9f1d034a7cfd5f7016da55da418af148eb683d199c9ad4fca8bfad9b4d1f1c7a"
+      },
+      "removableBytes": 0,
+      "policy": "DERIVED_EXACT"
+    },
+    {
+      "id": "C03-incomplete",
+      "command": "cargo clippy --offline --workspace",
+      "file": "captures/incomplete.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "truncated",
+      "presentation": "terminal-rendered",
+      "boundary": "derived negative witness; source native stderr boundary recorded on C03-workspace",
+      "provenance": {
+        "derivedFrom": "captures/workspace.txt",
+        "modification": "incomplete",
+        "sha256": "66ac9bb55289c495fcb86164fd78f7300d94d98854d69f600fc35eac23835644"
+      },
+      "removableBytes": 0,
+      "policy": "DERIVED_EXACT"
+    },
+    {
+      "id": "C03-unknown-boundary",
+      "command": "cargo clippy --offline --workspace",
+      "file": "captures/unknown-boundary.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "unknown"
+      },
+      "completeness": "unknown",
+      "presentation": "terminal-rendered",
+      "boundary": "derived negative witness; source native stderr boundary recorded on C03-workspace",
+      "provenance": {
+        "derivedFrom": "captures/workspace.txt",
+        "modification": "unknown-boundary",
+        "sha256": "13c39dee4f74d9975aa6d08df43a8f815a8feb78e2636367b3af242174ffe7af"
+      },
+      "removableBytes": 0,
+      "policy": "DERIVED_EXACT"
+    },
+    {
+      "id": "C03-existing-warning-regression",
+      "command": "cargo test --color never",
+      "file": "../../utility/cargo/warning/original.log",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "terminal-rendered",
+      "policy": "BASELINE_PRESERVED_REGRESSION_ONLY",
+      "provenance": {
+        "commit": "07ffe15e2263c2925778022194c5385807216603",
+        "receipt": "../../utility/cargo/warning/receipt.json",
+        "sha256": "5b6c11654de17ab77137edfe98f5d41abb410170711d9a3964c974f3192a0f0c"
+      }
+    }
+  ]
+}

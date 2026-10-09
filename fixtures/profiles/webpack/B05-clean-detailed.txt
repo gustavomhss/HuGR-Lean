@@ -1,0 +1,131 @@
+PublicPath: auto
+assets by status 23.8 KiB [emitted]
+  asset main café.js 13.1 KiB {main café} [emitted] (name: main café)
+  asset second.js 6.62 KiB {second} [emitted] (name: second)
+  asset asset.js 4.03 KiB {asset} [emitted] (name: asset)
+  asset 0d98ba6bea6441446d54.txt 20 bytes ({asset}) [emitted] [immutable] [from: asset.txt] (auxiliary name: asset)
+assets by status 1.03 KiB [compared for emit]
+  asset lazy_js.chunk.js 562 bytes {lazy_js} [compared for emit]
+  asset shared.js 497 bytes {shared} [compared for emit] (name: shared) (id hint: shared)
+Entrypoint main café 13.6 KiB = shared.js 497 bytes main café.js 13.1 KiB
+Entrypoint second 7.1 KiB = shared.js 497 bytes second.js 6.62 KiB
+Entrypoint asset 4.03 KiB (20 bytes) = asset.js 1 auxiliary asset
+asset {asset}
+chunk {asset} (runtime: asset) asset.js (asset) 91 bytes (javascript) 20 bytes (asset) 1.5 KiB (runtime) [entry] [rendered]
+  > ./asset-entry.js asset
+chunk {lazy_js} (runtime: main café) lazy_js.chunk.js 26 bytes <{main café}> <{shared}> [rendered]
+  > ./lazy β.js [./entrée α.js] ./entrée α.js 2:0-21
+chunk {main café} (runtime: main café) main café.js (main café) 102 bytes (javascript) 7.64 KiB (runtime) ={shared}= >{lazy_js}< [entry] [rendered]
+  > ./entrée α.js main café
+chunk {second} (runtime: second) second.js (second) 57 bytes (javascript) 3.03 KiB (runtime) ={shared}= [entry] [rendered]
+  > ./second.js second
+chunk {shared} (runtime: main café, second) shared.js (shared) (id hint: shared) 33 bytes ={main café}= ={second}= >{lazy_js}< [initial] [rendered] split chunk (cache group: shared) (name: shared)
+  > ./entrée α.js main café
+  > ./second.js second
+runtime modules 12.2 KiB
+  webpack/runtime/chunk loaded 886 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/chunk loaded 886 bytes {second} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/define property getters 308 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/define property getters 308 bytes {second} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/ensure chunk 326 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/get javascript chunk filename 173 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/global 221 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/global 221 bytes {asset} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/hasOwnProperty shorthand 88 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/hasOwnProperty shorthand 88 bytes {second} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/jsonp chunk loading 3.06 KiB {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/jsonp chunk loading 1.51 KiB {second} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/load script 1.34 KiB {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/make namespace object 274 bytes {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/make namespace object 274 bytes {second} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/make namespace object 274 bytes {asset} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/publicPath 1.02 KiB {main café} [code generated]
+    [no exports]
+    [used exports unknown]
+  webpack/runtime/publicPath 1.02 KiB {asset} [code generated]
+    [no exports]
+    [used exports unknown]
+cacheable modules 309 bytes (javascript) 20 bytes (asset)
+  ./entrée α.js 102 bytes {main café} [depth 0] [built] [code generated]
+    [no exports]
+    [used exports unknown]
+  ./second.js 57 bytes {second} [depth 0] [built] [code generated]
+    [no exports]
+    [used exports unknown]
+  ./asset-entry.js 49 bytes {asset} [depth 0] [built] [code generated]
+    [no exports]
+    [used exports unknown]
+  ./shared.js 33 bytes {shared} [depth 1] [built] [code generated]
+    [exports: value]
+    [used exports unknown]
+  ./asset.txt 20 bytes (asset) 42 bytes (javascript) {asset} [depth 1] [built] [code generated]
+    [no exports]
+    [used exports unknown]
+  ./lazy β.js 26 bytes {lazy_js} [depth 1] [built] [code generated]
+    [exports: default]
+    [used exports unknown]
+
+LOG from webpack.Compilation
+    6 modules hashed, 0 from cache (1 variants per module in average)
+    100% code generated (6 generated, 0 from cache)
+    100% code generated (18 generated, 0 from cache)
++ 24 hidden lines
+
+LOG from webpack.FlagDependencyExportsPlugin
+    100% of exports of modules have been determined (0 no declared exports, 6 not cached, 0 flagged uncacheable, 0 from cache, 0 from mem cache, 0 additional calculations due to dependencies)
++ 3 hidden lines
+
+LOG from webpack.buildChunkGraph
+    15 queue items processed (8 blocks)
+    1 chunk groups connected
+    1 chunk groups processed for merging (1 module sets, 0 forked, 0 + 0 modules forked, 0 + 0 modules merged into fork, 0 resulting modules)
+    1 chunk group info updated (0 already connected chunk groups reconnected)
++ 10 hidden lines
+
+LOG from webpack.FileSystemInfo
+    6 new snapshots created
+    0% root snapshot uncached (0 / 0)
+    0% children snapshot uncached (0 / 0)
+    0 entries tested
+    File info in cache: 6 timestamps 0 hashes 0 timestamp hash combinations
+    File timestamp snapshot optimization: 0% (0/6) entries shared via 0 shared snapshots (0 times referenced)
+    Directory info in cache: 0 timestamps 0 hashes 0 timestamp hash combinations
+    Managed items info in cache: 0 items
+
+LOG from webpack.CleanPlugin
+    main.js will be removed
+    broken.js will be removed
+
+2026-10-09 11:46:32: webpack 5.102.1 compiled successfully in 167 ms (0d8a9e8c2cef72c158c0)

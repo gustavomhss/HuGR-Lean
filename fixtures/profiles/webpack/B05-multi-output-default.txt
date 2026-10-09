@@ -1,0 +1,39 @@
+web café:
+  asset main café.js 13.1 KiB [emitted] (name: main café)
+  asset second.js 6.62 KiB [emitted] (name: second)
+  asset asset.js 4.03 KiB [emitted] (name: asset)
+  asset lazy_js.chunk.js 562 bytes [emitted]
+  asset shared.js 497 bytes [emitted] (name: shared) (id hint: shared)
+  asset 0d98ba6bea6441446d54.txt 20 bytes [emitted] [immutable] [from: asset.txt] (auxiliary name: asset)
+  Entrypoint main café 13.6 KiB = shared.js 497 bytes main café.js 13.1 KiB
+  Entrypoint second 7.1 KiB = shared.js 497 bytes second.js 6.62 KiB
+  Entrypoint asset 4.03 KiB (20 bytes) = asset.js 1 auxiliary asset
+  runtime modules 12.2 KiB 18 modules
+  cacheable modules 309 bytes (javascript) 20 bytes (asset)
+    ./entrée α.js 102 bytes [built] [code generated]
+    ./second.js 57 bytes [built] [code generated]
+    ./asset-entry.js 49 bytes [built] [code generated]
+    ./shared.js 33 bytes [built] [code generated]
+    ./asset.txt 20 bytes (asset) 42 bytes (javascript) [built] [code generated]
+    ./lazy β.js 26 bytes [built] [code generated]
+  web café (webpack 5.102.1) compiled successfully in 182 ms
+
+node β:
+  asset main café.js 7.75 KiB [emitted] (name: main café)
+  asset second.js 7.44 KiB [emitted] (name: second)
+  asset asset.js 2.46 KiB [emitted] (name: asset)
+  asset lazy_js.chunk.js 561 bytes [emitted]
+  asset shared.js 495 bytes [emitted] (name: shared) (id hint: shared)
+  asset 0d98ba6bea6441446d54.txt 20 bytes [emitted] [immutable] [from: asset.txt] (auxiliary name: asset)
+  Entrypoint main café 8.23 KiB = shared.js 495 bytes main café.js 7.75 KiB
+  Entrypoint second 7.92 KiB = shared.js 495 bytes second.js 7.44 KiB
+  Entrypoint asset 2.46 KiB (20 bytes) = asset.js 1 auxiliary asset
+  runtime modules 6.86 KiB 18 modules
+  cacheable modules 309 bytes (javascript) 20 bytes (asset)
+    ./entrée α.js 102 bytes [built] [code generated]
+    ./second.js 57 bytes [built] [code generated]
+    ./asset-entry.js 49 bytes [built] [code generated]
+    ./shared.js 33 bytes [built] [code generated]
+    ./asset.txt 20 bytes (asset) 42 bytes (javascript) [built] [code generated]
+    ./lazy β.js 26 bytes [built] [code generated]
+  node β (webpack 5.102.1) compiled successfully in 160 ms

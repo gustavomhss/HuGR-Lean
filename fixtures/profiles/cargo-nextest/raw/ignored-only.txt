@@ -1,0 +1,34 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID c4942d75-8c84-4838-a2f0-52da43fa22c3 with nextest profile: default
+    Starting 2 tests across 3 binaries (7 tests skipped)
+        SKIP [         ] (───) capture-alpha tests::alpha_collision
+        SKIP [         ] (───) capture-alpha tests::alpha_failure
+        SKIP [         ] (───) capture-alpha tests::alpha_logs
+        SKIP [         ] (───) capture-alpha tests::alpha_pass
+        PASS [   0.014s] (1/2) capture-alpha tests::alpha_ignored
+  stdout ───
+
+    running 1 test
+    IGNORED_STDOUT keep
+    test tests::alpha_ignored ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+
+        SKIP [         ] (───) capture-alpha::integration integration_pass
+        SKIP [         ] (───) capture-beta tests::beta_logs
+        SKIP [         ] (───) capture-beta tests::beta_pass
+        PASS [   0.015s] (2/2) capture-alpha::integration integration_ignored
+  stdout ───
+
+    running 1 test
+    test integration_ignored ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+  stderr ───
+    INTEGRATION_IGNORED_STDERR keep
+
+────────────
+     Summary [   0.030s] 2 tests run: 2 passed, 7 skipped

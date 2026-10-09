@@ -1,0 +1,858 @@
+{
+  "schema": "hugr-lean/native-capture/1",
+  "baseline": "71bcaea",
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "node": "v22.17.1\n",
+  "npm": "10.9.2\n",
+  "producer": {
+    "package": "rollup",
+    "version": "4.52.4",
+    "gitHead": "cd81da74af1d11fda0ee1752cc26f6dc8217e9ca",
+    "sri": "sha512-CLEVl+MnPAiKh5pl4dEWSyMTpuflgNQiLGhMv8ezD5W/qP8AKvmYpCOKRRNOh7oRKnauBZ4SyeYkMS+1VSyKwQ==",
+    "tarball": "https://registry.npmjs.org/rollup/-/rollup-4.52.4.tgz",
+    "license": "MIT",
+    "licensePath": "node_modules/rollup/LICENSE.md",
+    "licenseSha256": "bc91f5e3c168054fba08a1ea209a89c0fc10bc0667e52911481ee284c07ef69b"
+  },
+  "installedNativePackages": {
+    "node_modules/@rollup/rollup-darwin-x64/package.json": {
+      "name": "@rollup/rollup-darwin-x64",
+      "version": "4.52.4",
+      "os": [
+        "darwin"
+      ],
+      "cpu": [
+        "x64"
+      ],
+      "files": [
+        "rollup.darwin-x64.node"
+      ],
+      "description": "Native bindings for Rollup",
+      "author": "Lukas Taegert-Atkinson",
+      "homepage": "https://rollupjs.org/",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rollup/rollup.git"
+      },
+      "main": "./rollup.darwin-x64.node"
+    }
+  },
+  "metadataCommand": [
+    "/usr/local/bin/npm",
+    "view",
+    "rollup@4.52.4",
+    "--registry=https://registry.npmjs.org",
+    "--json"
+  ],
+  "metadataExit": 0,
+  "metadataSha256": "58ad0966e2880fa4fbc0ae3c84a82bcad4a6085f5386c57cd12a4da2008879e8",
+  "installCommand": [
+    "/usr/local/bin/npm",
+    "install",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--registry=https://registry.npmjs.org",
+    "--cache",
+    "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/npm-cache"
+  ],
+  "installCwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install",
+  "installExit": 0,
+  "installOutputSha256": "33ea694dc0e1a48ae97e6b2ea9ae778072e0f5cf4761e65b0c728e2ed8f8c9af",
+  "package": {
+    "name": "b04-native-capture",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+      "rollup": "4.52.4"
+    }
+  },
+  "lockSha256": "24670d7665ea4b988eb41c2df128bdabf03668137b41d02289b132bd85987d9f",
+  "recipeSha256": "14a6cd38a558aa1c4e754a6d60d9ccc36cc8a94dd18166c48b467aaf6d93addd",
+  "environment": {
+    "set": {
+      "NO_COLOR": "1",
+      "TERM": "dumb",
+      "LC_ALL": "C",
+      "LANG": "C"
+    },
+    "removed": [
+      "FORCE_COLOR",
+      "CLICOLOR_FORCE",
+      "NODE_OPTIONS",
+      "NODE_PATH",
+      "ROLLUP_WATCH"
+    ],
+    "otherwise": "inherited"
+  },
+  "sources": {
+    "entry.js": {
+      "output": "import { answer } from './shared.js';\nconsole.log('雪😀', answer);\nexport { answer };\n",
+      "bytes": 89,
+      "sha256": "7466be7d7504893dcf84598e00495bccb051d0b2c25b2d81b0f0fac594258032"
+    },
+    "shared.js": {
+      "output": "export const answer = 42;\n",
+      "bytes": 26,
+      "sha256": "a2098bd92b10bf8b816d24b7556b1ce8c49a879d130489065ef1051c17e042f6"
+    },
+    "split.js": {
+      "output": "export const load = () => import('./lazy.js');\nexport { answer } from './shared.js';\n",
+      "bytes": 85,
+      "sha256": "b5b08f7b4b86e5b43f148ddb830987446ffa469c48bd6265b6cbfdb59a198dd6"
+    },
+    "lazy.js": {
+      "output": "export const lazy = 'lazy chunk';\n",
+      "bytes": 34,
+      "sha256": "53373e317f0b0b9e658da07012d897bf7c7cbec051f83cccbe10132db0aa3221"
+    },
+    "warning.js": {
+      "output": "import external from 'b04-absent-dependency';\nexport default external;\n",
+      "bytes": 71,
+      "sha256": "68a1634229eb1cdc6af611fd1ef1c86f4f9a985ad7342a77a0c4cc854033e193"
+    },
+    "cycle-a.js": {
+      "output": "import { b } from './cycle-b.js';\nexport const a = () => b;\n",
+      "bytes": 60,
+      "sha256": "d504d7fdebbff38bfb3338bbb2338f05031f752c1feba510303d76a9a4270c11"
+    },
+    "cycle-b.js": {
+      "output": "import { a } from './cycle-a.js';\nexport const b = () => a;\n",
+      "bytes": 60,
+      "sha256": "bc7b67ca6aee0e501e7914e5db0bd6b3761ffc05f2d402f9981140f6e674de87"
+    },
+    "syntax.js": {
+      "output": "export const broken = ;\n",
+      "bytes": 24,
+      "sha256": "1863811115d972ef74151c6ff2368fa16ee78a50a677fac3455b50adabac3752"
+    },
+    "single.config.mjs": {
+      "output": "export default { input: 'entry.js', output: { file: 'out/artifact space 雪.mjs', format: 'es', sourcemap: true } };\n",
+      "bytes": 117,
+      "sha256": "aa7fe30d7f13a43e311de26c2db83a8c5cd888ec68c83c123525aa4307bbfaff"
+    },
+    "multi.config.mjs": {
+      "output": "export default { input: ['entry.js', 'split.js'], output: [\n  { dir: 'out/esm', format: 'es', sourcemap: true, entryFileNames: '[name]-[hash].mjs', chunkFileNames: 'chunks/[name]-[hash].mjs' },\n  { dir: 'out/cjs', format: 'cjs', exports: 'named', entryFileNames: '[name].cjs', chunkFileNames: 'chunks/[name]-[hash].cjs' }\n] };\n",
+      "bytes": 327,
+      "sha256": "74006e739f6fbfdeaa45d95474c23da970b0f07ce5f349db8a0fd6f749b5eb5f"
+    },
+    "fail.config.mjs": {
+      "output": "throw new Error('B04 config failure: preserve exact message 雪😀');\n",
+      "bytes": 71,
+      "sha256": "17ea8e15560b154395c17c722d63437ece49c02d74f867a7959772b63386d52d"
+    },
+    "plugin.config.mjs": {
+      "output": "export default {\n  input: 'entry.js', output: { file: 'out/single.js', format: 'es' },\n  plugins: [{ name: 'b04-opaque-stdout', buildStart() {\n    process.stdout.write('USER B04 opaque stdout 雪😀\\n');\n    process.stdout.write('\\nentry.js → out/single.js...\\n');\n    process.stdout.write('created out/single.js in 1ms\\n');\n  }, generateBundle() { process.stdout.write('USER B04 no-final-LF'); } }]\n};\n",
+      "bytes": 406,
+      "sha256": "9ae246343b55e4857e11564422db09789e998a4545d4544c92a4c6cc018edf8d"
+    }
+  },
+  "caseIds": [
+    "B04-version",
+    "B04-single",
+    "B04-multiple-chunks",
+    "B04-warning",
+    "B04-circular",
+    "B04-quiet",
+    "B04-quiet-warning",
+    "B04-config-failure",
+    "B04-config-missing",
+    "B04-syntax-failure",
+    "B04-missing-input",
+    "B04-stdout-bundle",
+    "B04-plugin-collision",
+    "B04-quiet-plugin-collision"
+  ],
+  "cases": [
+    {
+      "name": "B04-version",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "version.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--version"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/version",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 15,
+      "outputBytes": 15,
+      "sha256": "2c984864bee3d936be0d6c00c3b6be0c0a29cbc0c74ff13b9e8b713b6460ef9a",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "726f6c6c75702076342e35322e340a"
+      },
+      "boundary": {"bytes":15,"sha256":"2c984864bee3d936be0d6c00c3b6be0c0a29cbc0c74ff13b9e8b713b6460ef9a","readThroughEOF":true,"finalLF":true,"lastBytesHex":"726f6c6c75702076342e35322e340a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:22.628735+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-version",
+        "sha256": "2c984864bee3d936be0d6c00c3b6be0c0a29cbc0c74ff13b9e8b713b6460ef9a"
+      },
+      "artifacts": []
+    },
+    {
+      "name": "B04-single",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "single.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "single.config.mjs"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config single.config.mjs",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/single",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 87,
+      "outputBytes": 87,
+      "sha256": "db00354aa171f8d50fb7c3968f25fde62a728f36e0be160cf1a82f148631d92e",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2f617274696661637420737061636520e99baa2e6d6a7320696e2033386d730a"
+      },
+      "boundary": {"bytes":87,"sha256":"db00354aa171f8d50fb7c3968f25fde62a728f36e0be160cf1a82f148631d92e","readThroughEOF":true,"finalLF":true,"lastBytesHex":"2f617274696661637420737061636520e99baa2e6d6a7320696e2033386d730a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:22.806502+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-single",
+        "sha256": "db00354aa171f8d50fb7c3968f25fde62a728f36e0be160cf1a82f148631d92e"
+      },
+      "artifacts": [
+        {
+          "path": "out/artifact space 雪.mjs",
+          "archive": "artifacts/single/out/artifact space 雪.mjs.txt",
+          "bytes": 120,
+          "sha256": "b907388c2021302e797659335f634ba4f5ea8d804a9774c8d87edd153a4d04e1"
+        },
+        {
+          "path": "out/artifact space 雪.mjs.map",
+          "archive": "artifacts/single/out/artifact space 雪.mjs.map.txt",
+          "bytes": 325,
+          "sha256": "b7f9229178a20f3a52763c14727eeb38f1ee449ee007de115d9abed4ef03524d"
+        }
+      ]
+    },
+    {
+      "name": "B04-multiple-chunks",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "multiple-chunks.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "multi.config.mjs"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config multi.config.mjs",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/multiple-chunks",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 77,
+      "outputBytes": 77,
+      "sha256": "71b839d941c4d4af600a299dea3d394dab64b4b7d819746f6cc00a8b110e6256",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "726561746564206f75742f65736d2c206f75742f636a7320696e2035306d730a"
+      },
+      "boundary": {"bytes":77,"sha256":"71b839d941c4d4af600a299dea3d394dab64b4b7d819746f6cc00a8b110e6256","readThroughEOF":true,"finalLF":true,"lastBytesHex":"726561746564206f75742f65736d2c206f75742f636a7320696e2035306d730a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:22.996893+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-multiple-chunks",
+        "sha256": "71b839d941c4d4af600a299dea3d394dab64b4b7d819746f6cc00a8b110e6256"
+      },
+      "artifacts": [
+        {
+          "path": "out/cjs/chunks/lazy-BRs-3_yf.cjs",
+          "archive": "artifacts/multiple-chunks/out/cjs/chunks/lazy-BRs-3_yf.cjs.txt",
+          "bytes": 64,
+          "sha256": "767463c74dbec5c059406fadd60cb9beb8d77fb620cafa7d46c29854431010d5"
+        },
+        {
+          "path": "out/cjs/chunks/shared-ZLhsmAK6.cjs",
+          "archive": "artifacts/multiple-chunks/out/cjs/chunks/shared-ZLhsmAK6.cjs.txt",
+          "bytes": 60,
+          "sha256": "3382880b37981f53e51f19f05d10dd1e14ea00e2582e856f37ba0867387631ce"
+        },
+        {
+          "path": "out/cjs/entry.cjs",
+          "archive": "artifacts/multiple-chunks/out/cjs/entry.cjs.txt",
+          "bytes": 142,
+          "sha256": "7a00c06e28f434b1d836ceec729a9940ee574da0e7a9039998978363b3b5cc8e"
+        },
+        {
+          "path": "out/cjs/split.cjs",
+          "archive": "artifacts/multiple-chunks/out/cjs/split.cjs.txt",
+          "bytes": 230,
+          "sha256": "73643cf45fae68257dde88f74c7123afbfd71e9f7c94c7930557894cac8cb2bd"
+        },
+        {
+          "path": "out/esm/chunks/lazy-BWDBwCKZ.mjs",
+          "archive": "artifacts/multiple-chunks/out/esm/chunks/lazy-BWDBwCKZ.mjs.txt",
+          "bytes": 88,
+          "sha256": "6eb76d35f5ecf03348d5415cca6137976feffd373a64329d5b4f110385d5d988"
+        },
+        {
+          "path": "out/esm/chunks/lazy-BWDBwCKZ.mjs.map",
+          "archive": "artifacts/multiple-chunks/out/esm/chunks/lazy-BWDBwCKZ.mjs.map.txt",
+          "bytes": 176,
+          "sha256": "9eac49c1f00c9f2d776b79df873d0d208e99e7b9182862e4ec826149147801c2"
+        },
+        {
+          "path": "out/esm/chunks/shared-D5Fiyy3Q.mjs",
+          "archive": "artifacts/multiple-chunks/out/esm/chunks/shared-D5Fiyy3Q.mjs.txt",
+          "bytes": 89,
+          "sha256": "05edac8b21bf5a660da49dcba03226dca9e164e0bd4f39817724ee9a8d7b8d34"
+        },
+        {
+          "path": "out/esm/chunks/shared-D5Fiyy3Q.mjs.map",
+          "archive": "artifacts/multiple-chunks/out/esm/chunks/shared-D5Fiyy3Q.mjs.map.txt",
+          "bytes": 172,
+          "sha256": "49e315742030fc71dd7c10f75dce0918c613711b721d0a48331fa8baf6b08e98"
+        },
+        {
+          "path": "out/esm/entry-BR8Cyjlr.mjs",
+          "archive": "artifacts/multiple-chunks/out/esm/entry-BR8Cyjlr.mjs.txt",
+          "bytes": 157,
+          "sha256": "b2fd3f34e029e319a7a97eb4a776dc7e57fd1650bff4fe16692c71d23a7b0550"
+        },
+        {
+          "path": "out/esm/entry-BR8Cyjlr.mjs.map",
+          "archive": "artifacts/multiple-chunks/out/esm/entry-BR8Cyjlr.mjs.map.txt",
+          "bytes": 259,
+          "sha256": "40c176bd31d18a8228cc954d22236fe41668803f8120b092de7ee8d11f2f3dfc"
+        },
+        {
+          "path": "out/esm/split-DRvdUt9e.mjs",
+          "archive": "artifacts/multiple-chunks/out/esm/split-DRvdUt9e.mjs.txt",
+          "bytes": 180,
+          "sha256": "3aee79053beaadac61b19adafbaafdb18b2807ca489c4996b5cfe05d5c5cf9b8"
+        },
+        {
+          "path": "out/esm/split-DRvdUt9e.mjs.map",
+          "archive": "artifacts/multiple-chunks/out/esm/split-DRvdUt9e.mjs.map.txt",
+          "bytes": 245,
+          "sha256": "3cacbe205aa9992b0c44edad46ab6b898b94959ef293e60e6e258cf41721a53c"
+        }
+      ]
+    },
+    {
+      "name": "B04-warning",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "warning.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "warning.js",
+        "--file",
+        "out/warning.mjs",
+        "--format",
+        "es"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup warning.js --file out/warning.mjs --format es",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/warning",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 229,
+      "outputBytes": 229,
+      "sha256": "9acfd236b8ad76f6fc806f15ca67ca0af43f3aaeaf5465ab3d0a7dc8efce8a21",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "63726561746564206f75742f7761726e696e672e6d6a7320696e2033366d730a"
+      },
+      "boundary": {"bytes":229,"sha256":"9acfd236b8ad76f6fc806f15ca67ca0af43f3aaeaf5465ab3d0a7dc8efce8a21","readThroughEOF":true,"finalLF":true,"lastBytesHex":"63726561746564206f75742f7761726e696e672e6d6a7320696e2033366d730a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:23.190049+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-warning",
+        "sha256": "9acfd236b8ad76f6fc806f15ca67ca0af43f3aaeaf5465ab3d0a7dc8efce8a21"
+      },
+      "artifacts": [
+        {
+          "path": "out/warning.mjs",
+          "archive": "artifacts/warning/out/warning.mjs.txt",
+          "bytes": 95,
+          "sha256": "7884d32693645544306e783dad1e60b163d8ac5542d4bc1ebe2d2390a5bbe776"
+        }
+      ]
+    },
+    {
+      "name": "B04-circular",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "circular.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "cycle-a.js",
+        "--file",
+        "out/circular.mjs",
+        "--format",
+        "es"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup cycle-a.js --file out/circular.mjs --format es",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/circular",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 132,
+      "outputBytes": 132,
+      "sha256": "3d629b41d0852bc8d7c2a563446c10fb356e275a52fea804516cf4752b73e6c9",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "726561746564206f75742f63697263756c61722e6d6a7320696e2033356d730a"
+      },
+      "boundary": {"bytes":132,"sha256":"3d629b41d0852bc8d7c2a563446c10fb356e275a52fea804516cf4752b73e6c9","readThroughEOF":true,"finalLF":true,"lastBytesHex":"726561746564206f75742f63697263756c61722e6d6a7320696e2033356d730a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:23.377218+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-circular",
+        "sha256": "3d629b41d0852bc8d7c2a563446c10fb356e275a52fea804516cf4752b73e6c9"
+      },
+      "artifacts": [
+        {
+          "path": "out/circular.mjs",
+          "archive": "artifacts/circular/out/circular.mjs.txt",
+          "bytes": 54,
+          "sha256": "fde9e59999977933d1f60f9a9f7d692b977c1e626a74c291627dfe2c60adc766"
+        }
+      ]
+    },
+    {
+      "name": "B04-quiet",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "quiet.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "single.config.mjs",
+        "--silent"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config single.config.mjs --silent",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/quiet",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "boundary": {"bytes":0,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","readThroughEOF":true,"finalLF":false,"lastBytesHex":"","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:23.555913+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-quiet",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "artifacts": [
+        {
+          "path": "out/artifact space 雪.mjs",
+          "archive": "artifacts/quiet/out/artifact space 雪.mjs.txt",
+          "bytes": 120,
+          "sha256": "b907388c2021302e797659335f634ba4f5ea8d804a9774c8d87edd153a4d04e1"
+        },
+        {
+          "path": "out/artifact space 雪.mjs.map",
+          "archive": "artifacts/quiet/out/artifact space 雪.mjs.map.txt",
+          "bytes": 325,
+          "sha256": "b7f9229178a20f3a52763c14727eeb38f1ee449ee007de115d9abed4ef03524d"
+        }
+      ]
+    },
+    {
+      "name": "B04-quiet-warning",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "quiet-warning.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "warning.js",
+        "--file",
+        "out/quiet-warning.mjs",
+        "--format",
+        "es",
+        "--silent"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup warning.js --file out/quiet-warning.mjs --format es --silent",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/quiet-warning",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "boundary": {"bytes":0,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","readThroughEOF":true,"finalLF":false,"lastBytesHex":"","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:23.737025+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-quiet-warning",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "artifacts": [
+        {
+          "path": "out/quiet-warning.mjs",
+          "archive": "artifacts/quiet-warning/out/quiet-warning.mjs.txt",
+          "bytes": 95,
+          "sha256": "7884d32693645544306e783dad1e60b163d8ac5542d4bc1ebe2d2390a5bbe776"
+        }
+      ]
+    },
+    {
+      "name": "B04-config-failure",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "config-failure.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "fail.config.mjs"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config fail.config.mjs",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/config-failure",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1054,
+      "outputBytes": 1054,
+      "sha256": "6bdf55ca74c65222436945afa6f03e3b0fcab3675d86b70774829ab2668442fa",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c6c75702f646973742f62696e2f726f6c6c75703a313834393a3433290a0a0a"
+      },
+      "boundary": {"bytes":1054,"sha256":"6bdf55ca74c65222436945afa6f03e3b0fcab3675d86b70774829ab2668442fa","readThroughEOF":true,"finalLF":true,"lastBytesHex":"6c6c75702f646973742f62696e2f726f6c6c75703a313834393a3433290a0a0a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:23.881683+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-config-failure",
+        "sha256": "6bdf55ca74c65222436945afa6f03e3b0fcab3675d86b70774829ab2668442fa"
+      },
+      "artifacts": []
+    },
+    {
+      "name": "B04-config-missing",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "config-missing.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "missing.config.mjs"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config missing.config.mjs",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/config-missing",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1487,
+      "outputBytes": 1487,
+      "sha256": "90e5e56ef89d6c1c553b28c5403c51897a362033f129f21ad2c6a0583a0345b1",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "616c2f6d6f64756c65732f65736d2f6c6f616465723a3634323a3231290a0a0a"
+      },
+      "boundary": {"bytes":1487,"sha256":"90e5e56ef89d6c1c553b28c5403c51897a362033f129f21ad2c6a0583a0345b1","readThroughEOF":true,"finalLF":true,"lastBytesHex":"616c2f6d6f64756c65732f65736d2f6c6f616465723a3634323a3231290a0a0a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:24.039429+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-config-missing",
+        "sha256": "90e5e56ef89d6c1c553b28c5403c51897a362033f129f21ad2c6a0583a0345b1"
+      },
+      "artifacts": []
+    },
+    {
+      "name": "B04-syntax-failure",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "syntax-failure.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "syntax.js",
+        "--file",
+        "out/syntax.mjs",
+        "--format",
+        "es"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup syntax.js --file out/syntax.mjs --format es",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/syntax-failure",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 2310,
+      "outputBytes": 2310,
+      "sha256": "efd174f745eb232dfc3b8d16b90106621b189abdb5df12db2cf53c679f98fdaf",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "73742f7368617265642f726f6c6c75702e6a733a32323538313a3133290a0a0a"
+      },
+      "boundary": {"bytes":2310,"sha256":"efd174f745eb232dfc3b8d16b90106621b189abdb5df12db2cf53c679f98fdaf","readThroughEOF":true,"finalLF":true,"lastBytesHex":"73742f7368617265642f726f6c6c75702e6a733a32323538313a3133290a0a0a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:24.199230+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-syntax-failure",
+        "sha256": "efd174f745eb232dfc3b8d16b90106621b189abdb5df12db2cf53c679f98fdaf"
+      },
+      "artifacts": []
+    },
+    {
+      "name": "B04-missing-input",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "missing-input.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "absent.js",
+        "--file",
+        "out/missing.mjs",
+        "--format",
+        "es"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup absent.js --file out/missing.mjs --format es",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/missing-input",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 651,
+      "outputBytes": 651,
+      "sha256": "e3f1112039c1ce1210af332e62f0f9f739165a41db7f447297391778e1192a44",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "74206173796e632050726f6d6973652e616c6c2028696e6465782030290a0a0a"
+      },
+      "boundary": {"bytes":651,"sha256":"e3f1112039c1ce1210af332e62f0f9f739165a41db7f447297391778e1192a44","readThroughEOF":true,"finalLF":true,"lastBytesHex":"74206173796e632050726f6d6973652e616c6c2028696e6465782030290a0a0a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:24.377085+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-missing-input",
+        "sha256": "e3f1112039c1ce1210af332e62f0f9f739165a41db7f447297391778e1192a44"
+      },
+      "artifacts": []
+    },
+    {
+      "name": "B04-stdout-bundle",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "stdout-bundle.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "entry.js",
+        "--format",
+        "es"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup entry.js --format es",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/stdout-bundle",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 96,
+      "outputBytes": 96,
+      "sha256": "0963465bc69856f15d258fd888568ba07d951a379f913a2ba9eb2a2209fd10fe",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "272c20616e73776572293b0a0a6578706f7274207b20616e73776572207d3b0a"
+      },
+      "boundary": {"bytes":96,"sha256":"0963465bc69856f15d258fd888568ba07d951a379f913a2ba9eb2a2209fd10fe","readThroughEOF":true,"finalLF":true,"lastBytesHex":"272c20616e73776572293b0a0a6578706f7274207b20616e73776572207d3b0a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:24.561301+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-stdout-bundle",
+        "sha256": "0963465bc69856f15d258fd888568ba07d951a379f913a2ba9eb2a2209fd10fe"
+      },
+      "artifacts": []
+    },
+    {
+      "name": "B04-plugin-collision",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "plugin-collision.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "plugin.config.mjs"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config plugin.config.mjs",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/plugin-collision",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 172,
+      "outputBytes": 172,
+      "sha256": "ba9a460125c3102a192fe6b513014c1ef1208f62d8129e3f4c927d91baf9b468",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "4c4663726561746564206f75742f73696e676c652e6a7320696e2033366d730a"
+      },
+      "boundary": {"bytes":172,"sha256":"ba9a460125c3102a192fe6b513014c1ef1208f62d8129e3f4c927d91baf9b468","readThroughEOF":true,"finalLF":true,"lastBytesHex":"4c4663726561746564206f75742f73696e676c652e6a7320696e2033366d730a","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:24.738182+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-plugin-collision",
+        "sha256": "ba9a460125c3102a192fe6b513014c1ef1208f62d8129e3f4c927d91baf9b468"
+      },
+      "artifacts": [
+        {
+          "path": "out/single.js",
+          "archive": "artifacts/plugin-collision/out/single.js.txt",
+          "bytes": 72,
+          "sha256": "0f98dc4ac832ed11897504e357c146bee643f60e8b988cbe83de013c8cb08d38"
+        }
+      ]
+    },
+    {
+      "name": "B04-quiet-plugin-collision",
+      "family": "rollup",
+      "version": "rollup v4.52.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "quiet-plugin-collision.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup",
+        "--config",
+        "plugin.config.mjs",
+        "--silent"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/.bin/rollup --config plugin.config.mjs --silent",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/quiet-plugin-collision",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 111,
+      "outputBytes": 111,
+      "sha256": "30196fd63b2d8fa11b69493b015adeb55af479182b926acedec70db5e477c283",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "652e6a7320696e20316d730a5553455220423034206e6f2d66696e616c2d4c46"
+      },
+      "boundary": {"bytes":111,"sha256":"30196fd63b2d8fa11b69493b015adeb55af479182b926acedec70db5e477c283","readThroughEOF":true,"finalLF":false,"lastBytesHex":"652e6a7320696e20316d730a5553455220423034206e6f2d66696e616c2d4c46","method":"stdout PIPE, stderr STDOUT before exec; drained through EOF then waited; no PTY, normalization or truncation"},
+      "completionAt": "2026-10-09T14:46:24.926070+00:00",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "B04-quiet-plugin-collision",
+        "sha256": "30196fd63b2d8fa11b69493b015adeb55af479182b926acedec70db5e477c283"
+      },
+      "artifacts": [
+        {
+          "path": "out/single.js",
+          "archive": "artifacts/quiet-plugin-collision/out/single.js.txt",
+          "bytes": 72,
+          "sha256": "0f98dc4ac832ed11897504e357c146bee643f60e8b988cbe83de013c8cb08d38"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "npm registry gitHead is package metadata, not independently attested binary-to-source correspondence",
+    "single macOS x86_64 host, non-TTY merged pipe; no other versions/platforms/watch/API claims"
+  ]
+}

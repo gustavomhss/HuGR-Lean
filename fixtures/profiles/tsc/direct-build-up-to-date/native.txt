@@ -1,0 +1,9 @@
+3:54:49 PM - Projects in this build: 
+    * refs/lib/tsconfig.json
+    * refs/app/tsconfig.json
+    * refs/tsconfig.json
+
+3:54:49 PM - Project 'refs/lib/tsconfig.json' is up to date because newest input 'refs/lib/index.ts' is older than output 'refs/lib/out/tsconfig.tsbuildinfo'
+
+3:54:49 PM - Project 'refs/app/tsconfig.json' is up to date because newest input 'refs/app/index.ts' is older than output 'refs/app/out/tsconfig.tsbuildinfo'
+

@@ -1,0 +1,8 @@
+[package]
+name = "capture_alpha"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+extra = []
+collision = []

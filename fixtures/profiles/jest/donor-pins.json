@@ -1,0 +1,122 @@
+[
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/LICENSE",
+    "local": "LICENSE.istanbul-reports.txt",
+    "license": "BSD-3-Clause",
+    "modifications": "none",
+    "sha256": "e09f9b52c6ce5c17ba8103cd0cbf446c33b5448b0c1d01d711b36a1f15a501ba"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/block-navigation.js",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/block-navigation.js",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/block-navigation.js"
+    ],
+    "license": "BSD-3-Clause",
+    "modifications": "native reporter prepended /* eslint-disable */ plus LF",
+    "sourceSHA256": "dac7191744ea6959ed1ead1e05285d8b9bb5335b86a8ec13d0ab195cbea01d61",
+    "attachmentSHA256": "cd8db34b1fbeb973354a93f8b4133c7c7eab34cdda9429a0434be91384783b7e"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/vendor/prettify.js",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/prettify.js",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/prettify.js"
+    ],
+    "license": "Apache-2.0 (Google Code Prettify)",
+    "modifications": "native reporter prepended /* eslint-disable */ plus LF",
+    "sourceSHA256": "67126b6cd4d1b2305f8c8fa5974971ebe90ab2b0f6e209ba2f1c6e4af05f0207",
+    "attachmentSHA256": "fa1b1e1b906ddcfa08b46f161c0f924f506e1a31b4f3e09b8caaa2463ef52c18"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/favicon.png",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/favicon.png",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/favicon.png"
+    ],
+    "license": "BSD-3-Clause",
+    "modifications": "none; native reporter copied identical asset",
+    "sourceSHA256": "5b0cfd52dc0bfbe544f4e1a9c77aa46b8629b0e0aad6c54f95eef457b86c2a89",
+    "attachmentSHA256": "5b0cfd52dc0bfbe544f4e1a9c77aa46b8629b0e0aad6c54f95eef457b86c2a89"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/vendor/prettify.css",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/prettify.css",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/prettify.css"
+    ],
+    "license": "Apache-2.0 (Google Code Prettify)",
+    "modifications": "none; native reporter copied identical asset",
+    "sourceSHA256": "ea3fe433f9450698ca8a230271688e7aeec12f99c8a7ef6c94379abb38f27823",
+    "attachmentSHA256": "ea3fe433f9450698ca8a230271688e7aeec12f99c8a7ef6c94379abb38f27823"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/sorter.js",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/sorter.js",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/sorter.js"
+    ],
+    "license": "BSD-3-Clause",
+    "modifications": "native reporter prepended /* eslint-disable */ plus LF",
+    "sourceSHA256": "4c7ee48ab0ed461c008840f334383048ddb6318a3ef5892267d8f9acfcece18a",
+    "attachmentSHA256": "f8cc5d157379d844fd695ad567b6c29b3c1f0812964ddf6f95c26327e434bab5"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/base.css",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/base.css",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/base.css"
+    ],
+    "license": "BSD-3-Clause",
+    "modifications": "none; native reporter copied identical asset",
+    "sourceSHA256": "3f876e51f0a46864ffa7665b4b7a1f5fb5f6f37fb6a28f014e2b12d82962c852",
+    "attachmentSHA256": "3f876e51f0a46864ffa7665b4b7a1f5fb5f6f37fb6a28f014e2b12d82962c852"
+  },
+  {
+    "repository": "https://github.com/istanbuljs/istanbuljs",
+    "commit": "28ffdbc314596bdcb3007e85d30a62372602b262",
+    "path": "packages/istanbul-reports/lib/html/assets/sort-arrow-sprite.png",
+    "locals": [
+      "captures/coverage-snapshot/coverage/lcov-report/sort-arrow-sprite.png",
+      "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/sort-arrow-sprite.png"
+    ],
+    "license": "BSD-3-Clause",
+    "modifications": "none; native reporter copied identical asset",
+    "sourceSHA256": "42c895355f9838ede83fdfdca90127d8471aefed5ecf5342374f65ec7c3f10ab",
+    "attachmentSHA256": "42c895355f9838ede83fdfdca90127d8471aefed5ecf5342374f65ec7c3f10ab"
+  },
+  {
+    "repository": "https://github.com/googlearchive/code-prettify",
+    "commit": "e006587b4a893f0281e9dc9a53001c7ed584d4e7",
+    "path": "COPYING",
+    "local": "LICENSE.code-prettify.txt",
+    "license": "Apache-2.0",
+    "modifications": "none; license only, vendored asset source is pinned above",
+    "sha256": "deec98192f710d6e6aa8aba33f67087199e62c2db7f9d793b0ad465248ca3d05"
+  },
+  {
+    "repository": "https://github.com/jestjs/jest",
+    "commit": "855864e3f9751366455246790be2bf912d4d0dac",
+    "path": "LICENSE",
+    "local": "LICENSE.jest.txt",
+    "license": "MIT",
+    "modifications": "none",
+    "sha256": "9d5211db733ccdd26f9170bec24cdca84093f60415da6b769ee9cdf23d04e19f",
+    "packagePath": "jest@30.2.0/LICENSE",
+    "packageIntegrity": "sha512-F26gjC0yWN8uAA5m5Ss8ZQf5nDHWGlN/xWZIh8S5SRbsEKBovwZhxGd6LJlbZYxBgCYOtreSUyb8hpXyGC5O4A=="
+  }
+]

@@ -1,0 +1,66 @@
+{
+  "baseline": "bc5e12fc78aa190a9ec9863ca41cd96e4e3a0ea0",
+  "modules": [
+    {
+      "module": "golang.org/x/text",
+      "version": "v0.29.0",
+      "files": {
+        "v0.29.0.mod": "b57bcc7ffdfddb1b8235f77262bf41422c75d72dda5a145543cc36bccac43ad3",
+        "v0.29.0.info": "4661c3baf74ca29ba8f620c0445b2499f7654a0e4f549b9b2aecad678bdb3efa",
+        "v0.29.0.zip": "fb47744565fd36da42ab2ebd3ee4db0038dfed4f703c926a9e7327debab8af77"
+      }
+    },
+    {
+      "module": "example.com/g05/dep",
+      "version": "v1.0.0",
+      "files": {
+        "v1.0.0.mod": "2125ef2dd5381403390be72dfe4cd28d155ac2257bca34b009629a14083b9572",
+        "v1.0.0.info": "03860ddbcca086e370df8a6e0148f7d739d7797703ce95b2b009caf988175444",
+        "v1.0.0.zip": "6c1f68bda31e5de3dda75cc3fecc7a270eb68525d484d50a35933a9c723b208e"
+      },
+      "originalSource": {
+        "example.com/g05/dep@v1.0.0/go.mod": "module example.com/g05/dep\n\ngo 1.24.0\n",
+        "example.com/g05/dep@v1.0.0/dep.go": "package dep\n"
+      }
+    },
+    {
+      "module": "example.com/g05/dep",
+      "version": "v1.1.0",
+      "files": {
+        "v1.1.0.mod": "2125ef2dd5381403390be72dfe4cd28d155ac2257bca34b009629a14083b9572",
+        "v1.1.0.info": "3c01ccd5ebfbd45d865efa7dd944d738579ba3e42fbc5293387de9ca9be13ef2",
+        "v1.1.0.zip": "76d5a255fc9353eacbcd4265e73c08f99f22c65d7ebbd93b05a94baa271d548f"
+      },
+      "originalSource": {
+        "example.com/g05/dep@v1.1.0/go.mod": "module example.com/g05/dep\n\ngo 1.24.0\n",
+        "example.com/g05/dep@v1.1.0/dep.go": "package dep\n"
+      }
+    },
+    {
+      "module": "example.com/g05/other",
+      "version": "v1.0.0",
+      "files": {
+        "v1.0.0.mod": "00351bea46315f382d9141d450efffc6598a716eb6b1f9fdc136f98f854492ad",
+        "v1.0.0.info": "03860ddbcca086e370df8a6e0148f7d739d7797703ce95b2b009caf988175444",
+        "v1.0.0.zip": "a90453132629865360da7d7a22679592b5cb616124bc5f00e1d55d6acf826113"
+      },
+      "originalSource": {
+        "example.com/g05/other@v1.0.0/go.mod": "module example.com/g05/other\n\ngo 1.24.0\n",
+        "example.com/g05/other@v1.0.0/dep.go": "package dep\n"
+      }
+    },
+    {
+      "module": "example.com/g05/other",
+      "version": "v1.1.0",
+      "files": {
+        "v1.1.0.mod": "00351bea46315f382d9141d450efffc6598a716eb6b1f9fdc136f98f854492ad",
+        "v1.1.0.info": "3c01ccd5ebfbd45d865efa7dd944d738579ba3e42fbc5293387de9ca9be13ef2",
+        "v1.1.0.zip": "aad458463610e3dca6d285cb459cd26c3d9b14e992c21c3bdcf6562515308a47"
+      },
+      "originalSource": {
+        "example.com/g05/other@v1.1.0/go.mod": "module example.com/g05/other\n\ngo 1.24.0\n",
+        "example.com/g05/other@v1.1.0/dep.go": "package dep\n"
+      }
+    }
+  ]
+}

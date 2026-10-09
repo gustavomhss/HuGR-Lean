@@ -1,0 +1,1017 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "archives": ["captures/install.txt"],
+  "cases": [
+    {
+      "name": "L05/version",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--version"
+      ],
+      "command": "prettier --version",
+      "file": "captures/version.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/version",
+        "sha256": "bb8408e7188bc6e00f87159c1898e6bfee03926fb2c65b5af3f372a7abfbc7fb"
+      }
+    },
+    {
+      "name": "L05/check-clean",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "clean.js"
+      ],
+      "command": "prettier --check clean.js",
+      "file": "captures/check-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/check-clean",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/check-dirty",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "dirty.js"
+      ],
+      "command": "prettier --check dirty.js",
+      "file": "captures/check-dirty.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/check-dirty",
+        "sha256": "5afc36fd8725ccdd905292431985cb32ca76d2dc3ee0f44406b5c1636e41e72a"
+      }
+    },
+    {
+      "name": "L05/check-multiple",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "clean.js",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --check clean.js dirty.js 'space dir/雪 file.js'",
+      "file": "captures/check-multiple.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/check-multiple",
+        "sha256": "e1a5b5bf068efcc79bcd642910aad11972a6a6ee1ec136db7bfaad942796e29c"
+      }
+    },
+    {
+      "name": "L05/list-clean",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "clean.js"
+      ],
+      "command": "prettier --list-different clean.js",
+      "file": "captures/list-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/list-clean",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L05/list-multiple",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "clean.js",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --list-different clean.js dirty.js 'space dir/雪 file.js'",
+      "file": "captures/list-multiple.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/list-multiple",
+        "sha256": "2a47c69baccff01a4fe592341438f86592c0558d016d0c62f947566261aa0b43"
+      }
+    },
+    {
+      "name": "L05/debug-clean",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "clean.js"
+      ],
+      "command": "prettier --debug-check clean.js",
+      "file": "captures/debug-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/debug-clean",
+        "sha256": "a49c92d1add4f732e49fbbf13875f9ed941f8482f1610ea996ba4e29cfe75367"
+      }
+    },
+    {
+      "name": "L05/debug-multiple",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --debug-check dirty.js 'space dir/雪 file.js'",
+      "file": "captures/debug-multiple.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/debug-multiple",
+        "sha256": "2a47c69baccff01a4fe592341438f86592c0558d016d0c62f947566261aa0b43"
+      }
+    },
+    {
+      "name": "L05/default-source",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "dirty.js"
+      ],
+      "command": "prettier dirty.js",
+      "file": "captures/default-source.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/default-source",
+        "sha256": "c8482458943e70bc9b42b86c7a1f977028005367ead636ffa62dd836496a0259"
+      }
+    },
+    {
+      "name": "L05/syntax-check",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "broken.js"
+      ],
+      "command": "prettier --check broken.js",
+      "file": "captures/syntax-check.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/syntax-check",
+        "sha256": "2fbf8851dc9aff32ec8eb281ac4f897269dd31c36fde7fec0cc37877cde96405"
+      }
+    },
+    {
+      "name": "L05/syntax-list",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "broken.js"
+      ],
+      "command": "prettier --list-different broken.js",
+      "file": "captures/syntax-list.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/syntax-list",
+        "sha256": "044d352241ef5eb260b713fd6e5a97fa68d920a9369c5996ec6ffe1eebec7339"
+      }
+    },
+    {
+      "name": "L05/syntax-debug",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "broken.js"
+      ],
+      "command": "prettier --debug-check broken.js",
+      "file": "captures/syntax-debug.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/syntax-debug",
+        "sha256": "044d352241ef5eb260b713fd6e5a97fa68d920a9369c5996ec6ffe1eebec7339"
+      }
+    },
+    {
+      "name": "L05/config-failure",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --check --config bad.config.json clean.js",
+      "file": "captures/config-failure.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/config-failure",
+        "sha256": "6e618f807ccc1e1bf7d2ff27273f1cbc102a39a0e3b963ff8f3ef973cc8408e9"
+      }
+    },
+    {
+      "name": "L05/ignored",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "ignored.js"
+      ],
+      "command": "prettier --check ignored.js",
+      "file": "captures/ignored.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/ignored",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/no-files",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "missing-*.js"
+      ],
+      "command": "prettier --check 'missing-*.js'",
+      "file": "captures/no-files.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/no-files",
+        "sha256": "58d7bcc94734c66cd11e92da46ffd176604a72a8de19d448b96fe0a90558bfb3"
+      }
+    },
+    {
+      "name": "L05/no-files-allowed",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "--no-error-on-unmatched-pattern",
+        "missing-*.js"
+      ],
+      "command": "prettier --check --no-error-on-unmatched-pattern 'missing-*.js'",
+      "file": "captures/no-files-allowed.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/no-files-allowed",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/unknown-option",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "--unknown-capture-flag",
+        "clean.js"
+      ],
+      "command": "prettier --check --unknown-capture-flag clean.js",
+      "file": "captures/unknown-option.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/unknown-option",
+        "sha256": "6ea12f8abc05b8bacf6dd2d51ed418c887a5146b8cbdb27c4bd96daeb210d3ab"
+      }
+    },
+    {
+      "name": "L05/plugin-collision",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --check --plugin ./collision.mjs clean.js",
+      "file": "captures/plugin-collision.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/plugin-collision",
+        "sha256": "3d4d7673e5e6eb4298bf9b8d1c4ca920c8042be5866e84668b19025b003a3934"
+      }
+    },
+    {
+      "name": "L05/npx-check",
+      "family": "prettier",
+      "argv": [
+        "npx",
+        "prettier",
+        "--check",
+        "clean.js"
+      ],
+      "command": "npx prettier --check clean.js",
+      "file": "captures/npx-check.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/npx-check",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/npx-no-install-check",
+      "family": "prettier",
+      "argv": [
+        "npx",
+        "--no-install",
+        "prettier",
+        "--check",
+        "clean.js"
+      ],
+      "command": "npx --no-install prettier --check clean.js",
+      "file": "captures/npx-no-install-check.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/npx-no-install-check",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/config-good",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "--config",
+        "good.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --check --config good.config.json clean.js",
+      "file": "captures/config-good.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/config-good",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/default-clean",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "clean.js"
+      ],
+      "command": "prettier clean.js",
+      "file": "captures/default-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/default-clean",
+        "sha256": "ccaf64015d7074d368d360da2665a277bf0debdbf98a7807415121c1f3738017"
+      }
+    },
+    {
+      "name": "L05/default-unicode",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier 'space dir/雪 file.js'",
+      "file": "captures/default-unicode.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/default-unicode",
+        "sha256": "41a190965a64335a18b75ca666c6813c48a90b7de3a3aea098e908e789c9a48c"
+      }
+    },
+    {
+      "name": "L05/syntax-default",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "broken.js"
+      ],
+      "command": "prettier broken.js",
+      "file": "captures/syntax-default.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/syntax-default",
+        "sha256": "044d352241ef5eb260b713fd6e5a97fa68d920a9369c5996ec6ffe1eebec7339"
+      }
+    },
+    {
+      "name": "L05/config-list",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --list-different --config bad.config.json clean.js",
+      "file": "captures/config-list.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/config-list",
+        "sha256": "50f27b266d1b2c392025fd863db14586260f52ef30d416e4e1efded1589cb413"
+      }
+    },
+    {
+      "name": "L05/config-debug",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --debug-check --config bad.config.json clean.js",
+      "file": "captures/config-debug.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/config-debug",
+        "sha256": "50f27b266d1b2c392025fd863db14586260f52ef30d416e4e1efded1589cb413"
+      }
+    },
+    {
+      "name": "L05/config-default",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --config bad.config.json clean.js",
+      "file": "captures/config-default.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/config-default",
+        "sha256": "50f27b266d1b2c392025fd863db14586260f52ef30d416e4e1efded1589cb413"
+      }
+    },
+    {
+      "name": "L05/ignored-list",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "ignored.js"
+      ],
+      "command": "prettier --list-different ignored.js",
+      "file": "captures/ignored-list.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/ignored-list",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L05/ignored-debug",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "ignored.js"
+      ],
+      "command": "prettier --debug-check ignored.js",
+      "file": "captures/ignored-debug.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/ignored-debug",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "L05/ignored-default",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "ignored.js"
+      ],
+      "command": "prettier ignored.js",
+      "file": "captures/ignored-default.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/ignored-default",
+        "sha256": "5d96e8beaf3bdee67b8a1892aa85918426b9c0d6347ce3552410497dce904326"
+      }
+    },
+    {
+      "name": "L05/no-files-list",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "missing-*.js"
+      ],
+      "command": "prettier --list-different 'missing-*.js'",
+      "file": "captures/no-files-list.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/no-files-list",
+        "sha256": "1b159bdb2e48dc8e178beea8209cd9c2dccd0bfba0c490eaa4c97be9401c95d5"
+      }
+    },
+    {
+      "name": "L05/no-files-debug",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "missing-*.js"
+      ],
+      "command": "prettier --debug-check 'missing-*.js'",
+      "file": "captures/no-files-debug.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/no-files-debug",
+        "sha256": "1b159bdb2e48dc8e178beea8209cd9c2dccd0bfba0c490eaa4c97be9401c95d5"
+      }
+    },
+    {
+      "name": "L05/no-files-default",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "missing-*.js"
+      ],
+      "command": "prettier 'missing-*.js'",
+      "file": "captures/no-files-default.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/no-files-default",
+        "sha256": "1b159bdb2e48dc8e178beea8209cd9c2dccd0bfba0c490eaa4c97be9401c95d5"
+      }
+    },
+    {
+      "name": "L05/plugin-list",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --list-different --plugin ./collision.mjs clean.js",
+      "file": "captures/plugin-list.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/plugin-list",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    {
+      "name": "L05/plugin-debug",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --debug-check --plugin ./collision.mjs clean.js",
+      "file": "captures/plugin-debug.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/plugin-debug",
+        "sha256": "810472e22453c16f4de1afddf20586ace1c7b76925208d4f349cd9fb6c9432e3"
+      }
+    },
+    {
+      "name": "L05/plugin-default",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --plugin ./collision.mjs clean.js",
+      "file": "captures/plugin-default.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/plugin-default",
+        "sha256": "8418e57691c1c064a4f539c33b49249e462cf9bd9ce1134611d03c05e39a6803"
+      }
+    },
+    {
+      "name": "L05/plugin-multiple",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "--check",
+        "--plugin",
+        "./collision.mjs",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --check --plugin ./collision.mjs dirty.js 'space dir/雪 file.js'",
+      "file": "captures/plugin-multiple.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/plugin-multiple",
+        "sha256": "2fda750b72c453da0318d8b422c6db4be7ca4ae7488da61b7c0760b45294b6b0"
+      }
+    },
+    {
+      "name": "L05/default-multiple",
+      "family": "prettier",
+      "argv": [
+        "prettier",
+        "clean.js",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier clean.js dirty.js 'space dir/雪 file.js'",
+      "file": "captures/default-multiple.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "3.6.2",
+      "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "captureReceipt": "capture-receipt.json",
+        "record": "SOURCES.md",
+        "case": "L05/default-multiple",
+        "sha256": "674ffd5332acaa972ff3d818e0d87acc7cdab6967b13bd5039782b5a04c963bf"
+      }
+    }
+  ]
+}

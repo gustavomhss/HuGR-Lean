@@ -1,0 +1,9 @@
+bun test v1.3.14 (0d9b296a)
+....
+
+2 pass
+1 skip
+1 todo
+0 fail
+2 expect() calls
+Ran 4 tests across 1 file. [259.00ms]

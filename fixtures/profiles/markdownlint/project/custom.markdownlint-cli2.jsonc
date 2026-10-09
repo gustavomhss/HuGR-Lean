@@ -1,0 +1,4 @@
+{
+  "config": { "default": false, "L11-BAD": true },
+  "customRules": ["./custom-rule.cjs"]
+}

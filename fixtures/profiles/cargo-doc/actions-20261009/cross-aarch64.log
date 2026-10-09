@@ -1,0 +1,5 @@
+    Checking c05-beta v0.1.0 (/home/runner/work/_temp/c05-project/beta)
+    Checking c05-alpha v0.1.0 (/home/runner/work/_temp/c05-project)
+ Documenting c05-alpha v0.1.0 (/home/runner/work/_temp/c05-project)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
+   Generated /home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/index.html and 1 other file

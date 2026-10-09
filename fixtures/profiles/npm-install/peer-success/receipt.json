@@ -1,0 +1,44 @@
+{
+  "cases": [
+    {
+      "name": "P01/peer-override-success",
+      "command": [
+        "npm",
+        "install",
+        "--force",
+        "--ignore-scripts",
+        "--registry",
+        "http://127.0.0.1:49787/",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "npm 10.9.2; Node v22.17.1",
+      "boundary": {
+        "bytes": 787,
+        "sha256": "053ad80c0ac85b524700e227a02bc8cb9132980b1d348724b6c82fb74596e7ea",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e73756d65724022312e302e30222066726f6d2074686520726f6f742070726f6a6563740a0a61646465642032207061636b6167657320696e203433316d730a",
+        "collector": "subprocess.run; stderr=STDOUT at spawn; shared OS pipe drained before return"
+      },
+      "originalCollector": {
+        "file": "peer-success/collector.json",
+        "sha256": "2d7fc0c469467d5eae6113391604a5ce60293cefcecaaed6f9f0bc44fff64e2b"
+      },
+      "lock": {
+        "file": "peer-success/package-lock.json",
+        "sha256": "a011f75910a664094f690671a5ab24a180720d6b7bf6669ce04760d1a14ed3f6"
+      },
+      "installed": {
+        "file": "peer-success/installed.json",
+        "sha256": "f5c0f69e6ae9b2fc13999c7f2e38f8ed66d5acd50669152d744b7a880853b6e8"
+      }
+    }
+  ]
+}

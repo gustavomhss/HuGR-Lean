@@ -1,0 +1,2 @@
+PASS
+ok  	example.com/g01	5.402s

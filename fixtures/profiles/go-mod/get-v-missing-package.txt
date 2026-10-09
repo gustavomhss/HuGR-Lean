@@ -1,0 +1,1 @@
+go: module example.com/g05/dep@upgrade found (v1.0.0, replaced by ./dep), but does not contain package example.com/g05/dep/missing

@@ -1,0 +1,43 @@
+{
+  "schema":"hugr-lean/esbuild-capture/1",
+  "baseline":"07ffe15e2263c2925778022194c5385807216603",
+  "version":"0.25.11",
+  "platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "cwd":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native",
+  "binary":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild",
+  "binarySha256":"d738f75cffad3327640cc22c306066a9d6e921c533cf6f10a947460ba891fbe1",
+  "package":{"registry":"https://registry.npmjs.org","tarball":"https://registry.npmjs.org/esbuild/-/esbuild-0.25.11.tgz","integrity":"sha512-KohQwyzrKTQmhXDW1PjCv3Tyspn9n5GcY2RTDqeORIdIJY8yKIF7sTSopFmn/wpMPW4rdPXI0UE5LJLuq3bx0Q==","license":"MIT"},
+  "boundary":"Direct native executable, argv split on ASCII spaces in cases.json (no quoting required). subprocess.run with stdout=PIPE, stderr=STDOUT. Shared pipe preserves actual write order; bytes read through EOF after process exit. No timeout, truncation, normalization, alias, JS API, plugin or command rewrite. Raw output is inline in cases.json; LF/EOF follows JSON string exactly.",
+  "environment":"Inherited host environment; non-TTY shared pipe; no explicit color or width override. No custom esbuild wrapper. npm installation confined to isolated temporary package.",
+  "integrity":{"command":"python3 integrity.py","cwd":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native","negativeControl":"In-memory removal of [duplicate-object-key] rejected by raw SHA-256 comparison at B03-warning-full-context","original":"Passed raw hashes/UTF-8 byte sizes, case identities/exits, source bytes, native executable hash and recorded asset hashes/sizes","repositoryRuntimeChecks":"Not run; capture-only instruction"},
+  "sources":{
+    "src/failure.js":"import { missing } from './does-not-exist.js';\nconsole.log(missing);\n",
+    "src/icon.svg":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1\" height=\"1\"><path d=\"M0 0h1v1H0z\"/></svg>\n",
+    "src/lazy.js":"import { label } from './shared.js';\nexport const answer = `${label}:42`;\n",
+    "src/main.js":"import { label } from './shared.js';\nimport './style.css';\nimport image from './icon.svg';\nconsole.log(label, image);\nimport('./lazy.js').then(({ answer }) => console.log(answer));\n",
+    "src/shared.js":"export const label = 'café 🧪';\n",
+    "src/stdout.js":"console.log('stdout bundle: café 🧪');\n",
+    "src/style.css":"body { background: url('./icon.svg'); color: rebeccapurple; }\n",
+    "src/warning.js":"const values = { repeated: 1, repeated: 2 };\nconsole.log(values, Number('x') === NaN);\n"
+  },
+  "records":[
+    {"name":"B03-file-bundle","rawBytes":127,"rawSha256":"a95f41490b7207f395c4793bea491dde7882894f1b8efbcbe4156ba72b20bc3d","exitCode":0,"assets":[
+      {"path":"out/file/bundle.css","utf8Bytes":95,"sha256":"992041258a7f11f5ce8d0e85087eed7d3fce417493d9f2ced0baca4fb3cc4206"},
+      {"path":"out/file/bundle.js","utf8Bytes":994,"sha256":"e7400033168791afa4639eee55b5bfe769ea1d03f4457f2ef3ba763ea83e803a"},
+      {"path":"out/file/icon-MBMD7YBM.svg","utf8Bytes":91,"sha256":"2c22c4f85051d8496a421dab0908761d7529c74fae4d0479929d459c1f9b5759"}]},
+    {"name":"B03-multiple-assets-splitting","rawBytes":388,"rawSha256":"09026f62c338776dcfb57672ab9ffa000bccf2a2fd4d63dced9314a9dd931bba","exitCode":0,"assets":[
+      {"path":"out/split/chunk-Y3MEG7K4.js","utf8Bytes":114,"sha256":"a57bf717f2319a213ba50146cf2a28e00fdef9c6dcb823cbe2fa6a91429103bb"},
+      {"path":"out/split/chunk-Y3MEG7K4.js.map","utf8Bytes":180,"sha256":"270a67ed48d74a5c88af9a36edf78c2eb5a5b50c4045904191e15dd98b4ae622"},
+      {"path":"out/split/icon-MBMD7YBM.svg","utf8Bytes":91,"sha256":"2c22c4f85051d8496a421dab0908761d7529c74fae4d0479929d459c1f9b5759"},
+      {"path":"out/split/lazy.js","utf8Bytes":145,"sha256":"e843f2d71da801e7feda277eae02dd433c457c469f3a91fc2861ee8e6b8610d4"},
+      {"path":"out/split/lazy.js.map","utf8Bytes":220,"sha256":"dd5d499b2b27924481a9780d7621b5029a0b7eb66a0b65710e73a0a66af0b57f"},
+      {"path":"out/split/main.css","utf8Bytes":132,"sha256":"2c21ce8b6ea43796631f67b94449b3e4f86e06a804b96a92665a06bc7a16e6d9"},
+      {"path":"out/split/main.css.map","utf8Bytes":211,"sha256":"d29cbc07f9c4e8200c17b9ae1ae0697b43e0f888ecf226cf0587a8fe89df522f"},
+      {"path":"out/split/main.js","utf8Bytes":252,"sha256":"b79fee00493183a63b83e6975651c9cf63d1721eded038f93dd946083ac5b281"},
+      {"path":"out/split/main.js.map","utf8Bytes":399,"sha256":"8c64fcb249d5491a30a168509438d775d6c3272abac3dcfe7bd9a2c3e9749448"}]},
+    {"name":"B03-warning-full-context","rawBytes":835,"rawSha256":"4c96266a128c4573eb3afe69a921df4c59e00d2587d5d5dbc3f7c5e68cd77aed","exitCode":0,"assets":[{"path":"out/warning/bundle.js","utf8Bytes":124,"sha256":"cda2a765c0adac745792fa043bffe58885e894cdf6aa49dca3bc8ddf001f0c9a"}]},
+    {"name":"B03-failure-full-context","rawBytes":204,"rawSha256":"2a3ee2fa9283ed586fd66f9f28f6b8543753cd97619432c8246229a250eee77a","exitCode":1,"assets":[]},
+    {"name":"B03-stdout-bundle","rawBytes":85,"rawSha256":"a2a1e7cbb198aca2f9fa877475660796e5950beb17ee821202a370196d6d7f4b","exitCode":0,"assets":[]},
+    {"name":"B03-silent-file","rawBytes":0,"rawSha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","exitCode":0,"assets":[{"path":"out/silent/bundle.js","utf8Bytes":85,"sha256":"a2a1e7cbb198aca2f9fa877475660796e5950beb17ee821202a370196d6d7f4b"}]}
+  ]
+}

@@ -1,0 +1,10 @@
+warning: function `dormant_café` is never used
+ --> src/lib.rs:3:4
+  |
+3 | fn dormant_café() {}
+  |    ^^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `ridge-lib` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.06s

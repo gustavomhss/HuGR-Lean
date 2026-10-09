@@ -1,0 +1,39 @@
+{
+  "p01-peer-host": {
+    "1.0.0": {
+      "name": "p01-peer-host",
+      "version": "1.0.0",
+      "license": "MIT",
+      "dist": {
+        "integrity": "sha512-vqdpKr2BWD78If2lkJHhouhBFOkQvH02zCRZc/iFfjwraynzRTGQON6O0n8K0aZ2NszwSYP/WlQE6/Lns9hVJQ==",
+        "shasum": "d080008a56963c11d8579376efaf5a4edf1fcb38",
+        "tarball": "http://127.0.0.1:49787/p01-peer-host-1.0.0.tgz"
+      }
+    },
+    "2.0.0": {
+      "name": "p01-peer-host",
+      "version": "2.0.0",
+      "license": "MIT",
+      "dist": {
+        "integrity": "sha512-CayKLq5bBAU1BV7vmhcdnU5OSAzckljwqz19XPkO9+fF+ilaXEdohPynDU/j/NIWYvwNR3rZgEDWB0PCdkX9Tw==",
+        "shasum": "65a2b2674f1390efd2bd0f27bfdc2b386d74fcef",
+        "tarball": "http://127.0.0.1:49787/p01-peer-host-2.0.0.tgz"
+      }
+    }
+  },
+  "p01-peer-consumer": {
+    "1.0.0": {
+      "name": "p01-peer-consumer",
+      "version": "1.0.0",
+      "license": "MIT",
+      "peerDependencies": {
+        "p01-peer-host": ">=2"
+      },
+      "dist": {
+        "integrity": "sha512-FqVMbI5D0ovlHEJcAV2du8lJjWOTHdx1XkMc+LX7Xi68blhsHTfKmThDBYSVhM/eKLqZRFoaJukAdEGgq7zmTA==",
+        "shasum": "e8d18060557fae1ee6943c5c16fe6de496afc38a",
+        "tarball": "http://127.0.0.1:49787/p01-peer-consumer-1.0.0.tgz"
+      }
+    }
+  }
+}

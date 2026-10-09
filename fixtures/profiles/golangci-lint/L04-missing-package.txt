@@ -1,0 +1,2 @@
+level=error msg="[linters_context] typechecking error: stat /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s/missing: directory not found"
+0 issues.

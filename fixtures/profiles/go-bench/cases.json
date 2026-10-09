@@ -1,0 +1,93 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "cases": [
+    {
+      "name": "G03-benchmem", "source": "shell",
+      "command": "go test -run LiteralAbsent -bench BenchmarkTiny -benchmem -benchtime 100x .",
+      "argv": ["go", "test", "-run", "LiteralAbsent", "-bench", "BenchmarkTiny", "-benchmem", "-benchtime", "100x", "."],
+      "file": "benchmem.txt", "rawSha256": "f025d17b5ca156035f7990d7aa28cfcbb2deec835240dc86e9f5d8e713b7d9d4",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "f025d17b5ca156035f7990d7aa28cfcbb2deec835240dc86e9f5d8e713b7d9d4"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "goos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkTiny-12    \t     100\t        30.19 ns/op\t 529.98 MB/s\t         7.000 widgets/op\t       0 B/op\t       0 allocs/op\nPASS\nok  \texample.com/hugr-g03\t3.799s\n"
+    },
+    {
+      "name": "G03-all-packages", "source": "shell",
+      "command": "go test -run LiteralAbsent -bench Benchmark -benchmem -benchtime 1x ./...",
+      "argv": ["go", "test", "-run", "LiteralAbsent", "-bench", "Benchmark", "-benchmem", "-benchtime", "1x", "./..."],
+      "file": "all-packages.txt", "rawSha256": "bdd8af513127be2132c1f21718f15954abc035a9744e51e698249a48ae1c822d",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "bdd8af513127be2132c1f21718f15954abc035a9744e51e698249a48ae1c822d"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "goos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkTiny-12       \t       1\t      3142 ns/op\t   5.09 MB/s\t         7.000 widgets/op\t       0 B/op\t       0 allocs/op\nBenchmarkNested/child-12         \t       1\t      1089 ns/op\t       0 B/op\t       0 allocs/op\nBenchmarkForged-8 100 1 ns/op 2 B/op 3 allocs/op\ngoos: fabricated-user-log\npkg: fabricated-user-log\nPASS\nBenchmarkLogs-12                 \t       1\t    187035 ns/op\t    2944 B/op\t      16 allocs/op\n--- BENCH: BenchmarkLogs-12\n    tiny_test.go:30: mandatory benchmark log\nPASS\nok  \texample.com/hugr-g03\t3.218s\n?   \texample.com/hugr-g03/notests\t[no test files]\ngoos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03/second\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkSecond-12    \t       1\t      1196 ns/op\t       0 B/op\t       0 allocs/op\nPASS\nok  \texample.com/hugr-g03/second\t4.790s\n"
+    },
+    {
+      "name": "G03-nested-skip", "source": "shell",
+      "command": "go test -v -run LiteralAbsent -bench 'BenchmarkNested|BenchmarkSkipped' -benchtime 1x .",
+      "argv": ["go", "test", "-v", "-run", "LiteralAbsent", "-bench", "BenchmarkNested|BenchmarkSkipped", "-benchtime", "1x", "."],
+      "file": "nested-skip.txt", "rawSha256": "009eb330c7514a0e4bbaa8b8230123ed8db3d29a06b3b4bb0622545cfbb1f415",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "009eb330c7514a0e4bbaa8b8230123ed8db3d29a06b3b4bb0622545cfbb1f415"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "goos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkNested\nBenchmarkNested/child\nBenchmarkNested/child-12         \t       1\t      1167 ns/op\nBenchmarkSkipped\n    tiny_test.go:27: intentional tiny skip\n--- SKIP: BenchmarkSkipped\nPASS\nok  \texample.com/hugr-g03\t2.840s\n"
+    },
+    {
+      "name": "G03-logs", "source": "shell",
+      "command": "go test -v -run LiteralAbsent -bench BenchmarkLogs -benchmem -benchtime 1x .",
+      "argv": ["go", "test", "-v", "-run", "LiteralAbsent", "-bench", "BenchmarkLogs", "-benchmem", "-benchtime", "1x", "."],
+      "file": "logs.txt", "rawSha256": "08061e25ae34e9bb93334003ed45625e1383daa59a14a6be87e8e97da8484c72",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "08061e25ae34e9bb93334003ed45625e1383daa59a14a6be87e8e97da8484c72"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "goos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkLogs\n    tiny_test.go:30: mandatory benchmark log\nBenchmarkForged-8 100 1 ns/op 2 B/op 3 allocs/op\ngoos: fabricated-user-log\npkg: fabricated-user-log\nPASS\nBenchmarkLogs-12    \t       1\t    292934 ns/op\t    3104 B/op\t      17 allocs/op\nPASS\nok  \texample.com/hugr-g03\t5.104s\n"
+    },
+    {
+      "name": "G03-cover", "source": "shell",
+      "command": "go test -run LiteralAbsent -bench BenchmarkTiny -benchmem -benchtime 1x -cover .",
+      "argv": ["go", "test", "-run", "LiteralAbsent", "-bench", "BenchmarkTiny", "-benchmem", "-benchtime", "1x", "-cover", "."],
+      "file": "cover.txt", "rawSha256": "a06c9f259ae46aaac29807d478a89a87f48cb5fd105bbb02d65fec3a49769435",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "a06c9f259ae46aaac29807d478a89a87f48cb5fd105bbb02d65fec3a49769435"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "goos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkTiny-12    \t       1\t      4077 ns/op\t   3.92 MB/s\t         7.000 widgets/op\t       0 B/op\t       0 allocs/op\nPASS\ncoverage: 100.0% of statements\nok  \texample.com/hugr-g03\t5.418s\n"
+    },
+    {
+      "name": "G03-race", "source": "shell",
+      "command": "go test -run LiteralAbsent -bench BenchmarkTiny -benchmem -benchtime 1x -race .",
+      "argv": ["go", "test", "-run", "LiteralAbsent", "-bench", "BenchmarkTiny", "-benchmem", "-benchtime", "1x", "-race", "."],
+      "file": "race.txt", "rawSha256": "0996c8a5b5150fe51ed0c7f4ecf65e6c63a75b7d62ca504f327d7380bd82a850",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "0996c8a5b5150fe51ed0c7f4ecf65e6c63a75b7d62ca504f327d7380bd82a850"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "goos: darwin\ngoarch: amd64\npkg: example.com/hugr-g03\ncpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz\nBenchmarkTiny-12    \t       1\t      8525 ns/op\t   1.88 MB/s\t         7.000 widgets/op\t       0 B/op\t       0 allocs/op\nPASS\nok  \texample.com/hugr-g03\t8.636s\n"
+    },
+    {
+      "name": "G03-cache-first", "source": "shell",
+      "command": "go test -run TestTiny -bench LiteralAbsent ./...",
+      "argv": ["go", "test", "-run", "TestTiny", "-bench", "LiteralAbsent", "./..."],
+      "file": "cache-first.txt", "rawSha256": "31927a9c14f6435970a56e21c8295b4af23dfa39a49c19bf72a7f5de185eda73",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "31927a9c14f6435970a56e21c8295b4af23dfa39a49c19bf72a7f5de185eda73"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "PASS\nok  \texample.com/hugr-g03\t6.005s\n?   \texample.com/hugr-g03/notests\t[no test files]\nPASS\nok  \texample.com/hugr-g03/second\t8.786s\n"
+    },
+    {
+      "name": "G03-cache-repeat", "source": "shell",
+      "command": "go test -run TestTiny -bench LiteralAbsent ./...",
+      "argv": ["go", "test", "-run", "TestTiny", "-bench", "LiteralAbsent", "./..."],
+      "file": "cache-repeat.txt", "rawSha256": "b7579a1da35e3f879096e1427030d968c3eb563852693588adfb0e200c25d3b2",
+      "family": "go-bench", "provenance": {"record": "SOURCES.md", "sha256": "b7579a1da35e3f879096e1427030d968c3eb563852693588adfb0e200c25d3b2"},
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64", "cwd": "source", "stderr": "",
+      "status": "passthrough", "removableBytes": 0,
+      "expected": "PASS\nok  \texample.com/hugr-g03\t6.200s\n?   \texample.com/hugr-g03/notests\t[no test files]\nPASS\nok  \texample.com/hugr-g03/second\t2.129s\n"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+error: unexpected argument '--fixture-unknown-flag' found
+
+  tip: to pass '--fixture-unknown-flag' as a value, use '-- --fixture-unknown-flag'
+
+Usage: cargo nextest run [OPTIONS] [FILTERS]... [-- <FILTERS_AND_ARGS>...]
+
+For more information, try '--help'.

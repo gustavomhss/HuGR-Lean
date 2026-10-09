@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "jest",
+    "--version"
+  ],
+  "command": "jest --version",
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-config-o3lbvj_w/project",
+  "exitCode": 0,
+  "bytes": 7,
+  "sha256": "7fbbbdd8a7e1131f4ae3af1a0269ddb1da8c1a6101ebd22a17c20ec5882e1cbe",
+  "readThroughEOF": true,
+  "finalLF": true,
+  "lastBytesHex": "33302e312e330a",
+  "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+  "completionAt": "2026-10-09T18:40:28.852011+00:00"
+}

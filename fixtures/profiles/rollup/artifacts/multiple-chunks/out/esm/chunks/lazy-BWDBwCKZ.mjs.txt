@@ -1,0 +1,4 @@
+const lazy = 'lazy chunk';
+
+export { lazy };
+//# sourceMappingURL=lazy-BWDBwCKZ.mjs.map

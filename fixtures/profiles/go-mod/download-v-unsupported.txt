@@ -1,0 +1,3 @@
+flag provided but not defined: -v
+usage: go mod download [-x] [-json] [-reuse=old.json] [modules]
+Run 'go help mod download' for details.

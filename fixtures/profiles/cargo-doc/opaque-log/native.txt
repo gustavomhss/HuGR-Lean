@@ -1,0 +1,6 @@
+   Compiling doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+ Documenting doc-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/beta)
+warning: doc-alpha@0.1.0: opaque user log: Documenting fake-package v9.9.9
+ Documenting doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.47s
+   Generated /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/opaque-log/doc/doc_alpha/index.html and 1 other file

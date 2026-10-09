@@ -1,0 +1,12 @@
+Packages: +2
+++
+ WARN  Issues with peer dependencies found
+.
+└─┬ p02-consumer 1.0.0
+  └── ✕ unmet peer p02-host@^2.0.0: found 1.0.0
+
+dependencies:
++ p02-consumer 1.0.0
++ p02-host 1.0.0
+
+Done in 466ms using pnpm v10.18.3

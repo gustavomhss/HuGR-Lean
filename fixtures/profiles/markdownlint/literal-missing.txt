@@ -1,0 +1,9 @@
+markdownlint-cli2 v0.23.3 (markdownlint v0.41.1)
+Finding: :missing.md
+Linting: 1 file
+[Error: ENOENT: no such file or directory, open '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/project/missing.md'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/project/missing.md'
+}

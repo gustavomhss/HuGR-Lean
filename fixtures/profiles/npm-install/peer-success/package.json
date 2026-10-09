@@ -1,0 +1,10 @@
+{
+  "name": "p01-peer-success-root",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "p01-peer-host": "1.0.0",
+    "p01-peer-consumer": "1.0.0"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "recipe": "inspect .next recursively after process exit; hash raw file bytes; retain named manifests verbatim",
+  "termination": {
+    "kind": "timed_out"
+  },
+  "artifacts": [
+    {
+      "path": ".next/cache/.previewinfo",
+      "bytes": 262,
+      "sha256": "885cb7efc08404807c4de763aab4d21d939120c57ab98076177ef25c69907ff0"
+    },
+    {
+      "path": ".next/cache/.rscinfo",
+      "bytes": 102,
+      "sha256": "f529fe4e3ecd0529a941293645c0f1c3b63220a7c6acdd130d4533f161df5cd3"
+    },
+    {
+      "path": ".next/cache/.tsbuildinfo",
+      "bytes": 102837,
+      "sha256": "9d412e935d668340c2b6511bcd975ea0f037f8f1a8a20a6059448626d3570ea4"
+    },
+    {
+      "path": ".next/diagnostics/build-diagnostics.json",
+      "bytes": 83,
+      "sha256": "f957528ee74563741494ea85b5fbe42e0b7141bae938eefc6ddaa3b4a91f8430"
+    },
+    {
+      "path": ".next/diagnostics/framework.json",
+      "bytes": 37,
+      "sha256": "d90a1b4e602a12aa5381b6e78f0d0fc764d5fe0168d3ac3b0cdaf81f58c8c587"
+    },
+    {
+      "path": ".next/package.json",
+      "bytes": 20,
+      "sha256": "091a04fa67c7907b98e106fcff8b964e13129754fce72d24f3025b97c4887fa3"
+    },
+    {
+      "path": ".next/types/routes.d.ts",
+      "bytes": 1471,
+      "sha256": "c60ea95fc86fa413dc476176141c8aeeb9329f3617c054cbf0231a71b9073e27"
+    },
+    {
+      "path": ".next/types/validator.ts",
+      "bytes": 1681,
+      "sha256": "f470d42928bfe5e7b7a9f3184a91d7dec3df5d9371d2b29d8df391531b9a126d"
+    }
+  ]
+}

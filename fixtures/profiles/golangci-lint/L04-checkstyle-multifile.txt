@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle version="5.0">
+  <file name="issues/issues.go">
+    <error column="23" line="12" message="Error return value is not checked" severity="error" source="errcheck"></error>
+    <error column="2" line="6" message="ineffectual assignment to x" severity="error" source="ineffassign"></error>
+    <error column="6" line="3" message="func dead is unused" severity="error" source="unused"></error>
+  </file>
+  <file name="other/other.go">
+    <error column="6" line="3" message="func hidden is unused" severity="error" source="unused"></error>
+  </file>
+  <file name="other/雪.go">
+    <error column="6" line="4" message="func unused雪 is unused" severity="error" source="unused"></error>
+  </file>
+</checkstyle>

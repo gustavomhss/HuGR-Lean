@@ -1,0 +1,5 @@
+warning: c01-collision@0.1.0:    Compiling invented v9.8.7 (/producer/log)
+warning: c01-collision@0.1.0:     Finished `release` profile [optimized] target(s) in 0.00s
+warning: c01-collision@0.1.0: C01 unknown producer log café 🦀; retain exactly
+    Checking c01-collision v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-tiny/collision)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.26s

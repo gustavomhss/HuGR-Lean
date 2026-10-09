@@ -1,0 +1,12 @@
+
+In path space/雪😀.sh line 2:
+label="雪😀"; echo $label; echo $missing
+                              ^------^ SC2154 (warning): missing is referenced but not assigned.
+                              ^------^ SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+label="雪😀"; echo $label; echo "$missing"
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2154 -- missing is referenced but not ass...
+  https://www.shellcheck.net/wiki/SC2086 -- Double quote to prevent globbing ...

@@ -1,0 +1,522 @@
+{
+  "scope": "read-time native field type process controls; no producer execution",
+  "auditAt": "2026-10-09T20:10:24.380852+00:00",
+  "beforeRepair": false,
+  "auditRecipeSha256": "705e5365493f706519b7cbd8e32c42ce83a8f9fd2de3e37bc79a5e0efd45fa01",
+  "controlRecipe": {
+    "output": "\"\"\"Temporary JSON process controls; --before records prior auditor blind spots.\"\"\"\nimport base64\nimport copy\nimport datetime\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport tempfile\n\nroot = Path('/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright')\nscratch = Path('/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode')\nbefore = '--before' in sys.argv\nold_input = json.loads((root / 'capture-receipt.json').read_text())\nnew_input = json.loads((root / 'browser-recovery-receipt.json').read_text())\nlabels = ('worker-bool', 'retry-bool', 'duration-string', 'errors-object', 'annotations-object', 'viewport-float')\nif not before:\n    labels += ('parallel-bool', 'duration-bool', 'duration-nan', 'duration-negative', 'stdout-object',\n               'stderr-invalid-element', 'attachments-object', 'optional-error-wrong-type', 'location-line-bool',\n               'empty-results', 'cases-object')\ncontrols = []\n\ndef raw_tests(report):\n    tests = []\n    def visit(suites):\n        for suite in suites:\n            visit(suite.get('suites', []))\n            for spec in suite.get('specs', []):\n                tests.extend(spec['tests'])\n    visit(report['suites'])\n    return tests\n\nwith tempfile.TemporaryDirectory(prefix='R04-type-controls-', dir=scratch) as directory:\n    for label in (*labels, 'original'):\n        old, new = copy.deepcopy(old_input), copy.deepcopy(new_input)\n        name = 'R04-browser-success-list' if label == 'viewport-float' else 'R04-api-list'\n        target = new if label == 'viewport-float' else old\n        tests = target['evidence'][name]['tests']\n        result = tests[0]['results'][0]\n        if label in ('worker-bool', 'retry-bool', 'parallel-bool'):\n            result[{'worker-bool': 'workerIndex', 'retry-bool': 'retry', 'parallel-bool': 'parallelIndex'}[label]] = False\n        elif label.startswith('duration-'):\n            result['duration'] = {'duration-string': 'NOT_A_DURATION', 'duration-bool': False,\n                                  'duration-nan': float('nan'), 'duration-negative': -1}[label]\n        elif label in ('errors-object', 'annotations-object', 'stdout-object', 'attachments-object'):\n            result[label.split('-')[0]] = {}\n        elif label == 'stderr-invalid-element':\n            result['stderr'] = [{'text': False}]\n        elif label == 'optional-error-wrong-type':\n            tests[1]['results'][0]['error']['stack'] = []\n        elif label == 'location-line-bool':\n            tests[1]['results'][0]['errorLocation']['line'] = False\n        elif label == 'empty-results':\n            tests[0]['results'] = []\n        elif label == 'viewport-float':\n            item = next(item for item in result['attachments'] if item['name'] == 'browser-proof')\n            proof = json.loads(base64.b64decode(item['body']))\n            proof['viewport']['width'] = 800.0\n            item['body'] = base64.b64encode(json.dumps(proof, separators=(',', ':')).encode()).decode()\n        if label not in ('worker-bool', 'retry-bool', 'parallel-bool', 'original', 'cases-object'):\n            sidecar = target['artifacts'][name]['report.json']\n            report = json.loads(sidecar['output'])\n            for raw, evidence in zip(raw_tests(report), tests, strict=True):\n                raw['results'] = copy.deepcopy(evidence['results'])\n            sidecar['output'] = json.dumps(report, ensure_ascii=False, indent=2) + '\\n'\n            sidecar['sha256'] = hashlib.sha256(sidecar['output'].encode()).hexdigest()\n        old_path, new_path = Path(directory) / 'historical.json', Path(directory) / 'recovery.json'\n        old_path.write_text(json.dumps(old, ensure_ascii=False, indent=2) + '\\n')\n        # Repair the temporary envelope to ensure semantic validation is reached.\n        new['historicalReceiptSha256'] = hashlib.sha256(old_path.read_bytes()).hexdigest()\n        new_path.write_text(json.dumps(new, ensure_ascii=False, indent=2) + '\\n')\n        argv = [sys.executable, '-B', str(root / 'audit.py'), '--verify-only', '--historical-receipt', str(old_path), '--recovery-receipt', str(new_path)]\n        if label == 'cases-object':\n            # Import avoids altering the fixed native manifest; exercise its entry contract.\n            argv = [sys.executable, '-B', '-c', 'import sys; sys.path.insert(0, sys.argv[1]); import audit; m,r,_=audit.load_inputs(audit.ROOT/\"capture-receipt.json\", audit.ROOT/\"browser-recovery-receipt.json\"); m[\"cases\"]={}; audit.check(m,r)', str(root)]\n        proc = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)\n        output = proc.stdout.decode()\n        if before or label == 'original':\n            assert proc.returncode == 0 and '14 cases' in output, (label, output)\n        else:\n            expected_name = 'native cases' if label == 'cases-object' else name + ':'\n            assert proc.returncode != 0 and expected_name in output, (label, output)\n            assert 'historical receipt envelope mismatch' not in output, (label, output)\n        controls.append({'mutation': label, 'case': name if label != 'original' else 'all 14',\n                         'exit': proc.returncode, 'argv': argv, 'output': output,\n                         'outputSha256': hashlib.sha256(proc.stdout).hexdigest(), 'recomputedTemporaryEnvelope': True})\n        print(label, 'exit', proc.returncode)\n\nresults = [result for receipt in (old_input, new_input) for case in receipt['evidence'].values()\n           for test in case['tests'] for result in test['results']]\ninitial = json.loads(json.loads((root / 'browser-recovery-initial-failure.json').read_text())['report'])\ninitial_results = [result for test in raw_tests(initial) for result in test['results']]\ndomains = {'manifestWorkerIndices': sorted({result['workerIndex'] for result in results}),\n           'manifestParallelIndices': sorted({result['parallelIndex'] for result in results}),\n           'initialTimeoutResults': [{key: result[key] for key in ('workerIndex', 'parallelIndex', 'retry', 'status', 'duration')} for result in initial_results]}\nprint('Captured native domains:', domains)\nreceipt = {'scope': 'read-time native field type process controls; no producer execution',\n           'auditAt': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'beforeRepair': before,\n           'auditRecipeSha256': hashlib.sha256((root / 'audit.py').read_bytes()).hexdigest(),\n           'controlRecipe': {'output': Path(__file__).read_text(), 'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},\n           'capturedDomains': domains, 'restoration': 'temporary records disposed; native inputs untouched', 'controls': controls}\nif (root / 'audit_types.py').exists():\n    receipt['typeHelperSha256'] = hashlib.sha256((root / 'audit_types.py').read_bytes()).hexdigest()\n    receipt['sourceLines'] = {name: len((root / name).read_text().splitlines()) for name in ('audit.py', 'audit_types.py')}\n    assert all(0 < count < 400 for count in receipt['sourceLines'].values()), receipt['sourceLines']\n    print('Auditor source lines:', receipt['sourceLines'])\nif before:\n    (scratch / 'R04-type-before.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\\n')\nelse:\n    receipt['priorBlindControls'] = json.loads((scratch / 'R04-type-before.json').read_text())\n    (root / 'audit-type-controls-receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\\n')\n",
+    "sha256": "89a8ff690d63ba5630ba66d7b7a546ff3eef1b0fe71e6f1db3fa7644dc14b690"
+  },
+  "capturedDomains": {
+    "manifestWorkerIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "manifestParallelIndices": [
+      0
+    ],
+    "initialTimeoutResults": [
+      {
+        "workerIndex": 0,
+        "parallelIndex": 0,
+        "retry": 0,
+        "status": "skipped",
+        "duration": 0
+      }
+    ]
+  },
+  "restoration": "temporary records disposed; native inputs untouched",
+  "controls": [
+    {
+      "mutation": "worker-bool",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 121, in check_case\n    native_types.tests(facts['tests'], 'evidence tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 88, in result\n    integer(value[key], -1, label + '.' + key)\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 25, in integer\n    assert type(value) is int and minimum <= value <= MAX_SAFE, f'{label} must be JS-safe integer >= {minimum} (not bool/float)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: evidence tests[0].results[0].workerIndex must be JS-safe integer >= -1 (not bool/float)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: evidence tests[0].results[0].workerIndex must be JS-safe integer >= -1 (not bool/float)\n",
+      "outputSha256": "09d843fbbb2dd8d9882597709a6e024751cb6d0d6153e26dfc1e0d63409027b9",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "retry-bool",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 121, in check_case\n    native_types.tests(facts['tests'], 'evidence tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 89, in result\n    integer(value['retry'], 0, label + '.retry')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 25, in integer\n    assert type(value) is int and minimum <= value <= MAX_SAFE, f'{label} must be JS-safe integer >= {minimum} (not bool/float)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: evidence tests[0].results[0].retry must be JS-safe integer >= 0 (not bool/float)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: evidence tests[0].results[0].retry must be JS-safe integer >= 0 (not bool/float)\n",
+      "outputSha256": "dcb109358e32f64815e5caaaba60a182dd11b51d8175528d378e7da2cb03c7ec",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "duration-string",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 90, in result\n    duration(value['duration'], label + '.duration')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 29, in duration\n    assert type(value) in (int, float) and 0 <= value <= sys.float_info.max and math.isfinite(value), f'{label} must be finite nonnegative number (not bool)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n",
+      "outputSha256": "8f44adf563a43bb8719a0359408f998b4f940ba3c8ac334c83ee15c89321bd9b",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "errors-object",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 94, in result\n    array(value['errors'], label + '.errors')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 33, in array\n    assert type(value) is list and (value or not nonempty), f'{label} must be {\"nonempty \" if nonempty else \"\"}list'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].errors must be list\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].errors must be list\n",
+      "outputSha256": "d905b498ddf79ffcdf59987d5748605485d440b05454bbf863cd88f0bec0e396",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "annotations-object",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 97, in result\n    annotations(value['annotations'], label + '.annotations')\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 58, in annotations\n    array(value, label)\n    ~~~~~^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 33, in array\n    assert type(value) is list and (value or not nonempty), f'{label} must be {\"nonempty \" if nonempty else \"\"}list'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].annotations must be list\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].annotations must be list\n",
+      "outputSha256": "fa89570ac94594c66289fd4a8db89b2141c0e5db9ecbc3776d23a10ad2ca727f",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "viewport-float",
+      "case": "R04-browser-success-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 189, in check_case\n    native_types.viewport(proof['viewport'], 'browser proof viewport')\n    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 156, in viewport\n    integer(value[key], 1, label + '.' + key)\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 25, in integer\n    assert type(value) is int and minimum <= value <= MAX_SAFE, f'{label} must be JS-safe integer >= {minimum} (not bool/float)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: browser proof viewport.width must be JS-safe integer >= 1 (not bool/float)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-browser-success-list: browser proof viewport.width must be JS-safe integer >= 1 (not bool/float)\n",
+      "outputSha256": "396fd065e4298b0d704ec8e4f7a4dd9b82e788a7e80b37a88971cbc9939b6fb4",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "parallel-bool",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 121, in check_case\n    native_types.tests(facts['tests'], 'evidence tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 88, in result\n    integer(value[key], -1, label + '.' + key)\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 25, in integer\n    assert type(value) is int and minimum <= value <= MAX_SAFE, f'{label} must be JS-safe integer >= {minimum} (not bool/float)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: evidence tests[0].results[0].parallelIndex must be JS-safe integer >= -1 (not bool/float)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: evidence tests[0].results[0].parallelIndex must be JS-safe integer >= -1 (not bool/float)\n",
+      "outputSha256": "577d84f444f0ab444d6968922a725be763d0489db08f9b233bf34756e121563d",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "duration-bool",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 90, in result\n    duration(value['duration'], label + '.duration')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 29, in duration\n    assert type(value) in (int, float) and 0 <= value <= sys.float_info.max and math.isfinite(value), f'{label} must be finite nonnegative number (not bool)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n",
+      "outputSha256": "8f44adf563a43bb8719a0359408f998b4f940ba3c8ac334c83ee15c89321bd9b",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "duration-nan",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 90, in result\n    duration(value['duration'], label + '.duration')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 29, in duration\n    assert type(value) in (int, float) and 0 <= value <= sys.float_info.max and math.isfinite(value), f'{label} must be finite nonnegative number (not bool)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n",
+      "outputSha256": "8f44adf563a43bb8719a0359408f998b4f940ba3c8ac334c83ee15c89321bd9b",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "duration-negative",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 90, in result\n    duration(value['duration'], label + '.duration')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 29, in duration\n    assert type(value) in (int, float) and 0 <= value <= sys.float_info.max and math.isfinite(value), f'{label} must be finite nonnegative number (not bool)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].duration must be finite nonnegative number (not bool)\n",
+      "outputSha256": "8f44adf563a43bb8719a0359408f998b4f940ba3c8ac334c83ee15c89321bd9b",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "stdout-object",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 99, in result\n    array(value[key], label + '.' + key)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 33, in array\n    assert type(value) is list and (value or not nonempty), f'{label} must be {\"nonempty \" if nonempty else \"\"}list'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].stdout must be list\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].stdout must be list\n",
+      "outputSha256": "5f4489d44ededc4a735876bc5daf2aa5a4fb07fcbdba0fe135effca6285e6a97",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "stderr-invalid-element",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 104, in result\n    string(item[field], name + '.' + field)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 21, in string\n    assert type(value) is str, f'{label} must be string'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].stderr[0].text must be string\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].stderr[0].text must be string\n",
+      "outputSha256": "8ec8ee045d2f477a46cd00327a9640e86f5546eeeaf45ed9990f6a1f356373d8",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "attachments-object",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 107, in result\n    array(value['attachments'], label + '.attachments')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 33, in array\n    assert type(value) is list and (value or not nonempty), f'{label} must be {\"nonempty \" if nonempty else \"\"}list'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[0].results[0].attachments must be list\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[0].results[0].attachments must be list\n",
+      "outputSha256": "29cb2d7ff8f6920589f71393be8e62ff37903fa273cbdb75f2365b8d5272144d",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "optional-error-wrong-type",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 116, in result\n    error(value['error'], label + '.error')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 50, in error\n    string(value[key], label + '.' + key)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 21, in string\n    assert type(value) is str, f'{label} must be string'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[1].results[0].error.stack must be string\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[1].results[0].error.stack must be string\n",
+      "outputSha256": "b4c02ef65ede4c83dff4cf423d6aeaf477335a01d1b0734dd18f43faacdf40d2",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "location-line-bool",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 120, in check_case\n    native_types.tests(raw_tests, 'raw report tests')\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 134, in tests\n    result(item_result, f'{name}.results[{attempt}]')\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 118, in result\n    location(value['errorLocation'], label + '.errorLocation')\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 40, in location\n    integer(value[key], 0, label + '.' + key)\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 25, in integer\n    assert type(value) is int and minimum <= value <= MAX_SAFE, f'{label} must be JS-safe integer >= {minimum} (not bool/float)'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: raw report tests[1].results[0].errorLocation.line must be JS-safe integer >= 0 (not bool/float)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: raw report tests[1].results[0].errorLocation.line must be JS-safe integer >= 0 (not bool/float)\n",
+      "outputSha256": "43c919136a27de4f6a8c074006c2e47c46f5549577e5849cf2205822095f0031",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "empty-results",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 87, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 119, in check_case\n    raw_tests = extracted_tests(report)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 47, in extracted_tests\n    visit(report['suites'])\n    ~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 43, in visit\n    assert isinstance(test['results'], list) and test['results'], 'empty reporter results'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: empty reporter results\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 318, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 285, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 89, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: empty reporter results\n",
+      "outputSha256": "07820dfc82cc7404dee68cfd7a7c4028199310f33197209dc91ad7e297968d84",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "cases-object",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "-c",
+        "import sys; sys.path.insert(0, sys.argv[1]); import audit; m,r,_=audit.load_inputs(audit.ROOT/\"capture-receipt.json\", audit.ROOT/\"browser-recovery-receipt.json\"); m[\"cases\"]={}; audit.check(m,r)",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import sys; sys.path.insert(0, sys.argv[1]); import audit; m,r,_=audit.load_inputs(audit.ROOT/\"capture-receipt.json\", audit.ROOT/\"browser-recovery-receipt.json\"); m[\"cases\"]={}; audit.check(m,r)\n                                                                                                                                                                                      ~~~~~~~~~~~^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 78, in check\n    native_types.array(manifest['cases'], 'native cases', nonempty=True)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit_types.py\", line 33, in array\n    assert type(value) is list and (value or not nonempty), f'{label} must be {\"nonempty \" if nonempty else \"\"}list'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: native cases must be nonempty list\n",
+      "outputSha256": "51417cc946edccd83d52efd03f3f83892a14aed8fd5200411e390e33f74705b7",
+      "recomputedTemporaryEnvelope": true
+    },
+    {
+      "mutation": "original",
+      "case": "all 14",
+      "exit": 0,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-t0zq05di/recovery.json"
+      ],
+      "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+      "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+      "recomputedTemporaryEnvelope": true
+    }
+  ],
+  "typeHelperSha256": "2094f274b820696f5d1b0485eff7b57dab0a5a3929226ead6c2c69f2b214e9f5",
+  "sourceLines": {
+    "audit.py": 318,
+    "audit_types.py": 156
+  },
+  "priorBlindControls": {
+    "scope": "read-time native field type process controls; no producer execution",
+    "auditAt": "2026-10-09T20:04:18.886369+00:00",
+    "beforeRepair": true,
+    "auditRecipeSha256": "3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9",
+    "controlRecipe": {
+      "output": "\"\"\"Temporary JSON process controls; --before records prior auditor blind spots.\"\"\"\nimport base64\nimport copy\nimport datetime\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport tempfile\n\nroot = Path('/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright')\nscratch = Path('/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode')\nbefore = '--before' in sys.argv\nold_input = json.loads((root / 'capture-receipt.json').read_text())\nnew_input = json.loads((root / 'browser-recovery-receipt.json').read_text())\nlabels = ('worker-bool', 'retry-bool', 'duration-string', 'errors-object', 'annotations-object', 'viewport-float')\nif not before:\n    labels += ('parallel-bool', 'duration-bool', 'duration-nan', 'duration-negative', 'stdout-object',\n               'stderr-invalid-element', 'attachments-object', 'optional-error-wrong-type', 'location-line-bool',\n               'empty-results', 'cases-object')\ncontrols = []\n\ndef raw_tests(report):\n    tests = []\n    def visit(suites):\n        for suite in suites:\n            visit(suite.get('suites', []))\n            for spec in suite.get('specs', []):\n                tests.extend(spec['tests'])\n    visit(report['suites'])\n    return tests\n\nwith tempfile.TemporaryDirectory(prefix='R04-type-controls-', dir=scratch) as directory:\n    for label in (*labels, 'original'):\n        old, new = copy.deepcopy(old_input), copy.deepcopy(new_input)\n        name = 'R04-browser-success-list' if label == 'viewport-float' else 'R04-api-list'\n        target = new if label == 'viewport-float' else old\n        tests = target['evidence'][name]['tests']\n        result = tests[0]['results'][0]\n        if label in ('worker-bool', 'retry-bool', 'parallel-bool'):\n            result[{'worker-bool': 'workerIndex', 'retry-bool': 'retry', 'parallel-bool': 'parallelIndex'}[label]] = False\n        elif label.startswith('duration-'):\n            result['duration'] = {'duration-string': 'NOT_A_DURATION', 'duration-bool': False,\n                                  'duration-nan': float('nan'), 'duration-negative': -1}[label]\n        elif label in ('errors-object', 'annotations-object', 'stdout-object', 'attachments-object'):\n            result[label.split('-')[0]] = {}\n        elif label == 'stderr-invalid-element':\n            result['stderr'] = [{'text': False}]\n        elif label == 'optional-error-wrong-type':\n            tests[1]['results'][0]['error']['stack'] = []\n        elif label == 'location-line-bool':\n            tests[1]['results'][0]['errorLocation']['line'] = False\n        elif label == 'empty-results':\n            tests[0]['results'] = []\n        elif label == 'viewport-float':\n            item = next(item for item in result['attachments'] if item['name'] == 'browser-proof')\n            proof = json.loads(base64.b64decode(item['body']))\n            proof['viewport']['width'] = 800.0\n            item['body'] = base64.b64encode(json.dumps(proof, separators=(',', ':')).encode()).decode()\n        if label not in ('worker-bool', 'retry-bool', 'parallel-bool', 'original', 'cases-object'):\n            sidecar = target['artifacts'][name]['report.json']\n            report = json.loads(sidecar['output'])\n            for raw, evidence in zip(raw_tests(report), tests, strict=True):\n                raw['results'] = copy.deepcopy(evidence['results'])\n            sidecar['output'] = json.dumps(report, ensure_ascii=False, indent=2) + '\\n'\n            sidecar['sha256'] = hashlib.sha256(sidecar['output'].encode()).hexdigest()\n        old_path, new_path = Path(directory) / 'historical.json', Path(directory) / 'recovery.json'\n        old_path.write_text(json.dumps(old, ensure_ascii=False, indent=2) + '\\n')\n        # Repair the temporary envelope to ensure semantic validation is reached.\n        new['historicalReceiptSha256'] = hashlib.sha256(old_path.read_bytes()).hexdigest()\n        new_path.write_text(json.dumps(new, ensure_ascii=False, indent=2) + '\\n')\n        argv = [sys.executable, '-B', str(root / 'audit.py'), '--verify-only', '--historical-receipt', str(old_path), '--recovery-receipt', str(new_path)]\n        if label == 'cases-object':\n            # Import avoids altering the fixed native manifest; exercise its entry contract.\n            argv = [sys.executable, '-B', '-c', 'import sys; sys.path.insert(0, sys.argv[1]); import audit; m,r,_=audit.load_inputs(audit.ROOT/\"capture-receipt.json\", audit.ROOT/\"browser-recovery-receipt.json\"); m[\"cases\"]={}; audit.check(m,r)', str(root)]\n        proc = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)\n        output = proc.stdout.decode()\n        if before or label == 'original':\n            assert proc.returncode == 0 and '14 cases' in output, (label, output)\n        else:\n            expected_name = 'native cases' if label == 'cases-object' else name + ':'\n            assert proc.returncode != 0 and expected_name in output, (label, output)\n            assert 'historical receipt envelope mismatch' not in output, (label, output)\n        controls.append({'mutation': label, 'case': name if label != 'original' else 'all 14',\n                         'exit': proc.returncode, 'argv': argv, 'output': output,\n                         'outputSha256': hashlib.sha256(proc.stdout).hexdigest(), 'recomputedTemporaryEnvelope': True})\n        print(label, 'exit', proc.returncode)\n\nresults = [result for receipt in (old_input, new_input) for case in receipt['evidence'].values()\n           for test in case['tests'] for result in test['results']]\ninitial = json.loads(json.loads((root / 'browser-recovery-initial-failure.json').read_text())['report'])\ninitial_results = [result for test in raw_tests(initial) for result in test['results']]\ndomains = {'manifestWorkerIndices': sorted({result['workerIndex'] for result in results}),\n           'manifestParallelIndices': sorted({result['parallelIndex'] for result in results}),\n           'initialTimeoutResults': [{key: result[key] for key in ('workerIndex', 'parallelIndex', 'retry', 'status', 'duration')} for result in initial_results]}\nprint('Captured native domains:', domains)\nreceipt = {'scope': 'read-time native field type process controls; no producer execution',\n           'auditAt': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'beforeRepair': before,\n           'auditRecipeSha256': hashlib.sha256((root / 'audit.py').read_bytes()).hexdigest(),\n           'controlRecipe': {'output': Path(__file__).read_text(), 'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},\n           'capturedDomains': domains, 'restoration': 'temporary records disposed; native inputs untouched', 'controls': controls}\nif (root / 'audit_types.py').exists():\n    receipt['typeHelperSha256'] = hashlib.sha256((root / 'audit_types.py').read_bytes()).hexdigest()\nif before:\n    (scratch / 'R04-type-before.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\\n')\nelse:\n    receipt['priorBlindControls'] = json.loads((scratch / 'R04-type-before.json').read_text())\n    (root / 'audit-type-controls-receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\\n')\n",
+      "sha256": "f93ca25c9ec232aa808c8f74b47aab6fa849fcb101487a698fda5fee211dc9dc"
+    },
+    "capturedDomains": {
+      "manifestWorkerIndices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "manifestParallelIndices": [
+        0
+      ],
+      "initialTimeoutResults": [
+        {
+          "workerIndex": 0,
+          "parallelIndex": 0,
+          "retry": 0,
+          "status": "skipped",
+          "duration": 0
+        }
+      ]
+    },
+    "restoration": "temporary records disposed; native inputs untouched",
+    "controls": [
+      {
+        "mutation": "worker-bool",
+        "case": "R04-api-list",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      },
+      {
+        "mutation": "retry-bool",
+        "case": "R04-api-list",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      },
+      {
+        "mutation": "duration-string",
+        "case": "R04-api-list",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      },
+      {
+        "mutation": "errors-object",
+        "case": "R04-api-list",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      },
+      {
+        "mutation": "annotations-object",
+        "case": "R04-api-list",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      },
+      {
+        "mutation": "viewport-float",
+        "case": "R04-browser-success-list",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      },
+      {
+        "mutation": "original",
+        "case": "all 14",
+        "exit": 0,
+        "argv": [
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+          "--verify-only",
+          "--historical-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/historical.json",
+          "--recovery-receipt",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-type-controls-_b4c6dfp/recovery.json"
+        ],
+        "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+        "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+        "recomputedTemporaryEnvelope": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+error: no matching package named `itoa` found
+location searched: crates.io index
+required by package `c08-fetch v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/fetch)`
+note: offline mode (via `--offline`) can sometimes cause surprising resolution failures
+help: if this error is too confusing you may wish to retry without `--offline`

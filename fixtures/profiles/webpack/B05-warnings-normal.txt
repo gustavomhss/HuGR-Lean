@@ -1,0 +1,21 @@
+asset main.js 13.1 KiB [compared for emit] (name: main)
+asset warning.js 2.35 KiB [compared for emit] (name: warning)
+asset lazy_js.chunk.js 562 bytes [compared for emit]
+asset shared.js 497 bytes [compared for emit] (name: shared) (id hint: shared)
+Entrypoint warning 2.35 KiB = warning.js
+Entrypoint main 13.6 KiB = shared.js 497 bytes main.js 13.1 KiB
+runtime modules 7.72 KiB 11 modules
+built modules 386 bytes [built]
+  ./warning.js 65 bytes [built] [code generated]
+  ./entrée α.js 102 bytes [built] [code generated]
+  ././ lazy namespace object 160 bytes [built] [code generated]
+  ./shared.js 33 bytes [built] [code generated]
+  ./lazy β.js 26 bytes [built] [code generated]
+
+WARNING in ./warning.js 1:30-44
+Critical dependency: the request of a dependency is an expression
+
+1 warning has detailed information that is not shown.
+Use 'stats.errorDetails: true' resp. '--stats-error-details' to show it.
+
+webpack 5.102.1 compiled with 1 warning in 129 ms

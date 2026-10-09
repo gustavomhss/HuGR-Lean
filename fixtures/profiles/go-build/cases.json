@@ -1,0 +1,112 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "archives": ["supplement-receipt.json"],
+  "cases": [
+    {
+      "name": "G04/build-verbose", "family": "go-build", "command": "go build -v ./...",
+      "file": "captures/build-verbose.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-verbose", "sha256": "aebe645d1e2f06f69cffba1f00868f537737301133b3876bc330958620f00c41" }
+    },
+    {
+      "name": "G04/build-all", "family": "go-build", "command": "go build ./...",
+      "file": "captures/build-all.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-all", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/build-packages", "family": "go-build", "command": "go build ./lib ./cmd/quiet",
+      "file": "captures/build-packages.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-packages", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/build-tag-verbose", "family": "go-build", "command": "go build -v -tags=capturetag ./...",
+      "file": "captures/build-tag-verbose.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-tag-verbose", "sha256": "aebe645d1e2f06f69cffba1f00868f537737301133b3876bc330958620f00c41" }
+    },
+    {
+      "name": "G04/build-tag", "family": "go-build", "command": "go build -tags=capturetag ./...",
+      "file": "captures/build-tag.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-tag", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/build-target-output", "family": "go-build", "command": "go build -o quiet-native ./cmd/quiet",
+      "file": "captures/build-target-output.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-target-output", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/vet-all", "family": "go-build", "command": "go vet ./...",
+      "file": "captures/vet-all.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-vet-all", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/vet-packages", "family": "go-build", "command": "go vet ./lib ./cmd/quiet",
+      "file": "captures/vet-packages.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-vet-packages", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/vet-tag", "family": "go-build", "command": "go vet -tags=capturetag ./...",
+      "file": "captures/vet-tag.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-vet-tag", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/build-error", "family": "go-build", "command": "go build -tags=buildbad ./...",
+      "file": "captures/build-error.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 1 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-build-error", "sha256": "86938cb851c55858e7d73cacc118a5485c15d741519b500732cc7f8ea7df6c1f" }
+    },
+    {
+      "name": "G04/vet-error", "family": "go-build", "command": "go vet -tags=vetbad ./...",
+      "file": "captures/vet-error.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 1 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-vet-error", "sha256": "13bf10b95021ea1112298b17a59dc28b9d40a27e4cfc669ca579aa4fb6adaca0" }
+    },
+    {
+      "name": "G04/explicit-goos-unsupported", "family": "go-build", "command": "go build -GOOS=linux ./...",
+      "file": "captures/explicit-goos-unsupported.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 2 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-explicit-goos-unsupported", "sha256": "5941ab39fc017bd2bda31ba6bd9a897c4bd908242777143303b87f4d0a7bceaa" }
+    },
+    {
+      "name": "G04/run-quiet", "family": "go-build", "command": "go run ./cmd/quiet",
+      "file": "captures/run-quiet.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-run-quiet", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" }
+    },
+    {
+      "name": "G04/run-arbitrary", "family": "go-build", "command": "go run ./cmd/noisy",
+      "file": "captures/run-arbitrary.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 0 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-run-arbitrary", "sha256": "ccba1512614da779327ace243bf07ff4da04d0157bc439bfb0bcb3fefd7365a4" }
+    },
+    {
+      "name": "G04/run-arbitrary-nonzero", "family": "go-build", "command": "go run ./cmd/noisy fail",
+      "file": "captures/run-arbitrary-nonzero.output", "status": "passthrough",
+      "termination": { "kind": "exited", "code": 1 }, "completeness": "complete", "presentation": "unknown",
+      "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
+      "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-run-arbitrary-nonzero", "sha256": "0f4131a68a76345c3ecc1a464f8f1e32e1642ad074f6c8194a4e6d6ece4f4d72" }
+    },
+    {"name":"G04/cross-linux-amd64-success","family":"go-build","command":["go","build","-o","/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/go-build-supplement-n8mlS7/cross-linux-amd64","./..."],"file":"captures/cross-linux-amd64-success.output","expected":"","status":"passthrough","termination":{"kind":"exited","code":0},"completeness":"complete","presentation":"unknown","version":"go version go1.27.1 darwin/amd64","platform":"darwin/amd64","provenance":{"kind":"original","license":"MIT","record":"SOURCES.md","receipt":"supplement-receipt.json","case":"G04/cross-linux-amd64-success","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}}
+  ]
+}

@@ -1,0 +1,9 @@
+=== RUN   TestNested
+=== RUN   TestNested/group
+=== RUN   TestNested/group/skip
+    arith_test.go:13: G01 optional backend unavailable
+--- PASS: TestNested (0.00s)
+    --- PASS: TestNested/group (0.00s)
+        --- SKIP: TestNested/group/skip (0.00s)
+PASS
+ok  	example.com/g01	16.267s

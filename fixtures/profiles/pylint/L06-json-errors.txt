@@ -1,0 +1,15 @@
+[
+    {
+        "type": "error",
+        "module": "errors",
+        "obj": "broken",
+        "line": 6,
+        "column": 11,
+        "endLine": 6,
+        "endColumn": 24,
+        "path": "errors.py",
+        "symbol": "undefined-variable",
+        "message": "Undefined variable 'missing_value'",
+        "message-id": "E0602"
+    }
+]

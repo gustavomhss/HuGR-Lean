@@ -1,0 +1,32 @@
+level=info msg="golangci-lint has version 2.11.4 built with go1.26.1 from 8f3b0c7 on 2026-03-22T17:29:46Z"
+level=info msg="[config_reader] Module name \"example.invalid/l04\""
+level=info msg="[goenv] Read go env for 14.11771ms: map[string]string{\"GOCACHE\":\"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s/go-cache\", \"GOROOT\":\"/usr/local/Cellar/go/1.27.1/libexec\"}"
+level=info msg="[lintersdb] Active 3 linters: [errcheck ineffassign unused]"
+level=info msg="[loader] Go packages loading at mode 8767 (deps|files|types_sizes|compiled_files|exports_file|imports|name) took 47.754925ms"
+level=info msg="[runner/filename_unadjuster] Pre-built 0 adjustments in 295.537µs"
+level=info msg="[linters_context/goanalysis] analyzers took 0s with no stages"
+level=info msg="[runner] Processors filtering stat (in/out): cgo: 5/5, invalid_issue: 5/5, generated_file_filter: 5/5, max_same_issues: 5/5, path_absoluter: 5/5, exclusion_rules: 5/5, diff: 5/5, fixer: 5/5, source_code: 5/5, path_shortener: 5/5, path_prettifier: 5/5, path_relativity: 5/5, nolint_filter: 5/5, max_per_file_from_linter: 5/5, max_from_linter: 5/5, severity-rules: 5/5, filename_unadjuster: 5/5, exclusion_paths: 5/5, uniq_by_line: 5/5, sort_results: 5/5"
+level=info msg="[runner] processing took 342.022µs with stages: nolint_filter: 126.444µs, generated_file_filter: 99.647µs, source_code: 92.813µs, path_relativity: 7.298µs, cgo: 5.892µs, path_shortener: 2.614µs, sort_results: 2.51µs, invalid_issue: 1.117µs, max_same_issues: 764ns, max_per_file_from_linter: 414ns, filename_unadjuster: 376ns, path_absoluter: 371ns, exclusion_rules: 294ns, path_prettifier: 274ns, exclusion_paths: 258ns, max_from_linter: 245ns, fixer: 230ns, diff: 171ns, severity-rules: 145ns, uniq_by_line: 145ns"
+level=info msg="[runner] linters took 1.037787ms with stages: goanalysis_metalinter: 617.121µs"
+issues/issues.go:12:23: Error return value is not checked (errcheck)
+func Ignore() { action() }
+                      ^
+issues/issues.go:6:2: ineffectual assignment to x (ineffassign)
+	x := 1
+	^
+issues/issues.go:3:6: func dead is unused (unused)
+func dead() int { return 42 }
+     ^
+other/other.go:3:6: func hidden is unused (unused)
+func hidden() string { return "雪 😀" }
+     ^
+other/雪.go:4:6: func unused雪 is unused (unused)
+func unused雪() string { return "雪 😀" }
+     ^
+5 issues:
+* errcheck: 1
+* ineffassign: 1
+* unused: 3
+level=info msg="File cache stats: 3 entries of total size 311B"
+level=info msg="Memory: 2 samples, avg is 38.2MB, max is 38.2MB"
+level=info msg="Execution took 63.800596ms"

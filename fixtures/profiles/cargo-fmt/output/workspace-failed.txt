@@ -1,0 +1,6 @@
+Diff in /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c04-fmt-native-project-v2/dirty/src/lib.rs:1:
+-pub fn answer()->u32{42}
++pub fn answer() -> u32 {
++    42
++}
+ 

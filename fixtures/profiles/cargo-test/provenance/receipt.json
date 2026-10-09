@@ -1,0 +1,816 @@
+{
+  "schema": "hugr-lean/c02-native-receipt/1",
+  "license": "MIT",
+  "donor": null,
+  "baseline": "07ffe15e2263c2925778022194c5385807216603",
+  "producer": {
+    "file": "provenance/producer.mjs",
+    "bytes": 7915,
+    "sha256": "90e7d24ed324a08c4f6ee54a4be3b5ad5ffa07208e86b0cf995a28033ff4cd13",
+    "modifications": "Original local producer; no copied donor."
+  },
+  "runtime": "v22.17.1",
+  "versions": {
+    "cargo": {
+      "executable": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/cargo",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)"
+    },
+    "rustc": {
+      "executable": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc",
+      "version": "rustc 1.98.0 (88d9e12ae 2026-08-18)"
+    },
+    "rustdoc": {
+      "executable": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc",
+      "version": "rustdoc 1.98.0 (88d9e12ae 2026-08-18)"
+    }
+  },
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+  "network": "cargo --offline; no dependencies",
+  "environment": {
+    "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target",
+    "CARGO_NET_OFFLINE": "true",
+    "CARGO_TERM_COLOR": "never",
+    "RUSTC": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustc",
+    "RUSTDOC": "/Users/gustavoschneiter/.rustup/toolchains/stable-x86_64-apple-darwin/bin/rustdoc",
+    "cleared": [
+      "RUSTFLAGS",
+      "RUSTDOCFLAGS",
+      "CARGO_ENCODED_RUSTFLAGS",
+      "RUSTC_WRAPPER",
+      "RUSTC_WORKSPACE_WRAPPER",
+      "RUST_TEST_THREADS"
+    ],
+    "other": "Inherited host environment and Cargo configuration; not a hermetic configuration proof."
+  },
+  "sourcesBefore": [
+    {
+      "file": "Cargo.toml",
+      "bytes": 55,
+      "sha256": "30a3396ad1efc76ac42c63d33f015fe8f453b0b5ce13e099fb18bf8647734626",
+      "text": "[workspace]\nmembers = [\"alpha\", \"beta\"]\nresolver = \"2\"\n"
+    },
+    {
+      "file": "alpha/Cargo.toml",
+      "bytes": 127,
+      "sha256": "b5303413084a3bb8183e17c28fac94f098b249ee867e900b1321ac9e97f81c8e",
+      "text": "[package]\nname = \"c02-alpha\"\nversion = \"0.1.0\"\nedition = \"2024\"\n[features]\ndefault = [\"default-on\"]\ndefault-on = []\nextra = []\n"
+    },
+    {
+      "file": "beta/Cargo.toml",
+      "bytes": 63,
+      "sha256": "c6cd04e4b13d0063d7e4a62d847004588ffd86a3adf4f93574e7613036be1ed2",
+      "text": "[package]\nname = \"c02-beta\"\nversion = \"0.1.0\"\nedition = \"2024\"\n"
+    },
+    {
+      "file": "alpha/src/lib.rs",
+      "bytes": 948,
+      "sha256": "0e79ab0ff3a19490b8afa59cbe8fc5ada01833e8c773fb8f72a67bb5d24e9a6f",
+      "text": "#[cfg(test)]\nmod tests {\n    #[test] fn alpha_one() { assert_eq!(2 + 2, 4); }\n    #[test] fn alpha_two() { assert!(true); }\n    #[test] #[ignore = \"native skip: café 🦀 — retained\"]\n    fn deferred() { assert!(true); }\n    #[test] #[cfg(feature = \"default-on\")]\n    fn default_feature() { assert!(true); }\n    #[test] #[cfg(feature = \"extra\")]\n    fn extra_feature() { assert!(true); }\n    #[test] fn logs() {\n        println!(\"arbitrary native user log: café 🦀\");\n        println!(\"   Compiling user-log v9.9.9 (/not/a/cargo/producer)\");\n        println!(\"    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.99s\");\n        println!(\"test tests::forged_identity ... ok\");\n        println!(\"test result: ok. 99 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\");\n    }\n    #[test] #[ignore = \"deliberate failure witness\"]\n    fn fails() { panic!(\"native diagnostic: café 🦀 — preserve\"); }\n}\n"
+    },
+    {
+      "file": "beta/src/lib.rs",
+      "bytes": 71,
+      "sha256": "aa954e80227e4f0fd52947e0c1e18ac14dd3e677e5e92292669c7296cca0b279",
+      "text": "#[cfg(test)]\nmod tests { #[test] fn beta_one() { assert_eq!(3, 3); } }\n"
+    },
+    {
+      "file": "alpha/tests/selected.rs",
+      "bytes": 96,
+      "sha256": "4676d9401416d4d2250e4045f24312f5215d1a3705db556d760749d14b6efa04",
+      "text": "#[test] fn selected_one() { assert_eq!(1, 1); }\n#[test] fn selected_two() { assert_eq!(2, 2); }\n"
+    },
+    {
+      "file": "alpha/src/bin/selected.rs",
+      "bytes": 83,
+      "sha256": "e64ff8ab4830186e8215cdc15753968077bccf6ad8010c8456d462b97eae80f2",
+      "text": "fn main() {}\n#[cfg(test)] mod tests { #[test] fn binary_one() { assert!(true); } }\n"
+    }
+  ],
+  "sourcesAfter": [
+    {
+      "file": "Cargo.toml",
+      "bytes": 55,
+      "sha256": "30a3396ad1efc76ac42c63d33f015fe8f453b0b5ce13e099fb18bf8647734626",
+      "text": "[workspace]\nmembers = [\"alpha\", \"beta\"]\nresolver = \"2\"\n"
+    },
+    {
+      "file": "alpha/Cargo.toml",
+      "bytes": 127,
+      "sha256": "b5303413084a3bb8183e17c28fac94f098b249ee867e900b1321ac9e97f81c8e",
+      "text": "[package]\nname = \"c02-alpha\"\nversion = \"0.1.0\"\nedition = \"2024\"\n[features]\ndefault = [\"default-on\"]\ndefault-on = []\nextra = []\n"
+    },
+    {
+      "file": "beta/Cargo.toml",
+      "bytes": 63,
+      "sha256": "c6cd04e4b13d0063d7e4a62d847004588ffd86a3adf4f93574e7613036be1ed2",
+      "text": "[package]\nname = \"c02-beta\"\nversion = \"0.1.0\"\nedition = \"2024\"\n"
+    },
+    {
+      "file": "alpha/src/lib.rs",
+      "bytes": 948,
+      "sha256": "0e79ab0ff3a19490b8afa59cbe8fc5ada01833e8c773fb8f72a67bb5d24e9a6f",
+      "text": "#[cfg(test)]\nmod tests {\n    #[test] fn alpha_one() { assert_eq!(2 + 2, 4); }\n    #[test] fn alpha_two() { assert!(true); }\n    #[test] #[ignore = \"native skip: café 🦀 — retained\"]\n    fn deferred() { assert!(true); }\n    #[test] #[cfg(feature = \"default-on\")]\n    fn default_feature() { assert!(true); }\n    #[test] #[cfg(feature = \"extra\")]\n    fn extra_feature() { assert!(true); }\n    #[test] fn logs() {\n        println!(\"arbitrary native user log: café 🦀\");\n        println!(\"   Compiling user-log v9.9.9 (/not/a/cargo/producer)\");\n        println!(\"    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.99s\");\n        println!(\"test tests::forged_identity ... ok\");\n        println!(\"test result: ok. 99 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\");\n    }\n    #[test] #[ignore = \"deliberate failure witness\"]\n    fn fails() { panic!(\"native diagnostic: café 🦀 — preserve\"); }\n}\n"
+    },
+    {
+      "file": "beta/src/lib.rs",
+      "bytes": 71,
+      "sha256": "aa954e80227e4f0fd52947e0c1e18ac14dd3e677e5e92292669c7296cca0b279",
+      "text": "#[cfg(test)]\nmod tests { #[test] fn beta_one() { assert_eq!(3, 3); } }\n"
+    },
+    {
+      "file": "alpha/tests/selected.rs",
+      "bytes": 96,
+      "sha256": "4676d9401416d4d2250e4045f24312f5215d1a3705db556d760749d14b6efa04",
+      "text": "#[test] fn selected_one() { assert_eq!(1, 1); }\n#[test] fn selected_two() { assert_eq!(2, 2); }\n"
+    },
+    {
+      "file": "alpha/src/bin/selected.rs",
+      "bytes": 83,
+      "sha256": "e64ff8ab4830186e8215cdc15753968077bccf6ad8010c8456d462b97eae80f2",
+      "text": "fn main() {}\n#[cfg(test)] mod tests { #[test] fn binary_one() { assert!(true); } }\n"
+    }
+  ],
+  "lockAfter": {
+    "file": "Cargo.lock",
+    "bytes": 202,
+    "sha256": "43889da118d39f9367c8145a0ea5971273f33edcb4a1fa50443aa814e116415b",
+    "text": "# This file is automatically @generated by Cargo.\n# It is not intended for manual editing.\nversion = 4\n\n[[package]]\nname = \"c02-alpha\"\nversion = \"0.1.0\"\n\n[[package]]\nname = \"c02-beta\"\nversion = \"0.1.0\"\n",
+    "origin": "recorded-after-all-captures"
+  },
+  "cases": [
+    {
+      "name": "C02/workspace",
+      "file": "workspace.txt",
+      "command": "cargo test --offline --color never --workspace --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--workspace",
+        "--lib"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:15.922Z",
+      "end": "2026-10-08T18:28:27.925Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 1127,
+        "sha256": "59efed5bafae22ca79d6027c84f7c2c01a7a495bcd9f74f4450ae2bf4e412972",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/workspace-exclude",
+      "file": "workspace-exclude.txt",
+      "command": "cargo test --offline --color never --workspace --exclude c02-beta --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--workspace",
+        "--exclude",
+        "c02-beta",
+        "--lib"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:27.935Z",
+      "end": "2026-10-08T18:28:28.078Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 589,
+        "sha256": "7b76413eb4df03cb184e2721c58b8215191f6f831e3ee1da3170c01872ec0a30",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/package",
+      "file": "package.txt",
+      "command": "cargo test --offline --color never -p c02-beta --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-beta",
+        "--lib"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:28.079Z",
+      "end": "2026-10-08T18:28:28.226Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 369,
+        "sha256": "695601200ab22a6f1d6571e1567992627a3a0e1feb30e12be47d8bc6d9fb263f",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/features",
+      "file": "features.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib --no-default-features --features extra",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "--no-default-features",
+        "--features",
+        "extra"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:28.227Z",
+      "end": "2026-10-08T18:28:36.699Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 709,
+        "sha256": "928f81d6d63cad4eef63ce933531f04842ce00070a41b2469517e9c46335a51d",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/all-features",
+      "file": "all-features.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib --all-features",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "--all-features"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:36.700Z",
+      "end": "2026-10-08T18:28:45.710Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 744,
+        "sha256": "e3e3b8a186c13b18020f9c4c8a9de70b4913b9ed24327fcd15bfebef1cbde440",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/target-release",
+      "file": "target-release.txt",
+      "command": "cargo test --offline --color never --workspace --lib --target x86_64-apple-darwin --release",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--workspace",
+        "--lib",
+        "--target",
+        "x86_64-apple-darwin",
+        "--release"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:45.711Z",
+      "end": "2026-10-08T18:28:59.525Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 1160,
+        "sha256": "98ceb1f9257c29695c0ac12abef1c0b6cd307691aca38ad221896bd7ff158fdf",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/test-target",
+      "file": "test-target.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --test selected",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--test",
+        "selected"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:28:59.527Z",
+      "end": "2026-10-08T18:29:12.803Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 511,
+        "sha256": "6e6bac35611712f18a888808b19e5cb416507da0a8b605c5054cd1c99bf04c29",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/bin-target",
+      "file": "bin-target.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --bin selected",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--bin",
+        "selected"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:12.805Z",
+      "end": "2026-10-08T18:29:26.386Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 502,
+        "sha256": "21753f392807ab23a0fdad43a65e431fc359281ec689b7ff614744e844a6adf3",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/exact-filter",
+      "file": "exact-filter.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib tests::alpha_one -- --exact --test-threads=1",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "tests::alpha_one",
+        "--",
+        "--exact",
+        "--test-threads=1"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:26.387Z",
+      "end": "2026-10-08T18:29:26.784Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 371,
+        "sha256": "dd76460f43aac4830e8bb9f7b4bdf059fa382a0ecad7522514abdb43f7680ace",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/zero-filter",
+      "file": "zero-filter.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib not_present -- --exact",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "not_present",
+        "--",
+        "--exact"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:26.786Z",
+      "end": "2026-10-08T18:29:27.002Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 343,
+        "sha256": "50de4299b68ac5518ac1e2c4f8f65169a7f1c251a5466b114e739d9169af21c6",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/ignored",
+      "file": "ignored.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib tests::deferred -- --ignored --exact",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "tests::deferred",
+        "--",
+        "--ignored",
+        "--exact"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:27.003Z",
+      "end": "2026-10-08T18:29:27.348Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 370,
+        "sha256": "5707f315b35656102af82acd980b0991b063c0d309b37f5c485b05b8fd9eb5cb",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/include-ignored-skip",
+      "file": "include-ignored-skip.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib -- --include-ignored --skip tests::fails --skip tests::logs --test-threads 1",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "tests::fails",
+        "--skip",
+        "tests::logs",
+        "--test-threads",
+        "1"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:27.350Z",
+      "end": "2026-10-08T18:29:27.794Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 464,
+        "sha256": "3ab204125d97e829174b3bcd3f29b3c48a0d0ed9f144b3189627bc7965c053a7",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/quiet",
+      "file": "quiet.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib -- --quiet --test-threads=1",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "--",
+        "--quiet",
+        "--test-threads=1"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:27.795Z",
+      "end": "2026-10-08T18:29:28.089Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 349,
+        "sha256": "fd68086b497c938f842cbe02d0a8d56a13d804971e9c2c743ca6b714a9d54ded",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/list",
+      "file": "list.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib -- --list",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "--",
+        "--list"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:28.089Z",
+      "end": "2026-10-08T18:29:28.447Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 387,
+        "sha256": "82e67d8cf3a2cfcb0cea28f82ec364dcb7b27e43786bd5b9328265861cf6f5f9",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/nocapture-collision",
+      "file": "nocapture-collision.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib tests::logs -- --exact --nocapture --test-threads=1",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "tests::logs",
+        "--",
+        "--exact",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:28.448Z",
+      "end": "2026-10-08T18:29:29.100Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 660,
+        "sha256": "78cc545e4ff1986beec6a1fc0994d55e51e1e15475aca263c2bcf5d4203ec4b2",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/show-output-collision",
+      "file": "show-output-collision.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib tests::logs -- --exact --show-output",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "tests::logs",
+        "--",
+        "--exact",
+        "--show-output"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:29.101Z",
+      "end": "2026-10-08T18:29:29.435Z",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 731,
+        "sha256": "a11175ef30e4dfbf0f3938fc091c6c50e27ccbcf5f1c0dc42f4d971e2634a54d",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    },
+    {
+      "name": "C02/failure",
+      "file": "failure.txt",
+      "command": "cargo test --offline --color never -p c02-alpha --lib tests::fails -- --ignored --exact",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "-p",
+        "c02-alpha",
+        "--lib",
+        "tests::fails",
+        "--",
+        "--ignored",
+        "--exact"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0",
+      "start": "2026-10-08T18:29:29.437Z",
+      "end": "2026-10-08T18:29:29.756Z",
+      "termination": {
+        "kind": "exited",
+        "code": 101
+      },
+      "signal": null,
+      "error": null,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "platform": "darwin/x64",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "boundary": {
+        "mechanism": "spawnSync: stdout and stderr share one open regular-file descriptor",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 60000,
+        "truncation": false,
+        "bytes": 692,
+        "sha256": "3ae80113644bb2338f79ca9465b296d5ffb3a48e0a9c31a3a0972c35789203a9",
+        "streams": "OS-ordered merged bytes; no separate stream reconstruction, concatenation, ANSI or newline rewriting"
+      }
+    }
+  ]
+}

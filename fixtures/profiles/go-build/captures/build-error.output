@@ -1,0 +1,2 @@
+# example.org/hugr-g04-native/lib
+lib/broken.go:5:14: undefined: missingNativeSymbol

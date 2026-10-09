@@ -1,0 +1,10 @@
+warning: function `unused_café` is never used
+ --> app/src/lib.rs:2:4
+  |
+2 | fn unused_café() {}
+  |    ^^^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `c01-app` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.17s

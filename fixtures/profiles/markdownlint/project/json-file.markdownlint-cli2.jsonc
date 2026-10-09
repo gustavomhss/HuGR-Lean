@@ -1,0 +1,3 @@
+{
+  "outputFormatters": [["markdownlint-cli2-formatter-json", {"name": "requested-results.json", "spaces": 2}]]
+}

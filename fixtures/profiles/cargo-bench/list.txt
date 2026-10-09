@@ -1,0 +1,6 @@
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/builtin.rs (target/release/build/c06-alpha/450ccfd895061651/out/builtin-450ccfd895061651)
+suite::ignored_sum: benchmark
+sum_256: benchmark
+
+0 tests, 2 benchmarks

@@ -1,0 +1,2 @@
+go: added example.com/g05/dep v1.1.0
+go: added example.com/g05/other v1.1.0

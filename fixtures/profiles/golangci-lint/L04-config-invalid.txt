@@ -1,0 +1,2 @@
+Error: can't load config: can't read viper config: While parsing config: yaml: line 2: did not find expected node content
+The command is terminated due to an error: can't load config: can't read viper config: While parsing config: yaml: line 2: did not find expected node content

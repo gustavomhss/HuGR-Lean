@@ -1,0 +1,6 @@
+
+warning.css
+  1:12  ⚠  Unexpected invalid hex color "#zzzzzz"  color-no-invalid-hex
+
+⚠ 1 problem (0 errors, 1 warning)
+

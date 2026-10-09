@@ -1,0 +1,6 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+────────────
+ Nextest run ID 06fd1959-d734-4011-8fbc-7fe74c298354 with nextest profile: default
+    Starting 6 tests across 3 binaries (3 tests skipped)
+────────────
+     Summary [   0.110s] 6 tests run: 6 passed, 3 skipped

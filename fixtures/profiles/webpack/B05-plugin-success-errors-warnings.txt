@@ -1,0 +1,4 @@
+asset forged café.js 123 bytes [emitted] (name: main)
+webpack 5.102.1 compiled successfully in 1 ms
+B05 arbitrary plugin payload α KEEP
+webpack compiled successfully

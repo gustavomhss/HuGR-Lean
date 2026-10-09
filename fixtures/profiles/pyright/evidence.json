@@ -1,0 +1,106 @@
+{
+  "kind": "artifact inspection; not a reducer test or public-filter result",
+  "framingErrors": [],
+  "rawBytes": 7722,
+  "approvedSavingsBytes": 0,
+  "cases": [
+    {
+      "name": "L08-plain-success",
+      "rawBytes": 37,
+      "sha256": "6d88a1b220adb7a3d62092b6e38431f0b3fe8babe9864fab90e5849766260332",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "203020696e666f726d6174696f6e730a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-plain-error",
+      "rawBytes": 503,
+      "sha256": "2fcacd9a1357b4bb689dbf09aeb9ca4f15f3d97502b80e941b98a6d29278c8d5",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "203020696e666f726d6174696f6e730a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-plain-warning",
+      "rawBytes": 368,
+      "sha256": "f2a40e7447e71b7ec2a452f333e32d2841c4524e067c5a145158cc2dc76c29ea",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "203020696e666f726d6174696f6e730a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-plain-information",
+      "rawBytes": 367,
+      "sha256": "8408071b27ad405912ddd0bc66da0595a9dc3e884deb17bd54635ef70d72de2b",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "2c203120696e666f726d6174696f6e0a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-plain-multi",
+      "rawBytes": 1599,
+      "sha256": "4ad15418edfb3f8d293ea5fbb2055dc3a224ae8bee2ccd5303691f2b355f44b8",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "2c203120696e666f726d6174696f6e0a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-json-success",
+      "rawBytes": 251,
+      "sha256": "5cd7c104e2592ebc123acac731eade9db722d6bcdbe50c489c1e9591a396ffec",
+      "trailingLFBytes": 2,
+      "last16BytesHex": "20302e3331340a202020207d0a7d0a0a",
+      "approvedSavingsBytes": 0,
+      "layoutCandidateFile": "json-success.layout-candidate.txt",
+      "layoutCandidateBytes": 171,
+      "layoutCandidateSha256": "40307df6a36627eee5696b8b35b76538daefe2e0a5953010fbb4bffe120c35ac",
+      "layoutCandidateSavingsBytes": 80,
+      "eligibility": "unimplemented"
+    },
+    {
+      "name": "L08-json-error",
+      "rawBytes": 1639,
+      "sha256": "37b06d70613b1066dbd43200dfc7a75566bc0d180fa808ab13ce8dbf0e387d86",
+      "trailingLFBytes": 2,
+      "last16BytesHex": "20302e3331390a202020207d0a7d0a0a",
+      "approvedSavingsBytes": 0,
+      "layoutCandidateFile": "json-error.layout-candidate.txt",
+      "layoutCandidateBytes": 1036,
+      "layoutCandidateSha256": "3283199f0cd5d6ead6b2c5428effd542a321a660d8be22a8af875bf4abc65cce",
+      "layoutCandidateSavingsBytes": 603,
+      "eligibility": "unsafe/nonzero"
+    },
+    {
+      "name": "L08-config-invalid",
+      "rawBytes": 123,
+      "sha256": "fd183154a3eb1a119601e8772b42db02b8da32f8ad6fab5969dccb41af7b2e9f",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "203020696e666f726d6174696f6e730a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-config-missing",
+      "rawBytes": 188,
+      "sha256": "9fcc20ad3229f0afd1d77778af6b9c173c129a9f2937f3a21c138b9a2d1330c9",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "203020696e666f726d6174696f6e730a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-stats",
+      "rawBytes": 1322,
+      "sha256": "ef5f26ab7b9fe36001bfd1297eeb2fc0e4c7f68d2b2f4669d3bb056f7b450290",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "65733a2020202020202020307365630a",
+      "approvedSavingsBytes": 0
+    },
+    {
+      "name": "L08-verbose",
+      "rawBytes": 1325,
+      "sha256": "c2323157ab1edc4672afdd0dbb2efab7735319ab221f5df811615650e80ac2c9",
+      "trailingLFBytes": 1,
+      "last16BytesHex": "74656420696e20302e3533397365630a",
+      "approvedSavingsBytes": 0
+    }
+  ]
+}

@@ -6,11 +6,12 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { ROOT, readCorpus } from "./benchmark.mjs";
+import { assertCorpusCoverage } from "./native-corpus.mjs";
 import { isolatedEnvironment, runProcess } from "./opencode-boundary.mjs";
 
 // The inspector executes in the temporary consumer, using package names (and Node's exports resolver).
 // Its built-in assertions cannot be replaced by a fixture package's own test script.
-const INSPECT = String.raw`
+export const INSPECT = String.raw`
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
@@ -29,12 +30,8 @@ assert.equal(typeof filter, "function", "Installed /core filter is missing");
 assert.equal(typeof RawStore, "function", "Installed /raw RawStore is missing");
 const packageRoot = path.resolve("node_modules/hugr-lean");
 const { profiles } = await import(pathToFileURL(path.join(packageRoot, "dist/profiles/index.js")).href);
-assert.ok(Array.isArray(profiles) && profiles.length, "Installed default profile registry is empty");
-const profileIds = profiles.map((item) => item.id);
-assert.equal(new Set(profileIds).size, profileIds.length, "Installed profile IDs are duplicated");
-assert.equal(profileIds.length, 10, "Installed default registry must ship ten real profiles");
-assert.equal(evidence.cases.length, 39, "Installed fixture matrix must include legacy and independent native cases");
-assert.deepEqual([...new Set(evidence.cases.map((item) => item.family))].sort(), profileIds.toSorted(), "Installed profile/corpus coverage differs");
+const assertCoverage = ${assertCorpusCoverage.toString()};
+const profileIds = assertCoverage(profiles, evidence.cases, evidence.exactFamilies, "Installed");
 function covers(spans, [start, end]) {
   let cursor = start;
   for (const [from, to] of spans) {
@@ -87,7 +84,8 @@ for (const entry of evidence.cases) {
     assert.equal(Object.hasOwn(result, "replacement"), false, entry.name + ": passthrough supplied replacement");
     assert.equal(result.outputBytes, inputBytes, entry.name + ": passthrough bytes changed");
   }
-  rows.push({ name: entry.name, status: result.status, inputBytes, outputBytes: result.outputBytes });
+  rows.push({ name: entry.name, family: entry.family, ...(entry.scope ? { scope: entry.scope } : {}),
+    status: result.status, inputBytes, outputBytes: result.outputBytes, savedBytes: inputBytes - result.outputBytes });
 }
 const cargo = evidence.cases.find((entry) => entry.family === "cargo-test" && entry.status === "reduced");
 assert.ok(cargo, "Installed plugin control has no Cargo fixture");
@@ -129,7 +127,7 @@ assert.equal(entries.length, 1);
 assert.equal(entries[0].id, id);
 await raw.purge();
 assert.equal(await raw.get(id), undefined, "Installed /raw purge failed");
-console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, fixtureCount: rows.length, fixtures: rows,
+console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, exactFamilies: evidence.exactFamilies, fixtureCount: rows.length, fixtures: rows,
   plugin: { loaded: true, reduced: true, nonzeroExitExact: true, fixtureCount: evidence.cases.length }, raw: { exact: true, inputBytes: Buffer.byteLength(text, "utf8"), tempfile: true, purged: true } }));
 `;
 
@@ -202,7 +200,7 @@ export async function npmProcess(args, options) {
   return await command(process.execPath, [cli, ...args], options);
 }
 
-async function snapshotArtifact(root, destination) {
+export async function snapshotArtifact(root, destination) {
   await mkdir(destination);
   // Closed artifact surface. Never copy source .npmrc, source code, caches or node_modules.
   for (const file of ["package.json", "dist", "README.md", "LICENSE", "NOTICE", "licenses"]) {
@@ -210,6 +208,7 @@ async function snapshotArtifact(root, destination) {
     catch (error) { if (error.code !== "ENOENT") throw error; } // assertPack names every required missing artifact.
   }
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+  const sourceNotes = new Set();
   if (manifest.files?.includes("src/**/*.md")) {
     await cp(path.join(root, "docs"), path.join(destination, "docs"), { recursive: true });
     for (const module of await readdir(path.join(root, "src"), { withFileTypes: true })) {
@@ -222,13 +221,35 @@ async function snapshotArtifact(root, destination) {
     for (const family of ["runners", "formats"]) {
       const target = path.join(destination, "fixtures", family); await mkdir(target, { recursive: true });
       await cp(path.join(root, "fixtures", family, "SOURCES.md"), path.join(target, "SOURCES.md"));
+      sourceNotes.add(`fixtures/${family}/SOURCES.md`);
     }
     const utility = path.join(destination, "fixtures", "utility");
     for (const family of ["cargo", "go", "node", "pytest"]) {
       const target = path.join(utility, family); await mkdir(target, { recursive: true });
       await cp(path.join(root, "fixtures", "utility", family, "SOURCES.md"), path.join(target, "SOURCES.md"));
+      sourceNotes.add(`fixtures/utility/${family}/SOURCES.md`);
     }
   }
+  if (manifest.files?.includes("fixtures/**/SOURCES.md")) {
+    async function notes(relative) {
+      for (const entry of await readdir(path.join(root, relative), { withFileTypes: true })) {
+        const name = `${relative}/${entry.name}`;
+        assert.ok(entry.isDirectory() || entry.isFile(), `Non-regular fixture source entry: ${name}`);
+        if (entry.isDirectory()) await notes(name);
+        else if (entry.name === "SOURCES.md") {
+          const facts = await lstat(path.join(root, name));
+          assert.ok(facts.isFile() && facts.nlink === 1, `Non-regular or multiply linked source note: ${name}`);
+          if (!sourceNotes.has(name)) {
+            await mkdir(path.dirname(path.join(destination, name)), { recursive: true });
+            await cp(path.join(root, name), path.join(destination, name));
+            sourceNotes.add(name);
+          }
+        }
+      }
+    }
+    await notes("fixtures");
+  }
+  return [...sourceNotes].sort();
 }
 
 export function assertPack(pack) {
@@ -264,7 +285,7 @@ export async function runPackageSmoke({ root = ROOT, cli = true, opencode = fals
     const packDirectory = path.join(temporary, "pack"), consumer = path.join(temporary, "consumer"), snapshot = path.join(temporary, "artifact");
     await mkdir(packDirectory);
     await mkdir(consumer);
-    await snapshotArtifact(root, snapshot);
+    const sourceNotes = await snapshotArtifact(root, snapshot);
     const options = { cwd: consumer, isolation: temporary, timeout: 120000 };
     const packed = await npmProcess(["pack", "--json", "--ignore-scripts", "--pack-destination", packDirectory], { ...options, cwd: snapshot });
     let metadata;
@@ -283,14 +304,15 @@ export async function runPackageSmoke({ root = ROOT, cli = true, opencode = fals
       assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed notice/license differs: ${file}`);
       notices.push({ file, bytes: Buffer.byteLength(contents, "utf8") });
     }
-    for (const family of ["runners", "formats", "utility/cargo", "utility/go", "utility/node", "utility/pytest"]) {
-      const file = `fixtures/${family}/SOURCES.md`;
+    assert.ok(sourceNotes.length, "Packed fixture provenance list is empty");
+    for (const file of sourceNotes) {
+      assert.ok(artifact.files.includes(file), `Packed fixture sources note is missing: ${file}`);
       const contents = await readFile(path.join(installed, file), "utf8");
       assert.ok(contents.trim().length, `Installed fixture sources note is empty: ${file}`);
       assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed fixture sources note differs: ${file}`);
     }
     const evidence = path.join(consumer, "evidence.json");
-    await writeFile(evidence, JSON.stringify({ cases }));
+    await writeFile(evidence, JSON.stringify({ cases, exactFamilies: cases.exactFamilies }));
     const nodeArgs = await consumerNodeArgs(consumer);
     const checked = await command(process.execPath, [...nodeArgs, "--input-type=module", "-e", INSPECT, evidence], { ...options, timeout: 45000 });
     const inspection = JSON.parse(checked.stdout);

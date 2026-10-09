@@ -1,0 +1,5 @@
+PASS
+ok  	example.com/hugr-g03	6.200s
+?   	example.com/hugr-g03/notests	[no test files]
+PASS
+ok  	example.com/hugr-g03/second	2.129s

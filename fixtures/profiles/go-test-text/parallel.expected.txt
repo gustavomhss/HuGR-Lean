@@ -1,0 +1,14 @@
+=== RUN   TestParallel
+=== RUN   TestParallel/left
+=== PAUSE TestParallel/left
+=== RUN   TestParallel/right
+=== PAUSE TestParallel/right
+=== CONT  TestParallel/left
+    arith_test.go:21: linked worker left
+=== CONT  TestParallel/right
+    arith_test.go:21: linked worker right
+--- PASS: TestParallel (0.00s)
+    --- PASS: TestParallel/left (0.00s)
+    --- PASS: TestParallel/right (0.00s)
+PASS
+ok  	example.com/g01	1.286s

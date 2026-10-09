@@ -1,0 +1,270 @@
+{
+  "capturedAt": "2026-10-09T04:44:25.036870+00:00",
+  "versionOutput": "pyright 1.1.408\n",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source",
+  "sources": [
+    {
+      "file": "source/clean.py",
+      "bytes": 51,
+      "sha256": "5258325fe07dbd371693fd95788a0073a0787499c75f7ec25e64d5c359dfe579"
+    },
+    {
+      "file": "source/error.py",
+      "bytes": 76,
+      "sha256": "941ff5428d89008c7157d39801c3dfa3b5f0807763be9eb8b7e78b75828a8be1"
+    },
+    {
+      "file": "source/information.py",
+      "bytes": 40,
+      "sha256": "a83eedd07f5498b4a0ac33c23928a35be54b0ca9147e929f6a9487b8e5a09e9f"
+    },
+    {
+      "file": "source/invalid.json",
+      "bytes": 39,
+      "sha256": "3b8e71686f3bab5f9313f2b986da179028e0b14c8f90bdbed9fee3d5ebaf956c"
+    },
+    {
+      "file": "source/path spaces/café 🧪.py",
+      "bytes": 15,
+      "sha256": "1abf49f7d556837c9797898da1dc273ea39308c362b3fa022d8079014e81ab75"
+    },
+    {
+      "file": "source/pyrightconfig.json",
+      "bytes": 128,
+      "sha256": "d5ea634b510850093521056ce4f36cfaaa56eb2d2cf1d16eadfbfbb57344ef41"
+    },
+    {
+      "file": "source/warning.py",
+      "bytes": 35,
+      "sha256": "e1fb020632a28ad247a07599f3de77c87be2a716b42ba3c52ad635a68dc4a166"
+    }
+  ],
+  "records": [
+    {
+      "name": "L08-plain-success",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright clean.py",
+      "file": "plain-success.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 37,
+      "sha256": "6d88a1b220adb7a3d62092b6e38431f0b3fe8babe9864fab90e5849766260332",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-plain-error",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "error.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright error.py",
+      "file": "plain-error.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "bytes": 503,
+      "sha256": "2fcacd9a1357b4bb689dbf09aeb9ca4f15f3d97502b80e941b98a6d29278c8d5",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-plain-warning",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "warning.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright warning.py",
+      "file": "plain-warning.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 368,
+      "sha256": "f2a40e7447e71b7ec2a452f333e32d2841c4524e067c5a145158cc2dc76c29ea",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-plain-information",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "information.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright information.py",
+      "file": "plain-information.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 367,
+      "sha256": "8408071b27ad405912ddd0bc66da0595a9dc3e884deb17bd54635ef70d72de2b",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-plain-multi",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "clean.py",
+        "error.py",
+        "warning.py",
+        "information.py",
+        "path spaces/café 🧪.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright clean.py error.py warning.py information.py 'path spaces/café 🧪.py'",
+      "file": "plain-multi.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "bytes": 1599,
+      "sha256": "4ad15418edfb3f8d293ea5fbb2055dc3a224ae8bee2ccd5303691f2b355f44b8",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-json-success",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--outputjson",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson clean.py",
+      "file": "json-success.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 251,
+      "sha256": "5cd7c104e2592ebc123acac731eade9db722d6bcdbe50c489c1e9591a396ffec",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-json-error",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--outputjson",
+        "error.py",
+        "path spaces/café 🧪.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson error.py 'path spaces/café 🧪.py'",
+      "file": "json-error.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "bytes": 1639,
+      "sha256": "37b06d70613b1066dbd43200dfc7a75566bc0d180fa808ab13ce8dbf0e387d86",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-config-invalid",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--project",
+        "invalid.json",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --project invalid.json clean.py",
+      "file": "config-invalid.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 123,
+      "sha256": "fd183154a3eb1a119601e8772b42db02b8da32f8ad6fab5969dccb41af7b2e9f",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-config-missing",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--project",
+        "missing.json",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --project missing.json clean.py",
+      "file": "config-missing.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "completeness": "complete",
+      "bytes": 188,
+      "sha256": "9fcc20ad3229f0afd1d77778af6b9c173c129a9f2937f3a21c138b9a2d1330c9",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-stats",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--stats",
+        "clean.py",
+        "warning.py",
+        "information.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --stats clean.py warning.py information.py",
+      "file": "stats.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 1322,
+      "sha256": "ef5f26ab7b9fe36001bfd1297eeb2fc0e4c7f68d2b2f4669d3bb056f7b450290",
+      "eof": "LF"
+    },
+    {
+      "name": "L08-verbose",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--verbose",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --verbose clean.py",
+      "file": "verbose.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "bytes": 1325,
+      "sha256": "c2323157ab1edc4672afdd0dbb2efab7735319ab221f5df811615650e80ac2c9",
+      "eof": "LF"
+    }
+  ],
+  "boundary": "stdin DEVNULL; stdout PIPE; stderr STDOUT at child spawn; no PTY; no normalization",
+  "timeoutSeconds": 90,
+  "nodeVersion": "v22.17.1\n",
+  "npmVersion": "10.9.2\n",
+  "environment": {
+    "LANG": null,
+    "LC_ALL": null,
+    "TERM": null,
+    "NO_COLOR": null,
+    "FORCE_COLOR": null,
+    "PYTHONPATH": null
+  },
+  "producer": {
+    "package": "pyright",
+    "version": "1.1.408",
+    "license": "MIT",
+    "upstreamCommit": "ad444cc7a0923cb6127279fb95fe0b576d96d0d7",
+    "upstreamPath": "packages/pyright",
+    "tarball": "https://registry.npmjs.org/pyright/-/pyright-1.1.408.tgz",
+    "integrity": "sha512-N61pxaLLCsPcUuPPHMNIrGoZgGBgrbjBX5UqkaT5UV8NVZdL7ExsO6N3ectv1DzAUsLOzdlyqoYtX76u8eF4YA==",
+    "licenseSha256": "f7c936bc43f132b08497ac952e9376cbc102e5eedb4bf6ec902ea8442bd9c68d",
+    "entrySha256": "1b6744d5925694667abb3309c7e27611446aa7f1ee645cb99ecb0b9082a4c61e"
+  }
+}

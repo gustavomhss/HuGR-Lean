@@ -1,0 +1,3 @@
+   Compiling c01-app v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-tiny/app)
+   Compiling c01-peer v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-tiny/peer)
+    Finished `release` profile [optimized] target(s) in 2.67s

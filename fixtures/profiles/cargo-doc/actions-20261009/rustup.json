@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "rustup",
+    "--version"
+  ],
+  "cwd": "/home/runner/work/_temp/c05-project",
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "906064fd418786b737c4fe411695c1073182c633c2f41d1de27d8f9fc8e27ad7",
+  "bytes": 214,
+  "startedUnix": 1791578925.07765,
+  "elapsedSeconds": 0.011771678924560547,
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "runId": "37989424550",
+  "runAttempt": "1",
+  "boundary": "shared stdout/stderr pipe; communicate waits for EOF"
+}

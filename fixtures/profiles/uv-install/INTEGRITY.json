@@ -1,0 +1,7 @@
+{
+  "positive": "original raw hashes match",
+  "negative": "P06-pip-fresh-no-build: raw hash mismatch",
+  "mutation": "one in-memory appended line, no native artifact modified",
+  "restored": "original raw hashes match",
+  "scope": "raw UTF-8 hash integrity only; no parser/runtime claims"
+}

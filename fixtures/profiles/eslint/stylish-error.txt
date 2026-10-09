@@ -1,0 +1,6 @@
+
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/l01-eslint/project/error.js
+  1:1  error  'missingName' is not defined  no-undef
+
+✖ 1 problem (1 error, 0 warnings)
+

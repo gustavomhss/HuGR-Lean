@@ -1,0 +1,5 @@
+[workspace]
+members = ["clean", "dirty"]
+exclude = ["broken", "silent"]
+default-members = ["clean"]
+resolver = "2"

@@ -1,0 +1,22 @@
+{
+  "version": "0.0.6",
+  "gitHead": "613b0e9e64eac8e51f0cdc645af0a6026f6cdf50",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidAnson/markdownlint-cli2.git"
+  },
+  "dist": {
+    "integrity": "sha512-VVDGKsq9sgzu378swJ0fcHfSicUnMxnL8gnLm/Q4J/xsNJ4e5bA6lvAz7PCzIl0/No0lHyaWdqVD2jotxOSFMQ==",
+    "shasum": "aa6db33b2fafc0801f4bbddeedafc19a2499a62c",
+    "tarball": "https://registry.npmjs.org/markdownlint-cli2-formatter-default/-/markdownlint-cli2-formatter-default-0.0.6.tgz",
+    "fileCount": 4,
+    "unpackedSize": 5651,
+    "signatures": [
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEUCIQCuLE4DxjAsAukHsMuQdtNTpgGfCdLjmOYjflZSbLitoAIgMiHf3K8l9hlZu3aF+ZUCx8Bj6gqlHoaCuC9IhkYda3s="
+      }
+    ]
+  }
+}

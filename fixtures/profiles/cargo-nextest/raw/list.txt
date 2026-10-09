@@ -1,0 +1,8 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+capture-alpha tests::alpha_collision
+capture-alpha tests::alpha_failure
+capture-alpha tests::alpha_logs
+capture-alpha tests::alpha_pass
+capture-alpha::integration integration_pass
+capture-beta tests::beta_logs
+capture-beta tests::beta_pass

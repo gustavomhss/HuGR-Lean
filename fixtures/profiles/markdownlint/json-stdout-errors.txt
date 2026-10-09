@@ -1,0 +1,75 @@
+[
+  {
+    "fileName": "errors.md",
+    "lineNumber": 3,
+    "ruleNames": [
+      "MD019",
+      "no-multiple-space-atx"
+    ],
+    "ruleDescription": "Multiple spaces after hash on atx style heading",
+    "ruleInformation": "https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md019.md",
+    "errorDetail": null,
+    "errorContext": "##  Wide heading",
+    "errorRange": [
+      4,
+      1
+    ],
+    "fixInfo": {
+      "editColumn": 4,
+      "deleteCount": 1
+    },
+    "severity": "error"
+  },
+  {
+    "fileName": "errors.md",
+    "lineNumber": 5,
+    "ruleNames": [
+      "MD033",
+      "no-inline-html"
+    ],
+    "ruleDescription": "Inline HTML",
+    "ruleInformation": "https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md033.md",
+    "errorDetail": "Element: b",
+    "errorContext": null,
+    "errorRange": [
+      11,
+      3
+    ],
+    "fixInfo": null,
+    "severity": "error"
+  },
+  {
+    "fileName": "errors.md",
+    "lineNumber": 7,
+    "ruleNames": [
+      "MD025",
+      "single-title",
+      "single-h1"
+    ],
+    "ruleDescription": "Multiple top-level headings in the same document",
+    "ruleInformation": "https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md025.md",
+    "errorDetail": null,
+    "errorContext": "Second title",
+    "errorRange": null,
+    "fixInfo": null,
+    "severity": "error"
+  },
+  {
+    "fileName": "path spaces/café 🧪.md",
+    "lineNumber": 3,
+    "ruleNames": [
+      "MD033",
+      "no-inline-html"
+    ],
+    "ruleDescription": "Inline HTML",
+    "ruleInformation": "https://github.com/DavidAnson/markdownlint/blob/v0.41.1/doc/md033.md",
+    "errorDetail": "Element: b",
+    "errorContext": null,
+    "errorRange": [
+      9,
+      3
+    ],
+    "fixInfo": null,
+    "severity": "error"
+  }
+]

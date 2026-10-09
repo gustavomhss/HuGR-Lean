@@ -1,0 +1,32 @@
+  console.log
+    R02 application log: café 🔥 path=artifact.json
+
+      at Object.<anonymous> (mixed.test.cjs:2:11)
+
+  console.warn
+    R02 warning evidence
+
+      1 | test('logged evidence', () => {
+      2 |   console.log('R02 application log: café 🔥 path=artifact.json');
+    > 3 |   console.warn('R02 warning evidence');
+        |           ^
+      4 |   expect('log snapshot').toMatchSnapshot();
+      5 | });
+      6 | test.skip('skip reason: external database unavailable', () => {});
+
+      at Object.<anonymous> (mixed.test.cjs:3:11)
+
+PASS ./mixed.test.cjs
+  ✓ logged evidence (79 ms)
+  ○ skipped skip reason: external database unavailable
+  ✎ todo todo reason: follow-up contract
+
+ › 1 snapshot written.
+Snapshot Summary
+ › 1 snapshot written from 1 test suite.
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 1 todo, 1 passed, 3 total
+Snapshots:   1 written, 1 total
+Time:        0.722 s
+Ran all test suites matching mixed.test.cjs.

@@ -1,0 +1,9 @@
+************* Module errors
+errors.py:6:11: E0602: Undefined variable 'missing_value' (undefined-variable)
+************* Module warning_case
+warning_case.py:5:20: W0613: Unused argument 'value' (unused-argument)
+warning_case.py:2:0: W0611: Unused import math (unused-import)
+
+-----------------------------------
+Your code has been rated at 0.00/10
+

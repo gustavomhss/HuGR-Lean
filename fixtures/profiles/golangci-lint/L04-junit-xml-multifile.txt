@@ -1,0 +1,43 @@
+<testsuites>
+  <testsuite name="issues/issues.go" tests="3" errors="0" failures="3">
+    <testcase name="errcheck" classname="issues/issues.go:12:23">
+      <failure message="issues/issues.go:12:23: Error return value is not checked" type=""><![CDATA[: Error return value is not checked
+Category: errcheck
+File: issues/issues.go
+Line: 12
+Details: func Ignore() { action() }]]></failure>
+    </testcase>
+    <testcase name="ineffassign" classname="issues/issues.go:6:2">
+      <failure message="issues/issues.go:6:2: ineffectual assignment to x" type=""><![CDATA[: ineffectual assignment to x
+Category: ineffassign
+File: issues/issues.go
+Line: 6
+Details: 	x := 1]]></failure>
+    </testcase>
+    <testcase name="unused" classname="issues/issues.go:3:6">
+      <failure message="issues/issues.go:3:6: func dead is unused" type=""><![CDATA[: func dead is unused
+Category: unused
+File: issues/issues.go
+Line: 3
+Details: func dead() int { return 42 }]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="other/other.go" tests="1" errors="0" failures="1">
+    <testcase name="unused" classname="other/other.go:3:6">
+      <failure message="other/other.go:3:6: func hidden is unused" type=""><![CDATA[: func hidden is unused
+Category: unused
+File: other/other.go
+Line: 3
+Details: func hidden() string { return "雪 😀" }]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="other/雪.go" tests="1" errors="0" failures="1">
+    <testcase name="unused" classname="other/雪.go:4:6">
+      <failure message="other/雪.go:4:6: func unused雪 is unused" type=""><![CDATA[: func unused雪 is unused
+Category: unused
+File: other/雪.go
+Line: 4
+Details: func unused雪() string { return "雪 😀" }]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

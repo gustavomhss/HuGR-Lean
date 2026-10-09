@@ -1,0 +1,4 @@
+level=warning msg="The linter 'wsl' is deprecated (since v2.2.0) due to: new major version. Replaced by wsl_v5."
+level=warning msg="[linter] `allow-multiline-assign` is deprecated and always allowed in wsl >= v5"
+level=warning msg="Suggested new configuration:\nlinters:\n  enable:\n    - wsl_v5\n  settings:\n    wsl_v5:\n      allow-first-in-block: true\n      allow-whole-block: false\n      branch-max-lines: 2\n"
+0 issues.

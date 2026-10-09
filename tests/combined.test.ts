@@ -8,7 +8,9 @@ import { tokenizeCommand } from "../src/core/command.js";
 import { profiles } from "../src/profiles/index.js";
 import { formatProfiles } from "../src/profiles/formats.js";
 import { nodeTestProfile } from "../src/profiles/node-test.js";
+import { familyProfiles as tscProfiles } from "../src/profiles/tsc.js";
 import type { FilterResult, Observation, Reduction, Span } from "../src/types.js";
+import { assertCorpusCoverage, readNativeCorpus } from "../scripts/native-corpus.mjs";
 
 // Replay existing captures without rewriting bytes. Provenance, pinned donor
 // paths/commit/license and native tool versions live in fixtures/*/SOURCES.md.
@@ -42,14 +44,14 @@ const goldens: Readonly<Record<string, Golden>> = {
   "runners/pytest_real_default.txt": { command: "pytest", profile: "pytest" },
   "formats/jest_all_passed.txt": {
     command: "jest --verbose", profile: "jest",
-    expected: "+ src/utils.test.js\n  - should add numbers (5 ms)\n  - should subtract numbers (2 ms)\n" +
-      "  - should multiply numbers (3 ms)\n  - should divide numbers (4 ms)\n\n+ src/helpers.test.js\n" +
-      "  - should format date (1 ms)\n  - should parse JSON (2 ms)\n\nTest Suites: 2 passed, 2 total\n" +
+    expected: "PASS src/utils.test.js\n  ✓ should add numbers (5 ms)\n  ✓ should subtract numbers (2 ms)\n" +
+      "  ✓ should multiply numbers (3 ms)\n  ✓ should divide numbers (4 ms)\n\nPASS src/helpers.test.js\n" +
+      "  ✓ should format date (1 ms)\n  ✓ should parse JSON (2 ms)\n\nTest Suites: 2 passed, 2 total\n" +
       "Tests:       6 passed, 6 total\nTime:        0.8 s\n",
   },
   "formats/vitest_all_passed.txt": {
     command: "vitest run", profile: "vitest",
-    expected: " ✓ test/utils.test.ts (3 tests)\n ✓ test/helpers.test.ts (2 tests)\n ✓ test/components.test.ts (4 tests)\n\n" +
+    expected: " ✓ test/utils.test.ts (3 tests) 200ms\n ✓ test/helpers.test.ts (2 tests) 150ms\n ✓ test/components.test.ts (4 tests) 300ms\n\n" +
       " Test Files  3 passed (3)\n      Tests  9 passed (9)\n   Start at  10:30:00\n   Duration  1.20s\n",
   },
   "formats/git_status_mixed.txt": {
@@ -65,14 +67,14 @@ const goldens: Readonly<Record<string, Golden>> = {
   },
   "formats/jest_native.txt": {
     command: "jest --runInBand --verbose --no-color", profile: "jest",
-    expected: "+ ./jest-native.test.cjs\n  maths 🔥\n    - adds café (7 ms)\n    nested\n" +
-      "      - keeps path: evidence (2 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       2 passed, 2 total\n" +
+    expected: "PASS ./jest-native.test.cjs\n  maths 🔥\n    ✓ adds café (7 ms)\n    nested\n" +
+      "      ✓ keeps path: evidence (2 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       2 passed, 2 total\n" +
       "Snapshots:   0 total\nTime:        1.022 s\nRan all test suites.\n",
   },
   "formats/vitest_native.txt": {
     command: "vitest run vitest-native.test.js --globals --no-color", profile: "vitest",
     expected: "\n RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-formats-native\n\n" +
-      " ✓ vitest-native.test.js (2 tests)\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  00:23:02\n" +
+      " ✓ vitest-native.test.js (2 tests) 5ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  00:23:02\n" +
       "   Duration  1.28s (transform 26ms, setup 0ms, collect 10ms, tests 5ms, environment 0ms, prepare 324ms)\n\n",
   },
   "formats/lint_tsc_errors.txt": { command: "tsc --pretty false", profile: "tsc" },
@@ -84,23 +86,23 @@ const goldens: Readonly<Record<string, Golden>> = {
 type Anchor = string | { text: string; occurrence: number };
 const formatEvidence: Readonly<Record<string, readonly Anchor[]>> = {
   "formats/jest_all_passed.txt": [
-    "src/utils.test.js\n", "should add numbers (5 ms)\n", "should subtract numbers (2 ms)\n",
-    "should multiply numbers (3 ms)\n", "should divide numbers (4 ms)\n", "src/helpers.test.js\n",
-    "should format date (1 ms)\n", "should parse JSON (2 ms)\n",
+    "PASS src/utils.test.js\n", "  ✓ should add numbers (5 ms)\n", "  ✓ should subtract numbers (2 ms)\n",
+    "  ✓ should multiply numbers (3 ms)\n", "  ✓ should divide numbers (4 ms)\n", "PASS src/helpers.test.js\n",
+    "  ✓ should format date (1 ms)\n", "  ✓ should parse JSON (2 ms)\n",
     "Test Suites: 2 passed, 2 total\n", "Tests:       6 passed, 6 total\n", "Time:        0.8 s\n",
   ],
   "formats/jest_native.txt": [
-    "./jest-native.test.cjs\n", "  maths 🔥\n", "adds café (7 ms)\n", "    nested\n", "keeps path: evidence (2 ms)\n",
+    "PASS ./jest-native.test.cjs\n", "  maths 🔥\n", "    ✓ adds café (7 ms)\n", "    nested\n", "      ✓ keeps path: evidence (2 ms)\n",
     "Test Suites: 1 passed, 1 total\n", "Tests:       2 passed, 2 total\n", "Snapshots:   0 total\n",
     "Time:        1.022 s\n", "Ran all test suites.\n",
   ],
   "formats/vitest_all_passed.txt": [
-    " ✓ test/utils.test.ts (3 tests)", " ✓ test/helpers.test.ts (2 tests)", " ✓ test/components.test.ts (4 tests)",
+    " ✓ test/utils.test.ts (3 tests) 200ms\n", " ✓ test/helpers.test.ts (2 tests) 150ms\n", " ✓ test/components.test.ts (4 tests) 300ms\n",
     " Test Files  3 passed (3)\n", "      Tests  9 passed (9)\n", "   Start at  10:30:00\n", "   Duration  1.20s\n",
   ],
   "formats/vitest_native.txt": [
     " RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-formats-native\n",
-    " ✓ vitest-native.test.js (2 tests)", " Test Files  1 passed (1)\n", "      Tests  2 passed (2)\n",
+    " ✓ vitest-native.test.js (2 tests) 5ms\n", " Test Files  1 passed (1)\n", "      Tests  2 passed (2)\n",
     "   Start at  00:23:02\n", "   Duration  1.28s (transform 26ms, setup 0ms, collect 10ms, tests 5ms, environment 0ms, prepare 324ms)\n",
   ],
   "formats/git_status_mixed.txt": [
@@ -117,7 +119,8 @@ const fixtureRoot = fileURLToPath(new URL("../fixtures/", import.meta.url));
 function listFixtures(path = ""): string[] {
   const files: string[] = [];
   for (const item of readdirSync(join(fixtureRoot, path), { withFileTypes: true })) {
-    if (path === "" && item.name === "utility") continue; // Authenticated separately by readUtilityCorpus.
+    // These two explicit namespaces have their own non-vacuous readers in the inventory test below.
+    if (path === "" && (item.name === "utility" || item.name === "profiles")) continue;
     const name = path ? `${path}/${item.name}` : item.name;
     assert.ok(item.isDirectory() || item.isFile(), `Cannot enumerate fixture entry: ${name}`);
     if (item.isDirectory()) files.push(...listFixtures(name));
@@ -216,7 +219,9 @@ test("every format profile has independent evidence coverage or explicit exact d
   const formats = corpus.filter((entry) => entry.path.startsWith("formats/"));
   assert.deepEqual([...new Set(formats.map((entry) => entry.profile))].sort(), formatProfiles.map((profile) => profile.id).sort());
   assert.deepEqual(Object.keys(formatEvidence).sort(), formats.filter((entry) => entry.expected !== undefined).map((entry) => entry.path).sort());
-  for (const profile of formatProfiles) assert.equal(profiles.find((item) => item.id === profile.id), profile);
+  for (const profile of formatProfiles) {
+    assert.equal(profiles.find((item) => item.id === profile.id), profile.id === "tsc" ? tscProfiles[0] : profile);
+  }
 });
 for (const entry of corpus.filter((item) => item.path.startsWith("formats/"))) test(`critical required format evidence: ${entry.path}`, () => {
   const input = observation(entry.input, entry.command), profile = profiles.find((item) => item.id === entry.profile);
@@ -224,7 +229,7 @@ for (const entry of corpus.filter((item) => item.path.startsWith("formats/"))) t
   if (entry.expected === undefined) {
     assert.equal(entry.profile, "tsc", "Undeclared format passthrough exception");
     assert.equal(profile.reduce(input.output, input), undefined);
-    exact(input, "unsupported_output");
+    exact(input, "no_profile");
   } else {
     const anchors = formatEvidence[entry.path]; assert.ok(anchors, `Missing independent native evidence: ${entry.path}`);
     formatRequired(input, entry.profile, anchors);
@@ -249,12 +254,24 @@ test("source fixture inventory and default production registry are nonempty and 
   assert.ok(profiles.length > 0, "Empty production registry");
   const ids = profiles.map((profile) => profile.id).sort();
   assert.equal(new Set(ids).size, ids.length, "Duplicate production profile IDs");
-  assert.equal(ids.length, 10, "Default registry must ship ten real profiles");
   assert.equal(profiles.filter((profile) => profile === nodeTestProfile).length, 1, "Node profile must register exactly once");
   const utility = await utilityReader.readUtilityCorpus(join(fixtureRoot, "utility"));
   assert.deepEqual(utility.families.map((entry: { family: string }) => entry.family).sort(), ["cargo", "go", "node", "pytest"]);
   assert.equal(utility.cases.length, 25, "Independent native corpus contract changed");
-  assert.deepEqual(ids, [...new Set([...corpus, ...utility.cases].map((entry) => entry.profile))].sort(), "Every shipped profile needs a corpus case");
+  const delta = await readNativeCorpus(join(fixtureRoot, "profiles"));
+  assert.deepEqual(ids, assertCorpusCoverage(profiles, [
+    ...corpus.map(entry => ({ name: entry.path, family: entry.profile, status: "passthrough" as const,
+      expected: entry.expected ?? entry.input, observation: observation(entry.input, entry.command), provenance: "legacy native corpus" })),
+    ...utility.cases.map((entry: { qualifiedID: string; profile: string; expectedStatus: "reduced" | "passthrough"; expectedText: string; observation: Observation }) => ({
+      name: `utility/${entry.qualifiedID}`, family: entry.profile, status: entry.expectedStatus,
+      expected: entry.expectedText, observation: entry.observation, provenance: "authenticated utility corpus" })),
+    ...delta,
+  ], delta.exactFamilies).sort(), "Every shipped profile needs a corpus case");
+  for (const entry of delta) {
+    const result = run(entry.observation);
+    assert.equal(result.status, entry.status, entry.name);
+    assert.equal(visible(entry.observation, result), entry.expected, entry.name);
+  }
   for (const family of utility.families) {
     assert.ok(family.cases.length > 0, `${family.family}: empty native family`);
     for (const entry of family.cases) {
@@ -279,7 +296,17 @@ test("source fixture inventory and default production registry are nonempty and 
 
 for (const entry of corpus) test(`production golden: ${entry.path}`, () => {
   const input = observation(entry.input, entry.command);
-  if (entry.expected === undefined) exact(input, "unsupported_output");
+  if (entry.expected === undefined) exact(input, unknownGrammarReason(entry.command));
+  else if (["jest", "vitest"].includes(entry.profile)) {
+    assert.equal(entry.expected, entry.input, `${entry.profile} golden must retain raw bytes`);
+    exact(input, "not_smaller");
+    exact({ ...input, output: entry.input.replaceAll("\n", "\r\n") }, "not_smaller");
+    const colored = { ...input, output: `\x1b[32m${entry.input}\x1b[0m`, presentation: "terminal-rendered" as const };
+    const result = run(colored);
+    assert.equal(result.status, "normalized");
+    assert.equal(visible(colored, result), entry.expected);
+    assert.equal(result.outputBytes, Buffer.byteLength(entry.expected));
+  }
   else {
     const crlf = entry.expectedCRLF ?? entry.expected.replaceAll("\n", "\r\n");
     const expected = entry.input.includes("\r\n") ? crlf : entry.expected;
@@ -318,12 +345,14 @@ for (const [path, field, label] of c1Fields) {
   const expected = entry.expected;
   assert.ok(entry.input.includes(field) && expected.includes(field), `Missing dynamic field: ${path}`);
   const insert = (value: string) => entry.input.replace(field, field + value);
-  test(`production ${entry.profile} ${label} reduces ordinary Unicode`, () => {
+  test(`production ${entry.profile} ${label} ${["jest", "vitest"].includes(entry.profile) ? "preserves" : "reduces"} ordinary Unicode`, () => {
     const unicode = "漢字 e\u0301 🔥";
-    reduced(observation(insert(unicode), entry.command), expected.replace(field, field + unicode), entry.profile);
+    if (["jest", "vitest"].includes(entry.profile)) exact(observation(insert(unicode), entry.command), "not_smaller");
+    else reduced(observation(insert(unicode), entry.command), expected.replace(field, field + unicode), entry.profile);
   });
   test(`production ${entry.profile} ${label} preserves every C1 control exactly`, () => {
-    reduced(observation(entry.input, entry.command), expected, entry.profile);
+    if (["jest", "vitest"].includes(entry.profile)) exact(observation(entry.input, entry.command), "not_smaller");
+    else reduced(observation(entry.input, entry.command), expected, entry.profile);
     const failures: string[] = [];
     for (let code = 0x80; code <= 0x9f; code++) {
       const output = insert(String.fromCodePoint(code)), bytes = Buffer.byteLength(output, "utf8");
@@ -357,11 +386,12 @@ test("common failure, incomplete, unknown, and missing metadata preserve entire 
   }
 });
 
+const unknownGrammarReason = (command: string) => command === "tsc --pretty false" ? "no_profile" : "unsupported_output";
 test("commands dispatch by identity, not native-looking output", () => {
   const unknown = ["unknown test", "cat README.md", "read src/index.ts", "git diff", "npm test", "node script.js", "cargo test | tee report", "FOO=bar pytest"];
   for (const entry of corpus) {
     for (const command of unknown) exact(observation(entry.input, command));
-    for (const other of corpus) if (other.profile !== entry.profile) exact(observation(entry.input, other.command), "unsupported_output");
+    for (const other of corpus) if (other.profile !== entry.profile) exact(observation(entry.input, other.command), unknownGrammarReason(other.command));
   }
 });
 
@@ -375,9 +405,9 @@ test("unknown/read/diff/repeated JSON and unsafe CR remain exact through every c
   ];
   for (const entry of corpus) {
     for (const output of outputs) for (const presentation of ["unknown", "terminal-rendered"] as const)
-      exact(observation(output, entry.command, { presentation }), "unsupported_output");
+      exact(observation(output, entry.command, { presentation }), unknownGrammarReason(entry.command));
     for (const output of ["\rprogress\r" + entry.input, entry.input.replace(/\r?\n/, "\runsafe\r"), `\x1b[31m${entry.input}\x1b[0m\r`, "FAILx\rPASS!"])
-      exact(observation(output, entry.command, { presentation: "terminal-rendered" }), "unsupported_output");
+      exact(observation(output, entry.command, { presentation: "terminal-rendered" }), unknownGrammarReason(entry.command));
   }
 });
 
@@ -426,7 +456,7 @@ test("1,000 seeded finite arbitrary UTF-8 strings stay exact across production r
   assert.ok(commands.length > 0, "Empty command collection");
   for (const output of strings) {
     assert.equal(Buffer.from(output, "utf8").toString("utf8"), output, "Generator must emit Unicode scalar values");
-    for (const command of commands) exact(observation(output, command, { presentation: "terminal-rendered" }), "unsupported_output");
+    for (const command of commands) exact(observation(output, command, { presentation: "terminal-rendered" }), unknownGrammarReason(command));
     exact(observation(output, "unknown test"), "no_profile");
   }
 });
