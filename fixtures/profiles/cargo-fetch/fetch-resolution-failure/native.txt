@@ -1,0 +1,5 @@
+    Updating crates.io index
+error: failed to select a version for the requirement `itoa = "=999.0.0"`
+candidate versions found which didn't match: 1.0.18, 1.0.17, 1.0.16, ...
+location searched: crates.io index
+required by package `c08-fetch v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/resolution-failure)`

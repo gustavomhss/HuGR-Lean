@@ -1,0 +1,2 @@
+c08-local-bin v0.1.0 (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin):
+    c08-local-bin
