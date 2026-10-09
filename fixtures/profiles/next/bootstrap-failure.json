@@ -1,0 +1,16 @@
+{
+  "schema": "B02-bootstrap-failure/1",
+  "workspace": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-pfv5f9pe",
+  "action": "python3 fixtures/profiles/next/capture.py prepare",
+  "completedCommands": [
+    {"argv": ["node", "--version"], "exitCode": 0, "rawArchive": "bootstrap-node-version.log"},
+    {"argv": ["npm", "--version"], "exitCode": 0, "rawArchive": "bootstrap-npm-version.log"}
+  ],
+  "failedOperation": "write raw merged npm view next@15.5.9 --json output",
+  "errorExact": "OSError: [Errno 28] No space left on device: '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-B02/fixtures/profiles/next/B02-registry-next.txt'",
+  "registryRawOutput": "UNAVAILABLE: write failed; no raw output file or process receipt persisted",
+  "completeness": "unknown",
+  "boundary": "Collector failed after subprocess communication, before writing bytes. Not a complete command capture.",
+  "observedDisk": {"available": "66Mi", "capacity": "100%", "filesystem": "/dev/disk1s1"},
+  "modifications": "Original node/npm version bytes moved unchanged to bootstrap archives. Registry query changed to exact-version HTTPS metadata request for subsequent attempt. Receipt now persisted after each completed command. Disk preflight prevents install/build with insufficient free space."
+}
