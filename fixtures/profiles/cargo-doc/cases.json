@@ -2,6 +2,8 @@
   "schema": "hugr-lean/native-cases/1",
   "family": "cargo-doc",
   "state": "CAPTURED",
+  "platform": "darwin/x64",
+  "versions": {"cargo": "cargo 1.98.0 (797e8a9bc 2026-08-05)", "rustdoc": "rustdoc 1.98.0 (88d9e12ae 2026-08-18)", "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)"},
   "cases": [
     {
       "id": "default", "argv": ["cargo", "doc", "--offline"], "command": "cargo doc --offline",
@@ -131,6 +133,26 @@
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-checking-6EFaNm/target",
       "artifacts": [{"file": "target/doc/doc_tool/index.html", "sha256": "5bbee8d5a33ee414704b80984bf068e304480fa7b7d91bcfff7def9609cf6741"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture-checking.mjs", "recipeSHA256": "9d0bd63b520f223215e088934e218ca1253a431c48c105a1f9c9119c15c7082c", "completedStream": true}
+    },
+    {
+      "id": "three-warning", "argv": ["cargo", "doc", "--offline", "--workspace", "--no-deps", "--features", "doc-alpha/doc-warning", "--jobs", "1"], "command": "cargo doc --offline --workspace --no-deps --features doc-alpha/doc-warning --jobs 1",
+      "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-three-TBUjpU", "started": "2026-10-09T01:28:46.171Z", "elapsedMs": 13376.40494,
+      "outputFile": "three-warning/native.txt", "rawSHA256": "364afb6e2e9d3514ec94f2434f6cd3faf1bcd1e8c1fc6ccf4739c45e33cd2203", "inputBytes": 1103,
+      "expectedProposalFile": "three-warning/expected.txt", "proposedDisposition": "reduced", "removableBytes": 234,
+      "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-three-TBUjpU/target",
+      "artifacts": [{"file": "target/doc/doc_alpha/index.html", "sha256": "df578919d544791b22373b99e7dfc288bf67d1ece572f4b5920b5e532b69f5d4"}, {"file": "target/doc/doc_beta/index.html", "sha256": "fdcefa36a11638e11ccafaefa6ed27b42093e2dbf35cd12e8402c2dd3f392698"}, {"file": "target/doc/doc_gamma/index.html", "sha256": "186a8bafd60b2a8d0162d5420a14479913b8ead168d250d1b962f026433653c9"}],
+      "provenance": {"record": "SOURCES.md", "recipe": "capture-three.mjs", "recipeSHA256": "e6df9213de9b722cb7341b7b31db75e8a85086d506969594c8725c40248bf132", "completedStream": true}
+    },
+    {
+      "id": "profile-path", "argv": ["cargo", "doc", "--offline", "--manifest-path", "Cargo.toml", "--profile", "custom-doc", "--target", "x86_64-apple-darwin", "--no-deps", "-p", "doc-alpha", "--features", "doc-warning"], "command": "cargo doc --offline --manifest-path Cargo.toml --profile custom-doc --target x86_64-apple-darwin --no-deps -p doc-alpha --features doc-warning",
+      "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-options-q5Sxej", "started": "2026-10-09T01:30:37.933Z", "elapsedMs": 2879.522143,
+      "outputFile": "profile-path/native.txt", "rawSHA256": "80f52a0fb697775b5a06b4be17ee977a5e5fa259ddbe4329b2d92746be29de2e", "inputBytes": 885,
+      "expectedProposalFile": "profile-path/expected.txt", "proposedDisposition": "reduced", "removableBytes": 238,
+      "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-options-q5Sxej/target",
+      "artifacts": [{"file": "target/x86_64-apple-darwin/doc/doc_alpha/index.html", "sha256": "df578919d544791b22373b99e7dfc288bf67d1ece572f4b5920b5e532b69f5d4"}],
+      "provenance": {"record": "SOURCES.md", "recipe": "capture-options.mjs", "recipeSHA256": "56b8ac47ecbc7761e9aa00e6a0232b1715ce215626ccf901abea2fbbfaf35a69", "completedStream": true}
     }
   ]
 }

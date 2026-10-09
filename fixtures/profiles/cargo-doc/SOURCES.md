@@ -65,3 +65,25 @@ Aborted attempt: first capture hit harness 120-second timeout before printing JS
 recipe hashed every target file; no stream from that attempt is admitted as complete.
 Recipe changed to hash only generated crate-root HTML and bound each child to 60 seconds.
 Final main capture and both supplements exited successfully; syntax-fail native child exited 101.
+
+## Approved bounded grammar: added native witnesses (2026-10-09 UTC)
+
+`capture-three.mjs` SHA-256: `e6df9213de9b722cb7341b7b31db75e8a85086d506969594c8725c40248bf132`.
+Recipe copies beta to gamma, changes gamma package name to doc-gamma, adds gamma workspace member,
+and captures actual `--workspace --no-deps --features doc-alpha/doc-warning --jobs 1`.
+Native output proves `and 2 other files` and two Documenting rows after a complete warning frame/summary.
+Modified root Cargo.toml SHA: `cea0619844c913f90d77ceb90ad6ced61777e8502f16b9718a242cc2082ad373`;
+gamma/Cargo.toml SHA: `d9f1dc2ff33b85bf48b40d62f28ee7cf517f0e099c072b0ab731b1011c65b4a4`;
+gamma/src/lib.rs SHA: `5a89edfa119c16044e06e4e3a539bdfb0608fa40857579601a52265257d546a3`.
+
+`capture-options.mjs` SHA-256: `56b8ac47ecbc7761e9aa00e6a0232b1715ce215626ccf901abea2fbbfaf35a69`.
+Recipe appends exactly `\n[profile.custom-doc]\ninherits = "dev"\n` to disposable root manifest.
+Modified manifest SHA: `fee5c1edaf0f0ecd732a495044d539b581f09f9c7f085c152abb7034b89ab13e`.
+Actual argv includes --manifest-path Cargo.toml, --profile custom-doc, host --target, -p doc-alpha,
+--features doc-warning, --no-deps and --offline. Native finish retains the custom profile name;
+artifact retains the requested target. Both additional captures completed with exit 0, same tool
+versions, environment and merged-stream boundary as above. Their independent expected proposals
+were authored literally; no filter generated them. All root HTML hashes were measured before cleanup.
+
+The archived `capture-bins.mjs` header describes a failed Checking-capture intention. Its immutable
+executed recipe bytes are retained for hash binding; actual output disproves that intention.
