@@ -5,7 +5,7 @@ source snapshots, boundary and raw hash in `cases.json`. Original 16 captures
 remain passthrough; only the three default-get captures below admit deletion.
 Test: `tests/profile-go-mod.test.ts`, explicit `familyProfiles` injection.
 
-| ID | Native variant / required evidence | Prospective material policy |
+| ID | Native variant / required evidence | Material policy |
 | --- | --- | --- |
 | download-cold | Fresh public cache; silent success; go.sum creation | Exact; no output to remove |
 | download-cached | Same cache; silent success; unchanged files | Exact; no output to remove |
@@ -45,5 +45,6 @@ red at `G05/get-default-added`. Local baseline/source ref for added captures:
 Checks: focused named test plus npm run typecheck. Existing disposable capture
 integrity checks compare raw bytes/hash, sequential snapshots, source invariance,
 and native on-disk state; in-memory output/source mutations were rejected.
-Parser pairing-guard and required-change deletion mutations must fail focused tests,
-then restore and rerun. Registry integration remains lead-owned.
+Parser pairing-guard mutation failed the unpaired-version refusal test; deleting
+the first required change from emitted pieces failed native golden and span tests.
+Both mutations restored; focused tests and typecheck rerun. Registry remains lead-owned.

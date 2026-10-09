@@ -55,6 +55,9 @@ v1.0.0 and v1.1.0. Both versions contain `package dep\n` in dep.go and go.mod
 `module <module-path>\n\ngo 1.24.0\n`; native proxy info uses timestamp
 `2026-01-01T00:00:00Z`. Archive members are `<module>@<version>/go.mod` and dep.go.
 These are native proxy downloads, not progress lines from a replacement or fake Go.
+`proxy-sources.json` retains per-version SHA-256 of original mod/info/zip bytes
+and verbatim archive-member source for locally authored modules. Public archive,
+mod and info copies were compared byte-for-byte with the authenticated cache.
 No source/application execution is needed for module commands. This bounded proxy
 does not claim live latest-version registry resolution coverage.
 
