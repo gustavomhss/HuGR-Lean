@@ -41,7 +41,7 @@ directory on `PATH`. The package version remains `0.2.0` pending a human release
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for verified baseline local proof, pending final artifact inspection, deferred CI and human decisions.
+for historical baseline proof, native campaign scope, pending final artifact/CI and human decisions.
 The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
@@ -55,11 +55,11 @@ Copy `pluginURL` from doctor into your OpenCode configuration:
 ```
 
 Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Historically and freshly verified local host route at the frozen code baseline:
+Historical verified host route (not a fresh native-campaign package proof):
 **OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
 Final documentation-bearing artifact proof and Linux/macOS/Windows CI remain pending;
-Linux/Windows were not run locally. Actions stays deferred until final candidate verification
-is recorded and the lead explicitly declares completion.
+Linux/Windows host compatibility is not established. Final package CI waits for lead freeze;
+focused Rust capture Actions runs are separate evidence.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
 When npm registry publication is available, `hugr-lean@0.2.0` can be used as the plugin package name;
@@ -67,13 +67,18 @@ the package-name loading route has been tested with a locally installed tarball.
 
 ## Behavior and coverage
 
-Supported native grammars: Cargo test/build, pytest, Go verbose tests, Jest, Vitest,
-English Git status and numbered ripgrep. Coverage is deliberately format-specific; see
-[coverage matrix](docs/COVERAGE.md).
+Default registry has 20 profile IDs: bounded Cargo test/build/check/Clippy, pytest,
+Go text/JSON tests and module changes, Node/tsx TAP, tsc verbose reference-build timestamps,
+pnpm safe install progress, ESLint/Biome, explicit Ruff/Pyright/Pylint JSON layouts,
+Jest/Vitest validators, English Git status and numbered ripgrep. Jest/Vitest plaintext
+reduction is withdrawn: whole markers, timings and source rows stay exact.
+Native corpus enrolls 41 bounded families, including 25 exact-ledger families with no new
+runtime reducers. Missing/unimplemented/conservative variants remain explicit; see
+[coverage inventory](docs/COVERAGE.md) and [profile manual](src/profiles/MANUAL.md).
 
 - Unknown commands, malformed/new formats, failures and incomplete/truncated results stay exact.
 - Every reduction must preserve declared evidence and be smaller in UTF-8 bytes.
-- Original summaries remain exact; supported passing-test progress can disappear after count validation.
+- Original summaries remain exact; only specifically admitted progress/layout can disappear after full validation. Native-looking plugin/reporter/lifecycle text does not authenticate its producer.
 - The adapter changes only model-visible text. Native command, title, metadata and attachments remain host-owned.
 - Host truncation happens before the hook: raw recovery means the exact captured boundary, not full process stdout.
 
@@ -180,4 +185,7 @@ Target 400 LOC/file; allow 600; tolerate 750; above 750 split. CI checks logical
 [Real-world evaluation](docs/BENCHMARK_REAL.md) executes unchanged commands in pinned projects and reports zero-savings cases, preservation and overhead separately.
 [Host proof](docs/OPENCODE.md) uses a local model mock, including actual model-bound requests.
 Selected [TRS fixtures](fixtures/runners/SOURCES.md) carry pinned source paths, hashes and MIT notices;
-production parsers are original TypeScript. See [NOTICE](NOTICE) and [licenses](licenses/TRS-MIT.txt).
+native producer pins/copy modification records live in per-family CASES/SOURCES linked by coverage.
+Production parsers are original TypeScript; fixture licenses remain their own, including GPL license archives.
+See [NOTICE](NOTICE) and [TRS license](licenses/TRS-MIT.txt). Byte savings are not token/cost claims;
+current campaign benchmark and final exact-SHA package CI have not run.

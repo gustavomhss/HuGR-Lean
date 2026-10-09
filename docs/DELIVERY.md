@@ -1,4 +1,4 @@
-# Public GitHub delivery candidate — 2026-10-07
+# Public GitHub delivery candidate — native documentation close, 2026-10-09
 
 **Candidate pending human approval; not a new release or a completed gate.**
 Local Git is canonical. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
@@ -6,11 +6,18 @@ This is the single operational status record; historical release/benchmark repor
 
 ## Identity and evidence boundary
 
-Frozen code baseline: `56cd420190506e495b6446daf6ec6e4f95c94da2`.
+Current documentation baseline: `20ce6cd` on `campaign/native-integration`. Default registry
+has 20 IDs; promoted native index has 41 bounded families, 25 explicitly exact-only.
+[Coverage](COVERAGE.md) maps runtime/exact evidence; [campaign](NATIVE-COVERAGE-CAMPAIGN.md)
+retains independent integration/probe receipts and missing/unimplemented decisions.
+Final artifact proof, current benchmark and single exact-SHA three-OS package CI are pending
+lead freeze. No new release, publication, token savings or wider host support is claimed.
+
+Historical pre-campaign code baseline: `56cd420190506e495b6446daf6ec6e4f95c94da2`.
 It contains the independently reviewed format C1 fix, manual exact-SHA Actions guard,
 new-owner package/module contact identity and retirement of previous-provider execution configs.
-Documentation changes are based on that tree. Full local macOS proof at this baseline is now
-independently verified. Aggregate blob comparison from that baseline to the first documentation
+The earlier documentation delivery was based on that tree. Its local macOS proof was
+independently verified. Historical aggregate blob comparison to its first documentation
 commit found only the four owned docs changed: source/scripts/tests/package/workflow are identical.
 This proves code identity, not identity of the final documentation-bearing tarball or release approval.
 
@@ -22,19 +29,20 @@ for this document or automatic installation approval. Moving refs are not review
 ## PLAN delivery ledger
 
 The [plan](../PLAN.md) remains the acceptance source. Links identify implemented surfaces
-and existing witnesses, not fresh executions by this documentation change.
+and existing witnesses, not fresh executions by this documentation change. Baseline pass
+statements below refer to the historical pre-campaign receipt, not current-head checks.
 
 | PLAN item | Actual implementation / witnesses | Current evidence and remaining decision |
 | --- | --- | --- |
 | 1. Foundation | [Manifest](../package.json), [types](../src/core/types.ts), [LICENSE](../LICENSE), [build](../scripts/build.mjs), [structure tests](../tests/structure.test.ts) | One MIT TypeScript package, Node 22+, five modules. Baseline local structure/typecheck/build passed. |
 | 2. Pure core | [Engine](../src/core/engine.ts), [command identity](../src/core/command.ts), [lines](../src/core/lines.ts), [core tests](../tests/core.test.ts), [normalization tests](../tests/normalize.test.ts) | Bounded input, fail-open, UTF-16 spans and UTF-8 byte metrics implemented. Baseline full suite and temporary compiled-copy mutation controls passed/restored. |
 | 3. OpenCode | [Adapter](../src/opencode/index.ts), [plugin tests](../tests/plugin.test.ts), [host proof](OPENCODE.md) | Historical file/preinstalled package-name proof plus fresh installed model-bound proof at baseline: 1.18.17 legacy CLI, macOS x64. Final docs-artifact proof pending; V2/other routes unproved. |
-| 4. Profiles | [Registry](../src/profiles/index.ts), [runners](../src/profiles/runners.ts), [formats](../src/profiles/formats.ts), [runner tests](../tests/runners.test.ts), [format tests](../tests/formats.test.ts), [combined tests](../tests/combined.test.ts), [coverage](COVERAGE.md) | Native admitted grammars only; diagnostics/install progress remain passthrough. Final C1 fix is in this baseline; historical `ae4c3b5` lacks it. Baseline suite/installed fixture replay passed. |
+| 4. Profiles | [Registry](../src/profiles/index.ts), [manual](../src/profiles/MANUAL.md), [combined tests](../tests/combined.test.ts), [coverage](COVERAGE.md) | Current bounded reducers include diagnostics/layout/install progress; Cargo/Go extension and Node TAP reuse. Jest/Vitest plaintext reductions withdrawn, legacy validators retained. Exact ledger adds captures without stubs; final installed replay pending. |
 | 5. UX | [Options](../src/opencode/config.ts), [CLI](../src/cli/index.ts), [CLI tests](../tests/cli.test.ts), [README lifecycle](../README.md#lifecycle) | Baseline installed CLI/doctor and normal lifecycle installation passed. Upgrade/rollback/remove documented; final docs-artifact installation pending; no registry availability claim. |
 | 6. Optional raw | [Store](../src/raw/index.ts), [raw tests](../tests/raw.test.ts), [TTL tests](../tests/raw-ttl.test.ts), [real-host raw script](../scripts/opencode-raw-smoke.mjs) | Raw off by default; exact captured boundary, byte/TTL limits and safe IDs implemented. Fresh baseline raw off/on host and exact CLI recovery passed. |
 | 7. Proof/release | [Combined corpus tests](../tests/combined.test.ts), [installed smoke](../scripts/package-smoke.mjs), [smoke controls](../tests/package-smoke.test.ts), [benchmarks](BENCHMARK.md), [native evaluation](BENCHMARK_REAL.md), [NOTICE](../NOTICE), [distribution](DISTRIBUTION.md) | Baseline local mechanical/installed/host proof passed. Final docs-artifact proof, three-OS CI, retained corpus verification and human publication/usefulness decisions remain pending. |
 
-## Verified baseline local proof; final artifact receipt pending
+## Historical pre-campaign local proof; current artifact receipt pending
 
 The independently verified private receipt covers exactly the frozen baseline above on Darwin
 24.3.0 x64, Node 22.17.1/npm 10.9.2. Structure/typecheck/build, the full suite at file concurrency 2,
@@ -62,8 +70,8 @@ Installed package proof, actual host/model-bound proof and raw off/on recovery a
 checks. Smoke without `--opencode` can prove package paths but reports incomplete release proof;
 it is not real-host compatibility. Latency acceptance must retain declared budgets, environment,
 load and failures; historic timing is not a measurement of this head. This documentation lane
-runs static checks and controlled install-recipe fail-stop probes only, not product tests,
-npm installation, benchmarks or remote CI.
+runs read-only scoped link/pin-path audits only; it provides no fresh product-test,
+installation, benchmark or remote-CI execution evidence.
 
 The historical native corpus is not recovered for a fresh pass. Do not fabricate captures,
 rerun upstream commands as replacement historical evidence or erase failed reports.
@@ -72,19 +80,23 @@ primary cases: **the practical noise-reduction criterion failed on that corpus**
 Historical sampled preservation and engineering latency results do not establish general
 utility, token/cost savings or wider host support. No new utility goal or waiver is inferred.
 
-## Deferred GitHub Actions
+## Focused capture Actions; final package CI pending
 
-Actions must stay disabled until complete candidate local verification is recorded and the
-lead explicitly declares completion. No AppVeyor or GitLab execution route remains active.
-The candidate Linux/macOS/Windows matrix is **pending**, not green or replaced by local macOS.
+Two capture runs are recorded: [Rust builtin bench](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069)
+at candidate/workflow/checkout `da4c7601ad37cd1305c1ecd52733a84ee8dcc769`, and
+[rustdoc](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37989424550) at
+`6b40ec97e78ed233e2373928854fd9dac02dd802`. They prove dated-nightly Rust/native
+cases only, including rustdoc Checking/nonhost/config artifact controls; neither is final
+package CI. Capture-only workflows were excluded from integration. Current Linux/macOS/
+Windows package matrix remains **pending**; old macOS proof cannot replace it.
 
-After that completion decision, publish the exact candidate to `delivery/github-ready` and
-make that branch the new repository default so manual dispatch is available. This setup does
-not merge into `main`. Enable Actions only then. Confirm the default/dispatch branch resolves
-to the approved full SHA and replace the placeholder before issuing the single dispatch:
+After all capture/agent work stops, lead freezes and pushes the final integrated candidate,
+records its full SHA and artifact evidence, opens final PR, then dispatches ONE full workflow.
+Confirm dispatch ref resolves to the reviewed full SHA; replace both placeholders below.
+If that sole run fails, campaign remains incomplete; another full attempt needs human authorization.
 
 ```sh
-gh workflow run ci.yml --repo gustavomhss/HuGR-Lean --ref delivery/github-ready -f candidate_sha=FULL_REVIEWED_DELIVERY_SHA
+gh workflow run ci.yml --repo gustavomhss/HuGR-Lean --ref FROZEN_CANDIDATE_REF -f candidate_sha=FULL_REVIEWED_DELIVERY_SHA
 ```
 
 The [workflow](../.github/workflows/ci.yml) uses `workflow_dispatch` only and checks out the input.
@@ -98,7 +110,8 @@ not execute OpenCode, native recapture or latency acceptance.
 
 ## Human decisions still open
 
-Candidate approval and completion, missing-corpus disposition, practical usefulness, release
+Candidate approval/completion, missing variants and unimplemented safe-format dispositions,
+current performance/practical usefulness, release
 version/tag/GitHub publication and npm authorization remain explicit lead decisions. Missing
 evidence is not silently waived by source publication or future CI. The public repository is
 source-only at this handoff; the original local tarball remains retained separately. Agents stop
