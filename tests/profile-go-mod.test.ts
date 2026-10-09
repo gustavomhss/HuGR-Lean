@@ -41,6 +41,55 @@ const reducedChange = (value: Observation) => {
     value.output.slice(value.output.indexOf("\n") + 1));
 };
 
+const invalidModulePath = (name: string) => {
+  const profile = familyProfiles[0]!;
+  for (const argv of [["go", "get", name], ["go", "mod", "download", name]]) {
+    assert.equal(profile.match(argv), false, name);
+  }
+  exact(observation(output, `go get ${name}`));
+  exact(observation(output, `go get golang.org/x/text ${name}`));
+  exact(moduleChange(name, "v1.2.3"));
+  exact(moduleChange(name, "v1.2.4", "v1.2.3"));
+  exact(observation(output + `go: added ${name} v1.2.3\n`));
+  exact(observation(output + `go: upgraded ${name} v1.2.3 => v1.2.4\n`));
+  exact(observation(output + `go: downloading ${name} v1.2.3\ngo: added ${name} v1.2.3\n`));
+};
+
+test("G05 dotted first path element required for operands and every output row", () => {
+  for (const name of ["example-net/pkg", "example-net/pkg/sub", "example1/pkg"]) invalidModulePath(name);
+  for (const name of ["example-net.org/pkg", "example.net/pkg/sub", "example1.net/pkg"]) {
+    assert.equal(familyProfiles[0]!.match(["go", "get", name]), true);
+    reducedChange(moduleChange(name, "v1.2.3"));
+  }
+});
+
+test("G05 reserved Windows components preserve invalid operands and output rows", () => {
+  const reserved = ["CON", "PRN", "AUX", "NUL",
+    ...Array.from({ length: 9 }, (_, index) => `COM${index + 1}`),
+    ...Array.from({ length: 9 }, (_, index) => `LPT${index + 1}`)];
+  for (const part of reserved) {
+    for (const component of [part, part.toLowerCase() + ".txt", part[0] + part.slice(1).toLowerCase() + ".data.more"]) {
+      invalidModulePath(`example.net/${component}`);
+      invalidModulePath(`example.net/pkg/${component}/sub`);
+    }
+    invalidModulePath(`${part.toLowerCase()}.example/pkg`);
+  }
+  for (const part of ["CONx", "x.CON", "_nul", "com0", "com10", "lpt0", "lpt10"]) {
+    const name = `example.net/${part}`;
+    assert.equal(familyProfiles[0]!.match(["go", "get", name]), true);
+    reducedChange(moduleChange(name, "v1.2.3"));
+  }
+});
+
+test("G05 closed path constraints also reject unsupported operands", () => {
+  for (const tail of ["v0", "v1", "v01", "v2.0", ".hidden", "pkg.", "pkg~1"]) {
+    invalidModulePath(`example.net/pkg/${tail}`);
+  }
+  invalidModulePath("gopkg.in/pkg.v2");
+  reducedChange(moduleChange("example.net/pkg/v2", "v2.3.4"));
+  reducedChange(moduleChange("example.net/pkg/v2beta", "v1.2.3"));
+});
+
 test("G05 reject numeric prerelease leading zeros in every version position", () => {
   for (const release of ["v1.2.3-01", "v1.2.3-beta.00", "v1.2.3-0.01"]) {
     exact(moduleChange("example.net/pkg", release));
