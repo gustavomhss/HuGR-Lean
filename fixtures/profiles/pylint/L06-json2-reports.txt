@@ -1,0 +1,46 @@
+{
+    "messages": [
+        {
+            "type": "warning",
+            "symbol": "unused-argument",
+            "message": "Unused argument 'value'",
+            "messageId": "W0613",
+            "confidence": "HIGH",
+            "module": "warning_case",
+            "obj": "unused_argument",
+            "line": 5,
+            "column": 20,
+            "endLine": 5,
+            "endColumn": 25,
+            "path": "warning_case.py",
+            "absolutePath": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project/warning_case.py"
+        },
+        {
+            "type": "warning",
+            "symbol": "unused-import",
+            "message": "Unused import math",
+            "messageId": "W0611",
+            "confidence": "UNDEFINED",
+            "module": "warning_case",
+            "obj": "",
+            "line": 2,
+            "column": 0,
+            "endLine": 2,
+            "endColumn": 11,
+            "path": "warning_case.py",
+            "absolutePath": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project/warning_case.py"
+        }
+    ],
+    "statistics": {
+        "messageTypeCount": {
+            "fatal": 0,
+            "error": 0,
+            "warning": 2,
+            "refactor": 0,
+            "convention": 0,
+            "info": 0
+        },
+        "modulesLinted": 4,
+        "score": 3.333333333333334
+    }
+}

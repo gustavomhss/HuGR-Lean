@@ -1,0 +1,3 @@
+************* Module warning_case
+warning_case.py:5:20: W0613: Unused argument 'value' (unused-argument)
+warning_case.py:2:0: W0611: Unused import math (unused-import)
