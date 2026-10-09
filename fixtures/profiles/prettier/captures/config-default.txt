@@ -1,0 +1,1 @@
+[error] Invalid tabWidth value. Expected an integer, but received "wrong".

@@ -1,0 +1,7 @@
+{
+  "root": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-yarn-fifb25vb",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "node": "v22.17.1",
+  "producerSha256": "eaea4c3dabaa8487f1121388ec158a3ef97098b25dd054b5eb3bf59578e77e6c",
+  "boundary": "pipe, no PTY, no ANSI stripping, no newline rewriting"
+}

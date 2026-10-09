@@ -1,0 +1,108 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "next",
+  "baseline": "248c303",
+  "cases": [
+    {
+      "name": "B02-node-version",
+      "family": "next",
+      "version": "node v22.17.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-node-version.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "command": "node --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 15,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 9,
+      "outputBytes": 9,
+      "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+      "startedAt": "2026-10-09T15:34:26.679186+00:00",
+      "completionAt": "2026-10-09T15:34:27.508914+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 9,
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+        "finalLF": true,
+        "lastBytesHex": "7632322e31372e310a"
+      },
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "B02-node-version",
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf"
+      }
+    },
+    {
+      "name": "B02-npm-version",
+      "family": "next",
+      "version": "npm 10.9.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-npm-version.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "npm",
+        "--version"
+      ],
+      "command": "npm --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 15,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 7,
+      "outputBytes": 7,
+      "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+      "startedAt": "2026-10-09T15:34:27.516919+00:00",
+      "completionAt": "2026-10-09T15:34:29.850387+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 7,
+        "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+        "finalLF": true,
+        "lastBytesHex": "31302e392e320a"
+      },
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "B02-npm-version",
+        "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5"
+      }
+    }
+  ],
+  "archives": [
+    "CASES.md",
+    "LICENSE.next-upstream.txt",
+    "SOURCES.md",
+    "bootstrap-failure.json",
+    "bootstrap-node-version.log",
+    "bootstrap-npm-version.log",
+    "capture-receipt.json",
+    "capture.py",
+    "registry-next.json",
+    "registry-react-dom.json",
+    "registry-react.json",
+    "registry-types-node.json",
+    "registry-types-react.json",
+    "registry-typescript.json",
+    "source-recipes.json"
+  ]
+}

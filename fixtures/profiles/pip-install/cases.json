@@ -1,0 +1,569 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "pip-install",
+  "baseline": "07ffe15e2263c2925778022194c5385807216603",
+  "cases": [
+    {
+      "name": "P05/public-fresh",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "public-fresh.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--index-url",
+        "https://pypi.org/simple",
+        "--retries",
+        "0",
+        "--timeout",
+        "15",
+        "colorama==0.4.6"
+      ],
+      "command": "pip install --index-url https://pypi.org/simple --retries 0 --timeout 15 colorama==0.4.6",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 228,
+      "outputBytes": 228,
+      "sha256": "a562ed3350077321ad4a52c6e53cd1352f426b75dcc6cfed25ec20a28944f7e8",
+      "proposal": null,
+      "reason": "not-implemented: native download evidence inspected",
+      "elapsedSeconds": 2.177924156188965,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/public-fresh",
+        "sha256": "a562ed3350077321ad4a52c6e53cd1352f426b75dcc6cfed25ec20a28944f7e8"
+      }
+    },
+    {
+      "name": "P05/public-satisfied",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "public-satisfied.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--index-url",
+        "https://pypi.org/simple",
+        "--retries",
+        "0",
+        "--timeout",
+        "15",
+        "colorama==0.4.6"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --index-url https://pypi.org/simple --retries 0 --timeout 15 colorama==0.4.6",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 94,
+      "outputBytes": 94,
+      "sha256": "4e1903a32cc3b86b670640640e433d45fef8b3d70ef7fcbee9b57f5ff6f02a9c",
+      "proposal": null,
+      "reason": "no-removable-material: satisfied package/version retained",
+      "elapsedSeconds": 0.6122210025787354,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/public-satisfied",
+        "sha256": "4e1903a32cc3b86b670640640e433d45fef8b3d70ef7fcbee9b57f5ff6f02a9c"
+      }
+    },
+    {
+      "name": "P05/public-cache",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "public-cache.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--index-url",
+        "https://pypi.org/simple",
+        "--retries",
+        "0",
+        "--timeout",
+        "15",
+        "--force-reinstall",
+        "colorama==0.4.6"
+      ],
+      "command": "pip install --index-url https://pypi.org/simple --retries 0 --timeout 15 --force-reinstall colorama==0.4.6",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 390,
+      "outputBytes": 390,
+      "sha256": "4c2b9a8ff0f7bd7c141978b938587bf6841547d00caf76242b1a08a79a75d766",
+      "proposal": null,
+      "reason": "unsafe-to-delete: cache, uninstall and version changes retained",
+      "elapsedSeconds": 0.7954039573669434,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/public-cache",
+        "sha256": "4c2b9a8ff0f7bd7c141978b938587bf6841547d00caf76242b1a08a79a75d766"
+      }
+    },
+    {
+      "name": "P05/public-binary-progress-off",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "public-binary-progress-off.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--index-url",
+        "https://pypi.org/simple",
+        "--retries",
+        "0",
+        "--timeout",
+        "15",
+        "--only-binary=:all:",
+        "--progress-bar",
+        "off",
+        "--target",
+        "public-target",
+        "colorama==0.4.6"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --index-url https://pypi.org/simple --retries 0 --timeout 15 --only-binary=:all: --progress-bar off --target public-target colorama==0.4.6",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 230,
+      "outputBytes": 230,
+      "sha256": "dfb8eb5afd8a72aa1b3012ea3e3f1530617f84a22836efbdc556fa36db16db02",
+      "proposal": null,
+      "reason": "no-removable-material: original flags remove progress, not package evidence",
+      "elapsedSeconds": 0.7747893333435059,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/public-binary-progress-off",
+        "sha256": "dfb8eb5afd8a72aa1b3012ea3e3f1530617f84a22836efbdc556fa36db16db02"
+      }
+    },
+    {
+      "name": "P05/local-fresh",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "local-fresh.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "p05_root==1.0"
+      ],
+      "command": "pip install --no-index --find-links wheels p05_root==1.0",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 243,
+      "outputBytes": 243,
+      "sha256": "89dbb2eee71d7f80d38e9f8203069f29e64fa66b74ab3d7150a4505a0f8a346a",
+      "proposal": null,
+      "reason": "unsafe-to-delete: dependency and installation evidence",
+      "elapsedSeconds": 0.7077362537384033,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/local-fresh",
+        "sha256": "89dbb2eee71d7f80d38e9f8203069f29e64fa66b74ab3d7150a4505a0f8a346a"
+      }
+    },
+    {
+      "name": "P05/local-satisfied",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "local-satisfied.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "p05_root==1.0"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --no-index --find-links wheels p05_root==1.0",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 225,
+      "outputBytes": 225,
+      "sha256": "bbee4cde87ed5143520151946927ab6289e7cee9f38451c6a83817721239cec8",
+      "proposal": null,
+      "reason": "no-removable-material: dependency satisfaction evidence",
+      "elapsedSeconds": 0.7625432014465332,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/local-satisfied",
+        "sha256": "bbee4cde87ed5143520151946927ab6289e7cee9f38451c6a83817721239cec8"
+      }
+    },
+    {
+      "name": "P05/requirements-constraints",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "requirements-constraints.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "--only-binary=:all:",
+        "--progress-bar",
+        "off",
+        "--target",
+        "requirements-target",
+        "-r",
+        "requirements.txt",
+        "-c",
+        "constraints.txt"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --no-index --find-links wheels --only-binary=:all: --progress-bar off --target requirements-target -r requirements.txt -c constraints.txt",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 308,
+      "outputBytes": 308,
+      "sha256": "e817a6fd7bada69fafe7882f88c9b4839daeb5c44937f3f35ad6c648f07d81d7",
+      "proposal": null,
+      "reason": "no-removable-material: requirement/constraint package associations",
+      "elapsedSeconds": 0.7030429840087891,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/requirements-constraints",
+        "sha256": "e817a6fd7bada69fafe7882f88c9b4839daeb5c44937f3f35ad6c648f07d81d7"
+      }
+    },
+    {
+      "name": "P05/resolver-failure",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "resolver-failure.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "--target",
+        "conflict-target",
+        "-r",
+        "requirements.txt",
+        "-c",
+        "conflict.txt"
+      ],
+      "command": "pip install --no-index --find-links wheels --target conflict-target -r requirements.txt -c conflict.txt",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 921,
+      "outputBytes": 921,
+      "sha256": "49611e85a2b55bc75842b56f06107ef968afab895f2cbb0cf04228498039be1f",
+      "proposal": null,
+      "reason": "failure-exact: resolver diagnostics and action advice",
+      "elapsedSeconds": 0.7704281806945801,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/resolver-failure",
+        "sha256": "49611e85a2b55bc75842b56f06107ef968afab895f2cbb0cf04228498039be1f"
+      }
+    },
+    {
+      "name": "P05/offline-miss",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "offline-miss.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "p05_missing==1.0"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --no-index p05_missing==1.0",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 161,
+      "outputBytes": 161,
+      "sha256": "ff9930626482592f5995fa177ed45b13a782ba33b373e4761068b5a394695ce8",
+      "proposal": null,
+      "reason": "failure-exact: no matching distribution",
+      "elapsedSeconds": 0.8085360527038574,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/offline-miss",
+        "sha256": "ff9930626482592f5995fa177ed45b13a782ba33b373e4761068b5a394695ce8"
+      }
+    },
+    {
+      "name": "P05/offline-warning",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "offline-warning.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "--find-links",
+        "missing-wheel-directory",
+        "--target",
+        "warning-target",
+        "p05_root==1.0"
+      ],
+      "command": "pip install --no-index --find-links wheels --find-links missing-wheel-directory --target warning-target p05_root==1.0",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 502,
+      "outputBytes": 502,
+      "sha256": "3e22162251ce05b18232b2fe99765d7dd172dd1d825bdd910a4904b5bd1d10c1",
+      "proposal": null,
+      "reason": "unsafe-to-delete: native warning with successful install",
+      "elapsedSeconds": 0.6979591846466064,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/offline-warning",
+        "sha256": "3e22162251ce05b18232b2fe99765d7dd172dd1d825bdd910a4904b5bd1d10c1"
+      }
+    },
+    {
+      "name": "P05/backend-logs",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "backend-logs.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "-v",
+        "./backend"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --no-index -v ./backend",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1478,
+      "outputBytes": 1478,
+      "sha256": "a0f75ce8abae8bc06524f6668d08881b70c3b1bb2e0a1c482e44571e2e7cc3da",
+      "proposal": null,
+      "reason": "unsafe-ambiguous: native-shaped backend logs, timing, summary and warning",
+      "elapsedSeconds": 1.0572290420532227,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/backend-logs",
+        "sha256": "a0f75ce8abae8bc06524f6668d08881b70c3b1bb2e0a1c482e44571e2e7cc3da"
+      }
+    },
+    {
+      "name": "P05/binary-satisfied-backend",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "binary-satisfied-backend.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "--only-binary=:all:",
+        "--progress-bar",
+        "off",
+        "p05_backend==1.0"
+      ],
+      "command": "pip install --no-index --find-links wheels --only-binary=:all: --progress-bar off p05_backend==1.0",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 118,
+      "outputBytes": 118,
+      "sha256": "1f807e2bd8a1baff8f3471727b10170aef4d2d1a53a062055969075603170084",
+      "proposal": null,
+      "reason": "no-removable-material: previously installed backend package satisfaction",
+      "elapsedSeconds": 0.6521689891815186,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/binary-satisfied-backend",
+        "sha256": "1f807e2bd8a1baff8f3471727b10170aef4d2d1a53a062055969075603170084"
+      }
+    },
+    {
+      "name": "P05/binary-reject-backend",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "binary-reject-backend.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "wheels",
+        "--only-binary=:all:",
+        "--progress-bar",
+        "off",
+        "--target",
+        "binary-target",
+        "p05_backend==1.0"
+      ],
+      "command": "pip install --no-index --find-links wheels --only-binary=:all: --progress-bar off --target binary-target p05_backend==1.0",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 186,
+      "outputBytes": 186,
+      "sha256": "e985aed7674199eba207b5dd0edc19a2d76c82fbaf85417fc5696f60618e7083",
+      "proposal": null,
+      "reason": "failure-exact: fresh target has no backend wheel in find-links",
+      "elapsedSeconds": 0.7166500091552734,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/binary-reject-backend",
+        "sha256": "e985aed7674199eba207b5dd0edc19a2d76c82fbaf85417fc5696f60618e7083"
+      }
+    },
+    {
+      "name": "P05/binary-explicit-source",
+      "family": "pip-install",
+      "version": "pip 25.3",
+      "platform": "darwin-x86_64",
+      "file": "binary-explicit-source.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--only-binary=:all:",
+        "--progress-bar",
+        "off",
+        "--target",
+        "binary-source-target",
+        "-v",
+        "./backend"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin/python -m pip install --no-index --only-binary=:all: --progress-bar off --target binary-source-target -v ./backend",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1478,
+      "outputBytes": 1478,
+      "sha256": "f0a7a60101abe2ab9a6f42d66b731dfe157b1fdfa604426e1e6bb44b3169e784",
+      "proposal": null,
+      "reason": "unsafe-ambiguous: only-binary does not prevent explicitly requested local source backend execution",
+      "elapsedSeconds": 1.1067438125610352,
+      "provenance": {
+        "record": "SOURCES.md",
+        "originalCase": "P05/binary-explicit-source",
+        "sha256": "f0a7a60101abe2ab9a6f42d66b731dfe157b1fdfa604426e1e6bb44b3169e784"
+      }
+    }
+  ]
+}

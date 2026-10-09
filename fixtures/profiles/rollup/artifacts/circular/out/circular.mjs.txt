@@ -1,0 +1,5 @@
+const b = () => a;
+
+const a = () => b;
+
+export { a };

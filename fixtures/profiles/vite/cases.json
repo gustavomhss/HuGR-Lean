@@ -1,0 +1,58 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "vite",
+  "baseline": "07ffe15e2263c2925778022194c5385807216603",
+  "state": "CAPTURED_ONLY",
+  "cases": [
+    {
+      "name": "B01-fresh", "family": "vite", "version": "vite/6.3.5 darwin-x64 node-v22.17.1", "platform": "darwin-x64",
+      "source": "shell", "argv": ["vite", "build"], "command": "vite build",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown", "status": "passthrough",
+      "output": "vite v6.3.5 building for production...\ntransforming...\n✓ 7 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/assets/icon-B6571Fog.svg   0.09 kB │ gzip: 0.11 kB\ndist/index.html                 0.24 kB │ gzip: 0.19 kB\ndist/assets/index-V2tex3au.css  0.04 kB │ gzip: 0.05 kB\ndist/assets/lazy-D9K9YTnL.js    0.05 kB │ gzip: 0.07 kB\ndist/assets/index-B2kfxBZE.js   2.10 kB │ gzip: 1.07 kB\n✓ built in 131ms\n",
+      "inputBytes": 434, "outputBytes": 434,
+      "provenance": {"record": "SOURCES.md", "originalCase": "B01-fresh", "sha256": "d638bba210dca9da9c52f099c04b9ef9a61e01c789ae4a0149f6ddc136473cf8"},
+      "startedAt": "2026-10-09T03:06:11.845496+00:00", "completedAt": "2026-10-09T03:06:13.806091+00:00",
+      "facts": {"modules": 7, "reportedArtifacts": 5, "jsChunks": 2, "gzip": true, "buildMs": 131, "outDir": "dist", "priorOutDir": false}
+    },
+    {
+      "name": "B01-repeat", "family": "vite", "version": "vite/6.3.5 darwin-x64 node-v22.17.1", "platform": "darwin-x64",
+      "source": "shell", "argv": ["vite", "build"], "command": "vite build",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown", "status": "passthrough",
+      "output": "vite v6.3.5 building for production...\ntransforming...\n✓ 7 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/assets/icon-B6571Fog.svg   0.09 kB │ gzip: 0.11 kB\ndist/index.html                 0.24 kB │ gzip: 0.19 kB\ndist/assets/index-V2tex3au.css  0.04 kB │ gzip: 0.05 kB\ndist/assets/lazy-D9K9YTnL.js    0.05 kB │ gzip: 0.07 kB\ndist/assets/index-B2kfxBZE.js   2.10 kB │ gzip: 1.07 kB\n✓ built in 117ms\n",
+      "inputBytes": 434, "outputBytes": 434,
+      "provenance": {"record": "SOURCES.md", "originalCase": "B01-repeat", "sha256": "858d8e3959725541f07b7b46331ed0fb08489c1c81c43f5ac3776f02cabdd367"},
+      "startedAt": "2026-10-09T03:06:13.806132+00:00", "completedAt": "2026-10-09T03:06:14.204812+00:00",
+      "facts": {"modules": 7, "reportedArtifacts": 5, "jsChunks": 2, "gzip": true, "buildMs": 117, "outDir": "dist", "priorOutDir": true, "cacheHitClaim": false}
+    },
+    {
+      "name": "B01-outdir", "family": "vite", "version": "vite/6.3.5 darwin-x64 node-v22.17.1", "platform": "darwin-x64",
+      "source": "shell", "argv": ["vite", "build", "--outDir", "release/site"], "command": "vite build --outDir release/site",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown", "status": "passthrough",
+      "output": "vite v6.3.5 building for production...\ntransforming...\n✓ 7 modules transformed.\nrendering chunks...\ncomputing gzip size...\nrelease/site/assets/icon-B6571Fog.svg   0.09 kB │ gzip: 0.11 kB\nrelease/site/index.html                 0.24 kB │ gzip: 0.19 kB\nrelease/site/assets/index-V2tex3au.css  0.04 kB │ gzip: 0.05 kB\nrelease/site/assets/lazy-D9K9YTnL.js    0.05 kB │ gzip: 0.07 kB\nrelease/site/assets/index-B2kfxBZE.js   2.10 kB │ gzip: 1.07 kB\n✓ built in 111ms\n",
+      "inputBytes": 474, "outputBytes": 474,
+      "provenance": {"record": "SOURCES.md", "originalCase": "B01-outdir", "sha256": "111c3e0abe0103f19f602b9da2d78019dd213684a76cd8a070ccb2de72acf195"},
+      "startedAt": "2026-10-09T03:06:14.204848+00:00", "completedAt": "2026-10-09T03:06:14.581065+00:00",
+      "facts": {"modules": 7, "reportedArtifacts": 5, "jsChunks": 2, "gzip": true, "buildMs": 111, "outDir": "release/site"}
+    },
+    {
+      "name": "B01-warnings", "family": "vite", "version": "vite/6.3.5 darwin-x64 node-v22.17.1", "platform": "darwin-x64",
+      "source": "shell", "argv": ["vite", "build", "--config", "warnings.config.mjs"], "command": "vite build --config warnings.config.mjs",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown", "status": "passthrough",
+      "output": "vite v6.3.5 building for production...\ntransforming...\n✓ 7 modules transformed.\nlazy.js (3:0): Use of eval in \"lazy.js\" is strongly discouraged as it poses security risks and may cause issues with minification.\nrendering chunks...\n[plugin b01-source-warning] Sourcemap is likely to be incorrect: a plugin (b01-source-warning) was used to transform files, but didn't generate a sourcemap for the transformation. Consult the plugin documentation for help\ncomputing gzip size...\ndist/assets/icon-B6571Fog.svg   0.09 kB │ gzip: 0.11 kB\ndist/index.html                 0.24 kB │ gzip: 0.19 kB\ndist/assets/index-V2tex3au.css  0.04 kB │ gzip: 0.05 kB\ndist/assets/lazy-DdDpwP5I.js    0.12 kB │ gzip: 0.13 kB │ map: 0.10 kB\ndist/assets/index-_81oBTht.js   2.14 kB │ gzip: 1.10 kB │ map: 0.64 kB\n\n(!) Some chunks are larger than 1 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n✓ built in 130ms\n",
+      "inputBytes": 1151, "outputBytes": 1151,
+      "provenance": {"record": "SOURCES.md", "originalCase": "B01-warnings", "sha256": "814b0ad1daff43fde51215d2c7cb9caca6819730e71e426c3d0cfedd9131bbc1"},
+      "startedAt": "2026-10-09T03:06:14.581099+00:00", "completedAt": "2026-10-09T03:06:14.978561+00:00",
+      "facts": {"modules": 7, "reportedArtifacts": 5, "jsChunks": 2, "mapFiles": 2, "gzip": true, "buildMs": 130, "warningKinds": ["eval-source-location", "plugin-sourcemap", "chunk-size-advice"]}
+    },
+    {
+      "name": "B01-plugin-collision", "family": "vite", "version": "vite/6.3.5 darwin-x64 node-v22.17.1", "platform": "darwin-x64",
+      "source": "shell", "argv": ["vite", "build", "--config", "collision.config.mjs"], "command": "vite build --config collision.config.mjs",
+      "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown", "status": "passthrough",
+      "output": "vite v6.3.5 building for production...\ntransforming...\n✓ 999 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/assets/plugin-evidence.js  7.00 kB │ gzip: 3.00 kB\n✓ built in 777ms\ntransforming...\n✓ 7 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/assets/icon-B6571Fog.svg   0.09 kB │ gzip: 0.11 kB\ndist/index.html                 0.24 kB │ gzip: 0.19 kB\ndist/assets/index-V2tex3au.css  0.04 kB │ gzip: 0.05 kB\ndist/assets/lazy-D9K9YTnL.js    0.05 kB │ gzip: 0.07 kB\ndist/assets/index-B2kfxBZE.js   2.10 kB │ gzip: 1.07 kB\n✓ built in 135ms\n",
+      "inputBytes": 599, "outputBytes": 599,
+      "provenance": {"record": "SOURCES.md", "originalCase": "B01-plugin-collision", "sha256": "65a693ef28479e92adf56059e801e0c6ec1c8041f32c20d9f93746cfc9c64595"},
+      "startedAt": "2026-10-09T03:06:14.978597+00:00", "completedAt": "2026-10-09T03:06:15.419183+00:00",
+      "facts": {"modules": 7, "reportedArtifacts": 5, "pluginModuleClaim": 999, "pluginTimingClaimMs": 777, "pluginArtifactClaim": "dist/assets/plugin-evidence.js", "buildMs": 135, "authenticProducerBoundary": false}
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+import { a as answer } from './chunks/shared-D5Fiyy3Q.mjs';
+
+console.log('雪😀', answer);
+
+export { answer };
+//# sourceMappingURL=entry-BR8Cyjlr.mjs.map

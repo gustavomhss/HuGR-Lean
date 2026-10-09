@@ -1,0 +1,145 @@
+{
+  "recipe": "inspect .next recursively after process exit; hash raw file bytes; retain named manifests verbatim",
+  "termination": {
+    "kind": "exited",
+    "code": 1
+  },
+  "artifacts": [
+    {
+      "path": ".next/cache/.previewinfo",
+      "bytes": 262,
+      "sha256": "381422e311d9cdf3c441c2edcc7e05ab917d0804bcda7b05997415131043cb22"
+    },
+    {
+      "path": ".next/cache/.rscinfo",
+      "bytes": 102,
+      "sha256": "7fc46323a5e359388477f3a604b8e370716db8e2db82f4acebfba387fbe45825"
+    },
+    {
+      "path": ".next/cache/.tsbuildinfo",
+      "bytes": 102837,
+      "sha256": "951996b0061875d14e75cf629f123e4ceba3f40aa918d8815e946fc4fa45939d"
+    },
+    {
+      "path": ".next/cache/webpack/server-production/0.pack",
+      "bytes": 4378154,
+      "sha256": "49531fa4e9cd3fc23b977df5b65bf90535b2503fcb7cf8a15c0fcdc5b9f089ea"
+    },
+    {
+      "path": ".next/cache/webpack/server-production/index.pack",
+      "bytes": 306903,
+      "sha256": "2cf87412277acac66a694c1bc8bbea35902a65c357518f30d67774ffeb3e3ac1"
+    },
+    {
+      "path": ".next/diagnostics/build-diagnostics.json",
+      "bytes": 83,
+      "sha256": "f957528ee74563741494ea85b5fbe42e0b7141bae938eefc6ddaa3b4a91f8430"
+    },
+    {
+      "path": ".next/diagnostics/framework.json",
+      "bytes": 37,
+      "sha256": "d90a1b4e602a12aa5381b6e78f0d0fc764d5fe0168d3ac3b0cdaf81f58c8c587"
+    },
+    {
+      "path": ".next/package.json",
+      "bytes": 20,
+      "sha256": "091a04fa67c7907b98e106fcff8b964e13129754fce72d24f3025b97c4887fa3"
+    },
+    {
+      "path": ".next/server/chunks/317.js",
+      "bytes": 68910,
+      "sha256": "ff96e3526245de712ab15d21edd6951f41d6feadec95be0c5a7100a471559aa3"
+    },
+    {
+      "path": ".next/server/chunks/871.js",
+      "bytes": 65823,
+      "sha256": "b40fc2c257bfea534a7af0d784409d94db3dfd57b2a809bbf3b216ff71ea56cf"
+    },
+    {
+      "path": ".next/server/pages/_app.js",
+      "bytes": 3357,
+      "sha256": "acec747ac0357f460a61ba1e0083c808d285626b627fe06d4498223b45d23098"
+    },
+    {
+      "path": ".next/server/pages/_app.js.nft.json",
+      "bytes": 119,
+      "sha256": "22594c94b64957eec4eee2844d45c77e541b537c0e7ba98bc3d6c96d25d61530"
+    },
+    {
+      "path": ".next/server/pages/_document.js",
+      "bytes": 368,
+      "sha256": "9e8ed1fdfdb73fa090d32c8bbeadf14308468c20c1ba7b51cc87b6d71f48a59c"
+    },
+    {
+      "path": ".next/server/pages/_document.js.nft.json",
+      "bytes": 143,
+      "sha256": "2e9992c5ea6addb52cae7fa0b7c907d3ac0556bc07ca70733063c66f2aa79104"
+    },
+    {
+      "path": ".next/server/pages/_error.js",
+      "bytes": 6997,
+      "sha256": "d80f618bab5d6ccb9044fcaaf133f2faf7178127105bfe61b12219797b3945ff"
+    },
+    {
+      "path": ".next/server/pages/_error.js.nft.json",
+      "bytes": 85,
+      "sha256": "f07b702ff0a1089ae6df596a13cb5cf9c289cb3242b1ff85d81709401cb215b6"
+    },
+    {
+      "path": ".next/server/pages/blog/[slug].js",
+      "bytes": 1867,
+      "sha256": "4c183cf8ee6763fc0067fef034c52ffc82de43563fca5c14c7d7c882b5c243c3"
+    },
+    {
+      "path": ".next/server/pages/blog/[slug].js.nft.json",
+      "bytes": 121,
+      "sha256": "1652b8de9ab82efadac7ed18ca75af4549df408e02a56295dca05947a576d9df"
+    },
+    {
+      "path": ".next/server/pages/dynamic.js",
+      "bytes": 1770,
+      "sha256": "5e9229f6e26bb3618723d9de076d5d08c4ce43bb327a85830331c01e7250f666"
+    },
+    {
+      "path": ".next/server/pages/dynamic.js.nft.json",
+      "bytes": 109,
+      "sha256": "1afc42e2185b1d6987f8947e5be7a1db9fbb625dc6ddab58ab250677f41aada7"
+    },
+    {
+      "path": ".next/server/pages/index.js",
+      "bytes": 1792,
+      "sha256": "4c7d6af48c7a1afe7aac43292877cb6a33c97f49dbdcfc7d10fa314e864d7f94"
+    },
+    {
+      "path": ".next/server/pages/index.js.nft.json",
+      "bytes": 109,
+      "sha256": "1afc42e2185b1d6987f8947e5be7a1db9fbb625dc6ddab58ab250677f41aada7"
+    },
+    {
+      "path": ".next/server/pages-manifest.json",
+      "bytes": 201,
+      "sha256": "c467ed4feec8941062316eabbc1afed1b2b0a832a0e7ada106c9517427eea81b",
+      "content": "{\n  \"/_app\": \"pages/_app.js\",\n  \"/_error\": \"pages/_error.js\",\n  \"/\": \"pages/index.js\",\n  \"/_document\": \"pages/_document.js\",\n  \"/blog/[slug]\": \"pages/blog/[slug].js\",\n  \"/dynamic\": \"pages/dynamic.js\"\n}"
+    },
+    {
+      "path": ".next/server/webpack-runtime.js",
+      "bytes": 1027,
+      "sha256": "fa551e97986dc6bcbc489ca38642b63684885ebf14147d7e19c27b560473503d"
+    },
+    {
+      "path": ".next/trace",
+      "bytes": 1848,
+      "sha256": "70c90f23351d9534be3827e217f757924e06d57aaa46e2b3a5cb672a787fa142"
+    },
+    {
+      "path": ".next/types/routes.d.ts",
+      "bytes": 1471,
+      "sha256": "c60ea95fc86fa413dc476176141c8aeeb9329f3617c054cbf0231a71b9073e27"
+    },
+    {
+      "path": ".next/types/validator.ts",
+      "bytes": 1681,
+      "sha256": "f470d42928bfe5e7b7a9f3184a91d7dec3df5d9371d2b29d8df391531b9a126d"
+    }
+  ]
+}

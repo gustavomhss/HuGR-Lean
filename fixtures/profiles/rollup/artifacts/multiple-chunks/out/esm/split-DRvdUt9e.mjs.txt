@@ -1,0 +1,6 @@
+export { a as answer } from './chunks/shared-D5Fiyy3Q.mjs';
+
+const load = () => import('./chunks/lazy-BWDBwCKZ.mjs');
+
+export { load };
+//# sourceMappingURL=split-DRvdUt9e.mjs.map

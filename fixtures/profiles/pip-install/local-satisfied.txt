@@ -1,0 +1,3 @@
+Looking in links: wheels
+Requirement already satisfied: p05_root==1.0 in ./venv/lib/python3.14/site-packages (1.0)
+Requirement already satisfied: p05_dep==1.0 in ./venv/lib/python3.14/site-packages (from p05_root==1.0) (1.0)
