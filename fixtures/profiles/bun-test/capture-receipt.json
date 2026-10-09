@@ -1,0 +1,585 @@
+{
+  "baseline": "248c303",
+  "mode": "CAPTUREONLY",
+  "binary": {
+    "path": "/Users/gustavoschneiter/.bun/bin/bun",
+    "resolvedPath": "/Users/gustavoschneiter/.bun/bin/bun",
+    "sha256": "ea2f223e94bb2f4bf3050895113c3cf346438f6fa0501c8532284e063f72f7a0",
+    "version": "1.3.14",
+    "binding": "Existing host binary pinned by version and hash; build-to-source correspondence not attested"
+  },
+  "recipe": {
+    "file": "capture.py",
+    "sha256": "6e7a578124c9e5402177004b0baa2ecc980853ea1166a275a308f78b44fdcc26"
+  },
+  "environment": {
+    "set": {
+      "NO_COLOR": "1",
+      "TERM": "dumb",
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8"
+    },
+    "removed": [
+      "FORCE_COLOR",
+      "CLICOLOR_FORCE",
+      "BUN_OPTIONS",
+      "BUN_TEST_TIMEOUT"
+    ],
+    "otherwise": "inherited"
+  },
+  "sourceOrigin": "Original tiny campaign programs under repository MIT license; collision copies our own R05-suite native bytes verbatim",
+  "sources": [
+    {
+      "file": "inputs/collision.test.ts",
+      "bytes": 516,
+      "sha256": "659cf05bbd05f7dcc5b2c15bb3b94f24998ff4b960a81a3220e76180f977a2b2"
+    },
+    {
+      "file": "inputs/failure.test.ts",
+      "bytes": 166,
+      "sha256": "dc6b647f42f95a76aa2b388408e2296d0919e576e2aa05f0486a5c1028f4f345"
+    },
+    {
+      "file": "inputs/log.test.ts",
+      "bytes": 295,
+      "sha256": "eea4f87fafbebff5897e9d9bb3cda64455474e237ee0e22bdd6f8e9e54c2c497"
+    },
+    {
+      "file": "inputs/retry-failure.test.ts",
+      "bytes": 173,
+      "sha256": "a688b7a503793a7a72d178fcedb6e0e7a6b1b0833b70ff206d93197353bcc945"
+    },
+    {
+      "file": "inputs/retry.test.ts",
+      "bytes": 213,
+      "sha256": "1aba03a5678ad21fd72553d7553784223f8298517d2213c7356dadcd25ca8cc4"
+    },
+    {
+      "file": "inputs/second.test.ts",
+      "bytes": 216,
+      "sha256": "8e4336d0ee04a7da9ed5bdc06be0e576ec65c23e34dac103cb8d7ebead5aa1a3"
+    },
+    {
+      "file": "inputs/subject.ts",
+      "bytes": 143,
+      "sha256": "1eeb946481da3d2294e8f89f2c44c22c585738dff958d05a3fa1b8af32882f7f"
+    },
+    {
+      "file": "inputs/suite.test.ts",
+      "bytes": 424,
+      "sha256": "d38e445b5da3303ab381435b4b5ee5b1fdd7759b51d3a44f088858ccfbb5e18f"
+    }
+  ],
+  "cases": [
+    {
+      "name": "R05-version",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "--version"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "--version"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-version.txt",
+      "variant": "existing binary version",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:47.094033+00:00",
+      "completionAt": "2026-10-09T15:30:47.409955+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 7,
+        "sha256": "56b0485099b6c5427d3b68c042fd05b632d5e52e924c5064473389812227164c",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "312e332e31340a"
+      }
+    },
+    {
+      "name": "R05-help",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--help"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--help"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-help.txt",
+      "variant": "native documented flags including retry",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:47.410389+00:00",
+      "completionAt": "2026-10-09T15:30:47.482473+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 3368,
+        "sha256": "12160fcf26f16bcb1fa71b152c0b7cb31011d893b3063b133ee19b03e96426c5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "742068747470733a2f2f62756e2e636f6d2f646f63732f636c692f746573740a"
+      }
+    },
+    {
+      "name": "R05-suite",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-suite.txt",
+      "variant": "nested suites, skip reason in name, todo, totals",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:47.482772+00:00",
+      "completionAt": "2026-10-09T15:30:47.661539+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 392,
+        "sha256": "74bae71674f33663937a92cf1d4a75abf34adbf987d219eb5cc87570add46662",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7465737473206163726f737320312066696c652e205b3134362e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-multifile",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-multifile.txt",
+      "variant": "multifile nested suite identities and totals",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:47.661797+00:00",
+      "completionAt": "2026-10-09T15:30:47.990116+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 492,
+        "sha256": "885de3de2a2dee4639e39fb9016ad4d657d5a7c177cf0cd1122f5a8a31d99a52",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "65737473206163726f737320322066696c65732e205b3239352e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-logs",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./log.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./log.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-logs.txt",
+      "variant": "duplicate stdout and stderr user logs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:47.990377+00:00",
+      "completionAt": "2026-10-09T15:30:48.115842+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 280,
+        "sha256": "9b6f50e0c312bc08c9a8fa8494925a4619ce38bb5b06dfa7ffd091521f6597c3",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "312074657374206163726f737320312066696c652e205b39352e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-coverage",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--coverage",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--coverage",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-coverage.txt",
+      "variant": "text coverage metrics, file names, suites and skips",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:48.116113+00:00",
+      "completionAt": "2026-10-09T15:30:48.480438+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 772,
+        "sha256": "6d3ed76a1daefb1e1231d560f8eecf9cc7a70ae6f63cd4d3dabfbbec8f08fb2f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "65737473206163726f737320322066696c65732e205b3333322e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-failure",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./failure.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./failure.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-failure.txt",
+      "variant": "nonzero assertion diagnostics and totals",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:48.480708+00:00",
+      "completionAt": "2026-10-09T15:30:48.788435+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 283,
+        "sha256": "514937dfd1833e3e7287d67620888cb1fe167d1de9e86906add976776a34910a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374206163726f737320312066696c652e205b3237362e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-retry-success",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-retry-success.txt",
+      "variant": "documented CLI retry; failed attempt and successful retry logs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:48.788707+00:00",
+      "completionAt": "2026-10-09T15:30:48.913663+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 682,
+        "sha256": "8beab40c7b8a94dfe056d70ba4b15519ed9e288a0b876c2aaae7926b9b4f097b",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "312074657374206163726f737320312066696c652e205b39352e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-retry-exhausted",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry-failure.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry-failure.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-retry-exhausted.txt",
+      "variant": "documented CLI retry exhausted; diagnostics and logs",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:48.913901+00:00",
+      "completionAt": "2026-10-09T15:30:49.211917+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 1056,
+        "sha256": "87fb3da9af0b688e51606e56a74a99993a2312788c916c42a6ec387bd74bc414",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374206163726f737320312066696c652e205b3236362e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-rerun",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--rerun-each=2",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--rerun-each=2",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-rerun.txt",
+      "variant": "documented repeated run; distinct from retry",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:49.212180+00:00",
+      "completionAt": "2026-10-09T15:30:49.561611+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 687,
+        "sha256": "fc271e1932648a738af4368b44f4d9719edecd940be7768626acd1a3a2b7612b",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7465737473206163726f737320312066696c652e205b3331382e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-dots",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--reporter=dots",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--reporter=dots",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-dots.txt",
+      "variant": "alternate native reporter",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:49.561859+00:00",
+      "completionAt": "2026-10-09T15:30:49.855342+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 117,
+        "sha256": "d8926b0b65c9783c7a3690ba4676178081a76d455ee8d0f273573ca4df61283b",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7465737473206163726f737320312066696c652e205b3235392e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-unknown-flag",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--hugr-unknown-flag",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--hugr-unknown-flag",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-unknown-flag.txt",
+      "variant": "unsupported flag behavior as actually emitted",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:49.855772+00:00",
+      "completionAt": "2026-10-09T15:30:50.068640+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 392,
+        "sha256": "e4dcab7ea1391397507020ea851195cb1601f33917c0ca440f0a03f7e4dbe2db",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7465737473206163726f737320312066696c652e205b3138302e30306d735d0a"
+      }
+    },
+    {
+      "name": "R05-no-match",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./absent.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./absent.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-no-match.txt",
+      "variant": "missing file/no tests failure",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:50.069093+00:00",
+      "completionAt": "2026-10-09T15:30:50.177812+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 74,
+        "sha256": "30a3bfb4d9436fade0eb633801489136b88f0a000d28c29c4efd8e71b449381f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2f616273656e742e746573742e74732220686164206e6f206d6174636865730a"
+      }
+    },
+    {
+      "name": "R05-collision",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./collision.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./collision.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-collision.txt",
+      "variant": "real user stdout contains complete byte-exact R05-suite native output",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "startedAt": "2026-10-09T15:30:50.180680+00:00",
+      "completionAt": "2026-10-09T15:30:50.669014+00:00",
+      "boundary": {
+        "description": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF then wait; no PTY, normalization or truncation",
+        "bytes": 541,
+        "sha256": "ae650166fd71c6492013046f5724739cd863695d415a58dfac29aa009b37d2f7",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374206163726f737320312066696c652e205b3435332e30306d735d0a"
+      }
+    }
+  ],
+  "collision": {
+    "sourceCase": "R05-suite",
+    "collisionCase": "R05-collision",
+    "exactBytesContained": true,
+    "sha256": "74bae71674f33663937a92cf1d4a75abf34adbf987d219eb5cc87570add46662"
+  }
+}
