@@ -321,6 +321,21 @@ SHA-256 `1e24fe0db34c3333a26b31f3482f8244bf7a2476e11d5b7a193fdd150291e96e`: 833 
 24.054/21.828 ms at 1 MiB; budgets met. All empty boundaries account for finite zero savings.
 Independent aggregate/source/hash audit approved; raw timing vectors were not retained.
 Only documentation/report integration remains before exact final candidate/PR/single full CI.
+Final snapshot PR #129 was based on approved utility/integration `0d28527`, with identical Git tree
+to reviewed campaign `1f491fa`; candidate `3ab535d` was dispatched exactly once as full CI run
+`37997802813`. All three lanes passed structure/typecheck and failed tests. Linux/macOS each recorded
+1540 passes and five failures; Windows recorded 1325 passes, 187 failures and 33 platform skips.
+No build/installed-smoke success follows from this run. The failed run is preserved, not replaced.
+Repairs independently approved in PRs #130/#131: file-only G05 observation/test binding; finite
+optimized-dev positive admission expectation; C02 fallback no longer overrides legacy library/header
+refusals; native fixture namespaces use -text so Git Windows checkouts preserve pinned bytes. Actual
+autocrlf=true checkout control converts an unprotected LF sample while protected native samples retain
+their blob hashes. Original fixture/source bytes unchanged by the attribute/test repair.
+After import, all five shared failing named tests and checkout control passed focused checks; native
+guard mutations failed, restored guards passed. Initial missing TypeScript dependency blocked one
+local launch; dependency install restored tooling, only three unexecuted Cargo tests reran.
+Corrected source `d2057b1` has not had another full CI attempt or performance measurement.
+Another complete CI requires explicit human authorization; never merge while final gate is unresolved.
 States: SPEC -> CAPTURED -> BASELINE_RED/PRESERVED -> READY -> RUNNING -> REVIEW -> INTEGRATED -> FINAL_VERIFIED.
 Per row receipt: owner, baseline SHA, branch/worktree, packet/version, final SHA/PR, tests/mutation, blockers.
 Old-main planning branch remains historical and is not part of this integration.

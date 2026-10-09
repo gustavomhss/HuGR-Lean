@@ -1,6 +1,13 @@
 # Public GitHub delivery candidate — native documentation close, 2026-10-09
 
 **Candidate pending human approval; not a new release or a completed gate.**
+Final PR: [#129](https://github.com/gustavomhss/HuGR-Lean/pull/129).
+The sole full CI attempt [37997802813](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37997802813)
+tested `3ab535d08faf9f403be914a346a93e54697e5320` and failed tests on all three OS lanes;
+structure and full typecheck passed. Build/installed smoke were not reached.
+Five shared failures and Windows checkout byte corruption have independently reviewed focused repairs
+in `d2057b1` (PRs #130/#131). New full CI is **not authorized or dispatched** yet. Earlier failed
+candidate/run remains evidence; focused repair passes are not a green three-OS result.
 Local Git is canonical. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 This is the single operational status record; historical release/benchmark reports remain dated evidence.
 
@@ -13,7 +20,10 @@ has 20 IDs; promoted native index has 41 bounded families, 25 explicitly exact-o
 retains independent integration/probe receipts and missing/unimplemented decisions.
 Current local benchmark met both p95 budgets; [report and source-bound method](BENCHMARK.md)
 remain independent of final artifact proof. Single exact-SHA three-OS package CI and final artifact
-inspection are pending lead freeze. No new release, publication, token savings or wider host support is claimed.
+inspection are pending authorization for the corrected candidate after the failed sole attempt.
+The measured source above predates the fallback/refusal hotfix; the legacy successful fast path is
+unchanged, but no new performance measurement is claimed for the repaired source.
+No new release, publication, token savings or wider host support is claimed.
 
 Historical pre-campaign code baseline: `56cd420190506e495b6446daf6ec6e4f95c94da2`.
 It contains the independently reviewed format C1 fix, manual exact-SHA Actions guard,
