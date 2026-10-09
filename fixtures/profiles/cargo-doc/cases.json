@@ -10,7 +10,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:23:09.278Z", "elapsedMs": 7310.194534,
       "outputFile": "default/native.txt", "rawSHA256": "6389df01557f17ed60d83dccd13dff9bf222ce33784357dc92b54188fd470d67", "inputBytes": 425,
-      "expectedProposalFile": "default/expected.txt", "proposedDisposition": "reduced", "removableBytes": 230,
+      "expectedProposalFile": "default/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/default",
       "artifacts": [{"file": "targets/default/doc/doc_alpha/index.html", "sha256": "e08b0e94e3e9f7bafe7568f520fe72bde891adec20e3df85a31b3f2821d71c92"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -30,7 +30,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:23:16.858Z", "elapsedMs": 8136.189279,
       "outputFile": "no-deps/native.txt", "rawSHA256": "51f39ac909ca91b377c4dc38a68dbb00993338a6200a7c944d24462d64f8c281", "inputBytes": 425,
-      "expectedProposalFile": "no-deps/expected.txt", "proposedDisposition": "reduced", "removableBytes": 230,
+      "expectedProposalFile": "no-deps/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/no-deps",
       "artifacts": [{"file": "targets/no-deps/doc/doc_alpha/index.html", "sha256": "e08b0e94e3e9f7bafe7568f520fe72bde891adec20e3df85a31b3f2821d71c92"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -40,7 +40,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:23:25.007Z", "elapsedMs": 9289.6079,
       "outputFile": "workspace/native.txt", "rawSHA256": "d028a7bb024e4630e9a70ec90bbb14696d87dc12902e3b8fedf41cb47a04bc8a", "inputBytes": 557,
-      "expectedProposalFile": "workspace/expected.txt", "proposedDisposition": "reduced", "removableBytes": 343,
+      "expectedProposalFile": "workspace/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/workspace",
       "artifacts": [{"file": "targets/workspace/doc/doc_alpha/index.html", "sha256": "e08b0e94e3e9f7bafe7568f520fe72bde891adec20e3df85a31b3f2821d71c92"}, {"file": "targets/workspace/doc/doc_beta/index.html", "sha256": "fdcefa36a11638e11ccafaefa6ed27b42093e2dbf35cd12e8402c2dd3f392698"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -50,7 +50,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:23:34.309Z", "elapsedMs": 7740.343195,
       "outputFile": "package/native.txt", "rawSHA256": "c21f86a5b29a81360a6e35deadfd039b5b45699f3255f3950fbdf3f7593df7eb", "inputBytes": 307,
-      "expectedProposalFile": "package/expected.txt", "proposedDisposition": "reduced", "removableBytes": 113,
+      "expectedProposalFile": "package/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/package",
       "artifacts": [{"file": "targets/package/doc/doc_beta/index.html", "sha256": "fdcefa36a11638e11ccafaefa6ed27b42093e2dbf35cd12e8402c2dd3f392698"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -60,7 +60,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:23:42.057Z", "elapsedMs": 11196.547197,
       "outputFile": "features/native.txt", "rawSHA256": "d164a9fed625f7fb1f9cbbb389bfc14e4af3d2133c7e6febf65792c04d203431", "inputBytes": 857,
-      "expectedProposalFile": "features/expected.txt", "proposedDisposition": "reduced", "removableBytes": 230,
+      "expectedProposalFile": "features/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/features",
       "artifacts": [{"file": "targets/features/doc/doc_alpha/index.html", "sha256": "df578919d544791b22373b99e7dfc288bf67d1ece572f4b5920b5e532b69f5d4"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -70,7 +70,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:23:53.263Z", "elapsedMs": 9567.022139,
       "outputFile": "explicit-target/native.txt", "rawSHA256": "455e0f16eb660d31740905752c0e118dbcc8defde66ddfc1c5eb984c13465f58", "inputBytes": 453,
-      "expectedProposalFile": "explicit-target/expected.txt", "proposedDisposition": "reduced", "removableBytes": 230,
+      "expectedProposalFile": "explicit-target/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/explicit-target",
       "artifacts": [{"file": "targets/explicit-target/x86_64-apple-darwin/doc/doc_alpha/index.html", "sha256": "e08b0e94e3e9f7bafe7568f520fe72bde891adec20e3df85a31b3f2821d71c92"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -80,7 +80,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:24:02.841Z", "elapsedMs": 8056.90649,
       "outputFile": "private-items/native.txt", "rawSHA256": "0d8a50883b1fb91c5d512f6447b0f5ac5eaf67de07b00e6910f0f58371774556", "inputBytes": 431,
-      "expectedProposalFile": "private-items/expected.txt", "proposedDisposition": "reduced", "removableBytes": 230,
+      "expectedProposalFile": "private-items/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/private-items",
       "artifacts": [{"file": "targets/private-items/doc/doc_alpha/index.html", "sha256": "e8c82a08af722d097fb89804f20412efc6a3072d17d77d689e9f3960c8919d41"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -90,7 +90,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP", "started": "2026-10-08T23:24:10.910Z", "elapsedMs": 7293.971966,
       "outputFile": "workspace-warning/native.txt", "rawSHA256": "336315faf234e5f6582645597b54140504a8d6774ebaa5a9e4858fe45885028d", "inputBytes": 995,
-      "expectedProposalFile": "workspace-warning/expected.txt", "proposedDisposition": "reduced", "removableBytes": 343,
+      "expectedProposalFile": "workspace-warning/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/workspace-warning",
       "artifacts": [{"file": "targets/workspace-warning/doc/doc_alpha/index.html", "sha256": "26cb0f6aefef88363e0acbd16705dfbe6cd9819f29b7206eaee136530f3fa022"}, {"file": "targets/workspace-warning/doc/doc_beta/index.html", "sha256": "fdcefa36a11638e11ccafaefa6ed27b42093e2dbf35cd12e8402c2dd3f392698"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture.mjs", "recipeSHA256": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8", "completedStream": true}
@@ -129,7 +129,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-checking-6EFaNm", "started": "2026-10-08T23:26:12.357Z", "elapsedMs": 16304.190016,
       "outputFile": "checking-warning/native.txt", "rawSHA256": "ed494aa03d2eeb9064345d4fc3481e165b5c43b5a0c536087e8545c8658698a8", "inputBytes": 696,
-      "expectedProposalFile": "checking-warning/expected.txt", "proposedDisposition": "reduced", "removableBytes": 240,
+      "expectedProposalFile": "checking-warning/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-checking-6EFaNm/target",
       "artifacts": [{"file": "target/doc/doc_tool/index.html", "sha256": "5bbee8d5a33ee414704b80984bf068e304480fa7b7d91bcfff7def9609cf6741"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture-checking.mjs", "recipeSHA256": "9d0bd63b520f223215e088934e218ca1253a431c48c105a1f9c9119c15c7082c", "completedStream": true}
@@ -139,7 +139,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-three-TBUjpU", "started": "2026-10-09T01:28:46.171Z", "elapsedMs": 13376.40494,
       "outputFile": "three-warning/native.txt", "rawSHA256": "364afb6e2e9d3514ec94f2434f6cd3faf1bcd1e8c1fc6ccf4739c45e33cd2203", "inputBytes": 1103,
-      "expectedProposalFile": "three-warning/expected.txt", "proposedDisposition": "reduced", "removableBytes": 234,
+      "expectedProposalFile": "three-warning/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-three-TBUjpU/target",
       "artifacts": [{"file": "target/doc/doc_alpha/index.html", "sha256": "df578919d544791b22373b99e7dfc288bf67d1ece572f4b5920b5e532b69f5d4"}, {"file": "target/doc/doc_beta/index.html", "sha256": "fdcefa36a11638e11ccafaefa6ed27b42093e2dbf35cd12e8402c2dd3f392698"}, {"file": "target/doc/doc_gamma/index.html", "sha256": "186a8bafd60b2a8d0162d5420a14479913b8ead168d250d1b962f026433653c9"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture-three.mjs", "recipeSHA256": "e6df9213de9b722cb7341b7b31db75e8a85086d506969594c8725c40248bf132", "completedStream": true}
@@ -149,7 +149,7 @@
       "source": "shell", "termination": {"kind": "exited", "code": 0}, "completeness": "complete", "presentation": "unknown",
       "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-options-q5Sxej", "started": "2026-10-09T01:30:37.933Z", "elapsedMs": 2879.522143,
       "outputFile": "profile-path/native.txt", "rawSHA256": "80f52a0fb697775b5a06b4be17ee977a5e5fa259ddbe4329b2d92746be29de2e", "inputBytes": 885,
-      "expectedProposalFile": "profile-path/expected.txt", "proposedDisposition": "reduced", "removableBytes": 238,
+      "expectedProposalFile": "profile-path/native.txt", "proposedDisposition": "exact-unsafe-ambiguous", "removableBytes": 0,
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-options-q5Sxej/target",
       "artifacts": [{"file": "target/x86_64-apple-darwin/doc/doc_alpha/index.html", "sha256": "df578919d544791b22373b99e7dfc288bf67d1ece572f4b5920b5e532b69f5d4"}],
       "provenance": {"record": "SOURCES.md", "recipe": "capture-options.mjs", "recipeSHA256": "56b8ac47ecbc7761e9aa00e6a0232b1715ce215626ccf901abea2fbbfaf35a69", "completedStream": true}

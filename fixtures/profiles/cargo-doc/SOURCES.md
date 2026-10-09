@@ -1,5 +1,13 @@
 # C05 local native source record
 
+Cold-review correction (2026-10-09): this record authenticates capture bytes and recipe provenance,
+not the producer of each merged-stream row. Grammar and artifact agreement cannot authenticate
+Cargo progress against user/build-script collisions. Former reduction proposals in expected.txt
+are rejected historical artifacts; cases.json now uses raw native.txt identity expectations for those
+cases. No recapture, recipe changes, or raw hash changes. New counterexamples live in tests and are
+synthetic edits/prefixes of these captures, not additional native witnesses. Diagnostic ASCII column
+alignment only; --bins target/artifact binding unproven. Reduction support remains blocked.
+
 Baseline: `07ffe15` (campaign scaffold). Author: C05 capture agent. License: repository MIT.
 All Rust material and capture recipes were authored locally; no donor material was copied.
 Source paths are `project/**`; source hashes below bind the exact project used, not upstream fixtures.

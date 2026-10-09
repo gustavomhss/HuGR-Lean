@@ -53,10 +53,11 @@ const deadNote = "  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on 
 function parse(output: string, observation: Observation): Reduction | undefined {
   const argv = tokenizeCommand(observation.command), opts = argv && options(argv);
   // Captures use unknown presentation. Refuse rendered input: core may already strip controls.
-  if (!opts || observation.presentation !== "unknown" || !output.endsWith("\n") ||
+  // Bin names need not equal package names; no independently corroborated binding is available.
+  if (!opts || opts.bins || observation.presentation !== "unknown" || !output.endsWith("\n") ||
       /[\x00-\x09\x0b-\x1f\x7f-\x9f]|\p{Cf}/u.test(output)) return undefined;
   const rows = lines(output);
-  let cursor = 0, removableEnd = 0, diagnostic = false, uncertain = false;
+  let cursor = 0;
   let currentPackage: string | undefined, pending = 0, pendingKind: "lib" | "lib doc" | undefined;
   const documented = new Set<string>(), versions = new Map<string, string>();
   const summarized = new Set<string>(), frames = new Set<string>();
@@ -72,16 +73,13 @@ function parse(output: string, observation: Observation): Reduction | undefined 
         if (documented.has(currentPackage)) return undefined;
         documented.add(currentPackage);
       }
-      // Checking syntax is recognized conservatively, never removed without native proof.
-      if (row[1] === "    Checking") uncertain = true;
-      if (!diagnostic && !uncertain) removableEnd = rows[cursor]!.span[1];
+      // Syntax does not authenticate the producer. Preserve every progress row.
       cursor++;
       continue;
     }
     const link = linkMessage.exec(text), dead = deadMessage.exec(text);
     if (link || dead) {
       if (!currentPackage || !documented.has(currentPackage)) return undefined;
-      diagnostic = true;
       const kind = link ? "lib doc" : "lib";
       if (pendingKind && pendingKind !== kind) return undefined;
       pendingKind = kind;
@@ -92,7 +90,8 @@ function parse(output: string, observation: Observation): Reduction | undefined 
       if (!position || !pathValue(position[1]!) || uint(position[2]) === undefined || uint(position[3]) === undefined ||
           rows[cursor + 2]?.text !== "  |" || !snippet || snippet[1] !== position[2] || !caret ||
           caret[1]!.length + 1 !== Number(position[3]) || caret[2]!.length !== item.length ||
-          !snippet[2]!.includes(item)) return undefined;
+          !/^[\x20-\x7e]+$/.test(snippet[2]!) || !/^[\x20-\x7e]+$/.test(item) ||
+          snippet[2]!.slice(Number(position[3]) - 1, Number(position[3]) - 1 + item.length) !== item) return undefined;
       const frame = `${currentPackage}:${text}:${rows[cursor + 1]!.text}`;
       if (frames.has(frame) || summarized.has(currentPackage)) return undefined;
       frames.add(frame);
@@ -126,13 +125,13 @@ function parse(output: string, observation: Observation): Reduction | undefined 
   const path = artifact[1]!, segments = path.split("/");
   if (!pathValue(path) || segments.some((part, index) => part === "." || part === ".." || (part === "" && index > 0))) return undefined;
   if (opts.target && segments.at(-4) !== opts.target) return undefined;
-  // Any reduction must have native Documenting evidence; cache-only envelopes remain exact.
+  // Structural validation needs Documenting evidence; cache-only envelopes remain exact.
   if (documented.size !== extra + 1) return undefined;
   if (opts.package && documented.size && (!documented.has(opts.package) || documented.size !== 1)) return undefined;
-  if (!opts.bins && documented.size && ![...documented].some(pkg => pkg.replaceAll("-", "_") === artifact[2])) return undefined;
-  if (uncertain || removableEnd === 0) return undefined;
-  // Entire preserved suffix is mandatory: warnings, subsequent progress, timings and paths.
-  const span = [removableEnd, output.length] as const;
+  if (documented.size && ![...documented].some(pkg => pkg.replaceAll("-", "_") === artifact[2])) return undefined;
+  // Artifact/package agreement corroborates structure, not producer identity. No
+  // authenticated progress boundary exists in this merged stream; core must keep it exact.
+  const span = [0, output.length] as const;
   return { pieces: [span], required: [span] };
 }
 

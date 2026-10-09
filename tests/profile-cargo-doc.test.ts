@@ -11,11 +11,8 @@ const read = (path: string): string => readFileSync(new URL(path, root), "utf8")
 const observation = (output: string, command = "cargo doc --offline"): Observation => ({
   output, command, source: "shell", termination: { kind: "exited", code: 0 }, completeness: "complete", presentation: "unknown",
 });
-test("C05 default independent native golden positive", () => {
-  const result = filter(observation(read("default/native.txt")), { profiles: familyProfiles });
-  assert.equal(result.status, "reduced");
-  assert.ok("replacement" in result);
-  assert.equal(result.replacement, read("default/expected.txt"));
+test("C05 default producer boundary blocked exact", () => {
+  exact(read("default/native.txt"));
 });
 
 type Case = Omit<Observation, "output"> & { id: string; argv: string[]; outputFile: string; expectedProposalFile: string;
@@ -23,7 +20,6 @@ type Case = Omit<Observation, "output"> & { id: string; argv: string[]; outputFi
   artifacts: { file: string; sha256: string }[]; provenance: { record: string; recipe: string; recipeSHA256: string; completedStream: boolean } };
 const cases = (JSON.parse(read("cases.json")) as { schema: string; cases: Case[] });
 const sha = (text: string): string => createHash("sha256").update(text).digest("hex");
-const run = (output: string, command?: string) => filter(observation(output, command), { profiles: familyProfiles });
 function exact(output: string, command?: string, patch: Partial<Observation> = {}): void {
   const result = filter({ ...observation(output, command), ...patch }, { profiles: familyProfiles });
   assert.equal(result.status, "passthrough");
@@ -36,7 +32,7 @@ test("C05 flat completed native provenance and literal economy", () => {
   assert.deepEqual(cases.cases.map(c => c.id).sort(), ["default", "cached", "no-deps", "workspace", "package", "features",
     "explicit-target", "private-items", "workspace-warning", "opaque-log", "syntax-fail", "bins-warning", "checking-warning", "three-warning", "profile-path"].sort());
   assert.equal(cases.cases.reduce((sum, c) => sum + c.inputBytes, 0), 11215);
-  assert.equal(cases.cases.reduce((sum, c) => sum + c.removableBytes, 0), 2661);
+  assert.equal(cases.cases.reduce((sum, c) => sum + c.removableBytes, 0), 0);
   for (const c of cases.cases) {
     const native = read(c.outputFile), expected = read(c.expectedProposalFile);
     assert.equal(sha(native), c.rawSHA256, c.id);
@@ -68,12 +64,9 @@ test("C05 known warning later progress finish and artifacts remain mandatory", (
   const output = read("three-warning/native.txt"), obs = observation(output, cases.cases.find(c => c.id === "three-warning")!.command);
   const reduced = familyProfiles[0]!.reduce(output, obs);
   assert.ok(reduced);
-  assert.deepEqual(reduced.required, [[output.indexOf("warning:"), output.length]]);
-  const result = filter(obs, { profiles: familyProfiles });
-  assert.ok("replacement" in result); assert.equal(result.replacement, read("three-warning/expected.txt"));
-  assert.ok(result.replacement.includes(" Documenting doc-beta"));
-  assert.ok(result.replacement.includes(" Documenting doc-gamma"));
-  assert.ok(result.replacement.endsWith("index.html and 2 other files\n"));
+  assert.deepEqual(reduced.required, [[0, output.length]]);
+  assert.deepEqual(reduced.pieces, reduced.required);
+  exact(output, obs.command);
 });
 test("C05 optional offline and generic package profile features target path values", () => {
   const c = cases.cases.find(c => c.id === "profile-path")!;
@@ -81,22 +74,19 @@ test("C05 optional offline and generic package profile features target path valu
     .replaceAll("custom-doc", "audit-dev").replaceAll("x86_64-apple-darwin", "aarch64-unknown-linux-gnu")
     .replaceAll("missing_native_item", "another_native_item");
   const command = edits(c.command).replace("--offline ", "").replace("Cargo.toml", "'./other project/Cargo.toml'").replace("doc-warning", "audit-package/audit-feature");
-  const result = run(edits(read(c.outputFile)), command);
-  assert.equal(result.status, "reduced"); assert.ok("replacement" in result);
-  assert.equal(result.replacement, edits(read(c.expectedProposalFile)));
-  const plain = run(read("default/native.txt"), "cargo doc");
-  assert.equal(plain.status, "reduced");
+  const output = edits(read(c.outputFile));
+  assert.ok(familyProfiles[0]!.reduce(output, observation(output, command)));
+  exact(output, command);
+  exact(read("default/native.txt"), "cargo doc");
 });
-test("C05 UTF-16 spans and UTF-8 economy preserve astral source/path", () => {
-  const edit = (s: string) => s.replaceAll("hugr-c05-doc-YIDrnP", "workspace-🦀-é").replace("intentionally warns.", "intentionally warns. 🦀");
-  const output = edit(read("features/native.txt")), expected = edit(read("features/expected.txt"));
+test("C05 UTF-16 spans and UTF-8 economy preserve astral path", () => {
+  const edit = (s: string) => s.replaceAll("hugr-c05-doc-YIDrnP", "workspace-🦀-é");
+  const output = edit(read("features/native.txt"));
   const obs = observation(output, "cargo doc --features doc-warning --no-deps");
   const reduction = familyProfiles[0]!.reduce(output, obs);
-  assert.ok(reduction); assert.deepEqual(reduction.required, [[output.indexOf("warning:"), output.length]]);
+  assert.ok(reduction); assert.deepEqual(reduction.required, [[0, output.length]]);
   assert.notEqual(output.indexOf("warning:"), Buffer.byteLength(output.slice(0, output.indexOf("warning:"))));
-  const result = filter(obs, { profiles: familyProfiles });
-  assert.ok("replacement" in result); assert.equal(result.replacement, expected);
-  assert.equal(result.outputBytes, Buffer.byteLength(expected));
+  exact(output, obs.command);
 });
 test("C05 whole grammar unknown rows at every boundary stay exact", () => {
   const c = cases.cases.find(c => c.id === "three-warning")!, output = read(c.outputFile);
@@ -166,4 +156,46 @@ test("C05 unobserved Checking grammar remains conservative exact", () => {
   exact(read("default/native.txt").replace("   Compiling", "    Checking"));
   exact(read("default/native.txt").replace(" Documenting", "    Checking"));
   exact(read("cached/native.txt"));
+});
+test("C05 progress producer collisions preserve unrelated prefix and matched Documenting", () => {
+  const output = read("default/native.txt");
+  for (const prefix of ["   Compiling user-log v9.9.9 (/tmp/unrelated)\n", "    Checking user-log v9.9.9 (/tmp/unrelated)\n"]) {
+    const changed = prefix + output;
+    const parsed = familyProfiles[0]!.reduce(changed, observation(changed));
+    assert.ok(parsed, "recognized syntax must still preserve unrelated prefix");
+    assert.deepEqual(parsed.pieces, [[0, changed.length]]);
+    assert.deepEqual(parsed.required, parsed.pieces);
+    exact(changed);
+  }
+  // A user producer can emit the exact same Documenting row. No metadata here
+  // distinguishes that collision from Cargo; even matching artifacts prove no producer.
+  const documentingOnly = output.replace(/^   Compiling [^\n]+\n/, "");
+  assert.ok(familyProfiles[0]!.reduce(documentingOnly, observation(documentingOnly)));
+  exact(documentingOnly);
+});
+test("C05 diagnostic exact native column refuses displaced item and unsupported alignment", () => {
+  const c = cases.cases.find(c => c.id === "features")!, output = read(c.outputFile);
+  assert.ok(familyProfiles[0]!.reduce(output, observation(output, c.command)), "native ASCII frame positive control");
+  for (const changed of [
+    output.replace("/// Link to [`missing_native_item`]", "/// Link to [`xxxxxxxxxxxxxxxxxxx`] missing_native_item"),
+    output.replace("/// Link to [`missing_native_item`]", "/// Link to [ `missing_native_item`]"),
+    output.replace("intentionally warns.", "intentionally warns. é"),
+    output.replace("/// Link", "///\tLink"),
+  ]) {
+    assert.equal(familyProfiles[0]!.reduce(changed, observation(changed, c.command)), undefined);
+    exact(changed, c.command);
+  }
+});
+test("C05 bins unbound artifacts refuse entire output without fixture hardcodes", () => {
+  for (const id of ["checking-warning", "bins-warning"]) {
+    const c = cases.cases.find(c => c.id === id)!;
+    for (const output of [read(c.outputFile), read(c.outputFile).replace(/\/doc\/[^/]+\/index.html/, "/doc/unrelated_bin/index.html")]) {
+      assert.equal(familyProfiles[0]!.reduce(output, observation(output, c.command)), undefined);
+      exact(output, c.command);
+    }
+  }
+  const output = read("default/native.txt");
+  assert.ok(familyProfiles[0]!.reduce(output, observation(output)), "non-bin grammar positive control");
+  assert.equal(familyProfiles[0]!.reduce(output, observation(output, "cargo doc --bins")), undefined);
+  exact(output, "cargo doc --bins");
 });
