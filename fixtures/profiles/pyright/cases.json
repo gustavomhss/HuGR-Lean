@@ -1,0 +1,226 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "pyright",
+  "cases": [
+    {
+      "name": "L08-plain-success",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright clean.py",
+      "file": "plain-success.txt",
+      "provenance": {
+        "sha256": "6d88a1b220adb7a3d62092b6e38431f0b3fe8babe9864fab90e5849766260332",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-plain-success"
+      }
+    },
+    {
+      "name": "L08-plain-error",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright error.py",
+      "file": "plain-error.txt",
+      "provenance": {
+        "sha256": "2fcacd9a1357b4bb689dbf09aeb9ca4f15f3d97502b80e941b98a6d29278c8d5",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-plain-error"
+      }
+    },
+    {
+      "name": "L08-plain-warning",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright warning.py",
+      "file": "plain-warning.txt",
+      "provenance": {
+        "sha256": "f2a40e7447e71b7ec2a452f333e32d2841c4524e067c5a145158cc2dc76c29ea",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-plain-warning"
+      }
+    },
+    {
+      "name": "L08-plain-information",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright information.py",
+      "file": "plain-information.txt",
+      "provenance": {
+        "sha256": "8408071b27ad405912ddd0bc66da0595a9dc3e884deb17bd54635ef70d72de2b",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-plain-information"
+      }
+    },
+    {
+      "name": "L08-plain-multi",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright clean.py error.py warning.py information.py 'path spaces/café 🧪.py'",
+      "file": "plain-multi.txt",
+      "provenance": {
+        "sha256": "4ad15418edfb3f8d293ea5fbb2055dc3a224ae8bee2ccd5303691f2b355f44b8",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-plain-multi"
+      }
+    },
+    {
+      "name": "L08-json-success",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson clean.py",
+      "file": "json-success.txt",
+      "provenance": {
+        "sha256": "5cd7c104e2592ebc123acac731eade9db722d6bcdbe50c489c1e9591a396ffec",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-json-success"
+      }
+    },
+    {
+      "name": "L08-json-error",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson error.py 'path spaces/café 🧪.py'",
+      "file": "json-error.txt",
+      "provenance": {
+        "sha256": "37b06d70613b1066dbd43200dfc7a75566bc0d180fa808ab13ce8dbf0e387d86",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-json-error"
+      }
+    },
+    {
+      "name": "L08-config-invalid",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --project invalid.json clean.py",
+      "file": "config-invalid.txt",
+      "provenance": {
+        "sha256": "fd183154a3eb1a119601e8772b42db02b8da32f8ad6fab5969dccb41af7b2e9f",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-config-invalid"
+      }
+    },
+    {
+      "name": "L08-config-missing",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --project missing.json clean.py",
+      "file": "config-missing.txt",
+      "provenance": {
+        "sha256": "9fcc20ad3229f0afd1d77778af6b9c173c129a9f2937f3a21c138b9a2d1330c9",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-config-missing"
+      }
+    },
+    {
+      "name": "L08-stats",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --stats clean.py warning.py information.py",
+      "file": "stats.txt",
+      "provenance": {
+        "sha256": "ef5f26ab7b9fe36001bfd1297eeb2fc0e4c7f68d2b2f4669d3bb056f7b450290",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-stats"
+      }
+    },
+    {
+      "name": "L08-verbose",
+      "family": "pyright",
+      "version": "pyright 1.1.408",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --verbose clean.py",
+      "file": "verbose.txt",
+      "provenance": {
+        "sha256": "c2323157ab1edc4672afdd0dbb2efab7735319ab221f5df811615650e80ac2c9",
+        "record": "capture-receipt.json",
+        "originalCase": "L08-verbose"
+      }
+    }
+  ]
+}

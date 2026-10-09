@@ -1,0 +1,3 @@
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/warning.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/warning.py:2:5 - warning: Variable "unused" is not accessed (reportUnusedVariable)
+0 errors, 1 warning, 0 informations

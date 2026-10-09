@@ -1,0 +1,11 @@
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/error.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/error.py:4:11 - error: Argument of type "Literal['café 🧪']" cannot be assigned to parameter "value" of type "int" in function "takes_int"
+    "Literal['café 🧪']" is not assignable to "int" (reportArgumentType)
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/information.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/information.py:2:13 - information: Type of "value" is "Literal['café 🧪']"
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/path spaces/café 🧪.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/path spaces/café 🧪.py:1:13 - error: Type "Literal[42]" is not assignable to declared type "str"
+    "Literal[42]" is not assignable to "str" (reportAssignmentType)
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/warning.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/warning.py:2:5 - warning: Variable "unused" is not accessed (reportUnusedVariable)
+2 errors, 1 warning, 1 information
