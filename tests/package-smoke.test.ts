@@ -82,7 +82,12 @@ test("installed positive control packs/installs actual engine, loads default, fi
     assert.ok(!result.cli.target.startsWith(root + path.sep), "Consumer must live outside source ancestry");
     const corpus = await benchmark.readCorpus(directory);
     assert.equal(result.fixtureCount, corpus.length);
-    assert.deepEqual(result.profileIds.toSorted(), [...new Set(corpus.map((item: { family: string }) => item.family))].sort());
+    assert.deepEqual(result.profileIds.toSorted(), [...new Set(corpus.filter((item: { scope?: string }) => item.scope !== "exact-corpus").map((item: { family: string }) => item.family))].sort());
+    assert.deepEqual(result.exactFamilies, corpus.exactFamilies);
+    for (const row of result.fixtures.filter((item: { scope?: string }) => item.scope === "exact-corpus")) {
+      assert.equal(row.status, "passthrough");
+      assert.equal(row.savedBytes, 0);
+    }
     assert.equal(result.plugin.fixtureCount, corpus.length, "Every fixture must traverse installed after-hook");
     assert.deepEqual(result.fixtures.map((item: { name: string }) => item.name), corpus.map((item: { name: string }) => item.name));
     assert.ok(result.fixtures.some((item: { status: string }) => item.status === "reduced"));

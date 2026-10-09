@@ -1,4 +1,5 @@
 {
   "schema": "hugr-lean/native-index/1",
+  "exactFamilies": ["cargo-doc", "mypy", "shellcheck"],
   "families": ["biome", "cargo-build", "cargo-clippy", "cargo-doc", "cargo-test", "eslint", "go-mod", "go-test-json", "go-test-text", "mypy", "pnpm-install", "pylint", "pyright", "ruff", "shellcheck", "tsc"]
 }
