@@ -58,8 +58,8 @@ If those launcher warnings occur in an observation, the full grammar rejects it 
   consistent file/test summaries, start clock, total duration, optional known duration stages
   (`transform`, `setup`, `collect`, `import`, `tests`, `environment`, `prepare`).
   Every banner, full path/pass marker/test count, and summary is required source evidence.
-  Only Vitest's structurally delimited per-file timing suffixes are omitted. Aggregate timing
-  and reporter blank lines remain exact. Skipped/todo and other reporters decline.
+  Vitest fixtures are exact-preservation witnesses; no timing removal is approved. Installed
+  goldens must equal raw bytes. Runtime/source golden alignment depends on pending PR117.
 - English long Git status: branch/detached identity; optional initial/tracking/merge state;
   ordered staged, unmerged, unstaged, untracked sections; all native status/conflict labels;
   clean/unstaged/untracked footers. Ordinary output without staged entries or an explicit merge

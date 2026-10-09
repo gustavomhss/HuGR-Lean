@@ -6,11 +6,12 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { ROOT, readCorpus } from "./benchmark.mjs";
+import { assertCorpusCoverage } from "./native-corpus.mjs";
 import { isolatedEnvironment, runProcess } from "./opencode-boundary.mjs";
 
 // The inspector executes in the temporary consumer, using package names (and Node's exports resolver).
 // Its built-in assertions cannot be replaced by a fixture package's own test script.
-const INSPECT = String.raw`
+export const INSPECT = String.raw`
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
@@ -29,11 +30,8 @@ assert.equal(typeof filter, "function", "Installed /core filter is missing");
 assert.equal(typeof RawStore, "function", "Installed /raw RawStore is missing");
 const packageRoot = path.resolve("node_modules/hugr-lean");
 const { profiles } = await import(pathToFileURL(path.join(packageRoot, "dist/profiles/index.js")).href);
-assert.ok(Array.isArray(profiles) && profiles.length, "Installed default profile registry is empty");
-const profileIds = profiles.map((item) => item.id);
-assert.equal(new Set(profileIds).size, profileIds.length, "Installed profile IDs are duplicated");
-assert.ok(Array.isArray(evidence.cases) && evidence.cases.length, "Installed fixture matrix must be nonempty");
-assert.deepEqual([...new Set(evidence.cases.map((item) => item.family))].sort(), profileIds.toSorted(), "Installed profile/corpus coverage differs");
+const assertCoverage = ${assertCorpusCoverage.toString()};
+const profileIds = assertCoverage(profiles, evidence.cases, evidence.exactFamilies, "Installed");
 function covers(spans, [start, end]) {
   let cursor = start;
   for (const [from, to] of spans) {
@@ -86,7 +84,8 @@ for (const entry of evidence.cases) {
     assert.equal(Object.hasOwn(result, "replacement"), false, entry.name + ": passthrough supplied replacement");
     assert.equal(result.outputBytes, inputBytes, entry.name + ": passthrough bytes changed");
   }
-  rows.push({ name: entry.name, status: result.status, inputBytes, outputBytes: result.outputBytes });
+  rows.push({ name: entry.name, family: entry.family, ...(entry.scope ? { scope: entry.scope } : {}),
+    status: result.status, inputBytes, outputBytes: result.outputBytes, savedBytes: inputBytes - result.outputBytes });
 }
 const cargo = evidence.cases.find((entry) => entry.family === "cargo-test" && entry.status === "reduced");
 assert.ok(cargo, "Installed plugin control has no Cargo fixture");
@@ -128,7 +127,7 @@ assert.equal(entries.length, 1);
 assert.equal(entries[0].id, id);
 await raw.purge();
 assert.equal(await raw.get(id), undefined, "Installed /raw purge failed");
-console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, fixtureCount: rows.length, fixtures: rows,
+console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, exactFamilies: evidence.exactFamilies, fixtureCount: rows.length, fixtures: rows,
   plugin: { loaded: true, reduced: true, nonzeroExitExact: true, fixtureCount: evidence.cases.length }, raw: { exact: true, inputBytes: Buffer.byteLength(text, "utf8"), tempfile: true, purged: true } }));
 `;
 
@@ -289,7 +288,7 @@ export async function runPackageSmoke({ root = ROOT, cli = true, opencode = fals
       assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed fixture sources note differs: ${file}`);
     }
     const evidence = path.join(consumer, "evidence.json");
-    await writeFile(evidence, JSON.stringify({ cases }));
+    await writeFile(evidence, JSON.stringify({ cases, exactFamilies: cases.exactFamilies }));
     const nodeArgs = await consumerNodeArgs(consumer);
     const checked = await command(process.execPath, [...nodeArgs, "--input-type=module", "-e", INSPECT, evidence], { ...options, timeout: 45000 });
     const inspection = JSON.parse(checked.stdout);
