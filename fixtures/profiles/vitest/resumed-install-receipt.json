@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "npm",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--registry=https://registry.npmjs.org"
+  ],
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+  "exitCode": 0,
+  "processEOF": true,
+  "sha256": "2d7b75e72405fd7b313554e6bcdfbd73322430084dcc656f9dbc1b04ad6e2ef8",
+  "bytes": 304
+}
