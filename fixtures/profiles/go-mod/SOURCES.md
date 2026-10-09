@@ -41,7 +41,24 @@ source/no-execution witness, not a captured application-log collision and not
 permission to classify arbitrary `go run`/test stdout as module progress.
 `download-json-cached` retains native stdout JSON as evidence, not executable code.
 
-Capture-only: `status: passthrough` declares conservative corpus disposition;
-public filter was not run and parser admission is not claimed. Independent
-goldens, full-grammar admission, and preservation tests remain prospective lead
-work. No reduction expected files are derived from current filter behavior.
+Original 16 captures remain conservative passthrough. The three default-get
+captures added after lead approval use source baseline
+`bc5e12fc78aa190a9ec9863ca41cd96e4e3a0ea0`, native Go 1.27.1 and disposable
+`G05-default-native`; direct Python subprocess with the same regular-file boundary.
+Original manifest output, hashes, and before/after source snapshots remain intact.
+
+Default-get additions use a bounded `file://` Go module proxy with fresh per-case
+caches, GOSUMDB=off and no network. Public module archive/mod/info bytes are copied
+from the previously authenticated v0.29.0 cache without modification; proxy list
+contains only v0.29.0. Locally authored MIT dep/other proxy modules expose only
+v1.0.0 and v1.1.0. Both versions contain `package dep\n` in dep.go and go.mod
+`module <module-path>\n\ngo 1.24.0\n`; native proxy info uses timestamp
+`2026-01-01T00:00:00Z`. Archive members are `<module>@<version>/go.mod` and dep.go.
+These are native proxy downloads, not progress lines from a replacement or fake Go.
+No source/application execution is needed for module commands. This bounded proxy
+does not claim live latest-version registry resolution coverage.
+
+Independent expected files transcribe only original added/upgraded rows, preserving
+order and final LF. Focused tests inject the exported `go-mod` family into public
+filter and verify reductions, exact refusals and source evidence. Default registry
+registration is lead-owned and is not claimed by this branch.
