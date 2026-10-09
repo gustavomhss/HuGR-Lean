@@ -1,0 +1,875 @@
+{
+  "baseline": "63d3ece",
+  "python": "3.14.5",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "binary": {
+    "path": "/usr/local/bin/shellcheck",
+    "resolvedPath": "/usr/local/Cellar/shellcheck/0.11.0/bin/shellcheck",
+    "sha256": "f323ef60f901387ab96731eff65c870ee7aaab519eb547ce716c55d941dda6ff",
+    "versionOutput": "ShellCheck - shell script analysis tool\nversion: 0.11.0\nlicense: GNU General Public License, version 3\nwebsite: https://www.shellcheck.net\n",
+    "binding": "Existing host binary; reported version and binary hash pinned. Build-to-source correspondence not independently attested."
+  },
+  "recipe": {
+    "file": "capture.py",
+    "sha256": "f31d3e80e93f95dba14f0f0e0a4f010156501b3c942a556b4425fe3ee6bdd09b"
+  },
+  "environment": {
+    "set": {
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8",
+      "TERM": "dumb",
+      "NO_COLOR": "1",
+      "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la",
+      "XDG_CONFIG_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L10-shellcheck-f0xqp7la"
+    },
+    "removed": [
+      "SHELLCHECK_OPTS",
+      "FORCE_COLOR",
+      "CLICOLOR_FORCE"
+    ],
+    "otherwise": "inherited"
+  },
+  "sourceOrigin": "Original tiny campaign scripts/configs; MIT repository license; never executed",
+  "sources": {
+    "clean.sh": {
+      "output": "#!/bin/sh\nname=\"world\"\nprintf \"%s\\n\" \"$name\"\n",
+      "bytes": 45,
+      "sha256": "0d3d1f91c2ecc9386dbaa6b49424c6596e37d51378044fd3b6da272caa4363aa",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "202225735c6e222022246e616d65220a"
+    },
+    "warn.bash": {
+      "output": "#!/bin/bash\nunused=\"unused\"\nfor f in $(ls *.txt); do\n  echo $f\ndone\n",
+      "bytes": 68,
+      "sha256": "6803ff0461203105e3f37f5b5132bf6ffe93e0b8e51383ce5d9cd4311b2c31ec",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "0a20206563686f2024660a646f6e650a"
+    },
+    "levels.bash": {
+      "output": "#!/bin/bash\nunused=\"unused\"\n[ \"$value\" == \"yes\" ]\necho $value\necho \"${value}\"\ncat file.txt | grep needle\n",
+      "bytes": 105,
+      "sha256": "78fe61043d5c66a54ec75bd2a8530b43cc030956684620cbf5e8ffdeb8140b4e",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "74207c2067726570206e6565646c650a"
+    },
+    "error.sh": {
+      "output": "#!/bin/sh\nfoo = bar\n",
+      "bytes": 20,
+      "sha256": "ff34a5bc0747525be59bed123c31d5cf66310efbb6dd773e4cca6f037c9d0f73",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "696e2f73680a666f6f203d206261720a"
+    },
+    "syntax.sh": {
+      "output": "#!/bin/sh\nif true; then\n  echo \"unterminated\n",
+      "bytes": 45,
+      "sha256": "c9e66b2541ee12b8b94ce3810a35b09fdef240e25ace2f710271e6a8ddb2e2b1",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6f2022756e7465726d696e617465640a"
+    },
+    "path space/雪😀.sh": {
+      "output": "#!/bin/sh\nlabel=\"雪😀\"; echo $label; echo $missing\n",
+      "bytes": 54,
+      "sha256": "2f4f7d60bd99ceff25dd94a434148eed397532ef10038148d74c287d4c8c488d",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "3b206563686f20246d697373696e670a"
+    },
+    "directives.sh": {
+      "output": "#!/bin/sh\n# shellcheck disable=SC2086\necho $value\n",
+      "bytes": 50,
+      "sha256": "934e204dc78c841f8e211d87508c295efe3f94170f47d0b96b9cd7c93b370d91",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "3038360a6563686f202476616c75650a"
+    },
+    "dialect.sh": {
+      "output": "#!/bin/sh\nitems=(one two)\necho \"${items[0]}\"\n",
+      "bytes": 45,
+      "sha256": "3462d860cfeffc559b821e298ca0a0c95a1418197d42f8ef88b91264ede2def4",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6f2022247b6974656d735b305d7d220a"
+    },
+    "source.sh": {
+      "output": "#!/bin/sh\n# shellcheck source=lib.sh\n. ./lib.sh\necho \"$shared\"\n",
+      "bytes": 63,
+      "sha256": "145dbb598030f4b85d1d400e8ff6f80917c80500e03f9fc809eeabdb79ef0111",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "0a6563686f202224736861726564220a"
+    },
+    "lib.sh": {
+      "output": "#!/bin/sh\nshared=\"library\"\necho $shared\n",
+      "bytes": 40,
+      "sha256": "586059ce68bc378bc1a96b4d5e5a7986d1b3e58d573dcd27f379a2e20fd5119b",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "79220a6563686f20247368617265640a"
+    },
+    "good.rc": {
+      "output": "disable=SC2086\nshell=bash\n",
+      "bytes": 26,
+      "sha256": "0d10ba22a0b2a3a99443d9a556a2969cc7c21f3e40fc46e1eee51409c5228527",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "323038360a7368656c6c3d626173680a"
+    },
+    "bad.rc": {
+      "output": "shell=not-a-shell\n",
+      "bytes": 18,
+      "sha256": "a65086cf31fce3a0bd1524f132fd49ec063323de685be5cdabd329d0b5eae0c7",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "656c6c3d6e6f742d612d7368656c6c0a"
+    },
+    "syntax.rc": {
+      "output": "disable=\"SC2086\n",
+      "bytes": 16,
+      "sha256": "ac127352cda9f95e0c758926bb9b5f5eb6d0fd28811e57b65dd6e4dee688ab98",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "64697361626c653d225343323038360a"
+    }
+  },
+  "donor": {
+    "repository": "https://github.com/koalaman/shellcheck",
+    "commit": "aac0823e6b58f8a499e856e93738082691cbf212",
+    "path": "LICENSE",
+    "license": "GPL-3.0",
+    "file": "LICENSE.shellcheck.txt",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "modifications": "None; byte-for-byte license archive only. No donor implementation or fixture copied."
+  },
+  "cases": [
+    {
+      "name": "L10-version",
+      "file": "L10-version.txt",
+      "exit": 0,
+      "bytes": 139,
+      "sha256": "fc9eec16b4191d058a295813ca9afbe9d2b37b59975da860170726be162a3924",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2e7368656c6c636865636b2e6e65740a"
+    },
+    {
+      "name": "L10-help",
+      "file": "L10-help.txt",
+      "exit": 0,
+      "bytes": 1617,
+      "sha256": "9e087ec8dea4c1bb176a932926d21fe32679efbb9a03af327ae5ee861d790e4e",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6d6d61727920616e6420657869740a0a"
+    },
+    {
+      "name": "L10-optional-checks",
+      "file": "L10-optional-checks.txt",
+      "exit": 0,
+      "bytes": 1756,
+      "sha256": "093d7ba71b6d6ece48b192cd8d5302cc03ab84ca95116a1bd989dc03ce86a2e7",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2020677265702062617220666f6f0a0a"
+    },
+    {
+      "name": "L10-native-clean",
+      "file": "L10-native-clean.txt",
+      "exit": 0,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "readThroughEOF": true,
+      "finalLF": false,
+      "lastBytesHex": ""
+    },
+    {
+      "name": "L10-native-warnings",
+      "file": "L10-native-warnings.txt",
+      "exit": 1,
+      "bytes": 769,
+      "sha256": "06e86b58835d2e135e64f1e5aca68a4471890660bde515e09e7e42a1f73f7410",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+    },
+    {
+      "name": "L10-native-error",
+      "file": "L10-native-error.txt",
+      "exit": 1,
+      "bytes": 242,
+      "sha256": "6331e075f690ab7a6d64d1d3685668102d52764959338171fb91d9d0c5a04f71",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "3d20746f2061737369676e202e2e2e0a"
+    },
+    {
+      "name": "L10-native-multifile",
+      "file": "L10-native-multifile.txt",
+      "exit": 1,
+      "bytes": 908,
+      "sha256": "338da125b681539a0c174931e194bbab07333df9463326fa7d47c09f22d70c63",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2e20566572696679207573652e2e2e0a"
+    },
+    {
+      "name": "L10-native-unicode-space",
+      "file": "L10-native-unicode-space.txt",
+      "exit": 1,
+      "bytes": 528,
+      "sha256": "de51a204741f7b1f81369dc7820dad58479bbd06829d01b3b5a97345e9ee7f15",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+    },
+    {
+      "name": "L10-explicit-tty-links",
+      "file": "L10-explicit-tty-links.txt",
+      "exit": 1,
+      "bytes": 850,
+      "sha256": "05b785f1a51ffe09c82025463691126847b8153849237165ab2d18976c38c3ab",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+    },
+    {
+      "name": "L10-explicit-tty-color",
+      "file": "L10-explicit-tty-color.txt",
+      "exit": 1,
+      "bytes": 861,
+      "sha256": "d6c4996f57ffd1d6ca121f804f698f765d85c5ad6cec2bda6d4a3a4ac87965c9",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+    },
+    {
+      "name": "L10-directives",
+      "file": "L10-directives.txt",
+      "exit": 1,
+      "bytes": 210,
+      "sha256": "8dc8ae69a663829497f38aeae9426a2359442ac1e9beb09c2a2736457d2561be",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "7574206e6f742061737369672e2e2e0a"
+    },
+    {
+      "name": "L10-exclude",
+      "file": "L10-exclude.txt",
+      "exit": 1,
+      "bytes": 253,
+      "sha256": "7ec030f2bd4d13bb058db443b53af247821d4fbae2094df7de464bb1590f227d",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+    },
+    {
+      "name": "L10-exclude-all",
+      "file": "L10-exclude-all.txt",
+      "exit": 0,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "readThroughEOF": true,
+      "finalLF": false,
+      "lastBytesHex": ""
+    },
+    {
+      "name": "L10-include",
+      "file": "L10-include.txt",
+      "exit": 1,
+      "bytes": 242,
+      "sha256": "345cef5a22129f6574d3a5157f1d202321fe491477cac3b291404a67f30216a9",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+    },
+    {
+      "name": "L10-dialect-sh",
+      "file": "L10-dialect-sh.txt",
+      "exit": 1,
+      "bytes": 415,
+      "sha256": "811a88e7c34b8b2234767825954df597c7ecbb753dd1efaa1370fa760de2daf3",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "666572656e636573206172652e2e2e0a"
+    },
+    {
+      "name": "L10-dialect-bash",
+      "file": "L10-dialect-bash.txt",
+      "exit": 0,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "readThroughEOF": true,
+      "finalLF": false,
+      "lastBytesHex": ""
+    },
+    {
+      "name": "L10-severity-error",
+      "file": "L10-severity-error.txt",
+      "exit": 1,
+      "bytes": 236,
+      "sha256": "a80887ae1b42a48881d3d8c9a99c6bfad7c37716dbdc8f490772e1dc1971861d",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "7075742069732066726167692e2e2e0a"
+    },
+    {
+      "name": "L10-severity-warning",
+      "file": "L10-severity-warning.txt",
+      "exit": 1,
+      "bytes": 429,
+      "sha256": "e30c03bc5de059404d17ad8c11bb4d1ea0cbb023f414ae2980196a67563fff0a",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "7574206e6f742061737369672e2e2e0a"
+    },
+    {
+      "name": "L10-severity-info",
+      "file": "L10-severity-info.txt",
+      "exit": 1,
+      "bytes": 656,
+      "sha256": "faa55dd24be9b5ef1b63b7a1c1ed497d610454531f16c5e4bcac5ce3ced495b3",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+    },
+    {
+      "name": "L10-severity-style",
+      "file": "L10-severity-style.txt",
+      "exit": 1,
+      "bytes": 805,
+      "sha256": "62bdd253dde805ef9e0f3ebd3e323f92a855ff941e9549ff7bac3feb4b0090a2",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6e7420676c6f6262696e67202e2e2e0a"
+    },
+    {
+      "name": "L10-config",
+      "file": "L10-config.txt",
+      "exit": 1,
+      "bytes": 630,
+      "sha256": "58a7dc3edf5c9f0c206b9d718b13ea7bb5f5565c976bb7f5849d36e51b13405e",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6c6f622a20736f206e616d652e2e2e0a"
+    },
+    {
+      "name": "L10-config-invalid",
+      "file": "L10-config-invalid.txt",
+      "exit": 0,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "readThroughEOF": true,
+      "finalLF": false,
+      "lastBytesHex": ""
+    },
+    {
+      "name": "L10-config-syntax",
+      "file": "L10-config-syntax.txt",
+      "exit": 1,
+      "bytes": 276,
+      "sha256": "5a51777a9de621757ba9fd774a482acacceb7654e090a66bc42b980e5c643978",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "7461782e72632c206c696e652e2e2e0a"
+    },
+    {
+      "name": "L10-config-missing",
+      "file": "L10-config-missing.txt",
+      "exit": 0,
+      "bytes": 44,
+      "sha256": "277a3538d13060c376995b4687901fdecfdc819e01c78981209d74a291c4fcf1",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "66696c65206d697373696e672e72630a"
+    },
+    {
+      "name": "L10-syntax",
+      "file": "L10-syntax.txt",
+      "exit": 1,
+      "bytes": 604,
+      "sha256": "a42207192542b31ebfa78ec07fa6b48e096079b0cd58b4b6743d55f24645891f",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6572726f722077617320696e2e2e2e0a"
+    },
+    {
+      "name": "L10-missing-file",
+      "file": "L10-missing-file.txt",
+      "exit": 2,
+      "bytes": 83,
+      "sha256": "9d5dcef6b49ea81e42cf2a10758a551c8d8cf1d5bdfc9c58b592deee1a1df5d4",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "65206f72206469726563746f7279290a"
+    },
+    {
+      "name": "L10-invalid-format",
+      "file": "L10-invalid-format.txt",
+      "exit": 4,
+      "bytes": 102,
+      "sha256": "545a07d8971b13cc49c9a4709ef409f923bdca5d7d68636082866f0d40aa1b22",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "310a202071756965740a20207474790a"
+    },
+    {
+      "name": "L10-invalid-dialect",
+      "file": "L10-invalid-dialect.txt",
+      "exit": 4,
+      "bytes": 27,
+      "sha256": "23455f261054b5ae7922180df8a8d6390d294aebf6c921691dc31cd5e61abef9",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6c6c3a206e6f742d612d7368656c6c0a"
+    },
+    {
+      "name": "L10-source-default",
+      "file": "L10-source-default.txt",
+      "exit": 1,
+      "bytes": 423,
+      "sha256": "40d82e424726980ccf3a73514cf0b1690454214d3e54a13b8c9af35998dac4fa",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "20776173206e6f74207370652e2e2e0a"
+    },
+    {
+      "name": "L10-source-external",
+      "file": "L10-source-external.txt",
+      "exit": 1,
+      "bytes": 271,
+      "sha256": "455d01d50f5aace37fe40c93881c5beb153d41c3aac1a3f997033cd813a9d911",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "206576656e207768656e20762e2e2e0a"
+    },
+    {
+      "name": "L10-json-clean",
+      "file": "L10-json-clean.txt",
+      "exit": 0,
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "5b5d0a"
+    },
+    {
+      "name": "L10-json-warnings",
+      "file": "L10-json-warnings.txt",
+      "exit": 1,
+      "bytes": 956,
+      "sha256": "fcce4bbc22d0963c3828311b08633a9ea8a677b2bd7477e9104462c51ccca288",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6d656e74223a225c22227d5d7d7d5d0a"
+    },
+    {
+      "name": "L10-json-error",
+      "file": "L10-json-error.txt",
+      "exit": 1,
+      "bytes": 202,
+      "sha256": "deffe266ec1a05a27840ff5183521f7271e18ad52ef367b20cf228c9f88b76d4",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+    },
+    {
+      "name": "L10-json-syntax",
+      "file": "L10-json-syntax.txt",
+      "exit": 1,
+      "bytes": 558,
+      "sha256": "d2c1d5af4a8ac9e209fa02ac1b4276f5f3d400df1c3c0b47cf272475ec760cce",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+    },
+    {
+      "name": "L10-json-multifile",
+      "file": "L10-json-multifile.txt",
+      "exit": 1,
+      "bytes": 1156,
+      "sha256": "9a76839a9d4096d8358481e76485907d63250c3e49aa90a25f770581e5f9829d",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6d656e74223a225c22227d5d7d7d5d0a"
+    },
+    {
+      "name": "L10-json-unicode-space",
+      "file": "L10-json-unicode-space.txt",
+      "exit": 1,
+      "bytes": 601,
+      "sha256": "7b10c58440f2f924b8d9609fb54106fedcf74f260d19c8aac8544da0dca46bd3",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "6d656e74223a225c22227d5d7d7d5d0a"
+    },
+    {
+      "name": "L10-json-excluded",
+      "file": "L10-json-excluded.txt",
+      "exit": 1,
+      "bytes": 190,
+      "sha256": "f079699f60995569ee3bf9e74104e5fe76a3fc083d81c7b5ef26d69e24ff8a30",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+    },
+    {
+      "name": "L10-json-style",
+      "file": "L10-json-style.txt",
+      "exit": 1,
+      "bytes": 952,
+      "sha256": "d573d935f46b3075b87b4658f4e78f8255418d817101ba54485a24ced17e1f24",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "2e222c22666978223a6e756c6c7d5d0a"
+    },
+    {
+      "name": "L10-json-missing-file",
+      "file": "L10-json-missing-file.txt",
+      "exit": 2,
+      "bytes": 86,
+      "sha256": "7a6cabd3fb05d073b4ff6b0b7906d5bdeb3d120f57b531d65887f7e562683e7e",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "72206469726563746f7279290a5b5d0a"
+    },
+    {
+      "name": "L10-json1-clean",
+      "file": "L10-json1-clean.txt",
+      "exit": 0,
+      "bytes": 16,
+      "sha256": "aae1b299044091d29d83b1dc51c8de8739405a6055b6a4a360c132b973ec9c83",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "7b22636f6d6d656e7473223a5b5d7d0a"
+    },
+    {
+      "name": "L10-json1-warnings",
+      "file": "L10-json1-warnings.txt",
+      "exit": 1,
+      "bytes": 969,
+      "sha256": "df6186c2c3a19ae282b7d22f5f67044f9afc7614bbb96df7177548a71ea25a90",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "656e74223a225c22227d5d7d7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-error",
+      "file": "L10-json1-error.txt",
+      "exit": 1,
+      "bytes": 215,
+      "sha256": "5e0776a954cebaf0859c19e08e10153515878cc41bb7bfb8d5f0eb1b4b7fedc0",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-syntax",
+      "file": "L10-json1-syntax.txt",
+      "exit": 1,
+      "bytes": 571,
+      "sha256": "5119148fcdfcf9c812bfe58da5b1f3fef111c7407421bb9dc5c5ef56b81e005d",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-multifile",
+      "file": "L10-json1-multifile.txt",
+      "exit": 1,
+      "bytes": 1169,
+      "sha256": "1babdba1465d2de46c30f9b933101a75dda4bde82441b8a40e95bc475388b196",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "656e74223a225c22227d5d7d7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-unicode-space",
+      "file": "L10-json1-unicode-space.txt",
+      "exit": 1,
+      "bytes": 614,
+      "sha256": "1a9607751e2f4dbce119ce7cf141f3f02012f59796f9e34a53b8324be4dc3012",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "656e74223a225c22227d5d7d7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-excluded",
+      "file": "L10-json1-excluded.txt",
+      "exit": 1,
+      "bytes": 203,
+      "sha256": "7873520756f456312ceb36fb8f6e7206192e91d5eafad9bff451aa457d41cd80",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-style",
+      "file": "L10-json1-style.txt",
+      "exit": 1,
+      "bytes": 965,
+      "sha256": "7ffb68bb4bdad6a97c04046d17165d38644850f21dd241e469503f84b101ac05",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "222c22666978223a6e756c6c7d5d7d0a"
+    },
+    {
+      "name": "L10-json1-missing-file",
+      "file": "L10-json1-missing-file.txt",
+      "exit": 2,
+      "bytes": 99,
+      "sha256": "9f01132b8583ab2808dd14323cd590ada5b3ee7a9db9b2b05712086f044e6eb4",
+      "readThroughEOF": true,
+      "finalLF": true,
+      "lastBytesHex": "7b22636f6d6d656e7473223a5b5d7d0a"
+    }
+  ],
+  "candidates": [],
+  "approvedSavingsBytes": 0,
+  "jsonInventory": [
+    {
+      "case": "L10-json-clean",
+      "envelope": "array",
+      "levels": [],
+      "codes": [],
+      "diagnostics": 0,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-warnings",
+      "envelope": "array",
+      "levels": [
+        "error",
+        "info",
+        "warning"
+      ],
+      "codes": [
+        2034,
+        2035,
+        2045,
+        2086
+      ],
+      "diagnostics": 4,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-error",
+      "envelope": "array",
+      "levels": [
+        "error"
+      ],
+      "codes": [
+        2283
+      ],
+      "diagnostics": 1,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-syntax",
+      "envelope": "array",
+      "levels": [
+        "error",
+        "info"
+      ],
+      "codes": [
+        1009,
+        1072,
+        1073
+      ],
+      "diagnostics": 3,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-multifile",
+      "envelope": "array",
+      "levels": [
+        "error",
+        "info",
+        "warning"
+      ],
+      "codes": [
+        2034,
+        2035,
+        2045,
+        2086,
+        2283
+      ],
+      "diagnostics": 5,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-unicode-space",
+      "envelope": "array",
+      "levels": [
+        "info",
+        "warning"
+      ],
+      "codes": [
+        2086,
+        2154
+      ],
+      "diagnostics": 2,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-excluded",
+      "envelope": "array",
+      "levels": [
+        "info"
+      ],
+      "codes": [
+        2035
+      ],
+      "diagnostics": 1,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json-style",
+      "envelope": "array",
+      "levels": [
+        "info",
+        "style",
+        "warning"
+      ],
+      "codes": [
+        2002,
+        2034,
+        2086,
+        2154
+      ],
+      "diagnostics": 4,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-clean",
+      "envelope": "comments-object",
+      "levels": [],
+      "codes": [],
+      "diagnostics": 0,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-warnings",
+      "envelope": "comments-object",
+      "levels": [
+        "error",
+        "info",
+        "warning"
+      ],
+      "codes": [
+        2034,
+        2035,
+        2045,
+        2086
+      ],
+      "diagnostics": 4,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-error",
+      "envelope": "comments-object",
+      "levels": [
+        "error"
+      ],
+      "codes": [
+        2283
+      ],
+      "diagnostics": 1,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-syntax",
+      "envelope": "comments-object",
+      "levels": [
+        "error",
+        "info"
+      ],
+      "codes": [
+        1009,
+        1072,
+        1073
+      ],
+      "diagnostics": 3,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-multifile",
+      "envelope": "comments-object",
+      "levels": [
+        "error",
+        "info",
+        "warning"
+      ],
+      "codes": [
+        2034,
+        2035,
+        2045,
+        2086,
+        2283
+      ],
+      "diagnostics": 5,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-unicode-space",
+      "envelope": "comments-object",
+      "levels": [
+        "info",
+        "warning"
+      ],
+      "codes": [
+        2086,
+        2154
+      ],
+      "diagnostics": 2,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-excluded",
+      "envelope": "comments-object",
+      "levels": [
+        "info"
+      ],
+      "codes": [
+        2035
+      ],
+      "diagnostics": 1,
+      "layoutRemovableBytes": 0
+    },
+    {
+      "case": "L10-json1-style",
+      "envelope": "comments-object",
+      "levels": [
+        "info",
+        "style",
+        "warning"
+      ],
+      "codes": [
+        2002,
+        2034,
+        2086,
+        2154
+      ],
+      "diagnostics": 4,
+      "layoutRemovableBytes": 0
+    }
+  ],
+  "layoutMeasurementControl": {
+    "input": "{ \"control\" : \"雪 😀\", \"number\" : 1.00 }\n",
+    "output": "{\"control\":\"雪 😀\",\"number\":1.00}\n",
+    "purpose": "Positive control: removable outside-string whitespace detected; string spaces, numeric token spelling and EOF retained"
+  },
+  "coverage": {
+    "cases": 48,
+    "nativeBytes": 22901,
+    "exitCodes": {
+      "0": 10,
+      "1": 33,
+      "2": 3,
+      "4": 2
+    }
+  }
+}
