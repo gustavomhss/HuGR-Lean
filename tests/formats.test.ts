@@ -41,11 +41,11 @@ function reduced(id: string, input: string): string {
   assert.ok(Buffer.byteLength(output) < Buffer.byteLength(input), "Reduction must save UTF-8 bytes");
   return output;
 }
-function preservedVitest(input: string): string {
-  const result = profile("vitest").reduce(input, observation("vitest", input));
-  assert.ok(result, "Vitest grammar must still validate");
+function preserved(id: string, input: string): string {
+  const result = profile(id).reduce(input, observation(id, input));
+  assert.ok(result, `${id} grammar must still validate`);
   assert.equal(materialize(input, result), input);
-  const publicResult = filter(observation("vitest", input));
+  const publicResult = filter(observation(id, input));
   assert.equal(publicResult.status, "passthrough");
   assert.equal(publicResult.reason, "not_smaller");
   assert.equal("replacement" in publicResult, false);
@@ -68,22 +68,22 @@ test("donor bytes match pinned TRS blobs; changed bytes trip the oracle", () => 
 });
 
 const positives = [
-  ["jest", "jest_all_passed", "+ src/utils.test.js\n  - should add numbers (5 ms)\n  - should subtract numbers (2 ms)\n  - should multiply numbers (3 ms)\n  - should divide numbers (4 ms)\n\n+ src/helpers.test.js\n  - should format date (1 ms)\n  - should parse JSON (2 ms)\n\nTest Suites: 2 passed, 2 total\nTests:       6 passed, 6 total\nTime:        0.8 s\n"],
+  ["jest", "jest_all_passed", "PASS src/utils.test.js\n  ✓ should add numbers (5 ms)\n  ✓ should subtract numbers (2 ms)\n  ✓ should multiply numbers (3 ms)\n  ✓ should divide numbers (4 ms)\n\nPASS src/helpers.test.js\n  ✓ should format date (1 ms)\n  ✓ should parse JSON (2 ms)\n\nTest Suites: 2 passed, 2 total\nTests:       6 passed, 6 total\nTime:        0.8 s\n"],
   ["vitest", "vitest_all_passed", " ✓ test/utils.test.ts (3 tests) 200ms\n ✓ test/helpers.test.ts (2 tests) 150ms\n ✓ test/components.test.ts (4 tests) 300ms\n\n Test Files  3 passed (3)\n      Tests  9 passed (9)\n   Start at  10:30:00\n   Duration  1.20s\n"],
   ["git-status", "git_status_mixed", "On branch main\nYour branch is up to date with 'origin/main'.\n\nChanges to be committed:\n  modified:   src/main.rs\n  new file:   src/new_module.rs\n\nChanges not staged for commit:\n  modified:   src/router.rs\n  deleted:    src/old_code.rs\n\nUntracked files:\n  scratchpad.txt\n  notes.md\n\n"],
   ["rg", "grep_single_file_multiple_matches", "src/main.rs:\n10:fn init() {\n25:fn process() {\n42:fn main() {\n58:fn cleanup() {\n"],
-  ["jest", "jest_native", "+ ./jest-native.test.cjs\n  maths 🔥\n    - adds café (7 ms)\n    nested\n      - keeps path: evidence (2 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       2 passed, 2 total\nSnapshots:   0 total\nTime:        1.022 s\nRan all test suites.\n"],
+  ["jest", "jest_native", "PASS ./jest-native.test.cjs\n  maths 🔥\n    ✓ adds café (7 ms)\n    nested\n      ✓ keeps path: evidence (2 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       2 passed, 2 total\nSnapshots:   0 total\nTime:        1.022 s\nRan all test suites.\n"],
   ["vitest", "vitest_native", "\n RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-formats-native\n\n ✓ vitest-native.test.js (2 tests) 5ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  00:23:02\n   Duration  1.28s (transform 26ms, setup 0ms, collect 10ms, tests 5ms, environment 0ms, prepare 324ms)\n\n"],
 ] as const;
 for (const [id, name, expected] of positives) test(`${id} preserves exact required evidence: ${name}`, (context) => {
-  const input = fixture(name), output = id === "vitest" ? preservedVitest(input) : reduced(id, input);
+  const input = fixture(name), output = ["jest", "vitest"].includes(id) ? preserved(id, input) : reduced(id, input);
   assert.equal(output, expected);
   context.diagnostic(`${name}: ${Buffer.byteLength(input)} -> ${Buffer.byteLength(output)} UTF-8 bytes`);
 });
 test("native test/status grammars preserve CRLF and UTF-16 source offsets", () => {
   for (const [id, name, expected] of positives) if (id !== "rg") {
     const input = fixture(name).replaceAll("\n", "\r\n");
-    assert.equal(id === "vitest" ? preservedVitest(input) : reduced(id, input), expected.replaceAll("\n", "\r\n"));
+    assert.equal(["jest", "vitest"].includes(id) ? preserved(id, input) : reduced(id, input), expected.replaceAll("\n", "\r\n"));
   }
 });
 
@@ -102,12 +102,12 @@ for (const [id, name, field, label] of controlFields) {
   assert.ok(input.includes(field), `${id}: missing insertion anchor`);
   assert.ok(expected.includes(field), `${id}: missing expected evidence`);
   const insert = (value: string) => input.replace(field, field + value);
-  test(`${id} ${label} retains ordinary Unicode with ${id === "vitest" ? "exact identity" : "a real reduction"}`, () => {
+  test(`${id} ${label} retains ordinary Unicode with ${["jest", "vitest"].includes(id) ? "exact identity" : "a real reduction"}`, () => {
     const unicode = "漢字 e\u0301 🔥";
-    assert.equal(id === "vitest" ? preservedVitest(insert(unicode)) : reduced(id, insert(unicode)), expected.replace(field, field + unicode));
+    assert.equal(["jest", "vitest"].includes(id) ? preserved(id, insert(unicode)) : reduced(id, insert(unicode)), expected.replace(field, field + unicode));
   });
   test(`${id} ${label} declines every C1 control in otherwise admitted grammar`, () => {
-    assert.equal(id === "vitest" ? preservedVitest(input) : reduced(id, input), expected, "Unmodified fixture must validate");
+    assert.equal(["jest", "vitest"].includes(id) ? preserved(id, input) : reduced(id, input), expected, "Unmodified fixture must validate");
     const admitted: string[] = [];
     for (let code = 0x80; code <= 0x9f; code++) {
       const output = insert(String.fromCodePoint(code));
@@ -167,11 +167,11 @@ test("Jest/Vitest reject inconsistent, incomplete, skipped, and failed reports e
 
 test("Jest nonverbose, matching trailer, snapshots, and seed retain exact summaries", () => {
   const input = "PASS src/🔥.test.ts\n\nTest Suites: 1 passed, 1 total\nTests: 4 passed, 4 total\nSnapshots: 2 passed, 2 total\nSeed: -42\nTime: 0.8 s, estimated 1 s\nRan all test suites matching /🔥/i.\n";
-  assert.equal(reduced("jest", input), input.replace("PASS ", "+ "));
+  assert.equal(preserved("jest", input), input);
 });
 test("Jest retains timing-shaped test names without assuming a suffix is decoration", () => {
   const input = "PASS src/a.test.js\n  ✓ name (5 ms)\n  ✓ name (5 ms) (1 ms)\nTest Suites: 1 passed, 1 total\nTests: 2 passed, 2 total\n";
-  assert.equal(reduced("jest", input), "+ src/a.test.js\n  - name (5 ms)\n  - name (5 ms) (1 ms)\nTest Suites: 1 passed, 1 total\nTests: 2 passed, 2 total\n");
+  assert.equal(preserved("jest", input), input);
 });
 
 test("git status retains branch, all conflict codes, unquoted paths, renames, submodule evidence, CRLF", () => {

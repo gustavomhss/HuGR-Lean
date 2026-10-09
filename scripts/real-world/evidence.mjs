@@ -131,14 +131,14 @@ function runnerEvidence(oracle, source) {
       if (text === "PASS") { shape += "f"; finished++; keep(row); continue; }
       if (/^ok[ \t]+[^\s]+\t\d+(?:\.\d+)?s$/.test(text)) { shape += "z"; summary++; keep(row); continue; }
     } else if (oracle === "jest") {
-      if (/^ ?PASS .+$/.test(text)) { shape += "f"; known &&= !pendingHeading; depth = 0; counts.files++; fileLeaves.push(0); keep(row, "+ " + text.slice(text.startsWith(" ") ? 6 : 5)); continue; }
+      if (/^ ?PASS .+$/.test(text)) { shape += "f"; known &&= !pendingHeading; depth = 0; counts.files++; fileLeaves.push(0); keep(row); continue; }
       const leaf = /^( {2,})✓ (.+)$/.exec(text);
       const heading = /^( {2,})[^\s✓○✎].*$/.exec(text);
       const detail = leaf ?? heading;
       if (detail && counts.files) {
         const level = detail[1].length / 2;
         known &&= Number.isInteger(level) && level <= depth + 1 && (!pendingHeading || level === depth + 1);
-        if (leaf) { shape += "d"; counts.leaves++; fileLeaves[fileLeaves.length - 1]++; depth = Math.min(depth, level - 1); pendingHeading = false; keep(row, leaf[1] + "- " + leaf[2]); }
+        if (leaf) { shape += "d"; counts.leaves++; fileLeaves[fileLeaves.length - 1]++; depth = Math.min(depth, level - 1); pendingHeading = false; keep(row); }
         else { shape += "h"; depth = level; pendingHeading = true; keep(row); }
         continue;
       }
