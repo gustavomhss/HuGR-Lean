@@ -1,6 +1,6 @@
 # Coverage and admission inventory
 
-Post-implementation inventory of the utility candidate, still version 0.2.0, read from code and named witnesses. Native conformance, fixture replay, installed-artifact proof and host compatibility have distinct evidence; current full-suite/host/latency verification is pending.
+Post-implementation inventory of the utility candidate, still version 0.2.0, read from code and named witnesses. Native conformance, fixture replay, installed-artifact proof and host compatibility have distinct evidence; [delivery status](DELIVERY.md) records completed local proof and three-platform CI with their exact execution checkpoints.
 One MIT TypeScript package: root default plugin only, library `hugr-lean/core`, storage `hugr-lean/raw`, bin `hugr-lean` at `dist/cli/index.js`; [package manifest](../package.json), [plan](../PLAN.md), and [shared types](../src/core/types.ts) define the boundary.
 
 ## Profile coverage
@@ -19,7 +19,7 @@ The [registry](../src/profiles/index.ts) contains nine reducers plus identity-on
 | `tsc` | Identity stub, always `undefined`; multiline/pretty diagnostics remain exact | [format tests](../tests/formats.test.ts) |
 Exact argv and evidence: [profile manual](../src/profiles/MANUAL.md). Existing donor pins remain in [runner SOURCES](../fixtures/runners/SOURCES.md)/[format SOURCES](../fixtures/formats/SOURCES.md); new original local captures are described in [utility evaluation](UTILITY_EVALUATION.md). Runtime binary-version detection is not implied, except pytest's admitted default banner pair.
 
-The [combined tests](../tests/combined.test.ts) and [installed inspector](../scripts/package-smoke.mjs) declare 39 cases across all 10 IDs, including 25 native utility cases (12 noise, 13 exact). Four parser cold reviews were approved; this is not a final full-suite, package, host or latency outcome. Jest/Vitest coverage and utility strategy remain unchanged.
+The [combined tests](../tests/combined.test.ts) and [installed inspector](../scripts/package-smoke.mjs) cover 39 cases across all 10 IDs, including 25 native utility cases (12 noise, 13 exact). Four parser cold reviews and dated installed/core/after-hook receipts passed; full-suite, host and latency scopes remain separately recorded in [delivery status](DELIVERY.md). Jest/Vitest coverage and utility strategy remain unchanged.
 
 ## Optional-v1 assessment: passthrough
 These are admission decisions, not completed native captures or support promises; [formats.ts](../src/profiles/formats.ts) admits no lint/install grammar.
@@ -37,7 +37,7 @@ These are admission decisions, not completed native captures or support promises
 - [Raw tests](../tests/raw.test.ts) and [expiry tests](../tests/raw-ttl.test.ts): exact-string records, persisted writer expiry, default 64 MiB aggregate serialized bytes plus bounded separate lock metadata, seven-day lazy TTL, reject-full/unexpired retention, cooperative dead-PID-only recovery. Caller restricts ACLs on every OS; POSIX UID/modes do not prove extended-ACL isolation, and Windows permissions have distinct/skippable evidence.
 - [OpenCode proof](OPENCODE.md): recorded 1.18.17 legacy CLI/macOS x86_64 hook-to-next-model-request experiment; [CI harness teeth](../tests/opencode-boundary.test.ts) use a fake host. V2 and other installed routes require separate real-host proof.
 - [CLI manual](../src/cli/MANUAL.md), `src/cli/index.ts`, and `tests/cli.test.ts`: implemented required `--command`, optional `--exit-code`/`--complete`/`--terminal-rendered`, raw-only `--directory`, stdin byte preservation, exact replacement/get stdout, list/doctor JSON plus LF, version plus LF, and statuses 0/1/2. Compiled-entry tests include malformed UTF-8, oversize streaming, raw errors, and package-fact reporting; doctor uses the registry, not OpenCode proof.
-- [Installed-artifact smoke](../scripts/package-smoke.mjs) packs and installs an external consumer, checks independent fixture goldens and required source pieces, root/server/core/raw exports, CLI/version/doctor, notices and exact recovery. `--opencode` separately checks actual model-bound output. Final utility-candidate receipts and registry publication remain pending.
+- [Installed-artifact smoke](../scripts/package-smoke.mjs) packs and installs an external consumer, checks independent fixture goldens and required source pieces, root/server/core/raw exports, CLI/version/doctor, notices and exact recovery. `--opencode` separately checks actual model-bound output. Delivery receipts record package/host proof; registry publication remains pending.
 - Local checks and [CI workflow](../.github/workflows/ci.yml) validate structure, code/tests/build and installed-artifact smoke. Real-host proof and measured latency use explicit separate scripts; CI green alone does not establish native recapture, doc quality, registry publication or latency budgets.
 
 ## Maintenance contract

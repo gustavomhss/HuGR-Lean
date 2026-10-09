@@ -6,11 +6,11 @@ One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra
 ## Install and enable
 
 Node 22+, npm and Git. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
-The delivery candidate is **pending human approval**, not a new release.
+The lead's technical verdict and exact candidate/artifact binding are recorded in the
+[delivery PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85); this is not a new release.
 Before running commands, replace only `FULL_REVIEWED_DELIVERY_SHA` in the assignment below
-with the full 40-character lowercase hexadecimal SHA from the approved delivery PR and its
-candidate evidence receipt. Until approval
-and that receipt exist, this installation recipe is not an approved installation target.
+with the full 40-character lowercase hexadecimal SHA from that receipt's **APPROVE** verdict.
+The reviewed SHA and its evidence receipt define the installation target.
 Never substitute floating `main` or a branch tip for the reviewed snapshot.
 Run these commands from a directory where you want a fresh clone. Choose an unused folder name
 (shown here as `hugr-lean-reviewed`), and stop if any command fails:
@@ -34,14 +34,14 @@ hugr-lean doctor
 ```
 
 The subshell stops on failure: invalid SHA syntax fails before clone; failed source selection
-or a mismatched HEAD stops before npm. Syntax and identity checks do not grant human approval.
+or a mismatched HEAD stops before npm. Syntax and identity checks do not replace technical review.
 `npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
 uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
-directory on `PATH`. The package version remains `0.2.0` pending a human release/version decision.
+directory on `PATH`. The package version remains `0.2.0` until a separate release/version decision.
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for dated baseline proof, pending utility-candidate verification, deferred CI and human decisions.
+for dated execution proof, exact artifact binding, three-platform CI and remaining release items.
 The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
@@ -55,16 +55,22 @@ Copy `pluginURL` from doctor into your OpenCode configuration:
 ```
 
 Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Historically verified local host route at the earlier delivery baseline:
+Verified local host route on **2026-10-08**, code baseline `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`:
 **OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
-The utility candidate's final SHA, installed artifact, host and latency receipts remain pending;
-Linux/macOS/Windows CI also remains pending.
-Linux/Windows were not run locally. Actions stays deferred until final candidate verification
-is recorded and the lead explicitly declares completion.
+Private local receipts record 1,026 passing tests, installed-package/latency proof and 23 host scenarios:
+7 file, 5 package-name, 8 baseline/on replays across four native families, and 3 raw scenarios with exact CLI recovery.
+File/package-name routes use the same preinstalled normal tarball, not npm registry availability.
+Native fixture text replay proves model-bound bytes, not upstream recapture or model quality.
+Actions is enabled. [Run 37861421060](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37861421060)
+passed at code checkpoint `310666cc4dfcf08d7c91396a562d896c7bb3b965`:
+Linux/macOS 1,030 tests each; Windows 997 passed, 33 existing platform skips, zero failures.
+Build, installed smoke and pack passed on all three platforms. Exact delivery-head/package linkage
+is recorded in the [PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85); later docs-only
+updates do not relabel the checkpoint's tests or historical host experiments as new executions.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
 Npm registry installation is not currently available. If publication is authorized, the package
-name can be used as the plugin entry; historical package-name proof used a locally installed tarball.
+name can be used as the plugin entry; dated package-name proof used a locally installed/cached tarball.
 
 ## Behavior and coverage
 
@@ -80,9 +86,9 @@ English Git status and numbered ripgrep. Coverage is deliberately format-specifi
 - The OpenCode after-hook filters only `bash` results; it never rewrites command argv or performs core/profile I/O.
 
 [Native utility evaluation](docs/UTILITY_EVALUATION.md) records original local fixture projects:
-25 cases (12 noise, 13 exact), with deliberate long names and many tests. These are not
-representative real-agent sessions. The 39-case combined/installed matrix covers 10 IDs
-(nine reducers and inert `tsc`); matrix membership is not a fresh passing receipt.
+25 cases (12 reduced, 11 material, 13 exact) passed at the dated code baseline, with deliberate
+long names and many tests. These are not representative real-agent sessions. Normal installed
+proof passed 39 cases / 10 IDs (nine reducers and inert `tsc`), with package linkage in the delivery receipt.
 Jest/Vitest retain their existing prefix/per-file-timing strategy; no utility improvement is claimed.
 
 ## Options and raw recovery
