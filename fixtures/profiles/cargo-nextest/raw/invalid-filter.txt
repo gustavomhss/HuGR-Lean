@@ -1,0 +1,11 @@
+  error: invalid string
+   ╭────
+ 1 │ test(
+   ╰────
+
+  error: expected close parenthesis
+   ╭────
+ 1 │ test(
+   ╰────
+
+error: failed to parse filterset

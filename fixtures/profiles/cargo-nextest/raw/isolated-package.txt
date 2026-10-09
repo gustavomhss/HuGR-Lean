@@ -1,0 +1,27 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID 70d5849e-e8c8-456d-9742-b86e8584e173 with nextest profile: default
+    Starting 2 tests across 1 binary
+        PASS [   0.014s] (1/2) capture-beta tests::beta_logs
+  stdout ───
+
+    running 1 test
+    BETA_STDOUT keep suite association
+    test tests::beta_logs ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+  stderr ───
+    BETA_STDERR keep suite association
+
+        PASS [   0.016s] (2/2) capture-beta tests::beta_pass
+  stdout ───
+
+    running 1 test
+    test tests::beta_pass ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+────────────
+     Summary [   0.031s] 2 tests run: 2 passed, 0 skipped

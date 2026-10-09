@@ -1,0 +1,11 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID 182c15a0-a431-44e9-a823-f9b7abe176aa with nextest profile: default
+    Starting 5 tests across 3 binaries (4 tests skipped)
+        PASS [   0.015s] (1/5) capture-alpha tests::alpha_collision
+        PASS [   0.015s] (2/5) capture-alpha tests::alpha_pass
+        PASS [   0.014s] (3/5) capture-alpha::integration integration_pass
+        PASS [   0.015s] (4/5) capture-beta tests::beta_logs
+        PASS [   0.014s] (5/5) capture-beta tests::beta_pass
+────────────
+     Summary [   0.073s] 5 tests run: 5 passed, 4 skipped
