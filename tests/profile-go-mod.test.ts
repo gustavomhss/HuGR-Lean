@@ -8,7 +8,8 @@ import { familyProfiles } from "../src/profiles/go-mod.js";
 import { goProfile } from "../src/profiles/go.js";
 
 const base = new URL("../fixtures/profiles/go-mod/", import.meta.url);
-type NativeCase = Observation & {
+type NativeCase = Omit<Observation, "source" | "output"> & {
+  output?: string;
   name: string; argv: string[]; file: string; expectedFile?: string;
   provenance: { sha256: string };
   snapshots: { before: Record<string, string | null>; after: Record<string, string | null> };
@@ -147,7 +148,7 @@ test("G05 native captures: independent ordered-subset goldens and source evidenc
   assert.equal(manifest.cases.length, 19);
   for (const entry of manifest.cases) {
     const raw = readFileSync(new URL(entry.file, base), "utf8");
-    assert.equal(raw, entry.output, entry.name);
+    assert.equal(entry.output, undefined, entry.name);
     assert.equal(createHash("sha256").update(raw).digest("hex"), entry.provenance.sha256);
     assert.equal(entry.command, entry.argv.join(" "));
     for (const [path, hashes] of Object.entries(entry.sourceHashes)) {
@@ -155,7 +156,7 @@ test("G05 native captures: independent ordered-subset goldens and source evidenc
       assert.equal(createHash("sha256").update(entry.snapshots.before[path]!).digest("hex"), hashes.before);
       assert.equal(hashes.before, hashes.after);
     }
-    const value = { ...entry, source: "shell" as const };
+    const value: Observation = { ...entry, source: "shell", output: raw };
     if (!entry.expectedFile) { exact(value); continue; }
     const golden = readFileSync(new URL(entry.expectedFile, base), "utf8");
     assert(golden.endsWith("\n"));
