@@ -1,0 +1,8 @@
+Looking in links: wheels, missing-wheel-directory
+WARNING: Location 'missing-wheel-directory' is ignored: it is either a non-existing path or lacks a specific scheme.
+Processing ./wheels/p05_root-1.0-py3-none-any.whl
+WARNING: Location 'missing-wheel-directory' is ignored: it is either a non-existing path or lacks a specific scheme.
+Processing ./wheels/p05_dep-1.0-py3-none-any.whl (from p05_root==1.0)
+Installing collected packages: p05_dep, p05_root
+
+Successfully installed p05_dep-1.0 p05_root-1.0

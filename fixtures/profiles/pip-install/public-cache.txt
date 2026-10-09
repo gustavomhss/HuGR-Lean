@@ -1,0 +1,9 @@
+Collecting colorama==0.4.6
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Installing collected packages: colorama
+  Attempting uninstall: colorama
+    Found existing installation: colorama 0.4.6
+    Uninstalling colorama-0.4.6:
+      Successfully uninstalled colorama-0.4.6
+Successfully installed colorama-0.4.6
