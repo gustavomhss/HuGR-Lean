@@ -64,6 +64,26 @@ test("G05 native captures: independent ordered-subset goldens and source evidenc
   }
 });
 
+test("G05 authored bounded proxy source has pinned module bytes", () => {
+  const proxy = JSON.parse(readFileSync(new URL("proxy-sources.json", base), "utf8")) as {
+    baseline: string; modules: {
+      module: string; version: string; files: Record<string, string>; originalSource?: Record<string, string>;
+    }[];
+  };
+  assert.equal(proxy.baseline, "bc5e12fc78aa190a9ec9863ca41cd96e4e3a0ea0");
+  assert.deepEqual(proxy.modules.map(entry => `${entry.module}@${entry.version}`), [
+    "golang.org/x/text@v0.29.0", "example.com/g05/dep@v1.0.0", "example.com/g05/dep@v1.1.0",
+    "example.com/g05/other@v1.0.0", "example.com/g05/other@v1.1.0",
+  ]);
+  for (const entry of proxy.modules) {
+    for (const sha of Object.values(entry.files)) assert.match(sha, /^[a-f0-9]{64}$/);
+    if (!entry.originalSource) continue;
+    const prefix = `${entry.module}@${entry.version}/`;
+    assert.equal(createHash("sha256").update(entry.originalSource[prefix + "go.mod"]!).digest("hex"), entry.files[entry.version + ".mod"]);
+    assert.equal(entry.originalSource[prefix + "dep.go"], "package dep\n");
+  }
+});
+
 test("G05 malformed, unpaired, duplicate, unknown and non-module rows stay exact", () => {
   const downloading = "go: downloading golang.org/x/text v0.29.0\n";
   for (const text of [
@@ -117,4 +137,40 @@ test("G05 generic module/version grammar; every change is required source eviden
   const result = filter(value, options);
   assert.equal(result.status, "reduced");
   assert.equal("replacement" in result ? result.replacement : undefined, text.slice(text.indexOf("go: upgraded")));
+});
+
+test("G05 every known change survives, including earlier unrelated additions", () => {
+  const earlier = "go: added example.net/earlier v1.2.3\n";
+  const text = earlier + output;
+  const value = observation(text);
+  const result = filter(value, options);
+  assert.equal(result.status, "reduced");
+  assert.equal("replacement" in result ? result.replacement : undefined, earlier + change);
+  const reduction = familyProfiles[0]!.reduce(text, value)!;
+  assert.deepEqual(reduction.required, [[0, earlier.length], [earlier.length + output.indexOf(change), text.length]]);
+  const unpaired = "go: downloading example.net/absent v1.0.0\n";
+  exact(observation(unpaired + output));
+  exact(observation(output + "go: upgraded golang.org/x/text v0.28.0 => v0.30.0\n"));
+});
+
+test("G05 invalid observation schema and direct reducer boundary preserve original", () => {
+  for (const invalid of [
+    { ...observation(), termination: { kind: "exited", code: "0" } },
+    { ...observation(), completeness: "invalid" },
+    { ...observation(), presentation: "invalid" },
+    { ...observation(), source: "invalid" },
+  ]) {
+    const result = filter(invalid as unknown as Observation, options);
+    assert.equal(result.status, "failed_open");
+    assert.equal("replacement" in result, false);
+  }
+  const profile = familyProfiles[0]!;
+  for (const value of [
+    observation(output, "go get -v golang.org/x/text"),
+    observation(output, "go mod download"),
+    { ...observation(), completeness: "unknown" as const },
+    { ...observation(), source: "other" as const },
+    { ...observation(), termination: { kind: "exited" as const, code: 1 } },
+    { ...observation(), output: output + "unknown\n" },
+  ]) assert.equal(profile.reduce(output, value), undefined);
 });
