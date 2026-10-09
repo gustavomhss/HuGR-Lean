@@ -5,9 +5,41 @@ import type { Observation, Profile, Reduction, Span } from "../core/types.js";
 // Closed witnessed command surface. Version selectors cannot pass the shared
 // literal tokenizer; this profile never rewrites them or widens that grammar.
 const modulePath = /^[a-z0-9]+(?:[.-][a-z0-9]+)+(?:\/[A-Za-z0-9_][A-Za-z0-9_.-]*)+$/;
-const version = /^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?(?:\+incompatible)?$/;
+const version = /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(\+incompatible)?$/;
 function moduleName(value: string): boolean {
   return modulePath.test(value) && value.split("/").every(part => !part.endsWith("."));
+}
+type Release = { core: bigint[]; prerelease: string[] };
+function moduleRelease(name: string, value: string): Release | undefined {
+  const parsed = version.exec(value);
+  if (!moduleName(name) || !parsed || name.startsWith("gopkg.in/")) return undefined;
+  const prerelease = parsed[4]?.split(".") ?? [];
+  if (prerelease.some(part => /^0\d+$/.test(part))) return undefined;
+  const major = BigInt(parsed[1]!);
+  const suffix = /\/v([0-9.]+)$/.exec(name);
+  if (suffix) {
+    if (!/^[1-9]\d*$/.test(suffix[1]!) || BigInt(suffix[1]!) < 2n ||
+        BigInt(suffix[1]!) !== major || parsed[5]) return undefined;
+  } else if (major >= 2n ? !parsed[5] : parsed[5]) return undefined;
+  return { core: parsed.slice(1, 4).map(part => BigInt(part!)), prerelease };
+}
+function compareRelease(left: Release, right: Release): number {
+  for (let index = 0; index < 3; index++) {
+    if (left.core[index]! !== right.core[index]!) return left.core[index]! < right.core[index]! ? -1 : 1;
+  }
+  if (!left.prerelease.length || !right.prerelease.length) {
+    return left.prerelease.length ? -1 : right.prerelease.length ? 1 : 0;
+  }
+  for (let index = 0; index < Math.max(left.prerelease.length, right.prerelease.length); index++) {
+    const a = left.prerelease[index], b = right.prerelease[index];
+    if (a === b) continue;
+    if (a === undefined || b === undefined) return a === undefined ? -1 : 1;
+    const aNumeric = /^\d+$/.test(a), bNumeric = /^\d+$/.test(b);
+    if (aNumeric && bNumeric) return BigInt(a) < BigInt(b) ? -1 : 1;
+    if (aNumeric !== bNumeric) return aNumeric ? -1 : 1;
+    return a < b ? -1 : 1;
+  }
+  return 0;
 }
 function identity(argv: readonly string[]): { mode: string; requested: boolean } | undefined {
   if (argv[0] !== "go") return undefined;
@@ -42,7 +74,7 @@ function reduce(output: string, observation: Observation): Reduction | undefined
     const progress = /^go: downloading (\S+) (\S+)$/.exec(row.text);
     if (progress) {
       const name = progress[1]!, release = progress[2]!;
-      if (!moduleName(name) || !version.test(release) || downloading.has(name)) return undefined;
+      if (!moduleRelease(name, release) || downloading.has(name)) return undefined;
       downloading.set(name, { version: release, offset: row.span[0] });
       continue;
     }
@@ -51,8 +83,10 @@ function reduce(output: string, observation: Observation): Reduction | undefined
     if (!added && !upgraded) return undefined;
     const name = (added ?? upgraded)![1]!;
     const release = added ? added[2]! : upgraded![3]!;
-    if (!moduleName(name) || !version.test(release) || changes.has(name) ||
-        (upgraded && (!version.test(upgraded[2]!) || upgraded[2] === release))) return undefined;
+    const next = moduleRelease(name, release);
+    const previous = upgraded ? moduleRelease(name, upgraded[2]!) : undefined;
+    if (!next || changes.has(name) ||
+        (upgraded && (!previous || compareRelease(previous, next) >= 0))) return undefined;
     changes.set(name, { version: release, offset: row.span[0] });
     required.push(row.span);
   }

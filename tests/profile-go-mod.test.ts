@@ -29,6 +29,69 @@ const exact = (value: Observation) => {
   assert.equal(result.status, "passthrough");
   assert.equal("replacement" in result, false);
 };
+const moduleChange = (name: string, next: string, previous?: string): Observation => observation(
+  `go: downloading ${name} ${next}\n` + (previous
+    ? `go: upgraded ${name} ${previous} => ${next}\n` : `go: added ${name} ${next}\n`),
+  `go get ${name}`,
+);
+const reducedChange = (value: Observation) => {
+  const result = filter(value, options);
+  assert.equal(result.status, "reduced");
+  assert.equal("replacement" in result ? result.replacement : undefined,
+    value.output.slice(value.output.indexOf("\n") + 1));
+};
+
+test("G05 reject numeric prerelease leading zeros in every version position", () => {
+  for (const release of ["v1.2.3-01", "v1.2.3-beta.00", "v1.2.3-0.01"]) {
+    exact(moduleChange("example.net/pkg", release));
+    exact(moduleChange("example.net/pkg", "v1.2.4", release));
+    exact(observation(output + `go: added example.net/pkg ${release}\n`));
+  }
+  reducedChange(moduleChange("example.net/pkg", "v1.2.3-beta.0.01a"));
+});
+
+test("G05 enforce module path major and conservative incompatible semantics", () => {
+  for (const [name, release] of [
+    ["example.net/pkg/v01", "v1.2.3"], ["example.net/pkg/v2", "v1.2.3"],
+    ["example.net/pkg/v2", "v3.2.3"], ["example.net/pkg/v0", "v0.2.3"],
+    ["example.net/pkg/v1", "v1.2.3"], ["example.net/pkg/v2.0", "v2.2.3"],
+    ["example.net/pkg", "v2.2.3"], ["example.net/pkg", "v1.2.3+incompatible"],
+    ["example.net/pkg/v2", "v2.2.3+incompatible"], ["gopkg.in/pkg.v2", "v2.2.3"],
+  ] as const) exact(moduleChange(name, release));
+  exact(moduleChange("example.net/pkg/v2", "v2.2.3", "v1.2.3"));
+  exact(observation(output + "go: added example.net/pkg/v2 v1.2.3\n"));
+  reducedChange(moduleChange("example.net/pkg/v2", "v2.2.3"));
+  reducedChange(moduleChange("example.net/pkg", "v2.2.3+incompatible", "v1.2.3"));
+  reducedChange(moduleChange("example.net/pkg", "v3.0.0+incompatible", "v2.2.3+incompatible"));
+});
+
+test("G05 upgrades strictly increase with exact large numeric comparison", () => {
+  for (const [previous, next] of [
+    ["v1.2.3", "v1.2.2"], ["v1.2.3", "v1.2.3"], ["v1.3.0", "v1.2.99"],
+    ["v1.0.0", "v0.999.999"], ["v1.2.9007199254740993", "v1.2.9007199254740992"],
+    ["v1.9007199254740993.0", "v1.9007199254740992.999"],
+    ["v9007199254740993.0.0+incompatible", "v9007199254740992.999.999+incompatible"],
+  ]) exact(moduleChange("example.net/pkg", next!, previous!));
+  for (const [previous, next] of [
+    ["v1.2.9007199254740992", "v1.2.9007199254740993"],
+    ["v1.9007199254740992.999", "v1.9007199254740993.0"],
+    ["v9007199254740992.999.999+incompatible", "v9007199254740993.0.0+incompatible"],
+  ]) reducedChange(moduleChange("example.net/pkg", next!, previous!));
+});
+
+test("G05 upgrades follow SemVer prerelease precedence exactly", () => {
+  const ordered = ["0", "1", "alpha", "alpha.1", "alpha.beta", "beta", "beta.2", "beta.11", "rc.1"];
+  const releases = [...ordered.map(part => `v1.2.3-${part}`), "v1.2.3"];
+  for (let index = 1; index < releases.length; index++) {
+    reducedChange(moduleChange("example.net/pkg", releases[index]!, releases[index - 1]!));
+    exact(moduleChange("example.net/pkg", releases[index - 1]!, releases[index]!));
+  }
+  exact(moduleChange("example.net/pkg", "v1.2.3-beta.2", "v1.2.3-beta.2"));
+  reducedChange(moduleChange("example.net/pkg", "v1.2.3-9007199254740993", "v1.2.3-9007199254740992"));
+  exact(moduleChange("example.net/pkg", "v1.2.3-9007199254740992", "v1.2.3-9007199254740993"));
+  exact(moduleChange("example.net/pkg", "v2.2.3-beta+incompatible", "v2.2.3+incompatible"));
+  reducedChange(moduleChange("example.net/pkg", "v2.2.3+incompatible", "v2.2.3-beta+incompatible"));
+});
 
 test("G05 native captures: independent ordered-subset goldens and source evidence", () => {
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
