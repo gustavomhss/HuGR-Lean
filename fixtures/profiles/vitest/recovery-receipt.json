@@ -1,0 +1,155 @@
+{
+  "schema": "R03-interrupted-recovery/1",
+  "baseline": "248c303cb208f237896c0c6aaba777752aa481f5",
+  "state": "blocked",
+  "nativeCasesPromoted": false,
+  "archives": [
+    "CASES.md",
+    "LICENSE.vitest-coverage-v8.txt",
+    "LICENSE.vitest.txt",
+    "R03-default-projects.txt",
+    "SOURCES.md",
+    "capture.py",
+    "inputs/alpha.test.js",
+    "inputs/beta.test.js",
+    "inputs/collision-reporter.mjs",
+    "inputs/collision.config.mjs",
+    "inputs/package-lock.json",
+    "inputs/package.json",
+    "inputs/src/math.js",
+    "inputs/vitest.config.mjs",
+    "install.txt",
+    "interruption.txt",
+    "recover.py"
+  ],
+  "artifacts": {
+    "CASES.md": {
+      "sha256": "9d1bf8c51d1cbbba17276553aaf9b94a3dc351e9aa3b858c019ff231b5f41132",
+      "bytes": 2997,
+      "endsWithLF": true,
+      "tailHex": "65737320636c61696d2e204c656164207265766965772070656e64696e672e0a"
+    },
+    "LICENSE.vitest-coverage-v8.txt": {
+      "sha256": "ddc110f3b89cc397cee99d3d64c4f746928b7a3bac02fed15101eb4d367079f6",
+      "bytes": 1076,
+      "endsWithLF": true,
+      "tailHex": "4f54484552204445414c494e475320494e205448450a534f4654574152452e0a"
+    },
+    "LICENSE.vitest.txt": {
+      "sha256": "6b861d7554fbc8488a08ee59e613bd488785a2e27bd87b80142e5125abec6f4c",
+      "bytes": 34974,
+      "endsWithLF": true,
+      "tailHex": "4f54484552204445414c494e475320494e2054484520534f4654574152452e0a"
+    },
+    "R03-default-projects.txt": {
+      "sha256": "8668e3ea508bc4903e051be43e135708861d40e329e0ed086cd6537584c9f92a",
+      "bytes": 795,
+      "endsWithLF": true,
+      "tailHex": "6e7669726f6e6d656e7420316d732c2070726570617265203438316d73290a0a"
+    },
+    "SOURCES.md": {
+      "sha256": "474f2f4aa3766e1292d42963a4bf9dc49f04db8e54cb7f35fb4bf967db522f7c",
+      "bytes": 2519,
+      "endsWithLF": true,
+      "tailHex": "204e6f20696e6c696e65206475706c6963617465207261772062797465732e0a"
+    },
+    "capture.py": {
+      "sha256": "0c861b9d40ce270f2b5bedefe5358b4b4eb387de4fefb3cb340fda2ad64e6a3a",
+      "bytes": 5246,
+      "endsWithLF": true,
+      "tailHex": "6974436f6465275d2920666f72207220696e2072656365697074735d7d29290a"
+    },
+    "inputs/alpha.test.js": {
+      "sha256": "fe70d9e98602fa81e2faf99769af5c8c38e02f1739b3629efdb31a483cc7cef4",
+      "bytes": 601,
+      "endsWithLF": true,
+      "tailHex": "28275230335f544f444f20667574757265206272616e636827293b0a7d293b0a"
+    },
+    "inputs/beta.test.js": {
+      "sha256": "6c0c9531c1c62910f2e10bb987166075e7c826e0c530c638d06454c51741c83c",
+      "bytes": 357,
+      "endsWithLF": true,
+      "tailHex": "6c27292e746f42652827657870656374656427293b0a20207d293b0a7d293b0a"
+    },
+    "inputs/collision-reporter.mjs": {
+      "sha256": "80f89c20039d82c01c4e03fc9554cfec842a4ddd63a349f3f19554851b849624",
+      "bytes": 320,
+      "endsWithLF": true,
+      "tailHex": "5c6e2020204475726174696f6e2020312e3030735c6e27293b0a20207d0a7d0a"
+    },
+    "inputs/collision.config.mjs": {
+      "sha256": "0d9c5f4678a040ffaed46f67888c36ae63fc37c5d7ff1706737e93abf458c196",
+      "bytes": 133,
+      "endsWithLF": true,
+      "tailHex": "2e2f636f6c6c6973696f6e2d7265706f727465722e6d6a73275d207d207d3b0a"
+    },
+    "inputs/package-lock.json": {
+      "sha256": "3924c9d57c106ddc1f28b3db17fb1add292c6de0a5ad48f383f03d15c2a64edc",
+      "bytes": 83817,
+      "endsWithLF": true,
+      "tailHex": "6f6465223a20223e3d38220a2020202020207d0a202020207d0a20207d0a7d0a"
+    },
+    "inputs/package.json": {
+      "sha256": "3e2a8dae02bdb1c3511f3da070afab118477bd302290e291386fcdd9f97bfc77",
+      "bytes": 125,
+      "endsWithLF": true,
+      "tailHex": "22407669746573742f636f7665726167652d7638223a22332e322e34227d7d0a"
+    },
+    "inputs/src/math.js": {
+      "sha256": "ac017317a651436aa0cb1273eda0a779d0f0c62c76b52069fad0d7554a54052f",
+      "bytes": 76,
+      "endsWithLF": true,
+      "tailHex": "203e2030203f2076616c7565202b2031203a2076616c7565202d20313b207d0a"
+    },
+    "inputs/vitest.config.mjs": {
+      "sha256": "cfc207afa35e99848b7a5629ad2b6780b4692880ca37feedc65b15e6bf07a458",
+      "bytes": 416,
+      "endsWithLF": true,
+      "tailHex": "2e6a73275d2c2072657472793a2031207d207d2c0a20205d2c0a7d207d293b0a"
+    },
+    "install.txt": {
+      "sha256": "5be0d8853cecefe070626a0312f4fd08f07ade6708feac44b7ef18dc08e8deaa",
+      "bytes": 304,
+      "endsWithLF": true,
+      "tailHex": "732e6d650a0a616464656420313231207061636b6167657320696e203333730a"
+    },
+    "interruption.txt": {
+      "sha256": "476e1a08d7cb6976446b38441c005a41ab0b6665e76279d2b4078d4cb13a00d8",
+      "bytes": 653,
+      "endsWithLF": true,
+      "tailHex": "652e204e6f206661696c757265206279746573206e6f726d616c697a65642e0a"
+    },
+    "recover.py": {
+      "sha256": "cc166a875e3abd7dd4f8095112e7d13414bef9e2d5a8119e3807521cb7b4cb45",
+      "bytes": 1597,
+      "endsWithLF": true,
+      "tailHex": "3d322c20656e737572655f61736369693d46616c736529202b20275c6e27290a"
+    }
+  },
+  "pins": {
+    "vitest": {
+      "version": "3.2.4",
+      "resolved": "https://registry.npmjs.org/vitest/-/vitest-3.2.4.tgz",
+      "integrity": "sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==",
+      "license": "MIT"
+    },
+    "@vitest/coverage-v8": {
+      "version": "3.2.4",
+      "resolved": "https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-3.2.4.tgz",
+      "integrity": "sha512-EyF9SXU6kS5Ku/U82E259WSnvg6c8KTjppUncuNdm5QHpe17mwREHnjDzozC8x9MZ0xfBUFSaLkRv4TMA75ALQ==",
+      "license": "MIT"
+    }
+  },
+  "raw": {
+    "file": "R03-default-projects.txt",
+    "completeness": "unknown",
+    "termination": null,
+    "processEOF": null,
+    "observedArgv": null,
+    "observedEnvironment": null,
+    "observedPlatform": null,
+    "versionBanner": "3.2.4",
+    "boundary": "recipe merges stdout/stderr; executed boundary not authenticated"
+  },
+  "verification": "Existing files inventoried only; no native captures, filter runs, tests, typechecks or CI."
+}

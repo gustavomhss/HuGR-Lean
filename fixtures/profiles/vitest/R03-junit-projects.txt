@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="0.201607343">
+    <testsuite name="alpha.test.js" timestamp="2026-10-09T16:49:33.588Z" hostname="MacBook-Pro-de-Gustavo.local" tests="4" failures="0" errors="0" skipped="2" time="0.185623868">
+        <testcase classname="alpha.test.js" name="alpha suite café &gt; retry succeeds second attempt" time="0.174956825">
+            <system-out>
+R03_RETRY_ATTEMPT=1
+
+R03_RETRY_ATTEMPT=2
+
+            </system-out>
+        </testcase>
+        <testcase classname="alpha.test.js" name="alpha suite café &gt; stdout and stderr evidence" time="0.001681037">
+            <system-out>
+R03_STDOUT alpha café
+
+            </system-out>
+            <system-err>
+R03_STDERR alpha warning
+
+            </system-err>
+        </testcase>
+        <testcase classname="alpha.test.js" name="alpha suite café &gt; R03_SKIP unavailable service" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="alpha.test.js" name="alpha suite café &gt; R03_TODO future branch" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="beta.test.js" timestamp="2026-10-09T16:49:33.599Z" hostname="MacBook-Pro-de-Gustavo.local" tests="3" failures="0" errors="0" skipped="2" time="0.015983475">
+        <testcase classname="beta.test.js" name="beta suite &gt; beta passes" time="0.006021924">
+        </testcase>
+        <testcase classname="beta.test.js" name="beta suite &gt; R03_SKIP beta platform" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="beta.test.js" name="beta suite &gt; R03_FAILURE retry exhausted" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

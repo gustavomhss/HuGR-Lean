@@ -1,0 +1,24 @@
+
+ RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p
+
+stdout | alpha.test.js > alpha suite café > retry succeeds second attempt
+R03_RETRY_ATTEMPT=1
+
+stdout | alpha.test.js > alpha suite café > retry succeeds second attempt
+R03_RETRY_ATTEMPT=2
+
+stdout | alpha.test.js > alpha suite café > stdout and stderr evidence
+R03_STDOUT alpha café
+
+stderr | alpha.test.js > alpha suite café > stdout and stderr evidence
+R03_STDERR alpha warning
+
+ ✓ |alpha| alpha.test.js (4 tests | 2 skipped) 154ms
+ ✓ |beta| beta.test.js (3 tests | 2 skipped) 10ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed | 3 skipped | 1 todo (7)
+   Start at  16:49:37
+   Duration  7.82s (transform 100ms, setup 0ms, collect 155ms, tests 164ms, environment 16ms, prepare 2.68s)
+
+{"numTotalTestSuites":4,"numPassedTestSuites":4,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":7,"numPassedTests":3,"numFailedTests":0,"numPendingTests":3,"numTodoTests":1,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1791564577858,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["alpha suite café"],"fullName":"alpha suite café retry succeeds second attempt","status":"passed","title":"retry succeeds second attempt","duration":135.57345499999974,"failureMessages":["AssertionError: expected 1 to be 2 // Object.is equality\n    at /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/alpha.test.js:8:22\n    at file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"],"meta":{}},{"ancestorTitles":["alpha suite café"],"fullName":"alpha suite café stdout and stderr evidence","status":"passed","title":"stdout and stderr evidence","duration":7.855829999999969,"failureMessages":[],"meta":{}},{"ancestorTitles":["alpha suite café"],"fullName":"alpha suite café R03_SKIP unavailable service","status":"skipped","title":"R03_SKIP unavailable service","failureMessages":[],"meta":{}},{"ancestorTitles":["alpha suite café"],"fullName":"alpha suite café R03_TODO future branch","status":"todo","title":"R03_TODO future branch","failureMessages":[],"meta":{}}],"startTime":1791564581433,"endTime":1791564581576.8557,"status":"passed","message":"","name":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/alpha.test.js"},{"assertionResults":[{"ancestorTitles":["beta suite"],"fullName":"beta suite beta passes","status":"passed","title":"beta passes","duration":4.803880999999819,"failureMessages":[],"meta":{}},{"ancestorTitles":["beta suite"],"fullName":"beta suite R03_SKIP beta platform","status":"skipped","title":"R03_SKIP beta platform","failureMessages":[],"meta":{}},{"ancestorTitles":["beta suite"],"fullName":"beta suite R03_FAILURE retry exhausted","status":"skipped","title":"R03_FAILURE retry exhausted","failureMessages":[],"meta":{}}],"startTime":1791564585531,"endTime":1791564585535.804,"status":"passed","message":"","name":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/beta.test.js"}]}
