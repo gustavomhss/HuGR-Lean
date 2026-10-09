@@ -1,12 +1,31 @@
 # C05 local native source record
 
+## Human-approved capture-only normalization (2026-10-09)
+
+Independent audit accepted native evidence. Human approved exact ambiguous Cargo doc output
+under bounded capture-only scope, with zero savings; this is not a waiver of reduction proof.
+Reader transport now uses per-case `cargo-doc-<id>` name, `cargo-doc` family, native Cargo
+version/platform strings, `file` from `outputFile`, `status: passthrough`, and `provenance.sha256`
+from `rawSHA256`. `record: SOURCES.md`, recipe/hash and completed-stream binding are retained.
+Current expected fields are omitted so raw identity is expected; all 15 historical expected.txt
+paths are strings in top-level `archives`. Raw/project/recipe/archive bytes, argv, command, exits,
+timings, cwd, cache/target metadata and artifact records are unchanged from `42f799f`.
+Only fixtures are offered for lead import; earlier source/test commits are outside this handoff.
+
+Genuine gaps remain: native Checking, nonhost cross-target, no-offline invocation, user Cargo
+configuration coverage/isolation, and native fully progress-shaped stdout collision. Existing
+synthetic collision tests and opaque-log capture do not substitute for that native witness.
+
+## Historical cold-review correction
+
 Cold-review correction (2026-10-09): this record authenticates capture bytes and recipe provenance,
 not the producer of each merged-stream row. Grammar and artifact agreement cannot authenticate
 Cargo progress against user/build-script collisions. Former reduction proposals in expected.txt
-are rejected historical artifacts; cases.json now uses raw native.txt identity expectations for those
+are rejected historical artifacts; cases.json uses raw native.txt identity expectations for all
 cases. No recapture, recipe changes, or raw hash changes. New counterexamples live in tests and are
 synthetic edits/prefixes of these captures, not additional native witnesses. Diagnostic ASCII column
-alignment only; --bins target/artifact binding unproven. Reduction support remains blocked.
+alignment only; --bins target/artifact binding unproven. Reduction proof remains unavailable;
+the later human scope decision above accepts capture-only exact output.
 
 Baseline: `07ffe15` (campaign scaffold). Author: C05 capture agent. License: repository MIT.
 All Rust material and capture recipes were authored locally; no donor material was copied.

@@ -1,6 +1,36 @@
 # C05 bounded cargo-doc verification receipt
 
-## Cold-review correction (supersedes historical receipt below)
+## Recovery: human-approved capture-only normalization (2026-10-09)
+
+Recovery baseline: `42f799f2a31818cc9c4cff397dffd2a0c921922d`; existing branch
+`campaign/native-v2/C05`, PR https://github.com/gustavomhss/HuGR-Lean/pull/92,
+base `campaign/native-integration`. Prior pending cases.json normalization was preserved
+and completed. Ownership is cases.json, CASES.md, SOURCES.md and this receipt only.
+
+Human approved exact ambiguous Cargo doc output under bounded capture-only scope.
+Independent native evidence audit was already accepted. Reader metadata normalization adds
+globally unique names, family, string native version/platform, file and passthrough status;
+raw SHA moves to provenance.sha256 with local source record and recipe binding retained.
+Expected fields are omitted for raw identity; top-level archives retains all 15 expected.txt paths.
+Corpus remains 11,215 UTF-8 bytes in/out, zero savings. No runtime no-op is introduced.
+Lead imports these four fixture files only, not source/test from earlier branch history.
+
+Narrow verification completed against `42f799f`: all 15 raw SHA/UTF-8 lengths matched;
+all five recipe SHA bindings matched; all 43 tracked non-owned fixture files were byte-identical
+(raw streams, project sources, recipes and archived proposals). Every case matched the exact
+baseline record after only the declared reader-field normalization. Top-level native facts matched.
+All 15 archive paths matched case IDs; all 15 names were unique across fixture cases.json manifests.
+In-memory appended-byte SHA and changed-exit controls rejected corruption for all 15 cases;
+originals remained untouched. Total checked raw bytes: 11,215; removable bytes: zero.
+No full tests, typecheck, CI run or CI dispatch is authorized for fixture-only recovery.
+Historical runtime test receipts below were not rerun and do not verify normalized reader transport.
+
+Genuine gaps: native Checking; nonhost cross-target; no-offline invocation; user configuration
+coverage/isolation; native fully progress-shaped stdout collision. Human scope approval accepts
+capture-only exact output, not a fake waiver closing those gaps. Reduction producer authentication
+and --bins target/artifact binding remain unproved. Stop for lead fixture review; never merge.
+
+## Historical cold-review correction (supersedes historical author receipt)
 
 Checkpoint reviewed: `32c4ecf5c65ed2de09c48150b9673cde67c91f2b`.
 Current public disposition: every capture exact. Unsafe leading progress deletion removed;
@@ -8,8 +38,9 @@ all validated rows are required. Compiling/Checking prefixes and matching Docume
 collisions retain output. Diagnostic matching uses exact ASCII native-column slice; unsupported
 non-ASCII/tab alignment refuses. --bins refuses until independently bound to targets/artifacts.
 Grammar authenticates structure only, never producer identity. Captured artifact hashes cannot
-establish runtime per-row producer boundary. C05 reduction requirement remains BLOCKED pending
-human scope decision or genuine producer boundary. No boundary was invented.
+establish runtime per-row producer boundary. At that checkpoint C05 reduction remained BLOCKED
+pending human scope decision or genuine producer boundary. Capture-only scope was later approved
+as recorded above; no boundary was invented.
 
 Current corpus expectation: 11,215 UTF-8 bytes in and out, zero removable bytes. Historical 2,661-byte
 reduction below is withdrawn. cases.json references raw identity expectations for formerly reduced

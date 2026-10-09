@@ -1,13 +1,18 @@
-# C05 cargo-doc: reduction blocked by unauthenticated producers
+# C05 cargo-doc: human-approved bounded capture-only corpus
 
-Flat `cases.json`: `hugr-lean/native-cases/1`. All cases have actual argv, standard
-Observation metadata, native input/hash, identity expectation and completed-stream provenance.
-Each row names native input and current expectedProposalFile; stable test prefix is `C05 <id>`.
-Public-filter disposition is checked through custom `familyProfiles`, without shared registry edits.
-Current dispositions below supersede prior reduction proposals. Native corpus tests use
-`C05 <id> independent public custom-filter golden`. For formerly reduced cases, expectedProposalFile
-now points to native.txt: identity preservation is the oracle. Their old expected.txt files remain
-historical rejected proposals, not current goldens or reduction proof.
+Flat `cases.json`: `hugr-lean/native-cases/1`. Native evidence was independently audited;
+this recovery normalizes reader transport only. Each case has globally unique `cargo-doc-<id>`
+name, family `cargo-doc`, string Cargo version/platform copied from native facts, `file` copied
+from original `outputFile`, and `status: passthrough`. `provenance.sha256` copies original
+`rawSHA256`; local `SOURCES.md` record, recipe binding and completed-stream flag remain intact.
+Actual argv, command, exits, capture metadata and artifacts remain unchanged.
+No current expected fields are present: raw input itself is the exact identity expectation.
+Top-level `archives` lists all 15 unchanged `<id>/expected.txt` historical proposals;
+these are not current goldens or reduction proof.
+
+Human approved exact preservation of ambiguous Cargo doc output as a bounded capture-only
+scope decision. This corpus claims zero savings, not a reduction waiver or runtime no-op profile.
+Lead imports fixtures only; source/test from earlier branch commits are not part of this handoff.
 
 | Mandatory case ID | Required variant/combination | Proposed disposition | Removable UTF-8 bytes |
 | --- | --- | --- | ---: |
@@ -27,13 +32,12 @@ historical rejected proposals, not current goldens or reduction proof.
 | three-warning | three packages + features + serial jobs; post-warning progress; plural artifacts | exact/unsafe ambiguous | 0 |
 | profile-path | generic custom profile + manifest path + package + target + features | exact/unsafe ambiguous | 0 |
 
-## Current retention policy
+## Preservation boundary
 
 Every `Compiling`, `Checking`, and `Documenting` row is retained, including unrelated leading
 `   Compiling user-log v9.9.9 (/tmp/unrelated)`. Artifact agreement cannot prove producer identity.
-Validated non-bin output returns a whole-output required source span; core rejects equal-size
-replacement. Unknown output refuses parsing. All --bins output refuses parsing until target/artifact
-binding is corroborated independently of fixture names. No safe deletion is proved here.
+Raw identity is required for every case, including failed syntax and unbound --bins artifacts.
+No safe deletion is proved here.
 No generic warning summarization, deduplication, count/path/timing replacement or prose-sniffing.
 
 Require complete native grammar first: observed progress contains package/version/path;
@@ -48,18 +52,23 @@ Generated count is corroborated by recorded actual crate-root artifact hashes; p
 Diagnostic item must equal ASCII snippet slice at native column/caret, not appear elsewhere.
 Non-ASCII snippet/item and tab alignment are unsupported and refuse parsing. Unicode paths remain supported.
 
-## Blockers / lead handoff
+## Genuine gaps / lead handoff
 
-- Shared registry and corpus-reader integration remain lead-owned. Custom-profile implementation
-  has native preservation witnesses; no reduction, installed/default-registry or campaign-completion claim.
+- Shared registry and corpus-reader integration remain lead-owned. This fixture-only handoff
+  claims native capture preservation, not reduction, installed routing or campaign completion.
 - No `Checking` line was produced by these dependency-free Cargo 1.98 captures. Its syntax is
   retained in synthetic counterexamples, not native reduction support. Plural artifact spelling has the three-package witness.
 - Cold-review protecting names: `C05 progress producer collisions preserve unrelated prefix and matched Documenting`,
   `C05 diagnostic exact native column refuses displaced item and unsupported alignment`, and
   `C05 bins unbound artifacts refuse entire output without fixture hardcodes`.
   These are synthetic counterexamples derived from pinned native streams, not new native captures.
-- Native producer identity cannot be inferred from progress text. Unknown/colliding logs stay
-  exact. Missing authenticated producer boundary blocks mandatory reduction; human scope decision required.
+- Native producer identity cannot be inferred from progress text. Human scope decision accepts
+  exact output for this bounded corpus; authenticated producer boundaries remain a genuine gap.
+- Explicit targets are host `x86_64-apple-darwin` only: no nonhost cross-target witness.
+  All native commands use --offline: no no-offline witness. Inherited user Cargo configuration
+  is not isolated or independently covered. Native fully progress-shaped stdout collision is
+  not captured; synthetic collision counterexamples do not fill that gap. The opaque-log capture
+  is native but does not prove that fully progress-shaped stdout case.
 - Accepted argv: direct cargo doc; optional --offline; --no-deps/--workspace/--bins/private-items;
   -p/--features/--target/--profile/--manifest-path/--jobs with generic syntax-checked values.
   Duplicate/unknown flags, package+workspace, errors, new warning forms, C0/C1/Cf, partial outputs,
@@ -67,8 +76,8 @@ Non-ASCII snippet/item and tab alignment are unsupported and refuse parsing. Uni
   unoptimized+debuginfo seconds finish grammar is admitted; release/minutes/JSON remain exact.
   Presentation must be unknown as captured; rendered input is refused because core normalization
   can erase controls before the profile sees the output.
-- Checks authorized here: owned focused test, typecheck, tiny native captures and fixture inspection.
-  No full tests/build/check/smoke/benchmark or CI dispatch. Lead review required; never merge.
+- Recovery checks: narrow raw hashes, recipe/project/archive byte preservation and capture metadata.
+  No tests/typecheck/CI dispatch for this fixture-only normalization. Lead review required; never merge.
 
 Current corpus savings: 11,215 input/output UTF-8 bytes, 0 removable bytes. Prior 2,661-byte
 claim depended on unsafe deletion and is withdrawn. Captures and raw hashes are unchanged.
