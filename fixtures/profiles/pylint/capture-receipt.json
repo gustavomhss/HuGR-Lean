@@ -1,0 +1,1868 @@
+{
+  "schema": "hugr-lean/pylint-capture/1",
+  "baseline": "71bcaea2d5f0bf72e9128ebf80517ad1099f6cdd",
+  "recipe": {
+    "path": "capture.py",
+    "sha256": "982f0887fe959287b8e55ebb588762f8347e5c173fe398499d22370ee075d525"
+  },
+  "python": {
+    "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+    "resolved": "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "sha256": "4ce18cb186d0df2a429cc82827111f59798f3a6f3042420a0290ab87676910ad",
+    "version": "Python 3.14.5"
+  },
+  "installation": {
+    "report": "install-report.json",
+    "sha256": "2961a9d893cef95d3d2f5ef24c39451c2fdd47cb142afa558db19e44cd2af84e",
+    "versions": {
+      "pylint": "4.0.4",
+      "astroid": "4.0.4",
+      "isort": "7.0.0",
+      "mccabe": "0.7.0",
+      "dill": "0.4.1",
+      "platformdirs": "4.12.4",
+      "tomlkit": "0.15.1"
+    },
+    "wheelIdentity": "pip report download_info URLs and SHA-256; isolated venv only"
+  },
+  "producerSource": {
+    "repository": "https://github.com/pylint-dev/pylint",
+    "commit": "e16f942166511d6fb4427e503a734152fae0c4fe",
+    "tag": "v4.0.4",
+    "license": "GPL-2.0-or-later",
+    "licensePath": "LICENSE",
+    "licenseURL": "https://raw.githubusercontent.com/pylint-dev/pylint/e16f942166511d6fb4427e503a734152fae0c4fe/LICENSE",
+    "licenseFile": "LICENSE.pylint.txt",
+    "sha256": "f97b14080de8b8490d60eb3d620ebc419943e0779466d1dd0d5d6f68fe195dcd",
+    "modifications": "License copied verbatim. No runtime donor code copied. Original fixture inputs and recipe under repository MIT.",
+    "reach": "Tag resolves to commit; installed PyPI wheel pinned by report hash. Wheel-to-source build correspondence not independently attested."
+  },
+  "inputs": [
+    {
+      "path": "inputs/bad.toml",
+      "bytes": 33,
+      "sha256": "c633f708c27fa1fc311fa59ed413ade2d63c04bac8c5c20ae4fc406ca9216b33"
+    },
+    {
+      "path": "inputs/clean.py",
+      "bytes": 108,
+      "sha256": "2b1cf46c9960ffc3c2bdad494b0d85f1a2b202113aa86299ebbc68ae09042c76"
+    },
+    {
+      "path": "inputs/collision_plugin.py",
+      "bytes": 425,
+      "sha256": "e167ce99b59cfb0f6517dfbdb433c8537cb7f53a3e40b2569e537c560d1c9703"
+    },
+    {
+      "path": "inputs/empty.rc",
+      "bytes": 7,
+      "sha256": "a55e7c7f2834ec8597ab9ad17c74828c5b05cb14313f057ce981c1e35773e53f"
+    },
+    {
+      "path": "inputs/errors.py",
+      "bytes": 96,
+      "sha256": "64f5dae764e74289e07d53ed229a51a20126185e6ec0f6b7d46fdc308317d159"
+    },
+    {
+      "path": "inputs/good.rc",
+      "bytes": 57,
+      "sha256": "0429257590aa2244b68a25f8018aef7c341ae4ea22b5a74adc02c7070f019e5f"
+    },
+    {
+      "path": "inputs/space café/naïve.py",
+      "bytes": 155,
+      "sha256": "3b6d0e1029ee664fa566046de759341f3f03949925c2efaae3fe7ae92813be9c"
+    },
+    {
+      "path": "inputs/syntax.py",
+      "bytes": 44,
+      "sha256": "aa8e3b7868331abb97c4f8d8116f7fd5fb7c932fb800a8de6653327eca923052"
+    },
+    {
+      "path": "inputs/warning_case.py",
+      "bytes": 118,
+      "sha256": "56c6e52de991f84d4afe116f2cdcfdefa99e529617a359ce097b90f65e049188"
+    }
+  ],
+  "cases": [
+    {
+      "name": "L06-version",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--version"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 105,
+        "sha256": "891c2786c2bdccaff1d4b585acf1fb3b1d9c32a0412d9d64ddbfc8a6874fde29",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c616e672031372e302e302028636c616e672d313730302e362e342e32295d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:34.996384+00:00",
+      "completedAt": "2026-10-09T14:47:35.361341+00:00"
+    },
+    {
+      "name": "L06-help",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--help"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 37849,
+        "sha256": "1c55b22cffc3f3c981df8190a6877a3602ac309f6a087a26843922c4f6c5efd3",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "206f6e657320617265206578656d70742e202864656661756c743a202d31290a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:35.361447+00:00",
+      "completedAt": "2026-10-09T14:47:35.807306+00:00"
+    },
+    {
+      "name": "L06-native-clean",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 76,
+        "sha256": "bbb6ffa7d7107b760478161908c009d3b85b078b80d54e3ad8dcd57bfe91a142",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:35.807498+00:00",
+      "completedAt": "2026-10-09T14:47:36.544462+00:00"
+    },
+    {
+      "name": "L06-native-errors",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "errors.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 181,
+        "sha256": "27876b9b37b607b266c8f8b89f1f43c152c436b16f2cf358c4b41422a45eb04a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:36.544555+00:00",
+      "completedAt": "2026-10-09T14:47:37.332304+00:00"
+    },
+    {
+      "name": "L06-native-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 242,
+        "sha256": "b062c157b0f5540d60626864d83ee0d0751d9fd55f287736aeccb3d261088338",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420332e33332f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:37.332390+00:00",
+      "completedAt": "2026-10-09T14:47:38.078977+00:00"
+    },
+    {
+      "name": "L06-native-multifile",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 349,
+        "sha256": "ed52f8a0cb520b5227a64dd6a284fb2e8d4883e3bb25c64014f8f1dbc25bdbd5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:38.079067+00:00",
+      "completedAt": "2026-10-09T14:47:38.895990+00:00"
+    },
+    {
+      "name": "L06-native-unicode-space",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "space café/naïve.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 302,
+        "sha256": "68a5ad17a3beaf89f5e8beff27f599a6e5fb0113464c9a74ae1fa7a147b6cb42",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:38.896069+00:00",
+      "completedAt": "2026-10-09T14:47:39.766187+00:00"
+    },
+    {
+      "name": "L06-native-syntax",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "syntax.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 116,
+        "sha256": "4d665da93303b25bb3334f7479896fd802061975f1cb1e47e579e9d4f41046fa",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "73796e7461782c206c696e6520322927202873796e7461782d6572726f72290a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:39.766273+00:00",
+      "completedAt": "2026-10-09T14:47:40.439330+00:00"
+    },
+    {
+      "name": "L06-native-missing-file",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "missing.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 90,
+        "sha256": "855a085761abe94d9cf055f37218646a83443cb3ba1ae42efd207ab625c86f5e",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d6f64756c65206e616d6564206d697373696e672e70792028666174616c290a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:40.439418+00:00",
+      "completedAt": "2026-10-09T14:47:40.845949+00:00"
+    },
+    {
+      "name": "L06-score-disabled",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--score=no",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 168,
+        "sha256": "b7514e01cbca593c639e177f1fd7a342ad4bb4bcbf00c825fdbc3ec5f2f648fa",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "73656420696d706f7274206d6174682028756e757365642d696d706f7274290a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:40.846029+00:00",
+      "completedAt": "2026-10-09T14:47:41.593713+00:00"
+    },
+    {
+      "name": "L06-reports-clean",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--reports=yes",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 2561,
+        "sha256": "72f87846389b84f29831c921fc2522c49e79c4349c537af4847ed413b009ba31",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:41.593794+00:00",
+      "completedAt": "2026-10-09T14:47:42.279074+00:00"
+    },
+    {
+      "name": "L06-reports-multifile",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--reports=yes",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 3518,
+        "sha256": "c4bfbbfa4cd3ced3bbc0ea2f0baefb943eddbc952622522c5993d3fe356f90f4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:42.279176+00:00",
+      "completedAt": "2026-10-09T14:47:42.975700+00:00"
+    },
+    {
+      "name": "L06-reports-exit-zero",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--reports=yes",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 3518,
+        "sha256": "c4bfbbfa4cd3ced3bbc0ea2f0baefb943eddbc952622522c5993d3fe356f90f4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:42.975807+00:00",
+      "completedAt": "2026-10-09T14:47:43.636804+00:00"
+    },
+    {
+      "name": "L06-config",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--rcfile=good.rc",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 76,
+        "sha256": "bbb6ffa7d7107b760478161908c009d3b85b078b80d54e3ad8dcd57bfe91a142",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:43.636913+00:00",
+      "completedAt": "2026-10-09T14:47:44.292170+00:00"
+    },
+    {
+      "name": "L06-config-fail",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--rcfile=bad.toml",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 257,
+        "sha256": "7f45eddbfbcc8b1ea7d2fcdaff2ce756266c63d507ef4d43785aad91b8cd3168",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:44.292259+00:00",
+      "completedAt": "2026-10-09T14:47:44.937244+00:00"
+    },
+    {
+      "name": "L06-config-missing",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--rcfile=missing.rc",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 32
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 42,
+        "sha256": "6f884b14c49c613564942ca00092348a81fb8d7af9ad3ff567886083cbc1894a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2066696c65206d697373696e672e726320646f65736e2774206578697374210a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:44.937341+00:00",
+      "completedAt": "2026-10-09T14:47:45.342726+00:00"
+    },
+    {
+      "name": "L06-invalid-format",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=missing",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 6275,
+        "sha256": "5c570343fd10d40a330f7672a641a4dd8355357d0d422644a118ccb73d671874",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "732e496e76616c69645265706f727465724572726f723a206d697373696e670a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:45.342806+00:00",
+      "completedAt": "2026-10-09T14:47:45.755746+00:00"
+    },
+    {
+      "name": "L06-native-exit-zero",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 349,
+        "sha256": "ed52f8a0cb520b5227a64dd6a284fb2e8d4883e3bb25c64014f8f1dbc25bdbd5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f646520686173206265656e20726174656420617420302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:45.755849+00:00",
+      "completedAt": "2026-10-09T14:47:46.447891+00:00"
+    },
+    {
+      "name": "L06-plugin-native",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--load-plugins=collision_plugin",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 267,
+        "sha256": "0ed276dddd6c15173b3bf06fd8f59250fc513eeff282f05d45d88289e856d659",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:46.447973+00:00",
+      "completedAt": "2026-10-09T14:47:47.101745+00:00"
+    },
+    {
+      "name": "L06-plugin-native-exit-zero",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--load-plugins=collision_plugin",
+        "--exit-zero",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 267,
+        "sha256": "0ed276dddd6c15173b3bf06fd8f59250fc513eeff282f05d45d88289e856d659",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:47.101843+00:00",
+      "completedAt": "2026-10-09T14:47:47.775821+00:00"
+    },
+    {
+      "name": "L06-plugin-missing",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--load-plugins=missing_plugin",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 300,
+        "sha256": "c43b2c0aa70c9fcc5b66620d37ae0a43f653359316a7947bb320b4a30928b782",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f646520686173206265656e2072617465642061742031302e30302f31300a0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:47.775913+00:00",
+      "completedAt": "2026-10-09T14:47:48.514446+00:00"
+    },
+    {
+      "name": "L06-json-clean",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "5b5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:48.514546+00:00",
+      "completedAt": "2026-10-09T14:47:49.187582+00:00"
+    },
+    {
+      "name": "L06-json-errors",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "errors.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 338,
+        "sha256": "30d32c3aac78ebdf6841703215364019b40dc21d53b2ddc64c99477a45f925d6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20224530363032220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:49.187771+00:00",
+      "completedAt": "2026-10-09T14:47:49.857808+00:00"
+    },
+    {
+      "name": "L06-json-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 668,
+        "sha256": "2008f49c315b5393743de8e86795a9626d0b79126828345fb05caf0376d0aa59",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20225730363131220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:49.857908+00:00",
+      "completedAt": "2026-10-09T14:47:50.521022+00:00"
+    },
+    {
+      "name": "L06-json-multifile",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1003,
+        "sha256": "d8f68f078295501c6610239bb2e1c00fc7bce12a3d84afaf3ee9b9aa5eb86d14",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20225730363131220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:50.521140+00:00",
+      "completedAt": "2026-10-09T14:47:51.211589+00:00"
+    },
+    {
+      "name": "L06-json-unicode-space",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "space café/naïve.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 753,
+        "sha256": "cc5e9113394585bda1cd0058b09eef328c15f96c4bd511a245091a69d7cc9c76",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20224530363032220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:51.211697+00:00",
+      "completedAt": "2026-10-09T14:47:51.879582+00:00"
+    },
+    {
+      "name": "L06-json-syntax",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "syntax.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 346,
+        "sha256": "da3f4f3192ef28afd4c9769509fe9eecad508f93ea887825cb8154f26ae02485",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20224530303031220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:51.879686+00:00",
+      "completedAt": "2026-10-09T14:47:52.581143+00:00"
+    },
+    {
+      "name": "L06-json-exit-zero",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1003,
+        "sha256": "d8f68f078295501c6610239bb2e1c00fc7bce12a3d84afaf3ee9b9aa5eb86d14",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20225730363131220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:52.581237+00:00",
+      "completedAt": "2026-10-09T14:47:53.360153+00:00"
+    },
+    {
+      "name": "L06-json-reports",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--reports=yes",
+        "--exit-zero",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 668,
+        "sha256": "2008f49c315b5393743de8e86795a9626d0b79126828345fb05caf0376d0aa59",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2020226d6573736167652d6964223a20225730363131220a202020207d0a5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:53.360778+00:00",
+      "completedAt": "2026-10-09T14:47:54.042451+00:00"
+    },
+    {
+      "name": "L06-json-config-fail",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--rcfile=bad.toml",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 184,
+        "sha256": "626246924e99a2132c1adf629f19e23d917f32a577c4d849aa1ef32fb953614d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "756d6e203138292028636f6e6669672d70617273652d6572726f72290a5b5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:54.042982+00:00",
+      "completedAt": "2026-10-09T14:47:54.734377+00:00"
+    },
+    {
+      "name": "L06-json-plugin",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--load-plugins=collision_plugin",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 194,
+        "sha256": "e82cefc4bc9634403b33d85f34d9613101bc74e6250866564bf44e23d936751b",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6173206265656e2072617465642061742031302e30302f31300a5b5d0a5b5d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:54.734477+00:00",
+      "completedAt": "2026-10-09T14:47:55.426028+00:00"
+    },
+    {
+      "name": "L06-json2-clean",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 293,
+        "sha256": "7cd22b8ab04dcb12131fec977ed97fe8c9655e7db7d0d1beef8982cf02f9031f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2c0a20202020202020202273636f7265223a2031302e300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:55.426132+00:00",
+      "completedAt": "2026-10-09T14:47:56.101790+00:00"
+    },
+    {
+      "name": "L06-json2-errors",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "errors.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 854,
+        "sha256": "bdc30698579df6676d110c0dd73e7345d2cb1324eab1c2447c69d68713d228bd",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20342c0a20202020202020202273636f7265223a20300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:56.102349+00:00",
+      "completedAt": "2026-10-09T14:47:56.799410+00:00"
+    },
+    {
+      "name": "L06-json2-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1432,
+        "sha256": "47ca384d04bcabcdd3527980c061cdb4608b8eb9a6ab71760e17c7900f1f95c5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f7265223a20332e3333333333333333333333333333340a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:56.799507+00:00",
+      "completedAt": "2026-10-09T14:47:57.542590+00:00"
+    },
+    {
+      "name": "L06-json2-multifile",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1976,
+        "sha256": "550a8c1cc2e669f19671e687aa7a47e89409e635755c1d25a856bc65bd2b9868",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20352c0a20202020202020202273636f7265223a20300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:57.542691+00:00",
+      "completedAt": "2026-10-09T14:47:58.222671+00:00"
+    },
+    {
+      "name": "L06-json2-unicode-space",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "space café/naïve.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1529,
+        "sha256": "67470f394df02307a17241eceff6d039b6d54d9a543e14838a6a779e3f31f7d1",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20342c0a20202020202020202273636f7265223a20300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:58.222794+00:00",
+      "completedAt": "2026-10-09T14:47:58.956180+00:00"
+    },
+    {
+      "name": "L06-json2-syntax",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "syntax.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 763,
+        "sha256": "e6d4efac9a711caebd2a52f6c0537e7e9250cf373b0a856ccb0893436a4661e8",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20342c0a20202020202020202273636f7265223a20300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:58.956303+00:00",
+      "completedAt": "2026-10-09T14:47:59.871664+00:00"
+    },
+    {
+      "name": "L06-json2-exit-zero",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1976,
+        "sha256": "550a8c1cc2e669f19671e687aa7a47e89409e635755c1d25a856bc65bd2b9868",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20352c0a20202020202020202273636f7265223a20300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:47:59.871807+00:00",
+      "completedAt": "2026-10-09T14:48:00.678706+00:00"
+    },
+    {
+      "name": "L06-json2-reports",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--reports=yes",
+        "--exit-zero",
+        "warning_case.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1432,
+        "sha256": "47ca384d04bcabcdd3527980c061cdb4608b8eb9a6ab71760e17c7900f1f95c5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f7265223a20332e3333333333333333333333333333340a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:48:00.679373+00:00",
+      "completedAt": "2026-10-09T14:48:01.464761+00:00"
+    },
+    {
+      "name": "L06-json2-config-fail",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--rcfile=bad.toml",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 474,
+        "sha256": "a259529fa1db9c28633087932fb0d4cd75497bbaf4dd85f655a6663970d7851d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2c0a20202020202020202273636f7265223a2031302e300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:48:01.465372+00:00",
+      "completedAt": "2026-10-09T14:48:02.226040+00:00"
+    },
+    {
+      "name": "L06-json2-plugin",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--load-plugins=collision_plugin",
+        "clean.py"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin:/usr/bin:/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home",
+        "PYTHONPATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/project",
+        "PYLINTHOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-j6hb1p3c/home/pylint",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 484,
+        "sha256": "303c684eb6701e3c95fed60d9854b11d34d2c0a8c0fde84b61a4a30fad1d6b4a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2c0a20202020202020202273636f7265223a2031302e300a202020207d0a7d0a",
+        "merge": "stderr=STDOUT before exec; one binary pipe; communicate through EOF then wait; no PTY/normalization/truncation"
+      },
+      "startedAt": "2026-10-09T14:48:02.226165+00:00",
+      "completedAt": "2026-10-09T14:48:03.007702+00:00"
+    }
+  ],
+  "candidates": [
+    {
+      "case": "L06-json-exit-zero",
+      "file": "L06-json-exit-zero.candidate.txt",
+      "status": "unapproved",
+      "bytes": 642,
+      "savedBytes": 361,
+      "sha256": "d285167a545eb2047433f922c33d345b62bf982527aaf94b283064b24564b3a0",
+      "method": "lexical JSON whitespace only; every token spelling/order and exact trailing whitespace retained"
+    },
+    {
+      "case": "L06-json-reports",
+      "file": "L06-json-reports.candidate.txt",
+      "status": "unapproved",
+      "bytes": 427,
+      "savedBytes": 241,
+      "sha256": "4f8197413807920ec53abdd691cf6d1f5557d20eaceeaa25c86a0a6664f9f4e1",
+      "method": "lexical JSON whitespace only; every token spelling/order and exact trailing whitespace retained"
+    },
+    {
+      "case": "L06-json2-clean",
+      "file": "L06-json2-clean.candidate.txt",
+      "status": "unapproved",
+      "bytes": 152,
+      "savedBytes": 141,
+      "sha256": "0e4eafae9b78fbe7677d9149a9d04da29c8ab46665d5119deed3ad61af02cd76",
+      "method": "lexical JSON whitespace only; every token spelling/order and exact trailing whitespace retained"
+    },
+    {
+      "case": "L06-json2-exit-zero",
+      "file": "L06-json2-exit-zero.candidate.txt",
+      "status": "unapproved",
+      "bytes": 1230,
+      "savedBytes": 746,
+      "sha256": "a02ddccfbe3d541ac26e624bd263bf064c2393a1a5834ba9271f84a380cd00a9",
+      "method": "lexical JSON whitespace only; every token spelling/order and exact trailing whitespace retained"
+    },
+    {
+      "case": "L06-json2-reports",
+      "file": "L06-json2-reports.candidate.txt",
+      "status": "unapproved",
+      "bytes": 886,
+      "savedBytes": 546,
+      "sha256": "a5930974d2d4eda3ac8395bb2ecf262359fba2df7fa5ad7b605c9b9060d90d00",
+      "method": "lexical JSON whitespace only; every token spelling/order and exact trailing whitespace retained"
+    }
+  ],
+  "layoutPositiveControl": {
+    "inputHex": "207b20227822203a20226b6565702020737061636573205c22222c20226e223a2031652b3032207d0a0a",
+    "outputHex": "7b2278223a226b6565702020737061636573205c22222c226e223a31652b30327d0a0a",
+    "savedBytes": 7
+  }
+}

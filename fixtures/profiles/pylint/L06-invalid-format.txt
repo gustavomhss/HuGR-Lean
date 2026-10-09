@@ -1,0 +1,78 @@
+Traceback (most recent call last):
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/pylinter.py", line 464, in _load_reporter_by_name
+    reporter_class = _load_reporter_by_class(reporter_name)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/pylinter.py", line 92, in _load_reporter_by_class
+    module_part = astroid.modutils.get_module_part(qname)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/modutils.py", line 435, in get_module_part
+    file_from_modpath(
+    ~~~~~~~~~~~~~~~~~^
+        parts[starti : i + 1], path=path, context_file=context_file
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/modutils.py", line 330, in file_from_modpath
+    return file_info_from_modpath(modpath, path, context_file).location
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/modutils.py", line 381, in file_info_from_modpath
+    return _spec_from_modpath(modpath, path, context)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/modutils.py", line 643, in _spec_from_modpath
+    found_spec = spec.find_spec(modpath, path)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/interpreter/_import/spec.py", line 458, in find_spec
+    return _find_spec(tuple(modpath), tuple(path) if path else None)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/interpreter/_import/spec.py", line 480, in _find_spec
+    finder, spec = _find_spec_with_path(
+                   ~~~~~~~~~~~~~~~~~~~~^
+        _path, modname, module_path, tuple(processed), submodule_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/interpreter/_import/spec.py", line 438, in _find_spec_with_path
+    raise ImportError(f"No module named {'.'.join(module_parts)}")
+ImportError: No module named missing
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/__main__.py", line 10, in <module>
+    pylint.run_pylint()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/__init__.py", line 34, in run_pylint
+    PylintRun(argv or sys.argv[1:])
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/run.py", line 186, in __init__
+    args = _config_initialization(
+        linter, args, reporter, config_file=self._rcfile, verbose_mode=self.verbose
+    )
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/config/config_initialization.py", line 84, in _config_initialization
+    parsed_args_list = linter._parse_command_line_configuration(args_list)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/config/arguments_manager.py", line 230, in _parse_command_line_configuration
+    self.config, parsed_args = self._arg_parser.parse_known_args(
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        arguments, self.config
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/argparse.py", line 2015, in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/argparse.py", line 2044, in _parse_known_args2
+    namespace, args = self._parse_known_args(args, namespace, intermixed)
+                      ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/argparse.py", line 2295, in _parse_known_args
+    start_index = consume_optional(start_index)
+  File "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/argparse.py", line 2219, in consume_optional
+    take_action(action, args, option_string)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/argparse.py", line 2120, in take_action
+    action(self, namespace, argument_values, option_string)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/config/callback_actions.py", line 425, in __call__
+    self.linter._load_reporters(values[0])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/pylinter.py", line 436, in _load_reporters
+    reporter = self._load_reporter_by_name(reporter_name)
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/pylinter.py", line 466, in _load_reporter_by_name
+    raise exceptions.InvalidReporterError(name) from e
+pylint.exceptions.InvalidReporterError: missing

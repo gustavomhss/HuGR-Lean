@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/__main__.py", line 10, in <module>
+    pylint.run_pylint()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/__init__.py", line 31, in run_pylint
+    from pylint.lint import Run as PylintRun
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/__init__.py", line 20, in <module>
+    from pylint.lint.caching import load_results, save_results
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/lint/caching.py", line 12, in <module>
+    from pylint.constants import PYLINT_HOME
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/pylint/constants.py", line 11, in <module>
+    import astroid
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/__init__.py", line 35, in <module>
+    from astroid.nodes import node_classes, scoped_nodes
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/nodes/__init__.py", line 14, in <module>
+    from astroid.nodes.node_classes import (
+    ...<81 lines>...
+    )
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/nodes/node_classes.py", line 20, in <module>
+    from astroid import decorators, protocols, util
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/decorators.py", line 102, in <module>
+    if util.check_warnings_filter():  # noqa: C901
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/lib/python3.14/site-packages/astroid/util.py", line 133, in check_warnings_filter
+    for filter in warnings.filters
+                  ^^^^^^^^^^^^^^^^
+AttributeError: module 'warnings' has no attribute 'filters'

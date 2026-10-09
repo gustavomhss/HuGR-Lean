@@ -1,0 +1,7 @@
+************* Module clean
+clean.py:1:0: W0611: Unused import math (unused-import)
+
+------------------------------------------------------------------
+Your code has been rated at 10.00/10
+[]
+[]

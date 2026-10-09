@@ -1,0 +1,15 @@
+{
+    "messages": [],
+    "statistics": {
+        "messageTypeCount": {
+            "fatal": 0,
+            "error": 0,
+            "warning": 0,
+            "refactor": 0,
+            "convention": 0,
+            "info": 0
+        },
+        "modulesLinted": 4,
+        "score": 10.0
+    }
+}

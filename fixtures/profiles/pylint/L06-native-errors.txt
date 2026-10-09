@@ -1,0 +1,6 @@
+************* Module errors
+errors.py:6:11: E0602: Undefined variable 'missing_value' (undefined-variable)
+
+-----------------------------------
+Your code has been rated at 0.00/10
+

@@ -1,0 +1,6 @@
+************* Module bad.toml
+bad.toml:1:0: F0011: error while parsing the configuration: Expected ']' at the end of a table declaration (at line 1, column 18) (config-parse-error)
+
+------------------------------------
+Your code has been rated at 10.00/10
+
