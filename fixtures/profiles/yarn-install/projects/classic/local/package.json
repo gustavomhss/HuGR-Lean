@@ -1,0 +1,9 @@
+{
+  "name": "p03-local",
+  "version": "1.0.0",
+  "license": "MIT",
+  "deprecated": "P03 local deprecation evidence",
+  "peerDependencies": {
+    "p03-missing-peer": "^2.0.0"
+  }
+}
