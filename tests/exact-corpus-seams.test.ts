@@ -100,6 +100,36 @@ test("exact seams tiny reader validates ledger subset uniqueness identity and di
     }
   });
 });
+test("native receipt EOF LF and byte-tail facts reject false declarations", async () => {
+  await tiny(async (directory, _index, manifest) => {
+    const entry = manifest.cases[0], raw = Buffer.from(entry.output, "utf8");
+    entry.provenance = { receipt: "receipt.json", case: "bound", sha256: entry.provenance.sha256 };
+    const boundary = { bytes: raw.length, sha256: entry.provenance.sha256, readThroughEOF: true,
+      finalLF: true, lastBytesHex: raw.toString("hex") };
+    const receipt = { cases: [{ name: "bound", command: entry.command, termination: entry.termination,
+      completeness: entry.completeness, presentation: entry.presentation, version: entry.version, boundary }] };
+    const commitReceipt = async () => writeFile(path.join(directory, "exact/receipt.json"), JSON.stringify(receipt));
+    await writeFile(path.join(directory, "exact/cases.json"), JSON.stringify(manifest));
+    await commitReceipt();
+    assert.equal((await readNativeCorpus(directory)).length, 1);
+    for (const [key, bad, error] of [
+      ["readThroughEOF", false, /receipt EOF not complete/],
+      ["finalLF", false, /receipt final LF mismatch/],
+      ["finalLF", "true", /invalid receipt final LF/],
+      ["lastBytesHex", "00", /receipt tail mismatch/],
+      ["lastBytesHex", "", /invalid receipt tail/],
+      ["lastBytesHex", "a", /invalid receipt tail/],
+    ] as const) {
+      const prior = (boundary as Record<string, unknown>)[key];
+      (boundary as Record<string, unknown>)[key] = bad;
+      await commitReceipt();
+      await assert.rejects(readNativeCorpus(directory), error);
+      (boundary as Record<string, unknown>)[key] = prior;
+    }
+    await commitReceipt();
+    assert.equal((await readNativeCorpus(directory)).length, 1);
+  });
+});
 
 test("exact seams deleting real ledger cannot silently ignore native extra families", async () => {
   const cases = await readNativeCorpus(path.join(root, "fixtures/profiles"));

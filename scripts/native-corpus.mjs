@@ -133,6 +133,19 @@ export async function readNativeCorpus(root) {
           assert.equal(fact.version, entry.version, `${label}: receipt version mismatch`);
           assert.equal(fact.boundary?.bytes, raw.length, `${label}: receipt bytes mismatch`);
           assert.equal(fact.boundary?.sha256, createHash("sha256").update(raw).digest("hex"), `${label}: receipt hash mismatch`);
+          if (Object.hasOwn(fact.boundary, "readThroughEOF")) {
+            assert.equal(fact.boundary.readThroughEOF, true, `${label}: receipt EOF not complete`);
+          }
+          if (Object.hasOwn(fact.boundary, "finalLF")) {
+            assert.equal(typeof fact.boundary.finalLF, "boolean", `${label}: invalid receipt final LF`);
+            assert.equal(fact.boundary.finalLF, raw.at(-1) === 10, `${label}: receipt final LF mismatch`);
+          }
+          if (Object.hasOwn(fact.boundary, "lastBytesHex")) {
+            const tail = fact.boundary.lastBytesHex;
+            assert.ok(typeof tail === "string" && /^(?:[a-f0-9]{2})*$/.test(tail) &&
+              tail.length <= raw.length * 2 && (raw.length === 0 || tail.length > 0), `${label}: invalid receipt tail`);
+            assert.equal(raw.subarray(raw.length - tail.length / 2).toString("hex"), tail, `${label}: receipt tail mismatch`);
+          }
         }
       }
       if (entry.provenance.sha256 !== undefined) {
