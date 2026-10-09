@@ -1,0 +1,18 @@
+{
+  "version": "3.6.2",
+  "gitHead": "ff85232a8bd71f1b337dd7fddf1c16c17c3c10be",
+  "license": "MIT",
+  "dist": {
+    "shasum": "ccda02a1003ebbb2bfda6f83a074978f608b9393",
+    "tarball": "https://registry.npmjs.org/prettier/-/prettier-3.6.2.tgz",
+    "fileCount": 56,
+    "integrity": "sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==",
+    "signatures": [
+      {
+        "sig": "MEYCIQDGWK2e8iKF9EzCZZYDfGEPW7s5LDjmc7AWYQ7rpbKXJwIhAOj0TJy0zn9eGr2rD2JebgVSixHz+LE9lkFdmN0tNeT6",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 8458264
+  }
+}

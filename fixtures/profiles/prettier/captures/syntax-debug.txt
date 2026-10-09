@@ -1,0 +1,4 @@
+[error] broken.js: SyntaxError: Unexpected token (1:16)
+[error] > 1 | const broken = ;
+[error]     |                ^
+[error]   2 |
