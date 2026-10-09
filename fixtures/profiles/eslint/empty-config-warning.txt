@@ -1,0 +1,2 @@
+(node:90418) ESLintEmptyConfigWarning: Running ESLint with an empty config (from /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/l01-eslint/project/empty.config.mjs). Please double-check that this is what you want. If you want to run ESLint with an empty config, export [{}] to remove this warning.
+(Use `node --trace-warnings ...` to show where the warning was created)
