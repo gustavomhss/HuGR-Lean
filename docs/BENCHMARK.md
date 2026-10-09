@@ -1,5 +1,17 @@
 # Benchmark and installed-package proof
 
+## Current campaign boundary
+
+Native integration baseline `20ce6cd` has not run the final benchmark or final package CI.
+Lead measures after freeze using the unchanged budgets below; historical timing is not
+current acceptance. The two focused Actions captures ([builtin bench](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069),
+[rustdoc](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37989424550)) prove native Rust evidence only.
+
+**Withdrawal annotation:** historical Jest/Vitest timing/marker savings, their family
+distributions and aggregate savings below describe old behavior, not current support.
+Plaintext outputs now retain complete source rows and equal raw inputs; historical
+reports/artifacts remain unchanged. Current registry/corpus scope is [coverage](COVERAGE.md).
+
 ## Reproduction
 
 Use Node >=22 and npm. Build separately before packing; smoke never runs prepack/build.
@@ -55,8 +67,10 @@ fixture; missing, stale or empty goldens fail. Runner CRLF checkouts retain sour
 endings. Native captures and pinned TRS fixtures are separately labeled; donor path,
 commit, license and modification records are in the goldens and each `SOURCES.md`.
 JSON records each command/status/reason, UTF-8 input/output/saved bytes, byte reduction
-and latency. Per-family and corpus min/median/max/mean include passthrough **zeros**;
-registered `tsc` is passthrough-only. Synthetic exact-size Cargo workloads use one linear
+and latency. Per-family and corpus min/median/max/mean include passthrough **zeros**.
+Current reader also includes authenticated utility evidence and the 41-family native index,
+with explicit 25-family exact ledger and registry set correspondence. T01 tsc has bounded
+timestamp-only reductions; its legacy diagnostic fixture stays exact. Synthetic Cargo workloads use one linear
 allocation pass, unique names, consistent `running N tests`/`N passed` rows and exact
 finish/executable/summary retention. They are generated loads, not new native captures.
 Exit 101, unknown exit, timeout, truncation and unknown completeness deliberately reuse
@@ -65,7 +79,7 @@ Every operation checks exact passthrough/no replacement/equal bytes, or exact go
 
 ## Installed artifact proof
 
-Packing snapshots only prebuilt `dist`, manifest, README and notices, never source code,
+Packing snapshots prebuilt `dist`, manifest, README, notices and selected documentation, never runtime source code,
 `.npmrc` or source `node_modules`. Snapshot, tarball and consumer live in `os.tmpdir()`
 outside source ancestry. Actual `npm pack --ignore-scripts --pack-destination isolated-dir`
 and `npm install tarball --ignore-scripts` run with isolated HOME/USERPROFILE/XDG/npm cache
@@ -86,6 +100,11 @@ The fixture executable named `cargo` proves wiring, not broad Cargo compatibilit
 Whole host sessions include startup/SDK/provider/native work. Provider-request windows
 would exclude startup but not isolate adapter CPU. Neither is reported as adapter latency.
 Mechanical byte reduction is not a token estimate or causal LLM cost/quality benefit.
+
+The manifest allows all fixture SOURCES.md, but smoke's closed snapshot currently copies
+only runner/format and four utility notes, not native-family notes. Installed native cases
+are supplied as external evidence JSON; replay does not prove shipment of every provenance
+note. Final normal-pack contents/notices/link inspection remains a lead-owned artifact check.
 
 ## Historical baseline: 2026-09-30T07:17:05.204Z
 

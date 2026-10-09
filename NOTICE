@@ -7,3 +7,29 @@ Copyright (c) 2026 dPeluChe.
 See licenses/TRS-MIT.txt and fixtures/{runners,formats}/SOURCES.md for paths,
 hashes and modification records. Fixture bytes are not runtime dependencies.
 Production parsers are original TypeScript; no donor executable is required.
+
+Native campaign evidence: fixtures/profiles/*/{CASES,SOURCES}.md and case-local
+receipts record producer versions, immutable source/package paths, hashes,
+licenses and modifications. Cargo-test, Go JSON and tsc use CASES.md provenance.
+Original tiny projects/collectors are repository MIT material. Generated native
+output and copied producer material are not relicensed as MIT by this notice.
+
+Source-repository fixture archives include unmodified producer license copies:
+Jest (MIT), Istanbul HTML assets (BSD-3-Clause) and vendored Google Code Prettify
+(Apache-2.0): fixtures/profiles/jest/SOURCES.md and donor-pins.json record commits,
+paths and native reporter JS prefix modifications. Vitest/coverage-v8 (MIT),
+Next/React/type packages (MIT; TypeScript Apache-2.0), Pyright (MIT), Rollup
+(MIT plus bundled notices), webpack/CLI (MIT), nextest (MIT OR Apache-2.0),
+markdownlint components (MIT), Stylelint (MIT), and pytest dependencies
+(MIT/BSD/Apache-2.0) retain package/commit/path pins and unchanged license copies
+in their respective SOURCES.md/receipts. These licenses apply to their material.
+Pylint LICENSE at e16f942166511d6fb4427e503a734152fae0c4fe is GPL-2.0-or-later;
+ShellCheck LICENSE at aac0823e6b58f8a499e856e93738082691cbf212 and golangci-lint
+LICENSE at 8f3b0c7ed018e57905fbd873c697e0b1ede605a5 are GPL-3.0 archives.
+No GPL runtime implementation was copied into HuGR-Lean.
+
+The package.json files allowlist includes docs, module Markdown and fixture
+SOURCES.md, not all raw fixtures, CASES, receipts, producer assets or fixture
+license archives. Root licenses/TRS-MIT.txt remains the shipped donor license.
+Final tarball inspection is pending; producer license references in SOURCES.md
+describe repository evidence, not shipment of those producers or their assets.
