@@ -14,11 +14,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
-      RUSTUP_HOME: ${{ runner.temp }}/capture-rustup
-      CARGO_HOME: ${{ runner.temp }}/capture-cargo
       RUSTUP_TOOLCHAIN: nightly-2026-10-08
-      CAPTURE_OUTPUT: ${{ runner.temp }}/native-cargo-bench
-      CI_PROVENANCE_PATH: ${{ runner.temp }}/ci-candidate.json
     steps:
       # Official v4.2.2: https://github.com/actions/checkout/releases/tag/v4.2.2
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -28,8 +24,14 @@ jobs:
       - name: Verify exact candidate identity
         env:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          CI_PROVENANCE_PATH: ${{ runner.temp }}/ci-candidate.json
         run: node scripts/ci-candidate.mjs
       - name: Capture native builtin benchmarks
+        env:
+          RUSTUP_HOME: ${{ runner.temp }}/capture-rustup
+          CARGO_HOME: ${{ runner.temp }}/capture-cargo
+          CAPTURE_OUTPUT: ${{ runner.temp }}/native-cargo-bench
+          CI_PROVENANCE_PATH: ${{ runner.temp }}/ci-candidate.json
         run: python3 fixtures/profiles/cargo-bench/capture.py
       - name: Upload raw capture and provenance even on failure
         if: always()
