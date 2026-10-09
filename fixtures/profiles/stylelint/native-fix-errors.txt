@@ -1,0 +1,6 @@
+
+fix.css
+  1:28  ✖  Unexpected invalid hex color "#zzzzzz"  color-no-invalid-hex
+
+✖ 1 problem (1 error, 0 warnings)
+

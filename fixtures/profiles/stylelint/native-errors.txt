@@ -1,0 +1,8 @@
+
+errors.css
+  1:5   ✖  Unexpected unknown property "colour"    property-no-unknown
+  1:13  ✖  Unexpected invalid hex color "#ggg"     color-no-invalid-hex
+  1:26  ✖  Unexpected invalid hex color "#zzzzzz"  color-no-invalid-hex
+
+✖ 3 problems (3 errors, 0 warnings)
+

@@ -1,0 +1,25 @@
+{
+  "name": "stylelint",
+  "version": "16.25.0",
+  "repository": {
+    "url": "git+https://github.com/stylelint/stylelint.git",
+    "type": "git"
+  },
+  "commit": "a6efacbd24c1d3cc94f9b4d4eb68696fcf4b0d85",
+  "license": "MIT",
+  "tarball": "https://registry.npmjs.org/stylelint/-/stylelint-16.25.0.tgz",
+  "integrity": "sha512-Li0avYWV4nfv1zPbdnxLYBGq4z8DVZxbRgx4Kn6V+Uftz1rMoF1qiEI3oL4kgWqyYgCgs7gT5maHNZ82Gk03vQ==",
+  "tarballSha256": "955f1ce119c1b48c444c81d07a969c50c27e59dfe483857157a976f553aa8678",
+  "licenseSource": "package/LICENSE",
+  "licenseSha256": "75d7a49cb407946d65586e81b72265fbf5c87d5e4a7e03f9dcb4034ae3aba725",
+  "modifications": "License copied verbatim; no donor parser or fixture copied.",
+  "installArgv": [
+    "npm",
+    "install",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "installExitCode": 0,
+  "installOutputSha256": "600da69a139bb4b11f8fac6c78f2a2893929007985cf3c63b5ebc40d158517e8"
+}
