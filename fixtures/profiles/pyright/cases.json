@@ -1,6 +1,15 @@
 {
   "schema": "hugr-lean/native-cases/1",
   "family": "pyright",
+  "archives": [
+    "LICENSE-PYRIGHT.txt",
+    "json-error.layout-candidate.txt",
+    "json-success.layout-candidate.txt",
+    "json-success.golden.txt",
+    "json-warning.golden.txt",
+    "json-information.golden.txt",
+    "json-multi-unicode.golden.txt"
+  ],
   "cases": [
     {
       "name": "L08-plain-success",

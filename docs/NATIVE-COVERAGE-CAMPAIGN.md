@@ -168,6 +168,9 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | P06 | CAPTURED | campaign/native-v2/P06 / #94 | uv install/sync captures; no material reduction proposed |
 | B01 | CAPTURED | campaign/native-v2/B01 / #96 | Vite plugin can emit identical progress; candidate deletion unapproved |
 | B03 | CAPTURED | campaign/native-v2/B03 / #93 | esbuild CLI artifacts/warnings/stdout retained; no plugin API coverage claimed |
+| L05 | CAPTURED | campaign/native-v2/L05 / #101 | Prettier 3.6.2; real plugin stdout collision; no approved deletion |
+| L07 | CAPTURED | campaign/native-v2/L07 / #99 | mypy 1.18.2; diagnostics/notes/metrics and plugin output retained; no deletion proposed |
+| L08 | INTEGRATED | campaign/native-v2/L08 / #100 | Pyright 1.1.408 explicit exit-zero JSON layout; every token and two-LF EOF retained |
 
 All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
@@ -187,6 +190,15 @@ declarations: manifest-only source commit `6c6e15b592d657e0eacb307d4c1453a6c3b8f
 only redundant inline bytes, independently checked against unchanged files/hashes. The named
 Go-mod routing/corpus closure and Go disjointness check passed; scoped registry/closure typing passed.
 Unchanged author suites were not replayed. No full CI was dispatched.
+L08 source checkpoint `39ea1d1c8b3878bd23937861047e42ba08ea79e2` independently approved:
+the cold reviewer verified native/source hashes, pinned MIT producer, exact token goldens and an EOF
+deletion mutation (red, restored, same test green). Four native reductions save 1,847 UTF-8 bytes;
+plain, nonzero, config and requested metrics remain exact. The author closed its owned file once.
+Integration ran only the new Pyright routing/corpus closure and scoped registry/closure typing.
+The corpus reader rejected undeclared license/candidate/golden artifacts; explicit archive declarations
+fixed correspondence without weakening the reader. The same closure then passed.
+L05 capture checkpoint `986923ce378b0cd0136a3517adc04ddaf8e7a540` and L07 checkpoint
+`50eabccd3ef6845a10b0ac20a3b68afc328dcf8b` remain capture-only branches, not promoted profiles.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.

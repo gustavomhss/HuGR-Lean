@@ -74,3 +74,16 @@ test("S00 delta keeps exact-candidate manual workflow with no push or PR trigger
   assert.ok(workflow.includes("ref: ${{ inputs.candidate_sha }}"));
   assert.ok(workflow.includes("run: node scripts/ci-candidate.mjs"));
 });
+test("routing closure: Pyright reaches nonempty native goldens", async () => {
+  const entries = (await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url))))
+    .filter(entry => entry.family === "pyright");
+  assert.ok(entries.length > 0);
+  assert.ok(entries.some(entry => entry.status === "reduced"));
+  assert.ok(entries.some(entry => entry.status === "passthrough"));
+  for (const entry of entries) {
+    const result = filter(entry.observation);
+    assert.equal(result.status, entry.status, entry.name);
+    assert.equal("replacement" in result ? result.replacement : entry.observation.output, entry.expected, entry.name);
+    if (result.status === "reduced") assert.equal(result.profile, "pyright", entry.name);
+  }
+});

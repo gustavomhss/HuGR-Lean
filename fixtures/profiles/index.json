@@ -1,4 +1,4 @@
 {
   "schema": "hugr-lean/native-index/1",
-  "families": ["biome", "cargo-build", "cargo-clippy", "cargo-test", "eslint", "go-mod", "go-test-json", "go-test-text", "pnpm-install", "ruff", "tsc"]
+  "families": ["biome", "cargo-build", "cargo-clippy", "cargo-test", "eslint", "go-mod", "go-test-json", "go-test-text", "pnpm-install", "pyright", "ruff", "tsc"]
 }
