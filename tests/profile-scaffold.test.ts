@@ -44,11 +44,28 @@ test("routing closure: newly integrated lint families reach exact declared golde
   }
 });
 test("S00 delta Go routing is disjoint and closed", () => {
+  const goMod = profiles.find(profile => profile.id === "go-mod");
+  assert.ok(goMod);
+  assert.ok(goMod.match(["go", "get", "example.com/pkg"]));
+  assert.equal(goMod.match(["go", "test", "-v"]), false);
   assert.equal(goMode(["go", "test", "-v", "./..."]), "text");
   assert.equal(goMode(["go", "test", "-bench=BenchmarkThing", "."]), "bench");
   assert.equal(goMode(["go", "test", "-bench", "BenchmarkThing", "-json"]), "json");
   assert.equal(goMode(["go", "test", "-json", "-json=false"]), "text");
   for (const args of [["go", "test", "-unknown"], ["go", "test", "-bench"], ["go", "test", "-bench", "-json"]]) assert.equal(goMode(args), undefined);
+});
+test("routing closure: Go mod reaches nonempty native goldens", async () => {
+  const entries = (await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url))))
+    .filter(entry => entry.family === "go-mod");
+  assert.ok(entries.length > 0);
+  assert.ok(entries.some(entry => entry.status === "reduced"));
+  assert.ok(entries.some(entry => entry.status === "passthrough"));
+  for (const entry of entries) {
+    const result = filter(entry.observation);
+    assert.equal(result.status, entry.status, entry.name);
+    assert.equal("replacement" in result ? result.replacement : entry.observation.output, entry.expected, entry.name);
+    if (result.status === "reduced") assert.equal(result.profile, entry.family, entry.name);
+  }
 });
 test("S00 delta keeps exact-candidate manual workflow with no push or PR trigger", () => {
   const workflow = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");

@@ -157,11 +157,17 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | L01 | INTEGRATED | campaign/native-v2/L01 / #83 | ESLint stylish outer LF only; tiny savings, no material-profit claim |
 | P01 | CAPTURED | campaign/native-v2/P01 / #73 | No meaningful progress observed in captured pipe outputs; successful peer-warning case incomplete |
 | C04 | CAPTURED | campaign/native-v2/C04 / #87 | rustfmt silent success and nonzero diffs; no removable material found |
-| C05 | REVIEW | campaign/native-v2/C05 / #92 | Cargo doc implementation ready; artifacts/warnings retained; cold review pending |
+| C05 | BLOCKED | campaign/native-v2/C05 / #92 | Producer collisions invalidate progress deletion; fixed branch preserves all output, zero approved savings; bins binding unproved |
 | C06 | BLOCKED | campaign/native-v2/C06 / #88 | Stable toolchains reject builtin bench; arbitrary custom harness retained, native metrics unproven |
 | G03 | CAPTURED | campaign/native-v2/G03 / #90 | Bench metrics/logs retained; nested-progress deletion not approved |
 | G04 | CAPTURED | campaign/native-v2/G04 / #91 | Build/vet/run silent or meaningful output; no reduction proposed |
-| G05 | REVIEW | campaign/native-v2/G05 / #89 | Paired go-get download/change implementation ready; cold review pending |
+| G05 | INTEGRATED | campaign/native-v2/G05 / #89 | Paired default go-get downloads; SemVer precedence, major pairing and Go path constraints independently reviewed |
+| P03 | CAPTURED | campaign/native-v2/P03 / #97 | Yarn Classic/Berry pinned separately; Berry skip-build does not establish hook-free progress |
+| P04 | CAPTURED | campaign/native-v2/P04 / #98 | Bun install pinned; 63-byte candidate unapproved; offline/trusted-dependency boundaries incomplete |
+| P05 | CAPTURED | campaign/native-v2/P05 / #95 | pip only-binary still runs backend for explicit local source; no approved deletion |
+| P06 | CAPTURED | campaign/native-v2/P06 / #94 | uv install/sync captures; no material reduction proposed |
+| B01 | CAPTURED | campaign/native-v2/B01 / #96 | Vite plugin can emit identical progress; candidate deletion unapproved |
+| B03 | CAPTURED | campaign/native-v2/B03 / #93 | esbuild CLI artifacts/warnings/stdout retained; no plugin API coverage claimed |
 
 All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
@@ -169,6 +175,18 @@ claim that the full campaign is complete. Source/checkpoint SHA and detailed pro
 Lead corpus wiring checks family absence/extra, local references, declared receipt bindings, raw hashes
 where supplied, independent goldens and actual default-filter results. It does not authenticate every
 historical collector or replace existing family-specific provenance verifiers.
+Resumed-review receipts: C05 `42f799f2a31818cc9c4cff397dffd2a0c921922d` withdraws the
+2,661-byte proposal and retains every progress row. ASCII diagnostic-column validation is exact;
+unbound bins are refused. This is blocked reduction work, not completed exact-only coverage.
+G05 `51008ab49475bc05acc7311e950c6c8b0b4d6e2d` adds exact SemVer ordering, canonical
+path-major pairing, dotted first path elements and reserved-component refusal. Focused author
+probes were restored; independent numeric-prerelease probe failed under mutation and passed after
+restoration. Latest path fixes independently approved after an output-path bypass made the
+reserved-component guard fail; restoration passed. Integration exposed duplicate file/inline input
+declarations: manifest-only source commit `6c6e15b592d657e0eacb307d4c1453a6c3b8f44e` removes
+only redundant inline bytes, independently checked against unchanged files/hashes. The named
+Go-mod routing/corpus closure and Go disjointness check passed; scoped registry/closure typing passed.
+Unchanged author suites were not replayed. No full CI was dispatched.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.
