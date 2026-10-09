@@ -796,7 +796,7 @@
         "warning_case.py"
       ],
       "file": "L06-json-exit-zero.txt",
-      "status": "passthrough",
+      "status": "reduced",
       "termination": {
         "kind": "exited",
         "code": 0
@@ -807,7 +807,8 @@
         "receipt": "capture-receipt.json",
         "case": "L06-json-exit-zero",
         "sha256": "d8f68f078295501c6610239bb2e1c00fc7bce12a3d84afaf3ee9b9aa5eb86d14"
-      }
+      },
+      "expectedFile": "L06-json-exit-zero.golden.txt"
     },
     {
       "name": "L06-json-reports",
@@ -827,7 +828,7 @@
         "warning_case.py"
       ],
       "file": "L06-json-reports.txt",
-      "status": "passthrough",
+      "status": "reduced",
       "termination": {
         "kind": "exited",
         "code": 0
@@ -838,7 +839,8 @@
         "receipt": "capture-receipt.json",
         "case": "L06-json-reports",
         "sha256": "2008f49c315b5393743de8e86795a9626d0b79126828345fb05caf0376d0aa59"
-      }
+      },
+      "expectedFile": "L06-json-reports.golden.txt"
     },
     {
       "name": "L06-json-config-fail",
@@ -1093,7 +1095,7 @@
         "warning_case.py"
       ],
       "file": "L06-json2-exit-zero.txt",
-      "status": "passthrough",
+      "status": "reduced",
       "termination": {
         "kind": "exited",
         "code": 0
@@ -1104,7 +1106,8 @@
         "receipt": "capture-receipt.json",
         "case": "L06-json2-exit-zero",
         "sha256": "550a8c1cc2e669f19671e687aa7a47e89409e635755c1d25a856bc65bd2b9868"
-      }
+      },
+      "expectedFile": "L06-json2-exit-zero.golden.txt"
     },
     {
       "name": "L06-json2-reports",
@@ -1124,7 +1127,7 @@
         "warning_case.py"
       ],
       "file": "L06-json2-reports.txt",
-      "status": "passthrough",
+      "status": "reduced",
       "termination": {
         "kind": "exited",
         "code": 0
@@ -1135,7 +1138,8 @@
         "receipt": "capture-receipt.json",
         "case": "L06-json2-reports",
         "sha256": "47ca384d04bcabcdd3527980c061cdb4608b8eb9a6ab71760e17c7900f1f95c5"
-      }
+      },
+      "expectedFile": "L06-json2-reports.golden.txt"
     },
     {
       "name": "L06-json2-config-fail",
@@ -1205,6 +1209,10 @@
     "L06-json-reports.candidate.txt",
     "L06-json2-clean.candidate.txt",
     "L06-json2-exit-zero.candidate.txt",
-    "L06-json2-reports.candidate.txt"
+    "L06-json2-reports.candidate.txt",
+    "L06-launcher-direct-absolute.txt",
+    "L06-launcher-direct.txt",
+    "L06-launcher-python-module.txt",
+    "L06-launcher-python3-module.txt"
   ]
 }
