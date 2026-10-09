@@ -1,0 +1,19 @@
+   Compiling c06-alpha v0.1.0 (/home/runner/work/_temp/c06-project)
+    Finished `bench` profile [optimized] target(s) in 0.21s
+     Running benches/builtin.rs (target/release/build/c06-alpha/450ccfd895061651/out/builtin-450ccfd895061651)
+
+running 2 tests
+test suite::ignored_sum ... ignored, explicit ignored measurement only
+test sum_256            ... bench:          48.66 ns/iter (+/- 4.23) = 42666 MB/s
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 1 measured; 0 filtered out; finished in 0.11s
+
+     Running benches/custom.rs (target/release/build/c06-alpha/eacd31211ce641a2/out/custom-eacd31211ce641a2)
+    Finished `bench` profile [optimized] target(s) in 0.01s
+custom user log: native-looking progress; no measurement; no final LF     Running benches/second.rs (target/release/build/c06-alpha/c23f2297bfb5dc92/out/second-c23f2297bfb5dc92)
+
+running 1 test
+test multiply ... bench:           1.24 ns/iter (+/- 0.03)
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 1 measured; 0 filtered out; finished in 0.76s
+

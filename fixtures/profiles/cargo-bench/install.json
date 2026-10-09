@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "rustup",
+    "toolchain",
+    "install",
+    "nightly-2026-10-08",
+    "--profile",
+    "minimal"
+  ],
+  "cwd": "/home/runner/work/_temp/c06-project",
+  "startedUnix": 1791573797.394635,
+  "elapsedSeconds": 7.755854845046997,
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "1e29c885c2e83ee2c2c4044c9ab4e6047a1c5afeaf5845779331311f9a2f667a",
+  "bytes": 374,
+  "boundary": "one shared stdout/stderr pipe; communicate waits for EOF",
+  "candidateSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "runId": "37979866069",
+  "runAttempt": "1"
+}
