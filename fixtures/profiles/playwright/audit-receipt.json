@@ -1,0 +1,591 @@
+{
+  "scope": "read-time offline capture artifacts only; no native replay/runtime verification",
+  "auditAt": "2026-10-09T20:10:20.792678+00:00",
+  "auditRecipeSha256": "705e5365493f706519b7cbd8e32c42ce83a8f9fd2de3e37bc79a5e0efd45fa01",
+  "typeHelperSha256": "2094f274b820696f5d1b0485eff7b57dab0a5a3929226ead6c2c69f2b214e9f5",
+  "inputSha256": {
+    "cases.json": "218e554589ecc097405f3fc4d71ca0d87b6b4d7add66db985b3a2b82b0fe8c89",
+    "capture-receipt.json": "5a1b5d6b3c4b1a4198fec95e05cef034ee4a9987da797d69580c94fe96d9406a",
+    "browser-recovery-receipt.json": "c09a1dfdb53efd794937b8ee0263893d2dcc322489c0652c8dc61d25d34aa115",
+    "setup-receipt.json": "a95fcfd085d20b73f3d1d71fccade92b0a87b4b870b48391e79f2c8baf4abad6"
+  },
+  "predecessor": {
+    "commit": "e73ce031458b8954ae163098759f0100880dcc09",
+    "path": "fixtures/profiles/playwright/audit.py",
+    "archive": "audit-history-e73ce03.json",
+    "auditRecipeSha256": "3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9",
+    "auditReceiptSha256": "cebd36d06eafc605b25a44701e4267a54fe41469306f5baa15510354a90ab963",
+    "limitation": "Python equality accepted bool/integer masquerades and invalid coordinated field types"
+  },
+  "cases": {
+    "R04-api-list": {
+      "bytes": 5650,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T15:39:41.282Z",
+        "duration": 18241.422,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 0,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 8,
+      "attachments": 8,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log"
+      ],
+      "stdoutChunks": 6,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log"
+      ],
+      "screenshots": []
+    },
+    "R04-api-line": {
+      "bytes": 6134,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T15:40:04.838Z",
+        "duration": 11789.445000000002,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 0,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 8,
+      "attachments": 8,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log"
+      ],
+      "stdoutChunks": 6,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log"
+      ],
+      "screenshots": []
+    },
+    "R04-api-json": {
+      "bytes": 21221,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T15:40:19.285Z",
+        "duration": 9475.715,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 0,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 8,
+      "attachments": 8,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log"
+      ],
+      "stdoutChunks": 6,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log"
+      ],
+      "screenshots": []
+    },
+    "R04-failure-list": {
+      "bytes": 13246,
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-10-09T15:40:31.073Z",
+        "duration": 13299.878,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 2,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 12,
+      "attachments": 12,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-a/attachments/failure-path-b22c72bdefaa84fc45e02e3b671500b2b4b99e10.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-a-retry1/attachments/failure-path-f6a24578c6b7a82a639bfb2a62c83a0a1012e0fd.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-b/attachments/failure-path-383e74072ce3e8fdb51a025b9dea05a8a37e0dfd.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-b-retry1/attachments/failure-path-c722f88b2b536f24020fd808889bd2f6456a8900.log"
+      ],
+      "stdoutChunks": 10,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log",
+        "api-permanent-failure-with-retry-api-a-retry1/attachments/failure-path-f6a24578c6b7a82a639bfb2a62c83a0a1012e0fd.log",
+        "api-permanent-failure-with-retry-api-a-retry1/failure.log",
+        "api-permanent-failure-with-retry-api-a/attachments/failure-path-b22c72bdefaa84fc45e02e3b671500b2b4b99e10.log",
+        "api-permanent-failure-with-retry-api-a/failure.log",
+        "api-permanent-failure-with-retry-api-b-retry1/attachments/failure-path-c722f88b2b536f24020fd808889bd2f6456a8900.log",
+        "api-permanent-failure-with-retry-api-b-retry1/failure.log",
+        "api-permanent-failure-with-retry-api-b/attachments/failure-path-383e74072ce3e8fdb51a025b9dea05a8a37e0dfd.log",
+        "api-permanent-failure-with-retry-api-b/failure.log"
+      ],
+      "screenshots": []
+    },
+    "R04-failure-line": {
+      "bytes": 13974,
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-10-09T15:40:46.911Z",
+        "duration": 13383.696,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 2,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 12,
+      "attachments": 12,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-a/attachments/failure-path-b22c72bdefaa84fc45e02e3b671500b2b4b99e10.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-a-retry1/attachments/failure-path-f6a24578c6b7a82a639bfb2a62c83a0a1012e0fd.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-b/attachments/failure-path-383e74072ce3e8fdb51a025b9dea05a8a37e0dfd.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-b-retry1/attachments/failure-path-c722f88b2b536f24020fd808889bd2f6456a8900.log"
+      ],
+      "stdoutChunks": 10,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log",
+        "api-permanent-failure-with-retry-api-a-retry1/attachments/failure-path-f6a24578c6b7a82a639bfb2a62c83a0a1012e0fd.log",
+        "api-permanent-failure-with-retry-api-a-retry1/failure.log",
+        "api-permanent-failure-with-retry-api-a/attachments/failure-path-b22c72bdefaa84fc45e02e3b671500b2b4b99e10.log",
+        "api-permanent-failure-with-retry-api-a/failure.log",
+        "api-permanent-failure-with-retry-api-b-retry1/attachments/failure-path-c722f88b2b536f24020fd808889bd2f6456a8900.log",
+        "api-permanent-failure-with-retry-api-b-retry1/failure.log",
+        "api-permanent-failure-with-retry-api-b/attachments/failure-path-383e74072ce3e8fdb51a025b9dea05a8a37e0dfd.log",
+        "api-permanent-failure-with-retry-api-b/failure.log"
+      ],
+      "screenshots": []
+    },
+    "R04-failure-json": {
+      "bytes": 37721,
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-10-09T15:41:02.328Z",
+        "duration": 15208.582,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 2,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 12,
+      "attachments": 12,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-a/attachments/failure-path-b22c72bdefaa84fc45e02e3b671500b2b4b99e10.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-a-retry1/attachments/failure-path-f6a24578c6b7a82a639bfb2a62c83a0a1012e0fd.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-b/attachments/failure-path-383e74072ce3e8fdb51a025b9dea05a8a37e0dfd.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-permanent-failure-with-retry-api-b-retry1/attachments/failure-path-c722f88b2b536f24020fd808889bd2f6456a8900.log"
+      ],
+      "stdoutChunks": 10,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log",
+        "api-permanent-failure-with-retry-api-a-retry1/attachments/failure-path-f6a24578c6b7a82a639bfb2a62c83a0a1012e0fd.log",
+        "api-permanent-failure-with-retry-api-a-retry1/failure.log",
+        "api-permanent-failure-with-retry-api-a/attachments/failure-path-b22c72bdefaa84fc45e02e3b671500b2b4b99e10.log",
+        "api-permanent-failure-with-retry-api-a/failure.log",
+        "api-permanent-failure-with-retry-api-b-retry1/attachments/failure-path-c722f88b2b536f24020fd808889bd2f6456a8900.log",
+        "api-permanent-failure-with-retry-api-b-retry1/failure.log",
+        "api-permanent-failure-with-retry-api-b/attachments/failure-path-383e74072ce3e8fdb51a025b9dea05a8a37e0dfd.log",
+        "api-permanent-failure-with-retry-api-b/failure.log"
+      ],
+      "screenshots": []
+    },
+    "R04-browser-list": {
+      "bytes": 7509,
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-10-09T15:41:20.217Z",
+        "duration": 7421.687000000001,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 4,
+      "attachments": 0,
+      "pathAttachments": [],
+      "stdoutChunks": 0,
+      "stderrChunks": 0,
+      "resultFiles": [
+        ".last-run.json"
+      ],
+      "screenshots": []
+    },
+    "R04-browser-line": {
+      "bytes": 7626,
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-10-09T15:41:29.770Z",
+        "duration": 7579.514999999999,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 4,
+      "attachments": 0,
+      "pathAttachments": [],
+      "stdoutChunks": 0,
+      "stderrChunks": 0,
+      "resultFiles": [
+        ".last-run.json"
+      ],
+      "screenshots": []
+    },
+    "R04-browser-json": {
+      "bytes": 20915,
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-10-09T15:41:39.587Z",
+        "duration": 9151.732,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 4,
+      "attachments": 0,
+      "pathAttachments": [],
+      "stdoutChunks": 0,
+      "stderrChunks": 0,
+      "resultFiles": [
+        ".last-run.json"
+      ],
+      "screenshots": []
+    },
+    "R04-custom-collision": {
+      "bytes": 1584,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T15:41:51.545Z",
+        "duration": 10412.176,
+        "expected": 2,
+        "skipped": 2,
+        "unexpected": 0,
+        "flaky": 2
+      },
+      "attemptsIncludingSkips": 8,
+      "attachments": 8,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-ltzauj68/test-results/api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log"
+      ],
+      "stdoutChunks": 6,
+      "stderrChunks": 2,
+      "resultFiles": [
+        ".last-run.json",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-a/evidence.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/attachments/path-evidence-088a426c19326fc6ccf58dbba0af9deda82bc307.log",
+        "api-pass-with-stdout-stderr-and-attachments-雪-api-b/evidence.log"
+      ],
+      "screenshots": []
+    },
+    "R04-browser-success-list": {
+      "bytes": 1033,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T16:52:04.402Z",
+        "duration": 46539.437,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 2,
+      "attachments": 4,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png"
+      ],
+      "stdoutChunks": 2,
+      "stderrChunks": 0,
+      "resultFiles": [
+        ".last-run.json",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/page.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/page.png"
+      ],
+      "screenshots": [
+        {
+          "project": "chromium-desktop",
+          "dimensions": [
+            800,
+            600
+          ],
+          "bytes": 4431,
+          "sha256": "0fb178f649a6c2e1fc117c3e5cc48484f9d37df7eeaa74e7b17cac70e67292f3"
+        },
+        {
+          "project": "chromium-small",
+          "dimensions": [
+            320,
+            480
+          ],
+          "bytes": 3020,
+          "sha256": "754e60f49c2a7cdfcb9cc6594f4d82cb696fe48c284030321d1cf1e35c341496"
+        }
+      ]
+    },
+    "R04-browser-success-line": {
+      "bytes": 1286,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T16:53:05.405Z",
+        "duration": 54254.586,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 2,
+      "attachments": 4,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png"
+      ],
+      "stdoutChunks": 2,
+      "stderrChunks": 0,
+      "resultFiles": [
+        ".last-run.json",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/page.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/page.png"
+      ],
+      "screenshots": [
+        {
+          "project": "chromium-desktop",
+          "dimensions": [
+            800,
+            600
+          ],
+          "bytes": 4431,
+          "sha256": "0fb178f649a6c2e1fc117c3e5cc48484f9d37df7eeaa74e7b17cac70e67292f3"
+        },
+        {
+          "project": "chromium-small",
+          "dimensions": [
+            320,
+            480
+          ],
+          "bytes": 3020,
+          "sha256": "754e60f49c2a7cdfcb9cc6594f4d82cb696fe48c284030321d1cf1e35c341496"
+        }
+      ]
+    },
+    "R04-browser-success-json": {
+      "bytes": 8145,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T16:54:05.134Z",
+        "duration": 16503.96,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 2,
+      "attachments": 4,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png"
+      ],
+      "stdoutChunks": 2,
+      "stderrChunks": 0,
+      "resultFiles": [
+        ".last-run.json",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/page.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/page.png"
+      ],
+      "screenshots": [
+        {
+          "project": "chromium-desktop",
+          "dimensions": [
+            800,
+            600
+          ],
+          "bytes": 4431,
+          "sha256": "0fb178f649a6c2e1fc117c3e5cc48484f9d37df7eeaa74e7b17cac70e67292f3"
+        },
+        {
+          "project": "chromium-small",
+          "dimensions": [
+            320,
+            480
+          ],
+          "bytes": 3020,
+          "sha256": "754e60f49c2a7cdfcb9cc6594f4d82cb696fe48c284030321d1cf1e35c341496"
+        }
+      ]
+    },
+    "R04-browser-success-launch-debug": {
+      "bytes": 6648,
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-10-09T16:54:28.669Z",
+        "duration": 16946.218999999997,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "attemptsIncludingSkips": 2,
+      "attachments": 4,
+      "pathAttachments": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png"
+      ],
+      "stdoutChunks": 2,
+      "stderrChunks": 10,
+      "resultFiles": [
+        ".last-run.json",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/page.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png",
+        "browser-real-isolated-Chromium-page-and-screenshot-chromium-small/page.png"
+      ],
+      "screenshots": [
+        {
+          "project": "chromium-desktop",
+          "dimensions": [
+            800,
+            600
+          ],
+          "bytes": 4431,
+          "sha256": "0fb178f649a6c2e1fc117c3e5cc48484f9d37df7eeaa74e7b17cac70e67292f3"
+        },
+        {
+          "project": "chromium-small",
+          "dimensions": [
+            320,
+            480
+          ],
+          "bytes": 3020,
+          "sha256": "754e60f49c2a7cdfcb9cc6594f4d82cb696fe48c284030321d1cf1e35c341496"
+        }
+      ]
+    }
+  },
+  "probes": [
+    {
+      "mutation": "raw-byte-loss",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: artifact invariant failed",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "missing-path-artifact",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: ('R04-api-list', 'api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log')",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "retry-evidence-loss",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "missing-screenshot-artifact",
+      "case": "R04-browser-success-list",
+      "rejected": true,
+      "failure": "R04-browser-success-list: ('R04-browser-success-list', 'browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png')",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "body-loss",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "body-changed",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "report-body-changed",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: body-evidence bytes differ from source/project/retry",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "path-content",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: path-evidence bytes differ from source/project/retry",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "screenshot-size",
+      "case": "R04-browser-success-list",
+      "rejected": true,
+      "failure": "R04-browser-success-list: screenshot dimensions differ from project viewport",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "partial-result",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: evidence tests[0].results[0] missing/unknown fields",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "partial-report-result",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: raw report tests[0].results[0] missing/unknown fields",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "retry-body-changed",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: retry-evidence bytes differ from source/project/retry",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    }
+  ]
+}

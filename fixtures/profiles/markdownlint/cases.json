@@ -1,0 +1,273 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "markdownlint",
+  "archives": [
+    "LICENSE-markdownlint-cli2.txt",
+    "LICENSE-markdownlint.txt",
+    "LICENSE-markdownlint-cli2-formatter-default.txt",
+    "LICENSE-markdownlint-cli2-formatter-json.txt",
+    "success.progress-candidate.txt"
+  ],
+  "cases": [
+    {
+      "name": "L11-success",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 clean.md",
+      "file": "success.txt",
+      "provenance": {
+        "sha256": "4db619a46ed66203be5829d86e5e782d2034010ed004f833ed0fb60da6e874d8",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-success"
+      }
+    },
+    {
+      "name": "L11-errors",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 errors.md",
+      "file": "errors.txt",
+      "provenance": {
+        "sha256": "af7752759b6b92f3e587da16cfd37c06bcf85b918991d9da9a9e65c5ad45a06d",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-errors"
+      }
+    },
+    {
+      "name": "L11-multifile-unicode",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 clean.md errors.md 'path spaces/café 🧪.md'",
+      "file": "multifile-unicode.txt",
+      "provenance": {
+        "sha256": "1b5164d34484d8644617ff9808e0ed7e1bfa1a204eff5da1665c96fd7e71f7df",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-multifile-unicode"
+      }
+    },
+    {
+      "name": "L11-custom-rule",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config custom.markdownlint-cli2.jsonc 'path spaces/café 🧪.md'",
+      "file": "custom-rule.txt",
+      "provenance": {
+        "sha256": "fb869a435060948b21bbb25a4b101e15000d708f075cc0ec79377fb562e8691d",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-custom-rule"
+      }
+    },
+    {
+      "name": "L11-config-ignore",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config ignore.markdownlint-cli2.jsonc '**/*.md'",
+      "file": "config-ignore.txt",
+      "provenance": {
+        "sha256": "7aa56087a9d0bdcc5046c0e97d8ef335b032f8869317c3f57c609b4433a6c183",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-config-ignore"
+      }
+    },
+    {
+      "name": "L11-glob-ignore",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 '**/*.md' '#ignored/**'",
+      "file": "glob-ignore.txt",
+      "provenance": {
+        "sha256": "83fe5174a2e1a98695856460ee6df1a96c6343eada21062d539017f97f080907",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-glob-ignore"
+      }
+    },
+    {
+      "name": "L11-config-invalid",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config invalid.markdownlint-cli2.jsonc clean.md",
+      "file": "config-invalid.txt",
+      "provenance": {
+        "sha256": "f66cf11dab4c1bc50b96cee3ca0038ce0815a049fe4aead4353d237df94373c2",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-config-invalid"
+      }
+    },
+    {
+      "name": "L11-config-missing",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config missing.markdownlint-cli2.jsonc clean.md",
+      "file": "config-missing.txt",
+      "provenance": {
+        "sha256": "eb45da89d50bd9c9b91b2fdd97ac69c72a0ad6d254a1b165a010ff7ca68ea380",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-config-missing"
+      }
+    },
+    {
+      "name": "L11-literal-missing",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 :missing.md",
+      "file": "literal-missing.txt",
+      "provenance": {
+        "sha256": "7d319082fc1025ab327c491f774ea4d441956d064d5169f26a86430ce2ee104e",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-literal-missing"
+      }
+    },
+    {
+      "name": "L11-json-file",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config json-file.markdownlint-cli2.jsonc errors.md 'path spaces/café 🧪.md'",
+      "file": "json-file.txt",
+      "provenance": {
+        "sha256": "103499a5d45eff895b2f19116b49eb60cdbb01de28399b5994920dca296fae62",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-json-file"
+      }
+    },
+    {
+      "name": "L11-json-stdout-errors",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config json-stdout.markdownlint-cli2.jsonc errors.md 'path spaces/café 🧪.md'",
+      "file": "json-stdout-errors.txt",
+      "provenance": {
+        "sha256": "4f275d9e36d0ad23a40fdefdfb9c0310e6a725c65d274149457fdc471a63b223",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-json-stdout-errors"
+      }
+    },
+    {
+      "name": "L11-json-stdout-success",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config json-stdout.markdownlint-cli2.jsonc clean.md",
+      "file": "json-stdout-success.txt",
+      "provenance": {
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-json-stdout-success"
+      }
+    },
+    {
+      "name": "L11-reporter-collision",
+      "family": "markdownlint",
+      "version": "markdownlint-cli2 0.23.3 (markdownlint 0.41.1)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config collision.markdownlint-cli2.jsonc clean.md",
+      "file": "reporter-collision.txt",
+      "provenance": {
+        "sha256": "4ba1ca5da9c585ffdab1426a02203a8ed2dbeef860de468a7adc7d35afafcb01",
+        "record": "capture-receipt.json",
+        "originalCase": "L11-reporter-collision"
+      }
+    }
+  ]
+}

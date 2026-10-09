@@ -1,0 +1,42 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "esbuild",
+  "cases": [
+    {
+      "name":"B03-file-bundle","family":"esbuild","version":"0.25.11","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild src/main.js --bundle --loader:.svg=file --outfile=out/file/bundle.js",
+      "output":"\n  out/file/bundle.js          994b \n  out/file/bundle.css          95b \n  out/file/icon-MBMD7YBM.svg   91b \n\n⚡ Done in 27ms\n",
+      "provenance":{"sha256":"a95f41490b7207f395c4793bea491dde7882894f1b8efbcbe4156ba72b20bc3d","record":"capture-receipt.json","originalCase":"B03-file-bundle"}
+    },
+    {
+      "name":"B03-multiple-assets-splitting","family":"esbuild","version":"0.25.11","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild src/main.js src/lazy.js --bundle --splitting --format=esm --loader:.svg=file --outdir=out/split --sourcemap",
+      "output":"\n  out/split/main.js                252b \n  out/split/lazy.js                145b \n  out/split/main.css               132b \n  out/split/chunk-Y3MEG7K4.js      114b \n  out/split/icon-MBMD7YBM.svg       91b \n  out/split/main.js.map            399b \n  out/split/lazy.js.map            220b \n  out/split/main.css.map           211b \n  out/split/chunk-Y3MEG7K4.js.map  180b \n\n⚡ Done in 12ms\n",
+      "provenance":{"sha256":"09026f62c338776dcfb57672ab9ffa000bccf2a2fd4d63dced9314a9dd931bba","record":"capture-receipt.json","originalCase":"B03-multiple-assets-splitting"}
+    },
+    {
+      "name":"B03-warning-full-context","family":"esbuild","version":"0.25.11","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild src/warning.js --bundle --outfile=out/warning/bundle.js",
+      "output":"▲ [WARNING] Duplicate key \"repeated\" in object literal [duplicate-object-key]\n\n    src/warning.js:1:30:\n      1 │ const values = { repeated: 1, repeated: 2 };\n        ╵                               ~~~~~~~~\n\n  The original key \"repeated\" is here:\n\n    src/warning.js:1:17:\n      1 │ const values = { repeated: 1, repeated: 2 };\n        ╵                  ~~~~~~~~\n\n▲ [WARNING] Comparison with NaN using the \"===\" operator here is always false [equals-nan]\n\n    src/warning.js:2:32:\n      2 │ console.log(values, Number('x') === NaN);\n        ╵                                 ~~~\n\n  Floating-point equality is defined such that NaN is never equal to anything, so \"x === NaN\" always returns false. You need to use \"Number.isNaN(x)\" instead to test for NaN.\n\n2 warnings\n\n  out/warning/bundle.js  124b \n\n⚡ Done in 10ms\n",
+      "provenance":{"sha256":"4c96266a128c4573eb3afe69a921df4c59e00d2587d5d5dbc3f7c5e68cd77aed","record":"capture-receipt.json","originalCase":"B03-warning-full-context"}
+    },
+    {
+      "name":"B03-failure-full-context","family":"esbuild","version":"0.25.11","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":1},"status":"passthrough",
+      "command":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild src/failure.js --bundle --outfile=out/failure/bundle.js",
+      "output":"✘ [ERROR] Could not resolve \"./does-not-exist.js\"\n\n    src/failure.js:1:24:\n      1 │ import { missing } from './does-not-exist.js';\n        ╵                         ~~~~~~~~~~~~~~~~~~~~~\n\n1 error\n",
+      "provenance":{"sha256":"2a3ee2fa9283ed586fd66f9f28f6b8543753cd97619432c8246229a250eee77a","record":"capture-receipt.json","originalCase":"B03-failure-full-context"}
+    },
+    {
+      "name":"B03-stdout-bundle","family":"esbuild","version":"0.25.11","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild src/stdout.js --bundle",
+      "output":"(() => {\n  // src/stdout.js\n  console.log(\"stdout bundle: caf\\xE9 \\u{1F9EA}\");\n})();\n",
+      "provenance":{"sha256":"a2a1e7cbb198aca2f9fa877475660796e5950beb17ee821202a370196d6d7f4b","record":"capture-receipt.json","originalCase":"B03-stdout-bundle"}
+    },
+    {
+      "name":"B03-silent-file","family":"esbuild","version":"0.25.11","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B03-esbuild-native/node_modules/@esbuild/darwin-x64/bin/esbuild src/stdout.js --bundle --outfile=out/silent/bundle.js --log-level=silent",
+      "output":"",
+      "provenance":{"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","record":"capture-receipt.json","originalCase":"B03-silent-file"}
+    }
+  ]
+}

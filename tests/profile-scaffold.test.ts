@@ -114,3 +114,19 @@ test("routing closure: Pylint reaches nonempty native goldens", async () => {
     if (result.status === "reduced") assert.equal(result.profile, "pylint", entry.name);
   }
 });
+test("corpus closure: promoted campaign families preserve declared native results", async () => {
+  const promoted = new Set(["bun-install", "bun-test", "cargo-bench", "cargo-fetch", "cargo-fmt", "cargo-nextest",
+    "esbuild", "go-bench", "go-build", "golangci-lint", "jest", "markdownlint", "next", "npm-install",
+    "pip-install", "playwright", "prettier", "pytest", "rollup", "stylelint", "uv-install", "vite", "vitest", "webpack", "yarn-install"]);
+  const entries = await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url)));
+  for (const family of promoted) {
+    const captures = entries.filter(entry => entry.family === family);
+    assert.ok(captures.length > 0, family);
+    for (const entry of captures) {
+      const result = filter(entry.observation);
+      assert.equal(result.status, entry.status, entry.name);
+      assert.equal("replacement" in result ? result.replacement : entry.observation.output, entry.expected, entry.name);
+      if (entry.status === "passthrough") assert.equal("replacement" in result, false, entry.name);
+    }
+  }
+});

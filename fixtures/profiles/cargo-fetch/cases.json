@@ -1,0 +1,814 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "cargo-fetch",
+  "state": "CAPTURED",
+  "baseline": "71bcaea",
+  "versions": {
+    "cargo": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+    "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)"
+  },
+  "platform": "darwin/x64",
+  "root": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf",
+  "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+  "projectHashes": {
+    "bin/Cargo.toml": "8a506b43321f8dd04c2dc4196d518726591022942ed33b45688cc76b672b4ea5",
+    "bin/build.rs": "d1d95aa71c6a99c2d9c9c9489b5743a8884cbd57632bb4f5fea1d29be10bae37",
+    "bin/src/main.rs": "a472a082b61c9b3b3e9f712568741ba397b8db56826dbb062a40b5db547a5644",
+    "fetch/Cargo.lock": "0372e470fd6a0ad6cbd5458262df346403bfabd297f66d5afda24c358e8617f9",
+    "fetch/Cargo.toml": "b91fe8d0a8cf6e56c742e69b98c6935d74fabbc8d84b430cb7ce3da932929a82",
+    "fetch/src/lib.rs": "8740e0bdc28149c6b4fd0bb198f313d807af659b400fa54865f3bc38a02194df",
+    "locked-missing/Cargo.toml": "b91fe8d0a8cf6e56c742e69b98c6935d74fabbc8d84b430cb7ce3da932929a82",
+    "locked-missing/src/lib.rs": "8740e0bdc28149c6b4fd0bb198f313d807af659b400fa54865f3bc38a02194df",
+    "resolution-failure/Cargo.toml": "e829b085542675514a4638b436e8dd588721818f29f14dab9e54f0a14c1456f5",
+    "resolution-failure/src/lib.rs": "8740e0bdc28149c6b4fd0bb198f313d807af659b400fa54865f3bc38a02194df"
+  },
+  "archives": [
+    "install-cold/executable-output.txt",
+    "install-already-installed/executable-output.txt",
+    "install-cache-force/executable-output.txt",
+    "install-features/executable-output.txt",
+    "install-collision/executable-output.txt",
+    "install-collision-verbose/executable-output.txt"
+  ],
+  "cases": [
+    {
+      "id": "fetch-cold",
+      "name": "cargo-fetch-fetch-cold",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch"
+      ],
+      "command": "cargo fetch",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/fetch",
+      "started": "2026-10-09T14:46:02.364Z",
+      "elapsedMs": 583.710115,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-cold/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 190,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": null,
+      "installRoot": null,
+      "provenance": {
+        "sha256": "4bb3b4260b3d0a4cf1dae93132f53df86685c5350d9ce28e6229de9fd351f41c",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "fetch-cache",
+      "name": "cargo-fetch-fetch-cache",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch"
+      ],
+      "command": "cargo fetch",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/fetch",
+      "started": "2026-10-09T14:46:02.952Z",
+      "elapsedMs": 56.49174699999992,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-cache/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 0,
+      "eof": "empty",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "fetch-cold",
+      "installRoot": null,
+      "provenance": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "fetch-locked",
+      "name": "cargo-fetch-fetch-locked",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "command": "cargo fetch --locked",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/fetch",
+      "started": "2026-10-09T14:46:03.009Z",
+      "elapsedMs": 54.68005299999993,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-locked/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 0,
+      "eof": "empty",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "fetch-cold",
+      "installRoot": null,
+      "provenance": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "fetch-offline-cache",
+      "name": "cargo-fetch-fetch-offline-cache",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch",
+        "--offline",
+        "--locked"
+      ],
+      "command": "cargo fetch --offline --locked",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/fetch",
+      "started": "2026-10-09T14:46:03.064Z",
+      "elapsedMs": 58.009038999999916,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-offline-cache/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 0,
+      "eof": "empty",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "fetch-cold",
+      "installRoot": null,
+      "provenance": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "fetch-offline-cold-failure",
+      "name": "cargo-fetch-fetch-offline-cold-failure",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch",
+        "--offline",
+        "--locked"
+      ],
+      "command": "cargo fetch --offline --locked",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/fetch",
+      "started": "2026-10-09T14:46:03.123Z",
+      "elapsedMs": 56.39392299999997,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 101
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-offline-cold-failure/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 387,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/empty-cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": null,
+      "installRoot": null,
+      "provenance": {
+        "sha256": "b44ac3c147462f3b02f9bc9448b77a5a632adbf79bd5bbbc47a1f04d2e121371",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "fetch-locked-missing-failure",
+      "name": "cargo-fetch-fetch-locked-missing-failure",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "command": "cargo fetch --locked",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/locked-missing",
+      "started": "2026-10-09T14:46:03.183Z",
+      "elapsedMs": 111.12650599999984,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 101
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-locked-missing-failure/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 333,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "fetch-cold",
+      "installRoot": null,
+      "provenance": {
+        "sha256": "5e8bf95942caf849ceb55d1d9c8b6cfbeb3f4a146ecd3ac5bfa7ec574ef2cf1f",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "fetch-resolution-failure",
+      "name": "cargo-fetch-fetch-resolution-failure",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "fetch"
+      ],
+      "command": "cargo fetch",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/resolution-failure",
+      "started": "2026-10-09T14:46:03.299Z",
+      "elapsedMs": 108.292461,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 101
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "fetch-resolution-failure/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 355,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "fetch-cold",
+      "installRoot": null,
+      "provenance": {
+        "sha256": "9db44e26a9a81f8742cfbd70b74830dcb43e0ec10daa8444c23316eec23cefdc",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    },
+    {
+      "id": "install-cold",
+      "name": "cargo-fetch-install-cold",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--path",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root"
+      ],
+      "command": "cargo install --path /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "started": "2026-10-09T14:46:03.408Z",
+      "elapsedMs": 1555.2100119999998,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-cold/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1546,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": null,
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "94f103fd623cf5408322c571b69ec47802ff2fa643d64f69816ff2945fcf9a31",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      },
+      "artifacts": [
+        {
+          "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin",
+          "sha256": "28fcaac30ddf4d5dfcf7282f03a6993724a1a60ef42dda842cbf7daa5d5cd8a3",
+          "bytes": 422016,
+          "mode": 33261,
+          "execution": {
+            "argv": [
+              "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin"
+            ],
+            "exit": 0,
+            "file": "install-cold/executable-output.txt",
+            "sha256": "81fc91766fc6f7cc5d51ef3022d3979935a443687163bf171bc1f6afd7350ef7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "install-already-installed",
+      "name": "cargo-fetch-install-already-installed",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--path",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root"
+      ],
+      "command": "cargo install --path /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "started": "2026-10-09T14:46:05.306Z",
+      "elapsedMs": 92.04370199999994,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-already-installed/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1540,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "install-cold",
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "1fcc79248632ba2b205c86c27a23b18b52f6a8dab51e811151a0b79387dcfbab",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      },
+      "artifacts": [
+        {
+          "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin",
+          "sha256": "28fcaac30ddf4d5dfcf7282f03a6993724a1a60ef42dda842cbf7daa5d5cd8a3",
+          "bytes": 422016,
+          "mode": 33261,
+          "execution": {
+            "argv": [
+              "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin"
+            ],
+            "exit": 0,
+            "file": "install-already-installed/executable-output.txt",
+            "sha256": "81fc91766fc6f7cc5d51ef3022d3979935a443687163bf171bc1f6afd7350ef7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "install-cache-force",
+      "name": "cargo-fetch-install-cache-force",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--path",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+        "--force"
+      ],
+      "command": "cargo install --path /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root --force",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "started": "2026-10-09T14:46:05.725Z",
+      "elapsedMs": 88.39538399999992,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-cache-force/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1540,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "install-cold",
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "10c19431739fbfda9f48a738d97c19f1d1d563c851e85f9a01b6dbb427ae0708",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      },
+      "artifacts": [
+        {
+          "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin",
+          "sha256": "28fcaac30ddf4d5dfcf7282f03a6993724a1a60ef42dda842cbf7daa5d5cd8a3",
+          "bytes": 422016,
+          "mode": 33261,
+          "execution": {
+            "argv": [
+              "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin"
+            ],
+            "exit": 0,
+            "file": "install-cache-force/executable-output.txt",
+            "sha256": "81fc91766fc6f7cc5d51ef3022d3979935a443687163bf171bc1f6afd7350ef7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "install-features",
+      "name": "cargo-fetch-install-features",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--path",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+        "--force",
+        "--features",
+        "extra"
+      ],
+      "command": "cargo install --path /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root --force --features extra",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "started": "2026-10-09T14:46:06.144Z",
+      "elapsedMs": 898.703465,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-features/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1664,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": "install-cache-force",
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "9cfe7fe609ce05a9a5a832e595a2fb153aade7134e0cbefef7ee08348ed296fa",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      },
+      "artifacts": [
+        {
+          "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin",
+          "sha256": "d7946e4ade2a229491995e0973a0cc689ae68261b5f7e9de7e52442b5d41be89",
+          "bytes": 422016,
+          "mode": 33261,
+          "execution": {
+            "argv": [
+              "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin"
+            ],
+            "exit": 0,
+            "file": "install-features/executable-output.txt",
+            "sha256": "28fd24866c4912be08a9e11401653b22a1dd0e433986191db5b2714c29e29b65"
+          }
+        }
+      ]
+    },
+    {
+      "id": "install-collision",
+      "name": "cargo-fetch-install-collision",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--path",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+        "--force",
+        "--features",
+        "collision"
+      ],
+      "command": "cargo install --path /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root --force --features collision",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "started": "2026-10-09T14:46:07.376Z",
+      "elapsedMs": 907.7732589999996,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-collision/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1767,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": null,
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "92024b20093199ce2f2bf07b4141cefaacea8d76819488538f8fa3957c928802",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      },
+      "artifacts": [
+        {
+          "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin",
+          "sha256": "bad353afc343473c302f98a2d61c36c0f6cd5ed1a6a49defdb08789240ad0779",
+          "bytes": 422016,
+          "mode": 33261,
+          "execution": {
+            "argv": [
+              "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin"
+            ],
+            "exit": 0,
+            "file": "install-collision/executable-output.txt",
+            "sha256": "81fc91766fc6f7cc5d51ef3022d3979935a443687163bf171bc1f6afd7350ef7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "install-collision-verbose",
+      "name": "cargo-fetch-install-collision-verbose",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--path",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+        "--force",
+        "--features",
+        "collision",
+        "-vv"
+      ],
+      "command": "cargo install --path /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root --force --features collision -vv",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "started": "2026-10-09T14:46:08.609Z",
+      "elapsedMs": 1159.2246260000002,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-collision-verbose/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 8386,
+      "eof": "LF",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/collision-target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "cacheFrom": null,
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "df7b8d80f1a4ad531279d1e199a50cfc2017ce51568da429f9e05faced2d2472",
+        "record": "SOURCES.md",
+        "recipe": "capture.mjs",
+        "recipeSHA256": "c56b119f2b0ba4a5a65e8df07b9953f6432f0fa387cdd46fb8625686591f0c6d",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      },
+      "artifacts": [
+        {
+          "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin",
+          "sha256": "bad353afc343473c302f98a2d61c36c0f6cd5ed1a6a49defdb08789240ad0779",
+          "bytes": 422016,
+          "mode": 33261,
+          "execution": {
+            "argv": [
+              "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root/bin/c08-local-bin"
+            ],
+            "exit": 0,
+            "file": "install-collision-verbose/executable-output.txt",
+            "sha256": "81fc91766fc6f7cc5d51ef3022d3979935a443687163bf171bc1f6afd7350ef7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "install-list-already-installed",
+      "name": "cargo-fetch-install-list-already-installed",
+      "family": "cargo-fetch",
+      "version": "cargo 1.98.0 (797e8a9bc 2026-08-05)",
+      "platform": "darwin/x64",
+      "argv": [
+        "cargo",
+        "install",
+        "--list",
+        "--root",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root"
+      ],
+      "command": "cargo install --list --root /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/project/bin",
+      "environment": {
+        "CARGO_HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/cargo-home",
+        "CARGO_TARGET_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/collision-target",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/tmp",
+        "CARGO_TERM_COLOR": "never",
+        "CARGO_TERM_PROGRESS_WHEN": "never",
+        "RUSTUP_TOOLCHAIN": "1.98.0"
+      },
+      "started": "2026-10-09T14:47:36.528Z",
+      "elapsedMs": 60.31727,
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "install-list-already-installed/native.txt",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 130,
+      "eof": "LF",
+      "cacheFrom": "install-collision-verbose",
+      "installRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/install-root",
+      "provenance": {
+        "sha256": "a8d55c4887067962ff0ab5624e3ec52d41ccbbba1d075f119e1363b5d7bc43a2",
+        "record": "SOURCES.md",
+        "recipe": "capture-installed-state.mjs",
+        "recipeSHA256": "3846d1e04dde3f58e5b3acda6b4dfc091c7cb4e381f3fdff51b090f04b0b36b9",
+        "completedStream": true,
+        "boundary": "shared file descriptor stdout=stderr; waited for process exit; no normalization"
+      }
+    }
+  ],
+  "download": {
+    "package": "itoa",
+    "version": "1.0.15",
+    "sha256": "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c",
+    "vcsCommit": "e2766b868e4ac1ae2bf5bea1ac43d4c0da23b899",
+    "license": "MIT OR Apache-2.0",
+    "repository": "https://github.com/dtolnay/itoa",
+    "modification": "none; fetched by Cargo, not vendored"
+  }
+}

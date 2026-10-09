@@ -1,0 +1,11 @@
+markdownlint-cli2 v0.23.3 (markdownlint v0.41.1)
+Finding: **/*.md !ignored/**
+Found:
+ clean.md
+ errors.md
+ path spaces/café 🧪.md
+Linting: 3 files
+Summary: 3 issues in 2 files
+errors.md:5:11 error MD033/no-inline-html Inline HTML [Element: b]
+errors.md:7 error MD025/single-title/single-h1 Multiple top-level headings in the same document [Context: "Second title"]
+path spaces/café 🧪.md:3:9 error MD033/no-inline-html Inline HTML [Element: b]

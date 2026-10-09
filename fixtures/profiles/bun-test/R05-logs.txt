@@ -1,0 +1,12 @@
+bun test v1.3.14 (0d9b296a)
+
+log.test.ts:
+user stdout α: preserve both occurrences
+user stdout α: preserve both occurrences
+user stderr β: preserve order at merged boundary
+(pass) opaque user logs [0.47ms]
+
+ 1 pass
+ 0 fail
+ 1 expect() calls
+Ran 1 test across 1 file. [95.00ms]

@@ -1,0 +1,5 @@
+{
+  "config": { "MD019": false },
+  "ignores": ["ignored/**"],
+  "showFound": true
+}

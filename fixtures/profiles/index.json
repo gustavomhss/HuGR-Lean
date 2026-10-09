@@ -1,5 +1,5 @@
 {
   "schema": "hugr-lean/native-index/1",
-  "exactFamilies": ["cargo-doc", "mypy", "shellcheck"],
-  "families": ["biome", "cargo-build", "cargo-clippy", "cargo-doc", "cargo-test", "eslint", "go-mod", "go-test-json", "go-test-text", "mypy", "pnpm-install", "pylint", "pyright", "ruff", "shellcheck", "tsc"]
+  "exactFamilies": ["bun-install", "bun-test", "cargo-bench", "cargo-doc", "cargo-fetch", "cargo-fmt", "cargo-nextest", "esbuild", "go-bench", "go-build", "golangci-lint", "markdownlint", "mypy", "next", "npm-install", "pip-install", "playwright", "prettier", "rollup", "shellcheck", "stylelint", "uv-install", "vite", "webpack", "yarn-install"],
+  "families": ["biome", "bun-install", "bun-test", "cargo-bench", "cargo-build", "cargo-clippy", "cargo-doc", "cargo-fetch", "cargo-fmt", "cargo-nextest", "cargo-test", "esbuild", "eslint", "go-bench", "go-build", "go-mod", "go-test-json", "go-test-text", "golangci-lint", "jest", "markdownlint", "mypy", "next", "npm-install", "pip-install", "playwright", "pnpm-install", "prettier", "pylint", "pyright", "pytest", "rollup", "ruff", "shellcheck", "stylelint", "tsc", "uv-install", "vite", "vitest", "webpack", "yarn-install"]
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"split-DRvdUt9e.mjs","sources":["../../split.js"],"sourcesContent":["export const load = () => import('./lazy.js');\nexport { answer } from './shared.js';\n"],"names":[],"mappings":";;AAAY,MAAC,IAAI,GAAG,MAAM,OAAO,4BAAW;;;;"}

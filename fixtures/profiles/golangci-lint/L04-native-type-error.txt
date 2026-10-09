@@ -1,0 +1,5 @@
+broken/broken.go:1: : # example.invalid/l04/broken
+broken/broken.go:3:28: undefined: undefinedName (typecheck)
+package broken
+1 issues:
+* typecheck: 1

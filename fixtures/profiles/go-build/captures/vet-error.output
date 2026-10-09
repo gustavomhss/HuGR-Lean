@@ -1,0 +1,1 @@
+lib/vetbad.go:7:32: fmt.Printf format %d has arg "native vet diagnostic" of wrong type string

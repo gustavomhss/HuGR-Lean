@@ -1,0 +1,18 @@
+{
+  "state": "CAPTURE_ONLY_NOT_IMPLEMENTED",
+  "author": "Independent literal transcription; no SUT/filter invocation",
+  "proposals": [
+    {
+      "name": "P04/chalk-cold",
+      "disposition": "potential-reduction-pending-full-grammar-and-producer-safety-review",
+      "inputBytes": 176,
+      "outputBytes": 113,
+      "potentialRemovableBytes": 63,
+      "sha256": "2434915e3022f82160d1832775bc39a0a4bfa7fab7bf66d194b6168d0391060b",
+      "output": "bun install v1.3.14 (0d9b296a)\nSaved lockfile\n\n+ chalk@4.1.2 (v6.0.1 available)\n\n6 packages installed [282.00ms]\n",
+      "removeOnly": ["Resolving dependencies\n", "Resolved, downloaded and extracted [24]\n"],
+      "required": ["bun install v1.3.14 (0d9b296a)", "Saved lockfile", "+ chalk@4.1.2 (v6.0.1 available)", "6 packages installed [282.00ms]"],
+      "conditions": "Original argv includes --ignore-scripts; successful complete boundary; validate entire bounded version-pinned grammar and consistent summary. No safe backend claim from shape alone. Preserve every warning, advice, dependency/version, timing and summary count. New or ambiguous text refuses. Enabled script cases stay exact."
+    }
+  ]
+}

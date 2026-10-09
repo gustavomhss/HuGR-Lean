@@ -1,0 +1,308 @@
+{
+  "recipe": "recompute raw input, authored source recipe, retained manifest and historical checkpoint byte correspondence; no parser or test execution",
+  "cases": [
+    {
+      "name": "B02-node-version",
+      "file": "B02-node-version.txt",
+      "bytes": 9,
+      "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete"
+    },
+    {
+      "name": "B02-npm-version",
+      "file": "B02-npm-version.txt",
+      "bytes": 7,
+      "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete"
+    },
+    {
+      "name": "B02-install",
+      "file": "B02-install.txt",
+      "bytes": 25,
+      "sha256": "7ae091174250d43acec8810223cdfae19a3902823694ecbfeb884a0b5bc78fa0",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete"
+    },
+    {
+      "name": "B02-next-version",
+      "file": "B02-next-version.txt",
+      "bytes": 16,
+      "sha256": "2cf0fd9c1a1998e166e54197159106a61f1e4a1f2da59c9b1841a103d4e1a848",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete"
+    },
+    {
+      "name": "B02-routes",
+      "file": "B02-routes.txt",
+      "bytes": 299,
+      "sha256": "3bf42da290f8281f5b6e3f18abf3eaf159cf40d279da878aa7032b89a60199c1",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "timed_out"
+      },
+      "completeness": "truncated",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {}
+    },
+    {
+      "name": "B02-routes-retry",
+      "file": "B02-routes-retry.txt",
+      "bytes": 1337,
+      "sha256": "5baa9d8264f02a2e4359693c22eb0d07de15ffcd80773594b03b7b23c4f1709b",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {
+        ".next/BUILD_ID": true,
+        ".next/build-manifest.json": true,
+        ".next/prerender-manifest.json": true,
+        ".next/routes-manifest.json": true,
+        ".next/server/pages-manifest.json": true
+      }
+    },
+    {
+      "name": "B02-css-warning",
+      "file": "B02-css-warning.txt",
+      "bytes": 2913,
+      "sha256": "e2cb766538926f356970466b3d773a12ad9aa3b70165e3f51faa6f223db8799e",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true,
+        "pages/_app.tsx": true,
+        "style.css": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {
+        ".next/BUILD_ID": true,
+        ".next/build-manifest.json": true,
+        ".next/prerender-manifest.json": true,
+        ".next/routes-manifest.json": true,
+        ".next/server/pages-manifest.json": true
+      }
+    },
+    {
+      "name": "B02-config-warning",
+      "file": "B02-config-warning.txt",
+      "bytes": 1521,
+      "sha256": "d03b3bd92986e2484e1827e90bfe8f9bdecc4d5a4bf36dbf6d3e72530f43f890",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {
+        ".next/BUILD_ID": true,
+        ".next/build-manifest.json": true,
+        ".next/prerender-manifest.json": true,
+        ".next/routes-manifest.json": true,
+        ".next/server/pages-manifest.json": true
+      }
+    },
+    {
+      "name": "B02-typecheck-failure",
+      "file": "B02-typecheck-failure.txt",
+      "bytes": 818,
+      "sha256": "63f6d8af3d02608c60780b3de4095b3d7c171760740a0753c8d7741eaa737cbc",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {}
+    },
+    {
+      "name": "B02-build-failure",
+      "file": "B02-build-failure.txt",
+      "bytes": 486,
+      "sha256": "c09c7fe2a231c61abb7dc40f1078b721c0aa3509fdfe3ea742bacb707c505098",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {
+        ".next/server/pages-manifest.json": true
+      }
+    },
+    {
+      "name": "B02-config-collision",
+      "file": "B02-config-collision.txt",
+      "bytes": 1780,
+      "sha256": "e5719d97c2d75a8de1ba2ce61bd0c9c01e6038b6e81ef28b63a9999034465aa7",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {
+        ".next/BUILD_ID": true,
+        ".next/build-manifest.json": true,
+        ".next/prerender-manifest.json": true,
+        ".next/routes-manifest.json": true,
+        ".next/server/pages-manifest.json": true
+      }
+    },
+    {
+      "name": "B02-plugin-collision",
+      "file": "B02-plugin-collision.txt",
+      "bytes": 1555,
+      "sha256": "aa0a5fb4298e4a9d4a1677fbc9621aacd7feadd398e5c77e1016cc817128229c",
+      "matchesReceipt": true,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "recipeHashCorrespondence": {
+        "package.json": true,
+        "next.config.js": true,
+        "tsconfig.json": true,
+        "next-env.d.ts": true,
+        "pages/index.tsx": true,
+        "pages/dynamic.tsx": true,
+        "pages/blog/[slug].tsx": true
+      },
+      "generatedNextEnvCorrespondence": true,
+      "retainedManifestHashes": {
+        ".next/BUILD_ID": true,
+        ".next/build-manifest.json": true,
+        ".next/prerender-manifest.json": true,
+        ".next/routes-manifest.json": true,
+        ".next/server/pages-manifest.json": true
+      }
+    }
+  ],
+  "historical": [
+    {
+      "file": "capture-receipt.json",
+      "sha256": "25bbf8e501a3b144cf020e17f52a98a8ef21ac3e49fc4302ef7889b6d23fce0c",
+      "unchangedSinceENOSPCCheckpoint": true
+    },
+    {
+      "file": "bootstrap-failure.json",
+      "sha256": "9ba3e9c293ca91023eb312af55a937f9932966b061c68fa0dde42221f110077a",
+      "unchangedSinceENOSPCCheckpoint": true
+    },
+    {
+      "file": "bootstrap-node-version.log",
+      "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+      "unchangedSinceENOSPCCheckpoint": true
+    },
+    {
+      "file": "bootstrap-npm-version.log",
+      "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+      "unchangedSinceENOSPCCheckpoint": true
+    },
+    {
+      "file": "source-recipes.json",
+      "sha256": "5e346876bf120c57acaac867b84b41d07f2d796c82c7648096d62a9a94d3bb87",
+      "unchangedSinceENOSPCCheckpoint": true
+    }
+  ],
+  "generatedNextEnv": {
+    "file": "generated-next-env.d.ts.txt",
+    "sha256": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276"
+  },
+  "hashCalibration": {
+    "case": "B02-node-version",
+    "unchangedMatches": true,
+    "inMemoryAppendedNulMatches": false,
+    "fileModified": false
+  },
+  "reach": "Artifact byte correspondence only; independent corpus/filter preservation verification remains lead-owned"
+}

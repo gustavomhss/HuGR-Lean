@@ -1,0 +1,2 @@
+import external from 'b04-absent-dependency';
+export { default } from 'b04-absent-dependency';

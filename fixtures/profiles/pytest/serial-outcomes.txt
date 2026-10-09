@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f
+collected 5 items
+
+test_outcomes.py ..xXs                                                   [100%]
+
+=================================== XPASSES ====================================
+=========================== short test summary info ============================
+SKIPPED [1] test_outcomes.py:9: R01 worker skip
+XFAIL test_outcomes.py::test_outcome[xfail] - R01 expected café 雪 🧪
+XPASS test_outcomes.py::test_outcome[xpass] - R01 unexpected pass
+============== 2 passed, 1 skipped, 1 xfailed, 1 xpassed in 0.23s ==============

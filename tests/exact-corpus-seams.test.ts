@@ -23,7 +23,9 @@ const installedCoverage = new Function("assert", `return (${embedded});`)(assert
 
 test("exact seams accept declared real corpus and expose old guard counterexample", async () => {
   const cases = await readNativeCorpus(path.join(root, "fixtures/profiles"));
-  assert.deepEqual(cases.exactFamilies, ["cargo-doc", "mypy", "shellcheck"]);
+  const declared = JSON.parse(await readFile(path.join(root, "fixtures/profiles/index.json"), "utf8"));
+  assert.deepEqual(cases.exactFamilies, declared.exactFamilies);
+  for (const original of ["cargo-doc", "mypy", "shellcheck"]) assert.ok(cases.exactFamilies.includes(original));
   // Legacy witnesses supply runtime families not promoted into native delta directories yet.
   const all = Object.assign([...cases, ...profiles.filter(profile => !cases.some(entry => entry.family === profile.id)).map(profile => row(profile.id))],
     { exactFamilies: cases.exactFamilies });

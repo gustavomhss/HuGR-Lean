@@ -1,0 +1,14 @@
+PASS ./snapshot.test.cjs
+  ✓ snapshot café 🔥 (16 ms)
+
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |     100 |       50 |     100 |     100 |                   
+ math.cjs |     100 |       50 |     100 |     100 | 1                 
+----------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   1 passed, 1 total
+Time:        1.579 s
+Ran all test suites matching snapshot.test.cjs.

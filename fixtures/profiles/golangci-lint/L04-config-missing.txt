@@ -1,0 +1,2 @@
+Error: can't load config: can't read viper config: open missing.yml: no such file or directory
+The command is terminated due to an error: can't load config: can't read viper config: open missing.yml: no such file or directory

@@ -158,7 +158,7 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | P01 | CAPTURED | campaign/native-v2/P01 / #73 | No meaningful progress observed in captured pipe outputs; successful peer-warning case incomplete |
 | C04 | CAPTURED | campaign/native-v2/C04 / #87 | rustfmt silent success and nonzero diffs; no removable material found |
 | C05 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/C05 / #92 | Human-approved bounded exact corpus; zero reduction; native Checking/nonhost target/no-offline/config gaps explicit |
-| C06 | BLOCKED | campaign/native-v2/C06 / #88 | Stable toolchains reject builtin bench; arbitrary custom harness retained, native metrics unproven |
+| C06 | EXACT_CORPUS_INTEGRATED | campaign/cargo-bench-actions / #122 | Real builtin bench captured on Actions/Linux/nightly-2026-10-08; metrics and custom output retained |
 | G03 | CAPTURED | campaign/native-v2/G03 / #90 | Bench metrics/logs retained; nested-progress deletion not approved |
 | G04 | CAPTURED | campaign/native-v2/G04 / #91 | Build/vet/run silent or meaningful output; no reduction proposed |
 | G05 | INTEGRATED | campaign/native-v2/G05 / #89 | Paired default go-get downloads; SemVer precedence, major pairing and Go path constraints independently reviewed |
@@ -183,11 +183,14 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | B02 | CAPTURED | campaign/native-v2/B02 / #113 | Next bounded tiny builds/routes/artifacts/typechecks/warnings/collisions; ENOSPC and timeout history retained |
 | R01 | CAPTURED | campaign/native-v2/R01 / #112 | pytest 9.0.3/xdist 3.8.0 delta only; baseline anchors reused, default-filter admission pending |
 | R02 | CAPTURED | campaign/native-v2/R02 / #114 | Jest package 30.2.0/native CLI 30.1.3; projects/coverage/reporters/snapshots/log delta |
-| R03 | CAPTURED_FIX_PENDING | campaign/native-v2/R03 / #116 | Vitest 3.2.4 delta; configured reporter proved existing timing-deletion bug, preservation repair reviewed |
+| R03 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/R03 / #116 | Vitest 3.2.4 delta; configured reporter preserved whole; old unsafe golden remains historical archive |
 | R04 | CAPTURED | campaign/native-v2/R04 / #115 | Playwright 1.56.1 API reporters plus real isolated Chromium 1194/two viewport projects/screenshots; no cross-engine claim |
 | R05 | CAPTURED | campaign/native-v2/R05 / #111 | Bun 1.3.14 suites/skips/todo/logs/coverage/retries/reruns/collision evidence; admission pending |
 
-All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
+All 41 family directories now have independently reviewed bounded native evidence in the promoted
+index. Receipt rows still labeled CAPTURED above are now exact-corpus imports, not newly implemented
+reducers. Explicit missing variants and safe-format work remain open; directory enrollment is not
+full-family completion. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
 claim that the full campaign is complete. Source/checkpoint SHA and detailed probes live in each PR.
 Lead corpus wiring checks family absence/extra, local references, declared receipt bindings, raw hashes
@@ -258,6 +261,28 @@ nonempty/missing/extra/stale exceptions still checked. Both integrated; combined
 validator. Independent real-world oracle strengthened to require whole Vitest rows. A timing-only
 mutation initially remained green because only one of two rows changed; the revised control removes
 both timing suffixes, fails under the old oracle, then passes after restoration. Scoped typing passed.
+Final capture promotion checkpoint: fixture-only source imports from normalized `877343e`,
+Jest `362457b`, Playwright `1ce9ad0`, and the independently reviewed original producer checkpoints.
+All 1,284 staged imported paths and blobs match their exact approved Git sources. Capture-only
+workflow excluded; the lead's full-CI workflow blob remains `d035bbf40e8ae3f97f1f97cc294f784b82ed7688`.
+The new promoted-family default-filter closure, declared exact-ledger closure and scoped typing passed.
+Runtime families pytest/Jest/Vitest remain registered; exact exceptions cannot mask them. No new stub.
+Jest repair PR #121 `0640297` and actual config-only capture PR #120 `362457b` independently approved:
+PASS and leaf markers remain whole source rows; plain reductions withdrawn; installed goldens and
+independent real-world oracle strengthened. Whole-row native witnesses now retain 160 and 196 bytes.
+The reader additionally binds declared EOF, final-LF and byte-tail facts. Three separate guard bypasses
+made the named receipt test fail; each restored guard passed. Legacy omissions grant no new EOF proof.
+Playwright's read-time audit was repaired after independent controls exposed nonempty body corruption
+and Python bool/int equality. Typed field validation precedes equality; all 14 original captures pass,
+coordinated body/type/retry/path/screenshot corruptions fail. Captures unchanged; auditor history pinned.
+User explicitly steered builtin bench to Actions rather than local nightly. Native run
+`https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069` succeeded; capture/workflow/checkout
+SHA `da4c7601ad37cd1305c1ecd52733a84ee8dcc769`, artifact SHA-256
+`6f9f5925813f335cbc543ffa729d064cbcff9bb0b8ed01dbcf914e4808908bbd`, Rust source commit
+`1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6`. Seven real builtin/custom cases independently verified;
+the earlier invalid workflow failed before jobs. This native capture run is not final package CI.
+Remaining focused supplements include successful npm peer-warning, Yarn dependency deprecation,
+Bun trusted-dependency execution, successful Go cross-target, and additional rustfmt/doc witnesses.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.

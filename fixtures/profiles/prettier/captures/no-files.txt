@@ -1,0 +1,3 @@
+Checking formatting...
+[error] No files matching the pattern were found: "missing-*.js".
+All matched files use Prettier code style!

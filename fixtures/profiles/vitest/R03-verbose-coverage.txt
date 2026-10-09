@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p
+      Coverage enabled with v8
+
+stdout | alpha.test.js > alpha suite café > retry succeeds second attempt
+R03_RETRY_ATTEMPT=1
+
+stdout | alpha.test.js > alpha suite café > retry succeeds second attempt
+R03_RETRY_ATTEMPT=2
+
+ ✓ |alpha| alpha.test.js > alpha suite café > retry succeeds second attempt 265ms
+stdout | alpha.test.js > alpha suite café > stdout and stderr evidence
+R03_STDOUT alpha café
+
+stderr | alpha.test.js > alpha suite café > stdout and stderr evidence
+R03_STDERR alpha warning
+
+ ✓ |alpha| alpha.test.js > alpha suite café > stdout and stderr evidence 2ms
+ ↓ |alpha| alpha.test.js > alpha suite café > R03_SKIP unavailable service
+ ↓ |alpha| alpha.test.js > alpha suite café > R03_TODO future branch
+ ✓ |beta| beta.test.js > beta suite > beta passes 12ms
+ ↓ |beta| beta.test.js > beta suite > R03_SKIP beta platform
+ ↓ |beta| beta.test.js > beta suite > R03_FAILURE retry exhausted
+
+ Test Files  2 passed (2)
+      Tests  3 passed | 3 skipped | 1 todo (7)
+   Start at  16:48:39
+   Duration  8.31s (transform 67ms, setup 0ms, collect 179ms, tests 422ms, environment 4ms, prepare 2.70s)
+
+ % Coverage report from v8
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |     100 |      100 |     100 |     100 |                   
+ math.js  |     100 |      100 |     100 |     100 |                   
+----------|---------|----------|---------|---------|-------------------

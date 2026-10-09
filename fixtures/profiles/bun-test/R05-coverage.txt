@@ -1,0 +1,24 @@
+bun test v1.3.14 (0d9b296a)
+
+suite.test.ts:
+(pass) outer suite α > passing leaf [0.48ms]
+(pass) outer suite α > nested suite > nested passing leaf [0.80ms]
+(skip) outer suite α > nested suite > skip: platform feature unavailable
+(todo) outer suite α > nested suite > todo: implement negative branch
+
+second.test.ts:
+(pass) second file identity β [0.40ms]
+(skip) skip: external service unavailable
+------------|---------|---------|-------------------
+File        | % Funcs | % Lines | Uncovered Line #s
+------------|---------|---------|-------------------
+All files   |  100.00 |  100.00 |
+ subject.ts |  100.00 |  100.00 | 
+------------|---------|---------|-------------------
+
+ 3 pass
+ 2 skip
+ 1 todo
+ 0 fail
+ 3 expect() calls
+Ran 6 tests across 2 files. [332.00ms]

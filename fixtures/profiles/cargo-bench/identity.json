@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "candidate-identity-only",
+  "status": "verified",
+  "candidateSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "githubSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "workflowSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "checkoutSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "repository": "gustavomhss/HuGR-Lean",
+  "event": "workflow_dispatch",
+  "workflowRef": "gustavomhss/HuGR-Lean/.github/workflows/ci.yml@refs/heads/campaign/cargo-bench-actions",
+  "runId": "37979866069",
+  "runAttempt": "1",
+  "runnerOs": "Linux",
+  "platform": "linux",
+  "arch": "x64",
+  "node": "v22.23.3",
+  "recordedAt": "2026-10-09T19:23:17.239Z",
+  "errors": []
+}

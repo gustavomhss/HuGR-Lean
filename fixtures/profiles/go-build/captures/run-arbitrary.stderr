@@ -1,0 +1,5 @@
+application stderr
+# example.org/not-a-diagnostic
+./main.go:1:1: user-authored text
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+stderr tail without LF

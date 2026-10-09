@@ -1,0 +1,102 @@
+application stdout: café 🧪
+=== RUN   TestApplication0
+--- PASS: TestApplication0 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication1
+--- PASS: TestApplication1 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication2
+--- PASS: TestApplication2 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication3
+--- PASS: TestApplication3 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication4
+--- PASS: TestApplication4 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication5
+--- PASS: TestApplication5 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication6
+--- PASS: TestApplication6 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication7
+--- PASS: TestApplication7 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication8
+--- PASS: TestApplication8 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication9
+--- PASS: TestApplication9 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication10
+--- PASS: TestApplication10 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication11
+--- PASS: TestApplication11 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication12
+--- PASS: TestApplication12 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication13
+--- PASS: TestApplication13 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication14
+--- PASS: TestApplication14 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication15
+--- PASS: TestApplication15 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication16
+--- PASS: TestApplication16 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication17
+--- PASS: TestApplication17 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication18
+--- PASS: TestApplication18 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication19
+--- PASS: TestApplication19 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication20
+--- PASS: TestApplication20 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication21
+--- PASS: TestApplication21 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication22
+--- PASS: TestApplication22 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+=== RUN   TestApplication23
+--- PASS: TestApplication23 (0.00s)
+PASS
+ok  	example.org/application	0.001s
+stdout tail without LFapplication stderr
+# example.org/not-a-diagnostic
+./main.go:1:1: user-authored text
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+stderr tail without LF

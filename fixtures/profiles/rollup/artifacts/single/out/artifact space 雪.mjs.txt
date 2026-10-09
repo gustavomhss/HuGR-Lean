@@ -1,0 +1,6 @@
+const answer = 42;
+
+console.log('雪😀', answer);
+
+export { answer };
+//# sourceMappingURL=artifact space 雪.mjs.map

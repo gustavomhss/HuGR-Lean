@@ -1,0 +1,9 @@
+
+absent.js → out/missing.mjs...
+[!] RollupError: Could not resolve entry module "absent.js".
+    at getRollupError (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/parseAst.js:285:41)
+    at Object.error (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/parseAst.js:281:42)
+    at ModuleLoader.loadEntryModule (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:22815:32)
+    at async Promise.all (index 0)
+
+

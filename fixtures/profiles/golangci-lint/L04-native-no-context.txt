@@ -1,0 +1,7 @@
+issues/issues.go:12:23: Error return value is not checked (errcheck)
+issues/issues.go:6:2: ineffectual assignment to x (ineffassign)
+issues/issues.go:3:6: func dead is unused (unused)
+3 issues:
+* errcheck: 1
+* ineffassign: 1
+* unused: 1

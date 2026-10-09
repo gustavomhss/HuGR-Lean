@@ -1,0 +1,4 @@
+yarn install v1.22.22
+[1/4] Resolving packages...
+error Couldn't find any versions for "chalk" that matches "4.1.2" in our cache (possible versions are ""). This is usually caused by a missing entry in the lockfile, running Yarn without the --offline flag may help fix this issue.
+info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.

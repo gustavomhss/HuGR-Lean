@@ -1,0 +1,24 @@
+bun test v1.3.14 (0d9b296a)
+
+retry.test.ts:
+retry attempt 1
+1 | import { expect, test } from "bun:test";
+2 | let attempts = 0;
+3 | test("flaky succeeds second attempt", () => {
+4 |   attempts++;
+5 |   console.log(`retry attempt ${attempts}`);
+6 |   expect(attempts).toBeGreaterThanOrEqual(2);
+                       ^
+error: expect(received).toBeGreaterThanOrEqual(expected)
+
+Expected: >= 2
+Received: 1
+
+      at <anonymous> (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project/retry.test.ts:6:20)
+retry attempt 2
+(pass) flaky succeeds second attempt (attempt 2) [0.05ms]
+
+ 1 pass
+ 0 fail
+ 1 expect() calls
+Ran 1 test across 1 file. [95.00ms]

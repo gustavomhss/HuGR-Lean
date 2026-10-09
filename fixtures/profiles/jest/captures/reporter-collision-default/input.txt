@@ -1,0 +1,14 @@
+PASS ./snapshot.test.cjs
+  ✓ snapshot café 🔥 (20 ms)
+
+PASS ./snapshot.test.cjs
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   1 passed, 1 total
+Time:        0.001 s
+Ran all test suites.
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   1 passed, 1 total
+Time:        0.784 s, estimated 2 s
+Ran all test suites matching snapshot.test.cjs.

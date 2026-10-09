@@ -1,0 +1,431 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "stylelint",
+  "archives": [
+    "LICENSE-STYLELINT.txt",
+    "native-warning.layout-candidate.txt",
+    "native-verbose-warning.layout-candidate.txt"
+  ],
+  "cases": [
+    {
+      "name": "L09-native-success",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css",
+      "file": "native-success.txt",
+      "provenance": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-success"
+      }
+    },
+    {
+      "name": "L09-native-errors",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint errors.css",
+      "file": "native-errors.txt",
+      "provenance": {
+        "sha256": "58f9bccd010fc44a6586b51579a3defab697f14926c3934f532471a0b8ece4cd",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-errors"
+      }
+    },
+    {
+      "name": "L09-native-warning",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint warning.css --config warning.config.cjs",
+      "file": "native-warning.txt",
+      "provenance": {
+        "sha256": "a9fcb5000a7c60bf99d28dcee05d309cc20674eb35823534e59d45c66b239fc0",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-warning"
+      }
+    },
+    {
+      "name": "L09-native-multifile-unicode",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css errors.css 'paths with spaces/café 🧪.css'",
+      "file": "native-multifile-unicode.txt",
+      "provenance": {
+        "sha256": "83742467fb1031a7887e6e1d7a407745d4e7bcfb5c3f0273efbeba8702b9a5f9",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-multifile-unicode"
+      }
+    },
+    {
+      "name": "L09-native-verbose-warning",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint warning.css --config warning.config.cjs --formatter verbose",
+      "file": "native-verbose-warning.txt",
+      "provenance": {
+        "sha256": "a53e28f143a2adc029b334f03466b65308f2e91a7d0bfcde229c3bacf618b897",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-verbose-warning"
+      }
+    },
+    {
+      "name": "L09-native-syntax",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint syntax.css",
+      "file": "native-syntax.txt",
+      "provenance": {
+        "sha256": "29b38e38e63b80f0ebb348217c5707ed7c159a38a34b1735baef674e63ae3fcf",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-syntax"
+      }
+    },
+    {
+      "name": "L09-config-missing",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config missing.config.cjs",
+      "file": "config-missing.txt",
+      "provenance": {
+        "sha256": "06185ca9cbfaf58b310ae11dda76c1a004943ba54d87655aabde7e142b670555",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-config-missing"
+      }
+    },
+    {
+      "name": "L09-config-unknown-rule",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config bad.config.cjs",
+      "file": "config-unknown-rule.txt",
+      "provenance": {
+        "sha256": "878406887185ab71fd96b359389b7b084f6f501d4eaa70a450186f55a29e71cf",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-config-unknown-rule"
+      }
+    },
+    {
+      "name": "L09-config-syntax",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config broken.config.cjs",
+      "file": "config-syntax.txt",
+      "provenance": {
+        "sha256": "feda85cd45bfac280c956c9bbae2e426e69cf6da4e787c7df41e0955fc347b6b",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-config-syntax"
+      }
+    },
+    {
+      "name": "L09-json-success",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --formatter json",
+      "file": "json-success.txt",
+      "provenance": {
+        "sha256": "82f07078aecf9d5d304e53ec3eb7ef2d92f930a2f0349c3831b56be8191757ee",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-json-success"
+      }
+    },
+    {
+      "name": "L09-json-warning",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint warning.css --config warning.config.cjs --formatter json",
+      "file": "json-warning.txt",
+      "provenance": {
+        "sha256": "77627c0318505968188526ef0def9f16cc58a56a49c950a8afd5c440adc9ed48",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-json-warning"
+      }
+    },
+    {
+      "name": "L09-json-multifile-unicode",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css errors.css 'paths with spaces/café 🧪.css' --formatter json",
+      "file": "json-multifile-unicode.txt",
+      "provenance": {
+        "sha256": "c3313869c0ff89d5369a4ceacf6062c13a7d9fee063d2fad928c1e8d5ed6498a",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-json-multifile-unicode"
+      }
+    },
+    {
+      "name": "L09-json-syntax",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint syntax.css --formatter json",
+      "file": "json-syntax.txt",
+      "provenance": {
+        "sha256": "7e31c32f34169e81b0576d5a2d74954230cf06a6c3834087d90ac1878b4ea6cd",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-json-syntax"
+      }
+    },
+    {
+      "name": "L09-native-fix-success",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint fix-clean.css --fix",
+      "file": "native-fix-success.txt",
+      "provenance": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-fix-success"
+      }
+    },
+    {
+      "name": "L09-native-fix-errors",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint fix.css --fix",
+      "file": "native-fix-errors.txt",
+      "provenance": {
+        "sha256": "594179b01ecf9dca0db6f51bc8ada9f12c87dc1842f16faa188cf764979e9b92",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-native-fix-errors"
+      }
+    },
+    {
+      "name": "L09-json-fix-success",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint fix-clean.css --fix --formatter json",
+      "file": "json-fix-success.txt",
+      "provenance": {
+        "sha256": "c6f031a393c5bd6480b66a158049ce6b1fd2cb5c68fc1b3d188f87b55d8bf80b",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-json-fix-success"
+      }
+    },
+    {
+      "name": "L09-json-fix-errors",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint fix.css --fix --formatter json",
+      "file": "json-fix-errors.txt",
+      "provenance": {
+        "sha256": "89565d4a137e94d63417aacf79c4cf335dec0029424ae8cc4be93820f1bb5ac5",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-json-fix-errors"
+      }
+    },
+    {
+      "name": "L09-config-stdout-native",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config collision.config.cjs",
+      "file": "config-stdout-native.txt",
+      "provenance": {
+        "sha256": "fba519229b43506abc2eb9cfaead48bb3da2e1e5235cf2400b4079561eb90c03",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-config-stdout-native"
+      }
+    },
+    {
+      "name": "L09-config-stdout-json",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config collision.config.cjs --formatter json",
+      "file": "config-stdout-json.txt",
+      "provenance": {
+        "sha256": "6372c7668239dfbca23a0f51e2853b82fe20b7af3f5745481b0f3d4a45faa131",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-config-stdout-json"
+      }
+    },
+    {
+      "name": "L09-plugin-stdout-native",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config plugin.config.cjs --formatter verbose",
+      "file": "plugin-stdout-native.txt",
+      "provenance": {
+        "sha256": "c52927afdff978b6b63357b17195a417bbe6a697da9d5562bbb3950a84bbeb36",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-plugin-stdout-native"
+      }
+    },
+    {
+      "name": "L09-plugin-stdout-json",
+      "family": "stylelint",
+      "version": "stylelint 16.25.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint clean.css --config plugin.config.cjs --formatter json",
+      "file": "plugin-stdout-json.txt",
+      "provenance": {
+        "sha256": "c45f968f9114f2c30d9e2c5de24611c2b03c0f62a889e9fb23abe56dd96b534d",
+        "record": "capture-receipt.json",
+        "originalCase": "L09-plugin-stdout-json"
+      }
+    }
+  ]
+}

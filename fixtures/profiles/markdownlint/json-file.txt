@@ -1,0 +1,4 @@
+markdownlint-cli2 v0.23.3 (markdownlint v0.41.1)
+Finding: errors.md path spaces/café 🧪.md
+Linting: 2 files
+Summary: 4 issues in 2 files

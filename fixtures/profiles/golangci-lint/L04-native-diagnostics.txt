@@ -1,0 +1,13 @@
+issues/issues.go:12:23: Error return value is not checked (errcheck)
+func Ignore() { action() }
+                      ^
+issues/issues.go:6:2: ineffectual assignment to x (ineffassign)
+	x := 1
+	^
+issues/issues.go:3:6: func dead is unused (unused)
+func dead() int { return 42 }
+     ^
+3 issues:
+* errcheck: 1
+* ineffassign: 1
+* unused: 1

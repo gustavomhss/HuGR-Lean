@@ -1,0 +1,1 @@
+golangci-lint has version 2.11.4 built with go1.26.1 from 8f3b0c7 on 2026-03-22T17:29:46Z

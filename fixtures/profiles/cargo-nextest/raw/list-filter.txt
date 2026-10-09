@@ -1,0 +1,3 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+capture-alpha tests::alpha_pass
+capture-beta tests::beta_pass

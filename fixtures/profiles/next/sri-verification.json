@@ -1,0 +1,54 @@
+{
+  "recipe": "stream exact registry tarball through declared hash; compare digest and actual npm lock integrity",
+  "at": "2026-10-09T16:51:42.471335+00:00",
+  "checks": [
+    {
+      "name": "next",
+      "version": "15.5.9",
+      "url": "https://registry.npmjs.org/next/-/next-15.5.9.tgz",
+      "bytes": 30410969,
+      "verifiedIntegrity": "sha512-agNLK89seZEtC5zUHwtut0+tNrc0Xw4FT/Dg+B/VLEo9pAcS9rtTKpek3V6kVcVwsB2YlqMaHdfZL4eLEVYuCg==",
+      "lockCorrespondence": true
+    },
+    {
+      "name": "react",
+      "version": "19.1.0",
+      "url": "https://registry.npmjs.org/react/-/react-19.1.0.tgz",
+      "bytes": 24066,
+      "verifiedIntegrity": "sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==",
+      "lockCorrespondence": true
+    },
+    {
+      "name": "react-dom",
+      "version": "19.1.0",
+      "url": "https://registry.npmjs.org/react-dom/-/react-dom-19.1.0.tgz",
+      "bytes": 1157331,
+      "verifiedIntegrity": "sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==",
+      "lockCorrespondence": true
+    },
+    {
+      "name": "typescript",
+      "version": "5.9.3",
+      "url": "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz",
+      "bytes": 4377468,
+      "verifiedIntegrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+      "lockCorrespondence": true
+    },
+    {
+      "name": "@types/react",
+      "version": "19.1.0",
+      "url": "https://registry.npmjs.org/@types/react/-/react-19.1.0.tgz",
+      "bytes": 145999,
+      "verifiedIntegrity": "sha512-UaicktuQI+9UKyA4njtDOGBD/67t8YEBt2xdfqu8+gP9hqPUPsiXlNPcpS2gVdjmis5GKPG3fCxbQLVgxsQZ8w==",
+      "lockCorrespondence": true
+    },
+    {
+      "name": "@types/node",
+      "version": "22.15.30",
+      "url": "https://registry.npmjs.org/@types/node/-/node-22.15.30.tgz",
+      "bytes": 434664,
+      "verifiedIntegrity": "sha512-6Q7lr06bEHdlfplU6YRbgG1SFBdlsfNC4/lX+SkhiTs0cpJkOElmWls8PxDFv4yY/xKb8Y6SO0OmSX4wgqTZbA==",
+      "lockCorrespondence": true
+    }
+  ]
+}

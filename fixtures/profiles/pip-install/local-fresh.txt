@@ -1,0 +1,6 @@
+Looking in links: wheels
+Processing ./wheels/p05_root-1.0-py3-none-any.whl
+Processing ./wheels/p05_dep-1.0-py3-none-any.whl (from p05_root==1.0)
+Installing collected packages: p05_dep, p05_root
+
+Successfully installed p05_dep-1.0 p05_root-1.0

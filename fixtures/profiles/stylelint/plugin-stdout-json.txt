@@ -1,0 +1,6 @@
+(node:94437) [stylelint:001] DeprecationWarning: CommonJS plugins are deprecated ("/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/plugin.cjs").
+See https://stylelint.io/migration-guide/to-16
+(Use `node --trace-deprecation ...` to show where the warning was created)
+1 source checked
+  0 problems found
+[{"source":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/clean.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]

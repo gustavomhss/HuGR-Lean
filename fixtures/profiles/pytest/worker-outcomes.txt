@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0 -- /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai
+created: 2/2 workers
+2 workers [5 items]
+
+scheduling tests via LoadScheduling
+
+test_outcomes.py::test_outcome[xfail] 
+test_outcomes.py::test_parameterized[zero] 
+[gw0] [ 20%] PASSED test_outcomes.py::test_parameterized[zero] 
+test_outcomes.py::test_parameterized[one] 
+[gw0] [ 40%] PASSED test_outcomes.py::test_parameterized[one] 
+test_outcomes.py::test_outcome[skip] 
+[gw0] [ 60%] SKIPPED test_outcomes.py::test_outcome[skip] 
+[gw1] [ 80%] XFAIL test_outcomes.py::test_outcome[xfail] 
+test_outcomes.py::test_outcome[xpass] 
+[gw1] [100%] XPASS test_outcomes.py::test_outcome[xpass] 
+
+=================================== XPASSES ====================================
+=========================== short test summary info ============================
+SKIPPED [1] test_outcomes.py:9: R01 worker skip
+XFAIL test_outcomes.py::test_outcome[xfail] - R01 expected café 雪 🧪
+XPASS test_outcomes.py::test_outcome[xpass] - R01 unexpected pass
+============== 2 passed, 1 skipped, 1 xfailed, 1 xpassed in 2.38s ==============

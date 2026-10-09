@@ -1,0 +1,13 @@
+level=info msg="golangci-lint has version 2.11.4 built with go1.26.1 from 8f3b0c7 on 2026-03-22T17:29:46Z"
+level=info msg="[config_reader] Module name \"example.invalid/l04\""
+level=info msg="[goenv] Read go env for 15.798164ms: map[string]string{\"GOCACHE\":\"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s/go-cache\", \"GOROOT\":\"/usr/local/Cellar/go/1.27.1/libexec\"}"
+level=info msg="[lintersdb] Active 3 linters: [errcheck ineffassign unused]"
+level=info msg="[loader] Go packages loading at mode 8767 (compiled_files|deps|name|types_sizes|exports_file|files|imports) took 49.626784ms"
+level=info msg="[runner/filename_unadjuster] Pre-built 0 adjustments in 279.05µs"
+level=info msg="[linters_context/goanalysis] analyzers took 0s with no stages"
+level=info msg="[runner] processing took 3.145µs with stages: max_same_issues: 1.019µs, exclusion_paths: 270ns, exclusion_rules: 227ns, nolint_filter: 221ns, path_absoluter: 161ns, max_from_linter: 142ns, invalid_issue: 130ns, path_shortener: 124ns, max_per_file_from_linter: 124ns, path_relativity: 89ns, filename_unadjuster: 73ns, diff: 73ns, sort_results: 66ns, cgo: 65ns, uniq_by_line: 62ns, path_prettifier: 61ns, source_code: 61ns, generated_file_filter: 60ns, fixer: 59ns, severity-rules: 58ns"
+level=info msg="[runner] linters took 761.015µs with stages: goanalysis_metalinter: 698.925µs"
+0 issues.
+level=info msg="File cache stats: 0 entries of total size 0B"
+level=info msg="Memory: 2 samples, avg is 38.2MB, max is 38.2MB"
+level=info msg="Execution took 67.120355ms"

@@ -1,0 +1,408 @@
+{
+  "schema": "R03-baseline-closure/1",
+  "baseline": "248c303cb208f237896c0c6aaba777752aa481f5",
+  "reach": "New captured inputs only; default core at frozen baseline. Manifest uses executed argv. Logical Vitest argv replay is separately labeled analysis.",
+  "controls": [
+    "raw corruption rejected",
+    "missing EOF rejected",
+    "native timing shape reduced",
+    "explicit custom reporter refused"
+  ],
+  "historicalRaw": "unchanged; completeness unknown",
+  "results": [
+    {
+      "name": "R03-default-projects-resumed",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 798,
+        "outputBytes": 798
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 798,
+        "outputBytes": 798
+      }
+    },
+    {
+      "name": "R03-verbose-coverage",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 1684,
+        "outputBytes": 1684
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 1684,
+        "outputBytes": 1684
+      }
+    },
+    {
+      "name": "R03-dot-projects",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=dot"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 702,
+        "outputBytes": 702
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=dot"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 702,
+        "outputBytes": 702
+      }
+    },
+    {
+      "name": "R03-json-projects",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=json"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 3651,
+        "outputBytes": 3651
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=json"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 3651,
+        "outputBytes": 3651
+      }
+    },
+    {
+      "name": "R03-junit-projects",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=junit"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 1774,
+        "outputBytes": 1774
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=junit"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 1774,
+        "outputBytes": 1774
+      }
+    },
+    {
+      "name": "R03-multiple-reporters",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=default",
+        "--reporter=json"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 4449,
+        "outputBytes": 4449
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=default",
+        "--reporter=json"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 4449,
+        "outputBytes": 4449
+      }
+    },
+    {
+      "name": "R03-retry-exhausted-coverage",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage",
+        "--coverage.reportOnFailure"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "nonzero_exit",
+        "inputBytes": 2691,
+        "outputBytes": 2691
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage",
+        "--coverage.reportOnFailure"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "nonzero_exit",
+        "inputBytes": 2691,
+        "outputBytes": 2691
+      }
+    },
+    {
+      "name": "R03-user-reporter-explicit",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 136,
+        "outputBytes": 136
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 136,
+        "outputBytes": 136
+      }
+    },
+    {
+      "name": "R03-user-reporter-config",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--config=collision.config.mjs"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "nonzero_exit",
+        "inputBytes": 1434,
+        "outputBytes": 1434
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--config=collision.config.mjs"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "nonzero_exit",
+        "inputBytes": 1434,
+        "outputBytes": 1434
+      }
+    },
+    {
+      "name": "R03-user-reporter-config-valid",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 136,
+        "outputBytes": 136
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "logicalResult": {
+        "status": "reduced",
+        "replacement": " ✓ user-evidence.test.js (1 test)\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  12:34:56\n   Duration  1.00s\n",
+        "profile": "vitest",
+        "inputBytes": 136,
+        "outputBytes": 130,
+        "reason": "profile_reduction"
+      }
+    },
+    {
+      "name": "R03-direct-default-projects",
+      "command": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 798,
+        "outputBytes": 798
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 798,
+        "outputBytes": 798
+      }
+    },
+    {
+      "name": "R03-direct-reporter-explicit",
+      "command": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "result": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 136,
+        "outputBytes": 136
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "logicalResult": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 136,
+        "outputBytes": 136
+      }
+    },
+    {
+      "name": "R03-direct-reporter-config",
+      "command": [
+        "vitest",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "result": {
+        "status": "reduced",
+        "replacement": " ✓ user-evidence.test.js (1 test)\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  12:34:56\n   Duration  1.00s\n",
+        "profile": "vitest",
+        "inputBytes": 136,
+        "outputBytes": 130,
+        "reason": "profile_reduction"
+      },
+      "logicalArgv": [
+        "vitest",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "logicalResult": {
+        "status": "reduced",
+        "replacement": " ✓ user-evidence.test.js (1 test)\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  12:34:56\n   Duration  1.00s\n",
+        "profile": "vitest",
+        "inputBytes": 136,
+        "outputBytes": 130,
+        "reason": "profile_reduction"
+      }
+    }
+  ],
+  "blocker": "Configured arbitrary reporter native shape is reduced by existing baseline; golden records actual behavior, not approved evidence deletion."
+}
