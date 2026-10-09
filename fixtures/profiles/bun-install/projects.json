@@ -1,0 +1,25 @@
+{
+  "root": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-bun-native",
+  "initialFiles": {
+    "local/package.json": {"name":"p04-local-root","version":"1.0.0","private":true,"dependencies":{"p04-local-dep":"file:../local-dep"}},
+    "local-dep/package.json": {"name":"p04-local-dep","version":"1.2.3"},
+    "workspace/package.json": {"name":"p04-workspace-root","version":"1.0.0","private":true,"workspaces":["packages/*"],"dependencies":{"p04-ws-a":"workspace:*"}},
+    "workspace/packages/a/package.json": {"name":"p04-ws-a","version":"2.3.4","dependencies":{"p04-ws-b":"workspace:*"}},
+    "workspace/packages/b/package.json": {"name":"p04-ws-b","version":"3.4.5"},
+    "chalk/package.json": {"name":"p04-chalk-root","version":"1.0.0","private":true,"dependencies":{"chalk":"4.1.2"}},
+    "blocked/package.json": {"name":"p04-blocked-root","version":"1.0.0","private":true,"dependencies":{"p04-script-dep":"file:../script-dep"}},
+    "script-dep/package.json": {"name":"p04-script-dep","version":"1.2.3","scripts":{"postinstall":"bun log.js"}},
+    "script-dep/log.js": "console.log(\"Resolving dependencies\");\nconsole.log(\"Resolved, downloaded and extracted [999]\");\nconsole.log(\"Saved lockfile\");\nconsole.log(\"+ p04-fake-package@9.9.9\");\nconsole.log(\"999 packages installed [0.01ms]\");\nconsole.log(\"warn: P04 dependency user log — preserve λ\");\n",
+    "lifecycle/package.json": {"name":"p04-lifecycle-root","version":"1.0.0","private":true,"dependencies":{"p04-local-dep":"file:../local-dep"},"scripts":{"postinstall":"bun log.js"}},
+    "lifecycle/log.js": "console.log(\"bun install v1.3.14 (0d9b296a)\");\nconsole.log(\"Resolving dependencies\");\nconsole.log(\"Resolved, downloaded and extracted [999]\");\nconsole.log(\"Saved lockfile\");\nconsole.log(\"+ p04-fake-package@9.9.9\");\nconsole.log(\"999 packages installed [0.01ms]\");\nconsole.log(\"warn: P04 root user log — preserve λ\");\n",
+    "chalk-warm/package.json": {"name":"p04-chalk-root","version":"1.0.0","private":true,"dependencies":{"chalk":"4.1.2"}},
+    "chalk-offline-miss/package.json": {"name":"p04-chalk-root","version":"1.0.0","private":true,"dependencies":{"chalk":"4.1.2"}},
+    "missing-lock/package.json": {"name":"p04-missing-root","version":"1.0.0","private":true,"dependencies":{"p04-local-dep":"file:../local-dep"}},
+    "chalk-missing-lock/package.json": {"name":"p04-chalk-root","version":"1.0.0","private":true,"dependencies":{"chalk":"4.1.2"}}
+  },
+  "confirmedChangesBeforeFinalTwoCases": {
+    "chalk/package.json": {"name":"p04-chalk-root","version":"1.0.0","private":true,"dependencies":{"chalk":"4.1.1"}},
+    "blocked/package.json": {"name":"p04-blocked-root","version":"1.0.0","private":true,"dependencies":{"p04-script-dep":"file:../script-dep"},"trustedDependencies":["p04-script-dep"]}
+  },
+  "materialization": "Original sources created using apply_patch; manifest objects serialized compactly with final LF. JS strings exact. Disposable native node_modules/cache/locks never staged."
+}
