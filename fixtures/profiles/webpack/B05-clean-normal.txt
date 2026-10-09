@@ -1,0 +1,18 @@
+assets by status 20 bytes [cached] 1 asset
+asset main café.js 13.1 KiB [compared for emit] (name: main café)
+asset second.js 6.62 KiB [compared for emit] (name: second)
+asset asset.js 4.03 KiB [compared for emit] (name: asset)
+asset lazy_js.chunk.js 562 bytes [compared for emit]
+asset shared.js 497 bytes [compared for emit] (name: shared) (id hint: shared)
+Entrypoint main café 13.6 KiB = shared.js 497 bytes main café.js 13.1 KiB
+Entrypoint second 7.1 KiB = shared.js 497 bytes second.js 6.62 KiB
+Entrypoint asset 4.03 KiB (20 bytes) = asset.js 1 auxiliary asset
+runtime modules 12.2 KiB 18 modules
+cacheable modules 309 bytes (javascript) 20 bytes (asset)
+  ./entrée α.js 102 bytes [built] [code generated]
+  ./second.js 57 bytes [built] [code generated]
+  ./asset-entry.js 49 bytes [built] [code generated]
+  ./shared.js 33 bytes [built] [code generated]
+  ./asset.txt 20 bytes (asset) 42 bytes (javascript) [built] [code generated]
+  ./lazy β.js 26 bytes [built] [code generated]
+webpack 5.102.1 compiled successfully in 129 ms

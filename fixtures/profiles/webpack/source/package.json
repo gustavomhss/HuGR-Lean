@@ -1,0 +1,10 @@
+{
+  "name": "b05-native-tiny",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "webpack": "5.102.1",
+    "webpack-cli": "6.0.1"
+  }
+}

@@ -1,0 +1,4 @@
+WARNING in ./warning.js 1:30-44
+Critical dependency: the request of a dependency is an expression
+
+webpack compiled with 1 warning
