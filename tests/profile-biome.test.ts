@@ -77,14 +77,14 @@ for (const mode of ["lint", "check"]) {
 interface NativeCase extends Observation {
   name: string; family: string; file: string; status: "reduced" | "passthrough";
   expectedFile?: string; argv: string[]; version: string; platform: string;
-  provenance: { receipt: string; case: string };
+  provenance: { captureReceipt: string; record: string; sha256: string; case: string };
 }
 interface Receipt {
   name: string; file: string; command: string; argv: string[]; termination: Observation["termination"];
   completeness: string; presentation: string; version: string;
   provenance: { outputBytes: number; outputSha256: string; configSha256: string; sourceSha256: Record<string, string> };
 }
-test("Biome all 18 normalized native cases retain original receipt and public dispositions", () => {
+test("Biome metadata inventory copies original capture hashes", () => {
   const manifest = JSON.parse(text("cases.json")) as { schema: string; cases: NativeCase[] };
   const receipt = JSON.parse(text("capture-receipt.json")) as { schema: string; cases: Receipt[] };
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
@@ -98,7 +98,11 @@ test("Biome all 18 normalized native cases retain original receipt and public di
   for (const [index, entry] of manifest.cases.entries()) {
     const original = receipt.cases[index]!;
     assert.equal(entry.family, "biome");
-    assert.equal(entry.provenance.receipt, "capture-receipt.json");
+    assert.equal(entry.provenance.captureReceipt, "capture-receipt.json");
+    assert.equal(entry.provenance.record, "SOURCES.md");
+    assert.ok(text(entry.provenance.record).includes("# L02 sources and replay"));
+    assert.equal("receipt" in entry.provenance, false);
+    assert.equal(entry.provenance.sha256, original.provenance.outputSha256);
     assert.equal(entry.provenance.case, entry.name);
     for (const key of ["file", "command", "argv", "termination", "completeness", "presentation", "version"] as const) assert.deepEqual(entry[key], original[key]);
     assert.equal(typeof entry.platform, "string");
@@ -107,6 +111,14 @@ test("Biome all 18 normalized native cases retain original receipt and public di
     assert.equal(Buffer.byteLength(input), original.provenance.outputBytes);
     assert.equal(sha(`${dir}biome.json`), original.provenance.configSha256);
     for (const [file, hash] of Object.entries(original.provenance.sourceSha256)) assert.equal(sha(`${dir}${file}`), hash);
+    if (entry.expectedFile) assert.ok(text(entry.expectedFile).length > 0);
+  }
+});
+
+test("Biome all 18 normalized native cases retain public dispositions", () => {
+  const manifest = JSON.parse(text("cases.json")) as { cases: NativeCase[] };
+  for (const entry of manifest.cases) {
+    const input = text(entry.file);
     assert.ok(profile.match(entry.argv), entry.command);
     const result = filter({ ...entry, output: input, source: "shell" }, { profiles: familyProfiles });
     assert.equal(result.status, entry.status, entry.name);

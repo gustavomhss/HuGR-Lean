@@ -54,6 +54,9 @@ lines in output.txt; these bytes are intentional producer evidence, retained.
 Implementation extension: original receipt and all capture output/source bytes are
 unchanged. Normalized cases.json carries flat observation metadata, actual argv,
 existing fixture paths and dispositions; provenance links each full receipt row.
+The original native-cases1 receipt is linked through metadata `captureReceipt`,
+not the shared reader's common-schema `receipt`. Each case carries `record` pointing
+to this file and `sha256` copied verbatim from its original `outputSha256` descriptor.
 Replay writes a fresh capture-receipt.json only; it does not author goldens or
 overwrite normalized cases. Independently authored expected.txt files remove only
 the two approved terminal header bars. No shared JSON helper is used.
