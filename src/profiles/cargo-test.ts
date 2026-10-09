@@ -118,7 +118,8 @@ function allowedExecutable(context: string, source: string, kind: string, name: 
   }
   switch (c.selector) {
     case "doc": return false;
-    case "lib": case "bin": return unit && kind === "deps";
+    case "lib": return unit && kind === "deps" && !/^(?:src\/(?:main\.rs$|bin\/)|tests\/|examples\/)/.test(source);
+    case "bin": return unit && kind === "deps";
     case "test": return !unit && kind === "deps";
     case "example": case "examples": return unit && kind === "examples";
     default: return true;
@@ -126,7 +127,7 @@ function allowedExecutable(context: string, source: string, kind: string, name: 
 }
 
 /** Full suites, source-backed evidence, independent executable identities across workspace members. */
-function delta(output: string, c: Command): Reduction | undefined {
+function delta(output: string, c: Command, legacyArgv: boolean): Reduction | undefined {
   const rows = iterateLines(output);
   let row = rows.next().value ?? undefined;
   function take(): Line | undefined { const value = row; row = rows.next().value ?? undefined; return value; }
@@ -147,6 +148,8 @@ function delta(output: string, c: Command): Reduction | undefined {
     const isDoc = Boolean(doc), context = executable?.[1] ?? doc![1]!;
     if (executable) {
       const [, , source, , target, profile, kind, name] = executable;
+      // Bare/color-only fallback retains the legacy header vocabulary. New argv owns custom paths.
+      if (legacyArgv && (!/^(?:unittests [^\s()]+\.rs|tests\/[^\s()]+\.rs)$/.test(context) || kind !== "deps")) return undefined;
       const identity = `${target ?? ""}/${profile}/${kind}/${name}`;
       if (target !== c.target || profile !== mode || executables.has(identity)) return undefined;
       if (!allowedExecutable(context, source!, kind!, name!, c)) return undefined;
@@ -193,12 +196,14 @@ const expanded = nativeProfile("cargo-test", argv => legacy.match(argv) || comma
   (output: string, observation: Observation) => {
     const argv = tokenizeCommand(observation.command);
     if (!argv) return undefined;
-    // Prefer valid legacy reductions; a refusal still requires the complete closed delta grammar.
-    if (legacy.match(argv)) {
+    // Preserve traditional --lib refusals; only default suites may enter the closed fallback.
+    const legacyArgv = legacy.match(argv);
+    if (legacyArgv) {
       const result = legacy.reduce(output, observation);
       if (result !== undefined) return result;
+      if (argv.includes("--lib")) return undefined;
     }
     const c = command(argv);
-    return c ? delta(output, c) : undefined;
+    return c ? delta(output, c, legacyArgv) : undefined;
   });
 export const familyProfiles: readonly Profile[] = [expanded];
