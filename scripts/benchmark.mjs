@@ -151,8 +151,13 @@ function stats(values) {
 }
 function distribution(values) {
   const sorted = values.toSorted((a, b) => a - b);
-  assert.ok(sorted.length, "Empty reduction distribution");
+  assert.ok(sorted.length && sorted.every(value => Number.isFinite(value) && value >= 0 && value <= 100), "Empty or invalid reduction distribution");
   return { min: sorted[0], median: median(sorted), max: sorted.at(-1), mean: sorted.reduce((sum, value) => sum + value, 0) / sorted.length };
+}
+export function savingsPercent(inputBytes, outputBytes) {
+  assert.ok(Number.isSafeInteger(inputBytes) && inputBytes >= 0 && Number.isSafeInteger(outputBytes) &&
+    outputBytes >= 0 && outputBytes <= inputBytes, "Invalid savings byte counts");
+  return inputBytes === 0 ? 0 : (1 - outputBytes / inputBytes) * 100;
 }
 
 async function measure(run, verify, asynchronous = false) {
@@ -203,7 +208,7 @@ export async function runBenchmark({ root = ROOT } = {}) {
     rows.push({ name: entry.name, family: entry.family, provenance: entry.provenance, command: obs.command,
       ...(entry.scope ? { scope: entry.scope } : {}),
       status: baseline.status, reason: baseline.reason, inputBytes: baseline.inputBytes, outputBytes: baseline.outputBytes,
-      savedBytes: baseline.inputBytes - baseline.outputBytes, reductionPercent: (1 - baseline.outputBytes / baseline.inputBytes) * 100,
+      savedBytes: baseline.inputBytes - baseline.outputBytes, reductionPercent: savingsPercent(baseline.inputBytes, baseline.outputBytes),
       passthroughExact: entry.status === "passthrough" ? expected === obs.output : null,
       ...(entry.testCases ? { testCases: entry.testCases, nativeSummary: entry.nativeSummary } : {}), core, adapterRawOff: adapter });
   }
