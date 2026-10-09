@@ -11,6 +11,14 @@ termination, completeness, boundary and historical derivative recipes/hashes. Cu
 `cases.json` normalizes only actual native Clippy cases to shared schema; synthetic
 negatives now live in tests. Existing Cargo warning regression stays referenced in place.
 
+Native pipe captures have `presentation: "unknown"` in the flat manifest. Historical
+receipt presentation labels remain untouched as archived records; declared terminal-rendered
+normalization is exercised only by the separately named synthetic presentation test.
+`provenance.captureReceipt` points to the legacy ID-based record; `provenance.receipt`
+is reserved for the common corpus receipt schema. Each native case carries this local
+source record and its unchanged raw SHA-256. `archives: ["source-hashes.txt"]` explicitly
+declares that file an auxiliary non-input descriptor, not a native output case.
+
 Pins verified by native `cargo --version`, `rustc --version`, `cargo clippy --version`,
 `rustup component list --installed`: Cargo `1.98.0 (797e8a9bc 2026-08-05)`, rustc
 `1.98.0 (88d9e12ae 2026-08-18)`, Clippy `0.1.98 (88d9e12ae1 2026-08-18)` and installed

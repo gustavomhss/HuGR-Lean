@@ -12,9 +12,10 @@ interface NativeCase {
   name: string; family: string; command: string; file: string; status: "reduced" | "passthrough";
   expectedFile?: string; termination: Observation["termination"];
   completeness: Observation["completeness"]; presentation: Observation["presentation"];
-  version: string; platform: string; provenance: { sha256: string };
+  version: string; platform: string;
+  provenance: { sha256: string; record: string; captureReceipt?: string; captureId?: string };
 }
-const packet = JSON.parse(read("cases.json")) as { schema: string; cases: NativeCase[] };
+const packet = JSON.parse(read("cases.json")) as { schema: string; archives: string[]; cases: NativeCase[] };
 const observation = (output: string, command = "cargo clippy --workspace"): Observation => ({
   output, command, source: "shell", completeness: "complete", presentation: "terminal-rendered",
   termination: { kind: "exited", code: 0 },
@@ -52,6 +53,11 @@ function exact(output: string, changes: Partial<Observation> = {}): void {
 
 test("C03 shared native schema, immutable capture hashes and complete case inventory", () => {
   assert.equal(packet.schema, "hugr-lean/native-cases/1");
+  assert.deepEqual(packet.archives, ["source-hashes.txt"]);
+  assert.ok(read(packet.archives[0]!).includes("project/Cargo.toml"));
+  const original = JSON.parse(read("capture-receipt.json")) as {
+    cases: { id: string; command: string; termination: Observation["termination"]; provenance: { sha256: string } }[];
+  };
   assert.deepEqual(packet.cases.map(c => c.name), ["workspace", "cache", "package-features-target", "checking-target", "workspace-features-target-cache", "two-packages", "deny-warnings", "collision", "profile-dev"].map(id => `C03/${id}`));
   for (const c of packet.cases) {
     assert.equal(c.family, "cargo-clippy");
@@ -59,6 +65,17 @@ test("C03 shared native schema, immutable capture hashes and complete case inven
     assert.ok(c.version && c.platform && c.provenance);
     assert.equal(createHash("sha256").update(read(c.file)).digest("hex"), c.provenance.sha256);
     assert.equal(c.completeness, "complete");
+    assert.equal(c.presentation, "unknown", "native pipe capture, not declared terminal rendering");
+    assert.equal(c.provenance.record, "SOURCES.md");
+    assert.equal("receipt" in c.provenance, false, "common receipt schema is reserved");
+    if (c.name !== "C03/profile-dev") {
+      assert.equal(c.provenance.captureReceipt, "capture-receipt.json");
+      const recorded = original.cases.find(entry => entry.id === c.provenance.captureId);
+      assert.ok(recorded, "independent legacy capture ID must exist");
+      assert.equal(c.command, recorded.command);
+      assert.deepEqual(c.termination, recorded.termination);
+      assert.equal(c.provenance.sha256, recorded.provenance.sha256);
+    }
     if (c.expectedFile) {
       const output = read(c.file), expected = read(c.expectedFile);
       assert.equal(output.slice(output.indexOf("\n") + 1), expected, "independent one-row native suffix oracle");
