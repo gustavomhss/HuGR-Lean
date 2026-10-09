@@ -1,0 +1,2 @@
+Looking in links: wheels
+Requirement already satisfied: p05_backend==1.0 in ./venv/lib/python3.14/site-packages (1.0)

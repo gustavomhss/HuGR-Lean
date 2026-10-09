@@ -1,0 +1,38 @@
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   ▲ Next.js 15.5.9
+   - Experiments (use with caution):
+     · cpus: 1
+
+   Linting and checking validity of types ...
+   Creating an optimized production build ...
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+ ✓ Compiled successfully in 4.5s
+   Collecting page data ...
+   Generating static pages (0/4) ...
+   Generating static pages (1/4) 
+   Generating static pages (2/4) 
+   Generating static pages (3/4) 
+ ✓ Generating static pages (4/4)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (pages)                                Size  First Load JS
+┌ ○ / (335 ms)                              264 B        95.7 kB
+├ ○ /404                                    180 B        95.6 kB
+├ ● /blog/[slug] (328 ms)                   289 B        95.7 kB
+├   └ /blog/one (328 ms)
+└ ƒ /dynamic                                284 B        95.7 kB
++ First Load JS shared by all             95.4 kB
+  ├ chunks/framework-acd67e14855de5a2.js  57.7 kB
+  ├ chunks/main-03ed03852b4b217f.js       36.8 kB
+  └ other shared chunks (total)             952 B
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
+

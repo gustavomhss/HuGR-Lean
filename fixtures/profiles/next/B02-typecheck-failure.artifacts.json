@@ -1,0 +1,34 @@
+{
+  "recipe": "inspect .next recursively after process exit; hash raw file bytes; retain named manifests verbatim",
+  "termination": {
+    "kind": "exited",
+    "code": 1
+  },
+  "artifacts": [
+    {
+      "path": ".next/cache/.previewinfo",
+      "bytes": 262,
+      "sha256": "3fd19878f95e96b16b5d293c61a757ed624efbcff0f560af37b1b7d6a7af0881"
+    },
+    {
+      "path": ".next/cache/.rscinfo",
+      "bytes": 102,
+      "sha256": "38a9da8ab43d5f065b520f605ef02096d1046c3d728ff08f50001f69ff4b31d5"
+    },
+    {
+      "path": ".next/cache/.tsbuildinfo",
+      "bytes": 102837,
+      "sha256": "e9661c71bb8f9ae72186cb3400d879295025cbdbb6c74c46aff235b543600121"
+    },
+    {
+      "path": ".next/types/routes.d.ts",
+      "bytes": 1471,
+      "sha256": "c60ea95fc86fa413dc476176141c8aeeb9329f3617c054cbf0231a71b9073e27"
+    },
+    {
+      "path": ".next/types/validator.ts",
+      "bytes": 1681,
+      "sha256": "f470d42928bfe5e7b7a9f3184a91d7dec3df5d9371d2b29d8df391531b9a126d"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "p03-collision",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "node collision.cjs"
+  }
+}

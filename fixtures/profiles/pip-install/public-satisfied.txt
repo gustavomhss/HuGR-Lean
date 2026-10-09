@@ -1,0 +1,1 @@
+Requirement already satisfied: colorama==0.4.6 in ./venv/lib/python3.14/site-packages (0.4.6)

@@ -1,0 +1,817 @@
+{
+  "platform": "Darwin-x86_64; macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "version": "3.6.2",
+  "node": "v22.17.1",
+  "npm": "10.9.2",
+  "boundary": "stdout PIPE + stderr STDOUT; raw bytes; no PTY; no trimming; no producer authentication",
+  "toolSource": {
+    "repository": "https://github.com/prettier/prettier",
+    "commit": "ff85232a8bd71f1b337dd7fddf1c16c17c3c10be",
+    "license": "MIT",
+    "dist": {
+      "shasum": "ccda02a1003ebbb2bfda6f83a074978f608b9393",
+      "tarball": "https://registry.npmjs.org/prettier/-/prettier-3.6.2.tgz",
+      "fileCount": 56,
+      "integrity": "sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==",
+      "signatures": [
+        {
+          "sig": "MEYCIQDGWK2e8iKF9EzCZZYDfGEPW7s5LDjmc7AWYQ7rpbKXJwIhAOj0TJy0zn9eGr2rD2JebgVSixHz+LE9lkFdmN0tNeT6",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        }
+      ],
+      "unpackedSize": 8458264
+    },
+    "metadataArgv": [
+      "npm",
+      "view",
+      "prettier@3.6.2",
+      "version",
+      "gitHead",
+      "license",
+      "dist",
+      "--json",
+      "--registry=https://registry.npmjs.org/"
+    ],
+    "metadataFile": "captures/package-metadata.json",
+    "metadataSha256": "a48fc9b9e28b76edcda02084690b03345137cd0126e9cbb0ea422f43432e0110"
+  },
+  "install": {
+    "argv": [
+      "npm",
+      "install",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--registry=https://registry.npmjs.org/"
+    ],
+    "exit": 0,
+    "file": "captures/install.txt",
+    "sha256": "a941066d38162d18c88ea4b096d8cf11d19b0d46b973f6d916e2f9b8794e1f36"
+  },
+  "sourceSha256": {
+    "project/.prettierignore": "a3f5ab4e484521a93b5cbb92873b17921bce8ef70b45822073351f6c4bf0dbcb",
+    "project/bad.config.json": "0283ac65506701b336dfcc42534c7c44b61df3aaf7a177f2f1d44df50250da0a",
+    "project/broken.js": "2177bff62d47bc48c4cbc97cce938e986154a2f1e124612b43c664b5dc86ae43",
+    "project/clean.js": "ccaf64015d7074d368d360da2665a277bf0debdbf98a7807415121c1f3738017",
+    "project/collision.mjs": "d7f9eea2d5bb161f9a2d5f318983fdd28066269b20638abb8f1908c4b70d5bca",
+    "project/dirty.js": "1c8510ca565207bbcac9fe0f0c9812669c74610c1e4d0175c13c72a719a09e29",
+    "project/good.config.json": "83f15152d92b95d0bc41eba6eff13e7e9d834a0ae6b508899b4d79a75bd9a092",
+    "project/ignored.js": "5d96e8beaf3bdee67b8a1892aa85918426b9c0d6347ce3552410497dce904326",
+    "project/package-lock.json": "38a4e2299ee0c52902e52cd38c3064ba7eb215f97c9865f49e3696036c0dd203",
+    "project/package.json": "645002f2ceca951e6c18f3ecce42853360bb55d7e0b309b61fce57fc42762394",
+    "project/space dir/雪 file.js": "6a44fa4e065f0d687b2c046a496a16816bfe107dce77993fb3921cd6dd2dea2b"
+  },
+  "collectorSha256": "f3b2b7fefc2208f0020320604238ab61c3ff06a26c89c9aa42374cd00e053ddc",
+  "toolFiles": {
+    "node_modules/prettier/package.json": "b7745c082cb15e870748816bbfdc584867644a81be2cd3c17f91647c1c9a0a66",
+    "node_modules/prettier/LICENSE": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c",
+    "node_modules/prettier/bin/prettier.cjs": "ac5523cd57e7e9d8eac71caef7e022a8a8489bcdc19ca8a778b7e728ec103b93"
+  },
+  "cases": [
+    {
+      "name": "L05/version",
+      "argv": [
+        "prettier",
+        "--version"
+      ],
+      "command": "prettier --version",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:30.349126+00:00",
+      "bytes": 6,
+      "sha256": "bb8408e7188bc6e00f87159c1898e6bfee03926fb2c65b5af3f372a7abfbc7fb",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/check-clean",
+      "argv": [
+        "prettier",
+        "--check",
+        "clean.js"
+      ],
+      "command": "prettier --check clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:30.685519+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/check-dirty",
+      "argv": [
+        "prettier",
+        "--check",
+        "dirty.js"
+      ],
+      "command": "prettier --check dirty.js",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:30.953706+00:00",
+      "bytes": 123,
+      "sha256": "5afc36fd8725ccdd905292431985cb32ca76d2dc3ee0f44406b5c1636e41e72a",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/check-multiple",
+      "argv": [
+        "prettier",
+        "--check",
+        "clean.js",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --check clean.js dirty.js 'space dir/雪 file.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:31.199423+00:00",
+      "bytes": 145,
+      "sha256": "e1a5b5bf068efcc79bcd642910aad11972a6a6ee1ec136db7bfaad942796e29c",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/list-clean",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "clean.js"
+      ],
+      "command": "prettier --list-different clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:31.373143+00:00",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": "empty"
+    },
+    {
+      "name": "L05/list-multiple",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "clean.js",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --list-different clean.js dirty.js 'space dir/雪 file.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:31.583328+00:00",
+      "bytes": 31,
+      "sha256": "2a47c69baccff01a4fe592341438f86592c0558d016d0c62f947566261aa0b43",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/debug-clean",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "clean.js"
+      ],
+      "command": "prettier --debug-check clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:31.770096+00:00",
+      "bytes": 9,
+      "sha256": "a49c92d1add4f732e49fbbf13875f9ed941f8482f1610ea996ba4e29cfe75367",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/debug-multiple",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --debug-check dirty.js 'space dir/雪 file.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:31.996978+00:00",
+      "bytes": 31,
+      "sha256": "2a47c69baccff01a4fe592341438f86592c0558d016d0c62f947566261aa0b43",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/default-source",
+      "argv": [
+        "prettier",
+        "dirty.js"
+      ],
+      "command": "prettier dirty.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:32.200272+00:00",
+      "bytes": 24,
+      "sha256": "c8482458943e70bc9b42b86c7a1f977028005367ead636ffa62dd836496a0259",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/syntax-check",
+      "argv": [
+        "prettier",
+        "--check",
+        "broken.js"
+      ],
+      "command": "prettier --check broken.js",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:32.372223+00:00",
+      "bytes": 214,
+      "sha256": "2fbf8851dc9aff32ec8eb281ac4f897269dd31c36fde7fec0cc37877cde96405",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/syntax-list",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "broken.js"
+      ],
+      "command": "prettier --list-different broken.js",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:32.547358+00:00",
+      "bytes": 132,
+      "sha256": "044d352241ef5eb260b713fd6e5a97fa68d920a9369c5996ec6ffe1eebec7339",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/syntax-debug",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "broken.js"
+      ],
+      "command": "prettier --debug-check broken.js",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:32.718288+00:00",
+      "bytes": 132,
+      "sha256": "044d352241ef5eb260b713fd6e5a97fa68d920a9369c5996ec6ffe1eebec7339",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/config-failure",
+      "argv": [
+        "prettier",
+        "--check",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --check --config bad.config.json clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:32.842241+00:00",
+      "bytes": 98,
+      "sha256": "6e618f807ccc1e1bf7d2ff27273f1cbc102a39a0e3b963ff8f3ef973cc8408e9",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/ignored",
+      "argv": [
+        "prettier",
+        "--check",
+        "ignored.js"
+      ],
+      "command": "prettier --check ignored.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:32.965885+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/no-files",
+      "argv": [
+        "prettier",
+        "--check",
+        "missing-*.js"
+      ],
+      "command": "prettier --check 'missing-*.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:33.089076+00:00",
+      "bytes": 132,
+      "sha256": "58d7bcc94734c66cd11e92da46ffd176604a72a8de19d448b96fe0a90558bfb3",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/no-files-allowed",
+      "argv": [
+        "prettier",
+        "--check",
+        "--no-error-on-unmatched-pattern",
+        "missing-*.js"
+      ],
+      "command": "prettier --check --no-error-on-unmatched-pattern 'missing-*.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:33.218756+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/unknown-option",
+      "argv": [
+        "prettier",
+        "--check",
+        "--unknown-capture-flag",
+        "clean.js"
+      ],
+      "command": "prettier --check --unknown-capture-flag clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:33.376575+00:00",
+      "bytes": 130,
+      "sha256": "6ea12f8abc05b8bacf6dd2d51ed418c887a5146b8cbdb27c4bd96daeb210d3ab",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/plugin-collision",
+      "argv": [
+        "prettier",
+        "--check",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --check --plugin ./collision.mjs clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:33.613468+00:00",
+      "bytes": 132,
+      "sha256": "3d4d7673e5e6eb4298bf9b8d1c4ca920c8042be5866e84668b19025b003a3934",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/npx-check",
+      "argv": [
+        "npx",
+        "prettier",
+        "--check",
+        "clean.js"
+      ],
+      "command": "npx prettier --check clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:34.301320+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/npx-no-install-check",
+      "argv": [
+        "npx",
+        "--no-install",
+        "prettier",
+        "--check",
+        "clean.js"
+      ],
+      "command": "npx --no-install prettier --check clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:34.922175+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/config-good",
+      "argv": [
+        "prettier",
+        "--check",
+        "--config",
+        "good.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --check --config good.config.json clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.083665+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/default-clean",
+      "argv": [
+        "prettier",
+        "clean.js"
+      ],
+      "command": "prettier clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.246904+00:00",
+      "bytes": 17,
+      "sha256": "ccaf64015d7074d368d360da2665a277bf0debdbf98a7807415121c1f3738017",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/default-unicode",
+      "argv": [
+        "prettier",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier 'space dir/雪 file.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.422295+00:00",
+      "bytes": 26,
+      "sha256": "41a190965a64335a18b75ca666c6813c48a90b7de3a3aea098e908e789c9a48c",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/syntax-default",
+      "argv": [
+        "prettier",
+        "broken.js"
+      ],
+      "command": "prettier broken.js",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.591719+00:00",
+      "bytes": 132,
+      "sha256": "044d352241ef5eb260b713fd6e5a97fa68d920a9369c5996ec6ffe1eebec7339",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/config-list",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --list-different --config bad.config.json clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.722473+00:00",
+      "bytes": 75,
+      "sha256": "50f27b266d1b2c392025fd863db14586260f52ef30d416e4e1efded1589cb413",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/config-debug",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --debug-check --config bad.config.json clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.858253+00:00",
+      "bytes": 75,
+      "sha256": "50f27b266d1b2c392025fd863db14586260f52ef30d416e4e1efded1589cb413",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/config-default",
+      "argv": [
+        "prettier",
+        "--config",
+        "bad.config.json",
+        "clean.js"
+      ],
+      "command": "prettier --config bad.config.json clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:35.988811+00:00",
+      "bytes": 75,
+      "sha256": "50f27b266d1b2c392025fd863db14586260f52ef30d416e4e1efded1589cb413",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/ignored-list",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "ignored.js"
+      ],
+      "command": "prettier --list-different ignored.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.109530+00:00",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": "empty"
+    },
+    {
+      "name": "L05/ignored-debug",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "ignored.js"
+      ],
+      "command": "prettier --debug-check ignored.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.233411+00:00",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eof": "empty"
+    },
+    {
+      "name": "L05/ignored-default",
+      "argv": [
+        "prettier",
+        "ignored.js"
+      ],
+      "command": "prettier ignored.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.375868+00:00",
+      "bytes": 20,
+      "sha256": "5d96e8beaf3bdee67b8a1892aa85918426b9c0d6347ce3552410497dce904326",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/no-files-list",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "missing-*.js"
+      ],
+      "command": "prettier --list-different 'missing-*.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.498626+00:00",
+      "bytes": 66,
+      "sha256": "1b159bdb2e48dc8e178beea8209cd9c2dccd0bfba0c490eaa4c97be9401c95d5",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/no-files-debug",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "missing-*.js"
+      ],
+      "command": "prettier --debug-check 'missing-*.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.634011+00:00",
+      "bytes": 66,
+      "sha256": "1b159bdb2e48dc8e178beea8209cd9c2dccd0bfba0c490eaa4c97be9401c95d5",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/no-files-default",
+      "argv": [
+        "prettier",
+        "missing-*.js"
+      ],
+      "command": "prettier 'missing-*.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.744015+00:00",
+      "bytes": 66,
+      "sha256": "1b159bdb2e48dc8e178beea8209cd9c2dccd0bfba0c490eaa4c97be9401c95d5",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/plugin-list",
+      "argv": [
+        "prettier",
+        "--list-different",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --list-different --plugin ./collision.mjs clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:36.907452+00:00",
+      "bytes": 66,
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/plugin-debug",
+      "argv": [
+        "prettier",
+        "--debug-check",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --debug-check --plugin ./collision.mjs clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:37.072927+00:00",
+      "bytes": 273,
+      "sha256": "810472e22453c16f4de1afddf20586ace1c7b76925208d4f349cd9fb6c9432e3",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/plugin-default",
+      "argv": [
+        "prettier",
+        "--plugin",
+        "./collision.mjs",
+        "clean.js"
+      ],
+      "command": "prettier --plugin ./collision.mjs clean.js",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:37.250421+00:00",
+      "bytes": 83,
+      "sha256": "8418e57691c1c064a4f539c33b49249e462cf9bd9ce1134611d03c05e39a6803",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/plugin-multiple",
+      "argv": [
+        "prettier",
+        "--check",
+        "--plugin",
+        "./collision.mjs",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier --check --plugin ./collision.mjs dirty.js 'space dir/雪 file.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:37.442294+00:00",
+      "bytes": 277,
+      "sha256": "2fda750b72c453da0318d8b422c6db4be7ca4ae7488da61b7c0760b45294b6b0",
+      "eof": "LF"
+    },
+    {
+      "name": "L05/default-multiple",
+      "argv": [
+        "prettier",
+        "clean.js",
+        "dirty.js",
+        "space dir/雪 file.js"
+      ],
+      "command": "prettier clean.js dirty.js 'space dir/雪 file.js'",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L05/fixtures/profiles/prettier/.runtime-sc5jtnqk/project",
+      "completionAt": "2026-10-09T04:45:37.642907+00:00",
+      "bytes": 67,
+      "sha256": "674ffd5332acaa972ff3d818e0d87acc7cdab6967b13bd5039782b5a04c963bf",
+      "eof": "LF"
+    }
+  ]
+}

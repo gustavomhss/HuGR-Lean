@@ -1,0 +1,393 @@
+{
+  "schema": "R03-native-capture/1",
+  "baseline": "248c303cb208f237896c0c6aaba777752aa481f5",
+  "capturedAt": "2026-10-09T16:48:09.885499+00:00",
+  "node": "v22.17.1",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "pins": [
+    {
+      "package": "vitest",
+      "version": "3.2.4",
+      "resolved": "https://registry.npmjs.org/vitest/-/vitest-3.2.4.tgz",
+      "integrity": "sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==",
+      "license": "MIT",
+      "licenseFile": "LICENSE.vitest.txt",
+      "licenseSha256": "6b861d7554fbc8488a08ee59e613bd488785a2e27bd87b80142e5125abec6f4c"
+    },
+    {
+      "package": "@vitest/coverage-v8",
+      "version": "3.2.4",
+      "resolved": "https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-3.2.4.tgz",
+      "integrity": "sha512-EyF9SXU6kS5Ku/U82E259WSnvg6c8KTjppUncuNdm5QHpe17mwREHnjDzozC8x9MZ0xfBUFSaLkRv4TMA75ALQ==",
+      "license": "MIT",
+      "licenseFile": "LICENSE.vitest-coverage-v8.txt",
+      "licenseSha256": "ddc110f3b89cc397cee99d3d64c4f746928b7a3bac02fed15101eb4d367079f6"
+    }
+  ],
+  "cases": [
+    {
+      "id": "R03-default-projects-resumed",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 798,
+      "sha256": "c515f4ebfafe4b4b376e79d2edbb2865be073f77b9dae21cc430a4867be32f25",
+      "endsWithLF": true,
+      "tailHex": "6e7669726f6e6d656e7420336d732c207072657061726520332e303073290a0a"
+    },
+    {
+      "id": "R03-verbose-coverage",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 1684,
+      "sha256": "95599b3e0013538e3c2a5417a5f95f186fa8377b4e1ba735874ba60992cd1622",
+      "endsWithLF": true,
+      "tailHex": "2d7c2d2d2d2d2d2d2d2d2d7c2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d0a",
+      "coverageArtifact": "R03-verbose-coverage.coverage.json",
+      "coverageSha256": "0d965bf14a23d98a586599d9cc4edc20eedc05d5b8ee2406afed6e949fa6d26f"
+    },
+    {
+      "id": "R03-dot-projects",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=dot"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 702,
+      "sha256": "3639fd2fc458cdc93cefdbaad2224584ced2ceef4ce2a0cc731cd6d504df1b35",
+      "endsWithLF": true,
+      "tailHex": "6e7669726f6e6d656e7420326d732c207072657061726520322e303273290a0a"
+    },
+    {
+      "id": "R03-json-projects",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 3651,
+      "sha256": "f635ce8e4ce7f839e51cdb3538216a2ea222a74abb6352a52cf9e3f0a63f8b51",
+      "endsWithLF": true,
+      "tailHex": "69746573742d64793075336130702f626574612e746573742e6a73227d5d7d0a"
+    },
+    {
+      "id": "R03-junit-projects",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=junit"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 1774,
+      "sha256": "20d3a0a135d37a873a137cb888e7b31080d81ee5d25f8a28de8b3aa43c0cf304",
+      "endsWithLF": true,
+      "tailHex": "0a202020203c2f7465737473756974653e0a3c2f746573747375697465733e0a"
+    },
+    {
+      "id": "R03-multiple-reporters",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=default",
+        "--reporter=json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 4449,
+      "sha256": "4cc35df77078288da97c320f1bc25c4ac6811fcea9f4fd655635a14d7adcc3ef",
+      "endsWithLF": true,
+      "tailHex": "69746573742d64793075336130702f626574612e746573742e6a73227d5d7d0a"
+    },
+    {
+      "id": "R03-retry-exhausted-coverage",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage",
+        "--coverage.reportOnFailure"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC",
+        "R03_FAIL": "1"
+      },
+      "exitCode": 1,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 2691,
+      "sha256": "34c8e13e22a034692b3a402816af57ad7d121aab44d52b0eda6c3905fbe4ebc0",
+      "endsWithLF": true,
+      "tailHex": "2d7c2d2d2d2d2d2d2d2d2d7c2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d0a",
+      "coverageArtifact": "R03-retry-exhausted-coverage.coverage.json",
+      "coverageSha256": "0d965bf14a23d98a586599d9cc4edc20eedc05d5b8ee2406afed6e949fa6d26f"
+    },
+    {
+      "id": "R03-user-reporter-explicit",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 136,
+      "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb",
+      "endsWithLF": true,
+      "tailHex": "6174202031323a33343a35360a2020204475726174696f6e2020312e3030730a"
+    },
+    {
+      "id": "R03-user-reporter-config",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--config=collision.config.mjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 1,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 1434,
+      "sha256": "604f2b8b2d56560f12bf8e552dc48e4b42665ca5b7a445320d3d4990eb26a0a6",
+      "endsWithLF": true,
+      "tailHex": "6e5f6d61696e3a3131373a35290a0a4e6f64652e6a73207632322e31372e310a"
+    },
+    {
+      "id": "R03-user-reporter-config-valid",
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF",
+      "bytes": 136,
+      "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb",
+      "endsWithLF": true,
+      "tailHex": "6174202031323a33343a35360a2020204475726174696f6e2020312e3030730a"
+    },
+    {
+      "id": "R03-direct-default-projects",
+      "argv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "bytes": 798,
+      "sha256": "e61f5926d5ef7f7b5e993824cca966f85a997a296823729050003ebd2e3346ab",
+      "endsWithLF": true,
+      "tailHex": "6e7669726f6e6d656e7420396d732c207072657061726520312e353673290a0a",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF"
+    },
+    {
+      "id": "R03-direct-reporter-explicit",
+      "argv": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "bytes": 136,
+      "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb",
+      "endsWithLF": true,
+      "tailHex": "6174202031323a33343a35360a2020204475726174696f6e2020312e3030730a",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF"
+    },
+    {
+      "id": "R03-direct-reporter-config",
+      "argv": [
+        "vitest",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p",
+      "environment": {
+        "CI": "1",
+        "NO_COLOR": "1",
+        "TZ": "UTC",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin"
+      },
+      "exitCode": 0,
+      "processEOF": true,
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "version": "3.2.4",
+      "bytes": 136,
+      "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb",
+      "endsWithLF": true,
+      "tailHex": "6174202031323a33343a35360a2020204475726174696f6e2020312e3030730a",
+      "mergedStream": "stdout PIPE; stderr STDOUT; single OS pipe; communicate until EOF"
+    }
+  ],
+  "version": {
+    "argv": [
+      "/usr/local/bin/node",
+      "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+      "--version"
+    ],
+    "exitCode": 0,
+    "processEOF": true,
+    "file": "resumed-version.txt",
+    "sha256": "eed2395330096744cf6270efd57e1473cddedf027282306d97224eac6189fd4f"
+  },
+  "sources": {
+    "inputs/alpha.test.js": "fe70d9e98602fa81e2faf99769af5c8c38e02f1739b3629efdb31a483cc7cef4",
+    "inputs/beta.test.js": "6c0c9531c1c62910f2e10bb987166075e7c826e0c530c638d06454c51741c83c",
+    "inputs/collision-reporter.mjs": "80f89c20039d82c01c4e03fc9554cfec842a4ddd63a349f3f19554851b849624",
+    "inputs/collision.config.mjs": "0d9c5f4678a040ffaed46f67888c36ae63fc37c5d7ff1706737e93abf458c196",
+    "inputs/package-lock.json": "3924c9d57c106ddc1f28b3db17fb1add292c6de0a5ad48f383f03d15c2a64edc",
+    "inputs/package.json": "3e2a8dae02bdb1c3511f3da070afab118477bd302290e291386fcdd9f97bfc77",
+    "inputs/src/math.js": "ac017317a651436aa0cb1273eda0a779d0f0c62c76b52069fad0d7554a54052f",
+    "inputs/vitest.config.mjs": "cfc207afa35e99848b7a5629ad2b6780b4692880ca37feedc65b15e6bf07a458"
+  }
+}

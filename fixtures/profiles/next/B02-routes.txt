@@ -1,0 +1,7 @@
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+   ▲ Next.js 15.5.9
+   - Experiments (use with caution):
+     · cpus: 1
+
+   Linting and checking validity of types ...
+   Creating an optimized production build ...

@@ -1,0 +1,10 @@
+Recovery notes from available session tool outputs; not a native subprocess transcript.
+
+First capture.py invocation:
+FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-e0kejzsc/node_modules/vitest/LICENSE'
+
+Second capture.py invocation:
+shutil.Error during copytree into R03-vitest-ueb_3127; reported multiple copy failures with [Errno 28] No space left on device.
+
+User reports harness snapshot error interrupted earlier execution. Final native capture receipt absent.
+Existing R03-default-projects.txt retained; exit/EOF/actual argv unavailable. No failure bytes normalized.

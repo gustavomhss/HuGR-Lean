@@ -1,0 +1,387 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "vitest",
+  "baseline": "248c303cb208f237896c0c6aaba777752aa481f5",
+  "cases": [
+    {
+      "name": "R03-default-projects-resumed",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "file": "R03-default-projects-resumed.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-default-projects-resumed",
+        "sha256": "c515f4ebfafe4b4b376e79d2edbb2865be073f77b9dae21cc430a4867be32f25"
+      }
+    },
+    {
+      "name": "R03-verbose-coverage",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage"
+      ],
+      "file": "R03-verbose-coverage.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-verbose-coverage",
+        "sha256": "95599b3e0013538e3c2a5417a5f95f186fa8377b4e1ba735874ba60992cd1622"
+      }
+    },
+    {
+      "name": "R03-dot-projects",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=dot"
+      ],
+      "file": "R03-dot-projects.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-dot-projects",
+        "sha256": "3639fd2fc458cdc93cefdbaad2224584ced2ceef4ce2a0cc731cd6d504df1b35"
+      }
+    },
+    {
+      "name": "R03-json-projects",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=json"
+      ],
+      "file": "R03-json-projects.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-json-projects",
+        "sha256": "f635ce8e4ce7f839e51cdb3538216a2ea222a74abb6352a52cf9e3f0a63f8b51"
+      }
+    },
+    {
+      "name": "R03-junit-projects",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=junit"
+      ],
+      "file": "R03-junit-projects.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-junit-projects",
+        "sha256": "20d3a0a135d37a873a137cb888e7b31080d81ee5d25f8a28de8b3aa43c0cf304"
+      }
+    },
+    {
+      "name": "R03-multiple-reporters",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=default",
+        "--reporter=json"
+      ],
+      "file": "R03-multiple-reporters.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-multiple-reporters",
+        "sha256": "4cc35df77078288da97c320f1bc25c4ac6811fcea9f4fd655635a14d7adcc3ef"
+      }
+    },
+    {
+      "name": "R03-retry-exhausted-coverage",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=verbose",
+        "--coverage",
+        "--coverage.reportOnFailure"
+      ],
+      "file": "R03-retry-exhausted-coverage.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-retry-exhausted-coverage",
+        "sha256": "34c8e13e22a034692b3a402816af57ad7d121aab44d52b0eda6c3905fbe4ebc0"
+      }
+    },
+    {
+      "name": "R03-user-reporter-explicit",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "file": "R03-user-reporter-explicit.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-user-reporter-explicit",
+        "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb"
+      }
+    },
+    {
+      "name": "R03-user-reporter-config",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--config=collision.config.mjs"
+      ],
+      "file": "R03-user-reporter-config.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-user-reporter-config",
+        "sha256": "604f2b8b2d56560f12bf8e552dc48e4b42665ca5b7a445320d3d4990eb26a0a6"
+      }
+    },
+    {
+      "name": "R03-user-reporter-config-valid",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-dy0u3a0p/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "file": "R03-user-reporter-config-valid.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-user-reporter-config-valid",
+        "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb"
+      }
+    },
+    {
+      "name": "R03-direct-default-projects",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color"
+      ],
+      "file": "R03-direct-default-projects.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-direct-default-projects",
+        "sha256": "e61f5926d5ef7f7b5e993824cca966f85a997a296823729050003ebd2e3346ab"
+      }
+    },
+    {
+      "name": "R03-direct-reporter-explicit",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "vitest",
+        "run",
+        "--config=vitest.config.mjs",
+        "--no-color",
+        "--reporter=./collision-reporter.mjs"
+      ],
+      "file": "R03-direct-reporter-explicit.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-direct-reporter-explicit",
+        "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb"
+      }
+    },
+    {
+      "name": "R03-direct-reporter-config",
+      "family": "vitest",
+      "version": "3.2.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "vitest",
+        "run",
+        "--config=collision.config.mjs",
+        "--no-color"
+      ],
+      "file": "R03-direct-reporter-config.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "reader-receipt.json",
+        "case": "R03-direct-reporter-config",
+        "sha256": "ba4e61ef645eda1499b9fdc259dcebfeb63ef9b089cfb192f61a8fcb9dcc11fb"
+      }
+    }
+  ],
+  "archives": [
+    "R03-direct-reporter-config.golden.txt",
+    "CASES.md",
+    "LICENSE.vitest-coverage-v8.txt",
+    "LICENSE.vitest.txt",
+    "R03-default-projects.txt",
+    "R03-retry-exhausted-coverage.coverage.json",
+    "R03-user-reporter-config-valid.golden.txt",
+    "R03-verbose-coverage.coverage.json",
+    "SOURCES.md",
+    "capture-config.py",
+    "capture-direct.py",
+    "capture-receipt.json",
+    "capture.py",
+    "close.mjs",
+    "closure-receipt.json",
+    "inputs/alpha.test.js",
+    "inputs/beta.test.js",
+    "inputs/collision-reporter.mjs",
+    "inputs/collision.config.mjs",
+    "inputs/package-lock.json",
+    "inputs/package.json",
+    "inputs/src/math.js",
+    "inputs/vitest.config.mjs",
+    "install.txt",
+    "interruption.txt",
+    "recover.py",
+    "recovery-receipt.json",
+    "resumed-install-receipt.json",
+    "resumed-install.txt",
+    "resumed-version.txt"
+  ]
+}

@@ -1,0 +1,6 @@
+ ✓ user-evidence.test.js (1 test) 123ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  12:34:56
+   Duration  1.00s

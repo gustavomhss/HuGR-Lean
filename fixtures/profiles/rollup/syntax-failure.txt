@@ -1,0 +1,21 @@
+
+syntax.js → out/syntax.mjs...
+[!] RollupError: syntax.js (1:22): Expression expected
+syntax.js (1:22)
+1: export const broken = ;
+                         ^
+    at Object.getRollupError (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/parseAst.js:285:41)
+    at ParseError.initialise (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:16064:40)
+    at convertNode (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:17947:10)
+    at convertProgram (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:17187:12)
+    at Module.setSource (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:18935:24)
+    at async ModuleLoader.addModuleSource (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:22581:13)
+  [cause] RollupError: Expression expected
+      at Object.getRollupError (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/parseAst.js:285:41)
+      at ParseError.initialise (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:16064:40)
+      at convertNode (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:17947:10)
+      at convertProgram (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:17187:12)
+      at Module.setSource (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:18935:24)
+      at async ModuleLoader.addModuleSource (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/rollup.js:22581:13)
+
+

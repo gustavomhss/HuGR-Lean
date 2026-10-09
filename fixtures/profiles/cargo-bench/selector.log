@@ -1,0 +1,8 @@
+    Finished `bench` profile [optimized] target(s) in 0.00s
+     Running benches/builtin.rs (target/release/build/c06-alpha/450ccfd895061651/out/builtin-450ccfd895061651)
+
+running 1 test
+test sum_256 ... bench:          48.25 ns/iter (+/- 1.74) = 42666 MB/s
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 1 measured; 1 filtered out; finished in 0.31s
+

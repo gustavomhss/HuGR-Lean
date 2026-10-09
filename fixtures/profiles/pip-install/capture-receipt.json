@@ -1,0 +1,70 @@
+{
+  "version": "pip 25.3 from /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/lib/python3.14/site-packages/pip (python 3.14)",
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "environment": {
+    "PATHPrefix": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/bin",
+    "PIP_CONFIG_FILE": "/dev/null",
+    "PIP_CACHE_DIR": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/cache",
+    "otherPipEnvironment": "removed"
+  },
+  "boundary": "subprocess stdout pipe with stderr=STDOUT; byte-exact, no PTY, no normalization",
+  "publicSources": [
+    {
+      "url": "https://pypi.org/pypi/pip/25.3/json",
+      "sha256": "e9584da5fd19bb04d0ca2b1313413e3172d2f4fc75a0c4453c851d1a6ed27993",
+      "license": "MIT",
+      "wheels": [
+        {
+          "url": "https://files.pythonhosted.org/packages/44/3c/d717024885424591d5376220b5e836c2d5293ce2011523c9de23ff7bf068/pip-25.3-py3-none-any.whl",
+          "sha256": "9655943313a94722b7774661c21049070f6bbb0a1516bf02f7c8d5d9201514cd"
+        }
+      ]
+    },
+    {
+      "url": "https://pypi.org/pypi/colorama/0.4.6/json",
+      "sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+      "license": "",
+      "wheels": [
+        {
+          "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl",
+          "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+        }
+      ]
+    }
+  ],
+  "localInputs": [
+    {
+      "path": "wheels/p05_dep-1.0-py3-none-any.whl",
+      "sha256": "dfeeaa420865289e9d1afc1407d3d3b175dab4c0e8a4b9796707bbae5311eb43"
+    },
+    {
+      "path": "wheels/p05_dep-2.0-py3-none-any.whl",
+      "sha256": "e6e488d274c2e291acf9ae35a791d507b5519ab2ac521a3a165fceea5f693d1f"
+    },
+    {
+      "path": "wheels/p05_root-1.0-py3-none-any.whl",
+      "sha256": "acd2ff0eeab1ace5fd4478b8e37a9423a2cc58ce11f8a43ed6ee9ba8087d9c52"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "437d666ea2dadbc1b09e74fd38eebe71582bf01f2bc1cdaf76659b4b78b7391c"
+    },
+    {
+      "path": "constraints.txt",
+      "sha256": "fbc8612e8626ad137e39918c7cecb5cd6fbe8b87e9b9c28a961abfa99c56e28f"
+    },
+    {
+      "path": "conflict.txt",
+      "sha256": "f520baf2e2c2918ff65b51fdf38aa46d0d660656bcddb095e038be7ca62ce44b"
+    },
+    {
+      "path": "backend/backend.py",
+      "sha256": "6c9953d6eedf338b3b93534e9898b8c1d1a37d85b3747bd7b4433c2a8557a8a5"
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "sha256": "28d746c51adf4db94ab7684efac91d5a7e788a9295c1a47c6041a57fe693fb2d"
+    }
+  ]
+}
