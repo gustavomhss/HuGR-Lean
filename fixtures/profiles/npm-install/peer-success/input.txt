@@ -1,0 +1,19 @@
+npm warn using --force Recommended protections disabled.
+npm warn ERESOLVE overriding peer dependency
+npm warn While resolving: p01-peer-consumer@1.0.0
+npm warn Found: p01-peer-host@1.0.0
+npm warn node_modules/p01-peer-host
+npm warn   p01-peer-host@"1.0.0" from the root project
+npm warn
+npm warn Could not resolve dependency:
+npm warn peer p01-peer-host@">=2" from p01-peer-consumer@1.0.0
+npm warn node_modules/p01-peer-consumer
+npm warn   p01-peer-consumer@"1.0.0" from the root project
+npm warn
+npm warn Conflicting peer dependency: p01-peer-host@2.0.0
+npm warn node_modules/p01-peer-host
+npm warn   peer p01-peer-host@">=2" from p01-peer-consumer@1.0.0
+npm warn   node_modules/p01-peer-consumer
+npm warn     p01-peer-consumer@"1.0.0" from the root project
+
+added 2 packages in 431ms

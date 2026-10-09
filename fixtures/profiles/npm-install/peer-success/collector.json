@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-09T20:47:29.614884+00:00",
+  "argv": [
+    "npm",
+    "install",
+    "--force",
+    "--ignore-scripts",
+    "--registry",
+    "http://127.0.0.1:49787/",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "executable": "/usr/local/bin/npm",
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-peer-success-3gz7ialp/project",
+  "captureRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-peer-success-3gz7ialp",
+  "environment": {
+    "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+    "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-peer-success-3gz7ialp/home",
+    "NPM_CONFIG_CACHE": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-peer-success-3gz7ialp/cache",
+    "NPM_CONFIG_USERCONFIG": "/dev/null",
+    "NPM_CONFIG_GLOBALCONFIG": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-peer-success-3gz7ialp/global.npmrc",
+    "NPM_CONFIG_UPDATE_NOTIFIER": "false",
+    "NPM_CONFIG_FETCH_RETRIES": "0",
+    "NPM_CONFIG_FETCH_TIMEOUT": "10000",
+    "NO_COLOR": "1"
+  },
+  "versions": [
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "output": "v22.17.1\n",
+      "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf"
+    },
+    {
+      "argv": [
+        "npm",
+        "--version"
+      ],
+      "exit": 0,
+      "output": "10.9.2\n",
+      "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5"
+    }
+  ],
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "termination": {
+    "kind": "exited",
+    "code": 0
+  },
+  "boundary": {
+    "bytes": 787,
+    "sha256": "053ad80c0ac85b524700e227a02bc8cb9132980b1d348724b6c82fb74596e7ea",
+    "readThroughEOF": true,
+    "finalLF": true,
+    "lastBytesHex": "6e73756d65724022312e302e30222066726f6d2074686520726f6f742070726f6a6563740a0a61646465642032207061636b6167657320696e203433316d730a",
+    "collector": "subprocess.run; stderr=STDOUT at spawn; shared OS pipe drained before return"
+  },
+  "registry": "http://127.0.0.1:49787/",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/p01-peer-host",
+      "status": 200,
+      "sha256": "fbf0bb67f053448c3cf686caccc49f30cdfef0a8effa79101c437209c818a999"
+    },
+    {
+      "method": "GET",
+      "path": "/p01-peer-consumer",
+      "status": 200,
+      "sha256": "7d9aef826ea9f1a3c67e6df7d147bd00e3c4a0fdbf431118775ac68b68f07c96"
+    },
+    {
+      "method": "GET",
+      "path": "/p01-peer-host-1.0.0.tgz",
+      "status": 200,
+      "sha256": "77ad5a78a4c99a896e65669cbd699831905e11ec7e4c4e298143d5584bb2a414"
+    },
+    {
+      "method": "GET",
+      "path": "/p01-peer-consumer-1.0.0.tgz",
+      "status": 200,
+      "sha256": "fddcb421e9e18d949567e349ed55c05b95b4440946f568d2d0f1ab48a796bb66"
+    }
+  ],
+  "producer": {
+    "file": "capture-peer-success.py",
+    "sha256": "473d3835182fbe5676ed31b6dba9d46bc7137de4c09077bc28f9eb13beed9337"
+  }
+}
