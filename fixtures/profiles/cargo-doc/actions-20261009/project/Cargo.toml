@@ -1,0 +1,20 @@
+[workspace]
+members = ["beta"]
+default-members = ["."]
+resolver = "2"
+
+[package]
+name = "c05-alpha"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+c05-beta = { path = "beta" }
+
+[[bin]]
+name = "c05-tool"
+path = "src/main.rs"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(capture_user_config)'] }

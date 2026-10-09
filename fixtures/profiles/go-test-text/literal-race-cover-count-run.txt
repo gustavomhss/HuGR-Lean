@@ -1,0 +1,7 @@
+=== RUN   TestQuiet
+--- PASS: TestQuiet (0.00s)
+=== RUN   TestQuiet
+--- PASS: TestQuiet (0.00s)
+PASS
+coverage: 100.0% of statements
+ok  	example.com/g01	10.877s	coverage: 100.0% of statements

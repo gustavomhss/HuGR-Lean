@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "rustdoc",
+    "--version",
+    "--verbose"
+  ],
+  "cwd": "/home/runner/work/_temp/c05-project",
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "8ebf501115bd99c819c7f92ae76ee13bf7391ff7212e286287e6913484143a7b",
+  "bytes": 218,
+  "startedUnix": 1791578925.1231172,
+  "elapsedSeconds": 0.011150598526000977,
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "runId": "37989424550",
+  "runAttempt": "1",
+  "boundary": "shared stdout/stderr pipe; communicate waits for EOF"
+}

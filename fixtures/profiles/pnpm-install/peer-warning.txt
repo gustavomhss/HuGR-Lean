@@ -1,0 +1,14 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +2
+++
+Progress: resolved 2, reused 2, downloaded 0, added 2, done
+ WARN  Issues with peer dependencies found
+.
+└─┬ p02-peer 1.0.0
+  └── ✕ unmet peer p02-host@^2.0.0: found 1.0.0
+
+dependencies:
++ p02-host 1.0.0
++ p02-peer 1.0.0
+
+Done in 599ms using pnpm v10.18.3

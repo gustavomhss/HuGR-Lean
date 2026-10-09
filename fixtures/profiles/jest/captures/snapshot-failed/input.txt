@@ -1,0 +1,36 @@
+FAIL ./snapshot.test.cjs
+  ✕ snapshot café 🔥 (28 ms)
+
+  ● snapshot café 🔥
+
+    expect(received).toMatchSnapshot()
+
+    Snapshot name: `snapshot café 🔥 1`
+
+    - Snapshot  - 1
+    + Received  + 1
+
+      {
+    -   "count": 1,
+    +   "count": 2,
+        "text": "café 🔥",
+      }
+
+      1 | const { choose } = require('./math.cjs');
+      2 | test('snapshot café 🔥', () => {
+    > 3 |   expect({ text: choose(true), count: process.env.R02_FAIL ? 2 : 1 }).toMatchSnapshot();
+        |                                                                       ^
+      4 | });
+      5 |
+
+      at Object.<anonymous> (snapshot.test.cjs:3:71)
+
+ › 1 snapshot failed.
+Snapshot Summary
+ › 1 snapshot failed from 1 test suite. Inspect your code changes or re-run jest with `-u` to update them.
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   1 failed, 1 total
+Time:        0.808 s, estimated 1 s
+Ran all test suites matching snapshot.test.cjs.

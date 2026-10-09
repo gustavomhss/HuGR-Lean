@@ -1,0 +1,5 @@
+➤ YN0000: · Yarn 4.10.3
+➤ YN0000: ┌ Resolution step
+➤ YN0080: │ ansi-styles@npm:^4.1.0: Request to 'https://registry.npmjs.org/ansi-styles' has been blocked because of your configuration settings
+➤ YN0000: └ Completed
+➤ YN0000: · Failed with errors in 0s 61ms

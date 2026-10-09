@@ -1,0 +1,1 @@
+ok  	example.com/g01	2.359s	coverage: 100.0% of statements

@@ -1,0 +1,23 @@
+Using pip 25.3 from /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P05-native-capture/venv/lib/python3.14/site-packages/pip (python 3.14)
+Processing ./backend
+  Getting requirements to build wheel: started
+  Running command Getting requirements to build wheel
+  Collecting backend-user-log==9.9
+  Downloading backend-user-log (123 kB)
+  Successfully installed backend-user-log-9.9
+  WARNING: backend user log must survive
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Running command Preparing metadata (pyproject.toml)
+  Building wheels for collected packages: user-owned
+  Finished user task in 0.123s; retain timing
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: p05_backend
+  Building wheel for p05_backend (pyproject.toml): started
+  Running command Building wheel for p05_backend (pyproject.toml)
+  Building wheel for p05_backend (pyproject.toml): finished with status 'done'
+  Created wheel for p05_backend: filename=p05_backend-1.0-py3-none-any.whl size=980 sha256=f9dcee4be3532975ddae0152acb36a0f8f380e0627356eb5ad9f2977c3436e73
+  Stored in directory: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/pip-ephem-wheel-cache-9k__viki/wheels/d8/2d/6c/4deb7b0d3773dfe5d12d2f3c895c050b0887f26a325a96d1b3
+Successfully built p05_backend
+Installing collected packages: p05_backend
+Successfully installed p05_backend-1.0

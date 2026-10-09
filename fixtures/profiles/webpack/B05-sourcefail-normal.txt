@@ -1,0 +1,20 @@
+asset main.js 13.1 KiB [compared for emit] (name: main)
+asset broken.js 846 bytes [compared for emit] (name: broken)
+asset lazy_js.chunk.js 562 bytes [compared for emit]
+asset shared.js 497 bytes [compared for emit] (name: shared) (id hint: shared)
+Entrypoint broken 846 bytes = broken.js
+Entrypoint main 13.6 KiB = shared.js 497 bytes main.js 13.1 KiB
+runtime modules 7.64 KiB 10 modules
+cacheable modules 185 bytes
+  ./broken.js 24 bytes [built] [code generated] [1 error]
+  ./entrée α.js 102 bytes [built] [code generated]
+  ./shared.js 33 bytes [built] [code generated]
+  ./lazy β.js 26 bytes [built] [code generated]
+
+ERROR in ./broken.js 1:22
+Module parse failed: Unexpected token (1:22)
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+> export const broken = ;
+|
+
+webpack 5.102.1 compiled with 1 error in 199 ms

@@ -1,0 +1,15 @@
+[
+    {
+        "type": "error",
+        "module": "syntax",
+        "obj": "",
+        "line": 2,
+        "column": 12,
+        "endLine": null,
+        "endColumn": null,
+        "path": "syntax.py",
+        "symbol": "syntax-error",
+        "message": "Parsing failed: 'invalid syntax (syntax, line 2)'",
+        "message-id": "E0001"
+    }
+]

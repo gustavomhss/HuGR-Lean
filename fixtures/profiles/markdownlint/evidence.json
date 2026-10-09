@@ -1,0 +1,12 @@
+{
+  "scope": "capture artifact inspection only; no product or test invocation",
+  "hashCalibration": "Capture SHA-256 mismatch",
+  "cases": 13,
+  "declaredTxtInputs": 13,
+  "declaredTxtArchives": 5,
+  "jsonFileEqualsMergedJsonStdout": true,
+  "jsonSuccessExactHex": "5b5d",
+  "collisionRowsRetainedTwice": true,
+  "candidateBytesProposed": 34,
+  "approvedSavings": 0
+}

@@ -1,0 +1,6 @@
+
+clean.css
+  1:1  ✖  Unknown rule capture-rule-does-not-exist  capture-rule-does-not-exist
+
+✖ 1 problem (1 error, 0 warnings)
+

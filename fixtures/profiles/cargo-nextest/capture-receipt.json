@@ -1,0 +1,1304 @@
+{
+  "schema": "hugr-lean/native-capture/1",
+  "baseline": "71bcaea",
+  "producer": {
+    "repository": "https://github.com/nextest-rs/nextest",
+    "tag": "cargo-nextest-0.9.148",
+    "commit": "cd1d6d5467322dbc0d39a80cb671d000ac302798",
+    "license": "MIT OR Apache-2.0",
+    "asset": "cargo-nextest-0.9.148-universal-apple-darwin.tar.gz",
+    "sha256": "6c23b7fb4ca82c571fc8dfedbab45bfa773d45918f933170c85d21cd7f4b852b",
+    "binarySha256": "aac4a0d9109efcfb4d83ec729c6e3204d5c15bf16ff554b5ee4476f6c5f60b37",
+    "publishedChecksum": "6c23b7fb4ca82c571fc8dfedbab45bfa773d45918f933170c85d21cd7f4b852b  cargo-nextest-0.9.148-universal-apple-darwin.tar.gz\n",
+    "binarySourceCorrespondence": "official release attribution; build-to-commit not independently attested"
+  },
+  "sourceHashes": {
+    "project/Cargo.toml": "30a3396ad1efc76ac42c63d33f015fe8f453b0b5ce13e099fb18bf8647734626",
+    "project/alpha/Cargo.toml": "4ca49a1423b84c30e1148f578e8eb2698a59c5de4fc2c3a8fd5d5428a9f4d5ae",
+    "project/alpha/src/lib.rs": "41d5f2ec3d00cb109968fff9ab00a260091fa4e9c89e373107545231ce605f6b",
+    "project/alpha/tests/integration.rs": "05397a9e96c1d61c15c018269645aed0dad609bdd6d0c074b5e46fc0118390e9",
+    "project/beta/Cargo.toml": "d5a72054317d85cd03bac1e6338ff0ab1066b9f80d80d6029b2fe8cce590f850",
+    "project/beta/src/lib.rs": "f30b926334401ca3013443ca0a86c69e1084a3216269741543532aeedb1fa74d",
+    "archives/LICENSE-MIT.txt": "79e1e84378f5cbb0fd3f7314e80d0a02cbb8454247cecee3326c512ed7234797",
+    "archives/LICENSE-APACHE.txt": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "archives/Cargo.lock.txt": "4aa8a42df3df09aa20bce86c40cab1555c65c3003a7fec53b6c861b38054ba2b"
+  },
+  "recipeSha256": "999389f0b3f71833445e1bbf934e1e9e3deffe70b9ba25607df5c969d884a600",
+  "isolation": {
+    "work": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native",
+    "cargoHome": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/cargo-home",
+    "home": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/home",
+    "config": "no copied Cargo/nextest global defaults; original project has no config"
+  },
+  "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+  "captures": [
+    {
+      "name": "C07-version",
+      "family": "cargo-nextest",
+      "file": "raw/version.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "--version"
+      ],
+      "command": "cargo nextest --version",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 166,
+      "outputBytes": 166,
+      "sha256": "d95a1faf7f67d4d78e76bb53b1403e7dd60c6d1c73cb51aeb8d53903e9a0562f",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "pinned version"
+      ],
+      "startedAt": "2026-10-09T14:46:29.783896+00:00",
+      "completionAt": "2026-10-09T14:46:30.744667+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "31302d30370a686f73743a207838365f36342d6170706c652d64617277696e0a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-version",
+        "sha256": "d95a1faf7f67d4d78e76bb53b1403e7dd60c6d1c73cb51aeb8d53903e9a0562f"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-cargo-version",
+      "family": "cargo-nextest",
+      "file": "raw/cargo-version.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "--version"
+      ],
+      "command": "cargo --version",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 36,
+      "outputBytes": 36,
+      "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "toolchain"
+      ],
+      "startedAt": "2026-10-09T14:46:30.744795+00:00",
+      "completionAt": "2026-10-09T14:46:30.784958+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f20312e39382e30202837393765386139626320323032362d30382d3035290a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-cargo-version",
+        "sha256": "fb3f25aefd6d5441842d285f5a9b125b3f0f0b0bf2013d9a32677f9e99c6c854"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-rustc-version",
+      "family": "cargo-nextest",
+      "file": "raw/rustc-version.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "rustc",
+        "--version",
+        "--verbose"
+      ],
+      "command": "rustc --version --verbose",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 191,
+      "outputBytes": 191,
+      "sha256": "5c57701fafd052933302131eba17f86df67d25b5eaffd18ca76680d3e13de5ed",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "host toolchain"
+      ],
+      "startedAt": "2026-10-09T14:46:30.785101+00:00",
+      "completionAt": "2026-10-09T14:46:30.857431+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "73653a20312e39382e300a4c4c564d2076657273696f6e3a2032322e312e380a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-rustc-version",
+        "sha256": "5c57701fafd052933302131eba17f86df67d25b5eaffd18ca76680d3e13de5ed"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-run-help",
+      "family": "cargo-nextest",
+      "file": "raw/run-help.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--help"
+      ],
+      "command": "cargo nextest run --help",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 16858,
+      "outputBytes": 16858,
+      "sha256": "04196d0ca8c3c01bca10911230fca600fbec856865038868e1498dc8d7228b6b",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "native flag reference"
+      ],
+      "startedAt": "2026-10-09T14:46:30.857496+00:00",
+      "completionAt": "2026-10-09T14:46:30.913523+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20202020202020205b656e763a204e4558544553545f50524f46494c453d5d0a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-run-help",
+        "sha256": "04196d0ca8c3c01bca10911230fca600fbec856865038868e1498dc8d7228b6b"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-success-default",
+      "family": "cargo-nextest",
+      "file": "raw/success-default.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "not test(alpha_failure)"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'not test(alpha_failure)'",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 1004,
+      "outputBytes": 1004,
+      "sha256": "984da752e43663a53bb0e8aa9d0bc70ce43c3604505d80c85ee4e0455b319936",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "success",
+        "three binaries",
+        "names/counts",
+        "ignored/skips",
+        "default reporter/footer",
+        "default successful logs hidden"
+      ],
+      "startedAt": "2026-10-09T14:46:30.913642+00:00",
+      "completionAt": "2026-10-09T14:46:33.721199+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2036207061737365642c203320736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-success-default",
+        "sha256": "984da752e43663a53bb0e8aa9d0bc70ce43c3604505d80c85ee4e0455b319936"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-success-logs",
+      "family": "cargo-nextest",
+      "file": "raw/success-logs.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "not test(alpha_failure)",
+        "--success-output",
+        "immediate",
+        "--status-level",
+        "all",
+        "--final-status-level",
+        "all"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'not test(alpha_failure)' --success-output immediate --status-level all --final-status-level all",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 3094,
+      "outputBytes": 3094,
+      "sha256": "dda4abf92abaaf964b7eef4afc0b128f4268d9fa80614037cccc9b732d423f2c",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "stdout/stderr",
+        "suite association",
+        "native-shaped arbitrary output collision",
+        "all statuses/footer",
+        "cached build"
+      ],
+      "startedAt": "2026-10-09T14:46:33.721279+00:00",
+      "completionAt": "2026-10-09T14:46:34.099094+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "696e746567726174696f6e20696e746567726174696f6e5f69676e6f7265640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-success-logs",
+        "sha256": "dda4abf92abaaf964b7eef4afc0b128f4268d9fa80614037cccc9b732d423f2c"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-logs-final",
+      "family": "cargo-nextest",
+      "file": "raw/logs-final.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "test(alpha_logs) | test(beta_logs)",
+        "--success-output",
+        "final"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'test(alpha_logs) | test(beta_logs)' --success-output final",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 1122,
+      "outputBytes": 1122,
+      "sha256": "6d550299c0e0969b21eab1cdb2f2a3cb785dd0e54c47db855ddfd7f52d03649d",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "final stdout/stderr",
+        "filter expression",
+        "two suites",
+        "filtered skips"
+      ],
+      "startedAt": "2026-10-09T14:46:34.099176+00:00",
+      "completionAt": "2026-10-09T14:46:34.379839+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "5f535444455252206b656570207375697465206173736f63696174696f6e0a0a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-logs-final",
+        "sha256": "6d550299c0e0969b21eab1cdb2f2a3cb785dd0e54c47db855ddfd7f52d03649d"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-ignored-only",
+      "family": "cargo-nextest",
+      "file": "raw/ignored-only.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "--run-ignored",
+        "only",
+        "--success-output",
+        "immediate",
+        "--status-level",
+        "all"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 --run-ignored only --success-output immediate --status-level all",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 1420,
+      "outputBytes": 1420,
+      "sha256": "65d3a3b3e6134a90a0e50d0229661412e6b9bb4c969133b419a0cda93772250f",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "ignored execution",
+        "ignored logs",
+        "skip counts",
+        "all statuses"
+      ],
+      "startedAt": "2026-10-09T14:46:34.379915+00:00",
+      "completionAt": "2026-10-09T14:46:34.661088+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2032207061737365642c203720736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-ignored-only",
+        "sha256": "65d3a3b3e6134a90a0e50d0229661412e6b9bb4c969133b419a0cda93772250f"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-ignored-all",
+      "family": "cargo-nextest",
+      "file": "raw/ignored-all.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "not test(alpha_failure)",
+        "--run-ignored",
+        "all",
+        "--success-output",
+        "final"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'not test(alpha_failure)' --run-ignored all --success-output final",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 3357,
+      "outputBytes": 3357,
+      "sha256": "1d8073929bd6887cf9eb3867ef703974f2936d543b2009cbdda3cb773137ae1c",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "include ignored",
+        "multi-suite counts",
+        "final logs"
+      ],
+      "startedAt": "2026-10-09T14:46:34.661168+00:00",
+      "completionAt": "2026-10-09T14:46:35.029140+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c7465726564206f75743b2066696e697368656420696e20302e3030730a0a0a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-ignored-all",
+        "sha256": "1d8073929bd6887cf9eb3867ef703974f2936d543b2009cbdda3cb773137ae1c"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-failure",
+      "family": "cargo-nextest",
+      "file": "raw/failure.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "--no-fail-fast",
+        "--failure-output",
+        "immediate-final",
+        "--status-level",
+        "all",
+        "--final-status-level",
+        "all"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 --no-fail-fast --failure-output immediate-final --status-level all --final-status-level all",
+      "termination": {
+        "kind": "exited",
+        "code": 100
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 2762,
+      "outputBytes": 2762,
+      "sha256": "529f9d3ae8508d17daf83e8e477249118671755300778e026f44c014b73be74d",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "failure exit",
+        "panic",
+        "stdout/stderr failure",
+        "failure suite/name/footer",
+        "continued multisuite run"
+      ],
+      "startedAt": "2026-10-09T14:46:35.029222+00:00",
+      "completionAt": "2026-10-09T14:46:35.413273+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636b74726163650a0a6572726f723a20746573742072756e206661696c65640a"
+      },
+      "expectedNativeExit": 100,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-failure",
+        "sha256": "529f9d3ae8508d17daf83e8e477249118671755300778e026f44c014b73be74d"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-package-filter",
+      "family": "cargo-nextest",
+      "file": "raw/package-filter.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-p",
+        "capture-beta",
+        "--success-output",
+        "immediate"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -p capture-beta --success-output immediate",
+      "termination": {
+        "kind": "exited",
+        "code": 100
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 1773,
+      "outputBytes": 1773,
+      "sha256": "654e498bef7f5fd66677c6795ccbc3e78fa4eb9e89f70eba5b970a2c05f2c8f6",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "workspace plus package selector",
+        "workspace selection wins",
+        "default fail-fast",
+        "failure stdout/stderr/footer"
+      ],
+      "startedAt": "2026-10-09T14:46:35.413365+00:00",
+      "completionAt": "2026-10-09T14:46:35.709120+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "61782d6661696c290a6572726f723a20746573742072756e206661696c65640a"
+      },
+      "expectedNativeExit": 100,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-package-filter",
+        "sha256": "654e498bef7f5fd66677c6795ccbc3e78fa4eb9e89f70eba5b970a2c05f2c8f6"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "initialExpectation": {
+        "exit": 0,
+        "scope": "single package"
+      }
+    },
+    {
+      "name": "C07-positional-filter",
+      "family": "cargo-nextest",
+      "file": "raw/positional-filter.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "--",
+        "alpha_pass"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -- alpha_pass",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 406,
+      "outputBytes": 406,
+      "sha256": "5a789ae5697ac9bfc8f64d924a6cda6bcc7992ed6ec050f63e6160ceabfffa4f",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "positional name filter",
+        "filtered skips/counts"
+      ],
+      "startedAt": "2026-10-09T14:46:35.709204+00:00",
+      "completionAt": "2026-10-09T14:46:35.970771+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3120746573742072756e3a2031207061737365642c203820736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-positional-filter",
+        "sha256": "5a789ae5697ac9bfc8f64d924a6cda6bcc7992ed6ec050f63e6160ceabfffa4f"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-exclude-name",
+      "family": "cargo-nextest",
+      "file": "raw/exclude-name.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "not test(alpha_failure)",
+        "--",
+        "--skip",
+        "alpha_logs"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'not test(alpha_failure)' -- --skip alpha_logs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 673,
+      "outputBytes": 673,
+      "sha256": "126c8e49ff2641503aaf253169aaef69f809881f4943ef3f4451ad04ca5a4239",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "libtest skip filter",
+        "skip accounting"
+      ],
+      "startedAt": "2026-10-09T14:46:35.970845+00:00",
+      "completionAt": "2026-10-09T14:46:36.288536+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2035207061737365642c203420736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-exclude-name",
+        "sha256": "126c8e49ff2641503aaf253169aaef69f809881f4943ef3f4451ad04ca5a4239"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-no-tests",
+      "family": "cargo-nextest",
+      "file": "raw/no-tests.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "test(no_such_test)",
+        "--no-tests",
+        "pass"
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'test(no_such_test)' --no-tests pass",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 345,
+      "outputBytes": 345,
+      "sha256": "71be4259404a4af4d4ccf8d577b47611c9a2c57cea1d693523c89a5b55d300f8",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "empty selection",
+        "zero counts/footer",
+        "explicit no-tests policy"
+      ],
+      "startedAt": "2026-10-09T14:46:36.288648+00:00",
+      "completionAt": "2026-10-09T14:46:36.547581+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2030207061737365642c203920736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-no-tests",
+        "sha256": "71be4259404a4af4d4ccf8d577b47611c9a2c57cea1d693523c89a5b55d300f8"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-list",
+      "family": "cargo-nextest",
+      "file": "raw/list.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "list",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never"
+      ],
+      "command": "cargo nextest list --offline --workspace --color never",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 313,
+      "outputBytes": 313,
+      "sha256": "d9e25d10abef106b9203223b3439093d77001f9a76d41d7763d9425480250ee6",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "native default list",
+        "binary associations",
+        "names",
+        "ignored tests omitted by default"
+      ],
+      "startedAt": "2026-10-09T14:46:36.547655+00:00",
+      "completionAt": "2026-10-09T14:46:36.805914+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "730a636170747572652d626574612074657374733a3a626574615f706173730a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-list",
+        "sha256": "d9e25d10abef106b9203223b3439093d77001f9a76d41d7763d9425480250ee6"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-list-filter",
+      "family": "cargo-nextest",
+      "file": "raw/list-filter.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "list",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "-E",
+        "test(alpha_pass) | test(beta_pass)"
+      ],
+      "command": "cargo nextest list --offline --workspace --color never -E 'test(alpha_pass) | test(beta_pass)'",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 135,
+      "outputBytes": 135,
+      "sha256": "04503d37c10ad88b52bb38c0964afee51bd38b85a5679c3640c066ad0bc761b9",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "list expression selector",
+        "suite associations"
+      ],
+      "startedAt": "2026-10-09T14:46:36.805986+00:00",
+      "completionAt": "2026-10-09T14:46:37.066305+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "730a636170747572652d626574612074657374733a3a626574615f706173730a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-list-filter",
+        "sha256": "04503d37c10ad88b52bb38c0964afee51bd38b85a5679c3640c066ad0bc761b9"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-invalid-flag",
+      "family": "cargo-nextest",
+      "file": "raw/invalid-flag.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--fixture-unknown-flag"
+      ],
+      "command": "cargo nextest run --fixture-unknown-flag",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 256,
+      "outputBytes": 256,
+      "sha256": "81a1c05a174fd67007495435d044995ee2fc6d810eb6aab4ed29e66b9ccb3f98",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "unknown flag refusal"
+      ],
+      "startedAt": "2026-10-09T14:46:37.066369+00:00",
+      "completionAt": "2026-10-09T14:46:37.116223+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d6f726520696e666f726d6174696f6e2c2074727920272d2d68656c70272e0a"
+      },
+      "expectedNativeExit": 2,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-invalid-flag",
+        "sha256": "81a1c05a174fd67007495435d044995ee2fc6d810eb6aab4ed29e66b9ccb3f98"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin"
+    },
+    {
+      "name": "C07-invalid-filter",
+      "family": "cargo-nextest",
+      "file": "raw/invalid-filter.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-E",
+        "test("
+      ],
+      "command": "cargo nextest run --offline --workspace --color never --test-threads 1 -E 'test('",
+      "termination": {
+        "kind": "exited",
+        "code": 94
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "inputBytes": 197,
+      "outputBytes": 197,
+      "sha256": "104cdaf0212f4dd28327d6cb09763bd435c5b563529aa0da6c9f86e4f34a62ee",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "variants": [
+        "invalid filter diagnostics"
+      ],
+      "startedAt": "2026-10-09T14:46:37.116289+00:00",
+      "completionAt": "2026-10-09T14:46:37.342951+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "72726f723a206661696c656420746f2070617273652066696c7465727365740a"
+      },
+      "expectedNativeExit": 94,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-invalid-filter",
+        "sha256": "104cdaf0212f4dd28327d6cb09763bd435c5b563529aa0da6c9f86e4f34a62ee"
+      },
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "initialExpectation": {
+        "exit": 2
+      }
+    },
+    {
+      "name": "C07-isolated-package",
+      "family": "cargo-nextest",
+      "file": "raw/isolated-package.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "-p",
+        "capture-beta",
+        "--success-output",
+        "immediate"
+      ],
+      "command": "cargo nextest run --offline --color never --test-threads 1 -p capture-beta --success-output immediate",
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "inputBytes": 890,
+      "outputBytes": 890,
+      "sha256": "bd44c37190a01a40c3cde4f732b17276e6a70c2d7e7905844b034c06f367252f",
+      "variants": [
+        "package only",
+        "single suite",
+        "stdout/stderr"
+      ],
+      "completionAt": "2026-10-09T14:48:02.598988+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2032207061737365642c203020736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-isolated-package",
+        "sha256": "bd44c37190a01a40c3cde4f732b17276e6a70c2d7e7905844b034c06f367252f"
+      }
+    },
+    {
+      "name": "C07-no-capture-collision",
+      "family": "cargo-nextest",
+      "file": "raw/no-capture-collision.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "--workspace",
+        "-E",
+        "test(alpha_collision) | test(alpha_logs)",
+        "--no-capture"
+      ],
+      "command": "cargo nextest run --offline --color never --test-threads 1 --workspace -E 'test(alpha_collision) | test(alpha_logs)' --no-capture",
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "inputBytes": 1265,
+      "outputBytes": 1265,
+      "sha256": "1a47e09d669b87bda43aba178b3df5283038e30c640472ff9c0191b49ea35fe3",
+      "variants": [
+        "uncaptured arbitrary native-shaped output",
+        "serial execution",
+        "stdout/stderr",
+        "summary/progress collision"
+      ],
+      "completionAt": "2026-10-09T14:48:02.927187+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2032207061737365642c203720736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-no-capture-collision",
+        "sha256": "1a47e09d669b87bda43aba178b3df5283038e30c640472ff9c0191b49ea35fe3"
+      }
+    },
+    {
+      "name": "C07-status-none",
+      "family": "cargo-nextest",
+      "file": "raw/status-none.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "run",
+        "--offline",
+        "--color",
+        "never",
+        "--test-threads",
+        "1",
+        "--workspace",
+        "-E",
+        "not test(alpha_failure)",
+        "--status-level",
+        "none",
+        "--final-status-level",
+        "none"
+      ],
+      "command": "cargo nextest run --offline --color never --test-threads 1 --workspace -E 'not test(alpha_failure)' --status-level none --final-status-level none",
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "inputBytes": 345,
+      "outputBytes": 345,
+      "sha256": "4d6fa65576dab31f8e5e1ccf0c15472348dabcd05b565c35f2897233faa97710",
+      "variants": [
+        "status suppression flags",
+        "retained start/summary",
+        "default successful output hidden"
+      ],
+      "completionAt": "2026-10-09T14:48:03.337616+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2074657374732072756e3a2036207061737365642c203320736b69707065640a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-status-none",
+        "sha256": "4d6fa65576dab31f8e5e1ccf0c15472348dabcd05b565c35f2897233faa97710"
+      }
+    },
+    {
+      "name": "C07-list-ignored-all",
+      "family": "cargo-nextest",
+      "file": "raw/list-ignored-all.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "list",
+        "--offline",
+        "--workspace",
+        "--color",
+        "never",
+        "--run-ignored",
+        "all",
+        "--verbose"
+      ],
+      "command": "cargo nextest list --offline --workspace --color never --run-ignored all --verbose",
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "inputBytes": 2907,
+      "outputBytes": 2907,
+      "sha256": "cf838406976324b2037e8f633026ad9a793bf95611b78b171b474c98e46cc856",
+      "variants": [
+        "verbose native list",
+        "all nine names including ignored",
+        "three binary associations",
+        "ignored labels/reasons not emitted"
+      ],
+      "completionAt": "2026-10-09T14:48:03.638353+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2f626574615d205b6275696c6420706c6174666f726d3a207461726765745d0a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-list-ignored-all",
+        "sha256": "cf838406976324b2037e8f633026ad9a793bf95611b78b171b474c98e46cc856"
+      }
+    },
+    {
+      "name": "C07-list-help",
+      "family": "cargo-nextest",
+      "file": "raw/list-help.txt",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "cargo",
+        "nextest",
+        "list",
+        "--help"
+      ],
+      "command": "cargo nextest list --help",
+      "version": "cargo-nextest 0.9.148 (cd1d6d546 2026-10-07)\nrelease: 0.9.148\ncommit-hash: cd1d6d5467322dbc0d39a80cb671d000ac302798\ncommit-date: 2026-10-07\nhost: x86_64-apple-darwin",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; communicate through EOF and wait; no PTY, normalization, truncation or command rewriting",
+      "inputBytes": 11022,
+      "outputBytes": 11022,
+      "sha256": "2fc23cfb299262c06d08911c67a2a71ba197f23c951ed8af9baf3a6d99d77328",
+      "variants": [
+        "native list flag reference"
+      ],
+      "completionAt": "2026-10-09T14:48:03.697738+00:00",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20202020202020205b656e763a204e4558544553545f50524f46494c453d5d0a"
+      },
+      "expectedNativeExit": 0,
+      "nativeExitMatches": true,
+      "disposition": "CAPTURED_EXACT_PENDING_LEAD_DECISION",
+      "proposedRemovableBytes": 0,
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "C07-list-help",
+        "sha256": "2fc23cfb299262c06d08911c67a2a71ba197f23c951ed8af9baf3a6d99d77328"
+      }
+    }
+  ],
+  "supplementRecipeSha256": "df926212e633b4dc6c6f5dcc7f13af6bf1cc0f5aae45e26a3eb06f9711633d33",
+  "initialCaptureResult": "Recipe exited 1 after retaining all captures: package-filter expected 0 observed 100; invalid-filter expected 2 observed 94. Supplement corrects expectations with initial values retained; raw bytes unchanged.",
+  "finalizeRecipeSha256": "b91793c6ed136c61d7c1252b2a81d4d5b360abe55bd94bd9a9454f0763048177",
+  "sourceAssociation": {
+    "project": "Original dependency-free Rust source under project/ copied byte-for-byte to isolated cwd before capture; generated lockfile archived separately.",
+    "licenseCopies": [
+      {
+        "repository": "https://github.com/nextest-rs/nextest",
+        "commit": "cd1d6d5467322dbc0d39a80cb671d000ac302798",
+        "path": "LICENSE-MIT",
+        "archive": "archives/LICENSE-MIT.txt",
+        "modifications": "none; bytes unchanged"
+      },
+      {
+        "repository": "https://github.com/nextest-rs/nextest",
+        "commit": "cd1d6d5467322dbc0d39a80cb671d000ac302798",
+        "path": "LICENSE-APACHE",
+        "archive": "archives/LICENSE-APACHE.txt",
+        "modifications": "none; bytes unchanged"
+      }
+    ],
+    "ignoreReasons": "Native reporter and verbose list do not emit Rust ignore reason strings; retained in original source, never injected into raw output.",
+    "golden": "Whole native file must remain exact; no independent reduction golden or public-filter execution claimed."
+  }
+}

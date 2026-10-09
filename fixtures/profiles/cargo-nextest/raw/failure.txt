@@ -1,0 +1,69 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+────────────
+ Nextest run ID f1bb0339-7ea7-487e-ba9f-22834ae37839 with nextest profile: default
+    Starting 7 tests across 3 binaries (2 tests skipped)
+        PASS [   0.015s] (1/7) capture-alpha tests::alpha_collision
+        SKIP [         ] (───) capture-alpha tests::alpha_ignored
+        FAIL [   0.015s] (2/7) capture-alpha tests::alpha_failure
+  stdout ───
+
+    running 1 test
+    FAIL_STDOUT keep payload
+    test tests::alpha_failure ... FAILED
+
+    failures:
+
+    failures:
+        tests::alpha_failure
+
+    test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+    FAIL_STDERR keep diagnostic
+
+    thread 'tests::alpha_failure' (17562635) panicked at alpha/src/lib.rs:30:9:
+    assertion `left == right` failed: original failure evidence
+      left: 7
+     right: 9
+    note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+        PASS [   0.015s] (3/7) capture-alpha tests::alpha_logs
+        SKIP [         ] (───) capture-alpha::integration integration_ignored
+        PASS [   0.015s] (4/7) capture-alpha tests::alpha_pass
+        PASS [   0.015s] (5/7) capture-alpha::integration integration_pass
+        PASS [   0.016s] (6/7) capture-beta tests::beta_logs
+        PASS [   0.016s] (7/7) capture-beta tests::beta_pass
+────────────
+     Summary [   0.109s] 7 tests run: 6 passed, 1 failed, 2 skipped
+        PASS [   0.015s] (1/7) capture-alpha tests::alpha_collision
+        PASS [   0.015s] (3/7) capture-alpha tests::alpha_logs
+        PASS [   0.015s] (4/7) capture-alpha tests::alpha_pass
+        PASS [   0.015s] (5/7) capture-alpha::integration integration_pass
+        PASS [   0.016s] (6/7) capture-beta tests::beta_logs
+        PASS [   0.016s] (7/7) capture-beta tests::beta_pass
+        SKIP [         ] (───) capture-alpha tests::alpha_ignored
+        SKIP [         ] (───) capture-alpha::integration integration_ignored
+        FAIL [   0.015s] (2/7) capture-alpha tests::alpha_failure
+  stdout ───
+
+    running 1 test
+    FAIL_STDOUT keep payload
+    test tests::alpha_failure ... FAILED
+
+    failures:
+
+    failures:
+        tests::alpha_failure
+
+    test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+    FAIL_STDERR keep diagnostic
+
+    thread 'tests::alpha_failure' (17562635) panicked at alpha/src/lib.rs:30:9:
+    assertion `left == right` failed: original failure evidence
+      left: 7
+     right: 9
+    note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+error: test run failed

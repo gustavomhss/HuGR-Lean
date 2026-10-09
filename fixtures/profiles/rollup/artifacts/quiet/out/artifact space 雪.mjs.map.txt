@@ -1,0 +1,1 @@
+{"version":3,"file":"artifact space 雪.mjs","sources":["../shared.js","../entry.js"],"sourcesContent":["export const answer = 42;\n","import { answer } from './shared.js';\nconsole.log('雪😀', answer);\nexport { answer };\n"],"names":[],"mappings":"AAAY,MAAC,MAAM,GAAG;;ACCtB,OAAO,CAAC,GAAG,CAAC,KAAK,EAAE,MAAM,CAAC;;;;"}

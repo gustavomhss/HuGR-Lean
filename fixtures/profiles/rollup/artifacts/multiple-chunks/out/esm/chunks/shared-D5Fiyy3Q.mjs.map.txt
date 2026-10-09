@@ -1,0 +1,1 @@
+{"version":3,"file":"shared-D5Fiyy3Q.mjs","sources":["../../../shared.js"],"sourcesContent":["export const answer = 42;\n"],"names":[],"mappings":"AAAY,MAAC,MAAM,GAAG;;;;"}

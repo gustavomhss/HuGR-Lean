@@ -1,0 +1,22 @@
+{
+  "captureRoot": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-registry-2gdswoac",
+  "date": "2026-10-08",
+  "modifications": "Native command outputs unmodified; lockfile source/version/integrity/license facts extracted below. No dependency source code copied. Debug-log excerpts in CASES.md are explicitly auxiliary, not command output.",
+  "producer": {"package":"npm@10.9.2","repository":"https://github.com/npm/cli","path":"https://registry.npmjs.org/npm/-/npm-10.9.2.tgz","license":"Artistic-2.0","integrity":"sha512-iriPEPIkoMYUy3F6f3wwSZAU93E0Eg6cHwIR6jzzOXWSy+SD/rOODEs74cVONHKSx2obXtuUoyidVEhISrisgQ==","commit":null,"commitReason":"Registry npm@10.9.2 metadata omits gitHead; immutable distribution integrity pins producer source, not a donor-code copy."},
+  "dependencies": [
+    {"package":"lodash@4.17.20","path":"https://registry.npmjs.org/lodash/-/lodash-4.17.20.tgz","repository":"https://github.com/lodash/lodash","commit":"f2e7063ee409ff40a60b14370c58dceee1a2efd4","license":"MIT","integrity":"sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA=="},
+    {"package":"chalk@4.1.2","path":"https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz","repository":"https://github.com/chalk/chalk","commit":"95d74cbe8d3df3674dec1445a4608d3288d8b73c","license":"MIT","integrity":"sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="},
+    {"package":"ansi-styles@4.3.0","path":"https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz","license":"MIT","integrity":"sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="},
+    {"package":"color-convert@2.0.1","path":"https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz","license":"MIT","integrity":"sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="},
+    {"package":"color-name@1.1.4","path":"https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz","license":"MIT","integrity":"sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA=="},
+    {"package":"has-flag@4.0.0","path":"https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz","license":"MIT","integrity":"sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ=="},
+    {"package":"supports-color@7.2.0","path":"https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz","license":"MIT","integrity":"sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw=="}
+  ],
+  "locks": {"audit":"308ad5e0431ea0a0a116ec609c010a909e61980894ce596b55492aee2fabeeba","chalk-cold":"f78403b04d11356339987d6afc501937008ff382ccde729e49ec290bef5272f6","chalk-warm":"18e6ce36c90f5e8d430670b7d468063c008b4a36fb6e34f637bdefd405920fb8","chalk-offline":"8afc04cf610446678364fe8133d5d8c5aac0d54b5c300ad8e0cac8ce8529c7f6"},
+  "chalkCacheDebugLogs": {
+    "2026-10-08T18_54_57_400Z-debug-0.log":"9ef938014d477028ac11745f4a475502bea6f3f2d0c5875e726d1f01a0c2c544",
+    "2026-10-08T18_55_17_936Z-debug-0.log":"c72ee43c48e0ce6d53d147ecca0b58c59e9a61326dc12494f73092ba84572334",
+    "2026-10-08T18_55_36_597Z-debug-0.log":"cd2d94723827bb240cc1a50705baa69fff0a4823c55fd25c5a2a6c4a6d966d51",
+    "2026-10-08T18_55_54_408Z-debug-0.log":"efa7e7ec9301ecf8612c7a5eedd2faa47146797072587973ad33f85d6ce1a94a"
+  }
+}

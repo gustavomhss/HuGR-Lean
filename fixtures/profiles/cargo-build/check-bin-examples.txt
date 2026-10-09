@@ -1,0 +1,2 @@
+    Checking c01-app v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c01-tiny/app)
+    Finished `release` profile [optimized] target(s) in 0.26s

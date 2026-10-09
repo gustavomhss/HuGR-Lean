@@ -1,0 +1,511 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "cargo-bench",
+  "state": "CAPTURED",
+  "scope": "candidate-progress-unapproved",
+  "cases": [
+    {
+      "id": "default",
+      "name": "cargo-bench-default",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never"
+      ],
+      "command": "cargo bench --offline --color never",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "default.txt",
+      "receipt": "default.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1023,
+      "nativeOutcome": "expected",
+      "cacheFrom": null,
+      "provenance": {
+        "sha256": "971d9672973545908f73db276a38fc19da11397186dba4eb5627517b5d0a9317",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-default",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "cached",
+      "name": "cargo-bench-cached",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never"
+      ],
+      "command": "cargo bench --offline --color never",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "cached.txt",
+      "receipt": "cached.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 955,
+      "nativeOutcome": "expected",
+      "cacheFrom": "default",
+      "provenance": {
+        "sha256": "57c96d4212294a9e70a620f3b4ae5958b09dec2c01e6b58effd3bb460c06664c",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-cached",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "workspace",
+      "name": "cargo-bench-workspace",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never",
+        "--workspace"
+      ],
+      "command": "cargo bench --offline --color never --workspace",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "workspace.txt",
+      "receipt": "workspace.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 1307,
+      "nativeOutcome": "expected",
+      "cacheFrom": null,
+      "provenance": {
+        "sha256": "60304fd069e67de23f22f1b5897e0d421127c3d019574a8373251ed7c20e4f32",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-workspace",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "selector",
+      "name": "cargo-bench-selector",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never",
+        "--bench",
+        "builtin",
+        "sum_256"
+      ],
+      "command": "cargo bench --offline --color never --bench builtin sum_256",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "selector.txt",
+      "receipt": "selector.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 354,
+      "nativeOutcome": "expected",
+      "cacheFrom": null,
+      "provenance": {
+        "sha256": "7412c1f8592b116514fbbb2e10e8b857aee89ed0bb3b5db7d98a905203c4e019",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-selector",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "list",
+      "name": "cargo-bench-list",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never",
+        "--bench",
+        "builtin",
+        "--",
+        "--list"
+      ],
+      "command": "cargo bench --offline --color never --bench builtin -- --list",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "list.txt",
+      "receipt": "list.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 243,
+      "nativeOutcome": "expected",
+      "cacheFrom": null,
+      "provenance": {
+        "sha256": "578e86265f3c680cc9fae57304d2b48fc5fa5933c717c1ba3eeade99f1a45585",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-list",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "ignored",
+      "name": "cargo-bench-ignored",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never",
+        "--bench",
+        "builtin",
+        "suite::ignored_sum",
+        "--",
+        "--ignored",
+        "--exact"
+      ],
+      "command": "cargo bench --offline --color never --bench builtin suite::ignored_sum -- --ignored --exact",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "ignored.txt",
+      "receipt": "ignored.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 352,
+      "nativeOutcome": "expected",
+      "cacheFrom": null,
+      "provenance": {
+        "sha256": "4f40d9684440578e3d527e7fb4d01305904cddfcb2d35471432f9f1f1b4ad9d3",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-ignored",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "custom",
+      "name": "cargo-bench-custom",
+      "version": "nightly-2026-10-08; cargo 1.101.0-nightly (f3865b2a4 2026-09-29); rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "family": "cargo-bench",
+      "argv": [
+        "cargo",
+        "bench",
+        "--offline",
+        "--color",
+        "never",
+        "--bench",
+        "custom"
+      ],
+      "command": "cargo bench --offline --color never --bench custom",
+      "cwd": "/home/runner/work/_temp/c06-project",
+      "source": "shell",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "custom.txt",
+      "receipt": "custom.json",
+      "status": "passthrough",
+      "removableBytes": 0,
+      "inputBytes": 298,
+      "nativeOutcome": "expected",
+      "cacheFrom": null,
+      "provenance": {
+        "sha256": "d9be5dd97db0a061fea09f3213f5d9161f4bb04b2d5cb9d0fdea65a5eb0567a6",
+        "record": "SOURCES.md",
+        "receipt": "reader-receipt.json",
+        "case": "cargo-bench-custom",
+        "recipe": "capture.py",
+        "completedStream": true
+      }
+    }
+  ],
+  "failures": [],
+  "snapshots": [
+    {
+      "path": "CASES.md",
+      "sha256": "32c17483dae0566309a8c3d589779f3a0816e4eccc730a543efabb3e1f370e61"
+    },
+    {
+      "path": "SOURCES.md",
+      "sha256": "2fbc67df1a5de59360f25d5ee2f0db32196a05d3a42689bfde52395325930976"
+    },
+    {
+      "path": "cached.json",
+      "sha256": "a57e3d9a71d0d6d486f18b6e3fe17cc301ecf611c7c9e03d636a0088b4ba30c7"
+    },
+    {
+      "path": "cached.log",
+      "sha256": "57c96d4212294a9e70a620f3b4ae5958b09dec2c01e6b58effd3bb460c06664c"
+    },
+    {
+      "path": "cached.txt",
+      "sha256": "57c96d4212294a9e70a620f3b4ae5958b09dec2c01e6b58effd3bb460c06664c"
+    },
+    {
+      "path": "capture.py",
+      "sha256": "8d0bef678e000b3a468e016b565b25a20daa7745bb3da3c997812a84f8be055c"
+    },
+    {
+      "path": "cargo.json",
+      "sha256": "e37a30ece37c0a573e4d0d1d548fd01c16e3c588de6d45067dec61e92a256b55"
+    },
+    {
+      "path": "cargo.log",
+      "sha256": "138b8b6f1ef056b7ad3bc38947f7c13c3eeed2cfacecc4b3e67a8fefe331d427"
+    },
+    {
+      "path": "channel-rust-nightly.toml",
+      "sha256": "e9d90b7367f84f10e72e9ea14fd1f6ce2abb6f0367a3d0809f7b037676e67727"
+    },
+    {
+      "path": "custom.json",
+      "sha256": "5fd5ac42d32fc05fa1aacfcaaa2065e5a29394f7723af449bbeccd446af157bf"
+    },
+    {
+      "path": "custom.log",
+      "sha256": "d9be5dd97db0a061fea09f3213f5d9161f4bb04b2d5cb9d0fdea65a5eb0567a6"
+    },
+    {
+      "path": "custom.txt",
+      "sha256": "d9be5dd97db0a061fea09f3213f5d9161f4bb04b2d5cb9d0fdea65a5eb0567a6"
+    },
+    {
+      "path": "default.json",
+      "sha256": "eff3e0a7b12dff088b6cf8d3434fdd2c0f4f2f8a2b849446c050e215ab981ade"
+    },
+    {
+      "path": "default.log",
+      "sha256": "971d9672973545908f73db276a38fc19da11397186dba4eb5627517b5d0a9317"
+    },
+    {
+      "path": "default.txt",
+      "sha256": "971d9672973545908f73db276a38fc19da11397186dba4eb5627517b5d0a9317"
+    },
+    {
+      "path": "environment.json",
+      "sha256": "cf5d19b6536df274c966034eb73a712ec49f9968600ef30b4139db81e3dab656"
+    },
+    {
+      "path": "identity.json",
+      "sha256": "f9e9be72c4e1574505251d48fb0f1f0e014971424b4f7f08789538e246e5effd"
+    },
+    {
+      "path": "ignored.json",
+      "sha256": "ac182bae74a4fc3505e5fb4723a06964fc5adbcc9a7be6d0d92155abb61c6e43"
+    },
+    {
+      "path": "ignored.log",
+      "sha256": "4f40d9684440578e3d527e7fb4d01305904cddfcb2d35471432f9f1f1b4ad9d3"
+    },
+    {
+      "path": "ignored.txt",
+      "sha256": "4f40d9684440578e3d527e7fb4d01305904cddfcb2d35471432f9f1f1b4ad9d3"
+    },
+    {
+      "path": "install.json",
+      "sha256": "14ee2f6aa54701f065230580140084191aaf00d6adfa2173256a1f5bbbbd576f"
+    },
+    {
+      "path": "install.log",
+      "sha256": "1e29c885c2e83ee2c2c4044c9ab4e6047a1c5afeaf5845779331311f9a2f667a"
+    },
+    {
+      "path": "list.json",
+      "sha256": "412200e04cee8089b12e5a8e904beb18961e9b2e77470b8103bd3e03b20c4304"
+    },
+    {
+      "path": "list.log",
+      "sha256": "578e86265f3c680cc9fae57304d2b48fc5fa5933c717c1ba3eeade99f1a45585"
+    },
+    {
+      "path": "list.txt",
+      "sha256": "578e86265f3c680cc9fae57304d2b48fc5fa5933c717c1ba3eeade99f1a45585"
+    },
+    {
+      "path": "rustc.json",
+      "sha256": "c38564272ff59d48c5ed9f3aa872eac2a9f103f59d8758c8c16d6445143e217c"
+    },
+    {
+      "path": "rustc.log",
+      "sha256": "4c4dc36bf30832137b625afd035311ec0eced81e15d77fb96e8327103c95c965"
+    },
+    {
+      "path": "rustup.json",
+      "sha256": "6efcef96385f569f070614c7fc2a986308636e07c2b3fef19c88a2664b88bba9"
+    },
+    {
+      "path": "rustup.log",
+      "sha256": "906064fd418786b737c4fe411695c1073182c633c2f41d1de27d8f9fc8e27ad7"
+    },
+    {
+      "path": "selector.json",
+      "sha256": "6e59774cfeb113ec254b5d694f0865a492ee7ad0f0e12ebec417c63857ab84cb"
+    },
+    {
+      "path": "selector.log",
+      "sha256": "7412c1f8592b116514fbbb2e10e8b857aee89ed0bb3b5db7d98a905203c4e019"
+    },
+    {
+      "path": "selector.txt",
+      "sha256": "7412c1f8592b116514fbbb2e10e8b857aee89ed0bb3b5db7d98a905203c4e019"
+    },
+    {
+      "path": "source/Cargo.lock",
+      "sha256": "8c6f47fa4979b45219018b24156752c27f96f727a5b3abb541f1928ec3494738"
+    },
+    {
+      "path": "source/Cargo.toml",
+      "sha256": "e65b4dafef034ff079c1f17306f6103272b2ef5a44c20575f7b87fb7ae1bb42c"
+    },
+    {
+      "path": "source/benches/builtin.rs",
+      "sha256": "df22caf65c8829359be0c3a3e5057e3d4d32cdb54ad033efdb131fc19ea7e92c"
+    },
+    {
+      "path": "source/benches/custom.rs",
+      "sha256": "7a47dd38f1e0ec732dd3ea483be43abe8681bcee72df9beb456942be7ca2a6a4"
+    },
+    {
+      "path": "source/benches/second.rs",
+      "sha256": "427390d861886e32f1dc691ecb8ef4be21ba343046561bc4d8c5cddda7fce93e"
+    },
+    {
+      "path": "source/beta/Cargo.toml",
+      "sha256": "b0b4dfd55904ba5edc8f2be3203b9c18689dd0340ff3d9a3bf67bf08e1f575ed"
+    },
+    {
+      "path": "source/beta/benches/beta.rs",
+      "sha256": "9e967bcac784ec66c1e7bf07fcb333a1469d46c4dd831a83f8c95228e155fd12"
+    },
+    {
+      "path": "source/beta/src/lib.rs",
+      "sha256": "da6e470df61f32b4ae3ee76d16d68d136e27d7461e147639d6a14f26e9db84ef"
+    },
+    {
+      "path": "source/src/lib.rs",
+      "sha256": "5b16126173ba5de01664100744d156d5028fa1e9452199b2439900fb1fc6c85b"
+    },
+    {
+      "path": "workspace.json",
+      "sha256": "387e15f7ad1a92c2e1194a8ec3485b7c06632fb300f0943d4d88a54731ef55e6"
+    },
+    {
+      "path": "workspace.log",
+      "sha256": "60304fd069e67de23f22f1b5897e0d421127c3d019574a8373251ed7c20e4f32"
+    },
+    {
+      "path": "workspace.txt",
+      "sha256": "60304fd069e67de23f22f1b5897e0d421127c3d019574a8373251ed7c20e4f32"
+    }
+  ],
+  "archives": [
+    "reader-receipt.json",
+    "artifact-receipt.json",
+    "import-artifact.py",
+    "CASES.md",
+    "SOURCES.md",
+    "cached.json",
+    "cached.log",
+    "capture.py",
+    "cargo.json",
+    "cargo.log",
+    "channel-rust-nightly.toml",
+    "custom.json",
+    "custom.log",
+    "default.json",
+    "default.log",
+    "environment.json",
+    "identity.json",
+    "ignored.json",
+    "ignored.log",
+    "install.json",
+    "install.log",
+    "list.json",
+    "list.log",
+    "rustc.json",
+    "rustc.log",
+    "rustup.json",
+    "rustup.log",
+    "selector.json",
+    "selector.log",
+    "source/Cargo.lock",
+    "source/Cargo.toml",
+    "source/benches/builtin.rs",
+    "source/benches/custom.rs",
+    "source/benches/second.rs",
+    "source/beta/Cargo.toml",
+    "source/beta/benches/beta.rs",
+    "source/beta/src/lib.rs",
+    "source/src/lib.rs",
+    "workspace.json",
+    "workspace.log"
+  ]
+}

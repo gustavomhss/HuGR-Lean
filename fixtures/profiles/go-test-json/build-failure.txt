@@ -1,0 +1,6 @@
+{"ImportPath":"example.com/g02/broken","Action":"build-output","Output":"# example.com/g02/broken\n"}
+{"ImportPath":"example.com/g02/broken","Action":"build-output","Output":"broken/broken.go:2:13: undefined: missingSymbol\n"}
+{"ImportPath":"example.com/g02/broken","Action":"build-fail"}
+{"Time":"2026-10-08T15:27:48.643437-03:00","Action":"start","Package":"example.com/g02/broken"}
+{"Time":"2026-10-08T15:27:48.644119-03:00","Action":"output","Package":"example.com/g02/broken","Output":"FAIL\texample.com/g02/broken [build failed]\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:48.644201-03:00","Action":"fail","Package":"example.com/g02/broken","Elapsed":0.001,"FailedBuild":"example.com/g02/broken"}

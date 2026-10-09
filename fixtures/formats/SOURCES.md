@@ -41,6 +41,16 @@ keeps the test names, basenames, hierarchy, and counts; root banner, clock, and 
 These are native reporter streams; shell directory listings and npm bootstrap warnings are excluded.
 If those launcher warnings occur in an observation, the full grammar rejects it and preserves it.
 
+Config-only Jest collision regressions copy literal bytes from authored HuGR-Lean MIT commit
+`362457b6cfe79b1d2ba7a70206a5d025b66c6100`, paths
+`fixtures/profiles/jest/captures/{config-collision,config-full-collision}/input.txt`.
+Git blobs: `61fee64e8ad954c4d960ca613138b9dbd432eaf6` and
+`e83b741fc1a0573c1802faf1d366815bb2f3d94b`; sizes 160 and 196 UTF-8 bytes.
+Modification record: literal escaping/concatenation only, no byte changes. Exact source/config,
+license and merged-pipe EOF/exit/version facts live in that commit's `fixtures/profiles/jest/`
+`SOURCES.md` and `config-capture-receipt.json`. Actual argv uses only `--config`, no reporter flag;
+Jest package 30.2.0 / CLI 30.1.3 runs authored reporters. Tests pin bytes and preserve full rows.
+
 ## Admitted grammar
 
 - Identity: direct `jest`, `vitest`, `git status`, `rg`, `tsc`; explicit `npx TOOL` or
@@ -51,15 +61,17 @@ If those launcher warnings occur in an observation, the full grammar rejects it 
 - Jest: one or more PASS suites, either all nonverbose or all verbose; optional nested describe
   headings with two-space depth increments; all tests passed. Suite and visible test totals must agree.
   Optional passing/empty snapshots, seed, time/estimate, and `Ran all test suites[ matching ...].`.
-  Every complete suite path, describe heading, test body (including timings), and summary is required
-  source evidence. Known PASS prefixes become fixed `+ `; known success glyphs become fixed `- `.
-  Timing-shaped names cannot be distinguished from timing suffixes, so those bodies remain exact.
+  Every complete source row is required evidence, including PASS/check markers, headings, blanks,
+  timings and trailers. Config-only reporters can emit the entire grammar as user evidence;
+  argv cannot authenticate its producer. Legacy plain Jest reduction is withdrawn: installed
+  donor/native goldens equal raw bytes; validated equal-size streams return `not_smaller`.
 - Vitest: optional RUN/version/root banner, passing file rows with positive test counts,
   consistent file/test summaries, start clock, total duration, optional known duration stages
   (`transform`, `setup`, `collect`, `import`, `tests`, `environment`, `prepare`).
   Every banner, full path/pass marker/test count, and summary is required source evidence.
-  Only Vitest's structurally delimited per-file timing suffixes are omitted. Aggregate timing
-  and reporter blank lines remain exact. Skipped/todo and other reporters decline.
+  Vitest fixtures are exact-preservation witnesses; no timing removal is approved. Installed
+  goldens must equal raw bytes. Plain Jest/Vitest preservation does not disable core-owned safe
+  presentation normalization; grammar still validates rather than becoming a passthrough stub.
 - English long Git status: branch/detached identity; optional initial/tracking/merge state;
   ordered staged, unmerged, unstaged, untracked sections; all native status/conflict labels;
   clean/unstaged/untracked footers. Ordinary output without staged entries or an explicit merge

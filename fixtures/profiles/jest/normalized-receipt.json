@@ -1,0 +1,398 @@
+{
+  "schema": "hugr-lean/native-receipt/1",
+  "purpose": "fact-only adapter; historical statuses/goldens unchanged in original archives",
+  "cases": [
+    {
+      "name": "R02-snapshot-written",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --updateSnapshot",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 309,
+        "sha256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-snapshot-written",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/snapshot-written/input.txt"
+    },
+    {
+      "name": "R02-snapshot-passed",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 237,
+        "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-snapshot-passed",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/snapshot-passed/input.txt"
+    },
+    {
+      "name": "R02-snapshot-failed",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 985,
+        "sha256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-snapshot-failed",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/snapshot-failed/input.txt"
+    },
+    {
+      "name": "R02-skip-todo",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=skip-todo.test.cjs --verbose",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 330,
+        "sha256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7",
+        "finalLF": true,
+        "lastBytesHex": "6573206d61746368696e6720736b69702d746f646f2e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-skip-todo",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/skip-todo/input.txt"
+    },
+    {
+      "name": "R02-log-snapshot-written",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --verbose --updateSnapshot",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 970,
+        "sha256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb",
+        "finalLF": true,
+        "lastBytesHex": "737569746573206d61746368696e67206d697865642e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-log-snapshot-written",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/log-snapshot-written/input.txt"
+    },
+    {
+      "name": "R02-log-snapshot-passed",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --verbose",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 898,
+        "sha256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428",
+        "finalLF": true,
+        "lastBytesHex": "737569746573206d61746368696e67206d697865642e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-log-snapshot-passed",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/log-snapshot-passed/input.txt"
+    },
+    {
+      "name": "R02-coverage-snapshot",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --coverage --coverageReporters=text --coverageReporters=json --coverageReporters=lcov",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 654,
+        "sha256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-coverage-snapshot",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/coverage-snapshot/input.txt"
+    },
+    {
+      "name": "R02-multiproject-coverage-log-skip-snapshot",
+      "command": "jest --runInBand --no-color --projects project-a.cjs project-b.cjs --coverage --coverageReporters=text --coverageReporters=json --coverageReporters=lcov",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 1250,
+        "sha256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5",
+        "finalLF": true,
+        "lastBytesHex": "20616c6c20746573742073756974657320696e20322070726f6a656374732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-multiproject-coverage-log-skip-snapshot",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/multiproject-coverage-log-skip-snapshot/input.txt"
+    },
+    {
+      "name": "R02-json-default-log-snapshot",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --json --outputFile=result.json",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 935,
+        "sha256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85",
+        "finalLF": true,
+        "lastBytesHex": "726573756c7473207772697474656e20746f3a20726573756c742e6a736f6e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-json-default-log-snapshot",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/json-default-log-snapshot/input.txt"
+    },
+    {
+      "name": "R02-reporter-collision-default",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=default --reporters=./collision-reporter.cjs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 397,
+        "sha256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-reporter-collision-default",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/reporter-collision-default/input.txt"
+    },
+    {
+      "name": "R02-reporter-collision-only",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=./collision-reporter.cjs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 160,
+        "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+        "finalLF": true,
+        "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-reporter-collision-only",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/reporter-collision-only/input.txt"
+    },
+    {
+      "name": "R02-skipped-suite",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=skip.test.cjs --verbose",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest 30.2.0",
+      "boundary": {
+        "readThroughEOF": true,
+        "bytes": 155,
+        "sha256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144",
+        "finalLF": true,
+        "lastBytesHex": "20737569746573206d61746368696e6720736b69702e746573742e636a732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "capture-receipt.json",
+        "case": "R02-skipped-suite",
+        "sha256": "86747476184ff3c1cd50d8fbb4a5f1ef29f2f7378c24fb3da0b0892d303eded6"
+      },
+      "rawFile": "captures/skipped-suite/input.txt"
+    },
+    {
+      "name": "R02-config-collision",
+      "command": "jest --config=config-collision.cjs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest package 30.2.0; CLI 30.1.3",
+      "boundary": {
+        "bytes": 160,
+        "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "config-capture-receipt.json",
+        "case": "R02-config-collision",
+        "sha256": "a67998210f13c742499c8a530fc43522d6bdca27c4434e7c9d4b45f78a2536e0"
+      },
+      "rawFile": "captures/config-collision/input.txt"
+    },
+    {
+      "name": "R02-config-full-collision",
+      "command": "jest --config=config-full-collision.cjs",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "Jest package 30.2.0; CLI 30.1.3",
+      "boundary": {
+        "bytes": 196,
+        "sha256": "53abbe288a50b6a582e0ee89a5fa9b0cd78a33e77c4cf2ea725278e65a376fb1",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a",
+        "description": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, rewriting, trimming or normalization",
+        "stderrMergedBeforeExec": true,
+        "waitedForExit": true,
+        "normalizationApplied": false
+      },
+      "originalReceipt": {
+        "file": "config-capture-receipt.json",
+        "case": "R02-config-full-collision",
+        "sha256": "a67998210f13c742499c8a530fc43522d6bdca27c4434e7c9d4b45f78a2536e0"
+      },
+      "rawFile": "captures/config-full-collision/input.txt"
+    }
+  ]
+}

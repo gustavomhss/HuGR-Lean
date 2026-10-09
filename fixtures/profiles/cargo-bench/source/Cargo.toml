@@ -1,0 +1,16 @@
+[workspace]
+members = ["beta"]
+resolver = "2"
+
+[package]
+name = "c06-alpha"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[lib]
+bench = false
+
+[[bench]]
+name = "custom"
+harness = false

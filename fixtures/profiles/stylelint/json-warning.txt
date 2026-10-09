@@ -1,0 +1,1 @@
+[{"source":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/warning.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[{"line":1,"column":12,"endLine":1,"endColumn":19,"rule":"color-no-invalid-hex","severity":"warning","text":"Unexpected invalid hex color \"#zzzzzz\" (color-no-invalid-hex)"}]}]

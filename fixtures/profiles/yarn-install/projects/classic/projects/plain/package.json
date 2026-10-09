@@ -1,0 +1,10 @@
+{
+  "name": "p03-plain",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "p03-local": "file:/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-yarn-fifb25vb/classic/local",
+    "chalk": "4.1.2"
+  }
+}

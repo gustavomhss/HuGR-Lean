@@ -1,0 +1,823 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "mypy",
+  "baseline": "78195e9",
+  "cases": [
+    {
+      "name": "L07-version",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "mypy 1.18.2 (compiled: yes)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--version"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --version",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 28,
+      "outputBytes": 28,
+      "sha256": "2267d13f34fd02719f2c7d48caa6441d2c789e15a804081f84c140d8b9d57903",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "28636f6d70696c65643a20796573290a"
+      },
+      "provenance": {
+        "sha256": "2267d13f34fd02719f2c7d48caa6441d2c789e15a804081f84c140d8b9d57903",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-version"
+      },
+      "completionAt": "2026-10-09T04:44:53.087315+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-summary-success",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "Success: no issues found in 1 source file\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 42,
+      "outputBytes": 42,
+      "sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e203120736f757263652066696c650a"
+      },
+      "provenance": {
+        "sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-summary-success"
+      },
+      "completionAt": "2026-10-09T04:44:55.852044+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-silent-success",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--no-error-summary",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --no-error-summary clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": ""
+      },
+      "provenance": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-silent-success"
+      },
+      "completionAt": "2026-10-09T04:45:00.043548+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-errors-notes",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "errors.py:10: error: Incompatible types in assignment (expression has type \"str\", variable has type \"int\")  [assignment]\nerrors.py:11: error: No overload variant of \"convert\" matches argument type \"float\"  [call-overload]\nerrors.py:11: note: Possible overload variants:\nerrors.py:11: note:     def convert(value: int) -> int\nerrors.py:11: note:     def convert(value: str) -> str\nerrors.py:12: note: Revealed type is \"builtins.int\"\nFound 2 errors in 1 file (checked 1 source file)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "errors.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null errors.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 481,
+      "outputBytes": 481,
+      "sha256": "131debf9a8ca49801681673492af3f60c1298ae9aebf8b562d7cc565057ff0dc",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203120736f757263652066696c65290a"
+      },
+      "provenance": {
+        "sha256": "131debf9a8ca49801681673492af3f60c1298ae9aebf8b562d7cc565057ff0dc",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-errors-notes"
+      },
+      "completionAt": "2026-10-09T04:45:03.419401+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-columns-context",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "errors.py:10:15: error: Incompatible types in assignment (expression has type\n\"str\", variable has type \"int\")  [assignment]\n    result: int = 'bad'\n                  ^~~~~\nerrors.py:11:1: error: No overload variant of \"convert\" matches argument type\n\"float\"  [call-overload]\n    convert(1.5)\n    ^~~~~~~~~~~~\nerrors.py:11:1: note: Possible overload variants:\nerrors.py:11:1: note:     def convert(value: int) -> int\nerrors.py:11:1: note:     def convert(value: str) -> str\nerrors.py:12:13: note: Revealed type is \"builtins.int\"\nFound 2 errors in 1 file (checked 1 source file)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--show-column-numbers",
+        "--show-error-context",
+        "--pretty",
+        "errors.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --show-column-numbers --show-error-context --pretty errors.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 577,
+      "outputBytes": 577,
+      "sha256": "9803d502fd4545c4b6de57b135c09eb476e1035aa4dd96d79a4b79360a1e9195",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203120736f757263652066696c65290a"
+      },
+      "provenance": {
+        "sha256": "9803d502fd4545c4b6de57b135c09eb476e1035aa4dd96d79a4b79360a1e9195",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-columns-context"
+      },
+      "completionAt": "2026-10-09T04:45:06.319000+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-function-context",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "context.py: note: In function \"broken_return\":\ncontext.py:2:12: error: Incompatible return value type (got \"int\", expected\n\"str\")  [return-value]\n        return value\n               ^~~~~\nFound 1 error in 1 file (checked 1 source file)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--show-column-numbers",
+        "--show-error-context",
+        "--pretty",
+        "context.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --show-column-numbers --show-error-context --pretty context.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 236,
+      "outputBytes": 236,
+      "sha256": "547cf1a47e533e6c3effda9e3395cba574fae9390a46ffb9693a75914f8303dd",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203120736f757263652066696c65290a"
+      },
+      "provenance": {
+        "sha256": "547cf1a47e533e6c3effda9e3395cba574fae9390a46ffb9693a75914f8303dd",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-function-context"
+      },
+      "completionAt": "2026-10-09T04:45:08.821473+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-multi-file-imports",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "inconsistent.py:3: error: Name \"repeat\" already defined on line 1  [no-redef]\nuse.py:2: error: Cannot find implementation or library stub for module named \"absent_l07\"  [import-not-found]\nuse.py:2: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports\nuse.py:3: error: Incompatible types in assignment (expression has type \"int\", variable has type \"str\")  [assignment]\nuse.py:3: error: Argument 1 to \"take\" has incompatible type \"str\"; expected \"int\"  [arg-type]\nFound 4 errors in 2 files (checked 3 source files)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "defs.py",
+        "use.py",
+        "inconsistent.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null defs.py use.py inconsistent.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 542,
+      "outputBytes": 542,
+      "sha256": "6f698f34a25e8c6e5710956c0b1196f5d713deafbfe7860757961ef67c7bfd9a",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3320736f757263652066696c6573290a"
+      },
+      "provenance": {
+        "sha256": "6f698f34a25e8c6e5710956c0b1196f5d713deafbfe7860757961ef67c7bfd9a",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-multi-file-imports"
+      },
+      "completionAt": "2026-10-09T04:45:10.569603+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-unicode-space",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "path space/雪.py:1:33:1:37: error: Incompatible types in assignment (expression has type \"str\", variable has type \"int\")  [assignment]\npath space/雪.py:2:13:2:17: note: Revealed type is \"builtins.str\"\nFound 1 error in 1 file (checked 1 source file)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--show-column-numbers",
+        "--show-error-end",
+        "path space/雪.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --show-column-numbers --show-error-end 'path space/雪.py'",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 251,
+      "outputBytes": 251,
+      "sha256": "2b0578523e921a665a54e37c2b6db4b6b87df2c77d0d854138986db885745b1b",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203120736f757263652066696c65290a"
+      },
+      "provenance": {
+        "sha256": "2b0578523e921a665a54e37c2b6db4b6b87df2c77d0d854138986db885745b1b",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-unicode-space"
+      },
+      "completionAt": "2026-10-09T04:45:12.214723+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-config-warning",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "warning.ini: [mypy]: Unrecognized option: unknown_l07_option = True\nSuccess: no issues found in 1 source file\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--config-file",
+        "warning.ini",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --config-file warning.ini clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 110,
+      "outputBytes": 110,
+      "sha256": "e8c27252feec4a2c61d476eaedfb1d8649b14994bb6516d451b5993de3e9bfc2",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e203120736f757263652066696c650a"
+      },
+      "provenance": {
+        "sha256": "e8c27252feec4a2c61d476eaedfb1d8649b14994bb6516d451b5993de3e9bfc2",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-config-warning"
+      },
+      "completionAt": "2026-10-09T04:45:13.752303+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-config-failure",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "bad.ini: [mypy]: python_version: Invalid python version 'invalid' (expected format: 'x.y')\nSuccess: no issues found in 1 source file\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--config-file",
+        "bad.ini",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --config-file bad.ini clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 133,
+      "outputBytes": 133,
+      "sha256": "798abef0d4a6e37265b697bf2ef0e41281c9f8ced397e7b382baae04bea4ec0e",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e203120736f757263652066696c650a"
+      },
+      "provenance": {
+        "sha256": "798abef0d4a6e37265b697bf2ef0e41281c9f8ced397e7b382baae04bea4ec0e",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-config-failure"
+      },
+      "completionAt": "2026-10-09T04:45:15.142730+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-config-strict",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "errors.py:10:15: error: Incompatible types in assignment (expression has type \"str\", variable has type \"int\")  [assignment]\nerrors.py:11:1: error: No overload variant of \"convert\" matches argument type \"float\"  [call-overload]\nerrors.py:11:1: note: Possible overload variants:\nerrors.py:11:1: note:     def convert(value: int) -> int\nerrors.py:11:1: note:     def convert(value: str) -> str\nerrors.py:12:13: note: Revealed type is \"builtins.int\"\nFound 2 errors in 1 file (checked 1 source file)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--config-file",
+        "strict.ini",
+        "errors.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --config-file strict.ini errors.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 495,
+      "outputBytes": 495,
+      "sha256": "a691ef06626699d11d0f9cd8e84d92b6df79a08c879cab60a6c44eed277ca741",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203120736f757263652066696c65290a"
+      },
+      "provenance": {
+        "sha256": "a691ef06626699d11d0f9cd8e84d92b6df79a08c879cab60a6c44eed277ca741",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-config-strict"
+      },
+      "completionAt": "2026-10-09T04:45:16.433350+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-config-missing",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "usage: mypy [-h] [-v] [-V] [more options; see below]\n            [-m MODULE] [-p PACKAGE] [-c PROGRAM_TEXT] [files ...]\nmypy: error: Cannot find config file 'missing.ini'\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--config-file",
+        "missing.ini",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --config-file missing.ini clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 171,
+      "outputBytes": 171,
+      "sha256": "084fe7358a509b91d0fcdad012209f6325681c783d6a2d1dd41aa6631d265469",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6520276d697373696e672e696e69270a"
+      },
+      "provenance": {
+        "sha256": "084fe7358a509b91d0fcdad012209f6325681c783d6a2d1dd41aa6631d265469",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-config-missing"
+      },
+      "completionAt": "2026-10-09T04:45:16.709547+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-syntax-failure",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "syntax.py:1: error: Invalid syntax  [syntax]\nFound 1 error in 1 file (errors prevented further checking)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "syntax.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null syntax.py",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 105,
+      "outputBytes": 105,
+      "sha256": "176d2bd65c67d363e9ab04cce59335f1f828735712378bd98ba5b5f3ad12a5e8",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "727468657220636865636b696e67290a"
+      },
+      "provenance": {
+        "sha256": "176d2bd65c67d363e9ab04cce59335f1f828735712378bd98ba5b5f3ad12a5e8",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-syntax-failure"
+      },
+      "completionAt": "2026-10-09T04:45:17.044690+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-requested-json",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "{\"file\": \"errors.py\", \"line\": 10, \"column\": 14, \"message\": \"Incompatible types in assignment (expression has type \\\"str\\\", variable has type \\\"int\\\")\", \"hint\": null, \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"errors.py\", \"line\": 11, \"column\": 0, \"message\": \"No overload variant of \\\"convert\\\" matches argument type \\\"float\\\"\", \"hint\": \"Possible overload variants:\\n    def convert(value: int) -> int\\n    def convert(value: str) -> str\", \"code\": \"call-overload\", \"severity\": \"error\"}\n{\"file\": \"errors.py\", \"line\": 12, \"column\": 12, \"message\": \"Revealed type is \\\"builtins.int\\\"\", \"hint\": null, \"code\": \"misc\", \"severity\": \"note\"}\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--output",
+        "json",
+        "errors.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --output json errors.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 640,
+      "outputBytes": 640,
+      "sha256": "e1f1ed11e2450de91b7fb8dd50b1f83a72e5d90cd649140a4be37e0881345472",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6572697479223a20226e6f7465227d0a"
+      },
+      "provenance": {
+        "sha256": "e1f1ed11e2450de91b7fb8dd50b1f83a72e5d90cd649140a4be37e0881345472",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-requested-json"
+      },
+      "completionAt": "2026-10-09T04:45:18.791899+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-requested-json-success",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--output",
+        "json",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --output json clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1,
+      "outputBytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a"
+      },
+      "provenance": {
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-requested-json-success"
+      },
+      "completionAt": "2026-10-09T04:45:20.192037+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-requested-json-unicode",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "{\"file\": \"path space/\\u96ea.py\", \"line\": 1, \"column\": 32, \"message\": \"Incompatible types in assignment (expression has type \\\"str\\\", variable has type \\\"int\\\")\", \"hint\": null, \"code\": \"assignment\", \"severity\": \"error\"}\n{\"file\": \"path space/\\u96ea.py\", \"line\": 2, \"column\": 12, \"message\": \"Revealed type is \\\"builtins.str\\\"\", \"hint\": null, \"code\": \"misc\", \"severity\": \"note\"}\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--output",
+        "json",
+        "--show-column-numbers",
+        "path space/雪.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python -m mypy --no-incremental --cache-dir /dev/null --output json --show-column-numbers 'path space/雪.py'",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 375,
+      "outputBytes": 375,
+      "sha256": "4071d29ab2a5f4f9f460a7d23d2da34c2539c7fb0d97e833cc33cdd1e1e79b4a",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6572697479223a20226e6f7465227d0a"
+      },
+      "provenance": {
+        "sha256": "4071d29ab2a5f4f9f460a7d23d2da34c2539c7fb0d97e833cc33cdd1e1e79b4a",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-requested-json-unicode"
+      },
+      "completionAt": "2026-10-09T04:45:21.952133+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-module-launcher",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "errors.py:10:15: error: Incompatible types in assignment (expression has type \"str\", variable has type \"int\")  [assignment]\nerrors.py:11:1: error: No overload variant of \"convert\" matches argument type \"float\"  [call-overload]\nerrors.py:11:1: note: Possible overload variants:\nerrors.py:11:1: note:     def convert(value: int) -> int\nerrors.py:11:1: note:     def convert(value: str) -> str\nerrors.py:12:13: note: Revealed type is \"builtins.int\"\nFound 2 errors in 1 file (checked 1 source file)\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--show-column-numbers",
+        "errors.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python -m mypy --no-incremental --cache-dir /dev/null --show-column-numbers errors.py",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 495,
+      "outputBytes": 495,
+      "sha256": "a691ef06626699d11d0f9cd8e84d92b6df79a08c879cab60a6c44eed277ca741",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203120736f757263652066696c65290a"
+      },
+      "provenance": {
+        "sha256": "a691ef06626699d11d0f9cd8e84d92b6df79a08c879cab60a6c44eed277ca741",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-module-launcher"
+      },
+      "completionAt": "2026-10-09T04:45:24.876158+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-plugin-collision",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "Success: no issues found in 1 source file\nclean.py:1:1: note: native-shaped plugin stdout\nLOG:  Building graph\nSuccess: no issues found in 1 source file\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--config-file",
+        "plugin.ini",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --config-file plugin.ini clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 153,
+      "outputBytes": 153,
+      "sha256": "eef2ca99dc034d728867b3cced229b6b6e06368ee532350beed8c4c8dd2f51ef",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e203120736f757263652066696c650a"
+      },
+      "provenance": {
+        "sha256": "eef2ca99dc034d728867b3cced229b6b6e06368ee532350beed8c4c8dd2f51ef",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-plugin-collision"
+      },
+      "completionAt": "2026-10-09T04:45:27.583773+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-plugin-verbose-collision",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "Success: no issues found in 1 source file\nclean.py:1:1: note: native-shaped plugin stdout\nLOG:  Building graph\nLOG:  Could not load plugins snapshot: @plugins_snapshot.json\n\nLOG:  Mypy Version:           1.18.2\nLOG:  Config File:            /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb/plugin.ini\nLOG:  Configured Executable:  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python\nLOG:  Current Executable:     /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python\nLOG:  Cache Dir:              /dev/null\nLOG:  Compiled:               True\nLOG:  Exclude:                []\nLOG:  Found source:           BuildSource(path='clean.py', module='clean', has_text=False, base_dir='/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb', followed=False)\nLOG:  Metadata not found for clean\nLOG:  Parsing clean.py (clean)\nLOG:  Metadata not found for builtins\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/builtins.pyi (builtins)\nLOG:  Metadata not found for collections.abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/collections/abc.pyi (collections.abc)\nLOG:  Metadata not found for _ast\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_ast.pyi (_ast)\nLOG:  Metadata not found for _sitebuiltins\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_sitebuiltins.pyi (_sitebuiltins)\nLOG:  Metadata not found for _typeshed\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_typeshed/__init__.pyi (_typeshed)\nLOG:  Metadata not found for sys\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sys/__init__.pyi (sys)\nLOG:  Metadata not found for types\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/types.pyi (types)\nLOG:  Metadata not found for _collections_abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_collections_abc.pyi (_collections_abc)\nLOG:  Metadata not found for io\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/io.pyi (io)\nLOG:  Metadata not found for os\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/os/__init__.pyi (os)\nLOG:  Metadata not found for typing\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/typing.pyi (typing)\nLOG:  Metadata not found for typing_extensions\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/typing_extensions.pyi (typing_extensions)\nLOG:  Metadata not found for collections\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/collections/__init__.pyi (collections)\nLOG:  Metadata not found for ast\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/ast.pyi (ast)\nLOG:  Metadata not found for dataclasses\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/dataclasses.pyi (dataclasses)\nLOG:  Metadata not found for enum\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/enum.pyi (enum)\nLOG:  Metadata not found for _typeshed.importlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_typeshed/importlib.pyi (_typeshed.importlib)\nLOG:  Metadata not found for sys._monitoring\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sys/_monitoring.pyi (sys._monitoring)\nLOG:  Metadata not found for importlib.machinery\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/machinery.pyi (importlib.machinery)\nLOG:  Metadata not found for abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/abc.pyi (abc)\nLOG:  Metadata not found for _io\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_io.pyi (_io)\nLOG:  Metadata not found for os.path\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/os/path.pyi (os.path)\nLOG:  Metadata not found for subprocess\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/subprocess.pyi (subprocess)\nLOG:  Metadata not found for resource\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/resource.pyi (resource)\nLOG:  Metadata not found for re\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/re.pyi (re)\nLOG:  Metadata not found for contextlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/contextlib.pyi (contextlib)\nLOG:  Metadata not found for importlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/__init__.pyi (importlib)\nLOG:  Metadata not found for importlib._bootstrap\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/_bootstrap.pyi (importlib._bootstrap)\nLOG:  Metadata not found for importlib._bootstrap_external\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/_bootstrap_external.pyi (importlib._bootstrap_external)\nLOG:  Metadata not found for codecs\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/codecs.pyi (codecs)\nLOG:  Metadata not found for posixpath\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/posixpath.pyi (posixpath)\nLOG:  Metadata not found for sre_compile\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sre_compile.pyi (sre_compile)\nLOG:  Metadata not found for sre_constants\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sre_constants.pyi (sre_constants)\nLOG:  Metadata not found for importlib.abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/abc.pyi (importlib.abc)\nLOG:  Metadata not found for _frozen_importlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_frozen_importlib.pyi (_frozen_importlib)\nLOG:  Metadata not found for _frozen_importlib_external\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_frozen_importlib_external.pyi (_frozen_importlib_external)\nLOG:  Metadata not found for _codecs\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_codecs.pyi (_codecs)\nLOG:  Metadata not found for genericpath\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/genericpath.pyi (genericpath)\nLOG:  Metadata not found for sre_parse\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sre_parse.pyi (sre_parse)\nLOG:  Metadata not found for importlib.resources.abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/resources/abc.pyi (importlib.resources.abc)\nLOG:  Metadata not found for importlib._abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/_abc.pyi (importlib._abc)\nLOG:  Metadata not found for importlib.metadata\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/metadata/__init__.pyi (importlib.metadata)\nLOG:  Metadata not found for importlib.readers\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/readers.pyi (importlib.readers)\nLOG:  Metadata not found for importlib.resources\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/resources/__init__.pyi (importlib.resources)\nLOG:  Metadata not found for importlib.metadata._meta\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/metadata/_meta.pyi (importlib.metadata._meta)\nLOG:  Metadata not found for email.message\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/message.pyi (email.message)\nLOG:  Metadata not found for pathlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/pathlib/__init__.pyi (pathlib)\nLOG:  Metadata not found for zipfile\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/zipfile/__init__.pyi (zipfile)\nLOG:  Metadata not found for zipimport\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/zipimport.pyi (zipimport)\nLOG:  Metadata not found for importlib.resources._common\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/resources/_common.pyi (importlib.resources._common)\nLOG:  Metadata not found for email\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/__init__.pyi (email)\nLOG:  Metadata not found for email.charset\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/charset.pyi (email.charset)\nLOG:  Metadata not found for email.contentmanager\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/contentmanager.pyi (email.contentmanager)\nLOG:  Metadata not found for email.errors\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/errors.pyi (email.errors)\nLOG:  Metadata not found for email.policy\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/policy.pyi (email.policy)\nLOG:  Metadata not found for zipfile._path\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/zipfile/_path/__init__.pyi (zipfile._path)\nLOG:  Metadata not found for email._policybase\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/_policybase.pyi (email._policybase)\nLOG:  Metadata not found for email.header\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/header.pyi (email.header)\nLOG:  Loaded graph with 59 nodes (0.567 sec)\nLOG:  Found 2 SCCs; largest has 58 nodes\nLOG:  Processing SCC of size 58 (zipimport zipfile._path zipfile typing_extensions typing types sys._monitoring sys subprocess sre_parse sre_constants sre_compile resource re posixpath pathlib os.path os io importlib.resources.abc importlib.resources._common importlib.resources importlib.readers importlib.metadata._meta importlib.metadata importlib.machinery importlib.abc importlib._bootstrap_external importlib._bootstrap importlib._abc importlib genericpath enum email.policy email.message email.header email.errors email.contentmanager email.charset email._policybase email dataclasses contextlib collections.abc collections codecs ast abc _typeshed.importlib _typeshed _sitebuiltins _io _frozen_importlib_external _frozen_importlib _collections_abc _codecs _ast builtins) as inherently stale\nLOG:  Processing SCC singleton (clean) as inherently stale\nLOG:  No fresh SCCs left in queue\nLOG:  Build finished in 2.370 seconds with 59 modules, and 0 errors\nSuccess: no issues found in 1 source file\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--verbose",
+        "--follow-imports=skip",
+        "--config-file",
+        "plugin.ini",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --verbose --follow-imports=skip --config-file plugin.ini clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 14759,
+      "outputBytes": 14759,
+      "sha256": "3bb22200d71e9978cd3f644b4b2dd1617fa3ef0136a5bc196d4861b00b5c6f98",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e203120736f757263652066696c650a"
+      },
+      "provenance": {
+        "sha256": "3bb22200d71e9978cd3f644b4b2dd1617fa3ef0136a5bc196d4861b00b5c6f98",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-plugin-verbose-collision"
+      },
+      "completionAt": "2026-10-09T04:45:30.412808+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    },
+    {
+      "name": "L07-requested-verbose",
+      "family": "mypy",
+      "version": "mypy 1.18.2 (compiled: yes)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit",
+      "output": "LOG:  Could not load plugins snapshot: @plugins_snapshot.json\n\nLOG:  Mypy Version:           1.18.2\nLOG:  Config File:            Default\nLOG:  Configured Executable:  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python\nLOG:  Current Executable:     /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/python\nLOG:  Cache Dir:              /dev/null\nLOG:  Compiled:               True\nLOG:  Exclude:                []\nLOG:  Found source:           BuildSource(path='clean.py', module='clean', has_text=False, base_dir='/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb', followed=False)\nLOG:  Metadata not found for clean\nLOG:  Parsing clean.py (clean)\nLOG:  Metadata not found for builtins\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/builtins.pyi (builtins)\nLOG:  Metadata not found for collections.abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/collections/abc.pyi (collections.abc)\nLOG:  Metadata not found for _ast\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_ast.pyi (_ast)\nLOG:  Metadata not found for _sitebuiltins\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_sitebuiltins.pyi (_sitebuiltins)\nLOG:  Metadata not found for _typeshed\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_typeshed/__init__.pyi (_typeshed)\nLOG:  Metadata not found for sys\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sys/__init__.pyi (sys)\nLOG:  Metadata not found for types\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/types.pyi (types)\nLOG:  Metadata not found for _collections_abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_collections_abc.pyi (_collections_abc)\nLOG:  Metadata not found for io\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/io.pyi (io)\nLOG:  Metadata not found for os\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/os/__init__.pyi (os)\nLOG:  Metadata not found for typing\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/typing.pyi (typing)\nLOG:  Metadata not found for typing_extensions\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/typing_extensions.pyi (typing_extensions)\nLOG:  Metadata not found for collections\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/collections/__init__.pyi (collections)\nLOG:  Metadata not found for ast\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/ast.pyi (ast)\nLOG:  Metadata not found for dataclasses\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/dataclasses.pyi (dataclasses)\nLOG:  Metadata not found for enum\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/enum.pyi (enum)\nLOG:  Metadata not found for _typeshed.importlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_typeshed/importlib.pyi (_typeshed.importlib)\nLOG:  Metadata not found for sys._monitoring\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sys/_monitoring.pyi (sys._monitoring)\nLOG:  Metadata not found for importlib.machinery\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/machinery.pyi (importlib.machinery)\nLOG:  Metadata not found for abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/abc.pyi (abc)\nLOG:  Metadata not found for _io\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_io.pyi (_io)\nLOG:  Metadata not found for os.path\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/os/path.pyi (os.path)\nLOG:  Metadata not found for subprocess\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/subprocess.pyi (subprocess)\nLOG:  Metadata not found for resource\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/resource.pyi (resource)\nLOG:  Metadata not found for re\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/re.pyi (re)\nLOG:  Metadata not found for contextlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/contextlib.pyi (contextlib)\nLOG:  Metadata not found for importlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/__init__.pyi (importlib)\nLOG:  Metadata not found for importlib._bootstrap\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/_bootstrap.pyi (importlib._bootstrap)\nLOG:  Metadata not found for importlib._bootstrap_external\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/_bootstrap_external.pyi (importlib._bootstrap_external)\nLOG:  Metadata not found for codecs\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/codecs.pyi (codecs)\nLOG:  Metadata not found for posixpath\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/posixpath.pyi (posixpath)\nLOG:  Metadata not found for sre_compile\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sre_compile.pyi (sre_compile)\nLOG:  Metadata not found for sre_constants\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sre_constants.pyi (sre_constants)\nLOG:  Metadata not found for importlib.abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/abc.pyi (importlib.abc)\nLOG:  Metadata not found for _frozen_importlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_frozen_importlib.pyi (_frozen_importlib)\nLOG:  Metadata not found for _frozen_importlib_external\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_frozen_importlib_external.pyi (_frozen_importlib_external)\nLOG:  Metadata not found for _codecs\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/_codecs.pyi (_codecs)\nLOG:  Metadata not found for genericpath\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/genericpath.pyi (genericpath)\nLOG:  Metadata not found for sre_parse\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/sre_parse.pyi (sre_parse)\nLOG:  Metadata not found for importlib.resources.abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/resources/abc.pyi (importlib.resources.abc)\nLOG:  Metadata not found for importlib._abc\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/_abc.pyi (importlib._abc)\nLOG:  Metadata not found for importlib.metadata\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/metadata/__init__.pyi (importlib.metadata)\nLOG:  Metadata not found for importlib.readers\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/readers.pyi (importlib.readers)\nLOG:  Metadata not found for importlib.resources\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/resources/__init__.pyi (importlib.resources)\nLOG:  Metadata not found for importlib.metadata._meta\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/metadata/_meta.pyi (importlib.metadata._meta)\nLOG:  Metadata not found for email.message\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/message.pyi (email.message)\nLOG:  Metadata not found for pathlib\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/pathlib/__init__.pyi (pathlib)\nLOG:  Metadata not found for zipfile\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/zipfile/__init__.pyi (zipfile)\nLOG:  Metadata not found for zipimport\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/zipimport.pyi (zipimport)\nLOG:  Metadata not found for importlib.resources._common\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/importlib/resources/_common.pyi (importlib.resources._common)\nLOG:  Metadata not found for email\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/__init__.pyi (email)\nLOG:  Metadata not found for email.charset\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/charset.pyi (email.charset)\nLOG:  Metadata not found for email.contentmanager\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/contentmanager.pyi (email.contentmanager)\nLOG:  Metadata not found for email.errors\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/errors.pyi (email.errors)\nLOG:  Metadata not found for email.policy\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/policy.pyi (email.policy)\nLOG:  Metadata not found for zipfile._path\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/zipfile/_path/__init__.pyi (zipfile._path)\nLOG:  Metadata not found for email._policybase\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/_policybase.pyi (email._policybase)\nLOG:  Metadata not found for email.header\nLOG:  Parsing /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/lib/python3.12/site-packages/mypy/typeshed/stdlib/email/header.pyi (email.header)\nLOG:  Loaded graph with 59 nodes (0.352 sec)\nLOG:  Found 2 SCCs; largest has 58 nodes\nLOG:  Processing SCC of size 58 (zipimport zipfile._path zipfile typing_extensions typing types sys._monitoring sys subprocess sre_parse sre_constants sre_compile resource re posixpath pathlib os.path os io importlib.resources.abc importlib.resources._common importlib.resources importlib.readers importlib.metadata._meta importlib.metadata importlib.machinery importlib.abc importlib._bootstrap_external importlib._bootstrap importlib._abc importlib genericpath enum email.policy email.message email.header email.errors email.contentmanager email.charset email._policybase email dataclasses contextlib collections.abc collections codecs ast abc _typeshed.importlib _typeshed _sitebuiltins _io _frozen_importlib_external _frozen_importlib _collections_abc _codecs _ast builtins) as inherently stale\nLOG:  Processing SCC singleton (clean) as inherently stale\nLOG:  No fresh SCCs left in queue\nLOG:  Build finished in 1.224 seconds with 59 modules, and 0 errors\nSuccess: no issues found in 1 source file\n",
+      "status": "passthrough",
+      "source": "shell",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "/dev/null",
+        "--verbose",
+        "--follow-imports=skip",
+        "clean.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv/bin/mypy --no-incremental --cache-dir /dev/null --verbose --follow-imports=skip clean.py",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 14561,
+      "outputBytes": 14561,
+      "sha256": "cbdf4509ff5f6bde076a98626558068cf4f10fc88fa9443eb6b7c27df1e57b76",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-yssr07yb",
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e203120736f757263652066696c650a"
+      },
+      "provenance": {
+        "sha256": "cbdf4509ff5f6bde076a98626558068cf4f10fc88fa9443eb6b7c27df1e57b76",
+        "record": "capture-receipt.json",
+        "originalCase": "L07-requested-verbose"
+      },
+      "completionAt": "2026-10-09T04:45:32.103093+00:00",
+      "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization"
+    }
+  ]
+}

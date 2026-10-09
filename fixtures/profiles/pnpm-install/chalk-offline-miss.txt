@@ -1,0 +1,6 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +6
+++++++
+ ERR_PNPM_NO_OFFLINE_TARBALL  A package is missing from the store but cannot download it in offline mode. The missing package may be downloaded from https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz.
+
+This error happened while installing a direct dependency of /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p02-pnpm-83cb9upg/chalk-miss

@@ -1,0 +1,59 @@
+bun install v1.3.14 (0d9b296a)
+Enqueue package manifest for download: p04-trusted-witness
+Resolving dependencies
+> HTTP/1.1 GET http://127.0.0.1:49890/p04-trusted-witness
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.14
+> Host: 127.0.0.1:49890
+> Accept-Encoding: gzip, deflate, br, zstd
+< 200 OK
+< Server: BaseHTTP/0.6 Python/3.14.5
+< Date: Fri, 09 Oct 2026 20:48:46 GMT
+< Content-Length: 573
+
+    [1.77ms]
+Downloaded p04-trusted-witness versions
+[PackageManager] waiting for 1 tasks
+[PackageManager] waiting for 1 tasks
+   - "p04-trusted-witness": "1.0.0" - p04-trusted-witness@1.0.0
+[PackageManager] waiting for 1 tasks
+> HTTP/1.1 GET http://127.0.0.1:49890/witness.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.14
+> Accept: */*
+> Host: 127.0.0.1:49890
+> Accept-Encoding: gzip, deflate, br, zstd
+< 200 OK
+< Server: BaseHTTP/0.6 Python/3.14.5
+< Date: Fri, 09 Oct 2026 20:48:46 GMT
+< Content-Length: 1378
+
+[PackageManager] waiting for 1 tasks
+    [0.53ms] Downloaded p04-trusted-witness tarball
+[PackageManager] waiting for 1 tasks
+ LICENSE
+ install.cjs
+ package.json
+[p04-trusted-witness] Extract .dfdffffeed75ef9d-00000001.p04-trusted-witness (decompressed 1.38 KB tgz file in 44.271us)
+[p04-trusted-witness] Extracted to .dfdffffeed75ef9d-00000001.p04-trusted-witness (716.616us)
+[PackageManager] waiting for 1 tasks
+Resolved, downloaded and extracted [4]
+Clean lockfile: 2 packages - 2 packages in 50.7us
+[Scripts] Starting scripts for "p04-trusted-witness"
+P04_DEP_POSTINSTALL_EXECUTED_v1
+Resolving dependencies
+Resolved, downloaded and extracted [999]
+Saved lockfile
++ p04-native-shaped-user-log@9.9.9
+999 packages installed [0.01ms]
+[Scripts] Finished scripts for "p04-trusted-witness"
+
+-- BEGIN SHA512/256(`${alphabetize(name)}@${order(version)}`) --
+p04-trusted-witness@1.0.0
+-- END HASH--
+Saved lockfile
+
++ p04-trusted-witness@1.0.0
+
+1 package installed [126.00ms]

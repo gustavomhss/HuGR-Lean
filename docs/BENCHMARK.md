@@ -1,5 +1,31 @@
 # Benchmark and installed-package proof
 
+## Current campaign boundary
+
+Reconciled runtime `66454e470862c71a43bc70adfdfd2c85bba41a24` has a current local
+[measured report](NATIVE-CAMPAIGN-BENCHMARK-RECONCILED.json); final package CI is still pending.
+Node v22.17.1, macOS x64, Intel i7-9750H: 20 warmups and 100 samples per case,
+833 native/legacy fixtures plus nine synthetic controls/workloads. Of 842 cases,
+111 reduced and 731 stayed exact. All 39 empty captures contribute zero savings.
+
+| Input | Core p95 / budget | Raw-off adapter p95 / budget |
+| --- | --- | --- |
+| 256 KiB | 4.898 / 5 ms | 5.119 / 10 ms |
+| 1 MiB | 24.054 / 25 ms | 21.828 / 35 ms |
+
+Both budgets met. Report SHA-256: `1e24fe0db34c3333a26b31f3482f8244bf7a2476e11d5b7a193fdd150291e96e`.
+Independent audit verified stored aggregates, source binding and accounting, not raw timing vectors
+(not retained). This is local compiled core/adapter latency, not model/token cost or another OS.
+The [first campaign report](NATIVE-CAMPAIGN-BENCHMARK.json) remains unchanged historical evidence
+for `74843b8`; a second measurement was necessary after approved utility-base Cargo code changed.
+The two focused Actions captures ([builtin bench](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069),
+[rustdoc](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37989424550)) prove native Rust evidence only.
+
+**Withdrawal annotation:** historical Jest/Vitest timing/marker savings, their family
+distributions and aggregate savings below describe old behavior, not current support.
+Plaintext outputs now retain complete source rows and equal raw inputs; historical
+reports/artifacts remain unchanged. Current registry/corpus scope is [coverage](COVERAGE.md).
+
 ## Reproduction
 
 Use Node >=22 and npm. Build separately before packing; smoke never runs prepack/build.
@@ -55,8 +81,10 @@ fixture; missing, stale or empty goldens fail. Runner CRLF checkouts retain sour
 endings. Native captures and pinned TRS fixtures are separately labeled; donor path,
 commit, license and modification records are in the goldens and each `SOURCES.md`.
 JSON records each command/status/reason, UTF-8 input/output/saved bytes, byte reduction
-and latency. Per-family and corpus min/median/max/mean include passthrough **zeros**;
-registered `tsc` is passthrough-only. Synthetic exact-size Cargo workloads use one linear
+and latency. Per-family and corpus min/median/max/mean include passthrough **zeros**.
+Current reader also includes authenticated utility evidence and the 41-family native index,
+with explicit 25-family exact ledger and registry set correspondence. T01 tsc has bounded
+timestamp-only reductions; its legacy diagnostic fixture stays exact. Synthetic Cargo workloads use one linear
 allocation pass, unique names, consistent `running N tests`/`N passed` rows and exact
 finish/executable/summary retention. They are generated loads, not new native captures.
 Exit 101, unknown exit, timeout, truncation and unknown completeness deliberately reuse
@@ -65,7 +93,7 @@ Every operation checks exact passthrough/no replacement/equal bytes, or exact go
 
 ## Installed artifact proof
 
-Packing snapshots only prebuilt `dist`, manifest, README and notices, never source code,
+Packing snapshots prebuilt `dist`, manifest, README, notices and selected documentation, never runtime source code,
 `.npmrc` or source `node_modules`. Snapshot, tarball and consumer live in `os.tmpdir()`
 outside source ancestry. Actual `npm pack --ignore-scripts --pack-destination isolated-dir`
 and `npm install tarball --ignore-scripts` run with isolated HOME/USERPROFILE/XDG/npm cache
@@ -86,6 +114,11 @@ The fixture executable named `cargo` proves wiring, not broad Cargo compatibilit
 Whole host sessions include startup/SDK/provider/native work. Provider-request windows
 would exclude startup but not isolate adapter CPU. Neither is reported as adapter latency.
 Mechanical byte reduction is not a token estimate or causal LLM cost/quality benefit.
+
+Lead fix `21586c2` makes smoke snapshot every allowlisted fixture SOURCES.md and check
+packed presence plus installed byte equality. Native cases remain external evidence JSON;
+their replay is separate from provenance-note shipment checks.
+Final normal-pack contents/notices/link inspection remains a lead-owned artifact check.
 
 ## Historical baseline: 2026-09-30T07:17:05.204Z
 

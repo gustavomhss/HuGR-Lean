@@ -7,6 +7,7 @@ import path from "node:path";
 import { performance } from "node:perf_hooks";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { readUtilityCorpus } from "./utility-corpus.mjs";
+import { readNativeCorpus, assertCorpusCoverage } from "./native-corpus.mjs";
 
 export const ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const WARMUPS = 20;
@@ -21,10 +22,10 @@ const FIXTURES = [
   ["runners/build_cargo_errors.txt", "cargo-build", "cargo build", "passthrough", "pinned TRS fixture"],
   ["runners/cargo_test_real_failures.txt", "cargo-test", "cargo test", "passthrough", "pinned TRS fixture"],
   ["runners/pytest_real_default.txt", "pytest", "pytest", "passthrough", "pinned TRS fixture"],
-  ["formats/jest_all_passed.txt", "jest", "jest --verbose", "reduced", "pinned TRS fixture"],
-  ["formats/jest_native.txt", "jest", "jest --runInBand --verbose --no-color", "reduced", "native capture"],
-  ["formats/vitest_all_passed.txt", "vitest", "vitest run", "reduced", "pinned TRS fixture"],
-  ["formats/vitest_native.txt", "vitest", "vitest run vitest-native.test.js --globals --no-color", "reduced", "native capture"],
+  ["formats/jest_all_passed.txt", "jest", "jest --verbose", "passthrough", "pinned TRS fixture", true],
+  ["formats/jest_native.txt", "jest", "jest --runInBand --verbose --no-color", "passthrough", "native capture", true],
+  ["formats/vitest_all_passed.txt", "vitest", "vitest run", "passthrough", "pinned TRS fixture", true],
+  ["formats/vitest_native.txt", "vitest", "vitest run vitest-native.test.js --globals --no-color", "passthrough", "native capture", true],
   ["formats/git_status_mixed.txt", "git-status", "git status", "reduced", "pinned TRS fixture"],
   ["formats/grep_single_file_multiple_matches.txt", "rg", "rg -n --with-filename --regexp '' src", "reduced", "pinned TRS fixture"],
   ["formats/lint_tsc_errors.txt", "tsc", "tsc --pretty false", "passthrough", "pinned TRS fixture"],
@@ -48,14 +49,15 @@ export async function readCorpus(root = ROOT) {
   const goldens = JSON.parse(await readFile(path.join(root, "fixtures/installed-goldens.json"), "utf8"));
   assert.equal(goldens.schema, "hugr-lean/installed-goldens/1", "Invalid installed golden schema");
   assert.ok(goldens.outputs && typeof goldens.outputs === "object" && !Array.isArray(goldens.outputs), "Missing installed golden outputs");
-  assert.deepEqual(Object.keys(goldens.outputs).sort(), FIXTURES.filter((entry) => entry[3] === "reduced").map(([file]) => file).sort(),
+  assert.deepEqual(Object.keys(goldens.outputs).sort(), FIXTURES.filter((entry) => entry[3] === "reduced" || entry[5] === true).map(([file]) => file).sort(),
     "Installed golden/fixture coverage differs (missing or stale expected output)");
   const cases = [];
-  for (const [file, family, command, status, provenance] of FIXTURES) {
+  for (const [file, family, command, status, provenance, exactGolden] of FIXTURES) {
     const output = await readFile(path.join(root, "fixtures", file), "utf8");
     assert.ok(output.length, `Empty fixture: ${file}`);
-    let expected = status === "reduced" ? goldens.outputs[file] : output;
+    let expected = status === "reduced" || exactGolden ? goldens.outputs[file] : output;
     assert.ok(typeof expected === "string" && expected.length, `Empty or invalid installed golden: ${file}`);
+    if (status === "passthrough") assert.equal(expected, output, `${file}: passthrough installed golden changed original`);
     // Runner checkouts may use CRLF; their golden content stays fixed, with source line endings preserved.
     if (status === "reduced" && file.startsWith("runners/") && output.includes("\r\n") && !/(?<!\r)\n/.test(output)) expected = expected.replaceAll("\n", "\r\n");
     cases.push({ name: file, family, status, provenance, expected, observation: observation(output, command) });
@@ -67,23 +69,14 @@ export async function readCorpus(root = ROOT) {
     cases.push({ name: `utility/${entry.qualifiedID}`, family: entry.profile, status: entry.expectedStatus,
       provenance: "new native fixture", expected: entry.expectedText, observation: entry.observation, required: entry.required });
   }
+  const native = await readNativeCorpus(path.join(root, "fixtures", "profiles"));
+  cases.push(...native);
   assert.equal(new Set(cases.map((entry) => entry.name)).size, cases.length, "Duplicate fixture case names");
-  return cases;
+  return Object.assign(cases, { exactFamilies: native.exactFamilies });
 }
 
 export function assertCoverage(profiles, cases) {
-  assert.ok(Array.isArray(profiles) && profiles.length, "Default profile registry is missing or empty");
-  const ids = profiles.map((profile) => {
-    assert.ok(profile && typeof profile.id === "string" && profile.id.length &&
-      typeof profile.match === "function" && typeof profile.reduce === "function", "Invalid default profile");
-    return profile.id;
-  });
-  assert.equal(new Set(ids).size, ids.length, "Duplicate default profile IDs");
-  assert.ok(cases.length, "Workload corpus is empty");
-  assert.deepEqual([...new Set(cases.map((entry) => entry.family))].sort(), ids.toSorted(),
-    "Default profile/corpus coverage differs (missing profile or fixture)");
-  assert.equal(ids.length, 10, "Default registry must ship ten real profiles");
-  return ids;
+  return assertCorpusCoverage(profiles, cases);
 }
 
 export async function compiled(root = ROOT) {
@@ -158,8 +151,13 @@ function stats(values) {
 }
 function distribution(values) {
   const sorted = values.toSorted((a, b) => a - b);
-  assert.ok(sorted.length, "Empty reduction distribution");
+  assert.ok(sorted.length && sorted.every(value => Number.isFinite(value) && value >= 0 && value <= 100), "Empty or invalid reduction distribution");
   return { min: sorted[0], median: median(sorted), max: sorted.at(-1), mean: sorted.reduce((sum, value) => sum + value, 0) / sorted.length };
+}
+export function savingsPercent(inputBytes, outputBytes) {
+  assert.ok(Number.isSafeInteger(inputBytes) && inputBytes >= 0 && Number.isSafeInteger(outputBytes) &&
+    outputBytes >= 0 && outputBytes <= inputBytes, "Invalid savings byte counts");
+  return inputBytes === 0 ? 0 : (1 - outputBytes / inputBytes) * 100;
 }
 
 async function measure(run, verify, asynchronous = false) {
@@ -208,8 +206,9 @@ export async function runBenchmark({ root = ROOT } = {}) {
       assert.equal(output.title, "Benchmark", `${entry.name}: adapter changed title`);
     }, true);
     rows.push({ name: entry.name, family: entry.family, provenance: entry.provenance, command: obs.command,
+      ...(entry.scope ? { scope: entry.scope } : {}),
       status: baseline.status, reason: baseline.reason, inputBytes: baseline.inputBytes, outputBytes: baseline.outputBytes,
-      savedBytes: baseline.inputBytes - baseline.outputBytes, reductionPercent: (1 - baseline.outputBytes / baseline.inputBytes) * 100,
+      savedBytes: baseline.inputBytes - baseline.outputBytes, reductionPercent: savingsPercent(baseline.inputBytes, baseline.outputBytes),
       passthroughExact: entry.status === "passthrough" ? expected === obs.output : null,
       ...(entry.testCases ? { testCases: entry.testCases, nativeSummary: entry.nativeSummary } : {}), core, adapterRawOff: adapter });
   }
@@ -235,7 +234,7 @@ export async function runBenchmark({ root = ROOT } = {}) {
     method: { warmups: WARMUPS, samples: SAMPLES, percentiles: "nearest rank", median: "mean of middle two for even distributions",
       timing: "core synchronous filter; adapter fresh host result + awaited createAfterHook, raw false; no I/O/startup/model",
       cpu: "process.cpuUsage user+system per operation; includes measurement overhead and process background work" },
-    profileIds, profileCount: profileIds.length, fixtureCount: fixtures.length, caseCount: rows.length,
+    exactFamilies: fixtures.exactFamilies, profileIds, profileCount: profileIds.length, fixtureCount: fixtures.length, caseCount: rows.length,
     reducedCount: rows.filter((row) => row.status === "reduced").length, passthroughCount: rows.filter((row) => row.status === "passthrough").length,
     fixtureReductionPercent: distribution(rows.filter((row) => fixtureNames.has(row.name)).map((row) => row.reductionPercent)),
     familyFixtures, cases: rows, budgets, budgetsMet: budgets.every((budget) => budget.met) };

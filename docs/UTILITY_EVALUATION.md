@@ -1,5 +1,9 @@
 # Native fixture utility evaluation
 
+This historical record comes from approved PR #85 and integration `0d28527258c09fe5746dfcbe0e51f45d3b937e4e`.
+Its ten-profile/39-case inventory, inert-tsc and earlier Jest/Vitest behavior describe that dated
+utility snapshot, not the current native campaign. Current scope is [COVERAGE.md](COVERAGE.md).
+
 Dated local proof: **2026-10-08 UTC**, code baseline `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`.
 All four parser cold reviews were approved; private receipts record full-suite, normal installed-package,
 actual host and latency outcomes. The repaired reader's fresh 25/25 evaluation and successful three-platform

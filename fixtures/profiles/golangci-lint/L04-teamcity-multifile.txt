@@ -1,0 +1,8 @@
+##teamcity[inspectionType id='errcheck' name='errcheck' description='errcheck' category='Golangci-lint reports']
+##teamcity[inspection typeId='errcheck' message='Error return value is not checked' file='issues/issues.go' line='12' SEVERITY='ERROR']
+##teamcity[inspectionType id='ineffassign' name='ineffassign' description='ineffassign' category='Golangci-lint reports']
+##teamcity[inspection typeId='ineffassign' message='ineffectual assignment to x' file='issues/issues.go' line='6' SEVERITY='ERROR']
+##teamcity[inspectionType id='unused' name='unused' description='unused' category='Golangci-lint reports']
+##teamcity[inspection typeId='unused' message='func dead is unused' file='issues/issues.go' line='3' SEVERITY='ERROR']
+##teamcity[inspection typeId='unused' message='func hidden is unused' file='other/other.go' line='3' SEVERITY='ERROR']
+##teamcity[inspection typeId='unused' message='func unused雪 is unused' file='other/雪.go' line='4' SEVERITY='ERROR']

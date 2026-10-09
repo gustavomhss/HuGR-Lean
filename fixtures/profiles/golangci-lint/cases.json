@@ -1,0 +1,1787 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "golangci-lint",
+  "baseline": "71bcaea",
+  "cases": [
+    {
+      "name": "L04-version",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-version.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "version"
+      ],
+      "command": "/usr/local/bin/golangci-lint version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 90,
+      "outputBytes": 90,
+      "sha256": "e84238c2a55ef58d4d31098f93bf1fbfb8272db0358a195ba65312a1dc121e26",
+      "eof": {
+        "bytes": 90,
+        "sha256": "e84238c2a55ef58d4d31098f93bf1fbfb8272db0358a195ba65312a1dc121e26",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "30332d32325431373a32393a34365a0a"
+      },
+      "completionAt": "2026-10-09T14:50:29.916046+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-version",
+        "sha256": "e84238c2a55ef58d4d31098f93bf1fbfb8272db0358a195ba65312a1dc121e26"
+      }
+    },
+    {
+      "name": "L04-run-help",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-run-help.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--help"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --help",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 5502,
+      "outputBytes": 5502,
+      "sha256": "1444184ef2f725cc33c69604585ca15c9b7aa3088fcdcf71b8c864bd973ab4bb",
+      "eof": {
+        "bytes": 5502,
+        "sha256": "1444184ef2f725cc33c69604585ca15c9b7aa3088fcdcf71b8c864bd973ab4bb",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20566572626f7365206f75747075740a"
+      },
+      "completionAt": "2026-10-09T14:50:30.029638+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-run-help",
+        "sha256": "1444184ef2f725cc33c69604585ca15c9b7aa3088fcdcf71b8c864bd973ab4bb"
+      }
+    },
+    {
+      "name": "L04-linters-json",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-linters-json.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "linters",
+        "--no-config",
+        "--json"
+      ],
+      "command": "/usr/local/bin/golangci-lint linters --no-config --json",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 27052,
+      "outputBytes": 27052,
+      "sha256": "b11c59ebd1abcc67a28e2db10763ea0c1eebdbf92012a70b27f255bb96ec9262",
+      "eof": {
+        "bytes": 27052,
+        "sha256": "b11c59ebd1abcc67a28e2db10763ea0c1eebdbf92012a70b27f255bb96ec9262",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e742f696e7465726e616c227d5d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:30.187348+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-linters-json",
+        "sha256": "b11c59ebd1abcc67a28e2db10763ea0c1eebdbf92012a70b27f255bb96ec9262"
+      }
+    },
+    {
+      "name": "L04-native-clean",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-clean.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 10,
+      "outputBytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "eof": {
+        "bytes": 10,
+        "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "30206973737565732e0a"
+      },
+      "completionAt": "2026-10-09T14:50:30.565763+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-clean",
+        "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+      }
+    },
+    {
+      "name": "L04-native-diagnostics",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-diagnostics.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./issues"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false ./issues",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 336,
+      "outputBytes": 336,
+      "sha256": "ee262292115cd024fbd04aaa6a7acb50296cfbd6437a2987e476a2a9c4d43552",
+      "eof": {
+        "bytes": 336,
+        "sha256": "ee262292115cd024fbd04aaa6a7acb50296cfbd6437a2987e476a2a9c4d43552",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20310a"
+      },
+      "completionAt": "2026-10-09T14:50:30.855573+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-diagnostics",
+        "sha256": "ee262292115cd024fbd04aaa6a7acb50296cfbd6437a2987e476a2a9c4d43552"
+      }
+    },
+    {
+      "name": "L04-native-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 542,
+      "outputBytes": 542,
+      "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d",
+      "eof": {
+        "bytes": 542,
+        "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20330a"
+      },
+      "completionAt": "2026-10-09T14:50:31.141746+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-multifile",
+        "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d"
+      }
+    },
+    {
+      "name": "L04-native-space-unicode",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-space-unicode.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--path-mode=abs",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --path-mode=abs ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 420,
+      "outputBytes": 420,
+      "sha256": "df9e7f4c9480939f462da85027d3b6f23731eca63cccaea161c9987255f7168c",
+      "eof": {
+        "bytes": 420,
+        "sha256": "df9e7f4c9480939f462da85027d3b6f23731eca63cccaea161c9987255f7168c",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "65733a0a2a20756e757365643a20320a"
+      },
+      "completionAt": "2026-10-09T14:50:31.416862+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-space-unicode",
+        "sha256": "df9e7f4c9480939f462da85027d3b6f23731eca63cccaea161c9987255f7168c"
+      }
+    },
+    {
+      "name": "L04-native-type-error",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-type-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./broken"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false ./broken",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 151,
+      "outputBytes": 151,
+      "sha256": "2610e025f8addf2188635c1f753288113fcae1316ca4aca0337cfd706c315e9d",
+      "eof": {
+        "bytes": 151,
+        "sha256": "2610e025f8addf2188635c1f753288113fcae1316ca4aca0337cfd706c315e9d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a2a2074797065636865636b3a20310a"
+      },
+      "completionAt": "2026-10-09T14:50:31.769201+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-type-error",
+        "sha256": "2610e025f8addf2188635c1f753288113fcae1316ca4aca0337cfd706c315e9d"
+      }
+    },
+    {
+      "name": "L04-native-syntax-error",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-syntax-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./syntax"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false ./syntax",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 254,
+      "outputBytes": 254,
+      "sha256": "6a013808d3610ee6ab6b56e05bb32916b18e613ea07630f44c0b3ff9212740e5",
+      "eof": {
+        "bytes": 254,
+        "sha256": "6a013808d3610ee6ab6b56e05bb32916b18e613ea07630f44c0b3ff9212740e5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a2a2074797065636865636b3a20320a"
+      },
+      "completionAt": "2026-10-09T14:50:32.033937+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-syntax-error",
+        "sha256": "6a013808d3610ee6ab6b56e05bb32916b18e613ea07630f44c0b3ff9212740e5"
+      }
+    },
+    {
+      "name": "L04-json-clean",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-clean.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 2634,
+      "outputBytes": 2634,
+      "sha256": "d9bdd06e03e45ec223d22f6805da687fe16cc994f4955c82bf434121df32c0b1",
+      "eof": {
+        "bytes": 2634,
+        "sha256": "d9bdd06e03e45ec223d22f6805da687fe16cc994f4955c82bf434121df32c0b1",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:32.302693+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-clean",
+        "sha256": "d9bdd06e03e45ec223d22f6805da687fe16cc994f4955c82bf434121df32c0b1"
+      }
+    },
+    {
+      "name": "L04-json-diagnostics",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-diagnostics.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "./issues"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false ./issues",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3337,
+      "outputBytes": 3337,
+      "sha256": "c79d47ef2e128bf8ff8bacd0ff7afd1eb4ec9d504550b6196286196327ccf6df",
+      "eof": {
+        "bytes": 3337,
+        "sha256": "c79d47ef2e128bf8ff8bacd0ff7afd1eb4ec9d504550b6196286196327ccf6df",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:32.602094+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-diagnostics",
+        "sha256": "c79d47ef2e128bf8ff8bacd0ff7afd1eb4ec9d504550b6196286196327ccf6df"
+      }
+    },
+    {
+      "name": "L04-json-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3835,
+      "outputBytes": 3835,
+      "sha256": "d3f747c3ee6c8d2d071d92e15e9847d0a04baa5aa4d5cf150edf0218208e8fb5",
+      "eof": {
+        "bytes": 3835,
+        "sha256": "d3f747c3ee6c8d2d071d92e15e9847d0a04baa5aa4d5cf150edf0218208e8fb5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:32.898478+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-multifile",
+        "sha256": "d3f747c3ee6c8d2d071d92e15e9847d0a04baa5aa4d5cf150edf0218208e8fb5"
+      }
+    },
+    {
+      "name": "L04-json-space-unicode",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-space-unicode.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "--path-mode=abs",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false --path-mode=abs ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3323,
+      "outputBytes": 3323,
+      "sha256": "3ef6dfa73f08af22332d648057366393dda7c2142415210fc1dc94cb95dc39a7",
+      "eof": {
+        "bytes": 3323,
+        "sha256": "3ef6dfa73f08af22332d648057366393dda7c2142415210fc1dc94cb95dc39a7",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:33.160913+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-space-unicode",
+        "sha256": "3ef6dfa73f08af22332d648057366393dda7c2142415210fc1dc94cb95dc39a7"
+      }
+    },
+    {
+      "name": "L04-json-type-error",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-type-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "./broken"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false ./broken",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 2912,
+      "outputBytes": 2912,
+      "sha256": "0851355472dfd1f82be1da808bd16ba5f8f43ba6a6a4bfc204f197fb416b5230",
+      "eof": {
+        "bytes": 2912,
+        "sha256": "0851355472dfd1f82be1da808bd16ba5f8f43ba6a6a4bfc204f197fb416b5230",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:33.402425+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-type-error",
+        "sha256": "0851355472dfd1f82be1da808bd16ba5f8f43ba6a6a4bfc204f197fb416b5230"
+      }
+    },
+    {
+      "name": "L04-json-syntax-error",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-syntax-error.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "./syntax"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false ./syntax",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3150,
+      "outputBytes": 3150,
+      "sha256": "e664714159ea59d35ec8ba28b008f1cb52b91f10e2b1942d70b908c75d45f9a4",
+      "eof": {
+        "bytes": 3150,
+        "sha256": "e664714159ea59d35ec8ba28b008f1cb52b91f10e2b1942d70b908c75d45f9a4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:33.637480+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-syntax-error",
+        "sha256": "e664714159ea59d35ec8ba28b008f1cb52b91f10e2b1942d70b908c75d45f9a4"
+      }
+    },
+    {
+      "name": "L04-json-exit-zero",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-exit-zero.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "--issues-exit-code=0",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=false --issues-exit-code=0 ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3835,
+      "outputBytes": 3835,
+      "sha256": "d3f747c3ee6c8d2d071d92e15e9847d0a04baa5aa4d5cf150edf0218208e8fb5",
+      "eof": {
+        "bytes": 3835,
+        "sha256": "d3f747c3ee6c8d2d071d92e15e9847d0a04baa5aa4d5cf150edf0218208e8fb5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:33.994649+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-exit-zero",
+        "sha256": "d3f747c3ee6c8d2d071d92e15e9847d0a04baa5aa4d5cf150edf0218208e8fb5"
+      }
+    },
+    {
+      "name": "L04-json-with-stats",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-with-stats.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=true",
+        "./issues"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.json.path=stdout --show-stats=true ./issues",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3390,
+      "outputBytes": 3390,
+      "sha256": "456793b4ba1bd9ef4197385d49085c014e79b1526aa03116937c03a96ed2abcd",
+      "eof": {
+        "bytes": 3390,
+        "sha256": "456793b4ba1bd9ef4197385d49085c014e79b1526aa03116937c03a96ed2abcd",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20310a"
+      },
+      "completionAt": "2026-10-09T14:50:34.256634+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-with-stats",
+        "sha256": "456793b4ba1bd9ef4197385d49085c014e79b1526aa03116937c03a96ed2abcd"
+      }
+    },
+    {
+      "name": "L04-native-exit-zero",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-exit-zero.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--issues-exit-code=0",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --issues-exit-code=0 ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 542,
+      "outputBytes": 542,
+      "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d",
+      "eof": {
+        "bytes": 542,
+        "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20330a"
+      },
+      "completionAt": "2026-10-09T14:50:34.489403+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-exit-zero",
+        "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d"
+      }
+    },
+    {
+      "name": "L04-json-linter-warning",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-json-linter-warning.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=wsl",
+        "--output.text.path=",
+        "--output.json.path=stdout",
+        "--show-stats=false",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=wsl --output.text.path= --output.json.path=stdout --show-stats=false ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 3335,
+      "outputBytes": 3335,
+      "sha256": "aff315e88db1fbdcc81b7f4b9ac11ece86759ada18e7d240ce0976941c957209",
+      "eof": {
+        "bytes": 3335,
+        "sha256": "aff315e88db1fbdcc81b7f4b9ac11ece86759ada18e7d240ce0976941c957209",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e6f6c696e746c696e74227d5d7d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:34.717485+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-json-linter-warning",
+        "sha256": "aff315e88db1fbdcc81b7f4b9ac11ece86759ada18e7d240ce0976941c957209"
+      }
+    },
+    {
+      "name": "L04-native-verbose-metrics",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-verbose-metrics.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--verbose",
+        "--show-stats=true",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --verbose --show-stats=true ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 2618,
+      "outputBytes": 2618,
+      "sha256": "4029db0072d09f95a4cd549ed033e6d26337b0dee61b646d036a12c1e1abea0f",
+      "eof": {
+        "bytes": 2618,
+        "sha256": "4029db0072d09f95a4cd549ed033e6d26337b0dee61b646d036a12c1e1abea0f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f6b2036332e3830303539366d73220a"
+      },
+      "completionAt": "2026-10-09T14:50:34.942677+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-verbose-metrics",
+        "sha256": "4029db0072d09f95a4cd549ed033e6d26337b0dee61b646d036a12c1e1abea0f"
+      }
+    },
+    {
+      "name": "L04-native-clean-metrics",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-clean-metrics.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--verbose",
+        "--show-stats=true",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --verbose --show-stats=true ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1577,
+      "outputBytes": 1577,
+      "sha256": "7880b455da4edc9a6658086c3440ab902fbcf4be19c5a5eccf758e6fadf0e5d2",
+      "eof": {
+        "bytes": 1577,
+        "sha256": "7880b455da4edc9a6658086c3440ab902fbcf4be19c5a5eccf758e6fadf0e5d2",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f6b2036372e3132303335356d73220a"
+      },
+      "completionAt": "2026-10-09T14:50:35.188077+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-clean-metrics",
+        "sha256": "7880b455da4edc9a6658086c3440ab902fbcf4be19c5a5eccf758e6fadf0e5d2"
+      }
+    },
+    {
+      "name": "L04-native-no-context",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-no-context.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.print-issued-lines=false",
+        "./issues"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.print-issued-lines=false ./issues",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 237,
+      "outputBytes": 237,
+      "sha256": "031e38ecbad9b7c40f6d94bdddb0923ea67a913d510060d0cb689db862391bcf",
+      "eof": {
+        "bytes": 237,
+        "sha256": "031e38ecbad9b7c40f6d94bdddb0923ea67a913d510060d0cb689db862391bcf",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20310a"
+      },
+      "completionAt": "2026-10-09T14:50:35.417441+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-no-context",
+        "sha256": "031e38ecbad9b7c40f6d94bdddb0923ea67a913d510060d0cb689db862391bcf"
+      }
+    },
+    {
+      "name": "L04-native-color",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-native-color.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--color=always",
+        "./issues"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --color=always ./issues",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 336,
+      "outputBytes": 336,
+      "sha256": "ee262292115cd024fbd04aaa6a7acb50296cfbd6437a2987e476a2a9c4d43552",
+      "eof": {
+        "bytes": 336,
+        "sha256": "ee262292115cd024fbd04aaa6a7acb50296cfbd6437a2987e476a2a9c4d43552",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20310a"
+      },
+      "completionAt": "2026-10-09T14:50:35.640968+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-native-color",
+        "sha256": "ee262292115cd024fbd04aaa6a7acb50296cfbd6437a2987e476a2a9c4d43552"
+      }
+    },
+    {
+      "name": "L04-config-valid",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-config-valid.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--config=good.yml",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --config=good.yml ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 542,
+      "outputBytes": 542,
+      "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d",
+      "eof": {
+        "bytes": 542,
+        "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a20310a2a20756e757365643a20330a"
+      },
+      "completionAt": "2026-10-09T14:50:35.865505+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-config-valid",
+        "sha256": "ac0980d40b97ba6a783722b6bd7d94cae3ebe100fc42e9de61d93603e17bdc8d"
+      }
+    },
+    {
+      "name": "L04-config-invalid",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-config-invalid.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--config=bad.yml",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --config=bad.yml ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 280,
+      "outputBytes": 280,
+      "sha256": "8f3a59c88bfa8f751585205f6f8c0cea026e8d4c829cf80e5692263d73dac6db",
+      "eof": {
+        "bytes": 280,
+        "sha256": "8f3a59c88bfa8f751585205f6f8c0cea026e8d4c829cf80e5692263d73dac6db",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6564206e6f646520636f6e74656e740a"
+      },
+      "completionAt": "2026-10-09T14:50:35.963528+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-config-invalid",
+        "sha256": "8f3a59c88bfa8f751585205f6f8c0cea026e8d4c829cf80e5692263d73dac6db"
+      }
+    },
+    {
+      "name": "L04-config-version",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-config-version.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--config=old.yml",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --config=old.yml ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 350,
+      "outputBytes": 350,
+      "sha256": "6590810144f9019e0beacca51957f373e941c22f0f04e59b3ab51477f23a7215",
+      "eof": {
+        "bytes": 350,
+        "sha256": "6590810144f9019e0beacca51957f373e941c22f0f04e59b3ab51477f23a7215",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f6e20696e737472756374696f6e730a"
+      },
+      "completionAt": "2026-10-09T14:50:36.071136+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-config-version",
+        "sha256": "6590810144f9019e0beacca51957f373e941c22f0f04e59b3ab51477f23a7215"
+      }
+    },
+    {
+      "name": "L04-config-missing",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-config-missing.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--config=missing.yml",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --config=missing.yml ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 226,
+      "outputBytes": 226,
+      "sha256": "d49af4e8b1221fe1d82bfa05926545ddd2f1736a0390f333276e1c89bdfd5741",
+      "eof": {
+        "bytes": 226,
+        "sha256": "d49af4e8b1221fe1d82bfa05926545ddd2f1736a0390f333276e1c89bdfd5741",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6c65206f72206469726563746f72790a"
+      },
+      "completionAt": "2026-10-09T14:50:36.254051+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-config-missing",
+        "sha256": "d49af4e8b1221fe1d82bfa05926545ddd2f1736a0390f333276e1c89bdfd5741"
+      }
+    },
+    {
+      "name": "L04-unknown-linter",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-unknown-linter.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=not-a-linter",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=not-a-linter ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 256,
+      "outputBytes": 256,
+      "sha256": "d0a04ef3e2828570ba04e43eb7daffb0028b1d7edd3ed02c85d9ec11d1c39808",
+      "eof": {
+        "bytes": 256,
+        "sha256": "d0a04ef3e2828570ba04e43eb7daffb0028b1d7edd3ed02c85d9ec11d1c39808",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "70706f72746564206c696e746572730a"
+      },
+      "completionAt": "2026-10-09T14:50:36.435847+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-unknown-linter",
+        "sha256": "d0a04ef3e2828570ba04e43eb7daffb0028b1d7edd3ed02c85d9ec11d1c39808"
+      }
+    },
+    {
+      "name": "L04-deprecated-linter-warning",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-deprecated-linter-warning.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=wsl",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=wsl ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 428,
+      "outputBytes": 428,
+      "sha256": "34094bdb9bcceb273e65a2a51c48188a4e072de0d82f23903307ae5dec4e0386",
+      "eof": {
+        "bytes": 428,
+        "sha256": "34094bdb9bcceb273e65a2a51c48188a4e072de0d82f23903307ae5dec4e0386",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20325c6e220a30206973737565732e0a"
+      },
+      "completionAt": "2026-10-09T14:50:36.680515+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-deprecated-linter-warning",
+        "sha256": "34094bdb9bcceb273e65a2a51c48188a4e072de0d82f23903307ae5dec4e0386"
+      }
+    },
+    {
+      "name": "L04-invalid-format-flag",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-invalid-format-flag.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--out-format=json",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --out-format=json ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 3
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 104,
+      "outputBytes": 104,
+      "sha256": "fb46c470f9cfecaa8b054d7e9ca444bc9bd48f5f175166c542ee5cb04274c4e9",
+      "eof": {
+        "bytes": 104,
+        "sha256": "fb46c470f9cfecaa8b054d7e9ca444bc9bd48f5f175166c542ee5cb04274c4e9",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "673a202d2d6f75742d666f726d61740a"
+      },
+      "completionAt": "2026-10-09T14:50:36.779197+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-invalid-format-flag",
+        "sha256": "fb46c470f9cfecaa8b054d7e9ca444bc9bd48f5f175166c542ee5cb04274c4e9"
+      }
+    },
+    {
+      "name": "L04-missing-package",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-missing-package.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./missing"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false ./missing",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 7
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 196,
+      "outputBytes": 196,
+      "sha256": "b496f86fc4df2ecaafea60623aa58063b2d1cc86728a0056c7989469babc0fc7",
+      "eof": {
+        "bytes": 196,
+        "sha256": "b496f86fc4df2ecaafea60623aa58063b2d1cc86728a0056c7989469babc0fc7",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6f756e64220a30206973737565732e0a"
+      },
+      "completionAt": "2026-10-09T14:50:36.988634+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-missing-package",
+        "sha256": "b496f86fc4df2ecaafea60623aa58063b2d1cc86728a0056c7989469babc0fc7"
+      }
+    },
+    {
+      "name": "L04-malformed-space-import",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-malformed-space-import.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "./path space"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false './path space'",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 7
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 141,
+      "outputBytes": 141,
+      "sha256": "38d09050b66c46e7b7c311cb4e30d7f7478c0c328bcc1da412cf1f99d7c01926",
+      "eof": {
+        "bytes": 141,
+        "sha256": "38d09050b66c46e7b7c311cb4e30d7f7478c0c328bcc1da412cf1f99d7c01926",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20272027220a30206973737565732e0a"
+      },
+      "completionAt": "2026-10-09T14:50:37.203328+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-malformed-space-import",
+        "sha256": "38d09050b66c46e7b7c311cb4e30d7f7478c0c328bcc1da412cf1f99d7c01926"
+      }
+    },
+    {
+      "name": "L04-default-clean",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-default-clean.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "./clean"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config ./clean",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 10,
+      "outputBytes": 10,
+      "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+      "eof": {
+        "bytes": 10,
+        "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "30206973737565732e0a"
+      },
+      "completionAt": "2026-10-09T14:50:37.437635+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-default-clean",
+        "sha256": "e92606b0bf483111dff0a120c315ea165821348f31365020e2468a0059095c47"
+      }
+    },
+    {
+      "name": "L04-tab-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-tab-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.tab.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.tab.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 316,
+      "outputBytes": 316,
+      "sha256": "b68801a24514fc4a474700dda9fb88e5cf496eeff3a6c634a8cfa83795e70d4c",
+      "eof": {
+        "bytes": 316,
+        "sha256": "b68801a24514fc4a474700dda9fb88e5cf496eeff3a6c634a8cfa83795e70d4c",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6564e99baa20697320756e757365640a"
+      },
+      "completionAt": "2026-10-09T14:50:37.664962+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-tab-multifile",
+        "sha256": "b68801a24514fc4a474700dda9fb88e5cf496eeff3a6c634a8cfa83795e70d4c"
+      }
+    },
+    {
+      "name": "L04-checkstyle-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-checkstyle-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.checkstyle.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.checkstyle.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 757,
+      "outputBytes": 757,
+      "sha256": "2e53dce1d6eee6b85db72f12cf4de3a99aded2f747e3ae79736aae64cefab60c",
+      "eof": {
+        "bytes": 757,
+        "sha256": "2e53dce1d6eee6b85db72f12cf4de3a99aded2f747e3ae79736aae64cefab60c",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3e0a3c2f636865636b7374796c653e0a"
+      },
+      "completionAt": "2026-10-09T14:50:37.895843+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-checkstyle-multifile",
+        "sha256": "2e53dce1d6eee6b85db72f12cf4de3a99aded2f747e3ae79736aae64cefab60c"
+      }
+    },
+    {
+      "name": "L04-sarif-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-sarif-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.sarif.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.sarif.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1259,
+      "outputBytes": 1259,
+      "sha256": "cfc21dfe54af6f96a1fbffed4a6de124d2d3f7404f7b9c0f463b0c3e1c53ca55",
+      "eof": {
+        "bytes": 1259,
+        "sha256": "cfc21dfe54af6f96a1fbffed4a6de124d2d3f7404f7b9c0f463b0c3e1c53ca55",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "756d6e223a367d7d7d5d7d5d7d5d7d0a"
+      },
+      "completionAt": "2026-10-09T14:50:38.136077+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-sarif-multifile",
+        "sha256": "cfc21dfe54af6f96a1fbffed4a6de124d2d3f7404f7b9c0f463b0c3e1c53ca55"
+      }
+    },
+    {
+      "name": "L04-junit-xml-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-junit-xml-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.junit-xml.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.junit-xml.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1764,
+      "outputBytes": 1764,
+      "sha256": "b11664fd141dbc2d0f2ad84629a5531e2bacb938f671f9cc6efe94876ca2fb3c",
+      "eof": {
+        "bytes": 1764,
+        "sha256": "b11664fd141dbc2d0f2ad84629a5531e2bacb938f671f9cc6efe94876ca2fb3c",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "653e0a3c2f746573747375697465733e"
+      },
+      "completionAt": "2026-10-09T14:50:38.404817+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-junit-xml-multifile",
+        "sha256": "b11664fd141dbc2d0f2ad84629a5531e2bacb938f671f9cc6efe94876ca2fb3c"
+      }
+    },
+    {
+      "name": "L04-code-climate-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-code-climate-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.code-climate.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.code-climate.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1030,
+      "outputBytes": 1030,
+      "sha256": "ce452aaeaa9fbd4a850735eb7b81d5511e5c84e2f183f91977bdec87c93a8f07",
+      "eof": {
+        "bytes": 1030,
+        "sha256": "ce452aaeaa9fbd4a850735eb7b81d5511e5c84e2f183f91977bdec87c93a8f07",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3a7b22626567696e223a347d7d7d5d0a"
+      },
+      "completionAt": "2026-10-09T14:50:38.645824+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-code-climate-multifile",
+        "sha256": "ce452aaeaa9fbd4a850735eb7b81d5511e5c84e2f183f91977bdec87c93a8f07"
+      }
+    },
+    {
+      "name": "L04-teamcity-multifile",
+      "family": "golangci-lint",
+      "version": "golangci-lint 2.11.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "L04-teamcity-multifile.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "argv": [
+        "/usr/local/bin/golangci-lint",
+        "run",
+        "--no-config",
+        "--enable-only=unused,ineffassign,errcheck",
+        "--max-issues-per-linter=0",
+        "--max-same-issues=0",
+        "--uniq-by-line=false",
+        "--output.text.path=",
+        "--output.teamcity.path=stdout",
+        "--show-stats=false",
+        "./issues",
+        "./other"
+      ],
+      "command": "/usr/local/bin/golangci-lint run --no-config --enable-only=unused,ineffassign,errcheck --max-issues-per-linter=0 --max-same-issues=0 --uniq-by-line=false --output.text.path= --output.teamcity.path=stdout --show-stats=false ./issues ./other",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 968,
+      "outputBytes": 968,
+      "sha256": "2699068ad3efd0bfb8014c56aa2e596c5f216f1f9881c308175b929d731d9ff3",
+      "eof": {
+        "bytes": 968,
+        "sha256": "2699068ad3efd0bfb8014c56aa2e596c5f216f1f9881c308175b929d731d9ff3",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "5645524954593d274552524f52275d0a"
+      },
+      "completionAt": "2026-10-09T14:50:38.910305+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; read through EOF and wait; no PTY or normalization",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "L04-teamcity-multifile",
+        "sha256": "2699068ad3efd0bfb8014c56aa2e596c5f216f1f9881c308175b929d731d9ff3"
+      }
+    }
+  ],
+  "archives": [
+    "LICENSE.golangci-lint.txt",
+    "L04-build-metadata.txt",
+    "L04-go-version.txt"
+  ]
+}

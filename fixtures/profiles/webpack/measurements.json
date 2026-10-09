@@ -1,0 +1,306 @@
+{
+  "layoutControl": {
+    "inputHex": "7b20226122203a20227370616365206b656570222c20226e223a2031207d0a",
+    "outputHex": "7b2261223a227370616365206b656570222c226e223a317d0a",
+    "removedBytes": 6
+  },
+  "cases": [
+    {
+      "name": "B05-version",
+      "exit": 0,
+      "bytes": 330,
+      "sha256": "a8f42e4adffc933833e2b056d6cb9b62389d5524aa112c4ab9096966f26f9732",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-clean-default",
+      "exit": 0,
+      "bytes": 1052,
+      "sha256": "f13a39e943f3f7698a36d7a77e5b00bc02e4279f996045cc4a3622fa42f85607",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-clean-normal",
+      "exit": 0,
+      "bytes": 1041,
+      "sha256": "a8bfa7a62b587232b3bdc90ea435711ec33641087b56c3380744ef3803bcd77b",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-clean-errors-warnings",
+      "exit": 0,
+      "bytes": 30,
+      "sha256": "4ce4695944bf32c5d374ed66fa660e74822a7e2c2fa92f213ae2cc7ec2693b8a",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-clean-json",
+      "exit": 0,
+      "bytes": 48461,
+      "sha256": "b056c1bc8aaab7f76e290266c25390a541cf32a0e595e997629c910fa7128126",
+      "finalLF": false,
+      "receiptHashMatches": true,
+      "validJSON": true,
+      "candidateBytes": 48461,
+      "removedBytes": 0,
+      "candidateSha256": "b056c1bc8aaab7f76e290266c25390a541cf32a0e595e997629c910fa7128126",
+      "tokenPolicy": "delete only ASCII whitespace outside strings; preserve original EOF whitespace"
+    },
+    {
+      "name": "B05-warnings-default",
+      "exit": 0,
+      "bytes": 1034,
+      "sha256": "723a8fd68f6af692eecb8d6054c07d14b54e183da149ed9fff7ef3902c1ff962",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-warnings-normal",
+      "exit": 0,
+      "bytes": 964,
+      "sha256": "ffebef582c931358b8cc0bd5aeb4d5264e1099dd868116e9f1b4c5d54232b0ac",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-warnings-errors-warnings",
+      "exit": 0,
+      "bytes": 131,
+      "sha256": "01f3e5527b40e15582920a6440c7964d931b11950d3472bf910d010caea6f1c4",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-warnings-json",
+      "exit": 0,
+      "bytes": 36196,
+      "sha256": "b47951896ee8000f6027e63e4aa844cbc77f6b88b7cceae4df519f3e007cf255",
+      "finalLF": false,
+      "receiptHashMatches": true,
+      "validJSON": true,
+      "candidateBytes": 36196,
+      "removedBytes": 0,
+      "candidateSha256": "b47951896ee8000f6027e63e4aa844cbc77f6b88b7cceae4df519f3e007cf255",
+      "tokenPolicy": "delete only ASCII whitespace outside strings; preserve original EOF whitespace"
+    },
+    {
+      "name": "B05-sourcefail-default",
+      "exit": 1,
+      "bytes": 927,
+      "sha256": "db3b27b9a6a79ba732a4c3ff62dbbfcabc87178cdd0bf87cf235c051713ddbe5",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-sourcefail-normal",
+      "exit": 1,
+      "bytes": 937,
+      "sha256": "f511243fd049d0b397fa76e1039b84486336d251dca01f6a98a3a47320faaf6c",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-sourcefail-errors-warnings",
+      "exit": 1,
+      "bytes": 293,
+      "sha256": "d2646d191dc48f1237b935ce979cdbba1b733b231977fcd825ff2decbfd431c8",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-sourcefail-json",
+      "exit": 1,
+      "bytes": 30253,
+      "sha256": "6ad5fed819653c3ab95d5f9dec02ae39270fe2756e39ee85792615b645a57ff5",
+      "finalLF": false,
+      "receiptHashMatches": true,
+      "validJSON": true,
+      "candidateBytes": 30253,
+      "removedBytes": 0,
+      "candidateSha256": "6ad5fed819653c3ab95d5f9dec02ae39270fe2756e39ee85792615b645a57ff5",
+      "tokenPolicy": "delete only ASCII whitespace outside strings; preserve original EOF whitespace"
+    },
+    {
+      "name": "B05-configfail-default",
+      "exit": 2,
+      "bytes": 1059,
+      "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-configfail-normal",
+      "exit": 2,
+      "bytes": 1059,
+      "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-configfail-errors-warnings",
+      "exit": 2,
+      "bytes": 1059,
+      "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-configfail-json",
+      "exit": 2,
+      "bytes": 1059,
+      "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+      "finalLF": true,
+      "receiptHashMatches": true,
+      "validJSON": false,
+      "layoutProposal": "none",
+      "reason": "Expecting value: line 1 column 2 (char 1)"
+    },
+    {
+      "name": "B05-multi-output-default",
+      "exit": 0,
+      "bytes": 2220,
+      "sha256": "0f8cc61f07de17a041d1509c832074e2f532cf4b58bab5517865f5037b20a7f5",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-multi-output-normal",
+      "exit": 0,
+      "bytes": 2198,
+      "sha256": "21139629cf8f5533a147dcc386c120ca124430895c389fa9f4ab1b6c80c6c521",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-multi-output-errors-warnings",
+      "exit": 0,
+      "bytes": 87,
+      "sha256": "8e074eb10d91cfa1b9adbd2175494fae721e8e0ec5054ed75065cb4c1cd76c57",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-multi-output-json",
+      "exit": 0,
+      "bytes": 97274,
+      "sha256": "6bad8b41f4cf5e099f3fc85684080f11bed38954be8c0d4b52b0396dd2562c10",
+      "finalLF": false,
+      "receiptHashMatches": true,
+      "validJSON": true,
+      "candidateBytes": 97274,
+      "removedBytes": 0,
+      "candidateSha256": "6bad8b41f4cf5e099f3fc85684080f11bed38954be8c0d4b52b0396dd2562c10",
+      "tokenPolicy": "delete only ASCII whitespace outside strings; preserve original EOF whitespace"
+    },
+    {
+      "name": "B05-plugin-default",
+      "exit": 2,
+      "bytes": 1247,
+      "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-normal",
+      "exit": 2,
+      "bytes": 1247,
+      "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-errors-warnings",
+      "exit": 2,
+      "bytes": 1247,
+      "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-json",
+      "exit": 2,
+      "bytes": 1247,
+      "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+      "finalLF": true,
+      "receiptHashMatches": true,
+      "validJSON": false,
+      "layoutProposal": "none",
+      "reason": "Expecting value: line 1 column 2 (char 1)"
+    },
+    {
+      "name": "B05-clean-detailed",
+      "exit": 0,
+      "bytes": 6065,
+      "sha256": "5e4d953d36d0b0cc998846ae8155b5ad4238b5e5a69aab8fd9103a371c23432f",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-success-default",
+      "exit": 0,
+      "bytes": 1179,
+      "sha256": "7f1fca893dd7523623283040d726e888d0be1c36776e0516abf1a68bd8d1c3f4",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-success-normal",
+      "exit": 0,
+      "bytes": 1179,
+      "sha256": "907b2a43bdd530ae775eb9d9ffe411c6c1ad7feee894de201922c1fb84580143",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-success-errors-warnings",
+      "exit": 0,
+      "bytes": 168,
+      "sha256": "8adc4013c169f97111f634301a54aabadd9c26238a599416eb3fced4a93fe605",
+      "finalLF": true,
+      "receiptHashMatches": true
+    },
+    {
+      "name": "B05-plugin-success-json",
+      "exit": 0,
+      "bytes": 48599,
+      "sha256": "e33eb580d6c0d52b2433aef5d81740da14fc36a3827fc88487eb908b896fa19c",
+      "finalLF": false,
+      "receiptHashMatches": true,
+      "validJSON": false,
+      "layoutProposal": "none",
+      "reason": "Expecting value: line 1 column 1 (char 0)"
+    }
+  ],
+  "producerIntegrity": [
+    {
+      "tool": "webpack",
+      "version": "5.102.1",
+      "tarball": "https://registry.npmjs.org/webpack/-/webpack-5.102.1.tgz",
+      "bytes": 1082093,
+      "advertisedSRI": "sha512-7h/weGm9d/ywQ6qzJ+Xy+r9n/3qgp/thalBbpOi5i223dPXKi04IBtqPN9nTd+jBc7QKfvDbaBnFipYp4sJAUQ==",
+      "observedSRI": "sha512-7h/weGm9d/ywQ6qzJ+Xy+r9n/3qgp/thalBbpOi5i223dPXKi04IBtqPN9nTd+jBc7QKfvDbaBnFipYp4sJAUQ==",
+      "matches": true,
+      "gitHead": "c7ebdbda637ea73a03a23446f5db0f600e304772",
+      "license": "MIT",
+      "gitCorrespondence": "registry-reported gitHead; no independent source-build attestation"
+    },
+    {
+      "tool": "webpack-cli",
+      "version": "6.0.1",
+      "tarball": "https://registry.npmjs.org/webpack-cli/-/webpack-cli-6.0.1.tgz",
+      "bytes": 23954,
+      "advertisedSRI": "sha512-MfwFQ6SfwinsUVi0rNJm7rHZ31GyTcpVE5pgVA3hwFRb7COD4TzjUUwhGWKfO50+xdc2MQPuEBBJoqIMGt3JDw==",
+      "observedSRI": "sha512-MfwFQ6SfwinsUVi0rNJm7rHZ31GyTcpVE5pgVA3hwFRb7COD4TzjUUwhGWKfO50+xdc2MQPuEBBJoqIMGt3JDw==",
+      "matches": true,
+      "gitHead": "480b33d23b277b3a55310bfc6dec8bcd3d4ed404",
+      "license": "MIT",
+      "gitCorrespondence": "registry-reported gitHead; no independent source-build attestation"
+    }
+  ],
+  "totalRawBytes": 289842,
+  "JSONLayoutRemovedBytes": 0
+}

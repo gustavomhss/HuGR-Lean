@@ -1,0 +1,6 @@
+************* Module Command line or configuration file
+Command line or configuration file:1:0: E0013: Plugin 'missing_plugin' is impossible to load, is it installed ? ('No module named 'missing_plugin'') (bad-plugin-value)
+
+------------------------------------
+Your code has been rated at 10.00/10
+

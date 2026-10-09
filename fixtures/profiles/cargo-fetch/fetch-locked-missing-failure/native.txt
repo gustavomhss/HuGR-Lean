@@ -1,0 +1,3 @@
+    Updating crates.io index
+error: cannot create the lock file /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c08-native-P2aQXf/locked-missing/Cargo.lock because --locked was passed to prevent this
+help: to generate the lock file without accessing the network, remove the --locked flag and use --offline instead.

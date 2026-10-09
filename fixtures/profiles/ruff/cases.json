@@ -1,0 +1,90 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "ruff",
+  "cases": [
+    {
+      "name":"L03-check-clean","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache clean.py",
+      "file":"clean.txt","provenance":{"sha256":"82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18","record":"capture-receipt.json","originalCase":"L03-check-clean"}
+    },
+    {
+      "name":"L03-check-failed","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":1},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache lint.py",
+      "file":"lint.txt","provenance":{"sha256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96","record":"capture-receipt.json","originalCase":"L03-check-failed"}
+    },
+    {
+      "name":"L03-check-exit-zero","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache --exit-zero lint.py",
+      "file":"lint.txt","provenance":{"sha256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96","record":"capture-receipt.json","originalCase":"L03-check-exit-zero"}
+    },
+    {
+      "name":"L03-check-full","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache --exit-zero --output-format full lint.py",
+      "file":"lint.txt","provenance":{"sha256":"c2d347d105d0a5f3c7f8314dbd720254d81c61be4935d1808e5dadb580cb2e96","record":"capture-receipt.json","originalCase":"L03-check-full"}
+    },
+    {
+      "name":"L03-check-json-failed","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":1},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache --output-format json lint.py",
+      "output":"[\n  {\n    \"cell\": null,\n    \"code\": \"F401\",\n    \"end_location\": {\n      \"column\": 10,\n      \"row\": 1\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\n    \"fix\": {\n      \"applicability\": \"safe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 1,\n            \"row\": 2\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 1\n          }\n        }\n      ],\n      \"message\": \"Remove unused import: `os`\"\n    },\n    \"location\": {\n      \"column\": 8,\n      \"row\": 1\n    },\n    \"message\": \"`os` imported but unused\",\n    \"noqa_row\": 1,\n    \"url\": \"https://docs.astral.sh/ruff/rules/unused-import\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"F821\",\n    \"end_location\": {\n      \"column\": 14,\n      \"row\": 4\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 7,\n      \"row\": 4\n    },\n    \"message\": \"Undefined name `missing`\",\n    \"noqa_row\": 4,\n    \"url\": \"https://docs.astral.sh/ruff/rules/undefined-name\"\n  }\n]",
+      "provenance":{"sha256":"66e9b97476abac0d9d0d168cb11a02d7d365ab1fa37bf6961bb421d9129415e5","record":"capture-receipt.json","originalCase":"L03-check-json-failed"}
+    },
+    {
+      "name":"L03-check-json-exit-zero","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"reduced",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache --exit-zero --output-format json lint.py",
+      "output":"[\n  {\n    \"cell\": null,\n    \"code\": \"F401\",\n    \"end_location\": {\n      \"column\": 10,\n      \"row\": 1\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\n    \"fix\": {\n      \"applicability\": \"safe\",\n      \"edits\": [\n        {\n          \"content\": \"\",\n          \"end_location\": {\n            \"column\": 1,\n            \"row\": 2\n          },\n          \"location\": {\n            \"column\": 1,\n            \"row\": 1\n          }\n        }\n      ],\n      \"message\": \"Remove unused import: `os`\"\n    },\n    \"location\": {\n      \"column\": 8,\n      \"row\": 1\n    },\n    \"message\": \"`os` imported but unused\",\n    \"noqa_row\": 1,\n    \"url\": \"https://docs.astral.sh/ruff/rules/unused-import\"\n  },\n  {\n    \"cell\": null,\n    \"code\": \"F821\",\n    \"end_location\": {\n      \"column\": 14,\n      \"row\": 4\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\n    \"fix\": null,\n    \"location\": {\n      \"column\": 7,\n      \"row\": 4\n    },\n    \"message\": \"Undefined name `missing`\",\n    \"noqa_row\": 4,\n    \"url\": \"https://docs.astral.sh/ruff/rules/undefined-name\"\n  }\n]",
+      "expected":"[{\"cell\":null,\"code\":\"F401\",\"end_location\":{\"column\":10,\"row\":1},\"filename\":\"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\"fix\":{\"applicability\":\"safe\",\"edits\":[{\"content\":\"\",\"end_location\":{\"column\":1,\"row\":2},\"location\":{\"column\":1,\"row\":1}}],\"message\":\"Remove unused import: `os`\"},\"location\":{\"column\":8,\"row\":1},\"message\":\"`os` imported but unused\",\"noqa_row\":1,\"url\":\"https://docs.astral.sh/ruff/rules/unused-import\"},{\"cell\":null,\"code\":\"F821\",\"end_location\":{\"column\":14,\"row\":4},\"filename\":\"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/lint.py\",\"fix\":null,\"location\":{\"column\":7,\"row\":4},\"message\":\"Undefined name `missing`\",\"noqa_row\":4,\"url\":\"https://docs.astral.sh/ruff/rules/undefined-name\"}]",
+      "provenance":{"sha256":"66e9b97476abac0d9d0d168cb11a02d7d365ab1fa37bf6961bb421d9129415e5","record":"capture-receipt.json","originalCase":"L03-check-json-exit-zero"}
+    },
+    {
+      "name":"L03-check-fix","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache --fix fix.py",
+      "file":"fix.txt","provenance":{"sha256":"aac3a0503d8b95052cc85fb9f1717dc82b74aa55853a5aa9749b41e30275d472","record":"capture-receipt.json","originalCase":"L03-check-fix"}
+    },
+    {
+      "name":"L03-check-syntax","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff check --isolated --no-cache --exit-zero syntax.py",
+      "file":"syntax.txt","provenance":{"sha256":"d8c414ff3be6ba34992a0e4bcd98d259c30d2c5078c4ce04422691731cdf7093","record":"capture-receipt.json","originalCase":"L03-check-syntax"}
+    },
+    {
+      "name":"L03-format-check","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":1},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --check format.py clean.py",
+      "file":"format-check.txt","provenance":{"sha256":"6dbc3bcddf3cf052a328e40dfdf304c0f4646bfe2af0cfa383e02dab7747b1f3","record":"capture-receipt.json","originalCase":"L03-format-check"}
+    },
+    {
+      "name":"L03-format-diff","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":1},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --diff format.py",
+      "file":"format-diff.txt","provenance":{"sha256":"41d980bac57b6fc5559db428aaf73a70ca1e54dc8e825b15898f30826be2c9d0","record":"capture-receipt.json","originalCase":"L03-format-diff"}
+    },
+    {
+      "name":"L03-format-json-preview-check","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":1},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --preview --check --output-format json format.py clean.py",
+      "output":"[\n  {\n    \"cell\": null,\n    \"code\": \"unformatted\",\n    \"end_location\": {\n      \"column\": 15,\n      \"row\": 2\n    },\n    \"filename\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-project/format.py\",\n    \"fix\": {\n      \"applicability\": \"safe\",\n      \"edits\": [\n        {\n          \"content\": \" = {\\\"café 🧪\\\": [1, 2, 3]}\\nprint(values\",\n          \"end_location\": {\n            \"column\": 15,\n            \"row\": 2\n          },\n          \"location\": {\n            \"column\": 7,\n            \"row\": 1\n          }\n        }\n      ],\n      \"message\": null\n    },\n    \"location\": {\n      \"column\": 7,\n      \"row\": 1\n    },\n    \"message\": \"File would be reformatted\",\n    \"noqa_row\": null,\n    \"url\": null\n  }\n]",
+      "provenance":{"sha256":"456a54b705a94ad6a408e05e968da99eb8c4cbb16019bc93d8a21e953a6a5308","record":"capture-receipt.json","originalCase":"L03-format-json-preview-check"}
+    },
+    {
+      "name":"L03-format-write","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache format.py clean.py",
+      "file":"format-write.txt","provenance":{"sha256":"10869b88a75066aa23546ef1f95fcd4678c3fb92a56ed46ef91688052b67976a","record":"capture-receipt.json","originalCase":"L03-format-write"}
+    },
+    {
+      "name":"L03-format-json-warning","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --output-format json format.py",
+      "file":"format-warning.txt","provenance":{"sha256":"20212ad17dc3d0891649b397722654a3c13c6ce4d8bf25e9ef5b18d262bd1a3f","record":"capture-receipt.json","originalCase":"L03-format-json-warning"}
+    },
+    {
+      "name":"L03-format-json-preview-clean","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --preview --check --output-format json format.py",
+      "output":"[]","provenance":{"sha256":"4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945","record":"capture-receipt.json","originalCase":"L03-format-json-preview-clean"}
+    },
+    {
+      "name":"L03-format-clean","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --check format.py clean.py",
+      "file":"format-clean.txt","provenance":{"sha256":"3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938","record":"capture-receipt.json","originalCase":"L03-format-clean"}
+    },
+    {
+      "name":"L03-format-silent","family":"ruff","version":"ruff 0.14.0","platform":"macOS-15.3.2-x86_64-i386-64bit-Mach-O","completeness":"complete","presentation":"unknown","termination":{"kind":"exited","code":0},"status":"passthrough",
+      "command":"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L03-ruff-venv/bin/ruff format --isolated --no-cache --quiet format.py",
+      "file":"silent.txt","provenance":{"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","record":"capture-receipt.json","originalCase":"L03-format-silent"}
+    }
+  ]
+}

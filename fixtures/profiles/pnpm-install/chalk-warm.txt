@@ -1,0 +1,9 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +6
+++++++
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+
+dependencies:
++ chalk 4.1.2 (6.0.1 is available)
+
+Done in 721ms using pnpm v10.18.3

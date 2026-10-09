@@ -1,0 +1,22 @@
+{
+  "version": "5.102.1",
+  "dist": {
+    "shasum": "1003a3024741a96ba99c37431938bf61aad3d988",
+    "tarball": "https://registry.npmjs.org/webpack/-/webpack-5.102.1.tgz",
+    "fileCount": 706,
+    "integrity": "sha512-7h/weGm9d/ywQ6qzJ+Xy+r9n/3qgp/thalBbpOi5i223dPXKi04IBtqPN9nTd+jBc7QKfvDbaBnFipYp4sJAUQ==",
+    "signatures": [
+      {
+        "sig": "MEQCIGz/8i+UK0jZGULNNwG4jQTeCD2BYj4INPZsbzEXf4+4AiASvr+1fICSxUJUX2KGmocQuJdfz+t5oN5IHSUe9YCzjA==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 5549486
+  },
+  "license": "MIT",
+  "gitHead": "c7ebdbda637ea73a03a23446f5db0f600e304772",
+  "repository": {
+    "url": "git+https://github.com/webpack/webpack.git",
+    "type": "git"
+  }
+}

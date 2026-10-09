@@ -1,0 +1,3215 @@
+{
+  "schema": "hugr-lean/native-capture/1",
+  "baseline": "71bcaea",
+  "version": "webpack 5.102.1; webpack-cli 6.0.1",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "environment": {
+    "NO_COLOR": "1",
+    "FORCE_COLOR": "0",
+    "CI": "1",
+    "npm_config_registry": "https://registry.npmjs.org/"
+  },
+  "root": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+  "cases": [
+    {
+      "name": "B05-version",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--version"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--version"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-version.txt",
+      "startedAt": "2026-10-09T14:46:15.925731+00:00",
+      "completedAt": "2026-10-09T14:46:17.669637+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 330,
+        "sha256": "a8f42e4adffc933833e2b056d6cb9b62389d5524aa112c4ab9096966f26f9732",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20207765627061636b2d636c693a20362e302e31203d3e20362e302e31200a0a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      }
+    },
+    {
+      "name": "B05-clean-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-clean-default.txt",
+      "startedAt": "2026-10-09T14:46:17.680282+00:00",
+      "completedAt": "2026-10-09T14:46:18.399777+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1052,
+        "sha256": "f13a39e943f3f7698a36d7a77e5b00bc02e4279f996045cc4a3622fa42f85607",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c6564207375636365737366756c6c7920696e20313333206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-clean-default/dist/0d98ba6bea6441446d54.txt",
+          "path": "dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-default/dist/asset.js",
+          "path": "dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-default/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-default/dist/main café.js",
+          "path": "dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-default/dist/second.js",
+          "path": "dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-default/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-clean-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-clean-normal.txt",
+      "startedAt": "2026-10-09T14:46:18.405477+00:00",
+      "completedAt": "2026-10-09T14:46:19.113670+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1041,
+        "sha256": "a8bfa7a62b587232b3bdc90ea435711ec33641087b56c3380744ef3803bcd77b",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c6564207375636365737366756c6c7920696e20313239206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-clean-normal/dist/0d98ba6bea6441446d54.txt",
+          "path": "dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-normal/dist/asset.js",
+          "path": "dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-normal/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-normal/dist/main café.js",
+          "path": "dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-normal/dist/second.js",
+          "path": "dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-normal/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-clean-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-clean-errors-warnings.txt",
+      "startedAt": "2026-10-09T14:46:19.116651+00:00",
+      "completedAt": "2026-10-09T14:46:19.793308+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 30,
+        "sha256": "4ce4695944bf32c5d374ed66fa660e74822a7e2c2fa92f213ae2cc7ec2693b8a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7765627061636b20636f6d70696c6564207375636365737366756c6c790a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-clean-errors-warnings/dist/0d98ba6bea6441446d54.txt",
+          "path": "dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-errors-warnings/dist/asset.js",
+          "path": "dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-errors-warnings/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-errors-warnings/dist/main café.js",
+          "path": "dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-errors-warnings/dist/second.js",
+          "path": "dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-errors-warnings/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-clean-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-clean-json.txt",
+      "startedAt": "2026-10-09T14:46:19.796773+00:00",
+      "completedAt": "2026-10-09T14:46:20.718609+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 48461,
+        "sha256": "b056c1bc8aaab7f76e290266c25390a541cf32a0e595e997629c910fa7128126",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "227761726e696e6773436f756e74223a302c226368696c6472656e223a5b5d7d",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-clean-json/dist/0d98ba6bea6441446d54.txt",
+          "path": "dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-json/dist/asset.js",
+          "path": "dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-json/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-json/dist/main café.js",
+          "path": "dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-json/dist/second.js",
+          "path": "dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-json/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-warnings-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-warnings-default.txt",
+      "startedAt": "2026-10-09T14:46:20.725862+00:00",
+      "completedAt": "2026-10-09T14:46:21.608189+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1034,
+        "sha256": "723a8fd68f6af692eecb8d6054c07d14b54e183da149ed9fff7ef3902c1ff962",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d70696c656420776974682031207761726e696e6720696e20313735206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-warnings-default/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-default/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-default/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-default/dist/warning.js",
+          "path": "dist/warning.js",
+          "bytes": 2402,
+          "sha256": "ba25894680a2d8c03bf921943aec48165923acb436c635ca814f5f137037467e",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-warnings-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-warnings-normal.txt",
+      "startedAt": "2026-10-09T14:46:21.611418+00:00",
+      "completedAt": "2026-10-09T14:46:22.313663+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 964,
+        "sha256": "ffebef582c931358b8cc0bd5aeb4d5264e1099dd868116e9f1b4c5d54232b0ac",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6d70696c656420776974682031207761726e696e6720696e20313239206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-warnings-normal/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-normal/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-normal/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-normal/dist/warning.js",
+          "path": "dist/warning.js",
+          "bytes": 2402,
+          "sha256": "ba25894680a2d8c03bf921943aec48165923acb436c635ca814f5f137037467e",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-warnings-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-warnings-errors-warnings.txt",
+      "startedAt": "2026-10-09T14:46:22.316767+00:00",
+      "completedAt": "2026-10-09T14:46:23.039084+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 131,
+        "sha256": "01f3e5527b40e15582920a6440c7964d931b11950d3472bf910d010caea6f1c4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7765627061636b20636f6d70696c656420776974682031207761726e696e670a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-warnings-errors-warnings/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-errors-warnings/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-errors-warnings/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-errors-warnings/dist/warning.js",
+          "path": "dist/warning.js",
+          "bytes": 2402,
+          "sha256": "ba25894680a2d8c03bf921943aec48165923acb436c635ca814f5f137037467e",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-warnings-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "warnings.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-warnings-json.txt",
+      "startedAt": "2026-10-09T14:46:23.043603+00:00",
+      "completedAt": "2026-10-09T14:46:23.855086+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 36196,
+        "sha256": "b47951896ee8000f6027e63e4aa844cbc77f6b88b7cceae4df519f3e007cf255",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "227761726e696e6773436f756e74223a312c226368696c6472656e223a5b5d7d",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-warnings-json/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-json/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-json/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-warnings-json/dist/warning.js",
+          "path": "dist/warning.js",
+          "bytes": 2402,
+          "sha256": "ba25894680a2d8c03bf921943aec48165923acb436c635ca814f5f137037467e",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-sourcefail-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-sourcefail-default.txt",
+      "startedAt": "2026-10-09T14:46:23.859100+00:00",
+      "completedAt": "2026-10-09T14:46:24.657407+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 927,
+        "sha256": "db3b27b9a6a79ba732a4c3ff62dbbfcabc87178cdd0bf87cf235c051713ddbe5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c656420776974682031206572726f7220696e20313333206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-sourcefail-default/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-default/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-default/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-default/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-sourcefail-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-sourcefail-normal.txt",
+      "startedAt": "2026-10-09T14:46:24.661028+00:00",
+      "completedAt": "2026-10-09T14:46:25.463668+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 937,
+        "sha256": "f511243fd049d0b397fa76e1039b84486336d251dca01f6a98a3a47320faaf6c",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c656420776974682031206572726f7220696e20313939206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-sourcefail-normal/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-normal/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-normal/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-normal/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-sourcefail-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-sourcefail-errors-warnings.txt",
+      "startedAt": "2026-10-09T14:46:25.466824+00:00",
+      "completedAt": "2026-10-09T14:46:26.224972+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 293,
+        "sha256": "d2646d191dc48f1237b935ce979cdbba1b733b231977fcd825ff2decbfd431c8",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a0a7765627061636b20636f6d70696c656420776974682031206572726f720a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-sourcefail-errors-warnings/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-errors-warnings/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-errors-warnings/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-errors-warnings/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-sourcefail-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "sourcefail.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-sourcefail-json.txt",
+      "startedAt": "2026-10-09T14:46:26.227643+00:00",
+      "completedAt": "2026-10-09T14:46:27.070920+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 30253,
+        "sha256": "6ad5fed819653c3ab95d5f9dec02ae39270fe2756e39ee85792615b645a57ff5",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "227761726e696e6773436f756e74223a302c226368696c6472656e223a5b5d7d",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-sourcefail-json/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-json/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-json/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-sourcefail-json/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-configfail-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-configfail-default.txt",
+      "startedAt": "2026-10-09T14:46:27.073323+00:00",
+      "completedAt": "2026-10-09T14:46:27.320504+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1059,
+        "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-configfail-default/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-default/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-default/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-default/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-configfail-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-configfail-normal.txt",
+      "startedAt": "2026-10-09T14:46:27.323063+00:00",
+      "completedAt": "2026-10-09T14:46:27.559410+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1059,
+        "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-configfail-normal/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-normal/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-normal/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-normal/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-configfail-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-configfail-errors-warnings.txt",
+      "startedAt": "2026-10-09T14:46:27.562689+00:00",
+      "completedAt": "2026-10-09T14:46:27.802478+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1059,
+        "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-configfail-errors-warnings/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-errors-warnings/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-errors-warnings/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-errors-warnings/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-configfail-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "configfail.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-configfail-json.txt",
+      "startedAt": "2026-10-09T14:46:27.804893+00:00",
+      "completedAt": "2026-10-09T14:46:28.031456+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1059,
+        "sha256": "073643e691d9426ddcc2579eda2b47b1c98ee9c9969dc202247d711f533cc84a",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-configfail-json/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-json/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-json/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-configfail-json/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-multi-output-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-multi-output-default.txt",
+      "startedAt": "2026-10-09T14:46:28.034064+00:00",
+      "completedAt": "2026-10-09T14:46:28.925521+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 2220,
+        "sha256": "0f8cc61f07de17a041d1509c832074e2f532cf4b58bab5517865f5037b20a7f5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c6564207375636365737366756c6c7920696e20313630206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-multi-output-default/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-default/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-multi-output-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-multi-output-normal.txt",
+      "startedAt": "2026-10-09T14:46:28.938317+00:00",
+      "completedAt": "2026-10-09T14:46:29.706961+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 2198,
+        "sha256": "21139629cf8f5533a147dcc386c120ca124430895c389fa9f4ab1b6c80c6c521",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c6564207375636365737366756c6c7920696e20313439206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-multi-output-normal/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-normal/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-multi-output-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-multi-output-errors-warnings.txt",
+      "startedAt": "2026-10-09T14:46:29.750827+00:00",
+      "completedAt": "2026-10-09T14:46:30.469499+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 87,
+        "sha256": "8e074eb10d91cfa1b9adbd2175494fae721e8e0ec5054ed75065cb4c1cd76c57",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20206e6f646520ceb220636f6d70696c6564207375636365737366756c6c790a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-errors-warnings/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-multi-output-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "multi.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-multi-output-json.txt",
+      "startedAt": "2026-10-09T14:46:30.477741+00:00",
+      "completedAt": "2026-10-09T14:46:31.183876+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 97274,
+        "sha256": "6bad8b41f4cf5e099f3fc85684080f11bed38954be8c0d4b52b0396dd2562c10",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "72726f7273436f756e74223a302c227761726e696e6773436f756e74223a307d",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-multi-output-json/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-multi-output-json/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-default.txt",
+      "startedAt": "2026-10-09T14:46:31.193677+00:00",
+      "completedAt": "2026-10-09T14:46:31.412052+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1247,
+        "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-default/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-default/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-normal.txt",
+      "startedAt": "2026-10-09T14:46:31.419440+00:00",
+      "completedAt": "2026-10-09T14:46:31.646736+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1247,
+        "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-normal/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-normal/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-errors-warnings.txt",
+      "startedAt": "2026-10-09T14:46:31.655226+00:00",
+      "completedAt": "2026-10-09T14:46:31.882829+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1247,
+        "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-errors-warnings/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-json.txt",
+      "startedAt": "2026-10-09T14:46:31.893637+00:00",
+      "completedAt": "2026-10-09T14:46:32.151248+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1247,
+        "sha256": "c1f6a2744396f4480322e6d71736d28e823ddeb0ba6723faf22c740b2ac074e6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "2d636c692f6c69622f7765627061636b2d636c692e6a733a3235313a3330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-json/dist/broken.js",
+          "path": "dist/broken.js",
+          "bytes": 846,
+          "sha256": "2a20d432bfcf42ffafa7efb72753442e0044078bbc21e73177663e1d11b5f167",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist/main.js",
+          "path": "dist/main.js",
+          "bytes": 13450,
+          "sha256": "7a64290a89266df9ab59b8a1f43dc088692455773eb7404d4e1e4bb5d918de15",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-plugin-json/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-clean-detailed",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--stats",
+        "detailed"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "webpack.config.cjs",
+        "--no-color",
+        "--stats",
+        "detailed"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-clean-detailed.txt",
+      "startedAt": "2026-10-09T14:46:32.161431+00:00",
+      "completedAt": "2026-10-09T14:46:32.999240+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 6065,
+        "sha256": "5e4d953d36d0b0cc998846ae8155b5ad4238b5e5a69aab8fd9103a371c23432f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6e20313637206d7320283064386139653863326365663732633135386330290a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-clean-detailed/dist/0d98ba6bea6441446d54.txt",
+          "path": "dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist/asset.js",
+          "path": "dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist/lazy_js.chunk.js",
+          "path": "dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist/main café.js",
+          "path": "dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist/second.js",
+          "path": "dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist/shared.js",
+          "path": "dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-0/0d98ba6bea6441446d54.txt",
+          "path": "dist-0/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-0/asset.js",
+          "path": "dist-0/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-0/lazy_js.chunk.js",
+          "path": "dist-0/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-0/main café.js",
+          "path": "dist-0/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-0/second.js",
+          "path": "dist-0/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-0/shared.js",
+          "path": "dist-0/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-1/0d98ba6bea6441446d54.txt",
+          "path": "dist-1/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-1/asset.js",
+          "path": "dist-1/asset.js",
+          "bytes": 2520,
+          "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-1/lazy_js.chunk.js",
+          "path": "dist-1/lazy_js.chunk.js",
+          "bytes": 561,
+          "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-1/main café.js",
+          "path": "dist-1/main café.js",
+          "bytes": 7933,
+          "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-1/second.js",
+          "path": "dist-1/second.js",
+          "bytes": 7619,
+          "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        },
+        {
+          "file": "artifacts/B05-clean-detailed/dist-1/shared.js",
+          "path": "dist-1/shared.js",
+          "bytes": 495,
+          "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127",
+          "attribution": "post-command filesystem snapshot; may include prior build artifacts"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-success-default",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-success-default.txt",
+      "completedAt": "2026-10-09T14:47:59.830701+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1179,
+        "sha256": "7f1fca893dd7523623283040d726e888d0be1c36776e0516abf1a68bd8d1c3f4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c6564207375636365737366756c6c7920696e20313734206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-success-default/dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-default/dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-default/dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-default/dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-default/dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-default/dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-success-normal",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "normal"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-success-normal.txt",
+      "completedAt": "2026-10-09T14:48:00.618709+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 1179,
+        "sha256": "907b2a43bdd530ae775eb9d9ffe411c6c1ad7feee894de201922c1fb84580143",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "636f6d70696c6564207375636365737366756c6c7920696e20313537206d730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-success-normal/dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-normal/dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-normal/dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-normal/dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-normal/dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-normal/dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-success-errors-warnings",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--stats",
+        "errors-warnings"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-success-errors-warnings.txt",
+      "completedAt": "2026-10-09T14:48:01.341230+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 168,
+        "sha256": "8adc4013c169f97111f634301a54aabadd9c26238a599416eb3fced4a93fe605",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "500a7765627061636b20636f6d70696c6564207375636365737366756c6c790a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-success-errors-warnings/dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-errors-warnings/dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-errors-warnings/dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-errors-warnings/dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-errors-warnings/dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-errors-warnings/dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210"
+        }
+      ]
+    },
+    {
+      "name": "B05-plugin-success-json",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/node_modules/.bin/webpack",
+        "--config",
+        "plugin.config.cjs",
+        "--no-color",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r/tiny café space",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B05-plugin-success-json.txt",
+      "completedAt": "2026-10-09T14:48:02.126504+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 48599,
+        "sha256": "e33eb580d6c0d52b2433aef5d81740da14fc36a3827fc88487eb908b896fa19c",
+        "readThroughEOF": true,
+        "finalLF": false,
+        "lastBytesHex": "227761726e696e6773436f756e74223a302c226368696c6472656e223a5b5d7d",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      },
+      "artifacts": [
+        {
+          "file": "artifacts/B05-plugin-success-json/dist/0d98ba6bea6441446d54.txt",
+          "bytes": 20,
+          "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-json/dist/asset.js",
+          "bytes": 4127,
+          "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-json/dist/lazy_js.chunk.js",
+          "bytes": 562,
+          "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-json/dist/main café.js",
+          "bytes": 13456,
+          "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-json/dist/second.js",
+          "bytes": 6778,
+          "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f"
+        },
+        {
+          "file": "artifacts/B05-plugin-success-json/dist/shared.js",
+          "bytes": 497,
+          "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210"
+        }
+      ]
+    }
+  ],
+  "setup": [
+    {
+      "name": "setup-webpack-registry",
+      "command": [
+        "npm",
+        "view",
+        "webpack@5.102.1",
+        "version",
+        "dist",
+        "license",
+        "gitHead",
+        "repository",
+        "--json"
+      ],
+      "argv": [
+        "npm",
+        "view",
+        "webpack@5.102.1",
+        "version",
+        "dist",
+        "license",
+        "gitHead",
+        "repository",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "setup-webpack-registry.txt",
+      "startedAt": "2026-10-09T14:46:09.377251+00:00",
+      "completedAt": "2026-10-09T14:46:10.067410+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 746,
+        "sha256": "9b9421b1163f2204664af5450feed53b7aa86fd054a54fbe730d6ac846daeeb4",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "6b2e676974222c0a202020202274797065223a2022676974220a20207d0a7d0a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      }
+    },
+    {
+      "name": "setup-webpack-cli-registry",
+      "command": [
+        "npm",
+        "view",
+        "webpack-cli@6.0.1",
+        "version",
+        "dist",
+        "license",
+        "gitHead",
+        "repository",
+        "--json"
+      ],
+      "argv": [
+        "npm",
+        "view",
+        "webpack-cli@6.0.1",
+        "version",
+        "dist",
+        "license",
+        "gitHead",
+        "repository",
+        "--json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "setup-webpack-cli-registry.txt",
+      "startedAt": "2026-10-09T14:46:10.067987+00:00",
+      "completedAt": "2026-10-09T14:46:10.666925+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 748,
+        "sha256": "5aa9a5bb092f357a7fa13ca6a506056d321bcbed9e7bba488b0df94bf2c0ac49",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "692e676974222c0a202020202274797065223a2022676974220a20207d0a7d0a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      }
+    },
+    {
+      "name": "setup-install",
+      "command": [
+        "npm",
+        "install",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--save-exact"
+      ],
+      "argv": [
+        "npm",
+        "install",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--save-exact"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "setup-install.txt",
+      "startedAt": "2026-10-09T14:46:10.667433+00:00",
+      "completedAt": "2026-10-09T14:46:15.685610+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 26,
+        "sha256": "dbd3abec22d155a26307398e61cdf5f2477398060615a3307e3efc20f0019ea0",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a616464656420313137207061636b6167657320696e2035730a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      }
+    },
+    {
+      "name": "setup-node-version",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "setup-node-version.txt",
+      "startedAt": "2026-10-09T14:46:15.693359+00:00",
+      "completedAt": "2026-10-09T14:46:15.734639+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 9,
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "7632322e31372e310a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      }
+    },
+    {
+      "name": "setup-npm-version",
+      "command": [
+        "npm",
+        "--version"
+      ],
+      "argv": [
+        "npm",
+        "--version"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B05-webpack-vfr0hd2r",
+      "version": "webpack 5.102.1; webpack-cli 6.0.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "setup-npm-version.txt",
+      "startedAt": "2026-10-09T14:46:15.734716+00:00",
+      "completedAt": "2026-10-09T14:46:15.925625+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 7,
+        "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "31302e392e320a",
+        "method": "stdout pipe; stderr redirected to stdout before exec; no PTY or normalization"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "dist/0d98ba6bea6441446d54.txt",
+      "bytes": 20,
+      "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+    },
+    {
+      "path": "dist/asset.js",
+      "bytes": 4127,
+      "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79"
+    },
+    {
+      "path": "dist/lazy_js.chunk.js",
+      "bytes": 562,
+      "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542"
+    },
+    {
+      "path": "dist/main café.js",
+      "bytes": 13456,
+      "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b"
+    },
+    {
+      "path": "dist/second.js",
+      "bytes": 6778,
+      "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f"
+    },
+    {
+      "path": "dist/shared.js",
+      "bytes": 497,
+      "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210"
+    },
+    {
+      "path": "dist-0/0d98ba6bea6441446d54.txt",
+      "bytes": 20,
+      "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+    },
+    {
+      "path": "dist-0/asset.js",
+      "bytes": 4127,
+      "sha256": "b4ea253e4e757e8dc1decf81035a1f670f28a3504039662f79bb9aa90af84f79"
+    },
+    {
+      "path": "dist-0/lazy_js.chunk.js",
+      "bytes": 562,
+      "sha256": "3e66ccfe409d6dafcc773db3a3d2c79c315a066ff953a4801558a6c9ef4a1542"
+    },
+    {
+      "path": "dist-0/main café.js",
+      "bytes": 13456,
+      "sha256": "012365a50a1275aaf3176d655954d0416182634fd5b3f0300e09bf2977f0b68b"
+    },
+    {
+      "path": "dist-0/second.js",
+      "bytes": 6778,
+      "sha256": "e1906c4455bcd095031758eaab3bcbde6972564b6b090df6861427e17368387f"
+    },
+    {
+      "path": "dist-0/shared.js",
+      "bytes": 497,
+      "sha256": "6db5b6ee6f58d18d503d7cb2dc08c71a825ed784ef527bb610c137a858ab4210"
+    },
+    {
+      "path": "dist-1/0d98ba6bea6441446d54.txt",
+      "bytes": 20,
+      "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+    },
+    {
+      "path": "dist-1/asset.js",
+      "bytes": 2520,
+      "sha256": "dd8286b823c0c481549173d86270cefed71ad1308edae44c9b9084bed46f0ff6"
+    },
+    {
+      "path": "dist-1/lazy_js.chunk.js",
+      "bytes": 561,
+      "sha256": "95a1aeed9952772138655c8a90f405c138cdfd0cd182d05d6398fad848dd0695"
+    },
+    {
+      "path": "dist-1/main café.js",
+      "bytes": 7933,
+      "sha256": "74cfc28050620252199d705b92c72d81e4afa5b0e60719f295d26900106762f3"
+    },
+    {
+      "path": "dist-1/second.js",
+      "bytes": 7619,
+      "sha256": "c351c27ff1b0008b72dac28f790c10fe849a58757e88463aebd413954e32583c"
+    },
+    {
+      "path": "dist-1/shared.js",
+      "bytes": 495,
+      "sha256": "e1cb63a35e1fb09bb275879a8b9b866ab474e437728a4e565f18605a96352127"
+    }
+  ],
+  "recipe": {
+    "file": "capture.py",
+    "sha256": "7ab5ac5c6475f12d432d2264445aaf7629c42e9cccd702e85d3faff5377b45c7"
+  },
+  "source": [
+    {
+      "file": "source/package-lock.json",
+      "bytes": 51864,
+      "sha256": "6859d09e36551818a9f2072c361ac1a1b137951bf070fdcb638b0318721bc80b"
+    },
+    {
+      "file": "source/package.json",
+      "bytes": 171,
+      "sha256": "e1551396e4ae047a1e1779f0641adca25c1cefd3fb365a903ce53cadec36c5c1"
+    },
+    {
+      "file": "source/tiny café space/asset-entry.js",
+      "bytes": 49,
+      "sha256": "8d64be51550596ed2890914b74190982f4a3737956c72379d224a3f703178f8d"
+    },
+    {
+      "file": "source/tiny café space/asset.txt",
+      "bytes": 20,
+      "sha256": "d5e71e5fa67c8337d3878d4fd016333f7f1a9015bb0e10afe6df79236b6cc18a"
+    },
+    {
+      "file": "source/tiny café space/broken.js",
+      "bytes": 24,
+      "sha256": "1863811115d972ef74151c6ff2368fa16ee78a50a677fac3455b50adabac3752"
+    },
+    {
+      "file": "source/tiny café space/configfail.config.cjs",
+      "bytes": 54,
+      "sha256": "38e1e32cfab8acea05e36fd74fd9d24e7572a60323c5786167c1668afe43093c"
+    },
+    {
+      "file": "source/tiny café space/entrée α.js",
+      "bytes": 102,
+      "sha256": "1b0b3de020d8aa5020c349b2f4060b56afa26ce032894c02ae8726ba2d5f7a9c"
+    },
+    {
+      "file": "source/tiny café space/lazy β.js",
+      "bytes": 26,
+      "sha256": "51e2d571489a8beb723af897f582172c56953ac22e407612b4926cd6016c8fdb"
+    },
+    {
+      "file": "source/tiny café space/multi.config.cjs",
+      "bytes": 738,
+      "sha256": "45dde22c136769bca338cd2ce48efb3b0cbb9e5f2e61acb0cbcf4ded3a9604a0"
+    },
+    {
+      "file": "source/tiny café space/plugin-initial-invalid.config.cjs",
+      "bytes": 929,
+      "sha256": "5952873b4993419252b4e67d5e92f14a0cf276c37fa79e8666acedfde5f70daf"
+    },
+    {
+      "file": "source/tiny café space/plugin.config.cjs",
+      "bytes": 932,
+      "sha256": "0b5bb53641a89da1cd2b703dfaffcfd401884bf3190fcd5f569de48f04f93e5f"
+    },
+    {
+      "file": "source/tiny café space/second.js",
+      "bytes": 57,
+      "sha256": "147a98f13b187c408fe4fe29c195f98c5e50a41872d6d8fd70299a9983c4466c"
+    },
+    {
+      "file": "source/tiny café space/shared.js",
+      "bytes": 33,
+      "sha256": "ac7f7bd9e2b69b6587e1ccf4ef81e6a2ec9650aa2621c86a112aa112795715ba"
+    },
+    {
+      "file": "source/tiny café space/sourcefail.config.cjs",
+      "bytes": 648,
+      "sha256": "82027d5b6b34a5bf09b00aecff49460e0236728b03598ae31683b25b1e5e9564"
+    },
+    {
+      "file": "source/tiny café space/warning.js",
+      "bytes": 65,
+      "sha256": "d53d2c9abd80afc2b661a1ed0a6537bed7420e1d90629c268017779e3c77c35f"
+    },
+    {
+      "file": "source/tiny café space/warnings.config.cjs",
+      "bytes": 650,
+      "sha256": "fd8341d832cea770e83cdb36d69b34799785c8e158d9d2ba844529c9cd8da7f8"
+    },
+    {
+      "file": "source/tiny café space/webpack.config.cjs",
+      "bytes": 583,
+      "sha256": "e9da736953c6ab07af47ddd954d4762c7a372ac1fa33d89a66321d0fea73d80c"
+    }
+  ],
+  "supplementRecipe": {
+    "file": "capture-plugin.py",
+    "sha256": "d7d9d01b99df64cc58d68b496737d81a7d15bedfeb1d24444809511c0d0dd545"
+  }
+}

@@ -1,0 +1,8 @@
+syntax/syntax.go:1: : # example.invalid/l04/syntax
+syntax/syntax.go:3:14: syntax error: unexpected {, expected ) (typecheck)
+package syntax
+syntax/syntax.go:3:14: expected ')', found '{' (typecheck)
+func Broken( {
+             ^
+2 issues:
+* typecheck: 2

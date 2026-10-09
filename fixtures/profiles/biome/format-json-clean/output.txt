@@ -1,0 +1,2 @@
+The --json option is unstable/experimental and its output might change between patches/minor releases.
+{"summary":{"changed":0,"unchanged":1,"matches":0,"duration":{"secs":0,"nanos":657750},"scannerDuration":{"secs":0,"nanos":608527},"errors":0,"warnings":0,"skipped":0,"suggestedFixesSkipped":0,"diagnosticsNotPrinted":0},"diagnostics":[],"command":"format"}

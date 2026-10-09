@@ -1,0 +1,11 @@
+warning.css
+  1:12  ⚠  Unexpected invalid hex color "#zzzzzz"  color-no-invalid-hex
+
+⚠ 1 problem (0 errors, 1 warning)
+
+1 source checked
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/warning.css
+
+1 warning found
+  color-no-invalid-hex: 1
+

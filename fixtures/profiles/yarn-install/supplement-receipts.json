@@ -1,0 +1,503 @@
+{
+  "root": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9",
+  "node": "v22.17.1",
+  "npm": "10.9.2",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "producerSha256": "ebb88a857352a78da64147edca70c79f759a9e3c282385c8d050200524b30d9d",
+  "metadata": [
+    {
+      "name": "inflight",
+      "version": "1.0.6",
+      "url": "https://registry.npmjs.org/inflight/1.0.6",
+      "file": "supplement-inflight-metadata.json",
+      "sha256": "7f3b4b758834f3d542a99fa00cada53414ec389b9929b750f8852408554b9be4",
+      "license": "ISC",
+      "dist": {
+        "shasum": "49bd6331d7d02d0c09bc910a1075ba8165b56df9",
+        "tarball": "https://registry.npmjs.org/inflight/-/inflight-1.0.6.tgz",
+        "integrity": "sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==",
+        "signatures": [
+          {
+            "sig": "MEUCIHeTY8VavURUkUCnD17oIqsNuSlwTwP/yQOChuwV87WDAiEAhw/ZF24OrzMti41jlv8EM7Cq/KEVSteKCUh9MJ5Oo7s=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ]
+      },
+      "dependencies": {
+        "once": "^1.3.0",
+        "wrappy": "1"
+      },
+      "deprecated": "This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful."
+    },
+    {
+      "name": "once",
+      "version": "1.4.0",
+      "url": "https://registry.npmjs.org/once/1.4.0",
+      "file": "supplement-once-metadata.json",
+      "sha256": "56c04153fe7b9401ef06c0d6fedccb5e93b4b5f5e7574d08ddf51343e6f66033",
+      "license": "ISC",
+      "dist": {
+        "shasum": "583b1aa775961d4b113ac17d9c50baef9dd76bd1",
+        "tarball": "https://registry.npmjs.org/once/-/once-1.4.0.tgz",
+        "integrity": "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==",
+        "signatures": [
+          {
+            "sig": "MEQCIBoG/U/tJpr0WZlTEuYKTiY+IHcJ8q7ltkuQPJlL9q4ZAiB6nAD2IwFhsf3OOMThg/wNPiKveaMutTIScY9fya/n1g==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ]
+      },
+      "dependencies": {
+        "wrappy": "1"
+      },
+      "deprecated": null
+    },
+    {
+      "name": "wrappy",
+      "version": "1.0.2",
+      "url": "https://registry.npmjs.org/wrappy/1.0.2",
+      "file": "supplement-wrappy-metadata.json",
+      "sha256": "76b8c7dea2c592824a6bd038fdef4738d5147b6cfa188d906294075b04415738",
+      "license": "ISC",
+      "dist": {
+        "shasum": "b5243d8f3ec1aa35f1364605bc0d1036e30ab69f",
+        "tarball": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz",
+        "integrity": "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIHtPpKlaDF3QN9vNEImDylgjhVgE1cPX5dxgADkO3cbOAiBDRht6eiKjXoYA0jCizl4yJnAJLrUoRkZtth0Uw0e5aQ==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ]
+      },
+      "dependencies": {},
+      "deprecated": null
+    }
+  ],
+  "executions": [
+    {
+      "name": "classic-tooling",
+      "argv": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--registry=https://registry.npmjs.org"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool",
+      "launcher": "/usr/local/bin/npm",
+      "executable": "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+      "executableSha256": "8e5f6f3429f8cdbe693cdc29904e9d5a7b127a494bd15c804bd54c7403bfcbe7",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0"
+      },
+      "file": "supplement-classic-tooling.txt",
+      "sha256": "458f92f1be98763950692619b8df99e4309dee960767f2b1abda1005996a440c",
+      "bytes": 26,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "classic-version",
+      "argv": [
+        "yarn",
+        "--version"
+      ],
+      "command": "yarn --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool",
+      "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/.bin/yarn",
+      "executable": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/yarn/bin/yarn.js",
+      "executableSha256": "148e19db309ec9eaf7720b28df811337906eea8a1758deaa54afee60a6305e04",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0"
+      },
+      "file": "supplement-classic-version.txt",
+      "sha256": "84f7e5842635f748545ad7ca26b31b147aeba83c9cc4a8652c9852b2b8f8b0c1",
+      "bytes": 8,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "classic-dependency-deprecation",
+      "argv": [
+        "yarn",
+        "install",
+        "--ignore-scripts",
+        "--no-default-rc",
+        "--registry",
+        "https://registry.npmjs.org",
+        "--cache-folder",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/online-cache"
+      ],
+      "command": "yarn install --ignore-scripts --no-default-rc --registry https://registry.npmjs.org --cache-folder /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/online-cache",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/project",
+      "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/.bin/yarn",
+      "executable": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/yarn/bin/yarn.js",
+      "executableSha256": "148e19db309ec9eaf7720b28df811337906eea8a1758deaa54afee60a6305e04",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0"
+      },
+      "file": "supplement-classic-dependency-deprecation.txt",
+      "sha256": "59eb2d871d5041ad87d9823ce0e3d85b0b7be0003b0d92ecd259979ca1f6bcd8",
+      "bytes": 471,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "classic-cold-cache-offline-miss",
+      "argv": [
+        "yarn",
+        "install",
+        "--ignore-scripts",
+        "--no-default-rc",
+        "--registry",
+        "https://registry.npmjs.org",
+        "--cache-folder",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/cold-cache",
+        "--offline",
+        "--frozen-lockfile"
+      ],
+      "command": "yarn install --ignore-scripts --no-default-rc --registry https://registry.npmjs.org --cache-folder /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/cold-cache --offline --frozen-lockfile",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/project",
+      "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/.bin/yarn",
+      "executable": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/yarn/bin/yarn.js",
+      "executableSha256": "148e19db309ec9eaf7720b28df811337906eea8a1758deaa54afee60a6305e04",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/tool/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0"
+      },
+      "file": "supplement-classic-cold-cache-offline-miss.txt",
+      "sha256": "b78baea1229f4baa80bbde595182c3705e8ec45cabbc760a150f9fbb8c46bf1d",
+      "bytes": 262,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "berry-tooling",
+      "argv": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--registry=https://registry.npmjs.org"
+      ],
+      "command": "npm ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool",
+      "launcher": "/usr/local/bin/npm",
+      "executable": "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+      "executableSha256": "8e5f6f3429f8cdbe693cdc29904e9d5a7b127a494bd15c804bd54c7403bfcbe7",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0"
+      },
+      "file": "supplement-berry-tooling.txt",
+      "sha256": "35cc6924348dd87ad9163992222bdb913baf52246e1d3857912343a70ae8ea33",
+      "bytes": 26,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "berry-version",
+      "argv": [
+        "yarn",
+        "--version"
+      ],
+      "command": "yarn --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool",
+      "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/.bin/yarn",
+      "executable": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/@yarnpkg/cli-dist/bin/yarn.js",
+      "executableSha256": "cd71753d68307301d21034efaf20bd8eee81f9450af75f068477bf9011bb9ad4",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0",
+        "YARN_IGNORE_PATH": "1",
+        "YARN_ENABLE_GLOBAL_CACHE": "0",
+        "YARN_ENABLE_COLORS": "0",
+        "YARN_ENABLE_TELEMETRY": "0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "0"
+      },
+      "file": "supplement-berry-version.txt",
+      "sha256": "f63f15c1d115b9c0d2ee7a6272698ca5149fd10fa329523d001e31278c7a3ab2",
+      "bytes": 7,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "berry-dependency-deprecation",
+      "argv": [
+        "yarn",
+        "install",
+        "--mode=skip-build"
+      ],
+      "command": "yarn install --mode=skip-build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/project",
+      "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/.bin/yarn",
+      "executable": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/@yarnpkg/cli-dist/bin/yarn.js",
+      "executableSha256": "cd71753d68307301d21034efaf20bd8eee81f9450af75f068477bf9011bb9ad4",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0",
+        "YARN_IGNORE_PATH": "1",
+        "YARN_ENABLE_GLOBAL_CACHE": "0",
+        "YARN_ENABLE_COLORS": "0",
+        "YARN_ENABLE_TELEMETRY": "0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "0",
+        "YARN_CACHE_FOLDER": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/online-cache"
+      },
+      "file": "supplement-berry-dependency-deprecation.txt",
+      "sha256": "3b77b7c62afddce66bb06c41686c37fe44c91ff9e7a8fe3fce335e2c07433941",
+      "bytes": 373,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    },
+    {
+      "name": "berry-cold-cache-offline-miss",
+      "argv": [
+        "yarn",
+        "install",
+        "--mode=skip-build",
+        "--immutable",
+        "--immutable-cache"
+      ],
+      "command": "yarn install --mode=skip-build --immutable --immutable-cache",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/project",
+      "launcher": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/.bin/yarn",
+      "executable": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/@yarnpkg/cli-dist/bin/yarn.js",
+      "executableSha256": "cd71753d68307301d21034efaf20bd8eee81f9450af75f068477bf9011bb9ad4",
+      "environment": {
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/home",
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/tool/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "CI": "1",
+        "NO_COLOR": "1",
+        "COREPACK_ENABLE_PROJECT_SPEC": "0",
+        "YARN_IGNORE_PATH": "1",
+        "YARN_ENABLE_GLOBAL_CACHE": "0",
+        "YARN_ENABLE_COLORS": "0",
+        "YARN_ENABLE_TELEMETRY": "0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "0",
+        "YARN_CACHE_FOLDER": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/berry/cold-cache",
+        "YARN_ENABLE_NETWORK": "0"
+      },
+      "file": "supplement-berry-cold-cache-offline-miss.txt",
+      "sha256": "82ab5c8cbe641cb5cd2330c9915215881f9cd4c34016591fa5aeda72cf8f996f",
+      "bytes": 447,
+      "eof": "LF",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "shared stdout/stderr OS pipe through EOF; exit observed"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "supplement-projects/berry/project/.yarnrc.yml",
+      "sha256": "4b245021736d5440735bef4f003f4114c5fbb1b87879ebe36d58b4f244c32390"
+    },
+    {
+      "file": "supplement-projects/berry/project/package.json",
+      "sha256": "a62ab951364e9a0054975ced06258b6cdf6b552d15c501961dd37cefe8789ed3"
+    },
+    {
+      "file": "supplement-projects/berry/project/yarn.lock",
+      "sha256": "163eb9c76ca8b87eb1d41279d296dc578edb107208b411ca8ba761b13f264b9a"
+    },
+    {
+      "file": "supplement-projects/berry/tool/package-lock.json",
+      "sha256": "d5e319b46d03d1bfe0bc2b5d48551327b47e356cccb77a19e17b4468375e2ef8"
+    },
+    {
+      "file": "supplement-projects/berry/tool/package.json",
+      "sha256": "b8cdca53456ac7c100175f0561d5e3bf01000ba079e545b5d8a03dde5595efae"
+    },
+    {
+      "file": "supplement-projects/classic/project/package.json",
+      "sha256": "9afa592120ef0d24d203df3f1d070b4da292c461abace17130f3664bae3dcdcf"
+    },
+    {
+      "file": "supplement-projects/classic/project/yarn.lock",
+      "sha256": "dcd36c2cec304a158b1446174b89addcd6de2629bde465ebd7583ebca7fe5e0c"
+    },
+    {
+      "file": "supplement-projects/classic/tool/package-lock.json",
+      "sha256": "dd5b7c9d19a185a80f9422be4c3e4724109bd868812654b3c3cc4aefc6c07f12"
+    },
+    {
+      "file": "supplement-projects/classic/tool/package.json",
+      "sha256": "3e2be7ad14317551e9dcbbe4fab0f1c189f7ebc2a8837179a3cb299e5e068935"
+    }
+  ],
+  "cases": [
+    {
+      "name": "P03/supplement-classic-dependency-deprecation",
+      "command": "yarn install --ignore-scripts --no-default-rc --registry https://registry.npmjs.org --cache-folder /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/online-cache",
+      "version": "yarn 1.22.22; Node v22.17.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 471,
+        "sha256": "59eb2d871d5041ad87d9823ce0e3d85b0b7be0003b0d92ecd259979ca1f6bcd8",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "205361766564206c6f636b66696c652e0a446f6e6520696e20302e3335732e0a"
+      },
+      "adapterBounds": {
+        "maxInputBytes": 4194304,
+        "inputBytes": 471,
+        "withinBound": true
+      }
+    },
+    {
+      "name": "P03/supplement-classic-cold-cache-offline-miss",
+      "command": "yarn install --ignore-scripts --no-default-rc --registry https://registry.npmjs.org --cache-folder /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-supplement-3urhgai9/classic/cold-cache --offline --frozen-lockfile",
+      "version": "yarn 1.22.22; Node v22.17.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 262,
+        "sha256": "b78baea1229f4baa80bbde595182c3705e8ec45cabbc760a150f9fbb8c46bf1d",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "63756d656e746174696f6e2061626f7574207468697320636f6d6d616e642e0a"
+      },
+      "adapterBounds": {
+        "maxInputBytes": 4194304,
+        "inputBytes": 262,
+        "withinBound": true
+      }
+    },
+    {
+      "name": "P03/supplement-berry-dependency-deprecation",
+      "command": "yarn install --mode=skip-build",
+      "version": "yarn 4.10.3; Node v22.17.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 373,
+        "sha256": "3b77b7c62afddce66bb06c41686c37fe44c91ff9e7a8fe3fce335e2c07433941",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "e29ea420594e303030303a20c2b720446f6e6520696e203073203339356d730a"
+      },
+      "adapterBounds": {
+        "maxInputBytes": 4194304,
+        "inputBytes": 373,
+        "withinBound": true
+      }
+    },
+    {
+      "name": "P03/supplement-berry-cold-cache-offline-miss",
+      "command": "yarn install --mode=skip-build --immutable --immutable-cache",
+      "version": "yarn 4.10.3; Node v22.17.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": {
+        "bytes": 447,
+        "sha256": "82ab5c8cbe641cb5cd2330c9915215881f9cd4c34016591fa5aeda72cf8f996f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "b7204661696c65642077697468206572726f727320696e2030732032346d730a"
+      },
+      "adapterBounds": {
+        "maxInputBytes": 4194304,
+        "inputBytes": 447,
+        "withinBound": true
+      }
+    }
+  ],
+  "bindingProducer": {
+    "file": "supplement-receipt.py",
+    "sha256": "10f177d2a5105039efaa76a7460be842cbe57e266dfec66059b3cedd6182a0a6"
+  }
+}

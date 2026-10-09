@@ -1,0 +1,21 @@
+{
+  "p01-peer-host": {
+    "manifest": {
+      "name": "p01-peer-host",
+      "version": "1.0.0",
+      "license": "MIT"
+    },
+    "sha256": "5874ad7409bef6ab138c29e55b2b1783dfa706331f33b871b047b182513510bf"
+  },
+  "p01-peer-consumer": {
+    "manifest": {
+      "name": "p01-peer-consumer",
+      "version": "1.0.0",
+      "license": "MIT",
+      "peerDependencies": {
+        "p01-peer-host": ">=2"
+      }
+    },
+    "sha256": "e8cdacad9547573367f270bcb83a9212a3bc53cce32577181a86b43813097632"
+  }
+}

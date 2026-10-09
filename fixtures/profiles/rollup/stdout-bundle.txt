@@ -1,0 +1,7 @@
+
+entry.js → stdout...
+const answer = 42;
+
+console.log('雪😀', answer);
+
+export { answer };

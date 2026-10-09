@@ -1,0 +1,26 @@
+   Compiling capture_alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c03-clippy-native-project-v3/alpha)
+error: this if-then-else expression returns a bool literal
+ --> alpha/src/detail.rs:2:5
+  |
+2 | /     if value {
+3 | |         true
+4 | |     } else {
+5 | |         false
+6 | |     }
+  | |_____^ help: you can reduce it to: `value`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#needless_bool
+  = note: `-D clippy::needless-bool` implied by `-D warnings`
+  = help: to override `-D warnings` add `#[allow(clippy::needless_bool)]`
+
+error: accessing first element with `values.get(0)`
+ --> alpha/src/lib.rs:4:5
+  |
+4 |     values.get(0)
+  |     ^^^^^^^^^^^^^ help: try: `values.first()`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#get_first
+  = note: `-D clippy::get-first` implied by `-D warnings`
+  = help: to override `-D warnings` add `#[allow(clippy::get_first)]`
+
+error: could not compile `capture_alpha` (lib) due to 2 previous errors

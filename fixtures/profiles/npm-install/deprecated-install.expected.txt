@@ -1,0 +1,2 @@
+npm warn deprecated p01-deprecated@1.0.0: P01 local deprecation evidence; preserve exact text
+added 1 package in 2s

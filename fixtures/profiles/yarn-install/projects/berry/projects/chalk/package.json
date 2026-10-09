@@ -1,0 +1,9 @@
+{
+  "name": "p03-chalk",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "4.1.2"
+  }
+}

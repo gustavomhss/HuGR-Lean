@@ -1,0 +1,13 @@
+3:27:51 PM - Projects in this build: 
+    * refs/lib/tsconfig.json
+    * refs/app/tsconfig.json
+    * refs/tsconfig.json
+
+3:27:51 PM - Project 'refs/lib/tsconfig.json' is out of date because output file 'refs/lib/out/tsconfig.tsbuildinfo' does not exist
+
+3:27:51 PM - Building project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/lib/tsconfig.json'...
+
+3:27:52 PM - Project 'refs/app/tsconfig.json' is out of date because output file 'refs/app/out/tsconfig.tsbuildinfo' does not exist
+
+3:27:52 PM - Building project '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/t01-tsc/refs/app/tsconfig.json'...
+

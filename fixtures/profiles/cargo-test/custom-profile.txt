@@ -1,0 +1,9 @@
+   Compiling c02-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/beta)
+    Finished `c02` profile [optimized + debuginfo] target(s) in 10.93s
+     Running unittests src/lib.rs (/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c02-native-jcOoO0/target/c02/deps/c02_beta-38f648643e1e8f7d)
+
+running 1 test
+test tests::beta_one ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

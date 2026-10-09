@@ -1,0 +1,14 @@
+➤ YN0000: · Yarn 4.10.3
+➤ YN0000: ┌ Resolution step
+➤ YN0085: │ + p03-local@file:/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-yarn-fifb25vb/berry/local#/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p03-yarn-fifb25vb/berry/local::hash=212974&locator=p03-plain%40workspace%3A.
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Post-resolution validation
+➤ YN0002: │ p03-plain@workspace:. doesn't provide p03-missing-peer (p52b8bc), requested by p03-local.
+➤ YN0086: │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0013: │ A package was added to the project (+ 0.71 KiB).
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Link step
+➤ YN0000: └ Completed
+➤ YN0000: · Done with warnings in 0s 90ms

@@ -1,0 +1,12 @@
+➤ YN0000: · Yarn 4.10.3
+➤ YN0000: ┌ Resolution step
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Link step
+➤ YN0007: │ p03-collision@workspace:. must be built because it never has been before or the last one failed
+➤ YN0000: │ p03-collision@workspace:. STDOUT ➤ YN0000: ┌ Resolution step
+➤ YN0000: │ p03-collision@workspace:. STDOUT ➤ YN0000: └ Completed
+➤ YN0000: │ p03-collision@workspace:. STDOUT ➤ YN0000: Done in 0s
+➤ YN0000: └ Completed in 0s 447ms
+➤ YN0000: · Done in 0s 483ms

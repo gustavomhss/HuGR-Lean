@@ -1,0 +1,23 @@
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+opaque pnpmfile evidence λ
+Packages: +6
+++++++
+Progress: resolved 6, reused 6, downloaded 0, added 6, done
+
+dependencies:
++ chalk 4.1.2 (6.0.1 is available)
+
+Done in 525ms using pnpm v10.18.3

@@ -1,0 +1,1 @@
+{"comments":[{"file":"error.sh","line":2,"endLine":2,"column":5,"endColumn":6,"level":"error","code":2283,"message":"Remove spaces around = to assign (or use [ ] to compare, or quote '=' if literal).","fix":null}]}

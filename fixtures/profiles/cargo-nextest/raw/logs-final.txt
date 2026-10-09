@@ -1,0 +1,32 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID c783f441-de98-4478-9f7b-690acc4bc4dd with nextest profile: default
+    Starting 2 tests across 3 binaries (7 tests skipped)
+        PASS [   0.015s] (1/2) capture-alpha tests::alpha_logs
+        PASS [   0.015s] (2/2) capture-beta tests::beta_logs
+────────────
+     Summary [   0.031s] 2 tests run: 2 passed, 7 skipped
+        PASS [   0.015s] (1/2) capture-alpha tests::alpha_logs
+  stdout ───
+
+    running 1 test
+    ALPHA_STDOUT keep café 🦀
+    test tests::alpha_logs ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+    ALPHA_STDERR keep diagnostic
+
+        PASS [   0.015s] (2/2) capture-beta tests::beta_logs
+  stdout ───
+
+    running 1 test
+    BETA_STDOUT keep suite association
+    test tests::beta_logs ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+  stderr ───
+    BETA_STDERR keep suite association
+

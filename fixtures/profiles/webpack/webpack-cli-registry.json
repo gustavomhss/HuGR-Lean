@@ -1,0 +1,22 @@
+{
+  "version": "6.0.1",
+  "dist": {
+    "shasum": "a1ce25da5ba077151afd73adfa12e208e5089207",
+    "tarball": "https://registry.npmjs.org/webpack-cli/-/webpack-cli-6.0.1.tgz",
+    "fileCount": 16,
+    "integrity": "sha512-MfwFQ6SfwinsUVi0rNJm7rHZ31GyTcpVE5pgVA3hwFRb7COD4TzjUUwhGWKfO50+xdc2MQPuEBBJoqIMGt3JDw==",
+    "signatures": [
+      {
+        "sig": "MEYCIQC9et4eq46phEKcqjmZZFrvfcqY2u1nO9ftkiwuuQY7OwIhAO/hmRCk5lvo8M+yhSvNI0QJ1yRhqwAQjP3xmpJvX+nr",
+        "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+      }
+    ],
+    "unpackedSize": 109562
+  },
+  "license": "MIT",
+  "gitHead": "480b33d23b277b3a55310bfc6dec8bcd3d4ed404",
+  "repository": {
+    "url": "https://github.com/webpack/webpack-cli.git",
+    "type": "git"
+  }
+}

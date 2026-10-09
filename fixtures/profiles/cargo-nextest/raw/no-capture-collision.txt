@@ -1,0 +1,30 @@
+warning: ignoring --test-threads because --no-capture is specified
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+────────────
+ Nextest run ID 6b353719-d26e-4d08-8157-0399603097e3 with nextest profile: default
+    Starting 2 tests across 3 binaries (7 tests skipped)
+       START [         ] (1/2) capture-alpha tests::alpha_collision
+
+running 1 test
+        PASS [   0.001s] capture-alpha tests::alpha_pass
+     Summary [   0.001s] 99 tests run: 99 passed, 0 skipped
+------------
+    Starting 99 tests across 99 binaries
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+test tests::alpha_collision ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+        PASS [   0.018s] (1/2) capture-alpha tests::alpha_collision
+       START [         ] (2/2) capture-alpha tests::alpha_logs
+
+running 1 test
+ALPHA_STDOUT keep café 🦀
+ALPHA_STDERR keep diagnostic
+test tests::alpha_logs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+        PASS [   0.019s] (2/2) capture-alpha tests::alpha_logs
+────────────
+     Summary [   0.038s] 2 tests run: 2 passed, 7 skipped

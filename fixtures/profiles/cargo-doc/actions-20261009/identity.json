@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "candidate-identity-only",
+  "status": "verified",
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "githubSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "workflowSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "checkoutSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "repository": "gustavomhss/HuGR-Lean",
+  "event": "workflow_dispatch",
+  "workflowRef": "gustavomhss/HuGR-Lean/.github/workflows/ci.yml@refs/heads/campaign/cargo-doc-actions",
+  "runId": "37989424550",
+  "runAttempt": "1",
+  "runnerOs": "Linux",
+  "platform": "linux",
+  "arch": "x64",
+  "node": "v22.23.3",
+  "recordedAt": "2026-10-09T20:48:33.429Z",
+  "errors": []
+}

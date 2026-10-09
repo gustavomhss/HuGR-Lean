@@ -1,0 +1,610 @@
+{
+  "schema": "P06-local-native-sources/1",
+  "baseline": "07ffe15e2263c2925778022194c5385807216603",
+  "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+  "uvExecutable": "/Users/gustavoschneiter/.local/bin/uv",
+  "uvExecutableSHA256": "2ba666c9bbdab54f839440053afd90403d4398af250a41c9e7688f6e3f3f0696",
+  "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "pythonExecutable": "/usr/local/opt/python@3.14/bin/python3.14",
+  "root": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+  "sourceMaterial": [
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+      "sha256": "6ff53dbf16112cf6b9b46bdb3a9f069c818f8f4cfdb63a961be4e5ec9c9de300",
+      "members": {
+        "p06_tiny.py": "__version__ = \"1.0.0\"\n",
+        "p06_tiny-1.0.0.dist-info/METADATA": "Metadata-Version: 2.1\nName: p06-tiny\nVersion: 1.0.0\nLicense: MIT\n",
+        "p06_tiny-1.0.0.dist-info/WHEEL": "Wheel-Version: 1.0\nGenerator: P06-native-capture\nRoot-Is-Purelib: true\nTag: py3-none-any\n",
+        "p06_tiny-1.0.0.dist-info/RECORD": ""
+      },
+      "origin": "original synthetic P06 wheel; no donor code"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl",
+      "sha256": "5dffb14c0a626c21fbffdf672fef6daee7d36bfa8e2846a7a34ca1d66127dc19",
+      "members": {
+        "p06_tiny.py": "__version__ = \"2.0.0\"\n",
+        "p06_tiny-2.0.0.dist-info/METADATA": "Metadata-Version: 2.1\nName: p06-tiny\nVersion: 2.0.0\nLicense: MIT\n",
+        "p06_tiny-2.0.0.dist-info/WHEEL": "Wheel-Version: 1.0\nGenerator: P06-native-capture\nRoot-Is-Purelib: true\nTag: py3-none-any\n",
+        "p06_tiny-2.0.0.dist-info/RECORD": ""
+      },
+      "origin": "original synthetic P06 wheel; no donor code"
+    },
+    {
+      "setup": {
+        "name": "setup-pip-env",
+        "family": "uv-install",
+        "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+        "source": "shell",
+        "completeness": "complete",
+        "presentation": "unknown",
+        "termination": {
+          "kind": "exited",
+          "code": 0
+        },
+        "status": "passthrough",
+        "command": "/Users/gustavoschneiter/.local/bin/uv venv --python /usr/local/opt/python@3.14/bin/python3.14 /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env",
+        "argv": [
+          "/Users/gustavoschneiter/.local/bin/uv",
+          "venv",
+          "--python",
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env"
+        ],
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+        "environment": {
+          "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+          "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+          "LANG": "C.UTF-8",
+          "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+          "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+          "UV_PYTHON_DOWNLOADS": "never",
+          "UV_NO_CONFIG": "1",
+          "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+          "UV_INDEX_URL": "https://pypi.org/simple"
+        },
+        "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nCreating virtual environment at: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env\n",
+        "provenance": {
+          "sha256": "ddb70d4d6b61dcf87e9f489fcdb2681a3e6da8247de49d1676c3c4e3c9d7caf3",
+          "record": "SOURCES.json",
+          "originalCase": "setup-pip-env"
+        },
+        "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+        "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "removableBytes": 0,
+        "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+      }
+    },
+    {
+      "setup": {
+        "name": "setup-pip-cache-env",
+        "family": "uv-install",
+        "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+        "source": "shell",
+        "completeness": "complete",
+        "presentation": "unknown",
+        "termination": {
+          "kind": "exited",
+          "code": 0
+        },
+        "status": "passthrough",
+        "command": "/Users/gustavoschneiter/.local/bin/uv venv --python /usr/local/opt/python@3.14/bin/python3.14 /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-cache-env",
+        "argv": [
+          "/Users/gustavoschneiter/.local/bin/uv",
+          "venv",
+          "--python",
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-cache-env"
+        ],
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+        "environment": {
+          "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+          "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+          "LANG": "C.UTF-8",
+          "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+          "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+          "UV_PYTHON_DOWNLOADS": "never",
+          "UV_NO_CONFIG": "1",
+          "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+          "UV_INDEX_URL": "https://pypi.org/simple"
+        },
+        "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nCreating virtual environment at: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-cache-env\n",
+        "provenance": {
+          "sha256": "bace3e1a53cd0dbe34c32de2be3756aaf219bae87e701569e06f2e81c7a49665",
+          "record": "SOURCES.json",
+          "originalCase": "setup-pip-cache-env"
+        },
+        "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+        "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "removableBytes": 0,
+        "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+      }
+    },
+    {
+      "setup": {
+        "name": "setup-pip-offline-env",
+        "family": "uv-install",
+        "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+        "source": "shell",
+        "completeness": "complete",
+        "presentation": "unknown",
+        "termination": {
+          "kind": "exited",
+          "code": 0
+        },
+        "status": "passthrough",
+        "command": "/Users/gustavoschneiter/.local/bin/uv venv --python /usr/local/opt/python@3.14/bin/python3.14 /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env",
+        "argv": [
+          "/Users/gustavoschneiter/.local/bin/uv",
+          "venv",
+          "--python",
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env"
+        ],
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+        "environment": {
+          "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+          "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+          "LANG": "C.UTF-8",
+          "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+          "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+          "UV_PYTHON_DOWNLOADS": "never",
+          "UV_NO_CONFIG": "1",
+          "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+          "UV_INDEX_URL": "https://pypi.org/simple"
+        },
+        "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nCreating virtual environment at: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env\n",
+        "provenance": {
+          "sha256": "dd8263b3203c3d79759adb376d84d45145ec285d60b06842b04cb16a3e667692",
+          "record": "SOURCES.json",
+          "originalCase": "setup-pip-offline-env"
+        },
+        "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+        "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "removableBytes": 0,
+        "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+      }
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt",
+      "sha256": "158c7e9cb297b0b2ca2ce179e4a08c8e51706f0e3d1825083ad7b20f13229f47",
+      "content": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl\ncolorama==0.4.6\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "setup": {
+        "name": "setup-pip-sync-env",
+        "family": "uv-install",
+        "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+        "source": "shell",
+        "completeness": "complete",
+        "presentation": "unknown",
+        "termination": {
+          "kind": "exited",
+          "code": 0
+        },
+        "status": "passthrough",
+        "command": "/Users/gustavoschneiter/.local/bin/uv venv --python /usr/local/opt/python@3.14/bin/python3.14 /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env",
+        "argv": [
+          "/Users/gustavoschneiter/.local/bin/uv",
+          "venv",
+          "--python",
+          "/usr/local/opt/python@3.14/bin/python3.14",
+          "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env"
+        ],
+        "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+        "environment": {
+          "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+          "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+          "LANG": "C.UTF-8",
+          "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+          "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+          "UV_PYTHON_DOWNLOADS": "never",
+          "UV_NO_CONFIG": "1",
+          "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+          "UV_INDEX_URL": "https://pypi.org/simple"
+        },
+        "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nCreating virtual environment at: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env\n",
+        "provenance": {
+          "sha256": "3753794bbb1bfc7a2bc3ad896b2bf00d2ee2d6b05587291fa78b6be92626b5b9",
+          "record": "SOURCES.json",
+          "originalCase": "setup-pip-sync-env"
+        },
+        "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+        "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+        "removableBytes": 0,
+        "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+      }
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt",
+      "sha256": "97d8cf945f5760c962efd0267e63e97498a63d04bcf5c65c127d910bf5c7c02a",
+      "content": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project/pyproject.toml",
+      "sha256": "bf931bc1b2fd794c01e621565a0af195bdf71fbf179a3f80d9180c28029ad8ec",
+      "content": "[project]\nname = \"p06-virtual\"\nversion = \"0.1.0\"\nrequires-python = \">=3.14\"\ndependencies = [\"colorama==0.4.6\", \"p06-tiny\"]\n[tool.uv]\npackage = false\n[tool.uv.sources]\np06-tiny = { path = \"../p06_tiny-1.0.0-py3-none-any.whl\" }\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project/uv.lock.capture-initial",
+      "sha256": "32034c3b782eafedaeceafc74689e8f33170ed36e07311dc609dea66fd13f3c1",
+      "content": "version = 1\nrevision = 3\nrequires-python = \">=3.14\"\n\n[[package]]\nname = \"colorama\"\nversion = \"0.4.6\"\nsource = { registry = \"https://pypi.org/simple\" }\nsdist = { url = \"https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz\", hash = \"sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44\", size = 27697, upload-time = \"2022-10-25T02:36:22.414Z\" }\nwheels = [\n    { url = \"https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl\", hash = \"sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6\", size = 25335, upload-time = \"2022-10-25T02:36:20.889Z\" },\n]\n\n[[package]]\nname = \"p06-tiny\"\nversion = \"1.0.0\"\nsource = { path = \"../p06_tiny-1.0.0-py3-none-any.whl\" }\nwheels = [\n    { filename = \"p06_tiny-1.0.0-py3-none-any.whl\", hash = \"sha256:6ff53dbf16112cf6b9b46bdb3a9f069c818f8f4cfdb63a961be4e5ec9c9de300\" },\n]\n\n[[package]]\nname = \"p06-virtual\"\nversion = \"0.1.0\"\nsource = { virtual = \".\" }\ndependencies = [\n    { name = \"colorama\" },\n    { name = \"p06-tiny\" },\n]\n\n[package.metadata]\nrequires-dist = [\n    { name = \"colorama\", specifier = \"==0.4.6\" },\n    { name = \"p06-tiny\", path = \"../p06_tiny-1.0.0-py3-none-any.whl\" },\n]\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project/pyproject.toml",
+      "sha256": "8d228ebd03b8f0a8e03fc9bfe22a45e7e824f0ea61415fdd721cb347a21a2c87",
+      "content": "[project]\nname = \"p06-virtual\"\nversion = \"0.1.0\"\nrequires-python = \">=3.14\"\ndependencies = [\"colorama==0.4.6\", \"p06-tiny\"]\n[tool.uv]\npackage = false\n[tool.uv.sources]\np06-tiny = { path = \"../p06_tiny-2.0.0-py3-none-any.whl\" }\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project/uv.lock.capture-updated",
+      "sha256": "7f85fbaf1b15b6ed82adff0c015d44204fa71873765edf36dc24c573e4fbcaf4",
+      "content": "version = 1\nrevision = 3\nrequires-python = \">=3.14\"\n\n[[package]]\nname = \"colorama\"\nversion = \"0.4.6\"\nsource = { registry = \"https://pypi.org/simple\" }\nsdist = { url = \"https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz\", hash = \"sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44\", size = 27697, upload-time = \"2022-10-25T02:36:22.414Z\" }\nwheels = [\n    { url = \"https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl\", hash = \"sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6\", size = 25335, upload-time = \"2022-10-25T02:36:20.889Z\" },\n]\n\n[[package]]\nname = \"p06-tiny\"\nversion = \"2.0.0\"\nsource = { path = \"../p06_tiny-2.0.0-py3-none-any.whl\" }\nwheels = [\n    { filename = \"p06_tiny-2.0.0-py3-none-any.whl\", hash = \"sha256:5dffb14c0a626c21fbffdf672fef6daee7d36bfa8e2846a7a34ca1d66127dc19\" },\n]\n\n[[package]]\nname = \"p06-virtual\"\nversion = \"0.1.0\"\nsource = { virtual = \".\" }\ndependencies = [\n    { name = \"colorama\" },\n    { name = \"p06-tiny\" },\n]\n\n[package.metadata]\nrequires-dist = [\n    { name = \"colorama\", specifier = \"==0.4.6\" },\n    { name = \"p06-tiny\", path = \"../p06_tiny-2.0.0-py3-none-any.whl\" },\n]\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend/pyproject.toml",
+      "sha256": "c66781d2eb97ab801ac8094a5a2a737bc9b6c630bc18d144df53bf0b9f495bdd",
+      "content": "[build-system]\nrequires = []\nbuild-backend = \"backend\"\nbackend-path = [\".\"]\n[project]\nname = \"p06-backend\"\nversion = \"1.0.0\"\n",
+      "origin": "original synthetic P06 material"
+    },
+    {
+      "path": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend/backend.py",
+      "sha256": "8b4cf6e385f863038e23b44f780c32fa779793326f341cb0c1a105b7e5c8cf24",
+      "content": "import sys\ndef build_wheel(wheel_directory, config_settings=None, metadata_directory=None):\n    print(\"Resolved 777 packages in 1ms\", flush=True)\n    print(\"Prepared 777 packages in 1ms\", flush=True)\n    print(\"Installed 777 packages in 1ms\", flush=True)\n    print(\" + forged-progress==9.9.9\", flush=True)\n    print(\"warning: backend diagnostic must survive\", file=sys.stderr, flush=True)\n    raise RuntimeError(\"P06 backend collision witness\")\n",
+      "origin": "original synthetic P06 material"
+    }
+  ],
+  "captures": [
+    {
+      "name": "P06-pip-fresh-no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "rawSHA256": "02b85b908d11bd04af3b27b183d70f55f1a2cb6e11d071086bf64dd796a5f139",
+      "rawBytes": 287,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-cache-satisfied",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "rawSHA256": "84449421b3a56f50c4171d20c0a6e6409e6365a4bc1d1986e91d965cc46dcbce",
+      "rawBytes": 70,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-version-change",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl"
+      ],
+      "rawSHA256": "61aae5260e0a2cc731043c2c68f41a7d9bc7bdf58428212b043915d860361d67",
+      "rawBytes": 431,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-cache-fresh-env",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-cache-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "rawSHA256": "97dbb32719933c864ef8647f8e34af2232afe3c2aef5de2b300dd26f8afe6ed2",
+      "rawBytes": 263,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-offline-cache",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env/bin/python",
+        "--offline",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "rawSHA256": "88a34f79064d70da06f3be206246d363b4917fabee4907392127dd5b33afecf7",
+      "rawBytes": 266,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-offline-miss",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env/bin/python",
+        "--offline",
+        "--no-build",
+        "colorama==0.4.5"
+      ],
+      "rawSHA256": "952f5db51241703a767023b4bfa412565742f897326000080cd45edca89ded6c",
+      "rawBytes": 429,
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      }
+    },
+    {
+      "name": "P06-pip-resolver-error",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "colorama==0.4.6",
+        "colorama==0.4.5"
+      ],
+      "rawSHA256": "c933cd55871e3e7ac2d5d370f66e883439a15b07c608e1d57cc3cfaa0bd868f3",
+      "rawBytes": 229,
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      }
+    },
+    {
+      "name": "P06-pip-sync-fresh",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt"
+      ],
+      "rawSHA256": "aa2e386e93050974c0add352fed490cd56997df87438652b56638bf33bf0c8d7",
+      "rawBytes": 262,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-sync-cache",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt"
+      ],
+      "rawSHA256": "88d4214b5785877d21fb5ae18b60fa3421c6e0838ad2a500af7ccd2ad159111b",
+      "rawBytes": 105,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-sync-version-uninstall",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python",
+        "--offline",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt"
+      ],
+      "rawSHA256": "287b0c219b5c383e7387ab749ac6fe82989c3491b115f9d7e1d4845311fb4159",
+      "rawBytes": 429,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-lock-fresh",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "lock",
+        "--no-build"
+      ],
+      "rawSHA256": "6451149860c5c76ca18299b87e93cb203c2e372a0dc0e15a8b9add1f452d271d",
+      "rawBytes": 107,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-sync-fresh",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--no-build"
+      ],
+      "rawSHA256": "ea087c34f187be438540e59672b39f878aa7fe565572ff2751a80990cfec3bcf",
+      "rawBytes": 367,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-sync-cache",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--no-build"
+      ],
+      "rawSHA256": "a7c082978731ebb1dfd851b09ed9cdd784751d32e2d7c72efecb1b356851f49b",
+      "rawBytes": 56,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-sync-locked",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--locked",
+        "--no-build"
+      ],
+      "rawSHA256": "c551704255c2abd76a623376b14053983a90957aca6e6cd5de13f4b8ba98d018",
+      "rawBytes": 56,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-sync-frozen-stale-lock",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-build"
+      ],
+      "rawSHA256": "61b458df15fa43713e315c7cb7284e74f2e1572e3bad156baa3b2ac8bfe2355f",
+      "rawBytes": 29,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-sync-locked-stale-error",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--locked",
+        "--no-build"
+      ],
+      "rawSHA256": "8f5ac5bae9b96cb6e4d9e7fba3b6aa8e58b28deaef253c31465b37f4dd8ceffd",
+      "rawBytes": 143,
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      }
+    },
+    {
+      "name": "P06-sync-version-change",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--offline",
+        "--no-build"
+      ],
+      "rawSHA256": "fc2351b7f155fb36340f613c5d2e8739b83424c0ad3deb975f92da145f72b8a1",
+      "rawBytes": 377,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-sync-offline-fresh-env",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-build"
+      ],
+      "rawSHA256": "be63531aabd5c5d012e4af6fc906abe93a26733501f31f4f1742b59565069c90",
+      "rawBytes": 400,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      }
+    },
+    {
+      "name": "P06-pip-backend-collision",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend"
+      ],
+      "rawSHA256": "48b1ff164ddf304b539476527ca4fa3570d7cfc89fb7c8e5d79519c133dd5b08",
+      "rawBytes": 1263,
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      }
+    },
+    {
+      "name": "P06-pip-no-build-backend-refusal",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend"
+      ],
+      "rawSHA256": "c320edfa760780711821f1bb472f2f0669199252aad1cacab8cde1da507aca9e",
+      "rawBytes": 202,
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      }
+    }
+  ]
+}

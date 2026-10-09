@@ -1,0 +1,10 @@
+Error: ENOENT: no such file or directory, open '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/missing.config.cjs'
+    at async open (node:internal/fs/promises:639:25)
+    at async Object.readFile (node:internal/fs/promises:1243:14)
+    at async #readConfiguration (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/cosmiconfig/dist/Explorer.js:83:26)
+    at async load (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/cosmiconfig/dist/Explorer.js:20:48)
+    at async Explorer.load (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/cosmiconfig/dist/Explorer.js:23:20)
+    at async getConfigForFile (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/stylelint/lib/getConfigForFile.mjs:68:5)
+    at async resolveOptionValue (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/stylelint/lib/utils/resolveOptionValue.mjs:27:24)
+    at async getFormatter (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/stylelint/lib/utils/getFormatter.mjs:17:18)
+    at async standalone (file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/stylelint/lib/standalone.mjs:131:28)

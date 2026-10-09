@@ -1,0 +1,21 @@
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: p01-peer@1.0.0
+npm error Found: p01-host@1.0.0
+npm error node_modules/p01-host
+npm error   p01-host@"file:./host" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer p01-host@"^2.0.0" from p01-plugin@1.0.0
+npm error node_modules/p01-plugin
+npm error   p01-plugin@"file:./plugin/p01-plugin-1.0.0.tgz" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-npm-tofqpbbi/cache/_logs/2026-10-08T18_31_36_834Z-eresolve-report.txt
+npm error A complete log of this run can be found in: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-npm-tofqpbbi/cache/_logs/2026-10-08T18_31_36_834Z-debug-0.log

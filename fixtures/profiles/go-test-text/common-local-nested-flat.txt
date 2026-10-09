@@ -1,0 +1,8 @@
+=== RUN   TestParent
+=== RUN   TestParent/child
+--- PASS: TestParent (0.00s)
+    --- PASS: TestParent/child (0.00s)
+=== RUN   TestQuietFlat
+--- PASS: TestQuietFlat (0.00s)
+PASS
+ok  	example.com/g01-ambiguity	0.344s

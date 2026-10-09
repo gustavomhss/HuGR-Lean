@@ -1,0 +1,14 @@
+bun test v1.3.14 (0d9b296a)
+
+suite.test.ts:
+(pass) outer suite α > passing leaf [0.40ms]
+(pass) outer suite α > nested suite > nested passing leaf [0.09ms]
+(skip) outer suite α > nested suite > skip: platform feature unavailable
+(todo) outer suite α > nested suite > todo: implement negative branch
+
+ 2 pass
+ 1 skip
+ 1 todo
+ 0 fail
+ 2 expect() calls
+Ran 4 tests across 1 file. [146.00ms]

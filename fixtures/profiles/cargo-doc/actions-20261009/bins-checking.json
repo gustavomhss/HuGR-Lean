@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "cargo",
+    "doc",
+    "--color",
+    "never",
+    "--bins",
+    "--no-deps"
+  ],
+  "cwd": "/home/runner/work/_temp/c05-project",
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "e9689ffa0d0293c394425a4b772512afbb5662d34f69f21ee2024b7e0c72ba48",
+  "bytes": 375,
+  "startedUnix": 1791578925.3883054,
+  "elapsedSeconds": 0.19269752502441406,
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "runId": "37989424550",
+  "runAttempt": "1",
+  "boundary": "shared stdout/stderr pipe; communicate waits for EOF",
+  "env": {
+    "CARGO_TARGET_DIR": "/home/runner/work/_temp/c05-project/targets/bins-checking",
+    "CARGO_HOME": "/home/runner/work/_temp/c05-cargo",
+    "RUSTUP_HOME": "/home/runner/work/_temp/c05-rustup",
+    "RUSTUP_TOOLCHAIN": "nightly-2026-10-08",
+    "RUSTFLAGS": null,
+    "RUSTDOCFLAGS": null
+  },
+  "expectationMet": true,
+  "artifacts": [
+    {
+      "file": "/home/runner/work/_temp/c05-project/targets/bins-checking/doc/c05_alpha/index.html",
+      "captureFile": "html/bins-checking/doc/c05_alpha/index.html",
+      "sha256": "6a8efe6f97e25e0886907bbf8368ff3a08028317af4d4f0011c467378fcbcafe"
+    },
+    {
+      "file": "/home/runner/work/_temp/c05-project/targets/bins-checking/doc/c05_tool/index.html",
+      "captureFile": "html/bins-checking/doc/c05_tool/index.html",
+      "sha256": "f9b7046fb3412ee00b2c3d3c300d4bd38c8c663277faf38cfeb8c1eaf1cee936"
+    }
+  ]
+}

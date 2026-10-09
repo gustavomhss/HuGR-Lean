@@ -1,0 +1,48 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID 65985a73-1b22-4d32-b3a8-7f95adf2e504 with nextest profile: default
+    Starting 7 tests across 3 binaries (2 tests skipped)
+        PASS [   0.015s] (1/7) capture-alpha tests::alpha_collision
+  stdout ───
+
+    running 1 test
+            PASS [   0.001s] capture-alpha tests::alpha_pass
+    ------------
+        Starting 99 tests across 99 binaries
+    test tests::alpha_collision ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+         Summary [   0.001s] 99 tests run: 99 passed, 0 skipped
+        Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+
+        FAIL [   0.014s] (2/7) capture-alpha tests::alpha_failure
+  stdout ───
+
+    running 1 test
+    FAIL_STDOUT keep payload
+    test tests::alpha_failure ... FAILED
+
+    failures:
+
+    failures:
+        tests::alpha_failure
+
+    test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+    FAIL_STDERR keep diagnostic
+
+    thread 'tests::alpha_failure' (17562945) panicked at alpha/src/lib.rs:30:9:
+    assertion `left == right` failed: original failure evidence
+      left: 7
+     right: 9
+    note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+  Cancelling due to test failure
+────────────
+     Summary [   0.031s] 2/7 tests run: 1 passed, 1 failed, 2 skipped
+        FAIL [   0.014s] (2/7) capture-alpha tests::alpha_failure
+warning: 5/7 tests were not run due to test failure (run with --no-fail-fast to run all tests, or run with --max-fail)
+error: test run failed

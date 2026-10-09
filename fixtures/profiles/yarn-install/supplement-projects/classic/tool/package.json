@@ -1,0 +1,7 @@
+{
+  "name": "p03-supplement-classic-tool",
+  "private": true,
+  "dependencies": {
+    "yarn": "1.22.22"
+  }
+}

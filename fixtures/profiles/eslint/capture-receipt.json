@@ -1,0 +1,32 @@
+{
+  "schema": "native-cases1",
+  "campaign": "L01",
+  "status": "proposed",
+  "baseline": "07ffe15e2263c2925778022194c5385807216603",
+  "versions": { "eslint": "9.37.0", "node": "v22.17.1", "npm": "10.9.2" },
+  "provenance": {
+    "completionAt": "2026-10-08T20:22:03.245Z",
+    "platform": "darwin-x64",
+    "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/l01-eslint/project",
+    "executable": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/l01-eslint/node_modules/.bin/eslint",
+    "launcher": "/bin/zsh -c '<command> 2>&1'",
+    "boundary": "Child completed; stdout pipe drained; stderr redirected to stdout before exec; no signal, spawn error, maxBuffer error or remaining stderr.",
+    "completeness": "complete",
+    "presentation": "unknown",
+    "transport": "non-TTY UTF-8 pipe, NO_COLOR=1, FORCE_COLOR unset, isolated bin prepended to PATH",
+    "maxBufferBytes": 1048576,
+    "modifications": "None to captured output: absolute /private paths, PID, spacing and final LF retained.",
+    "source": "SOURCES.md"
+  },
+  "cases": [
+    { "id": "L01-version", "status": "proposed", "file": "version.txt", "argv": ["eslint", "--version"], "command": "eslint --version", "exitCode": 0, "bytes": 8, "sha256": "0a0d09d1fe009df2597b4be0922436d0e150414b41f1f5b5489bf579838ca23b", "material": "no-noise", "publicFilter": "unmeasured; preserve exact", "removableBytesProposed": 0 },
+    { "id": "L01-stylish-warnings", "status": "proposed", "file": "stylish-warnings.txt", "argv": ["eslint", "alpha.js", "雪.js"], "command": "eslint alpha.js '雪.js'", "exitCode": 0, "bytes": 720, "sha256": "934b492aa1e1ef0ef3c4b43ab34799ac810992016effd79d778ce6d6b8fe4311", "material": "native-boundary-blank-lines-only", "publicFilter": "grammar-unimplemented; blank-only reduction proposed", "removableBytesProposed": 2, "facts": { "files": 2, "errors": 0, "warnings": 5, "fixableWarnings": 1, "multilineMessage": true, "unicodePathAndNames": true } },
+    { "id": "L01-json-warnings", "status": "proposed", "file": "json-warnings.txt", "argv": ["eslint", "--format", "json", "alpha.js", "雪.js"], "command": "eslint --format json alpha.js '雪.js'", "exitCode": 0, "bytes": 2144, "sha256": "05b44e0e2dd5ac7091f3a1788884775f6e2885f23440b7307aba9db36414dd2b", "material": "no-noise", "publicFilter": "grammar-unimplemented; preserve requested JSON exact", "removableBytesProposed": 0, "facts": { "files": 2, "warnings": 5, "suggestions": 3, "automaticFixes": 1, "sourceContext": true, "ranges": "UTF-16" } },
+    { "id": "L01-stylish-error", "status": "proposed", "file": "stylish-error.txt", "argv": ["eslint", "error.js"], "command": "eslint error.js", "exitCode": 1, "bytes": 186, "sha256": "678e1bbd096c048daa94b0ed9f9f491d80329931485cbe5023a0c98d9d9f3413", "material": "failure-evidence", "publicFilter": "preserve nonzero exact", "removableBytesProposed": 0, "facts": { "errors": 1, "warnings": 0 } },
+    { "id": "L01-silent-clean", "status": "proposed", "file": "silent-clean.txt", "argv": ["eslint", "clean.js"], "command": "eslint clean.js", "exitCode": 0, "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "material": "no-noise", "publicFilter": "preserve empty; not reduction coverage", "removableBytesProposed": 0 },
+    { "id": "L01-fix-before", "status": "proposed", "file": "fix-before.txt", "argv": ["eslint", "--config", "fix.config.mjs", "fix.js"], "command": "eslint --config fix.config.mjs fix.js", "exitCode": 0, "bytes": 310, "sha256": "0a1be9c447d438d2555bc9792f23cb304f023e23ae2744b8b4c870e85ab8e3e6", "material": "native-boundary-blank-lines-only", "publicFilter": "grammar-unimplemented; blank-only reduction proposed", "removableBytesProposed": 2, "facts": { "errors": 0, "warnings": 2, "fixableWarnings": 2 } },
+    { "id": "L01-fix-applied", "status": "proposed", "file": "fix-applied.txt", "argv": ["eslint", "--config", "fix.config.mjs", "--fix", "fix.js"], "command": "eslint --config fix.config.mjs --fix fix.js", "exitCode": 0, "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "material": "no-noise", "publicFilter": "preserve empty; not reduction coverage", "removableBytesProposed": 0, "facts": { "beforeFile": "project/fix.before.js", "afterFile": "project/fix.after.js", "fileChanged": true, "change": "single quotes to double quotes; semicolon added" } },
+    { "id": "L01-ignored-warning", "status": "proposed", "file": "ignored-warning.txt", "argv": ["eslint", "ignored.js"], "command": "eslint ignored.js", "exitCode": 0, "bytes": 304, "sha256": "12f3578125b8309379267d54d0022ac96e7ac84d920511b43eb63de7da7c788f", "material": "native-boundary-blank-lines-only", "publicFilter": "grammar-unimplemented; blank-only reduction proposed", "removableBytesProposed": 2, "facts": { "position": "0:0", "ruleId": null, "warnings": 1, "ignoreAdviceRequired": true } },
+    { "id": "L01-empty-config-warning", "status": "proposed", "file": "empty-config-warning.txt", "argv": ["eslint", "--config", "empty.config.mjs", "clean.js"], "command": "eslint --config empty.config.mjs clean.js", "exitCode": 0, "bytes": 389, "sha256": "0b8124e8c8632934c5691341d56d30570056eafe87908f79b3b73a227df71655", "material": "no-noise", "publicFilter": "grammar-unimplemented; preserve config warning and Node advice exact", "removableBytesProposed": 0, "facts": { "warningClass": "ESLintEmptyConfigWarning", "pid": 90418, "stderrMerged": true } }
+  ]
+}

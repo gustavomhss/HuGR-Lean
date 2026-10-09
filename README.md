@@ -6,11 +6,11 @@ One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra
 ## Install and enable
 
 Node 22+, npm and Git. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
-The lead's technical verdict and exact candidate/artifact binding are recorded in the
-[delivery PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85); this is not a new release.
+The delivery candidate is **pending human approval**, not a new release.
 Before running commands, replace only `FULL_REVIEWED_DELIVERY_SHA` in the assignment below
-with the full 40-character lowercase hexadecimal SHA from that receipt's **APPROVE** verdict.
-The reviewed SHA and its evidence receipt define the installation target.
+with the full 40-character lowercase hexadecimal SHA from the approved delivery PR and its
+candidate evidence receipt. Until approval
+and that receipt exist, this installation recipe is not an approved installation target.
 Never substitute floating `main` or a branch tip for the reviewed snapshot.
 Run these commands from a directory where you want a fresh clone. Choose an unused folder name
 (shown here as `hugr-lean-reviewed`), and stop if any command fails:
@@ -34,14 +34,14 @@ hugr-lean doctor
 ```
 
 The subshell stops on failure: invalid SHA syntax fails before clone; failed source selection
-or a mismatched HEAD stops before npm. Syntax and identity checks do not replace technical review.
+or a mismatched HEAD stops before npm. Syntax and identity checks do not grant human approval.
 `npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
 uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
-directory on `PATH`. The package version remains `0.2.0` until a separate release/version decision.
+directory on `PATH`. The package version remains `0.2.0` pending a human release/version decision.
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for dated execution proof, exact artifact binding, three-platform CI and remaining release items.
+for historical baseline proof, native campaign scope, pending final artifact/CI and human decisions.
 The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
@@ -55,41 +55,32 @@ Copy `pluginURL` from doctor into your OpenCode configuration:
 ```
 
 Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Verified local host route on **2026-10-08**, code baseline `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`:
+Historical verified host route (not a fresh native-campaign package proof):
 **OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
-Private local receipts record 1,026 passing tests, installed-package/latency proof and 23 host scenarios:
-7 file, 5 package-name, 8 baseline/on replays across four native families, and 3 raw scenarios with exact CLI recovery.
-File/package-name routes use the same preinstalled normal tarball, not npm registry availability.
-Native fixture text replay proves model-bound bytes, not upstream recapture or model quality.
-Actions is enabled. [Run 37861421060](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37861421060)
-passed at code checkpoint `310666cc4dfcf08d7c91396a562d896c7bb3b965`:
-Linux/macOS 1,030 tests each; Windows 997 passed, 33 existing platform skips, zero failures.
-Build, installed smoke and pack passed on all three platforms. Exact delivery-head/package linkage
-is recorded in the [PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85); later docs-only
-updates do not relabel the checkpoint's tests or historical host experiments as new executions.
+Final documentation-bearing artifact proof and Linux/macOS/Windows CI remain pending;
+Linux/Windows host compatibility is not established. Final package CI waits for lead freeze;
+focused Rust capture Actions runs are separate evidence.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
-Npm registry installation is not currently available. If publication is authorized, the package
-name can be used as the plugin entry; dated package-name proof used a locally installed/cached tarball.
+When npm registry publication is available, `hugr-lean@0.2.0` can be used as the plugin package name;
+the package-name loading route has been tested with a locally installed tarball.
 
 ## Behavior and coverage
 
-Supported native grammars: Cargo test/build, pytest, Go verbose tests, Node/tsx TAP tests, Jest, Vitest,
-English Git status and numbered ripgrep. Coverage is deliberately format-specific; see
-[coverage matrix](docs/COVERAGE.md).
+Default registry has 20 profile IDs: bounded Cargo test/build/check/Clippy, pytest,
+Go text/JSON tests and module changes, Node/tsx TAP, tsc verbose reference-build timestamps,
+pnpm safe install progress, ESLint/Biome, explicit Ruff/Pyright/Pylint JSON layouts,
+Jest/Vitest validators, English Git status and numbered ripgrep. Jest/Vitest plaintext
+reduction is withdrawn: whole markers, timings and source rows stay exact.
+Native corpus enrolls 41 bounded families, including 25 exact-ledger families with no new
+runtime reducers. Missing/unimplemented/conservative variants remain explicit; see
+[coverage inventory](docs/COVERAGE.md) and [profile manual](src/profiles/MANUAL.md).
 
 - Unknown commands, malformed/new formats, failures and incomplete/truncated results stay exact.
 - Every reduction must preserve declared evidence and be smaller in UTF-8 bytes.
-- Original summaries remain exact; supported passing-test progress can disappear after count validation.
+- Original summaries remain exact; only specifically admitted progress/layout can disappear after full validation. Native-looking plugin/reporter/lifecycle text does not authenticate its producer.
 - The adapter changes only model-visible text. Native command, title, metadata and attachments remain host-owned.
 - Host truncation happens before the hook: raw recovery means the exact captured boundary, not full process stdout.
-- The OpenCode after-hook filters only `bash` results; it never rewrites command argv or performs core/profile I/O.
-
-[Native utility evaluation](docs/UTILITY_EVALUATION.md) records original local fixture projects:
-25 cases (12 reduced, 11 material, 13 exact) passed at the dated code baseline, with deliberate
-long names and many tests. These are not representative real-agent sessions. Normal installed
-proof passed 39 cases / 10 IDs (nine reducers and inert `tsc`), with package linkage in the delivery receipt.
-Jest/Vitest retain their existing prefix/per-file-timing strategy; no utility improvement is claimed.
 
 ## Options and raw recovery
 
@@ -194,4 +185,7 @@ Target 400 LOC/file; allow 600; tolerate 750; above 750 split. CI checks logical
 [Real-world evaluation](docs/BENCHMARK_REAL.md) executes unchanged commands in pinned projects and reports zero-savings cases, preservation and overhead separately.
 [Host proof](docs/OPENCODE.md) uses a local model mock, including actual model-bound requests.
 Selected [TRS fixtures](fixtures/runners/SOURCES.md) carry pinned source paths, hashes and MIT notices;
-production parsers are original TypeScript. See [NOTICE](NOTICE) and [licenses](licenses/TRS-MIT.txt).
+native producer pins/copy modification records live in per-family CASES/SOURCES linked by coverage.
+Production parsers are original TypeScript; fixture licenses remain their own, including GPL license archives.
+See [NOTICE](NOTICE) and [TRS license](licenses/TRS-MIT.txt). Byte savings are not token/cost claims;
+current campaign benchmark and final exact-SHA package CI have not run.

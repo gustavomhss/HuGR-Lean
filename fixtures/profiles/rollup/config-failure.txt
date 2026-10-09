@@ -1,0 +1,10 @@
+[!] Error: B04 config failure: preserve exact message 雪😀
+    at file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/config-failure/fail.config.mjs:1:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:329:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async getConfigFileExport (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/loadConfigFile.js:472:17)
+    at async Object.loadConfigFile (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/shared/loadConfigFile.js:430:59)
+    at async getConfigs (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/bin/rollup:1878:39)
+    at async runRollup (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B04-rollup-7vgdtnlo/install/node_modules/rollup/dist/bin/rollup:1849:43)
+
+

@@ -1,0 +1,9 @@
+Unknown format not-a-format
+Supported formats:
+  checkstyle
+  diff
+  gcc
+  json
+  json1
+  quiet
+  tty

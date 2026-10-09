@@ -1,0 +1,12 @@
+
+errors.css
+  1:5   ✖  Unexpected unknown property "colour"    property-no-unknown
+  1:13  ✖  Unexpected invalid hex color "#ggg"     color-no-invalid-hex
+  1:26  ✖  Unexpected invalid hex color "#zzzzzz"  color-no-invalid-hex
+
+paths with spaces/café 🧪.css
+  2:27  ✖  Unexpected invalid hex color "#ggg"   color-no-invalid-hex
+  2:33  ✖  Unexpected unknown property "colour"  property-no-unknown
+
+✖ 5 problems (5 errors, 0 warnings)
+

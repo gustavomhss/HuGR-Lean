@@ -1,0 +1,7 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID d4eef016-41d2-48cc-b447-45f59f86d34c with nextest profile: default
+    Starting 1 test across 3 binaries (8 tests skipped)
+        PASS [   0.014s] (1/1) capture-alpha tests::alpha_pass
+────────────
+     Summary [   0.015s] 1 test run: 1 passed, 8 skipped

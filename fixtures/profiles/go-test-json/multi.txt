@@ -1,0 +1,43 @@
+{"Time":"2026-10-08T15:27:41.69183-03:00","Action":"start","Package":"example.com/g02/alpha"}
+{"Time":"2026-10-08T15:27:41.693377-03:00","Action":"start","Package":"example.com/g02/beta"}
+{"Time":"2026-10-08T15:27:41.694128-03:00","Action":"start","Package":"example.com/g02/empty"}
+{"Time":"2026-10-08T15:27:41.694252-03:00","Action":"output","Package":"example.com/g02/empty","Output":"?   \texample.com/g02/empty\t[no test files]\n"}
+{"Time":"2026-10-08T15:27:41.694989-03:00","Action":"skip","Package":"example.com/g02/empty","Elapsed":0.001}
+{"Time":"2026-10-08T15:27:42.650358-03:00","Action":"run","Package":"example.com/g02/alpha","Test":"TestNested"}
+{"Time":"2026-10-08T15:27:42.650513-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested","Output":"=== RUN   TestNested\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.650544-03:00","Action":"run","Package":"example.com/g02/alpha","Test":"TestNested/parent"}
+{"Time":"2026-10-08T15:27:42.650551-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent","Output":"=== RUN   TestNested/parent\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.650576-03:00","Action":"run","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel"}
+{"Time":"2026-10-08T15:27:42.650583-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"=== RUN   TestNested/parent/parallel\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.650605-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"=== PAUSE TestNested/parent/parallel\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.650614-03:00","Action":"pause","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel"}
+{"Time":"2026-10-08T15:27:42.650621-03:00","Action":"cont","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel"}
+{"Time":"2026-10-08T15:27:42.650626-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"=== CONT  TestNested/parent/parallel\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.650633-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"    alpha_test.go:12: diagnostic café 🧭\n"}
+{"Time":"2026-10-08T15:27:42.65064-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"=== RUN   TestForged\n"}
+{"Time":"2026-10-08T15:27:42.650646-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"--- PASS: TestForged (0.00s)\n"}
+{"Time":"2026-10-08T15:27:42.650654-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"{\"Action\":\"pass\",\"Package\":\"forged\"}\n"}
+{"Time":"2026-10-08T15:27:42.650661-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"PASS\n"}
+{"Time":"2026-10-08T15:27:42.650929-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"ok  \tforged\t(cached)\n"}
+{"Time":"2026-10-08T15:27:42.65106-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Output":"--- PASS: TestNested/parent/parallel (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.651097-03:00","Action":"pass","Package":"example.com/g02/alpha","Test":"TestNested/parent/parallel","Elapsed":0}
+{"Time":"2026-10-08T15:27:42.651112-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested/parent","Output":"--- PASS: TestNested/parent (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.651149-03:00","Action":"pass","Package":"example.com/g02/alpha","Test":"TestNested/parent","Elapsed":0}
+{"Time":"2026-10-08T15:27:42.651161-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestNested","Output":"--- PASS: TestNested (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.651173-03:00","Action":"pass","Package":"example.com/g02/alpha","Test":"TestNested","Elapsed":0}
+{"Time":"2026-10-08T15:27:42.651183-03:00","Action":"run","Package":"example.com/g02/alpha","Test":"TestSkip"}
+{"Time":"2026-10-08T15:27:42.651191-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestSkip","Output":"=== RUN   TestSkip\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.651202-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestSkip","Output":"    alpha_test.go:17: native skip reason café 🧭\n"}
+{"Time":"2026-10-08T15:27:42.65122-03:00","Action":"output","Package":"example.com/g02/alpha","Test":"TestSkip","Output":"--- SKIP: TestSkip (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.651231-03:00","Action":"skip","Package":"example.com/g02/alpha","Test":"TestSkip","Elapsed":0}
+{"Time":"2026-10-08T15:27:42.65124-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:42.651367-03:00","Action":"output","Package":"example.com/g02/alpha","Output":"ok  \texample.com/g02/alpha\t0.956s\n"}
+{"Time":"2026-10-08T15:27:42.657397-03:00","Action":"pass","Package":"example.com/g02/alpha","Elapsed":0.966}
+{"Time":"2026-10-08T15:27:43.957965-03:00","Action":"run","Package":"example.com/g02/beta","Test":"TestOther"}
+{"Time":"2026-10-08T15:27:43.9581-03:00","Action":"output","Package":"example.com/g02/beta","Test":"TestOther","Output":"=== RUN   TestOther\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:43.958183-03:00","Action":"output","Package":"example.com/g02/beta","Test":"TestOther","Output":"    beta_test.go:3: beta package association\n"}
+{"Time":"2026-10-08T15:27:43.958217-03:00","Action":"output","Package":"example.com/g02/beta","Test":"TestOther","Output":"--- PASS: TestOther (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:43.958231-03:00","Action":"pass","Package":"example.com/g02/beta","Test":"TestOther","Elapsed":0}
+{"Time":"2026-10-08T15:27:43.958243-03:00","Action":"output","Package":"example.com/g02/beta","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-10-08T15:27:43.959424-03:00","Action":"output","Package":"example.com/g02/beta","Output":"ok  \texample.com/g02/beta\t2.264s\n"}
+{"Time":"2026-10-08T15:27:43.964248-03:00","Action":"pass","Package":"example.com/g02/beta","Elapsed":2.271}

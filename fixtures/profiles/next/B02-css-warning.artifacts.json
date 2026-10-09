@@ -1,0 +1,344 @@
+{
+  "recipe": "inspect .next recursively after process exit; hash raw file bytes; retain named manifests verbatim",
+  "termination": {
+    "kind": "exited",
+    "code": 0
+  },
+  "artifacts": [
+    {
+      "path": ".next/BUILD_ID",
+      "bytes": 8,
+      "sha256": "cba7e04b20dd6cc01e00ff5253ba38d3fd789212e8e09146b3aa635ea99284b6",
+      "content": "B02-tiny"
+    },
+    {
+      "path": ".next/build-manifest.json",
+      "bytes": 1512,
+      "sha256": "35f7b673cca5726d0e83514f1c99ab56057bbe021fe81d997217b310bfefc9e1",
+      "content": "{\n  \"polyfillFiles\": [\n    \"static/chunks/polyfills-42372ed130431b0a.js\"\n  ],\n  \"devFiles\": [],\n  \"ampDevFiles\": [],\n  \"lowPriorityFiles\": [\n    \"static/B02-tiny/_buildManifest.js\",\n    \"static/B02-tiny/_ssgManifest.js\"\n  ],\n  \"rootMainFiles\": [],\n  \"rootMainFilesTree\": {},\n  \"pages\": {\n    \"/\": [\n      \"static/chunks/webpack-8cac0b4b405cede1.js\",\n      \"static/chunks/framework-acd67e14855de5a2.js\",\n      \"static/chunks/main-03ed03852b4b217f.js\",\n      \"static/chunks/pages/index-0730067a67ed582f.js\"\n    ],\n    \"/_app\": [\n      \"static/chunks/webpack-8cac0b4b405cede1.js\",\n      \"static/chunks/framework-acd67e14855de5a2.js\",\n      \"static/chunks/main-03ed03852b4b217f.js\",\n      \"static/css/f51315de6a2af55e.css\",\n      \"static/chunks/pages/_app-b2b5a9efeb122fb3.js\"\n    ],\n    \"/_error\": [\n      \"static/chunks/webpack-8cac0b4b405cede1.js\",\n      \"static/chunks/framework-acd67e14855de5a2.js\",\n      \"static/chunks/main-03ed03852b4b217f.js\",\n      \"static/chunks/pages/_error-5366f00fee9a89ba.js\"\n    ],\n    \"/blog/[slug]\": [\n      \"static/chunks/webpack-8cac0b4b405cede1.js\",\n      \"static/chunks/framework-acd67e14855de5a2.js\",\n      \"static/chunks/main-03ed03852b4b217f.js\",\n      \"static/chunks/pages/blog/[slug]-e9528b6e26941709.js\"\n    ],\n    \"/dynamic\": [\n      \"static/chunks/webpack-8cac0b4b405cede1.js\",\n      \"static/chunks/framework-acd67e14855de5a2.js\",\n      \"static/chunks/main-03ed03852b4b217f.js\",\n      \"static/chunks/pages/dynamic-e88cca18abf16d36.js\"\n    ]\n  },\n  \"ampFirstPages\": []\n}"
+    },
+    {
+      "path": ".next/cache/.previewinfo",
+      "bytes": 262,
+      "sha256": "2c75e598ee84e227f42231513bba730e0367600e72569bbd7404fc40fe898799"
+    },
+    {
+      "path": ".next/cache/.rscinfo",
+      "bytes": 102,
+      "sha256": "e668f36ad3c38e0eb364c2d56d1fcb8135bdeda61e3995133b98b89a3b8b204d"
+    },
+    {
+      "path": ".next/cache/.tsbuildinfo",
+      "bytes": 102985,
+      "sha256": "9bcd89d7ab1918a6b7c9adf74a780c4f46a27b6a0481950396bdf0c3a42421bd"
+    },
+    {
+      "path": ".next/cache/webpack/client-production/0.pack",
+      "bytes": 10013273,
+      "sha256": "353ed072f986ec3a5b64522f159f7aed837bd64ee0424ad0a8516acb84b4e276"
+    },
+    {
+      "path": ".next/cache/webpack/client-production/index.pack",
+      "bytes": 821089,
+      "sha256": "c699c07a4cd626871791954f21b71bfcf5dbf096a53276e99995814a87be4b84"
+    },
+    {
+      "path": ".next/cache/webpack/edge-server-production/0.pack",
+      "bytes": 276,
+      "sha256": "4cf621d6541d0b5f1971d04d8acd429b63ef068b3eaf45a684bd7bf9f121aadc"
+    },
+    {
+      "path": ".next/cache/webpack/edge-server-production/index.pack",
+      "bytes": 2538,
+      "sha256": "218116c4e040807b0da7ae69c08d0dcab294362b77595df6b9b359d0bb418ce7"
+    },
+    {
+      "path": ".next/cache/webpack/server-production/0.pack",
+      "bytes": 4345088,
+      "sha256": "6425fd4d472758794e4cc475b071321d07d515953f50be85b246f89bbf62debc"
+    },
+    {
+      "path": ".next/cache/webpack/server-production/index.pack",
+      "bytes": 303608,
+      "sha256": "7bb655ac398f57003be2137e99b2d4b37424272e7181048f6f6e772c9060d32d"
+    },
+    {
+      "path": ".next/diagnostics/build-diagnostics.json",
+      "bytes": 93,
+      "sha256": "e4932338188cf0fbd08fb45f8b04421b523d0b2d9b90f197b5ad2e24fec94306"
+    },
+    {
+      "path": ".next/diagnostics/framework.json",
+      "bytes": 37,
+      "sha256": "d90a1b4e602a12aa5381b6e78f0d0fc764d5fe0168d3ac3b0cdaf81f58c8c587"
+    },
+    {
+      "path": ".next/dynamic-css-manifest.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": ".next/export-marker.json",
+      "bytes": 111,
+      "sha256": "82356527db218adb95bd1eca0ede6f3391165b38b22d667d064e62e6b539d974"
+    },
+    {
+      "path": ".next/images-manifest.json",
+      "bytes": 868,
+      "sha256": "7c212c92e6136c26e2881bb577d07f4aa37b117a97b8ecc396711863ddb9e08b"
+    },
+    {
+      "path": ".next/next-minimal-server.js.nft.json",
+      "bytes": 6461,
+      "sha256": "7e5ea00a97e585325dec9b3cf32704b7567dfb6ed1e19130119c76ff8f7810ac"
+    },
+    {
+      "path": ".next/next-server.js.nft.json",
+      "bytes": 41682,
+      "sha256": "cae18449071d0efcfc8a77f5008cfb45a1e471398a371882d16cb222b6b6e6cb"
+    },
+    {
+      "path": ".next/package.json",
+      "bytes": 20,
+      "sha256": "091a04fa67c7907b98e106fcff8b964e13129754fce72d24f3025b97c4887fa3"
+    },
+    {
+      "path": ".next/prerender-manifest.json",
+      "bytes": 1203,
+      "sha256": "c41711bfc04be165ecc8a343e2339cbfea6a3150d4cb81f681c9514b8ce959e3",
+      "content": "{\n  \"version\": 4,\n  \"routes\": {\n    \"/blog/one\": {\n      \"initialRevalidateSeconds\": false,\n      \"srcRoute\": \"/blog/[slug]\",\n      \"dataRoute\": \"/_next/data/B02-tiny/blog/one.json\",\n      \"allowHeader\": [\n        \"host\",\n        \"x-matched-path\",\n        \"x-prerender-revalidate\",\n        \"x-prerender-revalidate-if-generated\",\n        \"x-next-revalidated-tags\",\n        \"x-next-revalidate-tag-token\"\n      ]\n    }\n  },\n  \"dynamicRoutes\": {\n    \"/blog/[slug]\": {\n      \"routeRegex\": \"^/blog/([^/]+?)(?:/)?$\",\n      \"dataRoute\": \"/_next/data/B02-tiny/blog/[slug].json\",\n      \"fallback\": false,\n      \"dataRouteRegex\": \"^/_next/data/B02\\\\-tiny/blog/([^/]+?)\\\\.json$\",\n      \"allowHeader\": [\n        \"host\",\n        \"x-matched-path\",\n        \"x-prerender-revalidate\",\n        \"x-prerender-revalidate-if-generated\",\n        \"x-next-revalidated-tags\",\n        \"x-next-revalidate-tag-token\"\n      ]\n    }\n  },\n  \"notFoundRoutes\": [],\n  \"preview\": {\n    \"previewModeId\": \"1a72a80a28a82dc7d71a40551faf9ffc\",\n    \"previewModeSigningKey\": \"395e2f00ca26c6715107442889b5e2f399ed71be4a3b101e513b42187ab17ea5\",\n    \"previewModeEncryptionKey\": \"8e7aff8fe391d5ec7c7a9aecaeeefce15bdb99e33cef3fc78b129de336bb58f8\"\n  }\n}"
+    },
+    {
+      "path": ".next/react-loadable-manifest.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": ".next/required-server-files.json",
+      "bytes": 8955,
+      "sha256": "bf626930d87ab8d07ce7810e0b97fc3b751acfa0ce10379d0102769018f44ffa"
+    },
+    {
+      "path": ".next/routes-manifest.json",
+      "bytes": 1879,
+      "sha256": "396430f4930e899993c83007ddf0f0e04e723cdfbad607b6ff928d8ca6c1883a",
+      "content": "{\n  \"version\": 3,\n  \"pages404\": true,\n  \"caseSensitive\": false,\n  \"basePath\": \"\",\n  \"redirects\": [\n    {\n      \"source\": \"/:path+/\",\n      \"destination\": \"/:path+\",\n      \"internal\": true,\n      \"statusCode\": 308,\n      \"regex\": \"^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$\"\n    }\n  ],\n  \"headers\": [],\n  \"rewrites\": {\n    \"beforeFiles\": [],\n    \"afterFiles\": [],\n    \"fallback\": []\n  },\n  \"dynamicRoutes\": [\n    {\n      \"page\": \"/blog/[slug]\",\n      \"regex\": \"^/blog/([^/]+?)(?:/)?$\",\n      \"routeKeys\": {\n        \"nxtPslug\": \"nxtPslug\"\n      },\n      \"namedRegex\": \"^/blog/(?<nxtPslug>[^/]+?)(?:/)?$\"\n    }\n  ],\n  \"staticRoutes\": [\n    {\n      \"page\": \"/\",\n      \"regex\": \"^/(?:/)?$\",\n      \"routeKeys\": {},\n      \"namedRegex\": \"^/(?:/)?$\"\n    },\n    {\n      \"page\": \"/dynamic\",\n      \"regex\": \"^/dynamic(?:/)?$\",\n      \"routeKeys\": {},\n      \"namedRegex\": \"^/dynamic(?:/)?$\"\n    }\n  ],\n  \"dataRoutes\": [\n    {\n      \"page\": \"/blog/[slug]\",\n      \"routeKeys\": {\n        \"nxtPslug\": \"nxtPslug\"\n      },\n      \"dataRouteRegex\": \"^/_next/data/B02\\\\-tiny/blog/([^/]+?)\\\\.json$\",\n      \"namedDataRouteRegex\": \"^/_next/data/B02\\\\-tiny/blog/(?<nxtPslug>[^/]+?)\\\\.json$\"\n    },\n    {\n      \"page\": \"/dynamic\",\n      \"dataRouteRegex\": \"^/_next/data/B02\\\\-tiny/dynamic\\\\.json$\"\n    }\n  ],\n  \"rsc\": {\n    \"header\": \"rsc\",\n    \"varyHeader\": \"rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch\",\n    \"prefetchHeader\": \"next-router-prefetch\",\n    \"didPostponeHeader\": \"x-nextjs-postponed\",\n    \"contentTypeHeader\": \"text/x-component\",\n    \"suffix\": \".rsc\",\n    \"prefetchSuffix\": \".prefetch.rsc\",\n    \"prefetchSegmentHeader\": \"next-router-segment-prefetch\",\n    \"prefetchSegmentSuffix\": \".segment.rsc\",\n    \"prefetchSegmentDirSuffix\": \".segments\"\n  },\n  \"rewriteHeaders\": {\n    \"pathHeader\": \"x-nextjs-rewritten-path\",\n    \"queryHeader\": \"x-nextjs-rewritten-query\"\n  }\n}"
+    },
+    {
+      "path": ".next/server/chunks/317.js",
+      "bytes": 68910,
+      "sha256": "ff96e3526245de712ab15d21edd6951f41d6feadec95be0c5a7100a471559aa3"
+    },
+    {
+      "path": ".next/server/chunks/781.js",
+      "bytes": 65149,
+      "sha256": "9e7502bda624826ffdd9f7ed502fba7f964483387758b1cd965fa60fc54ea390"
+    },
+    {
+      "path": ".next/server/dynamic-css-manifest.js",
+      "bytes": 33,
+      "sha256": "552e8e00b2a9b3bb878bf5706a310b912dd0943c8841663006a94933ea6c10fb"
+    },
+    {
+      "path": ".next/server/functions-config-manifest.json",
+      "bytes": 37,
+      "sha256": "e7d9c7de4b1a0e8ed521c8ca071261fb4a0de053afc0040538c0a50e5e4c1ee4"
+    },
+    {
+      "path": ".next/server/interception-route-rewrite-manifest.js",
+      "bytes": 48,
+      "sha256": "fc5133e40acf09e6517b073ddd7b5c0c218d09938848902210f2cc13f08e1c81"
+    },
+    {
+      "path": ".next/server/middleware-build-manifest.js",
+      "bytes": 1363,
+      "sha256": "f429ed7627bdb209f24ede8bc50177364f6811c1319b73b2a0d5d1dbfbdff174"
+    },
+    {
+      "path": ".next/server/middleware-manifest.json",
+      "bytes": 83,
+      "sha256": "0a8520bc7e076f7ae717c2d62713990c83e8a3d74626f327a3844bc0504e210c"
+    },
+    {
+      "path": ".next/server/middleware-react-loadable-manifest.js",
+      "bytes": 36,
+      "sha256": "ad2e79ec91e2a5440840da3d8bd222c279b3b4c47e89a968327a66f6cb12eb82"
+    },
+    {
+      "path": ".next/server/next-font-manifest.js",
+      "bytes": 106,
+      "sha256": "2c0f5bbb79d07dfea405146a62d7e15a7a9e890d29e38b7db2631fcf6e480da8"
+    },
+    {
+      "path": ".next/server/next-font-manifest.json",
+      "bytes": 77,
+      "sha256": "926e772d34a53f2a4d9b16071dd6ea77b051b2b7acc49d9165723debe3fbbe0f"
+    },
+    {
+      "path": ".next/server/pages/404.html",
+      "bytes": 2142,
+      "sha256": "cb6b79d0474f4c7a985a551ed2ddd73d89886b3cd3e4008d9fc84976214da365"
+    },
+    {
+      "path": ".next/server/pages/500.html",
+      "bytes": 2128,
+      "sha256": "b721d59d96cc81c4e9151473adba74eda26fceca5ec41c572950fce21369ecd0"
+    },
+    {
+      "path": ".next/server/pages/_app.js",
+      "bytes": 352,
+      "sha256": "bd5be35f052215677e455f5ecbea4cd554ab6c964963585481bfc14d6aa688fe"
+    },
+    {
+      "path": ".next/server/pages/_app.js.nft.json",
+      "bytes": 487,
+      "sha256": "ab01db6aecee95b8a97e1f050b71ceb0a446aaf92e40868fbc2ad2870f70e69f"
+    },
+    {
+      "path": ".next/server/pages/_document.js",
+      "bytes": 368,
+      "sha256": "9e8ed1fdfdb73fa090d32c8bbeadf14308468c20c1ba7b51cc87b6d71f48a59c"
+    },
+    {
+      "path": ".next/server/pages/_document.js.nft.json",
+      "bytes": 3908,
+      "sha256": "b843d65d679a6266dbc710baa6ca9cd4aac5b67031534a0fa548ff7d1e8b35fa"
+    },
+    {
+      "path": ".next/server/pages/_error.js",
+      "bytes": 7313,
+      "sha256": "bce1b0565c75032156301204f32d0fed78c841b1cf52889910f0dae8b07b4f91"
+    },
+    {
+      "path": ".next/server/pages/_error.js.nft.json",
+      "bytes": 3925,
+      "sha256": "6c1de38880e6a4d0be16176602c3f440a25401ce2d964cea129bf149f41631c0"
+    },
+    {
+      "path": ".next/server/pages/blog/[slug].js",
+      "bytes": 2090,
+      "sha256": "9a5c473b18169446b76ee654d7735844ece72b31451106300978db8cbc005d74"
+    },
+    {
+      "path": ".next/server/pages/blog/[slug].js.nft.json",
+      "bytes": 4138,
+      "sha256": "435536be872c4e316324f996b4046d33232620680d5f538bdbb8e47fc643b531"
+    },
+    {
+      "path": ".next/server/pages/blog/one.html",
+      "bytes": 1295,
+      "sha256": "b87c483061e25fec140f6999c0df62749b4b8d4cd6355d06b5c964050c01c93b"
+    },
+    {
+      "path": ".next/server/pages/blog/one.json",
+      "bytes": 48,
+      "sha256": "715775f65c738ae369bf8bb9806fc7a8831c7a760fe73a9a89209119f86838e0"
+    },
+    {
+      "path": ".next/server/pages/dynamic.js",
+      "bytes": 1993,
+      "sha256": "5c0364e85ac29d31489cd6a43d6a072610688685be96c49501eb5833be7d7f5b"
+    },
+    {
+      "path": ".next/server/pages/dynamic.js.nft.json",
+      "bytes": 3949,
+      "sha256": "2114cadc98aef928c82a72fbb24a000eefddf8c4fd6bc51709e14943adc3f3e7"
+    },
+    {
+      "path": ".next/server/pages/index.html",
+      "bytes": 1263,
+      "sha256": "2edd2a60663673e337f1850d1d19ffc32c01485d14776a95f67460f1fd44ae85"
+    },
+    {
+      "path": ".next/server/pages/index.js.nft.json",
+      "bytes": 3949,
+      "sha256": "2114cadc98aef928c82a72fbb24a000eefddf8c4fd6bc51709e14943adc3f3e7"
+    },
+    {
+      "path": ".next/server/pages-manifest.json",
+      "bytes": 231,
+      "sha256": "46b6cdb8cd035120f653aea21aaec196e3eb0097b4e92859f86a9cef3688a4f5",
+      "content": "{\n  \"/_app\": \"pages/_app.js\",\n  \"/_error\": \"pages/_error.js\",\n  \"/\": \"pages/index.html\",\n  \"/_document\": \"pages/_document.js\",\n  \"/blog/[slug]\": \"pages/blog/[slug].js\",\n  \"/dynamic\": \"pages/dynamic.js\",\n  \"/404\": \"pages/404.html\"\n}"
+    },
+    {
+      "path": ".next/server/webpack-runtime.js",
+      "bytes": 1027,
+      "sha256": "fa551e97986dc6bcbc489ca38642b63684885ebf14147d7e19c27b560473503d"
+    },
+    {
+      "path": ".next/static/B02-tiny/_buildManifest.js",
+      "bytes": 651,
+      "sha256": "1f73b2320db794e574c8b5364c57508c4580c64001aea26e671966ab7b59edf6"
+    },
+    {
+      "path": ".next/static/B02-tiny/_ssgManifest.js",
+      "bytes": 104,
+      "sha256": "11cd2c5965fdfab0bb18ae0e05cb3d1c62fd0c1b3a25bb267dd521b54e5b876d"
+    },
+    {
+      "path": ".next/static/chunks/framework-acd67e14855de5a2.js",
+      "bytes": 182716,
+      "sha256": "2f156a3bf02037272c1086f5b7738f38285748cfc2d66182775ce6bea977e025"
+    },
+    {
+      "path": ".next/static/chunks/main-03ed03852b4b217f.js",
+      "bytes": 127552,
+      "sha256": "99ba65b32b86e398c8b58555343e09720d90784e296f1e5e32e49f68c5b8ac95"
+    },
+    {
+      "path": ".next/static/chunks/pages/_app-b2b5a9efeb122fb3.js",
+      "bytes": 396,
+      "sha256": "a6bf26979396d56546cbf62155d7f7de8b154fad0f840a6b7f392956c9f4db91"
+    },
+    {
+      "path": ".next/static/chunks/pages/_error-5366f00fee9a89ba.js",
+      "bytes": 218,
+      "sha256": "0f6511ca280393243866caca3f8bedc07dc9a8ebabb8adccaccea7f7e4ae5623"
+    },
+    {
+      "path": ".next/static/chunks/pages/blog/[slug]-e9528b6e26941709.js",
+      "bytes": 382,
+      "sha256": "263e46de8d14d5e843a2b705995981641ba140812f3d4c43a23828808953e13f"
+    },
+    {
+      "path": ".next/static/chunks/pages/dynamic-e88cca18abf16d36.js",
+      "bytes": 378,
+      "sha256": "dde506885e691d56f23ff78594dd539dc1785b4765d41db444ce2f9f34840fac"
+    },
+    {
+      "path": ".next/static/chunks/pages/index-0730067a67ed582f.js",
+      "bytes": 352,
+      "sha256": "9b20fb2194ee1c12906560ac7ecdebdc28c806e3c17cf1bddca19ecba71dfe14"
+    },
+    {
+      "path": ".next/static/chunks/polyfills-42372ed130431b0a.js",
+      "bytes": 112594,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683"
+    },
+    {
+      "path": ".next/static/chunks/webpack-8cac0b4b405cede1.js",
+      "bytes": 1458,
+      "sha256": "1785ee859ecf2c9c2bf33bb206521f44ef5b051670703578a2a39d4cc6dc68ef"
+    },
+    {
+      "path": ".next/static/css/f51315de6a2af55e.css",
+      "bytes": 38,
+      "sha256": "83885f5729ba2aff06ef7c19370e1af464628c0d445d0376948ce8db6bb7360e"
+    },
+    {
+      "path": ".next/trace",
+      "bytes": 106830,
+      "sha256": "20df5127dc6bc86d5aef2e483b29be5fd96e9f56d10c6ffb91107425d474cbad"
+    },
+    {
+      "path": ".next/types/routes.d.ts",
+      "bytes": 1471,
+      "sha256": "c60ea95fc86fa413dc476176141c8aeeb9329f3617c054cbf0231a71b9073e27"
+    },
+    {
+      "path": ".next/types/validator.ts",
+      "bytes": 1681,
+      "sha256": "f470d42928bfe5e7b7a9f3184a91d7dec3df5d9371d2b29d8df391531b9a126d"
+    }
+  ]
+}

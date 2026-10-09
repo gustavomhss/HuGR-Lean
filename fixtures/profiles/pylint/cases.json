@@ -1,0 +1,1218 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "pylint",
+  "baseline": "71bcaea2d5f0bf72e9128ebf80517ad1099f6cdd",
+  "cases": [
+    {
+      "name": "L06-version",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--version"
+      ],
+      "file": "L06-version.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-version",
+        "sha256": "891c2786c2bdccaff1d4b585acf1fb3b1d9c32a0412d9d64ddbfc8a6874fde29"
+      }
+    },
+    {
+      "name": "L06-help",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--help"
+      ],
+      "file": "L06-help.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-help",
+        "sha256": "1c55b22cffc3f3c981df8190a6877a3602ac309f6a087a26843922c4f6c5efd3"
+      }
+    },
+    {
+      "name": "L06-native-clean",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "clean.py"
+      ],
+      "file": "L06-native-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-clean",
+        "sha256": "bbb6ffa7d7107b760478161908c009d3b85b078b80d54e3ad8dcd57bfe91a142"
+      }
+    },
+    {
+      "name": "L06-native-errors",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "errors.py"
+      ],
+      "file": "L06-native-errors.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-errors",
+        "sha256": "27876b9b37b607b266c8f8b89f1f43c152c436b16f2cf358c4b41422a45eb04a"
+      }
+    },
+    {
+      "name": "L06-native-warnings",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "warning_case.py"
+      ],
+      "file": "L06-native-warnings.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-warnings",
+        "sha256": "b062c157b0f5540d60626864d83ee0d0751d9fd55f287736aeccb3d261088338"
+      }
+    },
+    {
+      "name": "L06-native-multifile",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-native-multifile.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-multifile",
+        "sha256": "ed52f8a0cb520b5227a64dd6a284fb2e8d4883e3bb25c64014f8f1dbc25bdbd5"
+      }
+    },
+    {
+      "name": "L06-native-unicode-space",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "space café/naïve.py"
+      ],
+      "file": "L06-native-unicode-space.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-unicode-space",
+        "sha256": "68a5ad17a3beaf89f5e8beff27f599a6e5fb0113464c9a74ae1fa7a147b6cb42"
+      }
+    },
+    {
+      "name": "L06-native-syntax",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "syntax.py"
+      ],
+      "file": "L06-native-syntax.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-syntax",
+        "sha256": "4d665da93303b25bb3334f7479896fd802061975f1cb1e47e579e9d4f41046fa"
+      }
+    },
+    {
+      "name": "L06-native-missing-file",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "missing.py"
+      ],
+      "file": "L06-native-missing-file.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-missing-file",
+        "sha256": "855a085761abe94d9cf055f37218646a83443cb3ba1ae42efd207ab625c86f5e"
+      }
+    },
+    {
+      "name": "L06-score-disabled",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--score=no",
+        "warning_case.py"
+      ],
+      "file": "L06-score-disabled.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-score-disabled",
+        "sha256": "b7514e01cbca593c639e177f1fd7a342ad4bb4bcbf00c825fdbc3ec5f2f648fa"
+      }
+    },
+    {
+      "name": "L06-reports-clean",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--reports=yes",
+        "clean.py"
+      ],
+      "file": "L06-reports-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-reports-clean",
+        "sha256": "72f87846389b84f29831c921fc2522c49e79c4349c537af4847ed413b009ba31"
+      }
+    },
+    {
+      "name": "L06-reports-multifile",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--reports=yes",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-reports-multifile.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-reports-multifile",
+        "sha256": "c4bfbbfa4cd3ced3bbc0ea2f0baefb943eddbc952622522c5993d3fe356f90f4"
+      }
+    },
+    {
+      "name": "L06-reports-exit-zero",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--reports=yes",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-reports-exit-zero.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-reports-exit-zero",
+        "sha256": "c4bfbbfa4cd3ced3bbc0ea2f0baefb943eddbc952622522c5993d3fe356f90f4"
+      }
+    },
+    {
+      "name": "L06-config",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--rcfile=good.rc",
+        "warning_case.py"
+      ],
+      "file": "L06-config.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-config",
+        "sha256": "bbb6ffa7d7107b760478161908c009d3b85b078b80d54e3ad8dcd57bfe91a142"
+      }
+    },
+    {
+      "name": "L06-config-fail",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--rcfile=bad.toml",
+        "clean.py"
+      ],
+      "file": "L06-config-fail.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-config-fail",
+        "sha256": "7f45eddbfbcc8b1ea7d2fcdaff2ce756266c63d507ef4d43785aad91b8cd3168"
+      }
+    },
+    {
+      "name": "L06-config-missing",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--rcfile=missing.rc",
+        "clean.py"
+      ],
+      "file": "L06-config-missing.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 32
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-config-missing",
+        "sha256": "6f884b14c49c613564942ca00092348a81fb8d7af9ad3ff567886083cbc1894a"
+      }
+    },
+    {
+      "name": "L06-invalid-format",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=missing",
+        "clean.py"
+      ],
+      "file": "L06-invalid-format.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-invalid-format",
+        "sha256": "5c570343fd10d40a330f7672a641a4dd8355357d0d422644a118ccb73d671874"
+      }
+    },
+    {
+      "name": "L06-native-exit-zero",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-native-exit-zero.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-native-exit-zero",
+        "sha256": "ed52f8a0cb520b5227a64dd6a284fb2e8d4883e3bb25c64014f8f1dbc25bdbd5"
+      }
+    },
+    {
+      "name": "L06-plugin-native",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--load-plugins=collision_plugin",
+        "clean.py"
+      ],
+      "file": "L06-plugin-native.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-plugin-native",
+        "sha256": "0ed276dddd6c15173b3bf06fd8f59250fc513eeff282f05d45d88289e856d659"
+      }
+    },
+    {
+      "name": "L06-plugin-native-exit-zero",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--load-plugins=collision_plugin",
+        "--exit-zero",
+        "clean.py"
+      ],
+      "file": "L06-plugin-native-exit-zero.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-plugin-native-exit-zero",
+        "sha256": "0ed276dddd6c15173b3bf06fd8f59250fc513eeff282f05d45d88289e856d659"
+      }
+    },
+    {
+      "name": "L06-plugin-missing",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--load-plugins=missing_plugin",
+        "clean.py"
+      ],
+      "file": "L06-plugin-missing.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-plugin-missing",
+        "sha256": "c43b2c0aa70c9fcc5b66620d37ae0a43f653359316a7947bb320b4a30928b782"
+      }
+    },
+    {
+      "name": "L06-json-clean",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "clean.py"
+      ],
+      "file": "L06-json-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-clean",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    },
+    {
+      "name": "L06-json-errors",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "errors.py"
+      ],
+      "file": "L06-json-errors.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-errors",
+        "sha256": "30d32c3aac78ebdf6841703215364019b40dc21d53b2ddc64c99477a45f925d6"
+      }
+    },
+    {
+      "name": "L06-json-warnings",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "warning_case.py"
+      ],
+      "file": "L06-json-warnings.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-warnings",
+        "sha256": "2008f49c315b5393743de8e86795a9626d0b79126828345fb05caf0376d0aa59"
+      }
+    },
+    {
+      "name": "L06-json-multifile",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-json-multifile.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-multifile",
+        "sha256": "d8f68f078295501c6610239bb2e1c00fc7bce12a3d84afaf3ee9b9aa5eb86d14"
+      }
+    },
+    {
+      "name": "L06-json-unicode-space",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "space café/naïve.py"
+      ],
+      "file": "L06-json-unicode-space.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-unicode-space",
+        "sha256": "cc5e9113394585bda1cd0058b09eef328c15f96c4bd511a245091a69d7cc9c76"
+      }
+    },
+    {
+      "name": "L06-json-syntax",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "syntax.py"
+      ],
+      "file": "L06-json-syntax.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-syntax",
+        "sha256": "da3f4f3192ef28afd4c9769509fe9eecad508f93ea887825cb8154f26ae02485"
+      }
+    },
+    {
+      "name": "L06-json-exit-zero",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-json-exit-zero.txt",
+      "status": "reduced",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-exit-zero",
+        "sha256": "d8f68f078295501c6610239bb2e1c00fc7bce12a3d84afaf3ee9b9aa5eb86d14"
+      },
+      "expectedFile": "L06-json-exit-zero.golden.txt"
+    },
+    {
+      "name": "L06-json-reports",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--reports=yes",
+        "--exit-zero",
+        "warning_case.py"
+      ],
+      "file": "L06-json-reports.txt",
+      "status": "reduced",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-reports",
+        "sha256": "2008f49c315b5393743de8e86795a9626d0b79126828345fb05caf0376d0aa59"
+      },
+      "expectedFile": "L06-json-reports.golden.txt"
+    },
+    {
+      "name": "L06-json-config-fail",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--rcfile=bad.toml",
+        "clean.py"
+      ],
+      "file": "L06-json-config-fail.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-config-fail",
+        "sha256": "626246924e99a2132c1adf629f19e23d917f32a577c4d849aa1ef32fb953614d"
+      }
+    },
+    {
+      "name": "L06-json-plugin",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json",
+        "--load-plugins=collision_plugin",
+        "clean.py"
+      ],
+      "file": "L06-json-plugin.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json-plugin",
+        "sha256": "e82cefc4bc9634403b33d85f34d9613101bc74e6250866564bf44e23d936751b"
+      }
+    },
+    {
+      "name": "L06-json2-clean",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "clean.py"
+      ],
+      "file": "L06-json2-clean.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-clean",
+        "sha256": "7cd22b8ab04dcb12131fec977ed97fe8c9655e7db7d0d1beef8982cf02f9031f"
+      }
+    },
+    {
+      "name": "L06-json2-errors",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "errors.py"
+      ],
+      "file": "L06-json2-errors.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-errors",
+        "sha256": "bdc30698579df6676d110c0dd73e7345d2cb1324eab1c2447c69d68713d228bd"
+      }
+    },
+    {
+      "name": "L06-json2-warnings",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "warning_case.py"
+      ],
+      "file": "L06-json2-warnings.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 4
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-warnings",
+        "sha256": "47ca384d04bcabcdd3527980c061cdb4608b8eb9a6ab71760e17c7900f1f95c5"
+      }
+    },
+    {
+      "name": "L06-json2-multifile",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-json2-multifile.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-multifile",
+        "sha256": "550a8c1cc2e669f19671e687aa7a47e89409e635755c1d25a856bc65bd2b9868"
+      }
+    },
+    {
+      "name": "L06-json2-unicode-space",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "space café/naïve.py"
+      ],
+      "file": "L06-json2-unicode-space.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 6
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-unicode-space",
+        "sha256": "67470f394df02307a17241eceff6d039b6d54d9a543e14838a6a779e3f31f7d1"
+      }
+    },
+    {
+      "name": "L06-json2-syntax",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "syntax.py"
+      ],
+      "file": "L06-json2-syntax.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-syntax",
+        "sha256": "e6d4efac9a711caebd2a52f6c0537e7e9250cf373b0a856ccb0893436a4661e8"
+      }
+    },
+    {
+      "name": "L06-json2-exit-zero",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--exit-zero",
+        "errors.py",
+        "warning_case.py"
+      ],
+      "file": "L06-json2-exit-zero.txt",
+      "status": "reduced",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-exit-zero",
+        "sha256": "550a8c1cc2e669f19671e687aa7a47e89409e635755c1d25a856bc65bd2b9868"
+      },
+      "expectedFile": "L06-json2-exit-zero.golden.txt"
+    },
+    {
+      "name": "L06-json2-reports",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--reports=yes",
+        "--exit-zero",
+        "warning_case.py"
+      ],
+      "file": "L06-json2-reports.txt",
+      "status": "reduced",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-reports",
+        "sha256": "47ca384d04bcabcdd3527980c061cdb4608b8eb9a6ab71760e17c7900f1f95c5"
+      },
+      "expectedFile": "L06-json2-reports.golden.txt"
+    },
+    {
+      "name": "L06-json2-config-fail",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--rcfile=bad.toml",
+        "clean.py"
+      ],
+      "file": "L06-json2-config-fail.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-config-fail",
+        "sha256": "a259529fa1db9c28633087932fb0d4cd75497bbaf4dd85f655a6663970d7851d"
+      }
+    },
+    {
+      "name": "L06-json2-plugin",
+      "family": "pylint",
+      "version": "pylint 4.0.4",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "command": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L06-pylint-venv/bin/python",
+        "-m",
+        "pylint",
+        "--rcfile=empty.rc",
+        "--persistent=no",
+        "--jobs=1",
+        "--output-format=json2",
+        "--load-plugins=collision_plugin",
+        "clean.py"
+      ],
+      "file": "L06-json2-plugin.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "L06-json2-plugin",
+        "sha256": "303c684eb6701e3c95fed60d9854b11d34d2c0a8c0fde84b61a4a30fad1d6b4a"
+      }
+    }
+  ],
+  "archives": [
+    "LICENSE.pylint.txt",
+    "L06-bootstrap-shadow.txt",
+    "L06-json-exit-zero.candidate.txt",
+    "L06-json-reports.candidate.txt",
+    "L06-json2-clean.candidate.txt",
+    "L06-json2-exit-zero.candidate.txt",
+    "L06-json2-reports.candidate.txt",
+    "L06-launcher-direct-absolute.txt",
+    "L06-launcher-direct.txt",
+    "L06-launcher-python-module.txt",
+    "L06-launcher-python3-module.txt"
+  ]
+}

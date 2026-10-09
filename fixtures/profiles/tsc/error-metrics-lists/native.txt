@@ -1,0 +1,35 @@
+[96mbad.ts[0m:[93m1[0m:[93m14[0m - [91merror[0m[90m TS2322: [0mType 'string' is not assignable to type 'number'.
+
+[7m1[0m export const answer: number = "wrong";
+[7m [0m [91m             ~~~~~~[0m
+
+[96mbad.ts[0m:[93m2[0m:[93m1[0m - [91merror[0m[90m TS2304: [0mCannot find name 'missingName'.
+
+[7m2[0m missingName();
+[7m [0m [91m~~~~~~~~~~~[0m
+
+../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts
+  Library 'lib.es5.d.ts' specified in compilerOptions
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.d.ts
+  Library referenced via 'decorators' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+../lean-native-v2-T01/node_modules/typescript/lib/lib.decorators.legacy.d.ts
+  Library referenced via 'decorators.legacy' from file '../lean-native-v2-T01/node_modules/typescript/lib/lib.es5.d.ts'
+bad.ts
+  Part of 'files' list in tsconfig.json
+
+Found 2 errors in the same file, starting at: bad.ts[90m:1[0m
+
+Files:               4
+Lines:            5013
+Identifiers:      4353
+Symbols:          3883
+Types:            1512
+Instantiations:    411
+Memory used:    26490K
+I/O read:        0.00s
+I/O write:       0.00s
+Parse time:      0.23s
+Bind time:       0.08s
+Check time:      1.61s
+Emit time:       0.00s
+Total time:      1.92s

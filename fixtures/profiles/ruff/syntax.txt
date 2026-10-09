@@ -1,0 +1,17 @@
+invalid-syntax: Expected a parameter or the end of the parameter list
+ --> syntax.py:1:12
+  |
+1 | def broken(:
+  |            ^
+2 |     pass
+  |
+
+invalid-syntax: Expected ')', found newline
+ --> syntax.py:1:13
+  |
+1 | def broken(:
+  |             ^
+2 |     pass
+  |
+
+Found 2 errors.

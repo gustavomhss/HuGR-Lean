@@ -1,0 +1,84 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+────────────
+ Nextest run ID aaf86569-66ff-4538-b5b5-5c9825c0dee9 with nextest profile: default
+    Starting 6 tests across 3 binaries (3 tests skipped)
+        SKIP [         ] (───) capture-alpha tests::alpha_failure
+        SKIP [         ] (───) capture-alpha tests::alpha_ignored
+        PASS [   0.015s] (1/6) capture-alpha tests::alpha_collision
+  stdout ───
+
+    running 1 test
+            PASS [   0.001s] capture-alpha tests::alpha_pass
+    ------------
+        Starting 99 tests across 99 binaries
+    test tests::alpha_collision ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+         Summary [   0.001s] 99 tests run: 99 passed, 0 skipped
+        Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+
+        PASS [   0.015s] (2/6) capture-alpha tests::alpha_logs
+  stdout ───
+
+    running 1 test
+    ALPHA_STDOUT keep café 🦀
+    test tests::alpha_logs ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+  stderr ───
+    ALPHA_STDERR keep diagnostic
+
+        SKIP [         ] (───) capture-alpha::integration integration_ignored
+        PASS [   0.014s] (3/6) capture-alpha tests::alpha_pass
+  stdout ───
+
+    running 1 test
+    test tests::alpha_pass ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+
+        PASS [   0.014s] (4/6) capture-alpha::integration integration_pass
+  stdout ───
+
+    running 1 test
+    test integration_pass ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+        PASS [   0.014s] (5/6) capture-beta tests::beta_logs
+  stdout ───
+
+    running 1 test
+    BETA_STDOUT keep suite association
+    test tests::beta_logs ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+  stderr ───
+    BETA_STDERR keep suite association
+
+        PASS [   0.014s] (6/6) capture-beta tests::beta_pass
+  stdout ───
+
+    running 1 test
+    test tests::beta_pass ... ok
+
+    test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+────────────
+     Summary [   0.087s] 6 tests run: 6 passed, 3 skipped
+        PASS [   0.015s] (1/6) capture-alpha tests::alpha_collision
+        PASS [   0.015s] (2/6) capture-alpha tests::alpha_logs
+        PASS [   0.014s] (3/6) capture-alpha tests::alpha_pass
+        PASS [   0.014s] (4/6) capture-alpha::integration integration_pass
+        PASS [   0.014s] (5/6) capture-beta tests::beta_logs
+        PASS [   0.014s] (6/6) capture-beta tests::beta_pass
+        SKIP [         ] (───) capture-alpha tests::alpha_failure
+        SKIP [         ] (───) capture-alpha tests::alpha_ignored
+        SKIP [         ] (───) capture-alpha::integration integration_ignored

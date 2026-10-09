@@ -1,0 +1,14 @@
+   Compiling capture-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project/alpha)
+   Compiling capture-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/C07-nextest-native/project/beta)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.14s
+────────────
+ Nextest run ID 21dfb698-4a51-4235-8aa8-197c37692cc9 with nextest profile: default
+    Starting 6 tests across 3 binaries (3 tests skipped)
+        PASS [   0.014s] (1/6) capture-alpha tests::alpha_collision
+        PASS [   0.014s] (2/6) capture-alpha tests::alpha_logs
+        PASS [   0.015s] (3/6) capture-alpha tests::alpha_pass
+        PASS [   0.014s] (4/6) capture-alpha::integration integration_pass
+        PASS [   0.014s] (5/6) capture-beta tests::beta_logs
+        PASS [   0.014s] (6/6) capture-beta tests::beta_pass
+────────────
+     Summary [   0.086s] 6 tests run: 6 passed, 3 skipped

@@ -1,0 +1,23 @@
+
+ RUN  v3.2.4 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R03-vitest-e0kejzsc
+
+stdout | alpha.test.js > alpha suite café > retry succeeds second attempt
+R03_RETRY_ATTEMPT=1
+
+stdout | alpha.test.js > alpha suite café > retry succeeds second attempt
+R03_RETRY_ATTEMPT=2
+
+stdout | alpha.test.js > alpha suite café > stdout and stderr evidence
+R03_STDOUT alpha café
+
+stderr | alpha.test.js > alpha suite café > stdout and stderr evidence
+R03_STDERR alpha warning
+
+ ✓ |alpha| alpha.test.js (4 tests | 2 skipped) 31ms
+ ✓ |beta| beta.test.js (3 tests | 2 skipped) 6ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed | 3 skipped | 1 todo (7)
+   Start at  15:32:18
+   Duration  1.76s (transform 76ms, setup 0ms, collect 156ms, tests 38ms, environment 1ms, prepare 481ms)
+

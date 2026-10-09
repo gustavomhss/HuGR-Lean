@@ -1,0 +1,50 @@
+warning: this if-then-else expression returns a bool literal
+ --> alpha/src/detail.rs:2:5
+  |
+2 | /     if value {
+3 | |         true
+4 | |     } else {
+5 | |         false
+6 | |     }
+  | |_____^ help: you can reduce it to: `value`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#needless_bool
+  = note: `#[warn(clippy::needless_bool)]` on by default
+
+warning: accessing first element with `values.get(0)`
+ --> alpha/src/lib.rs:4:5
+  |
+4 |     values.get(0)
+  |     ^^^^^^^^^^^^^ help: try: `values.first()`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#get_first
+  = note: `#[warn(clippy::get_first)]` on by default
+
+warning: `capture_alpha` (lib) generated 2 warnings (run `cargo clippy --fix --lib -p capture_alpha -- ` to apply 2 suggestions)
+warning: called `.iter().nth()` on a slice
+ --> alpha/src/main.rs:2:13
+  |
+2 |     let _ = [1, 2].iter().nth(0);
+  |             ^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#iter_nth
+  = note: `#[warn(clippy::iter_nth)]` on by default
+help: `get` is equivalent but more concise
+  |
+2 -     let _ = [1, 2].iter().nth(0);
+2 +     let _ = [1, 2].get(0);
+  |
+
+warning: `capture_alpha` (bin "capture_alpha") generated 1 warning (run `cargo clippy --fix --bin "capture_alpha" -p capture_alpha -- ` to apply 1 suggestion)
+    Checking capture_beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/c03-clippy-native-project-v3/beta)
+warning: using `contains()` instead of `iter().any()` is more efficient
+ --> beta/src/lib.rs:2:5
+  |
+2 |     values.iter().any(|item| *item == value)
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `values.contains(&value)`
+  |
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.98.0/index.html#manual_contains
+  = note: `#[warn(clippy::manual_contains)]` on by default
+
+warning: `capture_beta` (lib) generated 1 warning (run `cargo clippy --fix --lib -p capture_beta -- ` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.96s

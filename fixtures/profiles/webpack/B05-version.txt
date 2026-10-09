@@ -1,0 +1,13 @@
+
+  System:
+    OS: macOS 15.3.2
+    CPU: (12) x64 Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+    Memory: 2.62 GB / 16.00 GB
+  Binaries:
+    Node: 22.17.1 - /usr/local/bin/node
+    Yarn: 1.22.22 - /usr/local/bin/yarn
+    npm: 10.9.2 - /usr/local/bin/npm
+  Packages:
+    webpack: 5.102.1 => 5.102.1 
+    webpack-cli: 6.0.1 => 6.0.1 
+

@@ -1,0 +1,7 @@
+PASS ./snapshot.test.cjs
+  ✓ custom reporter output (1 ms)
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   1 passed, 1 total
+Time:        0.001 s
+Ran all test suites.
