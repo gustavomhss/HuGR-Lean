@@ -3,6 +3,8 @@
 Capture baseline `07ffe15e2263c2925778022194c5385807216603`; implementation follows
 lead-approved header-bar-only policy. `cases.json` uses `hugr-lean/native-cases/1`;
 original full manifest is preserved verbatim in `capture-receipt.json`.
+Each case links it through `provenance.captureReceipt`; `provenance.record` points
+to `SOURCES.md`, and `provenance.sha256` copies the original output descriptor hash.
 Commands are the actual direct Biome argv,
 not the Node/Python capture driver. Original stdout/stderr share one real pipe.
 All observations: exited, complete, presentation unknown. No byte normalization.
