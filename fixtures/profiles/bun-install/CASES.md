@@ -44,3 +44,33 @@ or retain ambiguous bytes. No arbitrary truncation, deduplication or summary rew
 Acceptance/test names: **deferred to implementation packet**. Sole capture check:
 `python3 fixtures/profiles/bun-install/verify-capture.py`; raw SHA comparison and
 one changed-byte in-memory corruption control. No repo tests/typecheck/build/CI.
+
+## P04 supplement, capture-only (2026-10-09)
+
+Original 24 records and ineffective/silent trust history above remain unchanged.
+Four appended records have file-only inputs and strong local receipt bindings in
+`supplement/visible/receipt.json`. Current lead reader/default filter was exercised
+on this family only: all 28 records are passthrough with equal effective bytes.
+This supersedes the opening **not executed** statement for this bounded check only.
+
+| Appended suffix | Actual outcome / witness | Required disposition |
+| --- | --- | --- |
+| registry-blocked-default | fresh HTTP registry tarball; blocked count; installed source hashes match; no marker before/after | exact, blocked advice retained |
+| registry-trusted-manifest | trustedDependencies present before fresh install; `--verbose`; source-bound stdout marker plus native-shaped rows; marker file created; trusted lock | exact, ambiguous dependency stdout retained |
+| registry-trusted-flag | fresh untrusted manifest; named package + documented `--trust --verbose`; manifest becomes trusted; same stdout/file/lock proof | exact, logs and requested verbose details retained |
+| registry-offline-request | fresh cache/project; actual `--offline --ignore-scripts`; server receives metadata and tarball GETs; exit 0 and installed source/lock | exact, enforced offline falsified for this invocation |
+
+Historical supplement root and `confirmed/` text files are explicit archives, not
+current inputs. Root attempt omitted registry `hasInstallScript`; blocked advice
+was absent, while trusted manifest did write a marker with hidden stdout.
+Confirmed attempt includes that bit: trusted manifest writes marker but
+successful dependency stdout is hidden without verbose; unnamed `--trust` does
+not establish trust. Neither is promoted as visible enabled-log proof.
+
+Checks: `supplement/verify.py` binds package/tarball/license/source/installed files,
+trust before/after, lock integrity, server requests, marker outcome and exact EOF.
+`supplement/verify-reader.mjs <lead-worktree>` uses current lead raw reader/filter
+with a private one-family index. Marker-byte, receipt-command and false-EOF
+controls reject, then restored private copy passes. Source verifier also rejects
+marker digest, marker outcome and EOF corruptions in memory. No mutation persists.
+No reduction, offline isolation, other-platform or full-family claim.

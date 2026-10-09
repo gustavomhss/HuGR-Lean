@@ -1,0 +1,6 @@
+{
+  "name": "p04-trusted-witness",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": { "postinstall": "node install.cjs" }
+}

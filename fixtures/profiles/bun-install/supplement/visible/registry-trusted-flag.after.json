@@ -1,0 +1,11 @@
+{
+  "name": "p04-private-project",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "p04-trusted-witness": "^1.0.0"
+  },
+  "trustedDependencies": [
+    "p04-trusted-witness"
+  ]
+}

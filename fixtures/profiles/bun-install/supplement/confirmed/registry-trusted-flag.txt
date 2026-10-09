@@ -1,0 +1,10 @@
+bun install v1.3.14 (0d9b296a)
+Resolving dependencies
+Resolved, downloaded and extracted [4]
+Saved lockfile
+
++ p04-trusted-witness@1.0.0
+
+1 package installed [22.00ms]
+
+Blocked 1 postinstall. Run `bun pm untrusted` for details.

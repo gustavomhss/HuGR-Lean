@@ -14,8 +14,13 @@ def intact(case, raw):
     return hashlib.sha256(raw).hexdigest() == case["provenance"]["sha256"]
 
 for case in cases:
-    assert intact(case, case["output"].encode("utf-8")), case["name"]
-    assert case["command"] == shlex.join(case["provenance"]["argv"])
+    raw = (root / case["file"]).read_bytes() if "file" in case else case["output"].encode("utf-8")
+    assert intact(case, raw), case["name"]
+    facts = case["provenance"]
+    if "receipt" in facts:
+        facts = next(fact for fact in json.loads((root / facts["receipt"]).read_text())["cases"]
+                     if fact["name"] == case["name"])
+    assert case["command"] == shlex.join(facts["argv"])
     assert case["version"] == "bun 1.3.14"
     assert case["termination"]["kind"] == "exited"
     assert case["completeness"] == "complete"
