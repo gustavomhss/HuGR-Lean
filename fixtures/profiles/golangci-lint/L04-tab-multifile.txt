@@ -1,0 +1,5 @@
+issues/issues.go:12:23  errcheck     Error return value is not checked
+issues/issues.go:6:2    ineffassign  ineffectual assignment to x
+issues/issues.go:3:6    unused       func dead is unused
+other/other.go:3:6      unused       func hidden is unused
+other/雪.go:4:6          unused       func unused雪 is unused

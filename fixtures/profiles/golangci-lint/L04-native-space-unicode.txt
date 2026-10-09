@@ -1,0 +1,8 @@
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s/other/other.go:3:6: func hidden is unused (unused)
+func hidden() string { return "雪 😀" }
+     ^
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L04 golangci 雪😀-aof1_j9s/other/雪.go:4:6: func unused雪 is unused (unused)
+func unused雪() string { return "雪 😀" }
+     ^
+2 issues:
+* unused: 2
