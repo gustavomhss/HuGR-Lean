@@ -1,0 +1,289 @@
+{
+  "schema": "B02-capture/1",
+  "baseline": "248c303",
+  "workspace": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+  "environmentOverrides": {
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "CI": "1",
+    "NO_COLOR": "1",
+    "TZ": "UTC"
+  },
+  "environmentRemoved": [
+    "FORCE_COLOR"
+  ],
+  "cases": [
+    {
+      "name": "B02-node-version",
+      "family": "next",
+      "version": "node v22.17.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-node-version.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "command": "node --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 15,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 9,
+      "outputBytes": 9,
+      "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+      "startedAt": "2026-10-09T15:34:26.679186+00:00",
+      "completionAt": "2026-10-09T15:34:27.508914+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 9,
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf",
+        "finalLF": true,
+        "lastBytesHex": "7632322e31372e310a"
+      },
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "B02-node-version",
+        "sha256": "16750f5453b03718f0cc7f5b933a5eab9247d15bdfabcd8d540e2a769d7994bf"
+      }
+    },
+    {
+      "name": "B02-npm-version",
+      "family": "next",
+      "version": "npm 10.9.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-npm-version.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "npm",
+        "--version"
+      ],
+      "command": "npm --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 15,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 7,
+      "outputBytes": 7,
+      "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+      "startedAt": "2026-10-09T15:34:27.516919+00:00",
+      "completionAt": "2026-10-09T15:34:29.850387+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 7,
+        "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5",
+        "finalLF": true,
+        "lastBytesHex": "31302e392e320a"
+      },
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "B02-npm-version",
+        "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "repository": "https://github.com/vercel/next.js",
+      "commit": "c5de33e93ccccaf3bee60cf50603e2152f9886e1",
+      "path": "license.md",
+      "url": "https://raw.githubusercontent.com/vercel/next.js/c5de33e93ccccaf3bee60cf50603e2152f9886e1/license.md",
+      "license": "MIT",
+      "archive": "LICENSE.next-upstream.txt",
+      "sha256": "ee765244e2d59f5234d474f62e0766fa0c8b99af967fdd4c0cb8dcb0c76ea224",
+      "modifications": "none; exact pinned upstream bytes",
+      "reach": "Source license only; package SRI, installed producer, and build correspondence not verified"
+    }
+  ],
+  "packages": [
+    {
+      "name": "next",
+      "version": "15.5.9",
+      "gitHead": "c5de33e93ccccaf3bee60cf50603e2152f9886e1",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git"
+      },
+      "dist": {
+        "shasum": "1b80d05865cc27e710fb4dcfc6fd9e726ed12ad4",
+        "tarball": "https://registry.npmjs.org/next/-/next-15.5.9.tgz",
+        "fileCount": 7255,
+        "integrity": "sha512-agNLK89seZEtC5zUHwtut0+tNrc0Xw4FT/Dg+B/VLEo9pAcS9rtTKpek3V6kVcVwsB2YlqMaHdfZL4eLEVYuCg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCaFen6hX6x2oAJxSPyHpLLYk7ml+ARJhWaPYrY/yMb+AIgaSVv8drXfAtbYmL/iOnKDLw8cMbXGMAifpdNr7/RtWE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/next@15.5.9",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 138331126
+      },
+      "metadataFile": "registry-next.json",
+      "metadataURL": "https://registry.npmjs.org/next/15.5.9",
+      "metadataSha256": "cc5203276d6c141d63caaca4f3a36ed26a2cecbbd39233cd499398ef8092963c"
+    },
+    {
+      "name": "react",
+      "version": "19.1.0",
+      "gitHead": "1825990c5608f0ab0c1475b4292218a508a171c9",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/facebook/react.git",
+        "type": "git",
+        "directory": "packages/react"
+      },
+      "dist": {
+        "shasum": "926864b6c48da7627f004795d6cce50e90793b75",
+        "tarball": "https://registry.npmjs.org/react/-/react-19.1.0.tgz",
+        "fileCount": 27,
+        "integrity": "sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDqFO0HOI6e5E03m53J6fb/7Pt5TfMO1nlJeEtpdrYEbgIhAIirElx2SZrosuB4ZdXe2guE9myN3T1MdcqZAFZ2Nspb",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 167000
+      },
+      "metadataFile": "registry-react.json",
+      "metadataURL": "https://registry.npmjs.org/react/19.1.0",
+      "metadataSha256": "790a9d0e1880471acb334069edbf74ccdc220b14194ddceae40b97e288d6e73f"
+    },
+    {
+      "name": "react-dom",
+      "version": "19.1.0",
+      "gitHead": "1825990c5608f0ab0c1475b4292218a508a171c9",
+      "license": "MIT",
+      "repository": {
+        "url": "git+https://github.com/facebook/react.git",
+        "type": "git",
+        "directory": "packages/react-dom"
+      },
+      "dist": {
+        "shasum": "133558deca37fa1d682708df8904b25186793623",
+        "tarball": "https://registry.npmjs.org/react-dom/-/react-dom-19.1.0.tgz",
+        "fileCount": 43,
+        "integrity": "sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCb6LCGEipbux/stdbARORtu/+8g0lMwP7xUqEgJcWcAwIhAM02BtyS26d+1HSkbuplm3LQf1ckWsU5JvnU3clcv2kR",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 6552660
+      },
+      "metadataFile": "registry-react-dom.json",
+      "metadataURL": "https://registry.npmjs.org/react-dom/19.1.0",
+      "metadataSha256": "0739aad8efb70440b467b12ab71eba24f057aeb1bd5add3b7cd9c00af1fd40ff"
+    },
+    {
+      "name": "typescript",
+      "version": "5.9.3",
+      "gitHead": "c63de15a992d37f0d6cec03ac7631872838602cb",
+      "license": "Apache-2.0",
+      "repository": {
+        "url": "git+https://github.com/microsoft/TypeScript.git",
+        "type": "git"
+      },
+      "dist": {
+        "shasum": "5b4f59e15310ab17a216f5d6cf53ee476ede670f",
+        "tarball": "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz",
+        "fileCount": 132,
+        "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC5ifNi1il+zAZC19ov+Q5oSrhOwlpOpghAaAAXYA0RpAIhAKdcZ6pMNZGuprpke8Zi3OPB1zol9c88KVW+apJNVjTy",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 23625066
+      },
+      "metadataFile": "registry-typescript.json",
+      "metadataURL": "https://registry.npmjs.org/typescript/5.9.3",
+      "metadataSha256": "80f0d5d237c08c433b4cee823d75c4f54469beee86cc2fad5e1800f86b6243d8"
+    },
+    {
+      "name": "@types/react",
+      "version": "19.1.0",
+      "gitHead": null,
+      "license": "MIT",
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/react"
+      },
+      "dist": {
+        "shasum": "73c43ad9bc43496ca8184332b111e2aef63fc9da",
+        "tarball": "https://registry.npmjs.org/@types/react/-/react-19.1.0.tgz",
+        "fileCount": 28,
+        "integrity": "sha512-UaicktuQI+9UKyA4njtDOGBD/67t8YEBt2xdfqu8+gP9hqPUPsiXlNPcpS2gVdjmis5GKPG3fCxbQLVgxsQZ8w==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDcLyjcV9TVc6hrxJQsclgrI9M49aya1sZCiyVz/AFzKQIhAJb6fOgzHfAuiDFHfB7sHaClFreyZB8rPDZFF849hDms",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 801920
+      },
+      "metadataFile": "registry-types-react.json",
+      "metadataURL": "https://registry.npmjs.org/@types%2freact/19.1.0",
+      "metadataSha256": "dd4f9369fadcf5ad960bd6efe777f34b08d8d23a247d36c043d0bd1172503ef3"
+    },
+    {
+      "name": "@types/node",
+      "version": "22.15.30",
+      "gitHead": null,
+      "license": "MIT",
+      "repository": {
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "type": "git",
+        "directory": "types/node"
+      },
+      "dist": {
+        "shasum": "3a20431783e28dd0b0326f84ab386a2ec81d921d",
+        "tarball": "https://registry.npmjs.org/@types/node/-/node-22.15.30.tgz",
+        "fileCount": 76,
+        "integrity": "sha512-6Q7lr06bEHdlfplU6YRbgG1SFBdlsfNC4/lX+SkhiTs0cpJkOElmWls8PxDFv4yY/xKb8Y6SO0OmSX4wgqTZbA==",
+        "signatures": [
+          {
+            "sig": "MEQCICyR5YVElq3syMAOdopn+ztgRUvQd7PfcpqgHmZjACgaAiBcUQmbos4gTpjboRZ6mrG7WsYPg6LYwhZub3pv4ZtJUw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 2359318
+      },
+      "metadataFile": "registry-types-node.json",
+      "metadataURL": "https://registry.npmjs.org/@types%2fnode/22.15.30",
+      "metadataSha256": "4175574fc0424c9f454faddfe3f5ac4dd303b3132733d9b606b8ac76a49242e4"
+    }
+  ],
+  "blockers": [
+    {
+      "kind": "insufficient-disk",
+      "availableBytes": 113541120,
+      "minimumBytes": 1073741824,
+      "stage": "npm install not started"
+    }
+  ]
+}

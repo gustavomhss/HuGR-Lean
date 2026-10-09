@@ -1,0 +1,34 @@
+{
+  "origin": "authored B02 tiny project, MIT",
+  "base": {
+    "package.json": "{\n  \"name\": \"b02-next-native\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"next\": \"15.5.9\",\n    \"react\": \"19.1.0\",\n    \"react-dom\": \"19.1.0\",\n    \"typescript\": \"5.9.3\",\n    \"@types/react\": \"19.1.0\",\n    \"@types/node\": \"22.15.30\"\n  }\n}\n",
+    "next.config.js": "module.exports = { experimental: { cpus: 1, workerThreads: false }, generateBuildId: async () => 'B02-tiny' };\n",
+    "tsconfig.json": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2017\",\n    \"lib\": [\n      \"dom\",\n      \"dom.iterable\",\n      \"esnext\"\n    ],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"strict\": true,\n    \"noEmit\": true,\n    \"esModuleInterop\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"preserve\",\n    \"incremental\": true\n  },\n  \"include\": [\n    \"next-env.d.ts\",\n    \"**/*.ts\",\n    \"**/*.tsx\"\n  ],\n  \"exclude\": [\n    \"node_modules\"\n  ]\n}\n",
+    "next-env.d.ts": "/// <reference types=\"next\" />\n/// <reference types=\"next/image-types/global\" />\n",
+    "pages/index.tsx": "export default function Home() { return <main>B02 tiny static</main>; }\n",
+    "pages/dynamic.tsx": "export async function getServerSideProps() { return { props: { label: 'B02 dynamic' } }; }\nexport default function Dynamic({ label }: { label: string }) { return <main>{label}</main>; }\n",
+    "pages/blog/[slug].tsx": "export async function getStaticPaths() { return { paths: [{ params: { slug: 'one' } }], fallback: false }; }\nexport async function getStaticProps() { return { props: { label: 'B02 SSG' } }; }\nexport default function Blog({ label }: { label: string }) { return <main>{label}</main>; }\n"
+  },
+  "variants": {
+    "routes": {},
+    "css-warning": {
+      "pages/_app.tsx": "import type { AppProps } from 'next/app';\nimport '../style.css';\nexport default function App({ Component, pageProps }: AppProps) { return <Component {...pageProps} />; }\n",
+      "style.css": ".b02 { display: flex; justify-content: end; }\n"
+    },
+    "config-warning": {
+      "next.config.js": "module.exports = { b02UnknownOption: true, experimental: { cpus: 1, workerThreads: false }, generateBuildId: async () => 'B02-tiny' };\n"
+    },
+    "typecheck-failure": {
+      "pages/index.tsx": "const label: number = 'B02 wrong type';\nexport default function Home() { return <main>{label}</main>; }\n"
+    },
+    "build-failure": {
+      "pages/index.tsx": "import missing from './b02-does-not-exist';\nexport default function Home() { return <main>{missing}</main>; }\n"
+    },
+    "config-collision": {
+      "next.config.js": "console.log('   Creating an optimized production build ...');\nconsole.log('Route (pages)                                Size  First Load JS');\nmodule.exports = { experimental: { cpus: 1, workerThreads: false }, generateBuildId: async () => 'B02-tiny' };\n"
+    },
+    "plugin-collision": {
+      "next.config.js": "class B02CollisionPlugin { apply(compiler) { compiler.hooks.beforeCompile.tap('B02CollisionPlugin', () => { console.log('   Creating an optimized production build ...'); console.log(' ✓ Compiled successfully'); }); } }\nmodule.exports = { experimental: { cpus: 1, workerThreads: false }, webpack: (config) => { config.plugins.push(new B02CollisionPlugin()); return config; }, generateBuildId: async () => 'B02-tiny' };\n"
+    }
+  }
+}
