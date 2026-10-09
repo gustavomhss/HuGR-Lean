@@ -1,0 +1,111 @@
+{
+  "capturedAt": "2026-10-09T04:50:54.757239+00:00",
+  "versionOutput": "pyright 1.1.408\n",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source",
+  "boundary": "stdin DEVNULL; stdout PIPE; stderr STDOUT at child spawn; no PTY; no normalization",
+  "producerReceipt": "capture-receipt.json",
+  "sources": [
+    {
+      "file": "source/clean.py",
+      "bytes": 51,
+      "sha256": "5258325fe07dbd371693fd95788a0073a0787499c75f7ec25e64d5c359dfe579"
+    },
+    {
+      "file": "source/error.py",
+      "bytes": 76,
+      "sha256": "941ff5428d89008c7157d39801c3dfa3b5f0807763be9eb8b7e78b75828a8be1"
+    },
+    {
+      "file": "source/information.py",
+      "bytes": 40,
+      "sha256": "a83eedd07f5498b4a0ac33c23928a35be54b0ca9147e929f6a9487b8e5a09e9f"
+    },
+    {
+      "file": "source/invalid.json",
+      "bytes": 39,
+      "sha256": "3b8e71686f3bab5f9313f2b986da179028e0b14c8f90bdbed9fee3d5ebaf956c"
+    },
+    {
+      "file": "source/path spaces/café 🧪.py",
+      "bytes": 15,
+      "sha256": "1abf49f7d556837c9797898da1dc273ea39308c362b3fa022d8079014e81ab75"
+    },
+    {
+      "file": "source/pyrightconfig.json",
+      "bytes": 128,
+      "sha256": "d5ea634b510850093521056ce4f36cfaaa56eb2d2cf1d16eadfbfbb57344ef41"
+    },
+    {
+      "file": "source/unicode paths/café 🧪.py",
+      "bytes": 98,
+      "sha256": "2fe339715b588d3303ef70a2d8defcbe66be899c16b719f1d9944ef029637556"
+    },
+    {
+      "file": "source/warning.py",
+      "bytes": 35,
+      "sha256": "e1fb020632a28ad247a07599f3de77c87be2a716b42ba3c52ad635a68dc4a166"
+    }
+  ],
+  "records": [
+    {
+      "name": "L08-json-warning",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--outputjson",
+        "warning.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson warning.py",
+      "file": "json-warning.txt",
+      "bytes": 828,
+      "sha256": "439597859602fe05d477336e21d930e5ff7c2de3d911a7a9d54463414ef4a58d",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "trailingLFBytes": 2,
+      "last16BytesHex": "20302e3330350a202020207d0a7d0a0a"
+    },
+    {
+      "name": "L08-json-information",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--outputjson",
+        "information.py"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson information.py",
+      "file": "json-information.txt",
+      "bytes": 803,
+      "sha256": "d8cb41e457f58fe3533758a150a2d344d32d30851bf90509cdd3c4d265ce8d1b",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "trailingLFBytes": 2,
+      "last16BytesHex": "3a20302e32370a202020207d0a7d0a0a"
+    },
+    {
+      "name": "L08-json-multi-unicode",
+      "argv": [
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright",
+        "--outputjson",
+        "warning.py",
+        "information.py",
+        "unicode paths"
+      ],
+      "command": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/.bin/pyright --outputjson warning.py information.py 'unicode paths'",
+      "file": "json-multi-unicode.txt",
+      "bytes": 2537,
+      "sha256": "bfb0235d9ebab84b738405247ed2064dddd5db273c440d462f37b13d2db91915",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "trailingLFBytes": 2,
+      "last16BytesHex": "20302e3330340a202020207d0a7d0a0a"
+    }
+  ]
+}

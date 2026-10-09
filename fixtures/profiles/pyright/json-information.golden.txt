@@ -1,0 +1,2 @@
+{"version":"1.1.408","time":"1791521454045","generalDiagnostics":[{"file":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/information.py","severity":"information","message":"Type of \"value\" is \"Literal['café 🧪']\"","range":{"start":{"line":1,"character":12},"end":{"line":1,"character":17}}}],"summary":{"filesAnalyzed":1,"errorCount":0,"warningCount":0,"informationCount":1,"timeInSec":0.27}}
+
