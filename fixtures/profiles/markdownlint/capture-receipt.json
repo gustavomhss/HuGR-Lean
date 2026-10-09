@@ -1,0 +1,1229 @@
+{
+  "schema": "hugr-lean/native-capture/1",
+  "family": "markdownlint",
+  "packet": "L11",
+  "capturedAt": "2026-10-09T05:13:44.901155+00:00",
+  "baseline": "63d3ece6f0a3f2963322149294f6dcc8bf197d47",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/project",
+  "node": "v22.17.1",
+  "npm": "10.9.2",
+  "environmentOverrides": {
+    "NO_COLOR": "1",
+    "FORCE_COLOR": "0",
+    "TERM": "dumb"
+  },
+  "boundary": "subprocess.Popen argv (shell=False), stdout=PIPE, stderr=STDOUT; one OS pipe, bytes untouched",
+  "stdin": "DEVNULL",
+  "tty": false,
+  "timeoutSeconds": 30,
+  "packages": [
+    {
+      "name": "markdownlint-cli2",
+      "version": "0.23.3",
+      "gitCommit": "916ad0aaa108c64d294101002066f530ea170b10",
+      "repository": "git+https://github.com/DavidAnson/markdownlint-cli2.git",
+      "license": "MIT",
+      "tarball": "https://registry.npmjs.org/markdownlint-cli2/-/markdownlint-cli2-0.23.3.tgz",
+      "sri": "sha512-xAr5o/TGpC3v6lE6cKIW4b5eOFRrRX5u7Vtjae9ix3RALv8nNOd94XMkD/1OXXBtpMcJ4uQGbpSo3hv5UqS4uQ==",
+      "tarballSha256": "f88841da392fd2b599b9af07f2f39a5588394d963584ed415ead0cb6b67e3921",
+      "installedFiles": [
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "1a56274fe8c0791c8bccf8d87d9a26b918defe6e003d996856561e9719367d78"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "319fa64eff9e8658eb8883857516b3d2c8439f3d042c6e5270734eb33b0749aa"
+        },
+        {
+          "path": "README.md",
+          "sha256": "fe65617495e2e2ea75e8512d2aa829c73db93192c5d52bb4b8bfa055deee0945"
+        },
+        {
+          "path": "append-to-array.mjs",
+          "sha256": "aee6cf96aeb69b78b23cafb27e381e7a089fb39fe50fe44faab49bdb3dda952f"
+        },
+        {
+          "path": "clone-options.mjs",
+          "sha256": "ea65a6ebd553cae44329bc77d546d835ad2232cfab9a0d11df0382715ae50a3f"
+        },
+        {
+          "path": "constants.mjs",
+          "sha256": "b058affbd7770e1e2c4693d4a8d9d68c78d0f11996eab9cdca50ab94c491fee3"
+        },
+        {
+          "path": "export-markdownlint-helpers.mjs",
+          "sha256": "deaaea13a0be52638a6049b3213dc5f5a8d018592379f29efc47465232c9a232"
+        },
+        {
+          "path": "export-markdownlint-promise.mjs",
+          "sha256": "6a53ce361b989379fcad0f29a4f54634fb183c65b3b53d6f64bf80af6ab9dadc"
+        },
+        {
+          "path": "export-markdownlint.mjs",
+          "sha256": "d6657e75e4fe3723fa6cdd20bcef45a719341068b61356dcbffee224d6424c42"
+        },
+        {
+          "path": "markdownlint-cli2-bin.mjs",
+          "sha256": "558a203f7c5deb0e2d4f309ed468e0454218427e57f196876cbbdd393678d772"
+        },
+        {
+          "path": "markdownlint-cli2.mjs",
+          "sha256": "19b15e37e4d103632fee5665dc4a3d9b9c0d2983d36d4bf9cce9ab2f908d5838"
+        },
+        {
+          "path": "merge-options.mjs",
+          "sha256": "f53c8e102bac93522c4c07b4e3c597455e56974cfd14cd60e432cccebabf5057"
+        },
+        {
+          "path": "package.json",
+          "sha256": "bbfaf8589aec54e7a1a9730b5a6a9b37ad3e263c4002e4dd69752eed3cdd184b"
+        },
+        {
+          "path": "parsers/jsonc-parse.mjs",
+          "sha256": "7af41691c16f6d7e19b8852bc4c4ea32dc79deb1a61ab948ee208fc0cf8b9536"
+        },
+        {
+          "path": "parsers/parsers.mjs",
+          "sha256": "7d3df47c3208bd73542882217cc0f3cc1b9bf0e0b5ac40d60a121a9a376cfe97"
+        },
+        {
+          "path": "parsers/toml-parse.mjs",
+          "sha256": "e24aab323b64d21af5a02a634ee5eef97fa9f059b2d142e86075d8352f431e86"
+        },
+        {
+          "path": "parsers/yaml-parse.mjs",
+          "sha256": "89a5c82ed88730a1e3e71e129abd8a4715d76eafdcd603873ef9343ff999bd73"
+        },
+        {
+          "path": "schema/ValidatingConfiguration.md",
+          "sha256": "a3d50e8106506f911b5aee8f9b2a0d5766eb391ac550530aca9982b56d8110fd"
+        },
+        {
+          "path": "schema/markdownlint-cli2-config-schema.json",
+          "sha256": "efe5de2b096b2abc5f8b408e1fef5c52d34497e89ca716443d49b735f52768a0"
+        },
+        {
+          "path": "schema/markdownlint-config-schema.json",
+          "sha256": "500e390aaf7cdd3c2ea19acc791f43d697e35a887eabeceb7791c2efcae9a1fa"
+        }
+      ],
+      "licenseCopy": {
+        "file": "LICENSE-markdownlint-cli2.txt",
+        "sha256": "319fa64eff9e8658eb8883857516b3d2c8439f3d042c6e5270734eb33b0749aa",
+        "bytesUtf8": 1063,
+        "endsWithLF": true,
+        "tailHex": "4f54484552204445414c494e475320494e205448450a534f4654574152452e0a",
+        "sourcePath": "LICENSE",
+        "modifications": "none"
+      }
+    },
+    {
+      "name": "markdownlint",
+      "version": "0.41.1",
+      "gitCommit": "e41e5a40ba934f079da0ffbdea0309869c034d47",
+      "repository": "git+https://github.com/DavidAnson/markdownlint.git",
+      "license": "MIT",
+      "tarball": "https://registry.npmjs.org/markdownlint/-/markdownlint-0.41.1.tgz",
+      "sri": "sha512-qHKeU2E1bdyNAT077go2FVTNXvYcktN5IHtF6XyeD1l0PClxzSp2tUApAV14ORI8DGX4H9bNKZEzelZp4qn8IA==",
+      "tarballSha256": "fa87fc7754a8dfdaaeac6448124c09fcd2dd2512741fb9774a54ddef85071527",
+      "installedFiles": [
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "d0ad8a979953e2c666d2929d7ebae82993ffc5e8061faaf8755283bf871dbabe"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "sha256": "91577340ec8abe4607c7552010e5f941e8d05449677443f054edb8703867de23"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "cdc3c1fb00ee139442c915e98afac039223569a00527e9f7aefc54f92019aec4"
+        },
+        {
+          "path": "README.md",
+          "sha256": "a3b92c1075f8b3b7c8bddba392e3241d59f362cf10d6daa6e85a58f485ea6c42"
+        },
+        {
+          "path": "doc/CustomRules.md",
+          "sha256": "bf92f5af372bd79513982fdfdd23497eec5f160d00393f1e41daf941f49ec524"
+        },
+        {
+          "path": "doc/Prettier.md",
+          "sha256": "a2e2c9638677127e9da9894c875f8558353d458ef8f219c71b76d92a463f6937"
+        },
+        {
+          "path": "doc/ReleaseProcess.md",
+          "sha256": "a28bfe70670eb4e2ce699e4eb4ecdebe9920c21c877318f1d3a3d09c956dc656"
+        },
+        {
+          "path": "doc/Rules.md",
+          "sha256": "59cd1ee162e487a5825c2401875e438e7359e2149aac8ce70e9fac2d44fb9c2a"
+        },
+        {
+          "path": "doc/md001.md",
+          "sha256": "403175518b314d7508d2ad1e7121ce425969d3df04081a457c28c9123c6fedf3"
+        },
+        {
+          "path": "doc/md003.md",
+          "sha256": "614ada9ac2ccde99ac8d04fb435090f0b4ccc069c91826023a893f5d5761c50a"
+        },
+        {
+          "path": "doc/md004.md",
+          "sha256": "c96f6466d11e91fd98cf7284e385b6a3df9e356131355b3b5aa6e07bd1d5d5eb"
+        },
+        {
+          "path": "doc/md005.md",
+          "sha256": "429c4ec5f261b6e45bf2ff484bd258ba588b2a82f4a1fc268ebc9e0b2a3b0f94"
+        },
+        {
+          "path": "doc/md007.md",
+          "sha256": "995798d9a7e4abace794e8efe40d97e3bd76d08d066510bab28003c208a992ba"
+        },
+        {
+          "path": "doc/md009.md",
+          "sha256": "5aad760da943e5645ee8f8f5e53b761a8e99f3a3de7bf05a238670ccbec804e8"
+        },
+        {
+          "path": "doc/md010.md",
+          "sha256": "67a11723874efdc120dcfe79543714cd5d06e84b9fb2fa25d070d11f56bf47f0"
+        },
+        {
+          "path": "doc/md011.md",
+          "sha256": "e77f1ea3c38270f96a95f75e2723493b5703336cbb7082d0ea731723f8534baf"
+        },
+        {
+          "path": "doc/md012.md",
+          "sha256": "0d0831f68d1a071df10c3df23a8d8c75a8fdf8e3e841a8fc867fe50e9363c253"
+        },
+        {
+          "path": "doc/md013.md",
+          "sha256": "7fa04560384845af1d21faeab9c86cad5639793236aa0d1e4abdc1dd5e56ceec"
+        },
+        {
+          "path": "doc/md014.md",
+          "sha256": "130a287396b9a5370ef8fe88203406d0848551abc1075e0c541768638d62bedc"
+        },
+        {
+          "path": "doc/md018.md",
+          "sha256": "ea299d0a99f90b10c803e4100bdfc050400ea4230758f3fb4ea861b7cb2491df"
+        },
+        {
+          "path": "doc/md019.md",
+          "sha256": "24db70f1a9833f88fc8e8c9d969ef3b761ee8d4d43001ed992873169e778e774"
+        },
+        {
+          "path": "doc/md020.md",
+          "sha256": "3c5054bc005b7d98bc7d67d9256f5ed98f6212facf767058e552049fb7c20bb6"
+        },
+        {
+          "path": "doc/md021.md",
+          "sha256": "fd3f9af35980ab37038ccf39b5ef60b361256f1bc0f7bb75d89a344d1a19cfe5"
+        },
+        {
+          "path": "doc/md022.md",
+          "sha256": "835aa11e7586ff5ab182c345f8a943dca558e50b25a4a971c406852a875a1f57"
+        },
+        {
+          "path": "doc/md023.md",
+          "sha256": "7e46b7a4eb75e36d4d81d042bcb095d2a631059232ac4b45685614332f2262f2"
+        },
+        {
+          "path": "doc/md024.md",
+          "sha256": "408dc767843770c00ea3be70dfd35b07f716ff1e77e11953858ce8b4ef8257a4"
+        },
+        {
+          "path": "doc/md025.md",
+          "sha256": "9d0e2bc5d85de886d88ba8399b4d9f43c3b519cbe05c566a68f532f4e16339f3"
+        },
+        {
+          "path": "doc/md026.md",
+          "sha256": "d489afe4d5a072ee1f9960a5b3a1a16ae5131b2cc755baae84881882e388c80b"
+        },
+        {
+          "path": "doc/md027.md",
+          "sha256": "4113dcd3422035180e7e64759bd3fc23735df1c96e7d55695ddfee4aa94504fb"
+        },
+        {
+          "path": "doc/md028.md",
+          "sha256": "63fd81dd890663a7ffc1f1a3f24c9e8a62fa207b0296a20318fa0373587fbb65"
+        },
+        {
+          "path": "doc/md029.md",
+          "sha256": "1d23f7e5ae83f402a40f6b4b042df9a309e1dd092ac14470e58578d45fe2776c"
+        },
+        {
+          "path": "doc/md030.md",
+          "sha256": "1884f96d050c8fcdec099a888047c1baefbbe1a79adc15709e726b49a4949f09"
+        },
+        {
+          "path": "doc/md031.md",
+          "sha256": "afea6e19d4dde455f31ac5424bb27f85f21f3c55c3f384367b87c463cc23621f"
+        },
+        {
+          "path": "doc/md032.md",
+          "sha256": "839ed94ea37f734bd481c7544646e1b405eb32f109c66177b8b76d538c90d3f9"
+        },
+        {
+          "path": "doc/md033.md",
+          "sha256": "51d53e64f8cc23932c4943389f80ba6b7c6e6c7b69634ca5bac0c125bb802f64"
+        },
+        {
+          "path": "doc/md034.md",
+          "sha256": "35449cba9aa0031bb8a3387ded0140079fe98ec17f93298add450867660e8857"
+        },
+        {
+          "path": "doc/md035.md",
+          "sha256": "fabaf908e169a6ec453b055857ab99ca8514414452922ad5b509bde4cbe1b0f9"
+        },
+        {
+          "path": "doc/md036.md",
+          "sha256": "f7444f8a3692db1079d9010a965b37f7735d48a98cef042d68123cd1d8beaa01"
+        },
+        {
+          "path": "doc/md037.md",
+          "sha256": "77e82a49013c5ddaeee0fba3b87bca9f6cb154125aafc6e10b640c04a4e47812"
+        },
+        {
+          "path": "doc/md038.md",
+          "sha256": "103dfbfda54c6c322b5e147c3965f291c3871598e3a40e1b34bd0feb084ab120"
+        },
+        {
+          "path": "doc/md039.md",
+          "sha256": "24093e44b1b3081ffe3c76e1ee5e5905a5453f02815aee6cb33f8c8e2382a270"
+        },
+        {
+          "path": "doc/md040.md",
+          "sha256": "11e94dc3e4af1648e9fa4c928814e4a8758316e133094208a3b580b249ae8f3b"
+        },
+        {
+          "path": "doc/md041.md",
+          "sha256": "83db4155eabe3eec5f59948e1760bec8815a146a6beb1a6ae413d2a713ad39e9"
+        },
+        {
+          "path": "doc/md042.md",
+          "sha256": "f455aa9ebd42a52476ba78ce022fdc50262885e883512226bdc849a6e99a4aa1"
+        },
+        {
+          "path": "doc/md043.md",
+          "sha256": "8cddbe1f120e45e6f3e0a778f147d134be2a067e867b1dcb07e4efab74f656d6"
+        },
+        {
+          "path": "doc/md044.md",
+          "sha256": "88e62f5b20317046a3ee4f0b959d5f2086dc2ee578ce92ff5b1e563b8e103e0a"
+        },
+        {
+          "path": "doc/md045.md",
+          "sha256": "92f4f612e1f7495f3a38586e3dcdedc5d55a4896612517ed00d93f7218a138cb"
+        },
+        {
+          "path": "doc/md046.md",
+          "sha256": "fd39bbc2c334e5d6885a7d8db0deb3d14b0c2f480aafcab208c7bfe91f3d6ca8"
+        },
+        {
+          "path": "doc/md047.md",
+          "sha256": "01b89c31b246dc240cec31c739ee184b15cef0555bae2e66132b70a05d0c9048"
+        },
+        {
+          "path": "doc/md048.md",
+          "sha256": "59e2537d693d4d7d2fcfa6633aaed4150388a2b4dd486ea98dcdb7e245cf7a73"
+        },
+        {
+          "path": "doc/md049.md",
+          "sha256": "34a33fccf64c3d1857bf64d656024d72ba1943f85443bb6b5b64af58d6616352"
+        },
+        {
+          "path": "doc/md050.md",
+          "sha256": "8a9e9a73eaeb36c2e41a60a2e93a9baf9c4ce911ab80599a8595101744a16739"
+        },
+        {
+          "path": "doc/md051.md",
+          "sha256": "dfdb4075b946129cf792f46424e503b34d2b8e416b8d7464c82fbea8ab682192"
+        },
+        {
+          "path": "doc/md052.md",
+          "sha256": "706bee83ba03e7f3f0c90cb2ebecbc565737473987fea86d0f5a9f13d98f7d52"
+        },
+        {
+          "path": "doc/md053.md",
+          "sha256": "7e35337f38095bfe79c88ecddbcbfc9c65277b2e7f711bfb624f5025dcf09295"
+        },
+        {
+          "path": "doc/md054.md",
+          "sha256": "8108be585e5a359c8b93344241ffa00a4acdf7b3da2c13fca5b66a2ce046e5db"
+        },
+        {
+          "path": "doc/md055.md",
+          "sha256": "43d2dc31ed50224744943e9639341e44529abf36f6f3ba3a3d4ee6db45d3a7ec"
+        },
+        {
+          "path": "doc/md056.md",
+          "sha256": "dbb6725609ba5a80caee520d0e04022f9aa06445dbd98cdb8e91345b15dc8982"
+        },
+        {
+          "path": "doc/md058.md",
+          "sha256": "f919ddb8971e51bdda82b48e6cdafa363207fff75a3da16e8f57808a2cdb07ae"
+        },
+        {
+          "path": "doc/md059.md",
+          "sha256": "37e39119221782a1507867dd04cca162120ddfb418b42a27ea253ac39b226c74"
+        },
+        {
+          "path": "doc/md060.md",
+          "sha256": "ce981bbc1786ebb7773ea23dbcbf56e9d41033d47609347e17c89aa3847fb049"
+        },
+        {
+          "path": "helpers/LICENSE",
+          "sha256": "cdc3c1fb00ee139442c915e98afac039223569a00527e9f7aefc54f92019aec4"
+        },
+        {
+          "path": "helpers/README.md",
+          "sha256": "916987950c0dcfeea2bf551c1f9343a93ce87e7e2e49a595a136887140ae32cb"
+        },
+        {
+          "path": "helpers/helpers.cjs",
+          "sha256": "74bf2eeb3cdf3d1304d1505e678b6293c1aa7a3e5104f52990bff4f6d4fcf499"
+        },
+        {
+          "path": "helpers/micromark-helpers.cjs",
+          "sha256": "bad012fbdf0030b193c8ed658cd2275e2cff75add3731762b95b4c8141ce5d1d"
+        },
+        {
+          "path": "helpers/package.json",
+          "sha256": "f18bf70a8e0588ac7a20ac24d029d7e28122ef7e2025f79f3d4bc6ef35092335"
+        },
+        {
+          "path": "helpers/shared.cjs",
+          "sha256": "b0ef520f3a762d583911508296fd424a4453a34b932bf887d8fd119bcf45808a"
+        },
+        {
+          "path": "lib/cache.mjs",
+          "sha256": "7a5786c892b9d1bc92708ddd4e98ee8f19f054432a8783fca8faa38c35a25ca5"
+        },
+        {
+          "path": "lib/configuration-strict.d.ts",
+          "sha256": "059b3389333d909550f3d61fd5fe1161ccc02b052b677ec82d891153d33728c1"
+        },
+        {
+          "path": "lib/configuration.d.ts",
+          "sha256": "29218e01636d475692c660fc0aba790d5de147736b8801cb953a98ab491cef86"
+        },
+        {
+          "path": "lib/constants.mjs",
+          "sha256": "199d420f4bbdf94d403f85f4acd9fedd5d5f08f034cea94ad0f508dbcb38cb7b"
+        },
+        {
+          "path": "lib/defer-require.cjs",
+          "sha256": "935accee372bc941bfc1d7ddd0e09e917688aadc043aab885d67cacb8b641c9b"
+        },
+        {
+          "path": "lib/exports-async.d.mts",
+          "sha256": "1544f9278be9151974e11beddd7d1237803e5fa2a92f1aa8082bd555b29697f6"
+        },
+        {
+          "path": "lib/exports-async.mjs",
+          "sha256": "5bcb8e65ce3b1b688a3532e1611084b1c07499160ff3ee0dce76b17bbfe6c932"
+        },
+        {
+          "path": "lib/exports-promise.d.mts",
+          "sha256": "31514ad51d0f7b0d73ce86bedbf8fced90dbfc23a779c8531afa0c34d06f24b6"
+        },
+        {
+          "path": "lib/exports-promise.mjs",
+          "sha256": "bf79cddc79d40dc5a03cdcb6f497e5b14824f6d08f370a82da50b8209ef506fb"
+        },
+        {
+          "path": "lib/exports-sync.d.mts",
+          "sha256": "b1c9c6e742f7631d6f9a4b75cfff0ee2f63249b12f8b8de6d9c2048ec4fe7769"
+        },
+        {
+          "path": "lib/exports-sync.mjs",
+          "sha256": "c7d32fda9efdc07029d93d451eaa9083e7903dbe9a86c8329b63cf6f63bab10f"
+        },
+        {
+          "path": "lib/exports.d.mts",
+          "sha256": "d911b02b01d4343cc699c281495df6c9506c26b5faddcaeac841b24ec454a669"
+        },
+        {
+          "path": "lib/exports.mjs",
+          "sha256": "ef15fa55ebaa526beffd86ac46012fc2880fd2069fcaf759894ab58a54334577"
+        },
+        {
+          "path": "lib/markdownit.cjs",
+          "sha256": "637cf40f74d539d27cc62efc477e83c060f6e8ec174c51d1ea5bb05675143f35"
+        },
+        {
+          "path": "lib/markdownlint.d.mts",
+          "sha256": "f14a8555b909c164215c60dac87231d868d954d6002ff692e0cf1b86bde7b761"
+        },
+        {
+          "path": "lib/markdownlint.mjs",
+          "sha256": "9a65aa5a5c75d027420f22cd26f132cd63b8387df49f77f94bdc251d5afe7c85"
+        },
+        {
+          "path": "lib/md001.mjs",
+          "sha256": "edfbb64d1ab14b5656db9b06956fbad4468bfa305058e17d55a66a7a0aefeba9"
+        },
+        {
+          "path": "lib/md003.mjs",
+          "sha256": "12b261cd4d1527fc4612e681056330e3a4b5f93fd931de7cbaa2ec6c4b4290ba"
+        },
+        {
+          "path": "lib/md004.mjs",
+          "sha256": "0192f925ed74b2ea180cf595bf6e620da36f9250adb88a743c2bf93d832816d3"
+        },
+        {
+          "path": "lib/md005.mjs",
+          "sha256": "49a85b82667d6a58852e24f6c13dd93c9e199e0aca6e7e6ed09a3e6727ce9734"
+        },
+        {
+          "path": "lib/md007.mjs",
+          "sha256": "03f38497d56fc9b9b884ad00185f82f9f115e3ad064706ee2ede7bad27e9df76"
+        },
+        {
+          "path": "lib/md009.mjs",
+          "sha256": "ea4a31182683c6dc9f20cb01115a52fb47f9262597e217be79fb93ca8124cfdb"
+        },
+        {
+          "path": "lib/md010.mjs",
+          "sha256": "c5ee3622feb781a471ac225177a9d825b31d27c5d0b694dc5ca87e33b0929bca"
+        },
+        {
+          "path": "lib/md011.mjs",
+          "sha256": "c40f0853d76fc00ea640e40a6f19888901600bc17040922dd49770ad3eeddc05"
+        },
+        {
+          "path": "lib/md012.mjs",
+          "sha256": "47eaaa6d2161fafdf2b0993d671316e920edcea67c55cce338c349534e453290"
+        },
+        {
+          "path": "lib/md013.mjs",
+          "sha256": "6879361c4121c907a3232e9219479c042362614e532153c169db7c71144663e3"
+        },
+        {
+          "path": "lib/md014.mjs",
+          "sha256": "fdbc4d5f7fdb9cf581d2048c075da39d87ce35583e423dd40ba340865d832099"
+        },
+        {
+          "path": "lib/md018.mjs",
+          "sha256": "84e3952b73796fe074487a000dc1eb7d9f7078eb958541e236cfa9b864c7de52"
+        },
+        {
+          "path": "lib/md019-md021.mjs",
+          "sha256": "e7cc91dba11fcced6a806147390a11b17fe0559ba4361c566b587709f3d2727d"
+        },
+        {
+          "path": "lib/md020.mjs",
+          "sha256": "43a4645f3278c2e6e22951a91147bced09a8e2dd6d8f07c8998ab65b39e2213c"
+        },
+        {
+          "path": "lib/md022.mjs",
+          "sha256": "192801418f1bddd322363e8454144a32a539d3f64a0b192267b987b1e265aff4"
+        },
+        {
+          "path": "lib/md023.mjs",
+          "sha256": "3077db5300b903d6b7c87fbd286255f9a622227a17c883986800b0a03803d405"
+        },
+        {
+          "path": "lib/md024.mjs",
+          "sha256": "24cfb0547a2ac25903d0c95cfa0432842cd3e3b9ac9e851ea1a82f873b2a8e2b"
+        },
+        {
+          "path": "lib/md025.mjs",
+          "sha256": "17ff13b81f60ddd7167cf7f80e125b405929e89c354e7bc5178c68e940ae206d"
+        },
+        {
+          "path": "lib/md026.mjs",
+          "sha256": "775d75537094af28d8c1d4cdbe2dc9cb116da063c9ba487f9a86faf9e0b22c82"
+        },
+        {
+          "path": "lib/md027.mjs",
+          "sha256": "0802ee8350dbc9fabf72fb507c091946c699b1db10dda5a408b9e292e56c321d"
+        },
+        {
+          "path": "lib/md028.mjs",
+          "sha256": "00bd6e93427f224af5a484d5bef88641722dd1b1c6bf23fd3cf111e249dc6509"
+        },
+        {
+          "path": "lib/md029.mjs",
+          "sha256": "ed7341b452fe131b4bff5bca393c5d84ef5ec20b4faa9e7f18c8f57eb6cee46c"
+        },
+        {
+          "path": "lib/md030.mjs",
+          "sha256": "840d7157b46f6590b980364758bdc9970ae35d655b2a00408d22acba5518959d"
+        },
+        {
+          "path": "lib/md031.mjs",
+          "sha256": "250c384bc61960eeb0a498d669cee9f04a09db971445af55e6aadf5da1784b2f"
+        },
+        {
+          "path": "lib/md032.mjs",
+          "sha256": "a07252241c219774fc4d24a3c97c0ca0717e237a436f9f4c5ca1d1de4cc4c807"
+        },
+        {
+          "path": "lib/md033.mjs",
+          "sha256": "4a186bf707949db70c71661497ca271490d999e76fa6294514d049fcb71a22a1"
+        },
+        {
+          "path": "lib/md034.mjs",
+          "sha256": "fd13165adeb7bf112aa73eb5b790a7f6080d7a3e77e7f08d0553396f9600d0a2"
+        },
+        {
+          "path": "lib/md035.mjs",
+          "sha256": "16be7886b9f1e482990e568c54b638b139a263e18c01c3a136338ece8c7fe53d"
+        },
+        {
+          "path": "lib/md036.mjs",
+          "sha256": "5a0a29258b3678491d0abf73d93c48cc0b211a9039285747efa267c2d8614908"
+        },
+        {
+          "path": "lib/md037.mjs",
+          "sha256": "ff4ca995111172804650a80332f543448b2c0927e6a822b07f86fd542513f351"
+        },
+        {
+          "path": "lib/md038.mjs",
+          "sha256": "0c16c1b3887c8fa3b18b5a21ada02c22d1972284aff57c701f2141d5b3f03d44"
+        },
+        {
+          "path": "lib/md039.mjs",
+          "sha256": "e8cdc569c0de00a605773bc1dbf27cb788117fdc8b083a33c352687c53bcca23"
+        },
+        {
+          "path": "lib/md040.mjs",
+          "sha256": "f8c09499cae77a1215ad620bfe67c0b7dd5b602e6d427f2b768febe55b090d3a"
+        },
+        {
+          "path": "lib/md041.mjs",
+          "sha256": "51fd87c0c8b9f72018e793cc3e995888dcb8268911b74e6816d8afc9f37bc6c9"
+        },
+        {
+          "path": "lib/md042.mjs",
+          "sha256": "2993c1f51885beedb2317b18943346f13b1994e7c0dfeb261dcdf8e8494a6bff"
+        },
+        {
+          "path": "lib/md043.mjs",
+          "sha256": "011151400c07de6e36a3ffff0e5aa519f0944d36fe42a04e5ab634484c5300f1"
+        },
+        {
+          "path": "lib/md044.mjs",
+          "sha256": "73cf51bf0be90664da9ed602d54ee5aa0e2cbdec6e125c01e3d36f2df07d055e"
+        },
+        {
+          "path": "lib/md045.mjs",
+          "sha256": "2f749c46b47a1a05b6b836f3aa0e95b40ebb56063aabaa4fc3cd86cf8d56889f"
+        },
+        {
+          "path": "lib/md046.mjs",
+          "sha256": "6bf8f86867223082d1708cb1d4e60b10a2777c7f7a27e9016d3b401dfcce2046"
+        },
+        {
+          "path": "lib/md047.mjs",
+          "sha256": "e0c9961c3372d72422e6580cfd9c3f7de99aca3463f60a61c4d8bea1a9536251"
+        },
+        {
+          "path": "lib/md048.mjs",
+          "sha256": "71ead6bef74ba5fbd29dfb9d0e46e471927f4a008b64eea8fcc42ded6c854513"
+        },
+        {
+          "path": "lib/md049-md050.mjs",
+          "sha256": "4a4859ee07fb2d19d65d662c39ad13d0635689b5daef35dca71763d32a1b8672"
+        },
+        {
+          "path": "lib/md051.mjs",
+          "sha256": "f84035f0e88099d23bd0b19caf86512b6e5e0dfea1aeb379967174393d6ddf4e"
+        },
+        {
+          "path": "lib/md052.mjs",
+          "sha256": "ae095ffec8da52d3e9ed79419ba03c8f5a8778c07c9d16a866d4a7804452cb61"
+        },
+        {
+          "path": "lib/md053.mjs",
+          "sha256": "e16b1d619d3dfc48cf2396863c47b6928dc2b4ea16b68e6909f7e13ae7cfe235"
+        },
+        {
+          "path": "lib/md054.mjs",
+          "sha256": "17d3a5d606b95d48dc89bd333b21fe46a1feddd4470d6863b4dd910f09f4328d"
+        },
+        {
+          "path": "lib/md055.mjs",
+          "sha256": "4d24f93c7b3ea408fb21f0423467be29d0c9dbf2dff56219b1a04a4b1010111d"
+        },
+        {
+          "path": "lib/md056.mjs",
+          "sha256": "694c41f1c744af6ca5213bcd8b0045287ff9e08cb041bb9805a8cbfbbeaa6f71"
+        },
+        {
+          "path": "lib/md058.mjs",
+          "sha256": "d1aebb603df424710bc144e6d4b7b112529b973594168bb1579873d034886971"
+        },
+        {
+          "path": "lib/md059.mjs",
+          "sha256": "68468259978d4bcadfff41b0eb83f29a05cdced44c7f946f21cbed2d22a5d22f"
+        },
+        {
+          "path": "lib/md060.mjs",
+          "sha256": "978f243f01acec9fd2f0fca0a732439c6a21cc69bd13cb984f2844c08254c322"
+        },
+        {
+          "path": "lib/micromark-parse.mjs",
+          "sha256": "372fbbd02815edfd51e04efdaabc66463c71edf8ea145b81198a09e1abece115"
+        },
+        {
+          "path": "lib/micromark-types.d.mts",
+          "sha256": "cf6ccb295a857a26c7fadd315d4bd5546701659104e290d6c99287f276a6bc25"
+        },
+        {
+          "path": "lib/node-imports-browser.mjs",
+          "sha256": "2ef9fb570a991bbcd95777396df8115a92333e414e74b41badb73131fc4bad01"
+        },
+        {
+          "path": "lib/node-imports-node.mjs",
+          "sha256": "37c5a180332c31726617e8e79fe6f6c5aa5df3290e73ac24dd84f236367acd89"
+        },
+        {
+          "path": "lib/parse-configuration.mjs",
+          "sha256": "d12d7edbe6fd39e3316c7a5bcfc6b007528daf6bfb9f6ee876c43664c3aeb003"
+        },
+        {
+          "path": "lib/resolve-module.cjs",
+          "sha256": "fcb3d22409ec47ee91afa025643310533f54ee764b0e351b20ffa75bd807da72"
+        },
+        {
+          "path": "lib/resolve-module.d.cts",
+          "sha256": "8fca884760dc406fb8d9ee26fdb3d1a9403845f608b0b9bea23cd3065edc9d9f"
+        },
+        {
+          "path": "lib/rules.mjs",
+          "sha256": "0f4206e0f57b10af1aea8ac71d01824dd5b6d91a10b0ba5b3c447c7d6a3173d4"
+        },
+        {
+          "path": "lib/types.d.mts",
+          "sha256": "3712a15527bce3d6db89133ee7ac8ce050d5566e3693ce06c85d2037afa12e70"
+        },
+        {
+          "path": "package.json",
+          "sha256": "80ff9ae21277b5d73a761d723c6d19d6ff0c9d0d3a13c39bdcf04af978501269"
+        },
+        {
+          "path": "schema/.markdownlint.jsonc",
+          "sha256": "7713de00aadd90f515b0b396e407515358f021280d8c18f630f3ba0ab16846ab"
+        },
+        {
+          "path": "schema/.markdownlint.yaml",
+          "sha256": "a439e665ee8120c069ebbb9b74cbdabca3c6d1106359bd89ebb713b9f6722bdb"
+        },
+        {
+          "path": "schema/ValidatingConfiguration.md",
+          "sha256": "40ea0c3b0a4f659d55184a2bc9f2a535040c6c88cacf9c3fce82457a4c9cf112"
+        },
+        {
+          "path": "schema/markdownlint-config-schema-strict.json",
+          "sha256": "a24390a464c03351b8361ceef6598653754eb0608def73166ee9b11af66c53db"
+        },
+        {
+          "path": "schema/markdownlint-config-schema.json",
+          "sha256": "500e390aaf7cdd3c2ea19acc791f43d697e35a887eabeceb7791c2efcae9a1fa"
+        },
+        {
+          "path": "style/all.json",
+          "sha256": "0eaca7c350cb72a268fe3a9cc14ee4293a7b693d76904649e116c2612e42ee6e"
+        },
+        {
+          "path": "style/cirosantilli.json",
+          "sha256": "13baa5b546831afa3acec07c3189afc3fd3d50fd2cdb02ce16c09cd67dbb7155"
+        },
+        {
+          "path": "style/prettier.json",
+          "sha256": "eeb4fa1eec47c145301dc05aba99a0662cbc1fbc2f5f7eff18a50c01de7200e6"
+        },
+        {
+          "path": "style/relaxed.json",
+          "sha256": "c2b76a13d67f722403d5330aaf4d05e79125f8cf2972f37077a36b25198ecb87"
+        }
+      ],
+      "licenseCopy": {
+        "file": "LICENSE-markdownlint.txt",
+        "sha256": "cdc3c1fb00ee139442c915e98afac039223569a00527e9f7aefc54f92019aec4",
+        "bytesUtf8": 1073,
+        "endsWithLF": true,
+        "tailHex": "4f54484552204445414c494e475320494e0a54484520534f4654574152452e0a",
+        "sourcePath": "LICENSE",
+        "modifications": "none"
+      }
+    },
+    {
+      "name": "markdownlint-cli2-formatter-default",
+      "version": "0.0.6",
+      "gitCommit": "613b0e9e64eac8e51f0cdc645af0a6026f6cdf50",
+      "repository": "git+https://github.com/DavidAnson/markdownlint-cli2.git",
+      "license": "MIT",
+      "tarball": "https://registry.npmjs.org/markdownlint-cli2-formatter-default/-/markdownlint-cli2-formatter-default-0.0.6.tgz",
+      "sri": "sha512-VVDGKsq9sgzu378swJ0fcHfSicUnMxnL8gnLm/Q4J/xsNJ4e5bA6lvAz7PCzIl0/No0lHyaWdqVD2jotxOSFMQ==",
+      "tarballSha256": "519eef2d849df2c8c333cc0e1a5e4a537c1ca38a18bc2f47737a43dcadeac9b9",
+      "installedFiles": [
+        {
+          "path": "LICENSE",
+          "sha256": "319fa64eff9e8658eb8883857516b3d2c8439f3d042c6e5270734eb33b0749aa"
+        },
+        {
+          "path": "README.md",
+          "sha256": "a2cf56ce709f1ec7e5f8f2fa80b133f54609d6ef11adecfcc6e8b5d76da92309"
+        },
+        {
+          "path": "markdownlint-cli2-formatter-default.js",
+          "sha256": "25751fbfac80227598d0096fe5aa8a9d91b92f619a28a4bc756245dc56604891"
+        },
+        {
+          "path": "package.json",
+          "sha256": "f26f53d37b03a9c48f4c8a2bc48f4a0656d2da73283883624a3968632bec73cf"
+        }
+      ],
+      "licenseCopy": {
+        "file": "LICENSE-markdownlint-cli2-formatter-default.txt",
+        "sha256": "319fa64eff9e8658eb8883857516b3d2c8439f3d042c6e5270734eb33b0749aa",
+        "bytesUtf8": 1063,
+        "endsWithLF": true,
+        "tailHex": "4f54484552204445414c494e475320494e205448450a534f4654574152452e0a",
+        "sourcePath": "formatter-default/LICENSE",
+        "modifications": "none"
+      }
+    },
+    {
+      "name": "markdownlint-cli2-formatter-json",
+      "version": "0.0.10",
+      "gitCommit": "24710a7febf3eb8b05a34da9078b40fa2133125b",
+      "repository": "git+https://github.com/DavidAnson/markdownlint-cli2.git",
+      "license": "MIT",
+      "tarball": "https://registry.npmjs.org/markdownlint-cli2-formatter-json/-/markdownlint-cli2-formatter-json-0.0.10.tgz",
+      "sri": "sha512-gSmKDntKWRjzgxVSD53ewMIVV/GMPNP4Va6g8drOTCDjdQJ8eF6eVJe794Dkc/3oPhGkpL0UE/xDlJwB4uR96Q==",
+      "tarballSha256": "da3f606b7b3ed7bb6f21f57d7f56dd1dd35212bccc713ef96e4f51744171f76d",
+      "installedFiles": [
+        {
+          "path": "LICENSE",
+          "sha256": "319fa64eff9e8658eb8883857516b3d2c8439f3d042c6e5270734eb33b0749aa"
+        },
+        {
+          "path": "README.md",
+          "sha256": "c123bd964b2e29fb158b898f0cf78eed37d0cae75449cf5f901b0d8e219e9a36"
+        },
+        {
+          "path": "markdownlint-cli2-formatter-json.js",
+          "sha256": "3b7ab306111288f15dc185f95872e9f95f8314bde4bfbb285cda3ef5dd5d1fab"
+        },
+        {
+          "path": "package.json",
+          "sha256": "0e86fcf2ef3d6f06f230d9ab0a1cc8643673db8ab1ecdeb0b8e1d409dc50a58a"
+        }
+      ],
+      "licenseCopy": {
+        "file": "LICENSE-markdownlint-cli2-formatter-json.txt",
+        "sha256": "319fa64eff9e8658eb8883857516b3d2c8439f3d042c6e5270734eb33b0749aa",
+        "bytesUtf8": 1063,
+        "endsWithLF": true,
+        "tailHex": "4f54484552204445414c494e475320494e205448450a534f4654574152452e0a",
+        "sourcePath": "formatter-json/LICENSE",
+        "modifications": "none"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "L11-success",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "clean.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 clean.md",
+      "startedAt": "2026-10-09T05:13:47.176358+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "success.txt",
+      "sha256": "4db619a46ed66203be5829d86e5e782d2034010ed004f833ed0fb60da6e874d8",
+      "bytesUtf8": 112,
+      "endsWithLF": true,
+      "tailHex": "6c650a53756d6d6172793a20302069737375657320696e20302066696c65730a"
+    },
+    {
+      "id": "L11-errors",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "errors.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 errors.md",
+      "startedAt": "2026-10-09T05:13:47.812556+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "errors.txt",
+      "sha256": "af7752759b6b92f3e587da16cfd37c06bcf85b918991d9da9a9e65c5ad45a06d",
+      "bytesUtf8": 427,
+      "endsWithLF": true,
+      "tailHex": "756d656e74205b436f6e746578743a20225365636f6e64207469746c65225d0a"
+    },
+    {
+      "id": "L11-multifile-unicode",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "clean.md",
+        "errors.md",
+        "path spaces/café 🧪.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 clean.md errors.md 'path spaces/café 🧪.md'",
+      "startedAt": "2026-10-09T05:13:48.157283+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "multifile-unicode.txt",
+      "sha256": "1b5164d34484d8644617ff9808e0ed7e1bfa1a204eff5da1665c96fd7e71f7df",
+      "bytesUtf8": 546,
+      "endsWithLF": true,
+      "tailHex": "652d68746d6c20496e6c696e652048544d4c205b456c656d656e743a20625d0a"
+    },
+    {
+      "id": "L11-custom-rule",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "custom.markdownlint-cli2.jsonc",
+        "path spaces/café 🧪.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config custom.markdownlint-cli2.jsonc 'path spaces/café 🧪.md'",
+      "startedAt": "2026-10-09T05:13:48.510859+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "custom-rule.txt",
+      "sha256": "fb869a435060948b21bbb25a4b101e15000d708f075cc0ec79377fb562e8691d",
+      "bytesUtf8": 282,
+      "endsWithLF": true,
+      "tailHex": "6e746578743a2022f09f988020636166c3a9203c623e4241443c2f623e225d0a"
+    },
+    {
+      "id": "L11-config-ignore",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "ignore.markdownlint-cli2.jsonc",
+        "**/*.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config ignore.markdownlint-cli2.jsonc '**/*.md'",
+      "startedAt": "2026-10-09T05:13:48.818542+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "config-ignore.txt",
+      "sha256": "7aa56087a9d0bdcc5046c0e97d8ef335b032f8869317c3f57c609b4433a6c183",
+      "bytesUtf8": 450,
+      "endsWithLF": true,
+      "tailHex": "652d68746d6c20496e6c696e652048544d4c205b456c656d656e743a20625d0a"
+    },
+    {
+      "id": "L11-glob-ignore",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "**/*.md",
+        "#ignored/**"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 '**/*.md' '#ignored/**'",
+      "startedAt": "2026-10-09T05:13:49.145431+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "glob-ignore.txt",
+      "sha256": "83fe5174a2e1a98695856460ee6df1a96c6343eada21062d539017f97f080907",
+      "bytesUtf8": 521,
+      "endsWithLF": true,
+      "tailHex": "652d68746d6c20496e6c696e652048544d4c205b456c656d656e743a20625d0a"
+    },
+    {
+      "id": "L11-config-invalid",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "invalid.markdownlint-cli2.jsonc",
+        "clean.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config invalid.markdownlint-cli2.jsonc clean.md",
+      "startedAt": "2026-10-09T05:13:49.491900+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "config-invalid.txt",
+      "sha256": "f66cf11dab4c1bc50b96cee3ca0038ce0815a049fe4aead4353d237df94373c2",
+      "bytesUtf8": 1917,
+      "endsWithLF": true,
+      "tailHex": "726b646f776e6c696e742d636c69322d62696e2e6d6a733a31343a32320a7d0a"
+    },
+    {
+      "id": "L11-config-missing",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "missing.markdownlint-cli2.jsonc",
+        "clean.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config missing.markdownlint-cli2.jsonc clean.md",
+      "startedAt": "2026-10-09T05:13:49.815410+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "config-missing.txt",
+      "sha256": "eb45da89d50bd9c9b91b2fdd97ac69c72a0ad6d254a1b165a010ff7ca68ea380",
+      "bytesUtf8": 2189,
+      "endsWithLF": true,
+      "tailHex": "2e6d61726b646f776e6c696e742d636c69322e6a736f6e63270a20207d0a7d0a"
+    },
+    {
+      "id": "L11-literal-missing",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        ":missing.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 :missing.md",
+      "startedAt": "2026-10-09T05:13:50.124714+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "literal-missing.txt",
+      "sha256": "7d319082fc1025ab327c491f774ea4d441956d064d5169f26a86430ce2ee104e",
+      "bytesUtf8": 419,
+      "endsWithLF": true,
+      "tailHex": "6e742d6e61746976652f70726f6a6563742f6d697373696e672e6d64270a7d0a"
+    },
+    {
+      "id": "L11-json-file",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "json-file.markdownlint-cli2.jsonc",
+        "errors.md",
+        "path spaces/café 🧪.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config json-file.markdownlint-cli2.jsonc errors.md 'path spaces/café 🧪.md'",
+      "startedAt": "2026-10-09T05:13:50.446389+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "json-file.txt",
+      "sha256": "103499a5d45eff895b2f19116b49eb60cdbb01de28399b5994920dca296fae62",
+      "bytesUtf8": 140,
+      "endsWithLF": true,
+      "tailHex": "65730a53756d6d6172793a20342069737375657320696e20322066696c65730a",
+      "sideArtifacts": [
+        {
+          "file": "requested-results.json",
+          "sha256": "4f275d9e36d0ad23a40fdefdfb9c0310e6a725c65d274149457fdc471a63b223",
+          "bytesUtf8": 1769,
+          "endsWithLF": false,
+          "tailHex": "6c2c0a20202020227365766572697479223a20226572726f72220a20207d0a5d"
+        }
+      ]
+    },
+    {
+      "id": "L11-json-stdout-errors",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "json-stdout.markdownlint-cli2.jsonc",
+        "errors.md",
+        "path spaces/café 🧪.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config json-stdout.markdownlint-cli2.jsonc errors.md 'path spaces/café 🧪.md'",
+      "startedAt": "2026-10-09T05:13:50.797775+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "json-stdout-errors.txt",
+      "sha256": "4f275d9e36d0ad23a40fdefdfb9c0310e6a725c65d274149457fdc471a63b223",
+      "bytesUtf8": 1769,
+      "endsWithLF": false,
+      "tailHex": "6c2c0a20202020227365766572697479223a20226572726f72220a20207d0a5d"
+    },
+    {
+      "id": "L11-json-stdout-success",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "json-stdout.markdownlint-cli2.jsonc",
+        "clean.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config json-stdout.markdownlint-cli2.jsonc clean.md",
+      "startedAt": "2026-10-09T05:13:51.166330+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "json-stdout-success.txt",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytesUtf8": 2,
+      "endsWithLF": false,
+      "tailHex": "5b5d"
+    },
+    {
+      "id": "L11-reporter-collision",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2",
+        "--config",
+        "collision.markdownlint-cli2.jsonc",
+        "clean.md"
+      ],
+      "command": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L11-markdownlint-native/node_modules/.bin/markdownlint-cli2 --config collision.markdownlint-cli2.jsonc clean.md",
+      "startedAt": "2026-10-09T05:13:51.505843+00:00",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "file": "reporter-collision.txt",
+      "sha256": "4ba1ca5da9c585ffdab1426a02203a8ed2dbeef860de468a7adc7d35afafcb01",
+      "bytesUtf8": 229,
+      "endsWithLF": true,
+      "tailHex": "652d6c656e677468207265706f727465722d6f776e656420636f6e746578740a"
+    }
+  ],
+  "candidates": [
+    {
+      "file": "success.progress-candidate.txt",
+      "sha256": "f4fb33f9ff00188e36004456dc914ed319426947ba6118cae07f702682a286f2",
+      "bytesUtf8": 78,
+      "endsWithLF": true,
+      "tailHex": "31290a53756d6d6172793a20302069737375657320696e20302066696c65730a",
+      "input": "success.txt",
+      "savedBytesUtf8": 34,
+      "approved": false,
+      "reason": "Producer-owned progress is not authenticated; reporter collision retained"
+    }
+  ],
+  "sourceEvidence": {
+    "file": "SOURCE-EVIDENCE.md",
+    "sha256": "3c7deb08719b9c63267d65a0f437e4c12f92f7805c32c1a5a0743da7876d0d04",
+    "bytesUtf8": 10263,
+    "endsWithLF": true,
+    "tailHex": "202020636f6e74656e742c0a202020202275746638220a2020293b0a6060600a",
+    "modifications": "selected verbatim line windows; Markdown headings/fences added"
+  },
+  "projectSources": [
+    {
+      "file": "project/clean.md",
+      "sha256": "6d6f8ac67a2f4a9d284c8f777fce02a42007ba817061a8b23fd45573d7d0a1af",
+      "bytesUtf8": 26,
+      "endsWithLF": true,
+      "tailHex": "2320436c65616e0a0a53686f7274207061726167726170682e0a"
+    },
+    {
+      "file": "project/collision-reporter.cjs",
+      "sha256": "e5bdf0d6167f8503f200b764d072c95cc940107f15b16037d652cb40ec5188df",
+      "bytesUtf8": 308,
+      "endsWithLF": true,
+      "tailHex": "7468207265706f727465722d6f776e656420636f6e7465787422293b0a7d3b0a"
+    },
+    {
+      "file": "project/collision.markdownlint-cli2.jsonc",
+      "sha256": "29225e9660c0bc16490b150d21b6410c6f867595677ce7dd11f61ebfd8afef0c",
+      "bytesUtf8": 55,
+      "endsWithLF": true,
+      "tailHex": "5b222e2f636f6c6c6973696f6e2d7265706f727465722e636a73225d5d207d0a"
+    },
+    {
+      "file": "project/custom-rule.cjs",
+      "sha256": "15ddc3e9b38948e8a9314fc90b0db8a2e7b5260d6efefb9c30cbf2f4b9bf96ba",
+      "bytesUtf8": 609,
+      "endsWithLF": true,
+      "tailHex": "20202020207d293b0a2020202020207d0a202020207d293b0a20207d0a7d3b0a"
+    },
+    {
+      "file": "project/custom.markdownlint-cli2.jsonc",
+      "sha256": "1380f759d05416273ec0ae210ebe21ee6a2b4e7995eba2e7fb04193bc5e71221",
+      "bytesUtf8": 94,
+      "endsWithLF": true,
+      "tailHex": "52756c6573223a205b222e2f637573746f6d2d72756c652e636a73225d0a7d0a"
+    },
+    {
+      "file": "project/errors.md",
+      "sha256": "025362e07d31acaa8c797f1265755f82bd8c3962ed8b81d59dff238c6907b59b",
+      "bytesUtf8": 74,
+      "endsWithLF": true,
+      "tailHex": "6e6c696e652048544d4c3c2f623e2e0a0a23205365636f6e64207469746c650a"
+    },
+    {
+      "file": "project/ignore.markdownlint-cli2.jsonc",
+      "sha256": "d1e6c3f70cf00225e433968e5541669c5ac3e64cc4cff239d0dc78d26cbd2fbd",
+      "bytesUtf8": 85,
+      "endsWithLF": true,
+      "tailHex": "7265642f2a2a225d2c0a20202273686f77466f756e64223a20747275650a7d0a"
+    },
+    {
+      "file": "project/ignored/bad.md",
+      "sha256": "484aca32f7f8ad2d1919b9bf722d972825ecc8cd4431a87474b98315115b87ef",
+      "bytesUtf8": 22,
+      "endsWithLF": true,
+      "tailHex": "2323202049676e6f7265642076696f6c6174696f6e0a"
+    },
+    {
+      "file": "project/invalid.markdownlint-cli2.jsonc",
+      "sha256": "eba9fa85f912c4afe948eb558bc90954d1c22baf01602ebf23b3e98263d05614",
+      "bytesUtf8": 12,
+      "endsWithLF": true,
+      "tailHex": "7b2022636f6e666967223a0a"
+    },
+    {
+      "file": "project/json-file.markdownlint-cli2.jsonc",
+      "sha256": "4de6a12d66ebed3f4360dc1f871f4192f249cf49efeb9ee07c790900937b458c",
+      "bytesUtf8": 114,
+      "endsWithLF": true,
+      "tailHex": "726573756c74732e6a736f6e222c2022737061636573223a20327d5d5d0a7d0a"
+    },
+    {
+      "file": "project/json-stdout.markdownlint-cli2.jsonc",
+      "sha256": "04bf7344699d50a4c3ae2bfbaaca9b46f8517fd81a8a249b956af5aa85ff67dd",
+      "bytesUtf8": 145,
+      "endsWithLF": true,
+      "tailHex": "222f6465762f7374646f7574222c2022737061636573223a20327d5d5d0a7d0a"
+    },
+    {
+      "file": "project/path spaces/café 🧪.md",
+      "sha256": "ff8b1c2b2c0349417218f10f219a1535ed6401faf29fdd436250318d6d29ae56",
+      "bytesUtf8": 33,
+      "endsWithLF": true,
+      "tailHex": "20556e69636f64650a0af09f988020636166c3a9203c623e4241443c2f623e0a"
+    }
+  ]
+}

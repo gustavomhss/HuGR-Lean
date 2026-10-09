@@ -1,0 +1,8 @@
+markdownlint-cli2 v0.23.3 (markdownlint v0.41.1)
+Finding: clean.md
+Linting: 1 file
+Summary: 0 issues in 0 files
+Finding: clean.md
+Linting: 1 file
+Summary: 0 issues in 0 files
+clean.md:3:1 MD013/line-length reporter-owned context
