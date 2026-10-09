@@ -5,6 +5,55 @@
   "platform": "darwin/x64",
   "versions": {"cargo": "cargo 1.98.0 (797e8a9bc 2026-08-05)", "rustdoc": "rustdoc 1.98.0 (88d9e12ae 2026-08-18)", "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)"},
   "archives": [
+    "actions-20261009/verify-import.py",
+    "actions-20261009/SOURCES.md",
+    "actions-20261009/bins-checking.json",
+    "actions-20261009/bins-checking.log",
+    "actions-20261009/capture.py",
+    "actions-20261009/cargo.json",
+    "actions-20261009/cargo.log",
+    "actions-20261009/channel-rust-nightly.toml",
+    "actions-20261009/config-control.json",
+    "actions-20261009/config-control.log",
+    "actions-20261009/cross-aarch64.json",
+    "actions-20261009/cross-aarch64.log",
+    "actions-20261009/default-nooffline.json",
+    "actions-20261009/default-nooffline.log",
+    "actions-20261009/environment.json",
+    "actions-20261009/html/bins-checking/doc/c05_alpha/index.html",
+    "actions-20261009/html/bins-checking/doc/c05_tool/index.html",
+    "actions-20261009/html/config-control/doc/c05_alpha/index.html",
+    "actions-20261009/html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/fn.aarch64_marker.html",
+    "actions-20261009/html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/index.html",
+    "actions-20261009/html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_tool/index.html",
+    "actions-20261009/html/default-nooffline/doc/c05_alpha/index.html",
+    "actions-20261009/html/default-nooffline/doc/c05_beta/index.html",
+    "actions-20261009/html/default-nooffline/doc/c05_tool/index.html",
+    "actions-20261009/html/user-config/doc/c05_alpha/fn.user_config_marker.html",
+    "actions-20261009/html/user-config/doc/c05_alpha/index.html",
+    "actions-20261009/identity.json",
+    "actions-20261009/import-artifact.py",
+    "actions-20261009/install.json",
+    "actions-20261009/install.log",
+    "actions-20261009/project/Cargo.lock",
+    "actions-20261009/project/Cargo.toml",
+    "actions-20261009/project/beta/Cargo.toml",
+    "actions-20261009/project/beta/src/lib.rs",
+    "actions-20261009/project/src/lib.rs",
+    "actions-20261009/project/src/main.rs",
+    "actions-20261009/rustc.json",
+    "actions-20261009/rustc.log",
+    "actions-20261009/rustdoc.json",
+    "actions-20261009/rustdoc.log",
+    "actions-20261009/rustup.json",
+    "actions-20261009/rustup.log",
+    "actions-20261009/supplement.json",
+    "actions-20261009/target-install.json",
+    "actions-20261009/target-install.log",
+    "actions-20261009/user-config.json",
+    "actions-20261009/user-config.log",
+    "actions-20261009/user-config.toml",
+    "actions-20261009/artifact-receipt.json",
     "default/expected.txt", "cached/expected.txt", "no-deps/expected.txt",
     "workspace/expected.txt", "package/expected.txt", "features/expected.txt",
     "explicit-target/expected.txt", "private-items/expected.txt", "workspace-warning/expected.txt",
@@ -160,6 +209,285 @@
       "cacheFrom": null, "targetDirectory": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-options-q5Sxej/target",
       "artifacts": [{"file": "target/x86_64-apple-darwin/doc/doc_alpha/index.html", "sha256": "df578919d544791b22373b99e7dfc288bf67d1ece572f4b5920b5e532b69f5d4"}],
       "provenance": {"sha256": "80f52a0fb697775b5a06b4be17ee977a5e5fa259ddbe4329b2d92746be29de2e", "record": "SOURCES.md", "recipe": "capture-options.mjs", "recipeSHA256": "56b8ac47ecbc7761e9aa00e6a0232b1715ce215626ccf901abea2fbbfaf35a69", "completedStream": true}
+    },
+    {
+      "id": "actions-default-nooffline",
+      "name": "cargo-doc-actions-default-nooffline",
+      "family": "cargo-doc",
+      "argv": [
+        "cargo",
+        "doc",
+        "--color",
+        "never"
+      ],
+      "command": "cargo doc --color never",
+      "cwd": "/home/runner/work/_temp/c05-project",
+      "source": "shell",
+      "version": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)",
+      "versions": {
+        "rustup": "rustup 1.29.1 (d95a37b6a 2026-08-13)\ninfo: This is the version for the rustup toolchain manager, not the rustc compiler.\ninfo: the currently active `rustc` version is `rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)`\n",
+        "cargo": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)\nrelease: 1.101.0-nightly\ncommit-hash: f3865b2a4d1acc5276f6b3c67d0e057f4dab3928\ncommit-date: 2026-09-29\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+        "rustc": "rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n",
+        "rustdoc": "rustdoc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustdoc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n"
+      },
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "file": "actions-20261009/default-nooffline.txt",
+      "receipt": "actions-20261009/default-nooffline.json",
+      "inputBytes": 469,
+      "status": "passthrough",
+      "removableBytes": 0,
+      "artifacts": [
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/default-nooffline/doc/c05_alpha/index.html",
+          "captureFile": "actions-20261009/html/default-nooffline/doc/c05_alpha/index.html",
+          "sha256": "6a8efe6f97e25e0886907bbf8368ff3a08028317af4d4f0011c467378fcbcafe"
+        },
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/default-nooffline/doc/c05_beta/index.html",
+          "captureFile": "actions-20261009/html/default-nooffline/doc/c05_beta/index.html",
+          "sha256": "08976e17b9437bf132c3d27f10ee61807ce608435221e94743d103f9c8860081"
+        },
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/default-nooffline/doc/c05_tool/index.html",
+          "captureFile": "actions-20261009/html/default-nooffline/doc/c05_tool/index.html",
+          "sha256": "f9b7046fb3412ee00b2c3d3c300d4bd38c8c663277faf38cfeb8c1eaf1cee936"
+        }
+      ],
+      "nativeOutcome": "expected",
+      "provenance": {
+        "sha256": "12c7ac6e35c78007dbcf1bc42776e9c19434f39cbc0901d3331d8a9b8678b27b",
+        "record": "actions-20261009/SOURCES.md",
+        "recipe": "actions-20261009/capture.py",
+        "recipeSHA256": "0f99ae8d2d240e50d9f814fe206d962ebb2b3f33b23171829e8479932900506d",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "actions-bins-checking",
+      "name": "cargo-doc-actions-bins-checking",
+      "family": "cargo-doc",
+      "argv": [
+        "cargo",
+        "doc",
+        "--color",
+        "never",
+        "--bins",
+        "--no-deps"
+      ],
+      "command": "cargo doc --color never --bins --no-deps",
+      "cwd": "/home/runner/work/_temp/c05-project",
+      "source": "shell",
+      "version": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)",
+      "versions": {
+        "rustup": "rustup 1.29.1 (d95a37b6a 2026-08-13)\ninfo: This is the version for the rustup toolchain manager, not the rustc compiler.\ninfo: the currently active `rustc` version is `rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)`\n",
+        "cargo": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)\nrelease: 1.101.0-nightly\ncommit-hash: f3865b2a4d1acc5276f6b3c67d0e057f4dab3928\ncommit-date: 2026-09-29\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+        "rustc": "rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n",
+        "rustdoc": "rustdoc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustdoc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n"
+      },
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "file": "actions-20261009/bins-checking.txt",
+      "receipt": "actions-20261009/bins-checking.json",
+      "inputBytes": 375,
+      "status": "passthrough",
+      "removableBytes": 0,
+      "artifacts": [
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/bins-checking/doc/c05_alpha/index.html",
+          "captureFile": "actions-20261009/html/bins-checking/doc/c05_alpha/index.html",
+          "sha256": "6a8efe6f97e25e0886907bbf8368ff3a08028317af4d4f0011c467378fcbcafe"
+        },
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/bins-checking/doc/c05_tool/index.html",
+          "captureFile": "actions-20261009/html/bins-checking/doc/c05_tool/index.html",
+          "sha256": "f9b7046fb3412ee00b2c3d3c300d4bd38c8c663277faf38cfeb8c1eaf1cee936"
+        }
+      ],
+      "nativeOutcome": "expected",
+      "provenance": {
+        "sha256": "e9689ffa0d0293c394425a4b772512afbb5662d34f69f21ee2024b7e0c72ba48",
+        "record": "actions-20261009/SOURCES.md",
+        "recipe": "actions-20261009/capture.py",
+        "recipeSHA256": "0f99ae8d2d240e50d9f814fe206d962ebb2b3f33b23171829e8479932900506d",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "actions-cross-aarch64",
+      "name": "cargo-doc-actions-cross-aarch64",
+      "family": "cargo-doc",
+      "argv": [
+        "cargo",
+        "doc",
+        "--color",
+        "never",
+        "--target",
+        "aarch64-unknown-linux-gnu",
+        "--no-deps"
+      ],
+      "command": "cargo doc --color never --target aarch64-unknown-linux-gnu --no-deps",
+      "cwd": "/home/runner/work/_temp/c05-project",
+      "source": "shell",
+      "version": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)",
+      "versions": {
+        "rustup": "rustup 1.29.1 (d95a37b6a 2026-08-13)\ninfo: This is the version for the rustup toolchain manager, not the rustc compiler.\ninfo: the currently active `rustc` version is `rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)`\n",
+        "cargo": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)\nrelease: 1.101.0-nightly\ncommit-hash: f3865b2a4d1acc5276f6b3c67d0e057f4dab3928\ncommit-date: 2026-09-29\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+        "rustc": "rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n",
+        "rustdoc": "rustdoc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustdoc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n"
+      },
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "file": "actions-20261009/cross-aarch64.txt",
+      "receipt": "actions-20261009/cross-aarch64.json",
+      "inputBytes": 419,
+      "status": "passthrough",
+      "removableBytes": 0,
+      "artifacts": [
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/fn.aarch64_marker.html",
+          "captureFile": "actions-20261009/html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/fn.aarch64_marker.html",
+          "sha256": "8bb4637377e22d1e7f5298e4b6272a4de639d48ed3293d632296ab0b65ff21a8"
+        },
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/index.html",
+          "captureFile": "actions-20261009/html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/index.html",
+          "sha256": "ed688fdc083d993947ecabbff235ff89f270629ed31f3f5e2378733fc479a8f5"
+        },
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_tool/index.html",
+          "captureFile": "actions-20261009/html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_tool/index.html",
+          "sha256": "f9b7046fb3412ee00b2c3d3c300d4bd38c8c663277faf38cfeb8c1eaf1cee936"
+        }
+      ],
+      "nativeOutcome": "expected",
+      "provenance": {
+        "sha256": "31289efb4b5363344e103788a78a86f0c79bc9e50c95ba95c32e32bdff547e30",
+        "record": "actions-20261009/SOURCES.md",
+        "recipe": "actions-20261009/capture.py",
+        "recipeSHA256": "0f99ae8d2d240e50d9f814fe206d962ebb2b3f33b23171829e8479932900506d",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "actions-config-control",
+      "name": "cargo-doc-actions-config-control",
+      "family": "cargo-doc",
+      "argv": [
+        "cargo",
+        "doc",
+        "--color",
+        "never",
+        "--lib",
+        "--no-deps"
+      ],
+      "command": "cargo doc --color never --lib --no-deps",
+      "cwd": "/home/runner/work/_temp/c05-project",
+      "source": "shell",
+      "version": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)",
+      "versions": {
+        "rustup": "rustup 1.29.1 (d95a37b6a 2026-08-13)\ninfo: This is the version for the rustup toolchain manager, not the rustc compiler.\ninfo: the currently active `rustc` version is `rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)`\n",
+        "cargo": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)\nrelease: 1.101.0-nightly\ncommit-hash: f3865b2a4d1acc5276f6b3c67d0e057f4dab3928\ncommit-date: 2026-09-29\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+        "rustc": "rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n",
+        "rustdoc": "rustdoc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustdoc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n"
+      },
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "file": "actions-20261009/config-control.txt",
+      "receipt": "actions-20261009/config-control.json",
+      "inputBytes": 309,
+      "status": "passthrough",
+      "removableBytes": 0,
+      "artifacts": [
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/config-control/doc/c05_alpha/index.html",
+          "captureFile": "actions-20261009/html/config-control/doc/c05_alpha/index.html",
+          "sha256": "6a8efe6f97e25e0886907bbf8368ff3a08028317af4d4f0011c467378fcbcafe"
+        }
+      ],
+      "nativeOutcome": "expected",
+      "provenance": {
+        "sha256": "bb0765e3ca376db6771b16065e830b59d1fd2e30ae0e1207ad4afc62b446911e",
+        "record": "actions-20261009/SOURCES.md",
+        "recipe": "actions-20261009/capture.py",
+        "recipeSHA256": "0f99ae8d2d240e50d9f814fe206d962ebb2b3f33b23171829e8479932900506d",
+        "completedStream": true
+      }
+    },
+    {
+      "id": "actions-user-config",
+      "name": "cargo-doc-actions-user-config",
+      "family": "cargo-doc",
+      "argv": [
+        "cargo",
+        "doc",
+        "--color",
+        "never",
+        "--lib",
+        "--no-deps"
+      ],
+      "command": "cargo doc --color never --lib --no-deps",
+      "cwd": "/home/runner/work/_temp/c05-project",
+      "source": "shell",
+      "version": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)",
+      "versions": {
+        "rustup": "rustup 1.29.1 (d95a37b6a 2026-08-13)\ninfo: This is the version for the rustup toolchain manager, not the rustc compiler.\ninfo: the currently active `rustc` version is `rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)`\n",
+        "cargo": "cargo 1.101.0-nightly (f3865b2a4 2026-09-29)\nrelease: 1.101.0-nightly\ncommit-hash: f3865b2a4d1acc5276f6b3c67d0e057f4dab3928\ncommit-date: 2026-09-29\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+        "rustc": "rustc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n",
+        "rustdoc": "rustdoc 1.101.0-nightly (1d81eb4ad 2026-10-07)\nbinary: rustdoc\ncommit-hash: 1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6\ncommit-date: 2026-10-07\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3\n"
+      },
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "file": "actions-20261009/user-config.txt",
+      "receipt": "actions-20261009/user-config.json",
+      "inputBytes": 306,
+      "status": "passthrough",
+      "removableBytes": 0,
+      "artifacts": [
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/user-config/doc/c05_alpha/fn.user_config_marker.html",
+          "captureFile": "actions-20261009/html/user-config/doc/c05_alpha/fn.user_config_marker.html",
+          "sha256": "0acf7fc439af41c38cbff9bad66cab04dc1e667b245c53c3fb8e4ca8d8b8403c"
+        },
+        {
+          "file": "/home/runner/work/_temp/c05-project/targets/user-config/doc/c05_alpha/index.html",
+          "captureFile": "actions-20261009/html/user-config/doc/c05_alpha/index.html",
+          "sha256": "93822751019d5e0781177b92059bc1c571c83b30df0c4e9970cd81611dcb628a"
+        }
+      ],
+      "nativeOutcome": "expected",
+      "provenance": {
+        "sha256": "21d86bece0fc151b902d6522f5dae56abb221b181eb79edeed2f93f93f5bc50d",
+        "record": "actions-20261009/SOURCES.md",
+        "recipe": "actions-20261009/capture.py",
+        "recipeSHA256": "0f99ae8d2d240e50d9f814fe206d962ebb2b3f33b23171829e8479932900506d",
+        "completedStream": true
+      }
     }
   ]
 }

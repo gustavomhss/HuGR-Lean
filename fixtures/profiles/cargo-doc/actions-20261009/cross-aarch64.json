@@ -1,0 +1,49 @@
+{
+  "argv": [
+    "cargo",
+    "doc",
+    "--color",
+    "never",
+    "--target",
+    "aarch64-unknown-linux-gnu",
+    "--no-deps"
+  ],
+  "cwd": "/home/runner/work/_temp/c05-project",
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "31289efb4b5363344e103788a78a86f0c79bc9e50c95ba95c32e32bdff547e30",
+  "bytes": 419,
+  "startedUnix": 1791578925.5835433,
+  "elapsedSeconds": 0.20790314674377441,
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "runId": "37989424550",
+  "runAttempt": "1",
+  "boundary": "shared stdout/stderr pipe; communicate waits for EOF",
+  "env": {
+    "CARGO_TARGET_DIR": "/home/runner/work/_temp/c05-project/targets/cross-aarch64",
+    "CARGO_HOME": "/home/runner/work/_temp/c05-cargo",
+    "RUSTUP_HOME": "/home/runner/work/_temp/c05-rustup",
+    "RUSTUP_TOOLCHAIN": "nightly-2026-10-08",
+    "RUSTFLAGS": null,
+    "RUSTDOCFLAGS": null
+  },
+  "expectationMet": true,
+  "artifacts": [
+    {
+      "file": "/home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/fn.aarch64_marker.html",
+      "captureFile": "html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/fn.aarch64_marker.html",
+      "sha256": "8bb4637377e22d1e7f5298e4b6272a4de639d48ed3293d632296ab0b65ff21a8"
+    },
+    {
+      "file": "/home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/index.html",
+      "captureFile": "html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_alpha/index.html",
+      "sha256": "ed688fdc083d993947ecabbff235ff89f270629ed31f3f5e2378733fc479a8f5"
+    },
+    {
+      "file": "/home/runner/work/_temp/c05-project/targets/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_tool/index.html",
+      "captureFile": "html/cross-aarch64/aarch64-unknown-linux-gnu/doc/c05_tool/index.html",
+      "sha256": "f9b7046fb3412ee00b2c3d3c300d4bd38c8c663277faf38cfeb8c1eaf1cee936"
+    }
+  ]
+}

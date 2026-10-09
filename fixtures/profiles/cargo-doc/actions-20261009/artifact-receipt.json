@@ -1,0 +1,106 @@
+{
+  "runUrl": "https://github.com/gustavomhss/HuGR-Lean/actions/runs/37989424550",
+  "runId": "37989424550",
+  "runAttempt": 1,
+  "conclusion": "success",
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "workflowSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "artifactId": "11644276831",
+  "artifactSHA256": "db8307b21dc4323cc0b9268f3389408dbaea75d442f791cc4ce24ea786b5934c",
+  "scope": "native-rustdoc-supplement only; exact passthrough; not final CI",
+  "controls": [
+    {
+      "control": "raw-byte-corruption",
+      "rejected": "raw hash mismatch"
+    },
+    {
+      "control": "receipt-eof-loss",
+      "rejected": "incomplete capture"
+    },
+    {
+      "control": "identity-mismatch",
+      "rejected": "identity mismatch"
+    },
+    {
+      "control": "empty-cases",
+      "rejected": "case closure mismatch"
+    },
+    {
+      "control": "project-source-corruption",
+      "rejected": "snapshot mismatch"
+    },
+    {
+      "control": "cfg-proof-projection",
+      "rejected": "cfg HTML control failed"
+    }
+  ],
+  "historicalFileSHA256": {
+    "fixtures/profiles/cargo-doc/CASES.md": "a2bb8b5798e8988a77312fcb290856f599e181ad62011455050aacf48b7fa419",
+    "fixtures/profiles/cargo-doc/RECEIPT.md": "867e6cae5e31147618cbd09c17fbe716a9415d453777649b923259e851b92697",
+    "fixtures/profiles/cargo-doc/SOURCES.md": "3b354f574377e2ecbe37e4d68242797729d61c17a1a4b744229c2a794cd7eb80",
+    "fixtures/profiles/cargo-doc/bins-warning/expected.txt": "f12f526819a1a0bb45a8deff9acf81714683d724fe2ea351840bfda11a2fbf54",
+    "fixtures/profiles/cargo-doc/bins-warning/native.txt": "f12f526819a1a0bb45a8deff9acf81714683d724fe2ea351840bfda11a2fbf54",
+    "fixtures/profiles/cargo-doc/cached/expected.txt": "96a14cb3de7bdea4d25fcefedf5a0efaf3ddcb19b901727a5b1794873371e6a1",
+    "fixtures/profiles/cargo-doc/cached/native.txt": "96a14cb3de7bdea4d25fcefedf5a0efaf3ddcb19b901727a5b1794873371e6a1",
+    "fixtures/profiles/cargo-doc/capture-bins.mjs": "400814ccb5bd9d8794cd32c50e1a6c37891f227904bf8718072c8a4438d6e438",
+    "fixtures/profiles/cargo-doc/capture-checking.mjs": "9d0bd63b520f223215e088934e218ca1253a431c48c105a1f9c9119c15c7082c",
+    "fixtures/profiles/cargo-doc/capture-options.mjs": "56b8ac47ecbc7761e9aa00e6a0232b1715ce215626ccf901abea2fbbfaf35a69",
+    "fixtures/profiles/cargo-doc/capture-three.mjs": "e6df9213de9b722cb7341b7b31db75e8a85086d506969594c8725c40248bf132",
+    "fixtures/profiles/cargo-doc/capture.mjs": "7aa1862f9d7c1b4b39024505d8e753e0449233dca39669d6bd9d68fcb08c64a8",
+    "fixtures/profiles/cargo-doc/cases.json": "188d2bc62719735006e6111277afe32847dfefb4c41e0a464699b6991ae018e7",
+    "fixtures/profiles/cargo-doc/checking-warning/expected.txt": "c140a26372c47851110db7776e71a7becd23fd1e309460a7049d40dd27da9c71",
+    "fixtures/profiles/cargo-doc/checking-warning/native.txt": "ed494aa03d2eeb9064345d4fc3481e165b5c43b5a0c536087e8545c8658698a8",
+    "fixtures/profiles/cargo-doc/default/expected.txt": "60cbf66fc221257f852e65459edfe22bed37a102890ecf2bdd6c13673fa3d77f",
+    "fixtures/profiles/cargo-doc/default/native.txt": "6389df01557f17ed60d83dccd13dff9bf222ce33784357dc92b54188fd470d67",
+    "fixtures/profiles/cargo-doc/explicit-target/expected.txt": "1c33de66fe26d36d961bfd7835baa75b753a14ba41c030aead50082ac39a0e7b",
+    "fixtures/profiles/cargo-doc/explicit-target/native.txt": "455e0f16eb660d31740905752c0e118dbcc8defde66ddfc1c5eb984c13465f58",
+    "fixtures/profiles/cargo-doc/features/expected.txt": "70d8e7336f432a33e9a5ca02379e5a0811b2cbf948ef632cf97c6ea35dde4dfa",
+    "fixtures/profiles/cargo-doc/features/native.txt": "d164a9fed625f7fb1f9cbbb389bfc14e4af3d2133c7e6febf65792c04d203431",
+    "fixtures/profiles/cargo-doc/no-deps/expected.txt": "43aed1cf6466f367554302e566460b42858d798117639975fa76ed230857e340",
+    "fixtures/profiles/cargo-doc/no-deps/native.txt": "51f39ac909ca91b377c4dc38a68dbb00993338a6200a7c944d24462d64f8c281",
+    "fixtures/profiles/cargo-doc/opaque-log/expected.txt": "b12ba739407c3ef4a1617b949e277b17e51a53132c17e78c8909b23fd08b8ad7",
+    "fixtures/profiles/cargo-doc/opaque-log/native.txt": "b12ba739407c3ef4a1617b949e277b17e51a53132c17e78c8909b23fd08b8ad7",
+    "fixtures/profiles/cargo-doc/package/expected.txt": "de8f654d5e5055eda0ab82d480c688507943a352b416be8ac1e20a9d634e6986",
+    "fixtures/profiles/cargo-doc/package/native.txt": "c21f86a5b29a81360a6e35deadfd039b5b45699f3255f3950fbdf3f7593df7eb",
+    "fixtures/profiles/cargo-doc/private-items/expected.txt": "ad224e68537f5ed44d57783bd3a671af0ca9004eb2b8dbad96fc11adf772e04e",
+    "fixtures/profiles/cargo-doc/private-items/native.txt": "0d8a50883b1fb91c5d512f6447b0f5ac5eaf67de07b00e6910f0f58371774556",
+    "fixtures/profiles/cargo-doc/profile-path/expected.txt": "8a002cdb917787e96403602091157b7908d76732f2eec5531052dfcb4e191ea7",
+    "fixtures/profiles/cargo-doc/profile-path/native.txt": "80f52a0fb697775b5a06b4be17ee977a5e5fa259ddbe4329b2d92746be29de2e",
+    "fixtures/profiles/cargo-doc/project/Cargo.toml": "00d9c1e9a193152d822bc533417c15c8df5e3a7f08405b808c5d8fd1c0d3eecd",
+    "fixtures/profiles/cargo-doc/project/alpha/Cargo.toml": "68fb41b6bcc387f8d04e014fa9805a3b9ee363539540e15edccbe1ef7d433297",
+    "fixtures/profiles/cargo-doc/project/alpha/build.rs": "7335033faf5a8dc3513d39e781325979cdc1f515d8e525100680bbdc4ab74d1a",
+    "fixtures/profiles/cargo-doc/project/alpha/src/broken.rs": "bbfe721f470ffee879d4d32da4b3aa9ffaf1cfa24820b8c542880bce211f1ea8",
+    "fixtures/profiles/cargo-doc/project/alpha/src/lib.rs": "3ff02d0dd0fa01fd5654016da033d52e58f8c0885491026d7c4a988aa343c874",
+    "fixtures/profiles/cargo-doc/project/alpha/src/main.rs": "6bb83563d85a21d793f1ae9bc19735be73fba80040b06c51bb698f0320d13670",
+    "fixtures/profiles/cargo-doc/project/beta/Cargo.toml": "4332d6d2efd4778d2efb28a5e433cee08a9bc6b21795c1078e0b9eae4bd37abb",
+    "fixtures/profiles/cargo-doc/project/beta/src/lib.rs": "5a89edfa119c16044e06e4e3a539bdfb0608fa40857579601a52265257d546a3",
+    "fixtures/profiles/cargo-doc/syntax-fail/expected.txt": "ec1de03658fd20fc556422071298a6a29b872c8c61fda66dffe3a1da3809615b",
+    "fixtures/profiles/cargo-doc/syntax-fail/native.txt": "ec1de03658fd20fc556422071298a6a29b872c8c61fda66dffe3a1da3809615b",
+    "fixtures/profiles/cargo-doc/three-warning/expected.txt": "7e3ccb9d7f7ffa1dd136735a1f5d1444c5116eef6e3cde865dcfa250a63508d3",
+    "fixtures/profiles/cargo-doc/three-warning/native.txt": "364afb6e2e9d3514ec94f2434f6cd3faf1bcd1e8c1fc6ccf4739c45e33cd2203",
+    "fixtures/profiles/cargo-doc/workspace-warning/expected.txt": "6641ae6d7cc0a960b1f43bf3f5c5c56e6a7bfe051919d820b76554c83d4f270c",
+    "fixtures/profiles/cargo-doc/workspace-warning/native.txt": "336315faf234e5f6582645597b54140504a8d6774ebaa5a9e4858fe45885028d",
+    "fixtures/profiles/cargo-doc/workspace/expected.txt": "de346733219606c90a01e807486c781e32920794dc045c94fb437f97d52c9e79",
+    "fixtures/profiles/cargo-doc/workspace/native.txt": "d028a7bb024e4630e9a70ec90bbb14696d87dc12902e3b8fedf41cb47a04bc8a"
+  },
+  "historicalCaseIds": [
+    "default",
+    "cached",
+    "no-deps",
+    "workspace",
+    "package",
+    "features",
+    "explicit-target",
+    "private-items",
+    "workspace-warning",
+    "opaque-log",
+    "syntax-fail",
+    "bins-warning",
+    "checking-warning",
+    "three-warning",
+    "profile-path"
+  ],
+  "importModifications": "captured files unchanged; parent cases.json appends prefixed cases/archives; new import receipt/driver",
+  "sourceLicense": "MIT",
+  "leadImport": "cargo-doc fixtures only; exclude branch workflow"
+}

@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "cargo",
+    "--version",
+    "--verbose"
+  ],
+  "cwd": "/home/runner/work/_temp/c05-project",
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "138b8b6f1ef056b7ad3bc38947f7c13c3eeed2cfacecc4b3e67a8fefe331d427",
+  "bytes": 353,
+  "startedUnix": 1791578925.0895672,
+  "elapsedSeconds": 0.022415637969970703,
+  "candidateSha": "6b40ec97e78ed233e2373928854fd9dac02dd802",
+  "runId": "37989424550",
+  "runAttempt": "1",
+  "boundary": "shared stdout/stderr pipe; communicate waits for EOF"
+}
