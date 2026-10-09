@@ -1,0 +1,7 @@
+
+In warn.bash line 3:
+for f in $(ls *.txt); do
+         ^---------^ SC2045 (error): Iterating over ls output is fragile. Use globs.
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2045 -- Iterating over ls output is fragi...

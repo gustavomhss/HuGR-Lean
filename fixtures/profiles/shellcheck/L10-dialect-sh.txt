@@ -1,0 +1,13 @@
+
+In dialect.sh line 2:
+items=(one two)
+      ^-------^ SC3030 (warning): In POSIX sh, arrays are undefined.
+
+
+In dialect.sh line 3:
+echo "${items[0]}"
+      ^---------^ SC3054 (warning): In POSIX sh, array references are undefined.
+
+For more information:
+  https://www.shellcheck.net/wiki/SC3030 -- In POSIX sh, arrays are undefined.
+  https://www.shellcheck.net/wiki/SC3054 -- In POSIX sh, array references are...

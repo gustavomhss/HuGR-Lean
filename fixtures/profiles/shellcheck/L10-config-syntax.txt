@@ -1,0 +1,7 @@
+
+In clean.sh line 1:
+#!/bin/sh
+^-- SC1134 (error): Failed to process syntax.rc, line 1: Missing terminating quote for directive.. Fix any mentioned problems and try again.
+
+For more information:
+  https://www.shellcheck.net/wiki/SC1134 -- Failed to process syntax.rc, line...
