@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "p04-private-project",
+      "dependencies": {
+        "p04-trusted-witness": "1.0.0",
+      },
+    },
+  },
+  "packages": {
+    "p04-trusted-witness": ["p04-trusted-witness@1.0.0", "http://127.0.0.1:49843/witness.tgz", {}, "sha512-O/5gajwkWKUusT62SeGC8rs44b72cAAUywnQ7N757N43cTaqsBUkMA8VmuZFP0/BWkgztDjRrXwMfvzj1vRm9g=="],
+  }
+}

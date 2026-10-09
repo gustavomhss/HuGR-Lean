@@ -130,3 +130,22 @@ test("corpus closure: promoted campaign families preserve declared native result
     }
   }
 });
+test("corpus closure: final native supplements stay exact at default boundary", async () => {
+  const names = ["P01/peer-override-success", "P03/supplement-classic-dependency-deprecation",
+    "P03/supplement-classic-cold-cache-offline-miss", "P03/supplement-berry-dependency-deprecation",
+    "P03/supplement-berry-cold-cache-offline-miss", "P04/registry-blocked-default", "P04/registry-trusted-manifest",
+    "P04/registry-trusted-flag", "P04/registry-offline-request", "G04/cross-linux-amd64-success",
+    "C04/workspace-clean-all", "cargo-doc-actions-default-nooffline", "cargo-doc-actions-bins-checking",
+    "cargo-doc-actions-cross-aarch64", "cargo-doc-actions-config-control", "cargo-doc-actions-user-config"];
+  const entries = await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url)));
+  for (const name of names) {
+    const entry = entries.find(item => item.name === `native/${name}`);
+    assert.ok(entry, `Missing native supplement: ${name}`);
+    assert.equal(entry.status, "passthrough", name);
+    const result = filter(entry.observation);
+    assert.equal(result.status, "passthrough", name);
+    assert.equal("replacement" in result, false, name);
+    assert.equal(result.outputBytes, Buffer.byteLength(entry.observation.output, "utf8"), name);
+    assert.equal(entry.expected, entry.observation.output, name);
+  }
+});

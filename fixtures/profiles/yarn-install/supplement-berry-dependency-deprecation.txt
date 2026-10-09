@@ -1,0 +1,10 @@
+➤ YN0000: · Yarn 4.10.3
+➤ YN0000: ┌ Resolution step
+➤ YN0085: │ + inflight@npm:1.0.6, once@npm:1.4.0, wrappy@npm:1.0.2
+➤ YN0000: └ Completed in 0s 207ms
+➤ YN0000: ┌ Fetch step
+➤ YN0013: │ 3 packages were added to the project (+ 12.79 KiB).
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Link step
+➤ YN0000: └ Completed
+➤ YN0000: · Done in 0s 395ms

@@ -155,15 +155,15 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | C03 | INTEGRATED | campaign/native-v2/C03 / #81 | Clippy suffix preserved; format-control/prefixed-warning fixes cold-reviewed |
 | L02 | INTEGRATED | campaign/native-v2/L02 / #80 | Biome decorative header bars only; exact terminal blank pair |
 | L01 | INTEGRATED | campaign/native-v2/L01 / #83 | ESLint stylish outer LF only; tiny savings, no material-profit claim |
-| P01 | CAPTURED | campaign/native-v2/P01 / #73 | No meaningful progress observed in captured pipe outputs; successful peer-warning case incomplete |
-| C04 | CAPTURED | campaign/native-v2/C04 / #87 | rustfmt silent success and nonzero diffs; no removable material found |
-| C05 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/C05 / #92 | Human-approved bounded exact corpus; zero reduction; native Checking/nonhost target/no-offline/config gaps explicit |
+| P01 | EXACT_CORPUS_INTEGRATED | campaign/supplement-npm / #123 | Native install/audit/lifecycle and successful peer-override warning retained; no progress deletion |
+| C04 | EXACT_CORPUS_INTEGRATED | campaign/supplement-go-fmt / #124 | rustfmt clean --all/workspace success and nonzero diffs retained |
+| C05 | EXACT_CORPUS_INTEGRATED | campaign/cargo-doc-actions / #126 | Native no-offline default, Checking, nonhost docs and config-on/off proof added; zero reduction |
 | C06 | EXACT_CORPUS_INTEGRATED | campaign/cargo-bench-actions / #122 | Real builtin bench captured on Actions/Linux/nightly-2026-10-08; metrics and custom output retained |
 | G03 | CAPTURED | campaign/native-v2/G03 / #90 | Bench metrics/logs retained; nested-progress deletion not approved |
-| G04 | CAPTURED | campaign/native-v2/G04 / #91 | Build/vet/run silent or meaningful output; no reduction proposed |
+| G04 | EXACT_CORPUS_INTEGRATED | campaign/supplement-go-fmt / #124 | Build/vet/run retained; successful Linux/amd64 cross-build proves ELF output from separate original env |
 | G05 | INTEGRATED | campaign/native-v2/G05 / #89 | Paired default go-get downloads; SemVer precedence, major pairing and Go path constraints independently reviewed |
-| P03 | CAPTURED | campaign/native-v2/P03 / #97 | Yarn Classic/Berry pinned separately; Berry skip-build does not establish hook-free progress |
-| P04 | CAPTURED | campaign/native-v2/P04 / #98 | Bun install pinned; 63-byte candidate unapproved; offline/trusted-dependency boundaries incomplete |
+| P03 | EXACT_CORPUS_INTEGRATED | campaign/supplement-yarn / #125 | Classic dependency deprecation and both cold-offline failures added; Berry emits no dependency deprecation for pinned graph |
+| P04 | EXACT_CORPUS_INTEGRATED | campaign/supplement-bun / #127 | Trusted dependency execution and blocked control proven; cold --offline still fetches, no enforcement claim |
 | P05 | CAPTURED | campaign/native-v2/P05 / #95 | pip only-binary still runs backend for explicit local source; no approved deletion |
 | P06 | CAPTURED | campaign/native-v2/P06 / #94 | uv install/sync captures; no material reduction proposed |
 | B01 | CAPTURED | campaign/native-v2/B01 / #96 | Vite plugin can emit identical progress; candidate deletion unapproved |
@@ -281,8 +281,22 @@ SHA `da4c7601ad37cd1305c1ecd52733a84ee8dcc769`, artifact SHA-256
 `6f9f5925813f335cbc543ffa729d064cbcff9bb0b8ed01dbcf914e4808908bbd`, Rust source commit
 `1d81eb4ad9cd207e3e638bd32b17ec4fce8412a6`. Seven real builtin/custom cases independently verified;
 the earlier invalid workflow failed before jobs. This native capture run is not final package CI.
-Remaining focused supplements include successful npm peer-warning, Yarn dependency deprecation,
-Bun trusted-dependency execution, successful Go cross-target, and additional rustfmt/doc witnesses.
+Final focused supplements independently approved and imported: npm `af55d70`, Yarn `06bbe314`,
+Bun `ec858e9`, Go/rustfmt `571ee8e`, rustdoc `528e425`. Sixteen new default-boundary rows remain
+byte-exact; only that new closure and scoped typing ran. Earlier raw/recipe/history bytes preserved.
+Successful npm peer-override is real exit 0 with retained conflicting associations. Classic Yarn emits
+dependency deprecation; Berry 4.10.3 does not emit it for the same pinned graph (not a fabricated
+warning witness). Both cold offline failures captured. Bun trusted postinstall produces source-bound
+stdout and private marker; blocked control uses identical script without execution. Actual metadata
+and tarball GETs falsify enforced offline for the captured Bun --offline invocation.
+Go cross-target success is real Linux/amd64 ELF64, machine 62, never executed on foreign host;
+clean rustfmt --all workspace is genuine exit 0/empty EOF. Rustdoc Actions run
+`https://github.com/gustavomhss/HuGR-Lean/actions/runs/37989424550` proves no-offline default,
+Checking, aarch64 nonhost generated docs, and private config-on/off HTML markers. Candidate/workflow/
+checkout SHA `6b40ec97e78ed233e2373928854fd9dac02dd802`, artifact SHA-256
+`db8307b21dc4323cc0b9268f3389408dbaea75d442f791cc4ce24ea786b5934c`. This is focused native capture,
+not final CI. Capture workflow again excluded; lead full-CI blob unchanged. Scope remains pinned
+versions/hosts/recorded cases, not every arbitrary plugin/config/terminal/platform combination.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.

@@ -106,3 +106,73 @@ Replay individual captures after materializing original sources under R:
 Native lock/cache state and confirmed edits must follow sequence above. Timings and
 registry update advice can change; replay is not promised byte-identical. Stop at
 capture PR for lead review; parser/safe grammar/offline policy remain later work.
+
+## P04 supplement provenance (2026-10-09)
+
+Worktree `opencode/lean-supplement-bun`, branch `campaign/supplement-bun`, frozen
+base `22ddaa66df78b11c02b065dbf9ceda7d377e8817`. Owned files only under this
+fixture family. Original 24 case objects are compared against base by the new
+verifier; old trust-edit and silent-log records remain historical, not proof.
+
+Existing Bun executable/version/revision/SHA above independently rechecked.
+Node `/usr/local/bin/node` returns `v22.17.1\n`, executable SHA-256
+`7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541`.
+Exact tool argv/output/exit and all native argv/cwd/platform/termination live in
+each supplement receipt. Current active root is
+`/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-9jqftl7a`.
+Loopback registry was `http://127.0.0.1:49890`; server stopped after capture.
+
+Original MIT dependency `supplement/dep/{package.json,install.cjs,LICENSE}`,
+name/version `p04-trusted-witness@1.0.0`, has only `postinstall: node install.cjs`.
+No donor source copied. File SHA/size receipts bind those exact bytes to tarball
+members and installed files. Python tarfile creates a real gzip npm package
+archive with `package/` members; no file dependency/symlink optimization. The
+minimal private HTTP registry exposes only this package metadata and tarball.
+Metadata includes `hasInstallScript: true`, dist SHA-512 integrity and SHA-1.
+Generated Bun locks bind version, registry tarball URL and exact SHA-512 bytes.
+
+Collector `supplement/capture.py` SHA-256:
+`a6ecf2e959540b32c38952d60df6142400b04992030611708ccdc2c838d372f4`.
+Final collector source is the visible-attempt revision. Earlier revisions differ
+only in output directory/receipt path, metadata install-script bit, and trusted
+argv (documented in CASES.md); their native outputs/receipts/tarballs are preserved.
+The script creates fresh project/cache per case, private HOME/config/TMPDIR,
+minimal explicit PATH and PRIVATEPROJECT, with no inherited Node/Bun options.
+No global installs or unknown home scripts. The root project has no lifecycle
+scripts; the only dependency script is the owned source above. Script validates
+dependency realpath under PRIVATEPROJECT before writing `postinstall.marker`
+there; package user source is not modified. Installed source hashes and regular
+non-symlink dependency path are observed after every capture.
+
+The visible trusted cases print `P04_DEP_POSTINSTALL_EXECUTED_v1` followed by
+five native-shaped rows, and create the same marker plus LF in the private
+project. Both require `--verbose` for successful dependency stdout to appear.
+Trusted manifest is applied before install; named `--trust` changes an initially
+untrusted manifest and lock. Fresh blocked default has blocked advice, identical
+installed script bytes, no stdout marker and no marker file; the trusted positive
+control proves this witness can detect execution. Root and confirmed attempts
+remain explicit archives; omission of metadata and hidden stdout are not erased.
+
+Cold `--offline --ignore-scripts` makes successful server GETs for both metadata
+and tarball with recorded response sizes/hashes, creates lock and installs exact
+package bytes. **Enforced offline is false for this invocation**, not a pending
+claim inferred only from success. No general unknown-flag policy or network
+isolation claim. The native output still reports blocked postinstall advice.
+
+All active outputs are file-only; all eight non-input supplement `.txt` files
+are declared archives. Outputs are exact merged stdout/stderr OS-pipe bytes
+through EOF with observed exit, 60-second timeout, no PTY. Strong receipts bind
+byte length/SHA-256/readThroughEOF/finalLF/last 32 bytes; all actual final EOFs
+contain LF. Marker stdout is bound to source and side effect, but no authenticated
+intra-output producer boundary is claimed: native-shaped script logs stay exact.
+
+Focused checks observed: stored-source verifier and integrity verifier; current
+lead `scripts/native-corpus.mjs` plus public default `filter` on private copy of
+this family only. All 28 cases passthrough. Marker-byte, receipt-command and EOF
+controls reject; private copy restored and same closure passed. In-memory source
+checks reject marker digest, outcome and EOF corruption. Original 24 unchanged.
+First reader launcher failed because lead node_modules was absent; existing main
+tsx used instead. First harness assumed nonexistent `FilterResult.output`; fixed
+to effective `replacement ?? observation.output` and byte length, then passed.
+No runtime/shared/index edits, full suite, typecheck, build or CI dispatch.
+Capture-only checkpoint awaits independent lead review; never merge here.

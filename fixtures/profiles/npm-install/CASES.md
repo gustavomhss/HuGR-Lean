@@ -165,3 +165,68 @@ New eight cases are exact; five advisory URLs and outside-range remediation were
 Repository typecheck need not rerun: only captures/docs/Python producer changed, no TypeScript/deps.
 Final CI is lead-owned; inspect PR checks without dispatching a workflow. Stop for lead review;
 do not merge or implement a parser until approval.
+
+## P01 successful peer-warning supplement (2026-10-09)
+
+`P01/peer-override-success` adds a separate exit-zero witness. The historical
+`peer-override-attempt` remains an unchanged exit-one ENOTCACHED witness. Earlier
+blocked findings above describe that historical capture, not this supplement.
+
+Original argv: `npm install --force --ignore-scripts --registry http://127.0.0.1:49787/ --no-audit --no-fund`.
+Native npm 10.9.2 / Node v22.17.1; macOS 15.3.2 x86_64. Fresh private HOME/cache,
+empty distinct user/global configuration, no credentials inherited; only loopback
+HTTP registry, no upstream proxy/fallback. Its complete original MIT package graph
+serves `p01-peer-host` 1.0.0/2.0.0 and `p01-peer-consumer` 1.0.0 with required peer
+`p01-peer-host >=2`; root pins host 1.0.0 and consumer 1.0.0. No optional peer,
+legacy-peer-deps, global install, lifecycle execution, audit or funding request.
+
+Collector `capture-peer-success.py` records original argv/env/cwd, real version
+probes, requests, observed exit and pipe boundary in `peer-success/collector.json`.
+stdout/stderr share one OS pipe at spawn; subprocess.run drains through EOF before
+return. Normalized `peer-success/receipt.json` binds command/version/exit/bytes,
+SHA-256, readThroughEOF, finalLF and last 64 bytes, and SHA-links original collector,
+native lock and installed manifests. Input declared by file only; no inline copy
+or separate golden. Desired/public-filter result: exact passthrough, zero removed
+bytes; no new runtime admission or material-progress claim.
+
+Real warning: `npm warn ERESOLVE overriding peer dependency`. Full warning retains
+resolving consumer 1.0.0, found host 1.0.0, root associations, required >=2 range,
+conflicting host 2.0.0 and all node_modules paths. Native exit 0 ends with
+`added 2 packages in 431ms`. Lock and installed manifests show host **1.0.0** plus
+consumer **1.0.0** with its unsatisfied >=2 peer still declared; host 2.0.0 is a
+resolution candidate, not installed. Force override does not make peer compatible.
+
+`peer-success/registry.json` pins exact served manifests, tarball URLs, SHA-1 and
+SHA-512 SRI. Three archived tiny tarballs preserve original manifest/LICENSE bytes;
+`peer-success/LICENSE.md` grants MIT for this authored graph. No donor code/license
+copied. npm producer retains Artistic-2.0 distribution pin in REGISTRY-SOURCES.json;
+Node executable version observed, not claimed as source-build attestation.
+`peer-success/package.json`, `package-lock.json`, `installed.json` are native
+source/outcome artifacts, not extra model-visible command inputs. All prior
+captures, archives and REGISTRY-SOURCES.json remain byte-identical.
+
+Reproduction: run collector in a clean worktree without existing peer-success/;
+it refuses overwrite. Ephemeral port/time/tarball gzip timestamp may differ on
+rerun; archived original bytes/SRI/receipt, not guessed regeneration, pin this run.
+Capture root: `/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p01-peer-success-3gz7ialp`.
+Native timeout 40s; fetch timeout 10s, retries zero. Parent directory verified with
+ls before creation. Failed captures would retain input/collector before success
+assertion and would not enroll as successful cases.
+
+Supplement verification: disposable scoped corpus copied only npm-install, with
+the current lead reader and default public filter. All 22 active cases preserved
+exactly; new case explicitly required to exist. SHA-links to original collector,
+producer source, lock and installed manifests checked; archived tarball SHA-1/SRI
+matched registry metadata and both installed lock entries. Every old manifest
+record/archive and every previously tracked raw/producer/source blob matched
+base `22ddaa6`, except the two additive CASES.md/cases.json edits.
+
+Destructive controls on disposable copies: false readThroughEOF, false finalLF,
+wrong lastBytesHex, wrong receipt SHA-256, different receipt argv, same-length
+warning corruption and deleted final LF each rejected by the existing reader.
+Copies restored; same scoped reader/filter closure passed afterward. First
+disposable harness invocation incorrectly read FilterResult.output and failed
+with undefined; harness corrected to assert passthrough status and use
+replacement ?? observation.output. Native capture/receipt never changed.
+No new tests/gates/runtime code, repository install, typecheck, build, full suite
+or CI dispatch. Lead independent review remains pending.

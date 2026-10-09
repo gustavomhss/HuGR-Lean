@@ -50,7 +50,8 @@ function validate(candidate, bytes = raw) {
     if (fact.exactReason.startsWith("no-noise")) assert.equal(bytes.get(entry.file).length, 0);
   }
 }
-validate(manifest);
+const historicalManifest = { ...manifest, cases: manifest.cases.filter(c => c.name !== "G04/cross-linux-amd64-success") };
+validate(historicalManifest);
 for (const id of ["build-verbose", "build-tag-verbose"]) {
   assert.deepEqual(raw.get(`captures/${id}.output`).toString().trim().split("\n").sort(), ["example.org/hugr-g04-native/cmd/noisy", "example.org/hugr-g04-native/cmd/quiet", "example.org/hugr-g04-native/lib"]);
 }
@@ -63,12 +64,12 @@ for (const mutate of [
   c => { c.cases[0].command = "go test -v ./..."; },
   c => { c.cases[0].provenance.sha256 = "0".repeat(64); },
 ]) {
-  const broken = structuredClone(manifest);
+  const broken = structuredClone(historicalManifest);
   mutate(broken);
   assert.throws(() => validate(broken));
 }
 const brokenBytes = new Map(raw);
 brokenBytes.set("captures/run-arbitrary.output", raw.get("captures/run-arbitrary.output").subarray(1));
-assert.throws(() => validate(manifest, brokenBytes));
-validate(manifest);
+assert.throws(() => validate(historicalManifest, brokenBytes));
+validate(historicalManifest);
 console.log("G04 receipt integrity: 15 exact cases; four corruption probes rejected; originals unchanged.");

@@ -1,0 +1,9 @@
+➤ YN0000: · Yarn 4.10.3
+➤ YN0000: ┌ Resolution step
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0056: │ inflight@npm:1.0.6: Cache entry required but missing for inflight@npm:1.0.6
+➤ YN0056: │ once@npm:1.4.0: Cache entry required but missing for once@npm:1.4.0
+➤ YN0056: │ wrappy@npm:1.0.2: Cache entry required but missing for wrappy@npm:1.0.2
+➤ YN0000: └ Completed
+➤ YN0000: · Failed with errors in 0s 24ms

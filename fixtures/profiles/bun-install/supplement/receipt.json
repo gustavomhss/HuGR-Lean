@@ -1,0 +1,456 @@
+{
+  "root": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5",
+  "registry": "http://127.0.0.1:49807",
+  "tools": [
+    {
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "--version"
+      ],
+      "output": "1.3.14\n",
+      "exit": 0,
+      "executableSHA256": "ea2f223e94bb2f4bf3050895113c3cf346438f6fa0501c8532284e063f72f7a0"
+    },
+    {
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "--revision"
+      ],
+      "output": "1.3.14+0d9b296af\n",
+      "exit": 0,
+      "executableSHA256": "ea2f223e94bb2f4bf3050895113c3cf346438f6fa0501c8532284e063f72f7a0"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/node",
+        "--version"
+      ],
+      "output": "v22.17.1\n",
+      "exit": 0,
+      "executableSHA256": "7ede1e8c98a2b2bb5965aff3c070ede061fc9e2a6a0b16774646487f94fe4541"
+    }
+  ],
+  "tarball": {
+    "file": "supplement/witness.tgz",
+    "bytes": 1378,
+    "sha256": "9c9987bc7767497c943273cfab1b43be7d5e338164b94a5df8d61d58ba353769"
+  },
+  "sources": [
+    {
+      "file": "supplement/dep/LICENSE",
+      "bytes": 1079,
+      "sha256": "d2b4ca8c4d2d6e7bce6333bfedf3656373fe78931c45851a8da233d1af50f92e"
+    },
+    {
+      "file": "supplement/dep/install.cjs",
+      "bytes": 695,
+      "sha256": "70dcc2102668a81ce8affb9fbf42c52987658aa181da3701b88b2d77567dc1b8"
+    },
+    {
+      "file": "supplement/dep/package.json",
+      "bytes": 130,
+      "sha256": "5a042e60fdcfb556621caf6d73a013e45a013d3f8f9dd1c1e5c564dfd18bbc86"
+    }
+  ],
+  "cases": [
+    {
+      "name": "P04/registry-blocked-default",
+      "family": "bun-install",
+      "command": "bun install --cache-dir /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-blocked-default/cache --registry http://127.0.0.1:49807",
+      "file": "supplement/registry-blocked-default.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "bun 1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "receipt": "supplement/receipt.json",
+        "case": "P04/registry-blocked-default",
+        "sha256": "95bd885a6cace65e07f04fa3061516fb32901847d57fe1949c8d95896bdd648f"
+      },
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-blocked-default",
+      "argv": [
+        "bun",
+        "install",
+        "--cache-dir",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-blocked-default/cache",
+        "--registry",
+        "http://127.0.0.1:49807"
+      ],
+      "environment": {
+        "PATH": "/usr/local/bin:/Users/gustavoschneiter/.bun/bin:/usr/bin:/bin",
+        "HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home",
+        "XDG_CONFIG_HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home/config",
+        "TMPDIR": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5",
+        "PRIVATEPROJECT": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-blocked-default"
+      },
+      "boundary": {
+        "bytes": 168,
+        "sha256": "95bd885a6cace65e07f04fa3061516fb32901847d57fe1949c8d95896bdd648f",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a0a31207061636b61676520696e7374616c6c6564205b31382e30306d735d0a",
+        "capture": "merged stdout/stderr OS pipe; subprocess exit observed; no PTY"
+      },
+      "manifestBefore": {
+        "file": "supplement/registry-blocked-default.before.json",
+        "bytes": 137,
+        "sha256": "9d8dd840ceccf91d213a683f8fc11af3df00ab58b437b6886c6b94799f0700d2"
+      },
+      "manifestAfter": {
+        "file": "supplement/registry-blocked-default.after.json",
+        "bytes": 137,
+        "sha256": "9d8dd840ceccf91d213a683f8fc11af3df00ab58b437b6886c6b94799f0700d2"
+      },
+      "lock": {
+        "file": "supplement/registry-blocked-default.lock",
+        "bytes": 419,
+        "sha256": "608e97810609c13671dc611ca2c36fa391a4caf309878a765201347a7960d04d"
+      },
+      "requests": [
+        {
+          "path": "/p04-trusted-witness",
+          "status": 200,
+          "bytes": 541,
+          "sha256": "68c3bc5f4e74bea2bb8af43b4158a7a5caf4f267345c305ffd305a5e4c11ca94"
+        },
+        {
+          "path": "/witness.tgz",
+          "status": 200,
+          "bytes": 1378,
+          "sha256": "9c9987bc7767497c943273cfab1b43be7d5e338164b94a5df8d61d58ba353769"
+        }
+      ],
+      "installedSources": [
+        {
+          "file": "LICENSE",
+          "sha256": "d2b4ca8c4d2d6e7bce6333bfedf3656373fe78931c45851a8da233d1af50f92e",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "install.cjs",
+          "sha256": "70dcc2102668a81ce8affb9fbf42c52987658aa181da3701b88b2d77567dc1b8",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "package.json",
+          "sha256": "5a042e60fdcfb556621caf6d73a013e45a013d3f8f9dd1c1e5c564dfd18bbc86",
+          "regular": true,
+          "symlink": false
+        }
+      ],
+      "dependencyRealpath": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-blocked-default/node_modules/p04-trusted-witness",
+      "dependencySymlink": false,
+      "markerBefore": false,
+      "markerAfter": false,
+      "marker": null
+    },
+    {
+      "name": "P04/registry-trusted-manifest",
+      "family": "bun-install",
+      "command": "bun install --cache-dir /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-manifest/cache --registry http://127.0.0.1:49807",
+      "file": "supplement/registry-trusted-manifest.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "bun 1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "receipt": "supplement/receipt.json",
+        "case": "P04/registry-trusted-manifest",
+        "sha256": "6ec4c7accf0801c4c29e3a7afe2847c4106c6605ef0d63f6de88a6014b18dfc6"
+      },
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-manifest",
+      "argv": [
+        "bun",
+        "install",
+        "--cache-dir",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-manifest/cache",
+        "--registry",
+        "http://127.0.0.1:49807"
+      ],
+      "environment": {
+        "PATH": "/usr/local/bin:/Users/gustavoschneiter/.bun/bin:/usr/bin:/bin",
+        "HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home",
+        "XDG_CONFIG_HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home/config",
+        "TMPDIR": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5",
+        "PRIVATEPROJECT": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-manifest"
+      },
+      "boundary": {
+        "bytes": 169,
+        "sha256": "6ec4c7accf0801c4c29e3a7afe2847c4106c6605ef0d63f6de88a6014b18dfc6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a31207061636b61676520696e7374616c6c6564205b3131392e30306d735d0a",
+        "capture": "merged stdout/stderr OS pipe; subprocess exit observed; no PTY"
+      },
+      "manifestBefore": {
+        "file": "supplement/registry-trusted-manifest.before.json",
+        "bytes": 195,
+        "sha256": "33647525248e8f6b491298e3fc80b7ee6763a7706fa9cb160fb0e3d34b77c3d2"
+      },
+      "manifestAfter": {
+        "file": "supplement/registry-trusted-manifest.after.json",
+        "bytes": 195,
+        "sha256": "33647525248e8f6b491298e3fc80b7ee6763a7706fa9cb160fb0e3d34b77c3d2"
+      },
+      "lock": {
+        "file": "supplement/registry-trusted-manifest.lock",
+        "bytes": 478,
+        "sha256": "d6e8663accbb72cc3e05d22c5c5f17526c781afa1f63e80517027e5f08ff447a"
+      },
+      "requests": [
+        {
+          "path": "/p04-trusted-witness",
+          "status": 200,
+          "bytes": 541,
+          "sha256": "68c3bc5f4e74bea2bb8af43b4158a7a5caf4f267345c305ffd305a5e4c11ca94"
+        },
+        {
+          "path": "/witness.tgz",
+          "status": 200,
+          "bytes": 1378,
+          "sha256": "9c9987bc7767497c943273cfab1b43be7d5e338164b94a5df8d61d58ba353769"
+        }
+      ],
+      "installedSources": [
+        {
+          "file": "LICENSE",
+          "sha256": "d2b4ca8c4d2d6e7bce6333bfedf3656373fe78931c45851a8da233d1af50f92e",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "install.cjs",
+          "sha256": "70dcc2102668a81ce8affb9fbf42c52987658aa181da3701b88b2d77567dc1b8",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "package.json",
+          "sha256": "5a042e60fdcfb556621caf6d73a013e45a013d3f8f9dd1c1e5c564dfd18bbc86",
+          "regular": true,
+          "symlink": false
+        }
+      ],
+      "dependencyRealpath": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-manifest/node_modules/p04-trusted-witness",
+      "dependencySymlink": false,
+      "markerBefore": false,
+      "markerAfter": true,
+      "marker": {
+        "file": "supplement/registry-trusted-manifest.marker",
+        "bytes": 32,
+        "sha256": "154f2041ebfee063a7f9f00ebba60c24eda053e07227119b8396539d86d72f3d"
+      }
+    },
+    {
+      "name": "P04/registry-trusted-flag",
+      "family": "bun-install",
+      "command": "bun install --trust --cache-dir /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-flag/cache --registry http://127.0.0.1:49807",
+      "file": "supplement/registry-trusted-flag.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "bun 1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "receipt": "supplement/receipt.json",
+        "case": "P04/registry-trusted-flag",
+        "sha256": "50c14fb13b8e7d6f3e043e49a71d4a8af36d4981c4d3d7eaf489f5b92416b234"
+      },
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-flag",
+      "argv": [
+        "bun",
+        "install",
+        "--trust",
+        "--cache-dir",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-flag/cache",
+        "--registry",
+        "http://127.0.0.1:49807"
+      ],
+      "environment": {
+        "PATH": "/usr/local/bin:/Users/gustavoschneiter/.bun/bin:/usr/bin:/bin",
+        "HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home",
+        "XDG_CONFIG_HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home/config",
+        "TMPDIR": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5",
+        "PRIVATEPROJECT": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-flag"
+      },
+      "boundary": {
+        "bytes": 168,
+        "sha256": "50c14fb13b8e7d6f3e043e49a71d4a8af36d4981c4d3d7eaf489f5b92416b234",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a0a31207061636b61676520696e7374616c6c6564205b32352e30306d735d0a",
+        "capture": "merged stdout/stderr OS pipe; subprocess exit observed; no PTY"
+      },
+      "manifestBefore": {
+        "file": "supplement/registry-trusted-flag.before.json",
+        "bytes": 137,
+        "sha256": "9d8dd840ceccf91d213a683f8fc11af3df00ab58b437b6886c6b94799f0700d2"
+      },
+      "manifestAfter": {
+        "file": "supplement/registry-trusted-flag.after.json",
+        "bytes": 137,
+        "sha256": "9d8dd840ceccf91d213a683f8fc11af3df00ab58b437b6886c6b94799f0700d2"
+      },
+      "lock": {
+        "file": "supplement/registry-trusted-flag.lock",
+        "bytes": 419,
+        "sha256": "608e97810609c13671dc611ca2c36fa391a4caf309878a765201347a7960d04d"
+      },
+      "requests": [
+        {
+          "path": "/p04-trusted-witness",
+          "status": 200,
+          "bytes": 541,
+          "sha256": "68c3bc5f4e74bea2bb8af43b4158a7a5caf4f267345c305ffd305a5e4c11ca94"
+        },
+        {
+          "path": "/witness.tgz",
+          "status": 200,
+          "bytes": 1378,
+          "sha256": "9c9987bc7767497c943273cfab1b43be7d5e338164b94a5df8d61d58ba353769"
+        }
+      ],
+      "installedSources": [
+        {
+          "file": "LICENSE",
+          "sha256": "d2b4ca8c4d2d6e7bce6333bfedf3656373fe78931c45851a8da233d1af50f92e",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "install.cjs",
+          "sha256": "70dcc2102668a81ce8affb9fbf42c52987658aa181da3701b88b2d77567dc1b8",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "package.json",
+          "sha256": "5a042e60fdcfb556621caf6d73a013e45a013d3f8f9dd1c1e5c564dfd18bbc86",
+          "regular": true,
+          "symlink": false
+        }
+      ],
+      "dependencyRealpath": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-trusted-flag/node_modules/p04-trusted-witness",
+      "dependencySymlink": false,
+      "markerBefore": false,
+      "markerAfter": false,
+      "marker": null
+    },
+    {
+      "name": "P04/registry-offline-request",
+      "family": "bun-install",
+      "command": "bun install --offline --ignore-scripts --cache-dir /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-offline-request/cache --registry http://127.0.0.1:49807",
+      "file": "supplement/registry-offline-request.txt",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "bun 1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "provenance": {
+        "receipt": "supplement/receipt.json",
+        "case": "P04/registry-offline-request",
+        "sha256": "81b64ca8f672487fdfe7ed85e580c876a03dd1955c4b27174984a08286e413f6"
+      },
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-offline-request",
+      "argv": [
+        "bun",
+        "install",
+        "--offline",
+        "--ignore-scripts",
+        "--cache-dir",
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-offline-request/cache",
+        "--registry",
+        "http://127.0.0.1:49807"
+      ],
+      "environment": {
+        "PATH": "/usr/local/bin:/Users/gustavoschneiter/.bun/bin:/usr/bin:/bin",
+        "HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home",
+        "XDG_CONFIG_HOME": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/home/config",
+        "TMPDIR": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5",
+        "PRIVATEPROJECT": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-offline-request"
+      },
+      "boundary": {
+        "bytes": 168,
+        "sha256": "81b64ca8f672487fdfe7ed85e580c876a03dd1955c4b27174984a08286e413f6",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "0a0a31207061636b61676520696e7374616c6c6564205b31352e30306d735d0a",
+        "capture": "merged stdout/stderr OS pipe; subprocess exit observed; no PTY"
+      },
+      "manifestBefore": {
+        "file": "supplement/registry-offline-request.before.json",
+        "bytes": 137,
+        "sha256": "9d8dd840ceccf91d213a683f8fc11af3df00ab58b437b6886c6b94799f0700d2"
+      },
+      "manifestAfter": {
+        "file": "supplement/registry-offline-request.after.json",
+        "bytes": 137,
+        "sha256": "9d8dd840ceccf91d213a683f8fc11af3df00ab58b437b6886c6b94799f0700d2"
+      },
+      "lock": {
+        "file": "supplement/registry-offline-request.lock",
+        "bytes": 419,
+        "sha256": "608e97810609c13671dc611ca2c36fa391a4caf309878a765201347a7960d04d"
+      },
+      "requests": [
+        {
+          "path": "/p04-trusted-witness",
+          "status": 200,
+          "bytes": 541,
+          "sha256": "68c3bc5f4e74bea2bb8af43b4158a7a5caf4f267345c305ffd305a5e4c11ca94"
+        },
+        {
+          "path": "/witness.tgz",
+          "status": 200,
+          "bytes": 1378,
+          "sha256": "9c9987bc7767497c943273cfab1b43be7d5e338164b94a5df8d61d58ba353769"
+        }
+      ],
+      "installedSources": [
+        {
+          "file": "LICENSE",
+          "sha256": "d2b4ca8c4d2d6e7bce6333bfedf3656373fe78931c45851a8da233d1af50f92e",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "install.cjs",
+          "sha256": "70dcc2102668a81ce8affb9fbf42c52987658aa181da3701b88b2d77567dc1b8",
+          "regular": true,
+          "symlink": false
+        },
+        {
+          "file": "package.json",
+          "sha256": "5a042e60fdcfb556621caf6d73a013e45a013d3f8f9dd1c1e5c564dfd18bbc86",
+          "regular": true,
+          "symlink": false
+        }
+      ],
+      "dependencyRealpath": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/p04-supplement-2vu4uxq5/registry-offline-request/node_modules/p04-trusted-witness",
+      "dependencySymlink": false,
+      "markerBefore": false,
+      "markerAfter": false,
+      "marker": null
+    }
+  ]
+}
