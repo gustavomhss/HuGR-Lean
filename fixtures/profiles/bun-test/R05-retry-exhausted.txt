@@ -1,0 +1,35 @@
+bun test v1.3.14 (0d9b296a)
+
+retry-failure.test.ts:
+exhausted attempt 1
+1 | import { expect, test } from "bun:test";
+2 | let attempts = 0;
+3 | test("retry exhausted", () => {
+4 |   console.log(`exhausted attempt ${++attempts}`);
+5 |   expect(false).toBe(true);
+                    ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project/retry-failure.test.ts:5:17)
+exhausted attempt 2
+1 | import { expect, test } from "bun:test";
+2 | let attempts = 0;
+3 | test("retry exhausted", () => {
+4 |   console.log(`exhausted attempt ${++attempts}`);
+5 |   expect(false).toBe(true);
+                    ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project/retry-failure.test.ts:5:17)
+(fail) retry exhausted (attempt 2) [0.33ms]
+
+ 0 pass
+ 1 fail
+ 1 expect() calls
+Ran 1 test across 1 file. [266.00ms]

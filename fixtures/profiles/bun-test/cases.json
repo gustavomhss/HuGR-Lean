@@ -1,0 +1,498 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "bun-test",
+  "baseline": "248c303",
+  "cases": [
+    {
+      "name": "R05-version",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "--version"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "--version"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-version.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "existing binary version",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-version",
+        "sha256": "56b0485099b6c5427d3b68c042fd05b632d5e52e924c5064473389812227164c"
+      }
+    },
+    {
+      "name": "R05-help",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--help"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--help"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-help.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "native documented flags including retry",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-help",
+        "sha256": "12160fcf26f16bcb1fa71b152c0b7cb31011d893b3063b133ee19b03e96426c5"
+      }
+    },
+    {
+      "name": "R05-suite",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-suite.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "nested suites, skip reason in name, todo, totals",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-suite",
+        "sha256": "74bae71674f33663937a92cf1d4a75abf34adbf987d219eb5cc87570add46662"
+      }
+    },
+    {
+      "name": "R05-multifile",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-multifile.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "multifile nested suite identities and totals",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-multifile",
+        "sha256": "885de3de2a2dee4639e39fb9016ad4d657d5a7c177cf0cd1122f5a8a31d99a52"
+      }
+    },
+    {
+      "name": "R05-logs",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./log.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./log.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-logs.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "duplicate stdout and stderr user logs",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-logs",
+        "sha256": "9b6f50e0c312bc08c9a8fa8494925a4619ce38bb5b06dfa7ffd091521f6597c3"
+      }
+    },
+    {
+      "name": "R05-coverage",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--coverage",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--coverage",
+        "./suite.test.ts",
+        "./second.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-coverage.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "text coverage metrics, file names, suites and skips",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-coverage",
+        "sha256": "6d3ed76a1daefb1e1231d560f8eecf9cc7a70ae6f63cd4d3dabfbbec8f08fb2f"
+      }
+    },
+    {
+      "name": "R05-failure",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./failure.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./failure.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-failure.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "nonzero assertion diagnostics and totals",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-failure",
+        "sha256": "514937dfd1833e3e7287d67620888cb1fe167d1de9e86906add976776a34910a"
+      }
+    },
+    {
+      "name": "R05-retry-success",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-retry-success.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "documented CLI retry; failed attempt and successful retry logs",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-retry-success",
+        "sha256": "8beab40c7b8a94dfe056d70ba4b15519ed9e288a0b876c2aaae7926b9b4f097b"
+      }
+    },
+    {
+      "name": "R05-retry-exhausted",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry-failure.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--retry=1",
+        "./retry-failure.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-retry-exhausted.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "documented CLI retry exhausted; diagnostics and logs",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-retry-exhausted",
+        "sha256": "87fb3da9af0b688e51606e56a74a99993a2312788c916c42a6ec387bd74bc414"
+      }
+    },
+    {
+      "name": "R05-rerun",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--rerun-each=2",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--rerun-each=2",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-rerun.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "documented repeated run; distinct from retry",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-rerun",
+        "sha256": "fc271e1932648a738af4368b44f4d9719edecd940be7768626acd1a3a2b7612b"
+      }
+    },
+    {
+      "name": "R05-dots",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--reporter=dots",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--reporter=dots",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-dots.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "alternate native reporter",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-dots",
+        "sha256": "d8926b0b65c9783c7a3690ba4676178081a76d455ee8d0f273573ca4df61283b"
+      }
+    },
+    {
+      "name": "R05-unknown-flag",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--hugr-unknown-flag",
+        "./suite.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "--hugr-unknown-flag",
+        "./suite.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-unknown-flag.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "unsupported flag behavior as actually emitted",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-unknown-flag",
+        "sha256": "e4dcab7ea1391397507020ea851195cb1601f33917c0ca440f0a03f7e4dbe2db"
+      }
+    },
+    {
+      "name": "R05-no-match",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./absent.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./absent.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-no-match.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "missing file/no tests failure",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-no-match",
+        "sha256": "30a3bfb4d9436fade0eb633801489136b88f0a000d28c29c4efd8e71b449381f"
+      }
+    },
+    {
+      "name": "R05-collision",
+      "family": "bun-test",
+      "version": "1.3.14",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "argv": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./collision.test.ts"
+      ],
+      "command": [
+        "/Users/gustavoschneiter/.bun/bin/bun",
+        "test",
+        "./collision.test.ts"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R05-bun-x_tlhpfu/project",
+      "file": "R05-collision.txt",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "status": "passthrough",
+      "baselineReplay": "pending; capture-only",
+      "removableBytes": 0,
+      "variant": "real user stdout contains complete byte-exact R05-suite native output",
+      "provenance": {
+        "receipt": "capture-receipt.json",
+        "case": "R05-collision",
+        "sha256": "ae650166fd71c6492013046f5724739cd863695d415a58dfac29aa009b37d2f7"
+      }
+    }
+  ],
+  "archives": [
+    "verify.py",
+    "capture-receipt.json",
+    "capture.py",
+    "CASES.md",
+    "SOURCES.md",
+    "inputs/collision.test.ts",
+    "inputs/failure.test.ts",
+    "inputs/log.test.ts",
+    "inputs/retry-failure.test.ts",
+    "inputs/retry.test.ts",
+    "inputs/second.test.ts",
+    "inputs/subject.ts",
+    "inputs/suite.test.ts"
+  ]
+}
