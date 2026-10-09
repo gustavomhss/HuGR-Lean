@@ -119,14 +119,16 @@ test("generic paths/rules, UTF-16 spans, multiline spaces and repeated records s
   assert.ok(profile.reduce(fixture("stylish-warnings.txt"), observe(fixture("stylish-warnings.txt"))));
 });
 
-test("flat native cases reconcile with measured public-filter outputs and original receipt", () => {
+test("native metadata inventory reconciles capture facts and measured statuses", () => {
   type NativeCase = Omit<Observation, "output"> & {
-    id: string; file: string; expectedFile?: string; status: string;
-    inputBytes: number; outputBytes: number; sha256: string; provenance: string;
+    name: string; family: string; version: string; platform: string;
+    file: string; expectedFile?: string; status: string;
+    inputBytes: number; outputBytes: number; sha256: string;
+    provenance: { record: string; originalCase: string; sha256: string };
   };
   const manifest = JSON.parse(fixture("cases.json")) as { schema: string; cases: NativeCase[] };
   assert.equal(manifest.schema, "hugr-lean/native-cases/1");
-  assert.deepEqual(manifest.cases.map(c => c.id).sort(), [
+  assert.deepEqual(manifest.cases.map(c => c.name).sort(), [
     "version", "stylish-warnings", "json-warnings", "stylish-error", "silent-clean", "fix-before", "fix-applied",
     "ignored-warning", "empty-config-warning", "ascii-stylish", "absolute-stylish", "npx-stylish", "npx-no-install-stylish",
   ].map(id => `L01-${id}`).sort());
@@ -134,17 +136,22 @@ test("flat native cases reconcile with measured public-filter outputs and origin
     "4fb9167df70e52a8fdd9567295eb15818e8c170fe40ad27e54f1c45049157d75");
   for (const c of manifest.cases) {
     const output = fixture(c.file);
-    assert.equal(createHash("sha256").update(output).digest("hex"), c.sha256, c.id);
-    assert.ok(c.provenance.length > 0);
+    assert.equal(createHash("sha256").update(output).digest("hex"), c.sha256, c.name);
+    assert.equal(c.family, "eslint");
+    assert.equal(c.version, "ESLint 9.37.0");
+    assert.equal(c.platform, "darwin-x64");
+    assert.equal(c.provenance.originalCase, c.name);
+    assert.equal(c.provenance.sha256, c.sha256);
+    assert.equal(c.provenance.record, c.file === "ascii-stylish.txt" ? "SOURCES.md" : "capture-receipt.json");
     const result = run({ ...c, output });
-    assert.equal(result.status, c.status, c.id);
-    assert.equal(result.inputBytes, c.inputBytes, c.id);
-    assert.equal(result.outputBytes, c.outputBytes, c.id);
+    assert.equal(result.status, c.status, c.name);
+    assert.equal(result.inputBytes, c.inputBytes, c.name);
+    assert.equal(result.outputBytes, c.outputBytes, c.name);
     if (c.expectedFile) {
-      assert.equal(result.status, "reduced", c.id);
-      assert.equal("replacement" in result && result.replacement, fixture(c.expectedFile), c.id);
-      assert.equal(output, `\n${fixture(c.expectedFile)}\n`, c.id);
-    } else assert.equal("replacement" in result, false, c.id);
+      assert.equal(result.status, "reduced", c.name);
+      assert.equal("replacement" in result && result.replacement, fixture(c.expectedFile), c.name);
+      assert.equal(output, `\n${fixture(c.expectedFile)}\n`, c.name);
+    } else assert.equal("replacement" in result, false, c.name);
   }
 });
 

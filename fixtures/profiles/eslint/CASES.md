@@ -6,6 +6,15 @@ focused tests supplied; shared registry remains lead-owned. `cases.json` uses
 Original full `native-cases1` record remains byte-exact in `capture-receipt.json`.
 `expectedFile` references independent literal goldens authored before parser.
 
+Integration metadata correction: each case uses `name`, `family`, `version`
+(`ESLint 9.37.0`), captured `platform` (`darwin-x64`) and structured provenance
+`{ record, originalCase, sha256 }`. Original commands/argv, files/statuses/goldens,
+termination/completeness/presentation, byte/hash facts and completion times remain
+unchanged. Different actual argv may share a raw file when original hashes agree.
+Parser approved at `1156ecb`; this metadata correction changes no native capture.
+Following lead's current campaign verification policy, only affected named metadata
+inventory test runs; no repeated owned suite or typecheck.
+
 | ID suffix | Native combination | Required evidence / current disposition |
 | --- | --- | --- |
 | version | Direct PATH-resolved binary | Actual v9.37.0, exit 0; exact |
