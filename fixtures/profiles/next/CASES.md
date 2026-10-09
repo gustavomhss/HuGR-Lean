@@ -1,4 +1,14 @@
-# B02 Next.js: blocked capture-only checkpoint
+# B02 Next.js: resumed capture-only packet, work in progress
+
+Resume update: user cleared disk blocker. Private installation completed with exit 0;
+actual `npm-lock.json`, installed direct-package licenses, Next version probe and
+`sri-verification.json` now exist. First routes capture timed out after 90 seconds during
+compilation; `B02-routes.txt` remains `timed_out` / `truncated`, not route coverage.
+Initial blocked receipt below is historical; `capture-receipt.json` stays byte-for-byte
+unchanged. New evidence uses `resume-receipt.json`; original manifest saved as
+`ENOSPC-cases.json`. No native acceptance variant is complete yet.
+
+## Historical blocked checkpoint (3941ecd)
 
 Baseline `248c303`; branch `campaign/native-v2/B02`; owner scope `fixtures/profiles/next/**`.
 This is not a completed B02 packet. No Next build has run. No reduction, native warning,

@@ -86,23 +86,192 @@
         "originalCase": "B02-npm-version",
         "sha256": "b90f6efb804599bb0ba84fec754b8c7807381dabfcdc1ffe3437ff37f18fb0f5"
       }
+    },
+    {
+      "name": "B02-install",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-install.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "npm",
+        "install",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--registry=https://registry.npmjs.org",
+        "--cache",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge/npm-cache"
+      ],
+      "command": "npm install --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org --cache /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge/npm-cache",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 180,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 25,
+      "outputBytes": 25,
+      "sha256": "7ae091174250d43acec8810223cdfae19a3902823694ecbfeb884a0b5bc78fa0",
+      "startedAt": "2026-10-09T16:47:29.293131+00:00",
+      "completionAt": "2026-10-09T16:49:41.056477+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 25,
+        "sha256": "7ae091174250d43acec8810223cdfae19a3902823694ecbfeb884a0b5bc78fa0",
+        "finalLF": true,
+        "lastBytesHex": "207061636b6167657320696e20326d0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-install",
+        "sha256": "7ae091174250d43acec8810223cdfae19a3902823694ecbfeb884a0b5bc78fa0"
+      }
+    },
+    {
+      "name": "B02-next-version",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-next-version.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "--version"
+      ],
+      "command": "node node_modules/next/dist/bin/next --version",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 15,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 16,
+      "outputBytes": 16,
+      "sha256": "2cf0fd9c1a1998e166e54197159106a61f1e4a1f2da59c9b1841a103d4e1a848",
+      "startedAt": "2026-10-09T16:49:41.103151+00:00",
+      "completionAt": "2026-10-09T16:49:42.592098+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 16,
+        "sha256": "2cf0fd9c1a1998e166e54197159106a61f1e4a1f2da59c9b1841a103d4e1a848",
+        "finalLF": true,
+        "lastBytesHex": "4e6578742e6a73207631352e352e390a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-next-version",
+        "sha256": "2cf0fd9c1a1998e166e54197159106a61f1e4a1f2da59c9b1841a103d4e1a848"
+      }
+    },
+    {
+      "name": "B02-routes",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-routes.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "timed_out"
+      },
+      "processReturncode": -9,
+      "timeoutSeconds": 90,
+      "completeness": "truncated",
+      "presentation": "unknown",
+      "inputBytes": 299,
+      "outputBytes": 299,
+      "sha256": "3bf42da290f8281f5b6e3f18abf3eaf159cf40d279da878aa7032b89a60199c1",
+      "startedAt": "2026-10-09T16:50:02.950294+00:00",
+      "completionAt": "2026-10-09T16:51:33.255394+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 299,
+        "sha256": "3bf42da290f8281f5b6e3f18abf3eaf159cf40d279da878aa7032b89a60199c1",
+        "finalLF": true,
+        "lastBytesHex": "6374696f6e206275696c64202e2e2e0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-routes",
+        "sha256": "3bf42da290f8281f5b6e3f18abf3eaf159cf40d279da878aa7032b89a60199c1"
+      },
+      "variant": "routes",
+      "sourceRecipe": {
+        "file": "source-recipes.json",
+        "base": "base",
+        "overlay": "variants.routes"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-routes.artifacts.json"
     }
   ],
   "archives": [
+    "B02-routes.artifacts.json",
     "CASES.md",
+    "ENOSPC-cases.json",
     "LICENSE.next-upstream.txt",
+    "LICENSE.next.txt",
+    "LICENSE.react-dom.txt",
+    "LICENSE.react.txt",
+    "LICENSE.types-node.txt",
+    "LICENSE.types-react.txt",
+    "LICENSE.typescript.txt",
     "SOURCES.md",
     "bootstrap-failure.json",
     "bootstrap-node-version.log",
     "bootstrap-npm-version.log",
     "capture-receipt.json",
     "capture.py",
+    "npm-lock.json",
     "registry-next.json",
     "registry-react-dom.json",
     "registry-react.json",
     "registry-types-node.json",
     "registry-types-react.json",
     "registry-typescript.json",
-    "source-recipes.json"
+    "resume-receipt.json",
+    "source-recipes.json",
+    "sri-verification.json"
   ]
 }

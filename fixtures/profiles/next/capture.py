@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """B02 isolated native captures. No server, PTY, output rewrite, or parser invocation."""
 import argparse
+import base64
 import datetime
 import hashlib
 import json
@@ -20,7 +21,7 @@ BASE = '248c303'
 VERSIONS = {'next': '15.5.9', 'react': '19.1.0', 'react-dom': '19.1.0',
             'typescript': '5.9.3', '@types/react': '19.1.0', '@types/node': '22.15.30'}
 ENV = {**os.environ, 'NEXT_TELEMETRY_DISABLED': '1', 'CI': '1',
-       'NO_COLOR': '1', 'TZ': 'UTC'}
+       'NO_COLOR': '1', 'TZ': 'UTC', 'RAYON_NUM_THREADS': '1', 'UV_THREADPOOL_SIZE': '1'}
 ENV.pop('FORCE_COLOR', None)
 CONFIG = "module.exports = { experimental: { cpus: 1, workerThreads: false }, generateBuildId: async () => 'B02-tiny' };\n"
 SOURCES = {
@@ -44,7 +45,7 @@ VARIANTS = {
         'style.css': '.b02 { display: flex; justify-content: end; }\n'},
     'config-warning': {'next.config.js': CONFIG.replace('experimental:', 'b02UnknownOption: true, experimental:')},
     'typecheck-failure': {'pages/index.tsx': "const label: number = 'B02 wrong type';\nexport default function Home() { return <main>{label}</main>; }\n"},
-    'build-failure': {'pages/index.tsx': "import missing from './b02-does-not-exist';\nexport default function Home() { return <main>{missing}</main>; }\n"},
+    'build-failure': {'pages/index.tsx': "const missing = require('./b02-does-not-exist');\nexport default function Home() { return <main>{missing}</main>; }\n"},
     'config-collision': {'next.config.js': "console.log('   Creating an optimized production build ...');\nconsole.log('Route (pages)                                Size  First Load JS');\n" + CONFIG},
     'plugin-collision': {'next.config.js': "class B02CollisionPlugin { apply(compiler) { compiler.hooks.beforeCompile.tap('B02CollisionPlugin', () => { console.log('   Creating an optimized production build ...'); console.log(' ✓ Compiled successfully'); }); } }\n" + CONFIG.replace("generateBuildId:", "webpack: (config) => { config.plugins.push(new B02CollisionPlugin()); return config; }, generateBuildId:")},
 }
@@ -86,17 +87,22 @@ def capture(name, argv, cwd, timeout):
            'boundary': 'stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization',
            'eof': {'readThroughEOF': True, 'bytes': len(data), 'sha256': digest(data),
                    'finalLF': data.endswith(b'\n'), 'lastBytesHex': data[-16:].hex()},
-           'provenance': {'record': 'capture-receipt.json', 'originalCase': name, 'sha256': digest(data)}}
+           'provenance': {'record': receipt_path().name, 'originalCase': name, 'sha256': digest(data)}}
     print(name, row['termination'], len(data), flush=True)
     return row
 
 
+def receipt_path():
+    resumed = HERE / 'resume-receipt.json'
+    return resumed if resumed.exists() else HERE / 'capture-receipt.json'
+
+
 def state():
-    return json.loads((HERE / 'capture-receipt.json').read_text())
+    return json.loads(receipt_path().read_text())
 
 
 def persist(receipt):
-    save_json(HERE / 'capture-receipt.json', receipt)
+    save_json(receipt_path(), receipt)
     inputs = {row['file'] for row in receipt['cases']}
     archives = sorted(p.relative_to(HERE).as_posix() for p in HERE.rglob('*')
                       if p.is_file() and p.name != 'cases.json' and p.relative_to(HERE).as_posix() not in inputs)
@@ -137,6 +143,29 @@ def prepare():
     install(receipt)
 
 
+def resume():
+    if (HERE / 'resume-receipt.json').exists():
+        raise RuntimeError('Resume already initialized')
+    receipt = state()
+    shutil.copyfile(HERE / 'cases.json', HERE / 'ENOSPC-cases.json')
+    receipt['previousReceipt'] = 'capture-receipt.json'
+    receipt['resume'] = {'at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        'availableBytes': shutil.disk_usage(TEMP).free,
+        'historicalCheckpoint': '3941ecd58b85a7baef3bedde8c17c333b5edce31',
+        'authorization': 'User cleared campaign temporary storage and authorized tiny native captures'}
+    workspace = Path(receipt['workspace'])
+    if not workspace.exists():
+        workspace = Path(tempfile.mkdtemp(prefix='B02-next-resume-', dir=TEMP))
+        receipt['workspace'] = str(workspace)
+    for name, text in SOURCES.items():
+        path = workspace / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+    receipt['environmentOverrides'].update({'RAYON_NUM_THREADS': '1', 'UV_THREADPOOL_SIZE': '1'})
+    save_json(HERE / 'resume-receipt.json', receipt)
+    persist(receipt)
+
+
 def install(receipt):
     workspace = Path(receipt['workspace'])
     if any(row['name'] == 'B02-install' for row in receipt['cases']):
@@ -148,7 +177,7 @@ def install(receipt):
         persist(receipt)
         raise RuntimeError('B02 install requires 1 GiB free; metadata retained; native build coverage blocked')
     row = capture('B02-install', ['npm', 'install', '--ignore-scripts', '--no-audit', '--no-fund',
-                                  '--registry=https://registry.npmjs.org'], workspace, 180)
+                                  '--registry=https://registry.npmjs.org', '--cache', str(workspace / 'npm-cache')], workspace, 180)
     receipt['cases'].append(row)
     persist(receipt)
     if row['termination'] != {'kind': 'exited', 'code': 0}:
@@ -168,8 +197,40 @@ def install(receipt):
             shutil.copyfile(license_path, HERE / target)
             receipt['sources'].append({'package': package, 'version': info['version'],
                 'installedPath': str(license_path), 'packagePath': license_path.name, 'archive': target,
+                'producerPin': next(p for p in receipt['packages'] if p['name'] == package),
                 'sha256': digest(license_path.read_bytes()), 'modifications': 'none; exact installed package license bytes'})
     receipt['cases'].append(capture('B02-next-version', ['node', 'node_modules/next/dist/bin/next', '--version'], workspace, 15))
+    receipt['installedProducerFiles'] = []
+    for path in [workspace / 'node_modules/next/dist/bin/next',
+                 *sorted((workspace / 'node_modules/@next').glob('swc-*/*.node'))]:
+        data = path.read_bytes()
+        receipt['installedProducerFiles'].append({'path': str(path), 'bytes': len(data), 'sha256': digest(data)})
+    persist(receipt)
+
+
+def verify_sri():
+    receipt = state()
+    checks = []
+    lock = json.loads((HERE / 'npm-lock.json').read_text())
+    for package in receipt['packages']:
+        expected = package['dist']['integrity']
+        algorithm, encoded = expected.split('-', 1)
+        hasher = hashlib.new(algorithm)
+        size = 0
+        with urllib.request.urlopen(package['dist']['tarball'], timeout=30) as response:
+            while chunk := response.read(1024 * 1024):
+                size += len(chunk)
+                if size > 64 * 1024 * 1024:
+                    raise RuntimeError('Tarball exceeded 64 MiB bound')
+                hasher.update(chunk)
+        actual = base64.b64encode(hasher.digest()).decode('ascii')
+        if actual != encoded or lock['packages']['node_modules/' + package['name']]['integrity'] != expected:
+            raise RuntimeError('Tarball/lock SRI mismatch: ' + package['name'])
+        checks.append({'name': package['name'], 'version': package['version'], 'url': package['dist']['tarball'],
+                       'bytes': size, 'verifiedIntegrity': expected, 'lockCorrespondence': True})
+    receipt['sriEvidence'] = 'sri-verification.json'
+    save_json(HERE / 'sri-verification.json', {'recipe': 'stream exact registry tarball through declared hash; compare digest and actual npm lock integrity',
+              'at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'checks': checks})
     persist(receipt)
 
 
@@ -192,9 +253,9 @@ def license_capture():
     persist(receipt)
 
 
-def build(variant):
+def build(variant, attempt, timeout):
     receipt = state()
-    name = 'B02-' + variant
+    name = 'B02-' + variant + ('-' + attempt if attempt else '')
     if any(row['name'] == name for row in receipt['cases']):
         raise RuntimeError('Capture exists: ' + name)
     workspace = Path(receipt['workspace'])
@@ -213,9 +274,12 @@ def build(variant):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
     source_hashes = {key: digest((workspace / key).read_bytes()) for key in source}
-    row = capture(name, ['node', 'node_modules/next/dist/bin/next', 'build'], workspace, 90)
+    save_json(HERE / 'resume-source-recipes.json', {'origin': 'authored B02 tiny project, MIT',
+        'base': SOURCES, 'variants': VARIANTS,
+        'modifications': 'Build-failure uses require rather than typed import to reach webpack after successful TS validation; other recipes unchanged'})
+    row = capture(name, ['node', 'node_modules/next/dist/bin/next', 'build'], workspace, timeout)
     row['variant'] = variant
-    row['sourceRecipe'] = {'file': 'source-recipes.json', 'base': 'base', 'overlay': 'variants.' + variant}
+    row['sourceRecipe'] = {'file': 'resume-source-recipes.json', 'base': 'base', 'overlay': 'variants.' + variant}
     row['sourceHashes'] = source_hashes
     row['postBuildSourceHashes'] = {key: digest((workspace / key).read_bytes()) for key in source}
     receipt['cases'].append(row)
@@ -237,18 +301,28 @@ def build(variant):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=['prepare', 'install', 'license', 'build', 'index'])
+    parser.add_argument('action', choices=['prepare', 'resume', 'install', 'sri', 'license', 'build', 'index'])
     parser.add_argument('variant', nargs='?', choices=list(VARIANTS))
+    parser.add_argument('--attempt', default='')
+    parser.add_argument('--timeout', type=int, default=90)
     args = parser.parse_args()
+    if args.attempt and not all(c.isalnum() or c == '-' for c in args.attempt):
+        parser.error('attempt must be alphanumeric/hyphen')
+    if not 1 <= args.timeout <= 300:
+        parser.error('timeout must be between 1 and 300 seconds')
     if args.action == 'prepare':
         prepare()
+    elif args.action == 'resume':
+        resume()
     elif args.action == 'install':
         install(state())
+    elif args.action == 'sri':
+        verify_sri()
     elif args.action == 'license':
         license_capture()
     elif args.action == 'build':
         if args.variant is None:
             parser.error('build requires variant')
-        build(args.variant)
+        build(args.variant, args.attempt, args.timeout)
     else:
         persist(state())
