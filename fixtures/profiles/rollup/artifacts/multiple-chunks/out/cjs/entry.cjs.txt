@@ -1,0 +1,7 @@
+'use strict';
+
+var shared = require('./chunks/shared-ZLhsmAK6.cjs');
+
+console.log('雪😀', shared.answer);
+
+exports.answer = shared.answer;

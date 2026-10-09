@@ -1,0 +1,5 @@
+
+cycle-a.js → out/circular.mjs...
+(!) Circular dependency
+cycle-a.js -> cycle-b.js -> cycle-a.js
+created out/circular.mjs in 35ms

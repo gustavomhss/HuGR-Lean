@@ -1,0 +1,7 @@
+
+entry.js → out/single.js...
+USER B04 opaque stdout 雪😀
+
+entry.js → out/single.js...
+created out/single.js in 1ms
+USER B04 no-final-LFcreated out/single.js in 36ms

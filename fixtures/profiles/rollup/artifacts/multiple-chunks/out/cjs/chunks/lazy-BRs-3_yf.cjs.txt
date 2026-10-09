@@ -1,0 +1,5 @@
+'use strict';
+
+const lazy = 'lazy chunk';
+
+exports.lazy = lazy;
