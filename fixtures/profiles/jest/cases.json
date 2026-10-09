@@ -1,0 +1,830 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "jest",
+  "baseline": "248c303",
+  "cases": [
+    {
+      "name": "R02-snapshot-written",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/snapshot-written/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --updateSnapshot",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=snapshot.test.cjs",
+        "--updateSnapshot"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 309,
+      "outputBytes": 309,
+      "sha256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 309,
+        "sha256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:06.814287+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-snapshot-written",
+        "sha256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8"
+      },
+      "attachments": [],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-snapshot-passed",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/snapshot-passed/input.txt",
+      "status": "reduced",
+      "disposition": "BASELINE_PRESERVED",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=snapshot.test.cjs",
+        "--verbose"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 237,
+      "outputBytes": 232,
+      "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 237,
+        "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:09.814817+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-snapshot-passed",
+        "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309"
+      },
+      "attachments": [],
+      "expectedFile": "captures/snapshot-passed/expected.txt",
+      "baselineReason": "profile_reduction"
+    },
+    {
+      "name": "R02-snapshot-failed",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/snapshot-failed/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --verbose",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=snapshot.test.cjs",
+        "--verbose"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {
+        "R02_FAIL": "1"
+      },
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 985,
+      "outputBytes": 985,
+      "sha256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 985,
+        "sha256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:12.416809+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-snapshot-failed",
+        "sha256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db"
+      },
+      "attachments": [],
+      "baselineReason": "nonzero_exit"
+    },
+    {
+      "name": "R02-skip-todo",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/skip-todo/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=skip-todo.test.cjs --verbose",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=skip-todo.test.cjs",
+        "--verbose"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 330,
+      "outputBytes": 330,
+      "sha256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 330,
+        "sha256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7",
+        "finalLF": true,
+        "lastBytesHex": "6573206d61746368696e6720736b69702d746f646f2e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:14.636047+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-skip-todo",
+        "sha256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7"
+      },
+      "attachments": [],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-log-snapshot-written",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/log-snapshot-written/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --verbose --updateSnapshot",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=mixed.test.cjs",
+        "--verbose",
+        "--updateSnapshot"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 970,
+      "outputBytes": 970,
+      "sha256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 970,
+        "sha256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb",
+        "finalLF": true,
+        "lastBytesHex": "737569746573206d61746368696e67206d697865642e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:16.800843+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-log-snapshot-written",
+        "sha256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb"
+      },
+      "attachments": [],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-log-snapshot-passed",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/log-snapshot-passed/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --verbose",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=mixed.test.cjs",
+        "--verbose"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 898,
+      "outputBytes": 898,
+      "sha256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 898,
+        "sha256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428",
+        "finalLF": true,
+        "lastBytesHex": "737569746573206d61746368696e67206d697865642e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:18.998923+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-log-snapshot-passed",
+        "sha256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428"
+      },
+      "attachments": [],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-coverage-snapshot",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/coverage-snapshot/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --coverage --coverageReporters=text --coverageReporters=json --coverageReporters=lcov",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=snapshot.test.cjs",
+        "--coverage",
+        "--coverageReporters=text",
+        "--coverageReporters=json",
+        "--coverageReporters=lcov"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 654,
+      "outputBytes": 654,
+      "sha256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 654,
+        "sha256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:22.040492+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-coverage-snapshot",
+        "sha256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c"
+      },
+      "attachments": [
+        {
+          "file": "captures/coverage-snapshot/coverage/coverage-final.json",
+          "bytes": 985,
+          "sha256": "3dd89c9f508f4be336d04c9ae41a276d75095cc16b8ce6513c215a0618c3b10a"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/base.css",
+          "bytes": 5394,
+          "sha256": "3f876e51f0a46864ffa7665b4b7a1f5fb5f6f37fb6a28f014e2b12d82962c852"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/block-navigation.js",
+          "bytes": 2655,
+          "sha256": "cd8db34b1fbeb973354a93f8b4133c7c7eab34cdda9429a0434be91384783b7e"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/favicon.png",
+          "bytes": 445,
+          "sha256": "5b0cfd52dc0bfbe544f4e1a9c77aa46b8629b0e0aad6c54f95eef457b86c2a89"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/index.html",
+          "bytes": 4350,
+          "sha256": "f2e657bb3a8c8771918436a4fd90b50b96b1eaf76b94045e4ecd6bb8e8467a2e"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/math.cjs.html",
+          "bytes": 3249,
+          "sha256": "3dcdbc3cfc455c85d7aeff71787024d15561a6c1fa3a14029029525a4824466d"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/prettify.css",
+          "bytes": 676,
+          "sha256": "ea3fe433f9450698ca8a230271688e7aeec12f99c8a7ef6c94379abb38f27823"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/prettify.js",
+          "bytes": 17590,
+          "sha256": "fa1b1e1b906ddcfa08b46f161c0f924f506e1a31b4f3e09b8caaa2463ef52c18"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/sort-arrow-sprite.png",
+          "bytes": 138,
+          "sha256": "42c895355f9838ede83fdfdca90127d8471aefed5ecf5342374f65ec7c3f10ab"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov-report/sorter.js",
+          "bytes": 6731,
+          "sha256": "f8cc5d157379d844fd695ad567b6c29b3c1f0812964ddf6f95c26327e434bab5"
+        },
+        {
+          "file": "captures/coverage-snapshot/coverage/lcov.info",
+          "bytes": 137,
+          "sha256": "c731511a61d86da394650417e2851d9812e19d1e24548c3f94ae78ef1f7c6007"
+        }
+      ],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-multiproject-coverage-log-skip-snapshot",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/multiproject-coverage-log-skip-snapshot/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --projects project-a.cjs project-b.cjs --coverage --coverageReporters=text --coverageReporters=json --coverageReporters=lcov",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--projects",
+        "project-a.cjs",
+        "project-b.cjs",
+        "--coverage",
+        "--coverageReporters=text",
+        "--coverageReporters=json",
+        "--coverageReporters=lcov"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 1250,
+      "outputBytes": 1250,
+      "sha256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 1250,
+        "sha256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5",
+        "finalLF": true,
+        "lastBytesHex": "20616c6c20746573742073756974657320696e20322070726f6a656374732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:26.281059+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-multiproject-coverage-log-skip-snapshot",
+        "sha256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5"
+      },
+      "attachments": [
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/coverage-final.json",
+          "bytes": 985,
+          "sha256": "3dd89c9f508f4be336d04c9ae41a276d75095cc16b8ce6513c215a0618c3b10a"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/base.css",
+          "bytes": 5394,
+          "sha256": "3f876e51f0a46864ffa7665b4b7a1f5fb5f6f37fb6a28f014e2b12d82962c852"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/block-navigation.js",
+          "bytes": 2655,
+          "sha256": "cd8db34b1fbeb973354a93f8b4133c7c7eab34cdda9429a0434be91384783b7e"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/favicon.png",
+          "bytes": 445,
+          "sha256": "5b0cfd52dc0bfbe544f4e1a9c77aa46b8629b0e0aad6c54f95eef457b86c2a89"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/index.html",
+          "bytes": 4350,
+          "sha256": "0043de0770a72861e2d9d635030aa9fd571759a543c09f35c92527e33a6a4c9c"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/math.cjs.html",
+          "bytes": 3249,
+          "sha256": "d1e81567ccec0ef59c97926f1d8c0d1d5d23f50369ed68498512b5db76c6df23"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/prettify.css",
+          "bytes": 676,
+          "sha256": "ea3fe433f9450698ca8a230271688e7aeec12f99c8a7ef6c94379abb38f27823"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/prettify.js",
+          "bytes": 17590,
+          "sha256": "fa1b1e1b906ddcfa08b46f161c0f924f506e1a31b4f3e09b8caaa2463ef52c18"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/sort-arrow-sprite.png",
+          "bytes": 138,
+          "sha256": "42c895355f9838ede83fdfdca90127d8471aefed5ecf5342374f65ec7c3f10ab"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/sorter.js",
+          "bytes": 6731,
+          "sha256": "f8cc5d157379d844fd695ad567b6c29b3c1f0812964ddf6f95c26327e434bab5"
+        },
+        {
+          "file": "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov.info",
+          "bytes": 137,
+          "sha256": "c731511a61d86da394650417e2851d9812e19d1e24548c3f94ae78ef1f7c6007"
+        }
+      ],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-json-default-log-snapshot",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/json-default-log-snapshot/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=mixed.test.cjs --json --outputFile=result.json",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=mixed.test.cjs",
+        "--json",
+        "--outputFile=result.json"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 935,
+      "outputBytes": 935,
+      "sha256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 935,
+        "sha256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85",
+        "finalLF": true,
+        "lastBytesHex": "726573756c7473207772697474656e20746f3a20726573756c742e6a736f6e0a"
+      },
+      "completionAt": "2026-10-09T15:33:28.903237+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-json-default-log-snapshot",
+        "sha256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85"
+      },
+      "attachments": [
+        {
+          "file": "captures/json-default-log-snapshot/result.json",
+          "bytes": 1661,
+          "sha256": "986f22f7f15a93187b20c3665f3735ca3ea1a5fb9a303a42e475aeda3a96e980"
+        }
+      ],
+      "baselineReason": "unsupported_output"
+    },
+    {
+      "name": "R02-reporter-collision-default",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/reporter-collision-default/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=default --reporters=./collision-reporter.cjs",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=snapshot.test.cjs",
+        "--reporters=default",
+        "--reporters=./collision-reporter.cjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 397,
+      "outputBytes": 397,
+      "sha256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 397,
+        "sha256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f",
+        "finalLF": true,
+        "lastBytesHex": "746573206d61746368696e6720736e617073686f742e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:31.478332+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-reporter-collision-default",
+        "sha256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f"
+      },
+      "attachments": [],
+      "baselineReason": "no_profile"
+    },
+    {
+      "name": "R02-reporter-collision-only",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/reporter-collision-only/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=./collision-reporter.cjs",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=snapshot.test.cjs",
+        "--reporters=./collision-reporter.cjs"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 160,
+      "outputBytes": 160,
+      "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 160,
+        "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+        "finalLF": true,
+        "lastBytesHex": "202020302e30303120730a52616e20616c6c2074657374207375697465732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:33.856401+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-reporter-collision-only",
+        "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9"
+      },
+      "attachments": [],
+      "baselineReason": "no_profile"
+    },
+    {
+      "name": "R02-skipped-suite",
+      "family": "jest",
+      "version": "Jest 30.2.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "captures/skipped-suite/input.txt",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "source": "shell",
+      "command": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=skip.test.cjs --verbose",
+      "argv": [
+        "jest",
+        "--runInBand",
+        "--no-color",
+        "--config=jest.config.cjs",
+        "--testPathPatterns=skip.test.cjs",
+        "--verbose"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/project",
+      "environment": {
+        "PATH": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R02-jest-ei_x09fw/tools/node_modules/.bin:/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "NO_COLOR": "1",
+        "CI": "true",
+        "TZ": "UTC",
+        "LC_ALL": "C"
+      },
+      "environmentDelta": {},
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF then wait; no PTY, decoding rewrite, trim or normalization",
+      "inputBytes": 155,
+      "outputBytes": 155,
+      "sha256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 155,
+        "sha256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144",
+        "finalLF": true,
+        "lastBytesHex": "20737569746573206d61746368696e6720736b69702e746573742e636a732e0a"
+      },
+      "completionAt": "2026-10-09T15:33:36.279690+00:00",
+      "provenance": {
+        "record": "capture-receipt.json",
+        "originalCase": "R02-skipped-suite",
+        "sha256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144"
+      },
+      "attachments": [],
+      "baselineReason": "unsupported_output"
+    }
+  ],
+  "archives": [
+    ".gitattributes",
+    "BOOTSTRAP-FAILURE.md",
+    "CANDIDATES.md",
+    "CASES.md",
+    "LICENSE.code-prettify.txt",
+    "LICENSE.istanbul-reports.txt",
+    "LICENSE.jest.txt",
+    "SOURCES.md",
+    "archive.py",
+    "attachments/__snapshots__/mixed.test.cjs.snap",
+    "attachments/__snapshots__/snapshot.test.cjs.snap",
+    "baseline-observations.json",
+    "capture-receipt.json",
+    "capture.py",
+    "captures/coverage-snapshot/coverage/coverage-final.json",
+    "captures/coverage-snapshot/coverage/lcov-report/base.css",
+    "captures/coverage-snapshot/coverage/lcov-report/block-navigation.js",
+    "captures/coverage-snapshot/coverage/lcov-report/favicon.png",
+    "captures/coverage-snapshot/coverage/lcov-report/index.html",
+    "captures/coverage-snapshot/coverage/lcov-report/math.cjs.html",
+    "captures/coverage-snapshot/coverage/lcov-report/prettify.css",
+    "captures/coverage-snapshot/coverage/lcov-report/prettify.js",
+    "captures/coverage-snapshot/coverage/lcov-report/sort-arrow-sprite.png",
+    "captures/coverage-snapshot/coverage/lcov-report/sorter.js",
+    "captures/coverage-snapshot/coverage/lcov.info",
+    "captures/json-default-log-snapshot/result.json",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/coverage-final.json",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/base.css",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/block-navigation.js",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/favicon.png",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/index.html",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/math.cjs.html",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/prettify.css",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/prettify.js",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/sort-arrow-sprite.png",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov-report/sorter.js",
+    "captures/multiproject-coverage-log-skip-snapshot/coverage/lcov.info",
+    "captures/snapshot-passed/expected.txt",
+    "classify.mjs",
+    "donor-pins.json",
+    "finalize.py",
+    "install.log",
+    "jest-registry.json",
+    "source/collision-reporter.cjs",
+    "source/jest.config.cjs",
+    "source/math.cjs",
+    "source/mixed.test.cjs",
+    "source/project-a.cjs",
+    "source/project-b.cjs",
+    "source/skip-todo.test.cjs",
+    "source/skip.test.cjs",
+    "source/snapshot.test.cjs",
+    "tool-lock.json.gz",
+    "version.log"
+  ]
+}

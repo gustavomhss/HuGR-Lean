@@ -1,0 +1,180 @@
+{
+  "baseline": "248c303",
+  "reach": "one public-filter call per captured case; no suites/typecheck/CI; in-memory controls only",
+  "observations": [
+    {
+      "name": "R02-snapshot-written",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 309,
+        "outputBytes": 309
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "ffe441f9496688b82dbb7ae776d72ef69d8c5aec949aaffe95a3a2c7572c94f8",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-snapshot-passed",
+      "actual": {
+        "status": "reduced",
+        "replacement": "+ ./snapshot.test.cjs\n  - snapshot café 🔥 (15 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       1 passed, 1 total\nSnapshots:   1 passed, 1 total\nTime:        0.929 s, estimated 1 s\nRan all test suites matching snapshot.test.cjs.\n",
+        "profile": "jest",
+        "inputBytes": 237,
+        "outputBytes": 232,
+        "reason": "profile_reduction"
+      },
+      "expectedStatus": "reduced",
+      "expectedFile": "captures/snapshot-passed/expected.txt",
+      "sha256": "361d204f0445e45654f0944f0fa105e63e9dcb3eab13acbc3f6f27a082065309",
+      "removableBytes": 5
+    },
+    {
+      "name": "R02-snapshot-failed",
+      "actual": {
+        "status": "passthrough",
+        "reason": "nonzero_exit",
+        "inputBytes": 985,
+        "outputBytes": 985
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "e45ba2484ec5d53c6d15b7a47ceebe5e50e8736c398ad8e945fe31ce3e20a2db",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-skip-todo",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 330,
+        "outputBytes": 330
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "639b4acb3bbb294e753d51459de55ad423da2dc7353490bbeeaae3eabf360ee7",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-log-snapshot-written",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 970,
+        "outputBytes": 970
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "7590ad5d55810cd04581a8e898258f10f35f3c3f4a9861b0900ee50b807cfdcb",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-log-snapshot-passed",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 898,
+        "outputBytes": 898
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "61f34003d8eea174156b8de58d5446c87ef648865b4243e4c89af50088a3e428",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-coverage-snapshot",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 654,
+        "outputBytes": 654
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "57a1f03830b7cc0ec40d896d015cd78570c61b7f939dc225f0984de04ab4193c",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-multiproject-coverage-log-skip-snapshot",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 1250,
+        "outputBytes": 1250
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "fffec9d826e065a2cf93ed2133f251dfd1b925482bf05afd7e948e78cb398cf5",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-json-default-log-snapshot",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 935,
+        "outputBytes": 935
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "8be99883e05e48f34cfc3d0e3e4d2f8859df2b79c876566f9e8ec8a5c54bcd85",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-reporter-collision-default",
+      "actual": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 397,
+        "outputBytes": 397
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "b1c3ff61a30b6a8188b84c3c2093b0b0dbebeb8d77fe2c6468702ad4c4168b9f",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-reporter-collision-only",
+      "actual": {
+        "status": "passthrough",
+        "reason": "no_profile",
+        "inputBytes": 160,
+        "outputBytes": 160
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "13a7870d2dcbce5b414f875b59d4c8de5cdee05736a92143790c1e3373e921c9",
+      "removableBytes": 0
+    },
+    {
+      "name": "R02-skipped-suite",
+      "actual": {
+        "status": "passthrough",
+        "reason": "unsupported_output",
+        "inputBytes": 155,
+        "outputBytes": 155
+      },
+      "expectedStatus": "passthrough",
+      "expectedFile": null,
+      "sha256": "d592b5e2b9a9300018f0c7269d5de5efb41718349f3bab722c6a913021d45144",
+      "removableBytes": 0
+    }
+  ],
+  "controls": {
+    "failureHashMutationDetected": true,
+    "collisionCounterfactual": {
+      "command": "jest",
+      "originalCommand": "jest --runInBand --no-color --config=jest.config.cjs --testPathPatterns=snapshot.test.cjs --reporters=./collision-reporter.cjs",
+      "result": {
+        "status": "reduced",
+        "replacement": "+ ./snapshot.test.cjs\nTest Suites: 1 passed, 1 total\nTests:       1 passed, 1 total\nSnapshots:   1 passed, 1 total\nTime:        0.001 s\nRan all test suites.\n",
+        "profile": "jest",
+        "inputBytes": 160,
+        "outputBytes": 157,
+        "reason": "profile_reduction"
+      },
+      "interpretation": "Native grammar cannot authenticate producer; actual explicit reporter argv is refused"
+    }
+  }
+}
