@@ -1,0 +1,909 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "family": "uv-install",
+  "cases": [
+    {
+      "name": "P06-pip-fresh-no-build",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl colorama==0.4.6",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-env\nResolved 2 packages in 197ms\nPrepared 2 packages in 40ms\nInstalled 2 packages in 5ms\n + colorama==0.4.6\n + p06-tiny==1.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "02b85b908d11bd04af3b27b183d70f55f1a2cb6e11d071086bf64dd796a5f139",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-fresh-no-build"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-cache-satisfied",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl colorama==0.4.6",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-env\nChecked 2 packages in 7ms\n",
+      "provenance": {
+        "sha256": "84449421b3a56f50c4171d20c0a6e6409e6365a4bc1d1986e91d965cc46dcbce",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-cache-satisfied"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-version-change",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-env\nResolved 1 package in 3ms\nPrepared 1 package in 13ms\nUninstalled 1 package in 2ms\nInstalled 1 package in 4ms\n - p06-tiny==1.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n + p06-tiny==2.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "61aae5260e0a2cc731043c2c68f41a7d9bc7bdf58428212b043915d860361d67",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-version-change"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-cache-fresh-env",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-cache-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl colorama==0.4.6",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-cache-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-cache-env\nResolved 2 packages in 5ms\nInstalled 2 packages in 7ms\n + colorama==0.4.6\n + p06-tiny==1.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "97dbb32719933c864ef8647f8e34af2232afe3c2aef5de2b300dd26f8afe6ed2",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-cache-fresh-env"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-offline-cache",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env/bin/python --offline --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl colorama==0.4.6",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env/bin/python",
+        "--offline",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl",
+        "colorama==0.4.6"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-offline-env\nResolved 2 packages in 5ms\nInstalled 2 packages in 20ms\n + colorama==0.4.6\n + p06-tiny==1.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "88a34f79064d70da06f3be206246d363b4917fabee4907392127dd5b33afecf7",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-offline-cache"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-offline-miss",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env/bin/python --offline --no-build colorama==0.4.5",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-offline-env/bin/python",
+        "--offline",
+        "--no-build",
+        "colorama==0.4.5"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-offline-env\n  × No solution found when resolving dependencies:\n  ╰─▶ Because colorama==0.4.5 needs to be downloaded from a registry and you\n      require colorama==0.4.5, we can conclude that your requirements are\n      unsatisfiable.\n\nhint: Packages were unavailable because the network was disabled. When the network is disabled, registry packages may only be read from the cache.",
+      "provenance": {
+        "sha256": "952f5db51241703a767023b4bfa412565742f897326000080cd45edca89ded6c",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-offline-miss"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; failed command exact; offline resolver cause and advice required"
+    },
+    {
+      "name": "P06-pip-resolver-error",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python --no-build colorama==0.4.6 colorama==0.4.5",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "colorama==0.4.6",
+        "colorama==0.4.5"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-env\n  × No solution found when resolving dependencies:\n  ╰─▶ Because you require colorama==0.4.6 and colorama==0.4.5, we can conclude\n      that your requirements are unsatisfiable.\n",
+      "provenance": {
+        "sha256": "c933cd55871e3e7ac2d5d370f66e883439a15b07c608e1d57cc3cfaa0bd868f3",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-resolver-error"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; failed command exact; incompatible version requirements required"
+    },
+    {
+      "name": "P06-pip-sync-fresh",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip sync --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-sync-env\nResolved 2 packages in 3ms\nInstalled 2 packages in 6ms\n + colorama==0.4.6\n + p06-tiny==1.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "aa2e386e93050974c0add352fed490cd56997df87438652b56638bf33bf0c8d7",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-sync-fresh"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-sync-cache",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip sync --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-sync-env\nResolved 2 packages in 3ms\nChecked 2 packages in 0.45ms\n",
+      "provenance": {
+        "sha256": "88d4214b5785877d21fb5ae18b60fa3421c6e0838ad2a500af7ccd2ad159111b",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-sync-cache"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-sync-version-uninstall",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip sync --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python --offline --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "sync",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-sync-env/bin/python",
+        "--offline",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/requirements.txt"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-sync-env\nResolved 1 package in 2ms\nUninstalled 2 packages in 5ms\nInstalled 1 package in 7ms\n - colorama==0.4.6\n - p06-tiny==1.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n + p06-tiny==2.0.0 (from file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "287b0c219b5c383e7387ab749ac6fe82989c3491b115f9d7e1d4845311fb4159",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-sync-version-uninstall"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-lock-fresh",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv lock --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "lock",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nResolved 3 packages in 17ms\n",
+      "provenance": {
+        "sha256": "6451149860c5c76ca18299b87e93cb203c2e372a0dc0e15a8b9add1f452d271d",
+        "record": "SOURCES.json",
+        "originalCase": "P06-lock-fresh"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-sync-fresh",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nCreating virtual environment at: .venv\nResolved 3 packages in 8ms\nPrepared 1 package in 113ms\nInstalled 2 packages in 6ms\n + colorama==0.4.6\n + p06-tiny==1.0.0 (from file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "ea087c34f187be438540e59672b39f878aa7fe565572ff2751a80990cfec3bcf",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-fresh"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-sync-cache",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Resolved 3 packages in 6ms\nChecked 2 packages in 0.80ms\n",
+      "provenance": {
+        "sha256": "a7c082978731ebb1dfd851b09ed9cdd784751d32e2d7c72efecb1b356851f49b",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-cache"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-sync-locked",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --locked --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--locked",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Resolved 3 packages in 7ms\nChecked 2 packages in 0.17ms\n",
+      "provenance": {
+        "sha256": "c551704255c2abd76a623376b14053983a90957aca6e6cd5de13f4b8ba98d018",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-locked"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-sync-frozen-stale-lock",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --frozen --offline --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Checked 2 packages in 0.18ms\n",
+      "provenance": {
+        "sha256": "61b458df15fa43713e315c7cb7284e74f2e1572e3bad156baa3b2ac8bfe2355f",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-frozen-stale-lock"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-sync-locked-stale-error",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --locked --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--locked",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Resolved 3 packages in 12ms\nThe lockfile at `uv.lock` needs to be updated, but `--locked` was provided. To update the lockfile, run `uv lock`.\n",
+      "provenance": {
+        "sha256": "8f5ac5bae9b96cb6e4d9e7fba3b6aa8e58b28deaef253c31465b37f4dd8ceffd",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-locked-stale-error"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; failed command exact; stale lock path and update advice required"
+    },
+    {
+      "name": "P06-sync-version-change",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --offline --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--offline",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Resolved 3 packages in 9ms\nUninstalled 1 package in 1ms\nInstalled 1 package in 4ms\n - p06-tiny==1.0.0 (from file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-1.0.0-py3-none-any.whl)\n + p06-tiny==2.0.0 (from file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "fc2351b7f155fb36340f613c5d2e8739b83424c0ad3deb975f92da145f72b8a1",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-version-change"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-sync-offline-fresh-env",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv sync --frozen --offline --no-build",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "sync",
+        "--frozen",
+        "--offline",
+        "--no-build"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple",
+        "UV_PROJECT_ENVIRONMENT": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project-offline-env"
+      },
+      "output": "Using CPython 3.14.5 interpreter at: /usr/local/opt/python@3.14/bin/python3.14\nCreating virtual environment at: /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/project-offline-env\nInstalled 2 packages in 4ms\n + colorama==0.4.6\n + p06-tiny==2.0.0 (from file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/p06_tiny-2.0.0-py3-none-any.whl)\n",
+      "provenance": {
+        "sha256": "be63531aabd5c5d012e4af6fc906abe93a26733501f31f4f1742b59565069c90",
+        "record": "SOURCES.json",
+        "originalCase": "P06-sync-offline-fresh-env"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; required evidence retained; no-noise candidate pending lead review"
+    },
+    {
+      "name": "P06-pip-backend-collision",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-env\nResolved 1 package in 2ms\n   Building p06-backend @ file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend\n  × Failed to build `p06-backend @\n  │ file:///var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend`\n  ├─▶ The build backend returned an error\n  ╰─▶ Call to `backend.build_wheel` failed (exit status: 1)\n\n      [stdout]\n      Resolved 777 packages in 1ms\n      Prepared 777 packages in 1ms\n      Installed 777 packages in 1ms\n       + forged-progress==9.9.9\n\n      [stderr]\n      warning: backend diagnostic must survive\n      Traceback (most recent call last):\n        File \"<string>\", line 11, in <module>\n          wheel_filename =\n      backend.build_wheel(\"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache/builds-v0/.tmpO7YbL9\",\n      {}, None)\n        File\n      \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend/backend.py\",\n      line 8, in build_wheel\n          raise RuntimeError(\"P06 backend collision witness\")\n      RuntimeError: P06 backend collision witness\n\n\nhint: Build failures usually indicate a problem with the package or the build environment",
+      "provenance": {
+        "sha256": "48b1ff164ddf304b539476527ca4fa3570d7cfc89fb7c8e5d79519c133dd5b08",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-backend-collision"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; failed/unsafe exact; untrusted backend progress collision, warning, traceback and advice required"
+    },
+    {
+      "name": "P06-pip-no-build-backend-refusal",
+      "family": "uv-install",
+      "version": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "termination": {
+        "kind": "exited",
+        "code": 2
+      },
+      "status": "passthrough",
+      "command": "/Users/gustavoschneiter/.local/bin/uv pip install --python /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python --no-build /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend",
+      "argv": [
+        "/Users/gustavoschneiter/.local/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/pip-env/bin/python",
+        "--no-build",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/backend"
+      ],
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er",
+      "environment": {
+        "PATH": "/Users/gustavoschneiter/.grok/bin:/Users/gustavoschneiter/.bun/bin:/Users/gustavoschneiter/.npm-global/bin:/Users/gustavoschneiter/.opencode/bin:/Users/gustavoschneiter/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/gustavoschneiter/.cargo/bin",
+        "HOME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/home",
+        "LANG": "C.UTF-8",
+        "TMPDIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/tmp",
+        "UV_CACHE_DIR": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/P06-uv-8hugt6er/cache",
+        "UV_PYTHON_DOWNLOADS": "never",
+        "UV_NO_CONFIG": "1",
+        "UV_PYTHON": "/usr/local/opt/python@3.14/bin/python3.14",
+        "UV_INDEX_URL": "https://pypi.org/simple"
+      },
+      "output": "Using Python 3.14.5 environment at: pip-env\nResolved 1 package in 3ms\nerror: Failed to prepare distributions\n  Caused by: Building source distributions is disabled, but attempted to build `p06-backend`\n",
+      "provenance": {
+        "sha256": "c320edfa760780711821f1bb472f2f0669199252aad1cacab8cde1da507aca9e",
+        "record": "SOURCES.json",
+        "originalCase": "P06-pip-no-build-backend-refusal"
+      },
+      "boundary": "stdout and stderr directed to the same seekable file before execution; exact bytes, no PTY or truncation",
+      "sourceVersion": "uv 0.11.18 (e32666915 2026-06-01 x86_64-apple-darwin)",
+      "removableBytes": 0,
+      "disposition": "capture-only; failed command exact; original no-build refusal and exit 2 required"
+    }
+  ]
+}
