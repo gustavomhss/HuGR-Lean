@@ -1,5 +1,6 @@
 {
   "schema": "hugr-lean/native-cases/1",
+  "archives": ["supplement-receipt.json"],
   "cases": [
     {
       "name": "G04/build-verbose", "family": "go-build", "command": "go build -v ./...",
@@ -105,6 +106,7 @@
       "termination": { "kind": "exited", "code": 1 }, "completeness": "complete", "presentation": "unknown",
       "version": "go version go1.27.1 darwin/amd64", "platform": "darwin/amd64",
       "provenance": { "record": "SOURCES.md", "capture": "native-receipt.json#G04-run-arbitrary-nonzero", "sha256": "0f4131a68a76345c3ecc1a464f8f1e32e1642ad074f6c8194a4e6d6ece4f4d72" }
-    }
+    },
+    {"name":"G04/cross-linux-amd64-success","family":"go-build","command":["go","build","-o","/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/go-build-supplement-n8mlS7/cross-linux-amd64","./..."],"file":"captures/cross-linux-amd64-success.output","expected":"","status":"passthrough","termination":{"kind":"exited","code":0},"completeness":"complete","presentation":"unknown","version":"go version go1.27.1 darwin/amd64","platform":"darwin/amd64","provenance":{"kind":"original","license":"MIT","record":"SOURCES.md","receipt":"supplement-receipt.json","case":"G04/cross-linux-amd64-success","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}}
   ]
 }

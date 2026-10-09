@@ -21,14 +21,23 @@ Actual command, exit facts and SHA reside in flat `cases.json` plus native recei
 | run-quiet | `go run ./cmd/quiet`; empty, exit 0 | NO_NOISE |
 | run-arbitrary | `go run ./cmd/noisy`; 2,731 bytes, exit 0 | Arbitrary stdout/stderr, Unicode, native-shaped collisions, no-LF tails |
 | run-arbitrary-nonzero | `go run ./cmd/noisy fail`; 2,746 bytes, Go exit 1 | Same application bytes plus native `exit status 23`, all exact |
+| cross-linux-amd64-success | `go build -o <private artifact> ./...`; empty, exit 0 | Actual env-selected linux/amd64 ELF; NO_NOISE, desired passthrough |
 
 Baseline grammar: `src/profiles/go.ts` only admits bounded `go test -v` argv.
 Build/vet/run remain unsupported command grammar at this baseline. Silent cases
 are no-noise evidence, not reduction support. No all-undefined profile was added.
 `-GOOS=linux` is a real rejected command, not successful cross-compilation. Explicit
-cross-GOOS success remains outside this no-environment-assignment packet; lead scope
-decision required before claiming target coverage beyond darwin/amd64.
+cross-GOOS success is now captured separately in `supplement-receipt.json` using
+original argv and separate environment metadata. Native host remains darwin/amd64;
+artifact is linux/amd64, never executed. This adds target evidence, not grammar support.
 
 Checks: `npm ci`, `npm run typecheck`; receipt/source SHA verification and in-memory
 corruption probes. No profile test, baseline red/green or material savings claim:
 capture-only packet. Lead owns corpus registration/public-filter checks and review.
+
+Supplement acceptance: `verify-supplements.mjs`, stable ID
+`G04/cross-linux-amd64-success`, original `captures/cross-linux-amd64-success.output`,
+independent expected inline empty string, removable bytes 0. Reader/public-filter
+checks cover only G04/C04; corrupt ELF, output/EOF, receipt command/LF/tail and source
+controls reject. Physical executable verification requires retained private capture;
+committed header/hash metadata alone does not prove a file exists on another host.
