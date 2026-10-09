@@ -1,0 +1,26 @@
+Loading configuration file at /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/pyrightconfig.json
+Auto-excluding **/node_modules
+Auto-excluding **/__pycache__
+Auto-excluding **/.*
+Found 3 source files
+pyright 1.1.408
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/information.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/information.py:2:13 - information: Type of "value" is "Literal['café 🧪']"
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/warning.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/warning.py:2:5 - warning: Variable "unused" is not accessed (reportUnusedVariable)
+0 errors, 1 warning, 1 information
+Completed in 0.64sec
+
+Analysis stats
+Total files parsed and bound: 26
+Total files checked: 3
+
+Timing stats
+Find Source Files:    0sec
+Read Source Files:    0sec
+Tokenize:             0.07sec
+Parse:                0.08sec
+Resolve Imports:      0.05sec
+Bind:                 0.07sec
+Check:                0.06sec
+Detect Cycles:        0sec

@@ -1,0 +1,2 @@
+Config "typeCheckingMode" entry must contain "off", "basic", "standard", or "strict".
+0 errors, 0 warnings, 0 informations
