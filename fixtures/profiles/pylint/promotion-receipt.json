@@ -1,0 +1,51 @@
+{
+  "schema": "hugr-lean/pylint-promotion/1",
+  "captureCheckpoint": "15e25d7aa91bb382772a5c6b90d288592d8a3b1a",
+  "producer": "pylint 4.0.4",
+  "goldens": [
+    {
+      "case": "L06-json-exit-zero",
+      "file": "L06-json-exit-zero.golden.txt",
+      "source": "L06-json-exit-zero.candidate.txt",
+      "sha256": "d285167a545eb2047433f922c33d345b62bf982527aaf94b283064b24564b3a0",
+      "inputBytes": 1003,
+      "outputBytes": 642,
+      "savedBytes": 361
+    },
+    {
+      "case": "L06-json-reports",
+      "file": "L06-json-reports.golden.txt",
+      "source": "L06-json-reports.candidate.txt",
+      "sha256": "4f8197413807920ec53abdd691cf6d1f5557d20eaceeaa25c86a0a6664f9f4e1",
+      "inputBytes": 668,
+      "outputBytes": 427,
+      "savedBytes": 241
+    },
+    {
+      "case": "L06-json2-exit-zero",
+      "file": "L06-json2-exit-zero.golden.txt",
+      "source": "L06-json2-exit-zero.candidate.txt",
+      "sha256": "a02ddccfbe3d541ac26e624bd263bf064c2393a1a5834ba9271f84a380cd00a9",
+      "inputBytes": 1976,
+      "outputBytes": 1230,
+      "savedBytes": 746
+    },
+    {
+      "case": "L06-json2-reports",
+      "file": "L06-json2-reports.golden.txt",
+      "source": "L06-json2-reports.candidate.txt",
+      "sha256": "a5930974d2d4eda3ac8395bb2ecf262359fba2df7fa5ad7b605c9b9060d90d00",
+      "inputBytes": 1432,
+      "outputBytes": 886,
+      "savedBytes": 546
+    }
+  ],
+  "approvedBytes": 1894,
+  "independentOracle": "Original capture.py lexical scanner candidates; copied byte-for-byte, never runtime parser output.",
+  "unchangedCaptureReceiptSha256": "34586425c508f615e7594e177c4872b5ba42f3dbf02a0e0934e05a3bad9ebf7e",
+  "blocked": {
+    "case": "L06-json2-clean",
+    "proposedBytes": 141,
+    "reason": "Native score 10.0 is noncanonical; frozen jsonLayout and requested refusal policy forbid reduction."
+  }
+}

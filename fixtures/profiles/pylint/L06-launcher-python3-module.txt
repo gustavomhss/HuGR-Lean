@@ -1,0 +1,28 @@
+[
+    {
+        "type": "warning",
+        "module": "warning_case",
+        "obj": "unused_argument",
+        "line": 5,
+        "column": 20,
+        "endLine": 5,
+        "endColumn": 25,
+        "path": "warning_case.py",
+        "symbol": "unused-argument",
+        "message": "Unused argument 'value'",
+        "message-id": "W0613"
+    },
+    {
+        "type": "warning",
+        "module": "warning_case",
+        "obj": "",
+        "line": 2,
+        "column": 0,
+        "endLine": 2,
+        "endColumn": 11,
+        "path": "warning_case.py",
+        "symbol": "unused-import",
+        "message": "Unused import math",
+        "message-id": "W0611"
+    }
+]
