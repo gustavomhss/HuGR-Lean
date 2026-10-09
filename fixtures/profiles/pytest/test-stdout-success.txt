@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai
+collected 1 item
+
+test_stdout.py test_stdout.py .                                                         [100%]
+============================== 1 passed in 0.01s ===============================
+R01 user stdout café 雪 🧪
+.
+
+============================== 1 passed in 0.16s ===============================

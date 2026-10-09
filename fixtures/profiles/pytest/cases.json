@@ -1,0 +1,751 @@
+{
+  "schema": "hugr-lean/native-cases/1",
+  "cases": [
+    {
+      "name": "R01/serial-strict-xpass",
+      "family": "pytest",
+      "file": "serial-strict-xpass.txt",
+      "command": "pytest --color=no -r a test_strict.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "test_strict.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 763,
+      "outputBytes": 763,
+      "sha256": "a32359218a00efb561579677b4d38b531942ea37ef2c6ddd98f3b0d1d3f530a7",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "a32359218a00efb561579677b4d38b531942ea37ef2c6ddd98f3b0d1d3f530a7"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "test_strict.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/worker-outcomes",
+      "family": "pytest",
+      "file": "worker-outcomes.txt",
+      "command": "pytest --color=no -r a -p xdist.plugin -n 2 -v test_outcomes.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "xdist.plugin",
+        "-n",
+        "2",
+        "-v",
+        "test_outcomes.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 1373,
+      "outputBytes": 1373,
+      "sha256": "9ac1f1beafa1c74ab9b71b83f7e07ed2deeed66304b5153fdb5b95f480304f3c",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "9ac1f1beafa1c74ab9b71b83f7e07ed2deeed66304b5153fdb5b95f480304f3c"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "xdist.plugin",
+          "-n",
+          "2",
+          "-v",
+          "test_outcomes.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/worker-strict-xpass",
+      "family": "pytest",
+      "file": "worker-strict-xpass.txt",
+      "command": "pytest --color=no -r a -p xdist.plugin -n 2 -v test_outcomes.py test_strict.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "xdist.plugin",
+        "-n",
+        "2",
+        "-v",
+        "test_outcomes.py",
+        "test_strict.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 1839,
+      "outputBytes": 1839,
+      "sha256": "98a02fd6b26f066d6f1190c4f19828545f3a56241d711d059197f5139812a2a5",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "98a02fd6b26f066d6f1190c4f19828545f3a56241d711d059197f5139812a2a5"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "xdist.plugin",
+          "-n",
+          "2",
+          "-v",
+          "test_outcomes.py",
+          "test_strict.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "322e313873203d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/worker-failure-stdout",
+      "family": "pytest",
+      "file": "worker-failure-stdout.txt",
+      "command": "pytest --color=no -r a -p xdist.plugin -n 2 -v test_outcomes.py test_stdout.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "xdist.plugin",
+        "-n",
+        "2",
+        "-v",
+        "test_outcomes.py",
+        "test_stdout.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 3733,
+      "outputBytes": 3733,
+      "sha256": "7f8d1063e206db568c4ac4ed0336bfb5136d530b7000df0825b990d2ec6f839e",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "7f8d1063e206db568c4ac4ed0336bfb5136d530b7000df0825b990d2ec6f839e"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "xdist.plugin",
+          "-n",
+          "2",
+          "-v",
+          "test_outcomes.py",
+          "test_stdout.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "677320696e20332e353373203d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/test-stdout-success",
+      "family": "pytest",
+      "file": "test-stdout-success.txt",
+      "command": "pytest --color=no -r a -s test_stdout.py::test_stdout",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-s",
+        "test_stdout.py::test_stdout"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 546,
+      "outputBytes": 546,
+      "sha256": "1b9994e7b8a93996f6538d73a46fe60173ed097e3b793ae0dc9cb960b737cd06",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "1b9994e7b8a93996f6538d73a46fe60173ed097e3b793ae0dc9cb960b737cd06"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-s",
+          "test_stdout.py::test_stdout"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/serial-outcomes",
+      "family": "pytest",
+      "file": "serial-outcomes.txt",
+      "command": "pytest --color=no -r a test_outcomes.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "test_outcomes.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 768,
+      "outputBytes": 768,
+      "sha256": "78577f87b5a33a69c34058b6d5e8f146d26de42dcb4bd17f578150d231bcc6d1",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "78577f87b5a33a69c34058b6d5e8f146d26de42dcb4bd17f578150d231bcc6d1"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "test_outcomes.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1",
+          "PYTHONPATH": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/plugin-success",
+      "family": "pytest",
+      "file": "plugin-success.txt",
+      "command": "pytest --color=no -r a -p collision_plugin test_outcomes.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "collision_plugin",
+        "test_outcomes.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 1035,
+      "outputBytes": 1035,
+      "sha256": "de7c258615ae597eceaeaf10249d639066869237e4880a85cf4b52b0eea2ff73",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "de7c258615ae597eceaeaf10249d639066869237e4880a85cf4b52b0eea2ff73"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "collision_plugin",
+          "test_outcomes.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1",
+          "PYTHONPATH": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/plugin-failure",
+      "family": "pytest",
+      "file": "plugin-failure.txt",
+      "command": "pytest --color=no -r a -p collision_plugin test_strict.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "collision_plugin",
+        "test_strict.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 1030,
+      "outputBytes": 1030,
+      "sha256": "0254bf0e9d633715f81c3b44b59d0e4c2a9aade2bf934cc35ed0b370454a99b3",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "0254bf0e9d633715f81c3b44b59d0e4c2a9aade2bf934cc35ed0b370454a99b3"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "collision_plugin",
+          "test_strict.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1",
+          "PYTHONPATH": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/plugin-test-stdout",
+      "family": "pytest",
+      "file": "plugin-test-stdout.txt",
+      "command": "pytest --color=no -r a -p collision_plugin -s test_stdout.py::test_stdout",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "collision_plugin",
+        "-s",
+        "test_stdout.py::test_stdout"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 813,
+      "outputBytes": 813,
+      "sha256": "81be9759a0fe26a0ab3a8cf6b6e060ce4768ff46f6cc495281d932db63ccf001",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "81be9759a0fe26a0ab3a8cf6b6e060ce4768ff46f6cc495281d932db63ccf001"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "collision_plugin",
+          "-s",
+          "test_stdout.py::test_stdout"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1",
+          "PYTHONPATH": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    },
+    {
+      "name": "R01/worker-plugin-collision",
+      "family": "pytest",
+      "file": "worker-plugin-collision.txt",
+      "command": "pytest --color=no -r a -p xdist.plugin -p collision_plugin -n 2 -v test_outcomes.py",
+      "argv": [
+        "pytest",
+        "--color=no",
+        "-r",
+        "a",
+        "-p",
+        "xdist.plugin",
+        "-p",
+        "collision_plugin",
+        "-n",
+        "2",
+        "-v",
+        "test_outcomes.py"
+      ],
+      "source": "shell",
+      "status": "passthrough",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "pytest==9.0.3; pytest-xdist==3.8.0; pluggy==1.6.0; execnet==2.1.1; iniconfig==2.3.0; packaging==26.0; pygments==2.19.2",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "inputBytes": 1640,
+      "outputBytes": 1640,
+      "sha256": "1c650c3b390f08dd2cbaa1ee2c33b18b01f23085e578d3905b7f8309b524e006",
+      "provenance": {
+        "capture": "capture-receipt.json",
+        "source": "project",
+        "sha256": "1c650c3b390f08dd2cbaa1ee2c33b18b01f23085e578d3905b7f8309b524e006"
+      },
+      "capture": {
+        "executedArgv": [
+          "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/pytest",
+          "--color=no",
+          "-r",
+          "a",
+          "-p",
+          "xdist.plugin",
+          "-p",
+          "collision_plugin",
+          "-n",
+          "2",
+          "-v",
+          "test_outcomes.py"
+        ],
+        "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f",
+        "environmentSet": {
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+          "PYTHONNOUSERSITE": "1",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTHONHASHSEED": "0",
+          "LC_ALL": "C.UTF-8",
+          "LANG": "C.UTF-8",
+          "TERM": "dumb",
+          "NO_COLOR": "1",
+          "PYTHONPATH": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-6gfvt14f"
+        },
+        "environmentRemoved": [
+          "PYTHONPATH",
+          "PYTHONHOME",
+          "PYTEST_ADDOPTS",
+          "PYTEST_PLUGINS",
+          "FORCE_COLOR",
+          "CLICOLOR_FORCE"
+        ],
+        "boundary": "stdout pipe; stderr redirected to same pipe before exec; read through EOF and wait; no PTY, truncation or normalization",
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "203d3d3d3d3d3d3d3d3d3d3d3d3d3d0a"
+      },
+      "baselineDisposition": "PENDING_DEFAULT_FILTER",
+      "approvedRemovableBytes": 0
+    }
+  ],
+  "archives": [
+    "CASES.md",
+    "FAILED-PREPARATION.md",
+    "LICENSE",
+    "SOURCES.md",
+    "capture-receipt.json",
+    "capture.py",
+    "failed-captures/capture-receipt.json",
+    "failed-captures/plugin-failure.txt",
+    "failed-captures/plugin-success.txt",
+    "failed-captures/plugin-test-stdout.txt",
+    "failed-captures/serial-outcomes.txt",
+    "failed-captures/worker-plugin-collision.txt",
+    "finalize-metadata.py",
+    "licenses/execnet-LICENSE",
+    "licenses/iniconfig-LICENSE",
+    "licenses/packaging-LICENSE",
+    "licenses/packaging-LICENSE.APACHE",
+    "licenses/packaging-LICENSE.BSD",
+    "licenses/pluggy-LICENSE",
+    "licenses/pygments-LICENSE",
+    "licenses/pytest-LICENSE",
+    "licenses/pytest-xdist-LICENSE",
+    "package-resolution.json",
+    "project/collision_plugin.py",
+    "project/test_outcomes.py",
+    "project/test_stdout.py",
+    "project/test_strict.py",
+    "requirements.lock",
+    "requirements.txt",
+    "allnoninput.txt"
+  ]
+}

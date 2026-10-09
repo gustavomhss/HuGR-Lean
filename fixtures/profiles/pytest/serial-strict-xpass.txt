@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai
+collected 1 item
+
+test_strict.py F                                                         [100%]
+
+=================================== FAILURES ===================================
+_________________________________ test_strict __________________________________
+[XPASS(strict)] R01 strict xpass
+=========================== short test summary info ============================
+FAILED test_strict.py::test_strict - [XPASS(strict)] R01 strict xpass
+============================== 1 failed in 0.09s ===============================

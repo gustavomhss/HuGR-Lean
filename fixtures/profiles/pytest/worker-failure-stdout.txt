@@ -1,0 +1,56 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0 -- /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai
+created: 2/2 workers
+2 workers [7 items]
+
+scheduling tests via LoadScheduling
+
+test_outcomes.py::test_outcome[xfail] 
+test_outcomes.py::test_parameterized[zero] 
+[gw0] [ 14%] PASSED test_outcomes.py::test_parameterized[zero] 
+test_outcomes.py::test_parameterized[one] 
+[gw0] [ 28%] PASSED test_outcomes.py::test_parameterized[one] 
+test_outcomes.py::test_outcome[skip] 
+[gw1] [ 42%] XFAIL test_outcomes.py::test_outcome[xfail] 
+[gw0] [ 57%] SKIPPED test_outcomes.py::test_outcome[skip] 
+test_outcomes.py::test_outcome[xpass] 
+test_stdout.py::test_stdout 
+[gw1] [ 71%] XPASS test_outcomes.py::test_outcome[xpass] 
+test_stdout.py::test_failure 
+[gw0] [ 85%] PASSED test_stdout.py::test_stdout 
+[gw1] [100%] FAILED test_stdout.py::test_failure 
+
+=================================== FAILURES ===================================
+_________________________________ test_failure _________________________________
+[gw1] darwin -- Python 3.14.5 /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/bin/python
+
+    def test_failure():
+        print("[gw0] [100%] PASSED test_stdout.py::test_stdout", flush=True)
+        print("R01 failing stdout café 雪 🧪", flush=True)
+>       assert False, "R01 original assertion"
+E       AssertionError: R01 original assertion
+E       assert False
+
+test_stdout.py:10: AssertionError
+----------------------------- Captured stdout call -----------------------------
+[gw0] [100%] PASSED test_stdout.py::test_stdout
+R01 failing stdout café 雪 🧪
+=============================== warnings summary ===============================
+../R01-pytest-venv/lib/python3.14/site-packages/_pytest/cacheprovider.py:475
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/lib/python3.14/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: cache could not write path /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai/.pytest_cache/v/cache/nodeids: [Errno 28] No space left on device: '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai/.pytest_cache/v/cache/nodeids'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+../R01-pytest-venv/lib/python3.14/site-packages/_pytest/cacheprovider.py:429
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-venv/lib/python3.14/site-packages/_pytest/cacheprovider.py:429: PytestCacheWarning: cache could not write path /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai/.pytest_cache/v/cache/lastfailed: [Errno 28] No space left on device: '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai/.pytest_cache/v/cache/lastfailed'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=================================== XPASSES ====================================
+=========================== short test summary info ============================
+SKIPPED [1] test_outcomes.py:9: R01 worker skip
+XFAIL test_outcomes.py::test_outcome[xfail] - R01 expected café 雪 🧪
+XPASS test_outcomes.py::test_outcome[xpass] - R01 unexpected pass
+FAILED test_stdout.py::test_failure - AssertionError: R01 original assertion
+=== 1 failed, 3 passed, 1 skipped, 1 xfailed, 1 xpassed, 2 warnings in 3.53s ===
