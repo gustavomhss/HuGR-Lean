@@ -255,6 +255,486 @@
         "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
       },
       "artifactEvidence": "B02-routes.artifacts.json"
+    },
+    {
+      "name": "B02-routes-retry",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-routes-retry.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1337,
+      "outputBytes": 1337,
+      "sha256": "5baa9d8264f02a2e4359693c22eb0d07de15ffcd80773594b03b7b23c4f1709b",
+      "startedAt": "2026-10-09T16:54:41.051169+00:00",
+      "completionAt": "2026-10-09T16:56:25.708820+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 1337,
+        "sha256": "5baa9d8264f02a2e4359693c22eb0d07de15ffcd80773594b03b7b23c4f1709b",
+        "finalLF": true,
+        "lastBytesHex": "65726564206f6e2064656d616e640a0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-routes-retry",
+        "sha256": "5baa9d8264f02a2e4359693c22eb0d07de15ffcd80773594b03b7b23c4f1709b"
+      },
+      "variant": "routes",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.routes"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-routes-retry.artifacts.json"
+    },
+    {
+      "name": "B02-css-warning",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-css-warning.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 2913,
+      "outputBytes": 2913,
+      "sha256": "e2cb766538926f356970466b3d773a12ad9aa3b70165e3f51faa6f223db8799e",
+      "startedAt": "2026-10-09T16:56:42.496088+00:00",
+      "completionAt": "2026-10-09T16:57:53.422807+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 2913,
+        "sha256": "e2cb766538926f356970466b3d773a12ad9aa3b70165e3f51faa6f223db8799e",
+        "finalLF": true,
+        "lastBytesHex": "65726564206f6e2064656d616e640a0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-css-warning",
+        "sha256": "e2cb766538926f356970466b3d773a12ad9aa3b70165e3f51faa6f223db8799e"
+      },
+      "variant": "css-warning",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.css-warning"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6",
+        "pages/_app.tsx": "fba1a5f96fc7a2fd034b203b48a6f92e37787055aee3c1747825510c0ae2a10a",
+        "style.css": "6a7a4b62e436add8b89ea2d78c54b5ed0538c1fe23284033dd8b92d4aea6d8fb"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6",
+        "pages/_app.tsx": "fba1a5f96fc7a2fd034b203b48a6f92e37787055aee3c1747825510c0ae2a10a",
+        "style.css": "6a7a4b62e436add8b89ea2d78c54b5ed0538c1fe23284033dd8b92d4aea6d8fb"
+      },
+      "artifactEvidence": "B02-css-warning.artifacts.json"
+    },
+    {
+      "name": "B02-config-warning",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-config-warning.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1521,
+      "outputBytes": 1521,
+      "sha256": "d03b3bd92986e2484e1827e90bfe8f9bdecc4d5a4bf36dbf6d3e72530f43f890",
+      "startedAt": "2026-10-09T16:57:54.908842+00:00",
+      "completionAt": "2026-10-09T16:59:27.611056+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 1521,
+        "sha256": "d03b3bd92986e2484e1827e90bfe8f9bdecc4d5a4bf36dbf6d3e72530f43f890",
+        "finalLF": true,
+        "lastBytesHex": "65726564206f6e2064656d616e640a0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-config-warning",
+        "sha256": "d03b3bd92986e2484e1827e90bfe8f9bdecc4d5a4bf36dbf6d3e72530f43f890"
+      },
+      "variant": "config-warning",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.config-warning"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "c36bfc4b1762500d54a6a8932661dbf63aec4707d283dc6dce017774d6ba0a19",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "c36bfc4b1762500d54a6a8932661dbf63aec4707d283dc6dce017774d6ba0a19",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-config-warning.artifacts.json"
+    },
+    {
+      "name": "B02-typecheck-failure",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-typecheck-failure.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "processReturncode": 1,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 818,
+      "outputBytes": 818,
+      "sha256": "63f6d8af3d02608c60780b3de4095b3d7c171760740a0753c8d7741eaa737cbc",
+      "startedAt": "2026-10-09T16:59:29.429407+00:00",
+      "completionAt": "2026-10-09T16:59:48.250168+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 818,
+        "sha256": "63f6d8af3d02608c60780b3de4095b3d7c171760740a0753c8d7741eaa737cbc",
+        "finalLF": true,
+        "lastBytesHex": "6e64207369676e616c3a206e756c6c0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-typecheck-failure",
+        "sha256": "63f6d8af3d02608c60780b3de4095b3d7c171760740a0753c8d7741eaa737cbc"
+      },
+      "variant": "typecheck-failure",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.typecheck-failure"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "ef73ff91f67ce2ecb8f05d88637ace83413d89a07fda1c94537731b75486290e",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "ef73ff91f67ce2ecb8f05d88637ace83413d89a07fda1c94537731b75486290e",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-typecheck-failure.artifacts.json"
+    },
+    {
+      "name": "B02-build-failure",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-build-failure.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 1
+      },
+      "processReturncode": 1,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 486,
+      "outputBytes": 486,
+      "sha256": "c09c7fe2a231c61abb7dc40f1078b721c0aa3509fdfe3ea742bacb707c505098",
+      "startedAt": "2026-10-09T16:59:56.497968+00:00",
+      "completionAt": "2026-10-09T17:00:33.499008+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 486,
+        "sha256": "c09c7fe2a231c61abb7dc40f1078b721c0aa3509fdfe3ea742bacb707c505098",
+        "finalLF": true,
+        "lastBytesHex": "207765627061636b206572726f72730a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-build-failure",
+        "sha256": "c09c7fe2a231c61abb7dc40f1078b721c0aa3509fdfe3ea742bacb707c505098"
+      },
+      "variant": "build-failure",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.build-failure"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "ee41284aa1a5d54f02efc9a4fc45c54d3c7ea4a26f2b1512db7496fb440102da",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "d50b7dbc32dc0d8ae54c985e42c4d1716ac5156cf1b5e2d047dea62244d75691",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "ee41284aa1a5d54f02efc9a4fc45c54d3c7ea4a26f2b1512db7496fb440102da",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-build-failure.artifacts.json"
+    },
+    {
+      "name": "B02-config-collision",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-config-collision.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1780,
+      "outputBytes": 1780,
+      "sha256": "e5719d97c2d75a8de1ba2ce61bd0c9c01e6038b6e81ef28b63a9999034465aa7",
+      "startedAt": "2026-10-09T17:00:34.479189+00:00",
+      "completionAt": "2026-10-09T17:01:44.045128+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 1780,
+        "sha256": "e5719d97c2d75a8de1ba2ce61bd0c9c01e6038b6e81ef28b63a9999034465aa7",
+        "finalLF": true,
+        "lastBytesHex": "65726564206f6e2064656d616e640a0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-config-collision",
+        "sha256": "e5719d97c2d75a8de1ba2ce61bd0c9c01e6038b6e81ef28b63a9999034465aa7"
+      },
+      "variant": "config-collision",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.config-collision"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "2a02ec829fb0d6e2330f5318c54b9259b844343cf47d5b20a03a37330ac5c8b3",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "2a02ec829fb0d6e2330f5318c54b9259b844343cf47d5b20a03a37330ac5c8b3",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-config-collision.artifacts.json"
+    },
+    {
+      "name": "B02-plugin-collision",
+      "family": "next",
+      "version": "Next.js 15.5.9 / React 19.1.0",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "file": "B02-plugin-collision.txt",
+      "source": "shell",
+      "status": "passthrough",
+      "disposition": "pending-policy",
+      "argv": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "command": "node node_modules/next/dist/bin/next build",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/B02-next-h1_k8tge",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "processReturncode": 0,
+      "timeoutSeconds": 300,
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1555,
+      "outputBytes": 1555,
+      "sha256": "aa0a5fb4298e4a9d4a1677fbc9621aacd7feadd398e5c77e1016cc817128229c",
+      "startedAt": "2026-10-09T17:01:44.927046+00:00",
+      "completionAt": "2026-10-09T17:02:22.187211+00:00",
+      "boundary": "stdout pipe; stderr redirected to stdout before exec; communicate through EOF and wait; no PTY or normalization",
+      "eof": {
+        "readThroughEOF": true,
+        "bytes": 1555,
+        "sha256": "aa0a5fb4298e4a9d4a1677fbc9621aacd7feadd398e5c77e1016cc817128229c",
+        "finalLF": true,
+        "lastBytesHex": "65726564206f6e2064656d616e640a0a"
+      },
+      "provenance": {
+        "record": "resume-receipt.json",
+        "originalCase": "B02-plugin-collision",
+        "sha256": "aa0a5fb4298e4a9d4a1677fbc9621aacd7feadd398e5c77e1016cc817128229c"
+      },
+      "variant": "plugin-collision",
+      "sourceRecipe": {
+        "file": "resume-source-recipes.json",
+        "base": "base",
+        "overlay": "variants.plugin-collision"
+      },
+      "sourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "4352d49ad6c92746432bed3c4d4270dd9b52208631d957d525632b12f0944281",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "postBuildSourceHashes": {
+        "package.json": "712554b92782a7652351e3afd1d71430645dd8b252a2d8cc9246220db984ef5c",
+        "next.config.js": "4352d49ad6c92746432bed3c4d4270dd9b52208631d957d525632b12f0944281",
+        "tsconfig.json": "6a2adf62b17c699aaa448abdef71e22d7b9acec88823fa6330491f60e737cf96",
+        "next-env.d.ts": "95c5e6b31f13db907e9fe5d7cd72edd186321a0c7a8fb2d89129029fb289c276",
+        "pages/index.tsx": "0cd85255a1a2c0f8229bac7c8538d98f2f03299dcceb0dfaadafeb583fc14c61",
+        "pages/dynamic.tsx": "0a9221e905c4be572702dceb4ab8a503b3d84b05d1d5c96087acb89207dc0ce6",
+        "pages/blog/[slug].tsx": "61785b0ef0f9b8192dfadef2dc53d36305137d91efadf5fd19328afeed46fbb6"
+      },
+      "artifactEvidence": "B02-plugin-collision.artifacts.json"
     }
   ],
   "sources": [

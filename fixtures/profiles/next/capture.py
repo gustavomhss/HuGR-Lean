@@ -299,9 +299,48 @@ def build(variant, attempt, timeout):
     persist(receipt)
 
 
+def evidence():
+    receipt = state()
+    rows = []
+    generated = Path(receipt['workspace']) / 'next-env.d.ts'
+    generated_bytes = generated.read_bytes()
+    generated_name = 'generated-next-env.d.ts.txt'
+    (HERE / generated_name).write_bytes(generated_bytes)
+    for row in receipt['cases']:
+        data = (HERE / row['file']).read_bytes()
+        observed = {'name': row['name'], 'file': row['file'], 'bytes': len(data),
+                    'sha256': digest(data), 'matchesReceipt': digest(data) == row['sha256'],
+                    'termination': row['termination'], 'completeness': row['completeness']}
+        if 'sourceRecipe' in row:
+            recipe = json.loads((HERE / row['sourceRecipe']['file']).read_text())
+            sources = {**recipe['base'], **recipe['variants'][row['variant']]}
+            observed['recipeHashCorrespondence'] = {key: digest(text.encode('utf-8')) == row['sourceHashes'][key]
+                                                   for key, text in sources.items()}
+            observed['generatedNextEnvCorrespondence'] = digest(generated_bytes) == row['postBuildSourceHashes']['next-env.d.ts']
+            archive = json.loads((HERE / row['artifactEvidence']).read_text())
+            observed['retainedManifestHashes'] = {item['path']: digest(item['content'].encode('utf-8')) == item['sha256']
+                for item in archive['artifacts'] if 'content' in item}
+        rows.append(observed)
+    historical = []
+    for name in ['capture-receipt.json', 'bootstrap-failure.json', 'bootstrap-node-version.log',
+                 'bootstrap-npm-version.log', 'source-recipes.json']:
+        original = subprocess.check_output(['git', 'show', '3941ecd:fixtures/profiles/next/' + name], cwd=HERE)
+        current = (HERE / name).read_bytes()
+        historical.append({'file': name, 'sha256': digest(current), 'unchangedSinceENOSPCCheckpoint': current == original})
+    control = receipt['cases'][0]
+    control_bytes = (HERE / control['file']).read_bytes()
+    save_json(HERE / 'evidence-inventory.json', {'recipe': 'recompute raw input, authored source recipe, retained manifest and historical checkpoint byte correspondence; no parser or test execution',
+        'cases': rows, 'historical': historical, 'generatedNextEnv': {'file': generated_name, 'sha256': digest(generated_bytes)},
+        'hashCalibration': {'case': control['name'], 'unchangedMatches': digest(control_bytes) == control['sha256'],
+                            'inMemoryAppendedNulMatches': digest(control_bytes + b'\0') == control['sha256'],
+                            'fileModified': False},
+        'reach': 'Artifact byte correspondence only; independent corpus/filter preservation verification remains lead-owned'})
+    persist(receipt)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=['prepare', 'resume', 'install', 'sri', 'license', 'build', 'index'])
+    parser.add_argument('action', choices=['prepare', 'resume', 'install', 'sri', 'license', 'build', 'evidence', 'index'])
     parser.add_argument('variant', nargs='?', choices=list(VARIANTS))
     parser.add_argument('--attempt', default='')
     parser.add_argument('--timeout', type=int, default=90)
@@ -320,6 +359,8 @@ if __name__ == '__main__':
         verify_sri()
     elif args.action == 'license':
         license_capture()
+    elif args.action == 'evidence':
+        evidence()
     elif args.action == 'build':
         if args.variant is None:
             parser.error('build requires variant')

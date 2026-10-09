@@ -1,66 +1,66 @@
-# B02 Next.js: resumed capture-only packet, work in progress
+# B02 Next.js: native capture-only packet
 
-Resume update: user cleared disk blocker. Private installation completed with exit 0;
-actual `npm-lock.json`, installed direct-package licenses, Next version probe and
-`sri-verification.json` now exist. First routes capture timed out after 90 seconds during
-compilation; `B02-routes.txt` remains `timed_out` / `truncated`, not route coverage.
-Initial blocked receipt below is historical; `capture-receipt.json` stays byte-for-byte
-unchanged. New evidence uses `resume-receipt.json`; original manifest saved as
-`ENOSPC-cases.json`. No native acceptance variant is complete yet.
+Baseline `248c303`; branch `campaign/native-v2/B02`; exclusive scope `fixtures/profiles/next/**`.
+Pinned Next 15.5.9, React/React DOM 19.1.0, TypeScript 5.9.3, @types/react 19.1.0,
+@types/node 22.15.30. Node v22.17.1 / npm 10.9.2; macOS 15.3.2 x86_64.
+Seven planned native variants have complete merged-pipe captures. Capture completeness is
+not parser support, public-filter verification, corpus promotion, or final campaign completion.
 
-## Historical blocked checkpoint (3941ecd)
+## Native case coverage
 
-Baseline `248c303`; branch `campaign/native-v2/B02`; owner scope `fixtures/profiles/next/**`.
-This is not a completed B02 packet. No Next build has run. No reduction, native warning,
-route-table, typecheck, artifact, or collision coverage is claimed.
+| Case / raw input | Native evidence observed | Exit / completeness | Public disposition |
+| --- | --- | --- | --- |
+| B02-routes-retry.txt | Successful type validation/compile; `/` static, `/blog/[slug]` SSG with `/blog/one`, `/dynamic` SSR; route sizes, shared chunks, rendering legend | 0 / complete | passthrough, pending-policy |
+| B02-css-warning.txt | Actual `(1:23) autoprefixer: end value has mixed support, consider using flex-end instead`; loader path/import trace; webpack cache serialization warnings; successful routes and artifacts | 0 / complete | passthrough, pending-policy |
+| B02-config-warning.txt | Invalid next.config.js options; exact unknown key `b02UnknownOption`, help URL; successful routes and artifacts | 0 / complete | passthrough, pending-policy |
+| B02-typecheck-failure.txt | `./pages/index.tsx:1:7`; string-to-number diagnostic, ANSI code frame and build-worker exit | 1 / complete | passthrough, pending-policy |
+| B02-build-failure.txt | Type validation reaches webpack; unresolved `./b02-does-not-exist`, module-not-found URL, webpack failure summary | 1 / complete | passthrough, pending-policy |
+| B02-config-collision.txt | Executed next.config.js logs native-identical build progress/table header repeatedly; real successful build table follows | 0 / complete | passthrough, pending-policy |
+| B02-plugin-collision.txt | Real webpack beforeCompile hook logs native-identical build progress plus native-looking success lines across compilers; real build succeeds | 0 / complete | passthrough, pending-policy |
 
-## Completed evidence
+Each case has a corresponding `.artifacts.json`: paths, byte sizes, raw hashes for every
+emitted `.next` file; verbatim BUILD_ID/build/routes/prerender/pages manifests when present.
+Successful builds retain the fixed `B02-tiny` build ID without final LF, static HTML and
+SSG JSON paths, SSR server-page paths and named shared chunks. Rendering modes come from
+native stdout and authored lifecycle exports, not the routing manifest's `staticRoutes` name.
+Nonzero builds have partial artifact inventories, not successful-build artifact claims.
 
-- `B02-node-version`: real `node --version`, exit 0, `v22.17.1` and final LF retained.
-- `B02-npm-version`: real `npm --version`, exit 0, `10.9.2` and final LF retained.
-- Exact-version npm registry metadata: Next 15.5.9, React/React DOM 19.1.0,
-  TypeScript 5.9.3, @types/react 19.1.0, @types/node 22.15.30.
-  Metadata records tarball URLs, declared SRI, licenses, and available gitHead values.
-  These are registry declarations, not installed-package/SRI verification.
-- Next upstream MIT license copied unchanged from the recorded immutable commit/path.
-- First collector's ENOSPC failure is recorded in `bootstrap-failure.json`.
-  Its registry command output could not be written and is unavailable, not complete.
+`source-recipes.json` preserves the original planned recipes. `resume-source-recipes.json`
+records the executed recipes: build-failure changed typed import to require so webpack,
+rather than TypeScript, owns the missing-module failure. Per-case pre/post source hashes
+bind recipes and generated changes. The final generated next-env.d.ts is archived separately;
+its hash correspondence to each case is recorded, never assumed.
 
-`cases.json` uses `hugr-lean/native-cases/1`: file-only input references,
-`status: passthrough`, `disposition: pending-policy`. Every other fixture artifact,
-including this document and the license `.txt`, is a string path in `archives`.
-The two version probes are setup evidence, not B02 acceptance variants.
+## Setup and failure witnesses
 
-## Mandatory variants awaiting real captures
+- B02-node-version / B02-npm-version: original complete version probes, bytes unchanged.
+- B02-install: private-cache `npm install --ignore-scripts --no-audit --no-fund`, exit 0.
+- B02-next-version: installed `Next.js v15.5.9`, exit 0.
+- B02-routes: first tiny build timed out at 90 seconds while compiling. Raw 299 bytes and
+  partial artifacts retained; `timed_out` / `truncated`, despite pipe EOF after process kill.
+  B02-routes-retry is a distinct successful capture, with a strict 300-second timeout.
+- bootstrap-failure.json: original ENOSPC collector failure. Lost registry output remains
+  explicitly unavailable. Disk cleanup did not reconstruct those bytes or erase that failure.
+- `capture-receipt.json`, bootstrap logs/failure, original recipes and `ENOSPC-cases.json`
+  preserve the blocked checkpoint; all resumed process evidence uses `resume-receipt.json`.
 
-| Intended native case | Recipe / required evidence | Current status |
-| --- | --- | --- |
-| B02-routes | `/` static, `/dynamic` getServerSideProps, `/blog/[slug]` SSG and `/blog/one`; route modes, sizes, shared chunks, artifact paths, successful lint/typecheck | BLOCKED: install unavailable |
-| B02-css-warning | Pages CSS `justify-content: end`; actual autoprefixer message/context; if producer does not warn, warning requirement stays open | BLOCKED: warning unobserved |
-| B02-config-warning | Unknown config option; exact native warning and successful/failed termination | BLOCKED: warning unobserved |
-| B02-typecheck-failure | String assigned to number in TSX; real Next diagnostic/snippet and exit | BLOCKED: diagnostic unobserved |
-| B02-build-failure | Missing import; real module error/import trace and exit | BLOCKED: failure unobserved |
-| B02-config-collision | Config executes two native-looking progress/table lines before export | BLOCKED: collision unobserved |
-| B02-plugin-collision | Real webpack beforeCompile hook emits native-looking build/success rows | BLOCKED: collision unobserved |
+## Preservation policy, candidates and review
 
-Source recipes are authored MIT material, not native output. Their existence cannot satisfy
-any row above. Artifact recipes hash every `.next` file and preserve selected manifest contents
-after process termination; no artifact archive exists until a real build finishes or fails.
+User authorized exact preservation for ambiguous config/plugin/reporter stdout. Both collision
+sources executed and produced real mixed output; grammar alone cannot authenticate producer.
+All cases remain file-only inputs under `hugr-lean/native-cases/1`, with `status: passthrough`
+and `disposition: pending-policy`; all noninput artifacts are explicit string-path archives.
 
-## Policy and checks
+No reduction candidate proposed; zero claimed removable bytes. Native progress exists, but
+the collision witnesses rule out deleting it by appearance alone. Warnings, diagnostics,
+sizes, routes, chunk paths, logs and EOF remain raw. Failed/incomplete cases require exact
+preservation regardless of whether other cases permit progress reduction.
+Native static-page progress includes trailing spaces/CR; successful outputs end with an
+extra blank LF. Git whitespace diagnostics on those raw `.txt` inputs are expected evidence,
+not defects to trim. Documentation/collector/JSON whitespace is checked separately.
 
-User approved exact preservation for ambiguous config/plugin/reporter output. That approval
-does not waive missing captures or authorize deletion of native-looking progress.
-Candidate deletion: none proposed. Removable-byte measurement: unavailable.
-Independent goldens and default-filter identity closure: pending lead promotion after captures.
-No parser, source, test, registry, or shared changes; no fixture-only tests, typecheck,
-full checks, smoke, benchmark, or CI executed. Native capture commands alone are authorized.
-
-## Blocker
-
-Initial raw-file write failed with `OSError: [Errno 28] No space left on device`.
-Subsequent exact-version metadata collection succeeded. Install preflight recorded
-113,541,120 free bytes against a 1 GiB minimum and stopped before npm install.
-No actual npm lock, installed license set, verified package SRI, Next version probe,
-or build exists. B02 remains incomplete. Resume only after storage is available;
-do not remove unrelated agents' files or disguise this as completed exact-only coverage.
+Capture blockers: none for the seven named variants. Historical ENOSPC and timeout remain
+failures, not completed captures. Independent review, exact corpus goldens/default-filter
+identity verification and promotion remain lead-owned. No fixture-only tests, full tests,
+standalone typecheck, CI, smoke, benchmark, served app, or application suite ran. Next's
+own type validation inside the authorized tiny builds is native capture evidence.
