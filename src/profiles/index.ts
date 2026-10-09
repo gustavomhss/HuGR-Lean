@@ -8,9 +8,14 @@ import { familyProfiles as goTest } from "./go-test-text.js";
 import { familyProfiles as tsc } from "./tsc.js";
 import { familyProfiles as goJson } from "./go-test-json.js";
 import { familyProfiles as pnpm } from "./pnpm-install.js";
+import { familyProfiles as clippy } from "./cargo-clippy.js";
+import { familyProfiles as eslint } from "./eslint.js";
+import { familyProfiles as biome } from "./biome.js";
+import { ruffProfile } from "./ruff.js";
 
 export const profiles: readonly Profile[] = Object.freeze([
   ...cargoTest, ...cargoBuild,
   ...runnerProfiles.filter((profile) => profile.id === "pytest"), ...goTest,
   ...formatProfiles.filter((profile) => profile.id !== "tsc"), ...tsc, nodeTestProfile, ...goJson, ...pnpm,
+  ...clippy, ...eslint, ...biome, ruffProfile,
 ]);

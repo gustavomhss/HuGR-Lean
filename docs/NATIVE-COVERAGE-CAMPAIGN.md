@@ -151,17 +151,17 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | G02 | INTEGRATED | campaign/native-v2/G02 / #71 | Complete JSON lifecycle; every Output event retained |
 | T01 | INTEGRATED | campaign/native-v2/T01 / #74 | Bound plain verbose solution-build timestamp layout only |
 | P02 | INTEGRATED | campaign/native-v2/P02 / #77 | Native install progress only with original ignore-scripts + ignore-pnpmfile |
-| L03 | REVIEWED | campaign/native-v2/L03 / #82 | Ruff explicit JSON/exit-zero, all data tokens retained; inline artifacts preserve no-LF EOF |
-| C03 | REVIEW | campaign/native-v2/C03 / #81 | Clippy suffix preserved; format-control/prefixed-warning fixes pending cold follow-up |
-| L02 | REVIEW | campaign/native-v2/L02 / #80 | Biome decorative header bars only; terminal blank-pair fix pending cold follow-up |
-| L01 | REVIEW | campaign/native-v2/L01 / #83 | ESLint stylish outer LF only; tiny savings, no material-profit claim |
+| L03 | INTEGRATED | campaign/native-v2/L03 / #82 | Ruff explicit JSON/exit-zero, all data tokens retained; inline artifacts preserve no-LF EOF |
+| C03 | INTEGRATED | campaign/native-v2/C03 / #81 | Clippy suffix preserved; format-control/prefixed-warning fixes cold-reviewed |
+| L02 | INTEGRATED | campaign/native-v2/L02 / #80 | Biome decorative header bars only; exact terminal blank pair |
+| L01 | INTEGRATED | campaign/native-v2/L01 / #83 | ESLint stylish outer LF only; tiny savings, no material-profit claim |
 | P01 | CAPTURED | campaign/native-v2/P01 / #73 | No meaningful progress observed in captured pipe outputs; successful peer-warning case incomplete |
 | C04 | CAPTURED | campaign/native-v2/C04 / #87 | rustfmt silent success and nonzero diffs; no removable material found |
-| C05 | CAPTURED | campaign/native-v2/C05 / #92 | Cargo doc progress candidate, artifacts/warnings retained |
+| C05 | REVIEW | campaign/native-v2/C05 / #92 | Cargo doc implementation ready; artifacts/warnings retained; cold review pending |
 | C06 | BLOCKED | campaign/native-v2/C06 / #88 | Stable toolchains reject builtin bench; arbitrary custom harness retained, native metrics unproven |
 | G03 | CAPTURED | campaign/native-v2/G03 / #90 | Bench metrics/logs retained; nested-progress deletion not approved |
 | G04 | CAPTURED | campaign/native-v2/G04 / #91 | Build/vet/run silent or meaningful output; no reduction proposed |
-| G05 | CAPTURED | campaign/native-v2/G05 / #89 | Mixed module/download progress candidate; changes and advice retained |
+| G05 | REVIEW | campaign/native-v2/G05 / #89 | Paired go-get download/change implementation ready; cold review pending |
 
 All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
@@ -172,6 +172,9 @@ historical collector or replace existing family-specific provenance verifiers.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.
+Lint integration receipt: only the newly added routing/corpus closure was run. It exposed Ruff's
+single-profile export mismatch; registry import corrected, same named closure passed. One scoped
+index/closure typecheck passed. Author suites and unchanged existing corpus were not rerun.
 States: SPEC -> CAPTURED -> BASELINE_RED/PRESERVED -> READY -> RUNNING -> REVIEW -> INTEGRATED -> FINAL_VERIFIED.
 Per row receipt: owner, baseline SHA, branch/worktree, packet/version, final SHA/PR, tests/mutation, blockers.
 Old-main planning branch remains historical and is not part of this integration.

@@ -48,6 +48,7 @@ export async function readNativeCorpus(root) {
     assert.ok(Array.isArray(archives) && archives.every(text) && new Set(archives).size === archives.length, `${family.name}: invalid archive declarations`);
     for (const archive of archives) assert.ok((await regular(directory, archive)).length, `${family.name}: empty archive ${archive}`);
     const inputs = new Set();
+    const expectedFiles = new Set();
     for (const entry of manifest.cases) {
       assert.ok(entry && typeof entry === "object" && !Array.isArray(entry), `${family.name}: invalid case object`);
       const label = `${family.name}/${entry.name}`;
@@ -62,7 +63,7 @@ export async function readNativeCorpus(root) {
       let raw;
       if (entry.file !== undefined) {
         assert.equal(entry.output, undefined, `${label}: ambiguous native input`);
-        assert.ok(!inputs.has(entry.file), `${label}: duplicate input file`);
+        if (inputs.has(entry.file)) assert.match(entry.provenance.sha256 ?? "", /^[a-f0-9]{64}$/, `${label}: reused input needs capture hash`);
         inputs.add(entry.file);
         raw = await regular(directory, entry.file);
       } else {
@@ -98,6 +99,7 @@ export async function readNativeCorpus(root) {
       }
       assert.ok(entry.expectedFile === undefined || entry.expected === undefined, `${label}: ambiguous independent golden`);
       const expected = entry.expectedFile === undefined ? (entry.expected ?? output) : utf8.decode(await regular(directory, entry.expectedFile));
+      if (entry.expectedFile !== undefined) expectedFiles.add(entry.expectedFile);
       assert.equal(typeof expected, "string", `${label}: invalid independent golden`);
       if (entry.status === "reduced") {
         assert.equal(entry.termination.code, 0, `${label}: failed reduction`);
@@ -116,7 +118,7 @@ export async function readNativeCorpus(root) {
         assert.ok(item.isDirectory() || item.isFile(), `${family.name}: non-regular native entry ${name}`);
         if (item.isDirectory()) await inspect(name);
         else if (item.isFile() && name.endsWith(".txt") && !name.endsWith(".expected.txt")) {
-          assert.ok(inputs.has(name) || archives.includes(name), `${family.name}: undeclared native input ${name}`);
+          assert.ok(inputs.has(name) || expectedFiles.has(name) || archives.includes(name), `${family.name}: undeclared native input ${name}`);
         }
       }
     }

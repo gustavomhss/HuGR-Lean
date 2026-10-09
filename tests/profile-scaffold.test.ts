@@ -33,6 +33,16 @@ test("S00 every delta corpus case reaches its declared default-profile result", 
     if (result.status === "reduced") assert.equal(result.profile, entry.family, entry.name);
   }
 });
+test("routing closure: newly integrated lint families reach exact declared goldens", async () => {
+  const entries = await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url)));
+  const newFamilies = new Set(["cargo-clippy", "eslint", "biome", "ruff"]);
+  for (const entry of entries.filter((item) => newFamilies.has(item.family))) {
+    const result = filter(entry.observation);
+    assert.equal(result.status, entry.status, entry.name);
+    assert.equal("replacement" in result ? result.replacement : entry.observation.output, entry.expected, entry.name);
+    if (result.status === "reduced") assert.equal(result.profile, entry.family, entry.name);
+  }
+});
 test("S00 delta Go routing is disjoint and closed", () => {
   assert.equal(goMode(["go", "test", "-v", "./..."]), "text");
   assert.equal(goMode(["go", "test", "-bench=BenchmarkThing", "."]), "bench");
