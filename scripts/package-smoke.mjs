@@ -200,7 +200,7 @@ export async function npmProcess(args, options) {
   return await command(process.execPath, [cli, ...args], options);
 }
 
-async function snapshotArtifact(root, destination) {
+export async function snapshotArtifact(root, destination) {
   await mkdir(destination);
   // Closed artifact surface. Never copy source .npmrc, source code, caches or node_modules.
   for (const file of ["package.json", "dist", "README.md", "LICENSE", "NOTICE", "licenses"]) {
@@ -208,6 +208,7 @@ async function snapshotArtifact(root, destination) {
     catch (error) { if (error.code !== "ENOENT") throw error; } // assertPack names every required missing artifact.
   }
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+  const sourceNotes = new Set();
   if (manifest.files?.includes("src/**/*.md")) {
     await cp(path.join(root, "docs"), path.join(destination, "docs"), { recursive: true });
     for (const module of await readdir(path.join(root, "src"), { withFileTypes: true })) {
@@ -220,13 +221,35 @@ async function snapshotArtifact(root, destination) {
     for (const family of ["runners", "formats"]) {
       const target = path.join(destination, "fixtures", family); await mkdir(target, { recursive: true });
       await cp(path.join(root, "fixtures", family, "SOURCES.md"), path.join(target, "SOURCES.md"));
+      sourceNotes.add(`fixtures/${family}/SOURCES.md`);
     }
     const utility = path.join(destination, "fixtures", "utility");
     for (const family of ["cargo", "go", "node", "pytest"]) {
       const target = path.join(utility, family); await mkdir(target, { recursive: true });
       await cp(path.join(root, "fixtures", "utility", family, "SOURCES.md"), path.join(target, "SOURCES.md"));
+      sourceNotes.add(`fixtures/utility/${family}/SOURCES.md`);
     }
   }
+  if (manifest.files?.includes("fixtures/**/SOURCES.md")) {
+    async function notes(relative) {
+      for (const entry of await readdir(path.join(root, relative), { withFileTypes: true })) {
+        const name = `${relative}/${entry.name}`;
+        assert.ok(entry.isDirectory() || entry.isFile(), `Non-regular fixture source entry: ${name}`);
+        if (entry.isDirectory()) await notes(name);
+        else if (entry.name === "SOURCES.md") {
+          const facts = await lstat(path.join(root, name));
+          assert.ok(facts.isFile() && facts.nlink === 1, `Non-regular or multiply linked source note: ${name}`);
+          if (!sourceNotes.has(name)) {
+            await mkdir(path.dirname(path.join(destination, name)), { recursive: true });
+            await cp(path.join(root, name), path.join(destination, name));
+            sourceNotes.add(name);
+          }
+        }
+      }
+    }
+    await notes("fixtures");
+  }
+  return [...sourceNotes].sort();
 }
 
 export function assertPack(pack) {
@@ -262,7 +285,7 @@ export async function runPackageSmoke({ root = ROOT, cli = true, opencode = fals
     const packDirectory = path.join(temporary, "pack"), consumer = path.join(temporary, "consumer"), snapshot = path.join(temporary, "artifact");
     await mkdir(packDirectory);
     await mkdir(consumer);
-    await snapshotArtifact(root, snapshot);
+    const sourceNotes = await snapshotArtifact(root, snapshot);
     const options = { cwd: consumer, isolation: temporary, timeout: 120000 };
     const packed = await npmProcess(["pack", "--json", "--ignore-scripts", "--pack-destination", packDirectory], { ...options, cwd: snapshot });
     let metadata;
@@ -281,8 +304,9 @@ export async function runPackageSmoke({ root = ROOT, cli = true, opencode = fals
       assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed notice/license differs: ${file}`);
       notices.push({ file, bytes: Buffer.byteLength(contents, "utf8") });
     }
-    for (const family of ["runners", "formats", "utility/cargo", "utility/go", "utility/node", "utility/pytest"]) {
-      const file = `fixtures/${family}/SOURCES.md`;
+    assert.ok(sourceNotes.length, "Packed fixture provenance list is empty");
+    for (const file of sourceNotes) {
+      assert.ok(artifact.files.includes(file), `Packed fixture sources note is missing: ${file}`);
       const contents = await readFile(path.join(installed, file), "utf8");
       assert.ok(contents.trim().length, `Installed fixture sources note is empty: ${file}`);
       assert.equal(contents, await readFile(path.join(root, file), "utf8"), `Installed fixture sources note differs: ${file}`);

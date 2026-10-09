@@ -8,6 +8,7 @@ import { tokenizeCommand } from "../src/core/command.js";
 import { profiles } from "../src/profiles/index.js";
 import { formatProfiles } from "../src/profiles/formats.js";
 import { nodeTestProfile } from "../src/profiles/node-test.js";
+import { familyProfiles as tscProfiles } from "../src/profiles/tsc.js";
 import type { FilterResult, Observation, Reduction, Span } from "../src/types.js";
 import { assertCorpusCoverage, readNativeCorpus } from "../scripts/native-corpus.mjs";
 
@@ -218,7 +219,9 @@ test("every format profile has independent evidence coverage or explicit exact d
   const formats = corpus.filter((entry) => entry.path.startsWith("formats/"));
   assert.deepEqual([...new Set(formats.map((entry) => entry.profile))].sort(), formatProfiles.map((profile) => profile.id).sort());
   assert.deepEqual(Object.keys(formatEvidence).sort(), formats.filter((entry) => entry.expected !== undefined).map((entry) => entry.path).sort());
-  for (const profile of formatProfiles) assert.equal(profiles.find((item) => item.id === profile.id), profile);
+  for (const profile of formatProfiles) {
+    assert.equal(profiles.find((item) => item.id === profile.id), profile.id === "tsc" ? tscProfiles[0] : profile);
+  }
 });
 for (const entry of corpus.filter((item) => item.path.startsWith("formats/"))) test(`critical required format evidence: ${entry.path}`, () => {
   const input = observation(entry.input, entry.command), profile = profiles.find((item) => item.id === entry.profile);
@@ -226,7 +229,7 @@ for (const entry of corpus.filter((item) => item.path.startsWith("formats/"))) t
   if (entry.expected === undefined) {
     assert.equal(entry.profile, "tsc", "Undeclared format passthrough exception");
     assert.equal(profile.reduce(input.output, input), undefined);
-    exact(input, "unsupported_output");
+    exact(input, "no_profile");
   } else {
     const anchors = formatEvidence[entry.path]; assert.ok(anchors, `Missing independent native evidence: ${entry.path}`);
     formatRequired(input, entry.profile, anchors);
@@ -293,7 +296,7 @@ test("source fixture inventory and default production registry are nonempty and 
 
 for (const entry of corpus) test(`production golden: ${entry.path}`, () => {
   const input = observation(entry.input, entry.command);
-  if (entry.expected === undefined) exact(input, "unsupported_output");
+  if (entry.expected === undefined) exact(input, unknownGrammarReason(entry.command));
   else if (["jest", "vitest"].includes(entry.profile)) {
     assert.equal(entry.expected, entry.input, `${entry.profile} golden must retain raw bytes`);
     exact(input, "not_smaller");
@@ -383,11 +386,12 @@ test("common failure, incomplete, unknown, and missing metadata preserve entire 
   }
 });
 
+const unknownGrammarReason = (command: string) => command === "tsc --pretty false" ? "no_profile" : "unsupported_output";
 test("commands dispatch by identity, not native-looking output", () => {
   const unknown = ["unknown test", "cat README.md", "read src/index.ts", "git diff", "npm test", "node script.js", "cargo test | tee report", "FOO=bar pytest"];
   for (const entry of corpus) {
     for (const command of unknown) exact(observation(entry.input, command));
-    for (const other of corpus) if (other.profile !== entry.profile) exact(observation(entry.input, other.command), "unsupported_output");
+    for (const other of corpus) if (other.profile !== entry.profile) exact(observation(entry.input, other.command), unknownGrammarReason(other.command));
   }
 });
 
@@ -401,9 +405,9 @@ test("unknown/read/diff/repeated JSON and unsafe CR remain exact through every c
   ];
   for (const entry of corpus) {
     for (const output of outputs) for (const presentation of ["unknown", "terminal-rendered"] as const)
-      exact(observation(output, entry.command, { presentation }), "unsupported_output");
+      exact(observation(output, entry.command, { presentation }), unknownGrammarReason(entry.command));
     for (const output of ["\rprogress\r" + entry.input, entry.input.replace(/\r?\n/, "\runsafe\r"), `\x1b[31m${entry.input}\x1b[0m\r`, "FAILx\rPASS!"])
-      exact(observation(output, entry.command, { presentation: "terminal-rendered" }), "unsupported_output");
+      exact(observation(output, entry.command, { presentation: "terminal-rendered" }), unknownGrammarReason(entry.command));
   }
 });
 
@@ -452,7 +456,7 @@ test("1,000 seeded finite arbitrary UTF-8 strings stay exact across production r
   assert.ok(commands.length > 0, "Empty command collection");
   for (const output of strings) {
     assert.equal(Buffer.from(output, "utf8").toString("utf8"), output, "Generator must emit Unicode scalar values");
-    for (const command of commands) exact(observation(output, command, { presentation: "terminal-rendered" }), "unsupported_output");
+    for (const command of commands) exact(observation(output, command, { presentation: "terminal-rendered" }), unknownGrammarReason(command));
     exact(observation(output, "unknown test"), "no_profile");
   }
 });

@@ -439,10 +439,15 @@ test("benchmark uses compiled default profiles; missing build, registry, duplica
         const original = await readFile(file, "utf8");
         const code = defect === "default-engine" ? 'export const filter = (obs) => ({ status: "passthrough", reason: "no_profile", inputBytes: Buffer.byteLength(obs.output), outputBytes: Buffer.byteLength(obs.output) });\n'
           : defect === "empty-registry" ? "export const profiles = [];\n"
-          : defect === "missing-profile" ? original.replace("...runnerProfiles", '...runnerProfiles.filter((entry) => entry.id !== "cargo-test")')
-          : original.replace("...runnerProfiles", "...runnerProfiles, runnerProfiles[0]");
+          : defect === "missing-profile" ? original.replace("...cargoTest,", "")
+          : original.replace("...cargoTest,", "...cargoTest, cargoTest[0],");
         assert.notEqual(code, original, "Control must alter compiled artifact");
         await writeFile(file, code);
+        if (defect === "missing-profile" || defect === "duplicate-profile") {
+          const mutated = (await benchmark.compiled(directory)).profiles;
+          assert.equal(mutated.filter((entry: { id: string }) => entry.id === "cargo-test").length,
+            defect === "missing-profile" ? 0 : 2, "Control must alter actual Cargo-test registration");
+        }
       }
       await assert.rejects(benchmark.runBenchmark({ root: directory }), pattern);
     }));
