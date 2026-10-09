@@ -1,0 +1,752 @@
+{
+  "schema": "stylelint-native-capture/1",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+  "node": "v22.17.1",
+  "npm": "10.9.2",
+  "versionArgv": [
+    "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+    "--version"
+  ],
+  "versionOutputHex": "31362e32352e300a",
+  "boundary": "Single child pipe: stdout=PIPE, stderr=STDOUT; bytes untouched through process exit and pipe EOF; no PTY, decoding, normalization, shell, or formatter substitution.",
+  "environment": {
+    "NO_COLOR": "1",
+    "FORCE_COLOR": "0",
+    "TERM": "dumb",
+    "NODE_OPTIONS": "unset"
+  },
+  "sources": [
+    {
+      "file": "source/clean.css",
+      "sha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450"
+    },
+    {
+      "file": "source/errors.css",
+      "sha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151"
+    },
+    {
+      "file": "source/warning.css",
+      "sha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134"
+    },
+    {
+      "file": "source/paths with spaces/café 🧪.css",
+      "sha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b"
+    },
+    {
+      "file": "source/syntax.css",
+      "sha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a"
+    },
+    {
+      "file": "source/fix.css",
+      "sha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177"
+    },
+    {
+      "file": "source/fix-clean.css",
+      "sha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9"
+    },
+    {
+      "file": "source/stylelint.config.cjs",
+      "sha256": "187c2750427d5f65f922f05655db0671e3272658776e90cad28ce024700a363e"
+    },
+    {
+      "file": "source/warning.config.cjs",
+      "sha256": "c88d934e873035717c487bb196f0f01eb1d3015326f883a7d6014d77353b8b8c"
+    },
+    {
+      "file": "source/bad.config.cjs",
+      "sha256": "d6970e1c212ffff32451b0bd6e6bb25e15e54a2406126f9d6e1d6f968dca4943"
+    },
+    {
+      "file": "source/broken.config.cjs",
+      "sha256": "1833386c1ede97cdb9cc713843a721f29f525b0d7333034ad974e92de52715ce"
+    },
+    {
+      "file": "source/collision.config.cjs",
+      "sha256": "e4a1e4f42bb7459ed73d9b50358272b49ed5d129ce8aa177fe4cabc6dd7979ef"
+    },
+    {
+      "file": "source/plugin.cjs",
+      "sha256": "f4a8b0311a8f39a9e1c0d268d8a9a69dd864caa3fd84602a075d23330e98f9bd"
+    },
+    {
+      "file": "source/plugin.config.cjs",
+      "sha256": "225b4508e3a578ed8fcd1ab41c7d5994c157cae401d41145146a68b2a7594ad8"
+    }
+  ],
+  "cases": [
+    {
+      "id": "L09-native-success",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-success.txt",
+      "exitCode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": ""
+      },
+      "reason": "no-noise",
+      "effects": []
+    },
+    {
+      "id": "L09-native-errors",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "errors.css"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-errors.txt",
+      "exitCode": 2,
+      "sha256": "58f9bccd010fc44a6586b51579a3defab697f14926c3934f532471a0b8ece4cd",
+      "bytes": 273,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "732c2030207761726e696e6773290a0a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-native-warning",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "warning.css",
+        "--config",
+        "warning.config.cjs"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-warning.txt",
+      "exitCode": 0,
+      "sha256": "a9fcb5000a7c60bf99d28dcee05d309cc20674eb35823534e59d45c66b239fc0",
+      "bytes": 125,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "72732c2031207761726e696e67290a0a"
+      },
+      "reason": "unimplemented",
+      "effects": []
+    },
+    {
+      "id": "L09-native-multifile-unicode",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "errors.css",
+        "paths with spaces/café 🧪.css"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-multifile-unicode.txt",
+      "exitCode": 2,
+      "sha256": "83742467fb1031a7887e6e1d7a407745d4e7bcfb5c3f0273efbeba8702b9a5f9",
+      "bytes": 450,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "732c2030207761726e696e6773290a0a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-native-verbose-warning",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "warning.css",
+        "--config",
+        "warning.config.cjs",
+        "--formatter",
+        "verbose"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-verbose-warning.txt",
+      "exitCode": 0,
+      "sha256": "a53e28f143a2adc029b334f03466b65308f2e91a7d0bfcde229c3bacf618b897",
+      "bytes": 287,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "696e76616c69642d6865783a20310a0a"
+      },
+      "reason": "unimplemented",
+      "effects": []
+    },
+    {
+      "id": "L09-native-syntax",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "syntax.css"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-syntax.txt",
+      "exitCode": 2,
+      "sha256": "29b38e38e63b80f0ebb348217c5707ed7c159a38a34b1735baef674e63ae3fcf",
+      "bytes": 93,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "722c2030207761726e696e6773290a0a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-config-missing",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "missing.config.cjs"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "config-missing.txt",
+      "exitCode": 1,
+      "sha256": "06185ca9cbfaf58b310ae11dda76c1a004943ba54d87655aabde7e142b670555",
+      "bytes": 1477,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "6f6e652e6d6a733a3133313a3238290a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-config-unknown-rule",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "bad.config.cjs"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "config-unknown-rule.txt",
+      "exitCode": 2,
+      "sha256": "878406887185ab71fd96b359389b7b084f6f501d4eaa70a450186f55a29e71cf",
+      "bytes": 131,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "722c2030207761726e696e6773290a0a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-config-syntax",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "broken.config.cjs"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "config-syntax.txt",
+      "exitCode": 1,
+      "sha256": "feda85cd45bfac280c956c9bbae2e426e69cf6da4e787c7df41e0955fc347b6b",
+      "bytes": 1012,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "61646572732e6a733a31383a3132290a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-json-success",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "json-success.txt",
+      "exitCode": 0,
+      "sha256": "82f07078aecf9d5d304e53ec3eb7ef2d92f930a2f0349c3831b56be8191757ee",
+      "bytes": 203,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "2c227761726e696e6773223a5b5d7d5d"
+      },
+      "reason": "unimplemented",
+      "effects": []
+    },
+    {
+      "id": "L09-json-warning",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "warning.css",
+        "--config",
+        "warning.config.cjs",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "json-warning.txt",
+      "exitCode": 0,
+      "sha256": "77627c0318505968188526ef0def9f16cc58a56a49c950a8afd5c440adc9ed48",
+      "bytes": 378,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "6e76616c69642d68657829227d5d7d5d"
+      },
+      "reason": "unimplemented",
+      "effects": []
+    },
+    {
+      "id": "L09-json-multifile-unicode",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "errors.css",
+        "paths with spaces/café 🧪.css",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "json-multifile-unicode.txt",
+      "exitCode": 2,
+      "sha256": "c3313869c0ff89d5369a4ceacf6062c13a7d9fee063d2fad928c1e8d5ed6498a",
+      "bytes": 1472,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "6e6f2d756e6b6e6f776e29227d5d7d5d"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-json-syntax",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "syntax.css",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "json-syntax.txt",
+      "exitCode": 2,
+      "sha256": "7e31c32f34169e81b0576d5a2d74954230cf06a6c3834087d90ac1878b4ea6cd",
+      "bytes": 308,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "796e7461784572726f7229227d5d7d5d"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": []
+    },
+    {
+      "id": "L09-native-fix-success",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "fix-clean.css",
+        "--fix"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-fix-success.txt",
+      "exitCode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": ""
+      },
+      "reason": "no-noise",
+      "effects": [
+        {
+          "source": "clean.css",
+          "beforeSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "afterSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "changed": false,
+          "before": "effects/native-fix-success/clean.css.before.css",
+          "after": "effects/native-fix-success/clean.css.after.css"
+        },
+        {
+          "source": "errors.css",
+          "beforeSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "afterSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "changed": false,
+          "before": "effects/native-fix-success/errors.css.before.css",
+          "after": "effects/native-fix-success/errors.css.after.css"
+        },
+        {
+          "source": "warning.css",
+          "beforeSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "afterSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "changed": false,
+          "before": "effects/native-fix-success/warning.css.before.css",
+          "after": "effects/native-fix-success/warning.css.after.css"
+        },
+        {
+          "source": "paths with spaces/café 🧪.css",
+          "beforeSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "afterSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "changed": false,
+          "before": "effects/native-fix-success/paths with spaces/café 🧪.css.before.css",
+          "after": "effects/native-fix-success/paths with spaces/café 🧪.css.after.css"
+        },
+        {
+          "source": "syntax.css",
+          "beforeSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "afterSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "changed": false,
+          "before": "effects/native-fix-success/syntax.css.before.css",
+          "after": "effects/native-fix-success/syntax.css.after.css"
+        },
+        {
+          "source": "fix.css",
+          "beforeSha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177",
+          "afterSha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177",
+          "changed": false,
+          "before": "effects/native-fix-success/fix.css.before.css",
+          "after": "effects/native-fix-success/fix.css.after.css"
+        },
+        {
+          "source": "fix-clean.css",
+          "beforeSha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9",
+          "afterSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "changed": true,
+          "before": "effects/native-fix-success/fix-clean.css.before.css",
+          "after": "effects/native-fix-success/fix-clean.css.after.css"
+        }
+      ]
+    },
+    {
+      "id": "L09-native-fix-errors",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "fix.css",
+        "--fix"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "native-fix-errors.txt",
+      "exitCode": 2,
+      "sha256": "594179b01ecf9dca0db6f51bc8ada9f12c87dc1842f16faa188cf764979e9b92",
+      "bytes": 121,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "722c2030207761726e696e6773290a0a"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": [
+        {
+          "source": "clean.css",
+          "beforeSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "afterSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "changed": false,
+          "before": "effects/native-fix-errors/clean.css.before.css",
+          "after": "effects/native-fix-errors/clean.css.after.css"
+        },
+        {
+          "source": "errors.css",
+          "beforeSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "afterSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "changed": false,
+          "before": "effects/native-fix-errors/errors.css.before.css",
+          "after": "effects/native-fix-errors/errors.css.after.css"
+        },
+        {
+          "source": "warning.css",
+          "beforeSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "afterSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "changed": false,
+          "before": "effects/native-fix-errors/warning.css.before.css",
+          "after": "effects/native-fix-errors/warning.css.after.css"
+        },
+        {
+          "source": "paths with spaces/café 🧪.css",
+          "beforeSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "afterSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "changed": false,
+          "before": "effects/native-fix-errors/paths with spaces/café 🧪.css.before.css",
+          "after": "effects/native-fix-errors/paths with spaces/café 🧪.css.after.css"
+        },
+        {
+          "source": "syntax.css",
+          "beforeSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "afterSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "changed": false,
+          "before": "effects/native-fix-errors/syntax.css.before.css",
+          "after": "effects/native-fix-errors/syntax.css.after.css"
+        },
+        {
+          "source": "fix.css",
+          "beforeSha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177",
+          "afterSha256": "cdeb8421f7a83a5f3285c0e17a03ca6b5978c30d7b3f4dc468afcc70863f1399",
+          "changed": true,
+          "before": "effects/native-fix-errors/fix.css.before.css",
+          "after": "effects/native-fix-errors/fix.css.after.css"
+        },
+        {
+          "source": "fix-clean.css",
+          "beforeSha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9",
+          "afterSha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9",
+          "changed": false,
+          "before": "effects/native-fix-errors/fix-clean.css.before.css",
+          "after": "effects/native-fix-errors/fix-clean.css.after.css"
+        }
+      ]
+    },
+    {
+      "id": "L09-json-fix-success",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "fix-clean.css",
+        "--fix",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "json-fix-success.txt",
+      "exitCode": 0,
+      "sha256": "c6f031a393c5bd6480b66a158049ce6b1fd2cb5c68fc1b3d188f87b55d8bf80b",
+      "bytes": 207,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "2c227761726e696e6773223a5b5d7d5d"
+      },
+      "reason": "unimplemented",
+      "effects": [
+        {
+          "source": "clean.css",
+          "beforeSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "afterSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "changed": false,
+          "before": "effects/json-fix-success/clean.css.before.css",
+          "after": "effects/json-fix-success/clean.css.after.css"
+        },
+        {
+          "source": "errors.css",
+          "beforeSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "afterSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "changed": false,
+          "before": "effects/json-fix-success/errors.css.before.css",
+          "after": "effects/json-fix-success/errors.css.after.css"
+        },
+        {
+          "source": "warning.css",
+          "beforeSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "afterSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "changed": false,
+          "before": "effects/json-fix-success/warning.css.before.css",
+          "after": "effects/json-fix-success/warning.css.after.css"
+        },
+        {
+          "source": "paths with spaces/café 🧪.css",
+          "beforeSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "afterSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "changed": false,
+          "before": "effects/json-fix-success/paths with spaces/café 🧪.css.before.css",
+          "after": "effects/json-fix-success/paths with spaces/café 🧪.css.after.css"
+        },
+        {
+          "source": "syntax.css",
+          "beforeSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "afterSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "changed": false,
+          "before": "effects/json-fix-success/syntax.css.before.css",
+          "after": "effects/json-fix-success/syntax.css.after.css"
+        },
+        {
+          "source": "fix.css",
+          "beforeSha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177",
+          "afterSha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177",
+          "changed": false,
+          "before": "effects/json-fix-success/fix.css.before.css",
+          "after": "effects/json-fix-success/fix.css.after.css"
+        },
+        {
+          "source": "fix-clean.css",
+          "beforeSha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9",
+          "afterSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "changed": true,
+          "before": "effects/json-fix-success/fix-clean.css.before.css",
+          "after": "effects/json-fix-success/fix-clean.css.after.css"
+        }
+      ]
+    },
+    {
+      "id": "L09-json-fix-errors",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "fix.css",
+        "--fix",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "json-fix-errors.txt",
+      "exitCode": 2,
+      "sha256": "89565d4a137e94d63417aacf79c4cf335dec0029424ae8cc4be93820f1bb5ac5",
+      "bytes": 371,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "6e76616c69642d68657829227d5d7d5d"
+      },
+      "reason": "unsafe-nonzero",
+      "effects": [
+        {
+          "source": "clean.css",
+          "beforeSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "afterSha256": "5c900a224999f84236b5805e12b3d9b0c4aaacf1b753294b06ed7f6099ed1450",
+          "changed": false,
+          "before": "effects/json-fix-errors/clean.css.before.css",
+          "after": "effects/json-fix-errors/clean.css.after.css"
+        },
+        {
+          "source": "errors.css",
+          "beforeSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "afterSha256": "289b4585fd575cf615eece0f9b390760ea6074c84cccfa7b91c4bff0d9349151",
+          "changed": false,
+          "before": "effects/json-fix-errors/errors.css.before.css",
+          "after": "effects/json-fix-errors/errors.css.after.css"
+        },
+        {
+          "source": "warning.css",
+          "beforeSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "afterSha256": "facf5ac8df3eec73b9b287408db65816c00dbbbe40a73288cb2faabf5c6ed134",
+          "changed": false,
+          "before": "effects/json-fix-errors/warning.css.before.css",
+          "after": "effects/json-fix-errors/warning.css.after.css"
+        },
+        {
+          "source": "paths with spaces/café 🧪.css",
+          "beforeSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "afterSha256": "7f36ec2f708bc266c7409ef4366f41b2450c4e35f382815eecff40d19585e62b",
+          "changed": false,
+          "before": "effects/json-fix-errors/paths with spaces/café 🧪.css.before.css",
+          "after": "effects/json-fix-errors/paths with spaces/café 🧪.css.after.css"
+        },
+        {
+          "source": "syntax.css",
+          "beforeSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "afterSha256": "859cad16d5400062c730b98988632bb14cba0496e48a7d2a59badd4fa7c2740a",
+          "changed": false,
+          "before": "effects/json-fix-errors/syntax.css.before.css",
+          "after": "effects/json-fix-errors/syntax.css.after.css"
+        },
+        {
+          "source": "fix.css",
+          "beforeSha256": "75cf66e6394be58321bf1c6423c3d11d6b9c6c411ea3e0ed327b30826e203177",
+          "afterSha256": "cdeb8421f7a83a5f3285c0e17a03ca6b5978c30d7b3f4dc468afcc70863f1399",
+          "changed": true,
+          "before": "effects/json-fix-errors/fix.css.before.css",
+          "after": "effects/json-fix-errors/fix.css.after.css"
+        },
+        {
+          "source": "fix-clean.css",
+          "beforeSha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9",
+          "afterSha256": "c106acb8294041c435e9fc36af119e2ee67e634b2339f4d383b243a886ffeee9",
+          "changed": false,
+          "before": "effects/json-fix-errors/fix-clean.css.before.css",
+          "after": "effects/json-fix-errors/fix-clean.css.after.css"
+        }
+      ]
+    },
+    {
+      "id": "L09-config-stdout-native",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "collision.config.cjs"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "config-stdout-native.txt",
+      "exitCode": 0,
+      "sha256": "fba519229b43506abc2eb9cfaead48bb3da2e1e5235cf2400b4079561eb90c03",
+      "bytes": 36,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "2070726f626c656d7320666f756e640a"
+      },
+      "reason": "unsafe-producer-collision",
+      "effects": []
+    },
+    {
+      "id": "L09-config-stdout-json",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "collision.config.cjs",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "config-stdout-json.txt",
+      "exitCode": 0,
+      "sha256": "6372c7668239dfbca23a0f51e2853b82fe20b7af3f5745481b0f3d4a45faa131",
+      "bytes": 239,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "2c227761726e696e6773223a5b5d7d5d"
+      },
+      "reason": "unsafe-producer-collision",
+      "effects": []
+    },
+    {
+      "id": "L09-plugin-stdout-native",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "plugin.config.cjs",
+        "--formatter",
+        "verbose"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "plugin-stdout-native.txt",
+      "exitCode": 0,
+      "sha256": "c52927afdff978b6b63357b17195a417bbe6a697da9d5562bbb3950a84bbeb36",
+      "bytes": 478,
+      "eof": {
+        "endsWithLF": true,
+        "tailHex": "70726f626c656d7320666f756e640a0a"
+      },
+      "reason": "unsafe-producer-collision",
+      "effects": []
+    },
+    {
+      "id": "L09-plugin-stdout-json",
+      "argv": [
+        "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/.bin/stylelint",
+        "clean.css",
+        "--config",
+        "plugin.config.cjs",
+        "--formatter",
+        "json"
+      ],
+      "cwd": "/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native",
+      "file": "plugin-stdout-json.txt",
+      "exitCode": 0,
+      "sha256": "c45f968f9114f2c30d9e2c5de24611c2b03c0f62a889e9fb23abe56dd96b534d",
+      "bytes": 545,
+      "eof": {
+        "endsWithLF": false,
+        "tailHex": "2c227761726e696e6773223a5b5d7d5d"
+      },
+      "reason": "unsafe-producer-collision",
+      "effects": []
+    }
+  ],
+  "candidates": [
+    {
+      "input": "native-warning.txt",
+      "file": "native-warning.layout-candidate.txt",
+      "approved": false,
+      "inputBytes": 125,
+      "candidateBytes": 124,
+      "sha256": "46d96484a202fef76745f48666b2554fc9e1d5641c7f6395a6627e5087ae1475",
+      "proposal": "Remove exactly the first LF; retain every remaining byte including two-LF EOF."
+    },
+    {
+      "input": "native-verbose-warning.txt",
+      "file": "native-verbose-warning.layout-candidate.txt",
+      "approved": false,
+      "inputBytes": 287,
+      "candidateBytes": 286,
+      "sha256": "d81c7b11e9e5659caa8c9db7afbbd5367790713a4bb659d55c955f3665c56463",
+      "proposal": "Remove exactly the first LF; retain every remaining byte including two-LF EOF."
+    }
+  ]
+}

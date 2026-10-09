@@ -1,0 +1,15 @@
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/broken.config.cjs:1
+module.exports = { rules: ;
+                          ^
+
+SyntaxError: Unexpected token ';'
+    at wrapSafe (node:internal/modules/cjs/loader:1662:18)
+    at Module._compile (node:internal/modules/cjs/loader:1704:20)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at module.exports (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/import-fresh/index.js:33:91)
+    at loadJsSync (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/node_modules/cosmiconfig/dist/loaders.js:18:12)

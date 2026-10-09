@@ -1,0 +1,1 @@
+[{"source":"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L09-stylelint-native/fix-clean.css","deprecations":[],"invalidOptionWarnings":[],"parseErrors":[],"errored":false,"warnings":[]}]
