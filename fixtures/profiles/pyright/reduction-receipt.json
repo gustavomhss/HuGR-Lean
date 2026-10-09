@@ -1,0 +1,43 @@
+{
+  "scope": "explicitly selected pyrightProfile; default registry remains lead-owned",
+  "goldenMethod": "manual native token transcription; native EOF appended; not reducer-generated",
+  "expectedSavingsBytes": 1847,
+  "cases": [
+    {
+      "name": "L08-json-success",
+      "inputBytes": 251,
+      "outputBytes": 171,
+      "savingsBytes": 80,
+      "goldenFile": "json-success.golden.txt",
+      "goldenSha256": "40307df6a36627eee5696b8b35b76538daefe2e0a5953010fbb4bffe120c35ac",
+      "terminalLFBytes": 2
+    },
+    {
+      "name": "L08-json-warning",
+      "inputBytes": 828,
+      "outputBytes": 484,
+      "savingsBytes": 344,
+      "goldenFile": "json-warning.golden.txt",
+      "goldenSha256": "9981cfcdcf438b612e7fcf3f92061740cf931ebd38d8ae188ce076f30911b3ea",
+      "terminalLFBytes": 2
+    },
+    {
+      "name": "L08-json-information",
+      "inputBytes": 803,
+      "outputBytes": 473,
+      "savingsBytes": 330,
+      "goldenFile": "json-information.golden.txt",
+      "goldenSha256": "76be7bb1ebda833c2dda393f28a067efb448315d2c484a528d517b259b8e43bf",
+      "terminalLFBytes": 2
+    },
+    {
+      "name": "L08-json-multi-unicode",
+      "inputBytes": 2537,
+      "outputBytes": 1444,
+      "savingsBytes": 1093,
+      "goldenFile": "json-multi-unicode.golden.txt",
+      "goldenSha256": "07901c52298309b3b611940a98c2f69a03471d8b25d18e0831a4c42cb335f1b2",
+      "terminalLFBytes": 2
+    }
+  ]
+}

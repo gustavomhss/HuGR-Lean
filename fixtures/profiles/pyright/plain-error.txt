@@ -1,0 +1,4 @@
+/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/error.py
+  /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/error.py:4:11 - error: Argument of type "Literal['café 🧪']" cannot be assigned to parameter "value" of type "int" in function "takes_int"
+    "Literal['café 🧪']" is not assignable to "int" (reportArgumentType)
+1 error, 0 warnings, 0 informations

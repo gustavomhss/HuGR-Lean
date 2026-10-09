@@ -1,0 +1,22 @@
+Loading configuration file at /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/pyrightconfig.json
+Auto-excluding **/node_modules
+Auto-excluding **/__pycache__
+Auto-excluding **/.*
+Execution environment: python
+  Extra paths:
+    (none)
+  Python version: 3.12
+  Python platform: Darwin
+  Search paths:
+    /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/pyright/dist/typeshed-fallback/stdlib
+    /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source
+    /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-L08/fixtures/profiles/pyright/source/typings
+    /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/node_modules/pyright/dist/typeshed-fallback/stubs/...
+    /usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14
+    /usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/lib-dynload
+    /Users/gustavoschneiter/Library/Python/3.14/lib/python/site-packages
+    /usr/local/lib/python3.14/site-packages
+Found 1 source file
+pyright 1.1.408
+0 errors, 0 warnings, 0 informations
+Completed in 0.539sec
