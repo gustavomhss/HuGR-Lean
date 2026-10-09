@@ -43,9 +43,9 @@ const goldens: Readonly<Record<string, Golden>> = {
   "runners/pytest_real_default.txt": { command: "pytest", profile: "pytest" },
   "formats/jest_all_passed.txt": {
     command: "jest --verbose", profile: "jest",
-    expected: "+ src/utils.test.js\n  - should add numbers (5 ms)\n  - should subtract numbers (2 ms)\n" +
-      "  - should multiply numbers (3 ms)\n  - should divide numbers (4 ms)\n\n+ src/helpers.test.js\n" +
-      "  - should format date (1 ms)\n  - should parse JSON (2 ms)\n\nTest Suites: 2 passed, 2 total\n" +
+    expected: "PASS src/utils.test.js\n  ✓ should add numbers (5 ms)\n  ✓ should subtract numbers (2 ms)\n" +
+      "  ✓ should multiply numbers (3 ms)\n  ✓ should divide numbers (4 ms)\n\nPASS src/helpers.test.js\n" +
+      "  ✓ should format date (1 ms)\n  ✓ should parse JSON (2 ms)\n\nTest Suites: 2 passed, 2 total\n" +
       "Tests:       6 passed, 6 total\nTime:        0.8 s\n",
   },
   "formats/vitest_all_passed.txt": {
@@ -66,8 +66,8 @@ const goldens: Readonly<Record<string, Golden>> = {
   },
   "formats/jest_native.txt": {
     command: "jest --runInBand --verbose --no-color", profile: "jest",
-    expected: "+ ./jest-native.test.cjs\n  maths 🔥\n    - adds café (7 ms)\n    nested\n" +
-      "      - keeps path: evidence (2 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       2 passed, 2 total\n" +
+    expected: "PASS ./jest-native.test.cjs\n  maths 🔥\n    ✓ adds café (7 ms)\n    nested\n" +
+      "      ✓ keeps path: evidence (2 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       2 passed, 2 total\n" +
       "Snapshots:   0 total\nTime:        1.022 s\nRan all test suites.\n",
   },
   "formats/vitest_native.txt": {
@@ -85,13 +85,13 @@ const goldens: Readonly<Record<string, Golden>> = {
 type Anchor = string | { text: string; occurrence: number };
 const formatEvidence: Readonly<Record<string, readonly Anchor[]>> = {
   "formats/jest_all_passed.txt": [
-    "src/utils.test.js\n", "should add numbers (5 ms)\n", "should subtract numbers (2 ms)\n",
-    "should multiply numbers (3 ms)\n", "should divide numbers (4 ms)\n", "src/helpers.test.js\n",
-    "should format date (1 ms)\n", "should parse JSON (2 ms)\n",
+    "PASS src/utils.test.js\n", "  ✓ should add numbers (5 ms)\n", "  ✓ should subtract numbers (2 ms)\n",
+    "  ✓ should multiply numbers (3 ms)\n", "  ✓ should divide numbers (4 ms)\n", "PASS src/helpers.test.js\n",
+    "  ✓ should format date (1 ms)\n", "  ✓ should parse JSON (2 ms)\n",
     "Test Suites: 2 passed, 2 total\n", "Tests:       6 passed, 6 total\n", "Time:        0.8 s\n",
   ],
   "formats/jest_native.txt": [
-    "./jest-native.test.cjs\n", "  maths 🔥\n", "adds café (7 ms)\n", "    nested\n", "keeps path: evidence (2 ms)\n",
+    "PASS ./jest-native.test.cjs\n", "  maths 🔥\n", "    ✓ adds café (7 ms)\n", "    nested\n", "      ✓ keeps path: evidence (2 ms)\n",
     "Test Suites: 1 passed, 1 total\n", "Tests:       2 passed, 2 total\n", "Snapshots:   0 total\n",
     "Time:        1.022 s\n", "Ran all test suites.\n",
   ],
@@ -294,8 +294,8 @@ test("source fixture inventory and default production registry are nonempty and 
 for (const entry of corpus) test(`production golden: ${entry.path}`, () => {
   const input = observation(entry.input, entry.command);
   if (entry.expected === undefined) exact(input, "unsupported_output");
-  else if (entry.profile === "vitest") {
-    assert.equal(entry.expected, entry.input, "Vitest golden must retain raw bytes");
+  else if (["jest", "vitest"].includes(entry.profile)) {
+    assert.equal(entry.expected, entry.input, `${entry.profile} golden must retain raw bytes`);
     exact(input, "not_smaller");
     exact({ ...input, output: entry.input.replaceAll("\n", "\r\n") }, "not_smaller");
     const colored = { ...input, output: `\x1b[32m${entry.input}\x1b[0m`, presentation: "terminal-rendered" as const };
@@ -342,13 +342,13 @@ for (const [path, field, label] of c1Fields) {
   const expected = entry.expected;
   assert.ok(entry.input.includes(field) && expected.includes(field), `Missing dynamic field: ${path}`);
   const insert = (value: string) => entry.input.replace(field, field + value);
-  test(`production ${entry.profile} ${label} ${entry.profile === "vitest" ? "preserves" : "reduces"} ordinary Unicode`, () => {
+  test(`production ${entry.profile} ${label} ${["jest", "vitest"].includes(entry.profile) ? "preserves" : "reduces"} ordinary Unicode`, () => {
     const unicode = "漢字 e\u0301 🔥";
-    if (entry.profile === "vitest") exact(observation(insert(unicode), entry.command), "not_smaller");
+    if (["jest", "vitest"].includes(entry.profile)) exact(observation(insert(unicode), entry.command), "not_smaller");
     else reduced(observation(insert(unicode), entry.command), expected.replace(field, field + unicode), entry.profile);
   });
   test(`production ${entry.profile} ${label} preserves every C1 control exactly`, () => {
-    if (entry.profile === "vitest") exact(observation(entry.input, entry.command), "not_smaller");
+    if (["jest", "vitest"].includes(entry.profile)) exact(observation(entry.input, entry.command), "not_smaller");
     else reduced(observation(entry.input, entry.command), expected, entry.profile);
     const failures: string[] = [];
     for (let code = 0x80; code <= 0x9f; code++) {

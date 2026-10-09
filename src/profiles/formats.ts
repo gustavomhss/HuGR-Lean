@@ -54,8 +54,8 @@ function jest(output: string, observation: Observation): Reduction | undefined {
     if (/^ ?PASS .+$/u.test(text)) {
       if (pending) return undefined;
       tests.push(0); headings.length = 0;
-      result.pieces.push({ text: "+ " });
-      keep(result, [line.span[0] + (text.startsWith(" ") ? 6 : 5), line.span[1]]); continue;
+      // Config-only reporters can emit native-shaped user evidence, markers included.
+      keep(result, line.span); continue;
     }
     const leaf = /^( {2,})✓ (.+)$/u.exec(text);
     const heading = /^( {2,})([^\s✓○✎].*)$/u.exec(text);
@@ -68,10 +68,7 @@ function jest(output: string, observation: Observation): Reduction | undefined {
     pending = !leaf;
     if (leaf) {
       tests[tests.length - 1]!++;
-      // A name may itself end in "(5 ms)". Keep the whole body, including timing.
-      keep(result, [line.span[0], line.span[0] + indent]);
-      result.pieces.push({ text: "- " });
-      keep(result, [line.span[0] + indent + 2, line.span[1]]);
+      keep(result, line.span);
     } else { headings.push(indent); keep(result, line.span); }
   }
   if (pending || !tests.length || !equalCounts(rows[index]?.text ?? "", /^Test Suites: +(\d+) passed, (\d+) total$/u, tests.length)) return undefined;
