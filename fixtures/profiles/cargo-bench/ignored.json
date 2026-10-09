@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "cargo",
+    "bench",
+    "--offline",
+    "--color",
+    "never",
+    "--bench",
+    "builtin",
+    "suite::ignored_sum",
+    "--",
+    "--ignored",
+    "--exact"
+  ],
+  "cwd": "/home/runner/work/_temp/c06-project",
+  "startedUnix": 1791573814.2971435,
+  "elapsedSeconds": 0.625950813293457,
+  "exitCode": 0,
+  "timeout": false,
+  "eof": true,
+  "sha256": "4f40d9684440578e3d527e7fb4d01305904cddfcb2d35471432f9f1f1b4ad9d3",
+  "bytes": 352,
+  "boundary": "one shared stdout/stderr pipe; communicate waits for EOF",
+  "candidateSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "runId": "37979866069",
+  "runAttempt": "1",
+  "expectationMet": true
+}
