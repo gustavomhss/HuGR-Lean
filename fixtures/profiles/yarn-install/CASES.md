@@ -80,3 +80,48 @@ outside this packet. Lead must decide grammar/scope before any implementation/pr
 
 Focused integrity check: every native and archived raw SHA checked, deliberately corrupted
 raw hash rejected, bytes restored and same check passed. No suite/typecheck/CI dispatched.
+
+## Supplement at `22ddaa6` — capture-only
+
+Historical limits above describe the original packet. Supplement IDs are additive; original
+recipes, rows, raw bytes and failed-attempt archive remain historical evidence.
+
+| Stable ID | Actual native outcome | Required evidence / disposition |
+| --- | --- | --- |
+| `P03/supplement-classic-dependency-deprecation` | Yarn 1.22.22, exit 0; registry `inflight@1.0.6` warning | Entire raw input, warning/advice, all four steps, ignored-script warning, lock/save/time; passthrough |
+| `P03/supplement-berry-dependency-deprecation` | Yarn 4.10.3, exit 0; same deprecated dependency, **no dependency-deprecation warning emitted** | Entire raw input, YN0085 package list, YN0013 package/size metric, step/time/final summary; passthrough; warning gap explicit |
+| `P03/supplement-classic-cold-cache-offline-miss` | Matching generated lock, empty new cache, removed node_modules, `--offline --frozen-lockfile`; exit 1 | Entire raw input, `once` tarball URL, offline error, documentation advice; passthrough |
+| `P03/supplement-berry-cold-cache-offline-miss` | Matching generated lock, empty new cache, removed node_modules/install state, `--immutable --immutable-cache`, environment `YARN_ENABLE_NETWORK=0`; exit 1 | Entire raw input, three YN0056 package-associated misses, failed summary/time; passthrough |
+
+Inputs are named by `file` in `cases.json`; no inline/file duplication. Removable bytes zero;
+no implementation or grammar promotion. Existing peer/plugin/lifecycle captures remain anchors;
+the new three-package graph has no peer dependencies or lifecycle scripts.
+
+`supplement.py` creates fresh private projects and installs local tools using `npm ci` from
+exact lock entries pinned in original tooling locks. Those original locks have historical
+absolute-path package keys: new tool locks normalize only package keys/root manifest while
+retaining version, resolved URL, SRI, license and bin entries. No global tooling. Bare `yarn`
+uses the local `.bin` launcher; receipts record both launcher and resolved executable/hash.
+Classic disables scripts via native flag; Berry records both skip-build and config
+`enableScripts: false`. Config is authored input, not reporter output. Fresh Berry empty lock
+establishes project boundary before initial resolution; it is not an absent-lock witness.
+
+Run fresh capture only against an unsupplemented manifest, then bind receipts:
+`python3 fixtures/profiles/yarn-install/supplement.py` followed by
+`python3 fixtures/profiles/yarn-install/supplement-receipt.py`.
+Online resolution creates saved locks; subsequent cold-cache failures use those exact locks.
+The recipe refuses duplicate IDs rather than replacing recorded observations.
+
+`supplement-receipts.json` binds cases to byte counts, SHA-256, EOF read, final LF and tail
+hex, complete/exited metadata, 4 MiB adapter input bound, argv and selected execution env.
+Saved manifest/config/locks and unmodified registry metadata have SHA-256 inventories.
+Public metadata pins tarball/SRI/license/graph; captured locks establish resolved versions.
+Boundary is merged pipe through EOF, unknown presentation, no PTY or byte rewriting.
+
+Scoped check: `npx --no-install tsx fixtures/profiles/yarn-install/supplement-controls.mjs`.
+It reads an isolated copy with current lead-owned reader/filter, checks exact retention and
+all supplemental artifact hashes, then rejects raw corruption, false EOF, duplicate IDs and
+undeclared `.txt`; restores copied bytes and rereads. Initial check used nonexistent
+`FilterResult.output` and failed; corrected to actual `replacement ?? original` contract.
+No shared code, index, suite, typecheck or CI dispatch. Berry dependency-deprecation warning
+remains unobserved; existing flag YN0050 is not substituted. No broader format claim.
