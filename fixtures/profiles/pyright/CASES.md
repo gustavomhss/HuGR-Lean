@@ -33,7 +33,7 @@ Additional raw JSON witnesses contribute 4,168 bytes; combined raw corpus is 11,
 `reduction-receipt.json` records four independent golden hashes and 1,847 selected-profile saved bytes.
 All raw captures are complete exited processes. Plain/config/stats/verbose have one terminal LF;
 JSON has two. No normalization of `/private/var` paths, nonbreaking spaces, Unicode, timestamps,
-timings, or summaries occurred. Spans, if implemented later, must use UTF-16 indices, not byte offsets.
+timings, or summaries occurred. Implemented source spans use UTF-16 indices, not byte offsets.
 
 ## Layout candidate, not implementation
 
