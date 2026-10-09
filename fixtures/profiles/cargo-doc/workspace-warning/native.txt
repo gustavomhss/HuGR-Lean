@@ -1,0 +1,15 @@
+   Compiling doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+ Documenting doc-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/beta)
+ Documenting doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+warning: unresolved link to `missing_native_item`
+ --> alpha/src/lib.rs:7:15
+  |
+7 | /// Link to [`missing_native_item`] intentionally warns.
+  |               ^^^^^^^^^^^^^^^^^^^ no item named `missing_native_item` in scope
+  |
+  = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
+  = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
+
+warning: `doc-alpha` (lib doc) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.11s
+   Generated /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/workspace-warning/doc/doc_alpha/index.html and 1 other file

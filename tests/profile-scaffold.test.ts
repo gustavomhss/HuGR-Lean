@@ -87,3 +87,17 @@ test("routing closure: Pyright reaches nonempty native goldens", async () => {
     if (result.status === "reduced") assert.equal(result.profile, "pyright", entry.name);
   }
 });
+test("corpus closure: exact Cargo doc mypy ShellCheck preserve native bytes", async () => {
+  const entries = await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url)));
+  for (const family of ["cargo-doc", "mypy", "shellcheck"]) {
+    const captures = entries.filter(entry => entry.family === family);
+    assert.ok(captures.length > 0, family);
+    for (const entry of captures) {
+      assert.equal(entry.status, "passthrough", entry.name);
+      const result = filter(entry.observation);
+      assert.equal(result.status, "passthrough", entry.name);
+      assert.equal("replacement" in result, false, entry.name);
+      assert.equal(entry.expected, entry.observation.output, entry.name);
+    }
+  }
+});

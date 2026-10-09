@@ -157,7 +157,7 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | L01 | INTEGRATED | campaign/native-v2/L01 / #83 | ESLint stylish outer LF only; tiny savings, no material-profit claim |
 | P01 | CAPTURED | campaign/native-v2/P01 / #73 | No meaningful progress observed in captured pipe outputs; successful peer-warning case incomplete |
 | C04 | CAPTURED | campaign/native-v2/C04 / #87 | rustfmt silent success and nonzero diffs; no removable material found |
-| C05 | BLOCKED | campaign/native-v2/C05 / #92 | Producer collisions invalidate progress deletion; fixed branch preserves all output, zero approved savings; bins binding unproved |
+| C05 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/C05 / #92 | Human-approved bounded exact corpus; zero reduction; native Checking/nonhost target/no-offline/config gaps explicit |
 | C06 | BLOCKED | campaign/native-v2/C06 / #88 | Stable toolchains reject builtin bench; arbitrary custom harness retained, native metrics unproven |
 | G03 | CAPTURED | campaign/native-v2/G03 / #90 | Bench metrics/logs retained; nested-progress deletion not approved |
 | G04 | CAPTURED | campaign/native-v2/G04 / #91 | Build/vet/run silent or meaningful output; no reduction proposed |
@@ -169,8 +169,11 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | B01 | CAPTURED | campaign/native-v2/B01 / #96 | Vite plugin can emit identical progress; candidate deletion unapproved |
 | B03 | CAPTURED | campaign/native-v2/B03 / #93 | esbuild CLI artifacts/warnings/stdout retained; no plugin API coverage claimed |
 | L05 | CAPTURED | campaign/native-v2/L05 / #101 | Prettier 3.6.2; real plugin stdout collision; no approved deletion |
-| L07 | CAPTURED | campaign/native-v2/L07 / #99 | mypy 1.18.2; diagnostics/notes/metrics and plugin output retained; no deletion proposed |
+| L07 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/L07 / #99 | mypy 1.18.2; named native diagnostics/notes/metrics/plugin captures retained; no runtime parser or reduction claim |
 | L08 | INTEGRATED | campaign/native-v2/L08 / #100 | Pyright 1.1.408 explicit exit-zero JSON layout; every token and two-LF EOF retained |
+| L09 | CAPTURED | campaign/native-v2/L09 / #102 | Stylelint 16.25.0; compact JSON, fixes and plugin/config output retained; LF candidates unapproved |
+| L10 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/L10 / #103 | ShellCheck 0.11.0; compact JSON, silence and nonzero diagnostics retained; binary/source correspondence unattested |
+| L11 | CAPTURED | campaign/native-v2/L11 / #104 | markdownlint-cli2 0.23.3 only; custom reporter progress collision; no approved deletion |
 
 All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
@@ -199,6 +202,27 @@ The corpus reader rejected undeclared license/candidate/golden artifacts; explic
 fixed correspondence without weakening the reader. The same closure then passed.
 L05 capture checkpoint `986923ce378b0cd0136a3517adc04ddaf8e7a540` and L07 checkpoint
 `50eabccd3ef6845a10b0ac20a3b68afc328dcf8b` remain capture-only branches, not promoted profiles.
+L09 `e1becdb9cb2fb2521cce892a422e1af1d0478184`, L10
+`d20d8054100a8d21cb2c85b35dd58e105e072842` and L11
+`c6d48a3778118c6941a5d8628c3a73aa092a4ef3` are capture-only checkpoints. No fixture-only
+test suites or typechecks were run. Raw/recipe receipts remain on their exclusive branches pending
+independent review and corpus promotion. ShellCheck's copied upstream license remains GPL-3.0
+fixture provenance, not runtime donor code; producer build-to-commit correspondence remains unproved.
+Human scope decision after resumed L09/L10/L11 captures: user selected "Preservar exato
+(Recommended)" for Cargo doc and ambiguous plugin/reporter progress. These cases may close as exact
+preservation after independent capture review and corpus promotion; no reduction claim, producer
+authentication or parser stub is licensed by this decision. Applies to the documented producer-collision
+cases, not blanket waiver of missing variants or unimplemented safe formats. C06 nightly remains
+unauthorized: user asked why nightly, and builtin libtest's unstable `#![feature(test)]`/E0554 boundary
+was explained. Criterion/stable is a distinct reporter and cannot stand in for builtin benchmark proof.
+Exact-corpus promotion: C05 fixture-only source `2bbe9c7f5610a88759d0b86a0f8f1c129e3f8bc4`,
+L07 `50eabccd3ef6845a10b0ac20a3b68afc328dcf8b` and L10
+`d20d8054100a8d21cb2c85b35dd58e105e072842` independently reviewed for raw/source hashes,
+EOF, source associations and finite native reach; corruption controls detected altered evidence.
+Only C05 fixtures imported: its no-reduction parser/tests excluded. ShellCheck archive metadata
+normalized to path strings; raw bytes and receipt remain unchanged. The nonempty per-family
+default-filter identity closure and scoped closure typing passed. No new runtime profile introduced.
+These states attest bounded exact native evidence, not blanket family completeness or new reductions.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.

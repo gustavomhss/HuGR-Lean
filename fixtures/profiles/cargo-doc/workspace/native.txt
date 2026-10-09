@@ -1,0 +1,5 @@
+   Compiling doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+ Documenting doc-beta v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/beta)
+ Documenting doc-alpha v0.1.0 (/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/alpha)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.09s
+   Generated /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-c05-doc-YIDrnP/targets/workspace/doc/doc_alpha/index.html and 1 other file

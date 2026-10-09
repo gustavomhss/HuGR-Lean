@@ -1968,9 +1968,6 @@
     }
   ],
   "archives": [
-    {
-      "file": "LICENSE.shellcheck.txt",
-      "reason": "Pinned upstream GPL-3.0 license; not command output"
-    }
+    "LICENSE.shellcheck.txt"
   ]
 }
