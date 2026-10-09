@@ -6,11 +6,11 @@ One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra
 ## Install and enable
 
 Node 22+, npm and Git. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
-The delivery candidate is **pending human approval**, not a new release.
+The lead's technical verdict and exact candidate/artifact binding are recorded in the
+[delivery PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85); this is not a new release.
 Before running commands, replace only `FULL_REVIEWED_DELIVERY_SHA` in the assignment below
-with the full 40-character lowercase hexadecimal SHA from the approved delivery PR and its
-candidate evidence receipt. Until approval
-and that receipt exist, this installation recipe is not an approved installation target.
+with the full 40-character lowercase hexadecimal SHA from that receipt's **APPROVE** verdict.
+The reviewed SHA and its evidence receipt define the installation target.
 Never substitute floating `main` or a branch tip for the reviewed snapshot.
 Run these commands from a directory where you want a fresh clone. Choose an unused folder name
 (shown here as `hugr-lean-reviewed`), and stop if any command fails:
@@ -34,10 +34,10 @@ hugr-lean doctor
 ```
 
 The subshell stops on failure: invalid SHA syntax fails before clone; failed source selection
-or a mismatched HEAD stops before npm. Syntax and identity checks do not grant human approval.
+or a mismatched HEAD stops before npm. Syntax and identity checks do not replace technical review.
 `npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
 uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
-directory on `PATH`. The package version remains `0.2.0` pending a human release/version decision.
+directory on `PATH`. The package version remains `0.2.0` until a separate release/version decision.
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
