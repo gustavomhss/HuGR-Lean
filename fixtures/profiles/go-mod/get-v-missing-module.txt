@@ -1,0 +1,1 @@
+go: example.com/g05/absent@v1.0.0: module lookup disabled by GOPROXY=off
