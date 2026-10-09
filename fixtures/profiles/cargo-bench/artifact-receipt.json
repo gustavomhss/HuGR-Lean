@@ -1,0 +1,38 @@
+{
+  "runUrl": "https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069",
+  "runId": "37979866069",
+  "runAttempt": 1,
+  "conclusion": "success",
+  "candidateSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "workflowSha": "da4c7601ad37cd1305c1ecd52733a84ee8dcc769",
+  "artifactId": "11640431967",
+  "artifactName": "native-cargo-bench-37979866069-1",
+  "artifactSHA256": "6f9f5925813f335cbc543ffa729d064cbcff9bb0b8ed01dbcf914e4808908bbd",
+  "scope": "native-capture-only; candidate-progress-unapproved; not final CI",
+  "invalidDefinitionRun": "37979697871",
+  "controls": [
+    {
+      "control": "raw-byte-corruption",
+      "rejected": "raw hash mismatch"
+    },
+    {
+      "control": "receipt-eof-loss",
+      "rejected": "incomplete capture"
+    },
+    {
+      "control": "identity-mismatch",
+      "rejected": "identity mismatch"
+    },
+    {
+      "control": "empty-case-list",
+      "rejected": "missing or extra capture"
+    },
+    {
+      "control": "project-source-corruption",
+      "rejected": "snapshot mismatch"
+    }
+  ],
+  "importModifications": "cases.json archives extended with artifact-receipt.json and import-artifact.py; captured raw/receipts/source/snapshots unchanged",
+  "sourceLicense": "MIT",
+  "leadImport": "fixtures only; exclude .github/workflows/ci.yml"
+}

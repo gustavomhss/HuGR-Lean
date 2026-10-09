@@ -5,7 +5,7 @@ Internal, pure full-stream parsers for narrow native success grammars; the core 
 ## Scope
 - [runners.ts](runners.ts): `cargo-test`, `cargo-build`, `pytest`, and `go-test-verbose`.
 - [formats.ts](formats.ts): `jest`, `vitest`, `git-status`, and `rg`; `tsc` is an identity-only passthrough stub.
-- Vitest validates its existing grammar but retains every source row, including per-file timings: configured reporters can emit the whole stream as user evidence. Plain streams return `passthrough/not_smaller`; legacy Vitest reduction support is withdrawn. Safe presentation normalization remains core-owned.
+- Jest and Vitest validate existing grammars but retain every source row, including PASS/check markers and timings: config-only reporters can emit the whole stream as user evidence. Plain streams return `passthrough/not_smaller`; legacy plain Jest/Vitest reduction support is withdrawn. Safe presentation normalization remains core-owned.
 - [index.ts](index.ts) registers eight reducers plus that ninth stub; registration does not imply every invocation or output variant is supported.
 - Reducers return source-backed `Reduction` or `undefined`; unknown lines, diagnostics, inconsistent totals, or incomplete/failed observations decline.
 - No generic deduplication, synthetic runner totals, command execution, or I/O belongs here.
