@@ -1,0 +1,30 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai
+collected 0 items / 1 error
+
+==================================== ERRORS ====================================
+______________________ ERROR collecting test_outcomes.py _______________________
+/usr/local/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1406: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+../R01-pytest-venv/lib/python3.14/site-packages/_pytest/assertion/rewrite.py:176: in exec_module
+    ok = try_makedirs(cache_dir)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+../R01-pytest-venv/lib/python3.14/site-packages/_pytest/assertion/rewrite.py:1172: in try_makedirs
+    os.makedirs(cache_dir, exist_ok=True)
+<frozen os>:236: in makedirs
+    ???
+E   OSError: [Errno 28] No space left on device: '/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R01-pytest-5osb1uai/__pycache__'
+=========================== short test summary info ============================
+ERROR test_outcomes.py - OSError: [Errno 28] No space left on device: '/priva...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=============================== 1 error in 2.14s ===============================
