@@ -59,7 +59,7 @@ async function withAncestorTypeScript(action: () => Promise<void>): Promise<void
     for (const name of names.slice(0, 3)) process.env[name] = ownTmp;
     process.env.NODE_PATH = path.join(root, "node_modules");
     // Measured positive: ordinary Node resolves the planted ancestor even with NODE_PATH scrubbed.
-    const control = await smoke.isolatedProcess(process.execPath, ["--input-type=module", "-e", 'import ts from "typescript"; console.log(ts.version);'], { cwd: ownTmp, isolation: ownTmp, timeout: 5000 });
+    const control = await smoke.isolatedProcess(process.execPath, ["--input-type=module", "-e", 'import ts from "typescript"; console.log(ts.version);'], { cwd: ownTmp, isolation: ownTmp });
     assert.equal(control.code, 0, control.stderr);
     assert.equal(control.stdout.trim(), JSON.parse(await readFile(path.join(root, "node_modules/typescript/package.json"), "utf8")).version);
     await action();

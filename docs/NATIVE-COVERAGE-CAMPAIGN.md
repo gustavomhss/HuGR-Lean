@@ -299,10 +299,21 @@ not final CI. Capture workflow again excluded; lead full-CI blob unchanged. Scop
 versions/hosts/recorded cases, not every arbitrary plugin/config/terminal/platform combination.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
-index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.
+index made real corpus correspondence fail; index restored. At that checkpoint no full CI or benchmark had run.
 Lint integration receipt: only the newly added routing/corpus closure was run. It exposed Ruff's
 single-profile export mismatch; registry import corrected, same named closure passed. One scoped
 index/closure typecheck passed. Author suites and unchanged existing corpus were not rerun.
+Final base reconciliation: origin utility/integration advanced to approved PR #85 integration
+`0d28527258c09fe5746dfcbe0e51f45d3b937e4e` while the campaign used frozen `5faec804`.
+Independent comparison found thirteen exact source/test imports and one compatible smoke timeout hunk;
+campaign docs/gates kept intact. The approved Cargo cursor allocation optimization, native readiness,
+64-bit artifact identities, raw concurrent admission and capture-error retention were forwarded.
+Sixteen focused changed tests passed; removing the retained Cargo summary made the exact LF/evidence
+guard fail, restoration passed. Scoped typing passed. Dated utility evaluation imported with historical
+scope annotation. Original `74843b8` benchmark remains unchanged historical evidence, SHA-256
+`2ff5042e1e9b94a028213229d53e0f6425d42d88e21e64db78ff05c934f46f9c`; it cannot certify the
+changed runtime. One post-reconciliation measurement is required by this actual source change.
+Full campaign CI still not dispatched; original workflow bytes remain unchanged.
 States: SPEC -> CAPTURED -> BASELINE_RED/PRESERVED -> READY -> RUNNING -> REVIEW -> INTEGRATED -> FINAL_VERIFIED.
 Per row receipt: owner, baseline SHA, branch/worktree, packet/version, final SHA/PR, tests/mutation, blockers.
 Old-main planning branch remains historical and is not part of this integration.

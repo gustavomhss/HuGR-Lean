@@ -412,11 +412,41 @@ test("same-process concurrent store instances publish complete unique records", 
   const { directory } = await fixture(t);
   const stores = [new RawStore({ directory }), new RawStore({ directory })];
   const inputs = Array.from({ length: 24 }, (_, index) => `entry ${index}\r\n🔥\ud800`);
-  const ids = await Promise.all(inputs.map((text, index) => stores[index % 2]!.put(text)));
-  assert.equal(new Set(ids).size, inputs.length);
-  assert.deepEqual(await Promise.all(ids.map((id) => stores[0]!.get(id))), inputs);
-  assert.equal((await stores[0]!.list()).length, inputs.length);
-  assert.deepEqual((await readdir(directory)).sort(), ids.map((id) => `${id}.json`).sort());
+  // Repair the admission assumption: the documented five-second bound may refuse contention.
+  const results = await Promise.allSettled(inputs.map((text, index) => stores[index % 2]!.put(text)));
+  const accepted: { id: string; text: string }[] = [], refused: number[] = [];
+  for (const [index, result] of results.entries()) {
+    if (result.status === "fulfilled") accepted.push({ id: result.value, text: inputs[index]! });
+    else {
+      assert.ok(result.reason instanceof Error);
+      assert.equal(result.reason.message, "Raw store lock timeout; active or ambiguous owner requires waiting or manual recovery");
+      refused.push(index);
+    }
+  }
+  assert.ok(accepted.length > 0, "concurrent publication must make progress");
+  const verify = async (entries: typeof accepted) => {
+    const ids = entries.map(({ id }) => id);
+    assert.equal(new Set(ids).size, entries.length);
+    assert.deepEqual(await Promise.all(ids.map((id) => stores[0]!.get(id))), entries.map(({ text }) => text));
+    const listed = await stores[0]!.list();
+    assert.deepEqual(listed.map(({ id }) => id).sort(), [...ids].sort());
+    assert.deepEqual((await readdir(directory)).sort(), ids.map((id) => `${id}.json`).sort());
+    const records = await Promise.all(ids.map((id) => readFile(join(directory, `${id}.json`))));
+    for (const [index, bytes] of records.entries()) {
+      const record = JSON.parse(bytes.toString("utf8"));
+      assert.equal(record.id, entries[index]!.id);
+      assert.equal(record.text, entries[index]!.text);
+      assert.equal(listed.find(({ id }) => id === record.id)!.bytes, bytes.byteLength);
+    }
+    return records;
+  };
+  // Check drained-batch closure before retrying, so rejected publications cannot hide.
+  const before = await verify(accepted);
+  const completed = [...accepted];
+  for (const index of refused) completed.push({ id: await stores[index % 2]!.put(inputs[index]!), text: inputs[index]! });
+  assert.equal(completed.length, inputs.length);
+  await verify(completed);
+  assert.deepEqual(await Promise.all(accepted.map(({ id }) => readFile(join(directory, `${id}.json`)))), before);
 });
 
 test("concurrent pressure respects serialized byte cap", async (t) => {

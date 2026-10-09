@@ -555,20 +555,34 @@ test("CARGO-LIB binds actual quoted/tab argv and refuses incompatible observatio
     exact(obs(raw("lib"), command));
   }
 });
-test("legacy Cargo installed goldens remain exact under existing command identities", () => {
+const legacyCases = [["cargo_test_success.txt", "cargo-test", "cargo test --color never"],
+  ["cargo_build_success.txt", "cargo-build", "cargo build --color never"]] as const;
+function legacy(file: string, id: string, command: string, eol?: string): void {
   const installed = JSON.parse(readFileSync(new URL("../fixtures/installed-goldens.json", import.meta.url), "utf8"));
-  for (const [file, id, command] of [["cargo_test_success.txt", "cargo-test", "cargo test --color never"],
-    ["cargo_build_success.txt", "cargo-build", "cargo build --color never"]]) {
-    const input = readFileSync(new URL(`../fixtures/runners/${file}`, import.meta.url), "utf8");
-    const expected: string = installed.outputs[`runners/${file}`];
-    assert.ok(expected); const result = filter(obs(input, command));
-    assert.equal(result.status, "reduced");
-    if (result.status !== "reduced") assert.fail("legacy Cargo must reduce");
-    assert.equal(result.profile, id); assert.equal(result.replacement, expected);
-    const reduction = cargoProfiles.find((entry) => entry.id === id)!.reduce(input, obs(input, command));
-    assert.ok(reduction); assert.equal(evidence(input, reduction, anchors(expected)), expected);
-  }
+  const checkout = readFileSync(new URL(`../fixtures/runners/${file}`, import.meta.url), "utf8");
+  const input = eol === undefined ? checkout : checkout.replace(/\r?\n/g, eol);
+  const frozen: string = installed.outputs[`runners/${file}`];
+  assert.ok(frozen); assert.ok(frozen.includes("\n") && !frozen.includes("\r"), "independent frozen LF golden");
+  const style = eol ?? (checkout.includes("\r\n") ? "\r\n" : "\n");
+  assert.ok(input.includes(style));
+  assert.equal(input.replaceAll(style, "").includes("\r"), false, "no bare CR");
+  if (style === "\r\n") assert.equal(input.replaceAll(style, "").includes("\n"), false, "uniform CRLF");
+  // Only the independent expected text changes EOL; actual retained source bytes stay exact.
+  const expected = frozen.replaceAll("\n", style), result = filter(obs(input, command));
+  assert.equal(result.status, "reduced");
+  if (result.status !== "reduced") assert.fail("legacy Cargo must reduce");
+  assert.equal(result.profile, id); assert.equal(result.replacement, expected);
+  const reduction = cargoProfiles.find((entry) => entry.id === id)!.reduce(input, obs(input, command));
+  assert.ok(reduction); assert.equal(evidence(input, reduction, anchors(expected)), expected);
+}
+test("legacy Cargo installed goldens remain exact under existing command identities", () => {
+  for (const [file, id, command] of legacyCases) legacy(file, id, command);
 });
+for (const [style, eol] of [["LF", "\n"], ["CRLF", "\r\n"]] as const) {
+  test(`legacy Cargo ${style}: independent goldens retain full declared and emitted source rows`, () => {
+    for (const [file, id, command] of legacyCases) legacy(file, id, command, eol);
+  });
+}
 test("actual native Cargo core bytes and material flags match frozen independent goals", (t) => {
   const manifest = JSON.parse(read("manifest.json"));
   for (const entry of manifest.cases as NativeCase[]) {
