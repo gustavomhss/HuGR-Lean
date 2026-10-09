@@ -1,0 +1,10 @@
+PASS ./skip-todo.test.cjs
+  ✓ active beside skip/todo (9 ms)
+  ○ skipped skip reason: unavailable service
+  ✎ todo todo reason: pending implementation
+
+Test Suites: 1 passed, 1 total
+Tests:       1 skipped, 1 todo, 1 passed, 3 total
+Snapshots:   0 total
+Time:        0.681 s
+Ran all test suites matching skip-todo.test.cjs.
