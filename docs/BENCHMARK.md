@@ -2,9 +2,23 @@
 
 ## Current campaign boundary
 
-Native integration baseline `20ce6cd` has not run the final benchmark or final package CI.
-Lead measures after freeze using the unchanged budgets below; historical timing is not
-current acceptance. The two focused Actions captures ([builtin bench](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069),
+Reconciled runtime `66454e470862c71a43bc70adfdfd2c85bba41a24` has a current local
+[measured report](NATIVE-CAMPAIGN-BENCHMARK-RECONCILED.json); final package CI is still pending.
+Node v22.17.1, macOS x64, Intel i7-9750H: 20 warmups and 100 samples per case,
+833 native/legacy fixtures plus nine synthetic controls/workloads. Of 842 cases,
+111 reduced and 731 stayed exact. All 39 empty captures contribute zero savings.
+
+| Input | Core p95 / budget | Raw-off adapter p95 / budget |
+| --- | --- | --- |
+| 256 KiB | 4.898 / 5 ms | 5.119 / 10 ms |
+| 1 MiB | 24.054 / 25 ms | 21.828 / 35 ms |
+
+Both budgets met. Report SHA-256: `1e24fe0db34c3333a26b31f3482f8244bf7a2476e11d5b7a193fdd150291e96e`.
+Independent audit verified stored aggregates, source binding and accounting, not raw timing vectors
+(not retained). This is local compiled core/adapter latency, not model/token cost or another OS.
+The [first campaign report](NATIVE-CAMPAIGN-BENCHMARK.json) remains unchanged historical evidence
+for `74843b8`; a second measurement was necessary after approved utility-base Cargo code changed.
+The two focused Actions captures ([builtin bench](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069),
 [rustdoc](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37989424550)) prove native Rust evidence only.
 
 **Withdrawal annotation:** historical Jest/Vitest timing/marker savings, their family

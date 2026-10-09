@@ -314,6 +314,13 @@ scope annotation. Original `74843b8` benchmark remains unchanged historical evid
 `2ff5042e1e9b94a028213229d53e0f6425d42d88e21e64db78ff05c934f46f9c`; it cannot certify the
 changed runtime. One post-reconciliation measurement is required by this actual source change.
 Full campaign CI still not dispatched; original workflow bytes remain unchanged.
+Reconciled measurement at `66454e4` completed after that actual Cargo runtime change; source subtree
+`92a332c5c0bebeddc71971ba88861e7f50b36c44`. Report `NATIVE-CAMPAIGN-BENCHMARK-RECONCILED.json`
+SHA-256 `1e24fe0db34c3333a26b31f3482f8244bf7a2476e11d5b7a193fdd150291e96e`: 833 fixtures,
+842 total cases, 111 reductions, 731 exact results. p95 core/adapter: 4.898/5.119 ms at 256 KiB,
+24.054/21.828 ms at 1 MiB; budgets met. All empty boundaries account for finite zero savings.
+Independent aggregate/source/hash audit approved; raw timing vectors were not retained.
+Only documentation/report integration remains before exact final candidate/PR/single full CI.
 States: SPEC -> CAPTURED -> BASELINE_RED/PRESERVED -> READY -> RUNNING -> REVIEW -> INTEGRATED -> FINAL_VERIFIED.
 Per row receipt: owner, baseline SHA, branch/worktree, packet/version, final SHA/PR, tests/mutation, blockers.
 Old-main planning branch remains historical and is not part of this integration.

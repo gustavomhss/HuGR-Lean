@@ -6,12 +6,14 @@ This is the single operational status record; historical release/benchmark repor
 
 ## Identity and evidence boundary
 
-Current documentation baseline: `20ce6cd` on `campaign/native-integration`. Default registry
+Current verified runtime source: `66454e470862c71a43bc70adfdfd2c85bba41a24` on `campaign/native-integration`.
+It reconciles approved utility-base PR #85 without reverting campaign changes. Default registry
 has 20 IDs; promoted native index has 41 bounded families, 25 explicitly exact-only.
 [Coverage](COVERAGE.md) maps runtime/exact evidence; [campaign](NATIVE-COVERAGE-CAMPAIGN.md)
 retains independent integration/probe receipts and missing/unimplemented decisions.
-Final artifact proof, current benchmark and single exact-SHA three-OS package CI are pending
-lead freeze. No new release, publication, token savings or wider host support is claimed.
+Current local benchmark met both p95 budgets; [report and source-bound method](BENCHMARK.md)
+remain independent of final artifact proof. Single exact-SHA three-OS package CI and final artifact
+inspection are pending lead freeze. No new release, publication, token savings or wider host support is claimed.
 
 Historical pre-campaign code baseline: `56cd420190506e495b6446daf6ec6e4f95c94da2`.
 It contains the independently reviewed format C1 fix, manual exact-SHA Actions guard,
