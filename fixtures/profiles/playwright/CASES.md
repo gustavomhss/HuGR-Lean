@@ -1,4 +1,9 @@
-# R04 cases: captured, browser execution blocked
+# R04 cases: reporter and actual Chromium captures
+
+Browser blocker cleared after user-authorized campaign cleanup. Four successful
+browser observations appended; original ENOSPC/setup and missing-executable
+observations remain exact historical evidence. Approved removable bytes: **0**,
+pending lead policy. Chromium only; no cross-engine or runtime-profile claim.
 
 Baseline `248c303`. Exclusive fixture packet; no Playwright runtime profile.
 Existing `src/profiles/runners.ts` collects Cargo/pytest/Go only. Campaign R04
@@ -29,11 +34,16 @@ currently has 0 approved removable bytes. No public-filter test name exists;
 | R04-browser-line | line,json; chromium-desktop + chromium-small | 1 | 7626 | 2 failed; executable missing | 4 | 0 | 0 / 0 |
 | R04-browser-json | json stdout; chromium-desktop + chromium-small | 1 | 20915 | 2 unexpected; executable missing | 4 | 0 | 0 / 0 |
 | R04-custom-collision | original custom reporter,json; api-a + api-b | 0 | 1584 | custom claims 2 passed; JSON also records 2 flaky + 2 skipped | 8 | 8 | 6 / 2 |
+| R04-browser-success-list | list,json; desktop + small | 0 | 1033 | 2 passed | 2 | 4 | 2 / 0 |
+| R04-browser-success-line | line,json; desktop + small | 0 | 1286 | 2 passed | 2 | 4 | 2 / 0 |
+| R04-browser-success-json | json stdout; desktop + small | 0 | 8145 | 2 expected | 2 | 4 | 2 / 0 |
+| R04-browser-success-launch-debug | list,json + DEBUG=pw:browser; desktop + small | 0 | 6648 | 2 passed; private launch/profile/cleanup logs | 2 | 4 | 2 / 10 |
 
 JSON stats `expected` means tests with expected outcomes, not attempts.
 Each API project has pass, fail-then-pass flaky test, deliberate skip; optional
 permanent failure fails attempts 0 and 1. Browser tests request actual `page`
-and `browser` fixtures, but executable lookup fails on attempts 0 and 1.
+and `browser` fixtures. Historical browser rows fail executable lookup on
+attempts 0 and 1; appended success rows pass on attempt 0.
 Desktop/small are Chromium viewport projects, not distinct browser engines.
 
 ## Evidence links
@@ -52,8 +62,21 @@ Desktop/small are Chromium viewport projects, not distinct browser engines.
   print all passing attachment paths or skip annotations; companion JSON
   establishes those details without claiming they existed in terminal text.
 - `audit-receipt.json.cases[ID]`: all attachment paths and artifact filenames,
-  native byte/exit/count evidence. No screenshot exists; browser failed before
-  test body. Browser test source contains screenshot recipe for later retry.
+  native byte/exit/count evidence. Historical failures have no screenshots.
+  Each successful row has two PNG path attachments and two JSON proof bodies.
+- `browser-recovery-receipt.json`: exact lock replay, successful official
+  download, browser version/revision/binary SHA-256, complete source/environment
+  snapshot, new evidence/artifact records. Screenshots encode 800x600 desktop
+  and 320x480 small viewport; both independently opened and show `雪 browser`
+  button. Native assertions verify title and button text, not screenshot alone.
+- Debug row retains actual private headless-shell launch argv, two disposable
+  user-data paths under private TMPDIR and completed cleanup logs. Inspector
+  saw only Node/Playwright transform caches remaining in that TMPDIR.
+- `browser-recovery-operations.json` retains every recovery operation output,
+  including first 45-second startup/teardown timeout. Its report/artifact
+  snapshot lives in `browser-recovery-initial-failure.json`; not counted as
+  successful browser proof. Final runs use 120-second native global timeout,
+  45-second test timeout and 180-second process bound; all reach EOF/exit 0.
 - `setup-receipt.json`: install/version/download argv, exact merged output,
   exits, bytes/hash, EOF and timestamps. Browser install attempted official
   headless shell only and failed `ENOSPC: no space left on device, write`.
@@ -71,8 +94,9 @@ full grammar and evidence retention; no approved reduction/golden here.
 Wrong framing: API-only native reporter proof completes browser requirement;
 two Chromium viewport projects prove cross-engine coverage; fake custom totals
 can replace actual result counts; passthrough metadata proves runtime support.
-Correct state: reporter evidence captured, native browser execution **BLOCKED**,
-public-filter/grammar work pending, R04 completeness not achieved or waived.
+Correct state: reporter evidence captured, actual private Chromium execution
+and screenshot attachments established; public-filter/grammar policy pending.
+Historical blocker retained as history, not current missing-browser waiver.
 
 ## Narrow inspection
 
@@ -82,7 +106,10 @@ python3 fixtures/profiles/playwright/audit.py
 
 Artifact inspection verifies EOF/hash/bytes, path snapshot links, retry/status,
 skip reason and attachment/log counts. In-memory probes remove raw final byte,
-referenced path artifact, or retry result; each rejected, original checked again.
+referenced path artifact, retry result, or successful screenshot artifact;
+each rejected, original checked again. Browser proof bodies and PNG dimensions
+checked against pinned binary/version/projects. Historical manifest and receipt
+hashes verified unchanged; no historical native case rewritten.
 No disk mutations or runtime preservation test claims. Initial audit equality
 assumed annotations had no location field; corrected to compare required fields.
 First path-loss probe removed original unreferenced file, did not reject;

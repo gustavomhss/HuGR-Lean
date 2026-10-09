@@ -23,10 +23,18 @@ No donor implementation copied or modified. Project sources use this repository'
 - Chromium/headless-shell revision **1194**, browser version **141.0.7390.37**.
   Intended official macOS x64 archive:
   `https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1194/chromium-headless-shell-mac.zip`.
-  Download failed with `ENOSPC`; mirror attempts and exact errors retained in
-  `setup-receipt.json`. No completed browser archive/executable hash or browser
-  SRI claimed. Full npm browser registry retained, including other revisions;
-  Firefox/WebKit were not installed or tested.
+  Initial download failed with `ENOSPC`; mirror attempts and exact errors retained
+  in `setup-receipt.json`. Recovery used that same official archive successfully.
+  Installed headless-shell SHA-256:
+  `92203af80c72d2e352871e289bdfcf9ca9719dad9ccd7180b4d91c4ae5ff97e5`.
+  Binary hash is locally measured, not upstream browser SRI or source/build attestation.
+  Full npm browser registry retained; Firefox/WebKit were not installed or tested.
+- Chromium version-tag `141.0.7390.37` resolves to source commit
+  `9f043f63b0e5b728c8d09f3e3ddfc1681a4bd58e` (Googlesource tag lookup).
+  Chromium BSD-3-Clause license reference:
+  `https://chromium.googlesource.com/chromium/src/+/9f043f63b0e5b728c8d09f3e3ddfc1681a4bd58e/LICENSE`.
+  Bundled third-party code has separate licenses. No Chromium code/binary copied
+  into repository; source tag is version reference, not attested build identity.
 
 ## Recipe and boundary
 
@@ -64,12 +72,48 @@ files are snapshotted before next run. Binary artifacts use base64 plus byte
 length and SHA-256. There are no duplicate file/inline native inputs or `.txt`
 archives: native inputs exist only as inline `cases.json` output strings.
 
-## Reach and blockers
+## Browser recovery recipe
+
+Original isolated node_modules were removed by authorized campaign cleanup;
+original npm lock was preserved. `browser-recovery.py` restores that exact lock
+into a fresh private scratch project using `npm ci --ignore-scripts --no-audit
+--no-fund`. Installed package versions and unchanged lock/browser registry are
+asserted before official `install --only-shell chromium` (240-second bound).
+Installer also fetches its pinned ffmpeg helper; complete native download log
+records versions/URLs. No global cache, browser or person profile used.
+
+```
+python3 -B fixtures/profiles/playwright/browser-recovery.py
+```
+
+First browser command exceeded original native 45-second startup bound. Raw
+operation/report/artifacts preserved. Resume reuses installed pins and browser,
+does not download again:
+
+```
+python3 -B fixtures/profiles/playwright/browser-recovery.py --resume /absolute/R04-playwright-recovery-scratch
+```
+
+Source changes from original recipe: explicit `launchOptions.executablePath`
+points to private revision-1194 headless-shell; body proof records project,
+version, executable/hash, viewport and asserted page title; test timeout raised
+to 45 seconds. Final native global/process bounds are 120/180 seconds.
+Two Chromium projects each load in-memory HTML, assert title/button, capture PNG
+and attach it by path. Four native captures cover list, line, JSON stdout and
+separate `DEBUG=pw:browser` launch evidence. Debug logs include exact disposable
+user-data paths beneath private TMPDIR and completed cleanup; no persistent
+context. Screenshots, copied attachments, proof bodies and sidecars snapshotted.
+No modifications to historical sources/receipt/setup/cases; appended observations
+reference `browser-recovery-receipt.json` and recovery recipe hash separately.
+
+## Reach and historical blockers
 
 API-only tests prove reporter behavior; they do not request browser fixtures.
-Browser tests actually request `page`/`browser` and fail to launch missing
-private executable. Their retry diagnostics prove failure preservation only.
-**Browser execution remains blocked; R04 is incomplete, not waived.**
+Historical browser tests request `page`/`browser` and fail missing-executable
+lookup. Their retry diagnostics prove failure preservation only. Recovery
+captures now prove actual private Chromium 141.0.7390.37 execution with two
+viewport projects and real screenshots; browser blocker cleared. Runtime
+grammar/policy still pending, approved removable bytes **0**.
 
 Initial resume invocation hit harness 240-second timeout before committing
 artifacts; its test output is not claimed as complete evidence. Final recipe

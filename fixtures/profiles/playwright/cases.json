@@ -479,6 +479,193 @@
         "originalCase": "R04-custom-collision"
       },
       "boundary": "stdout pipe; stderr redirected into same pipe before exec; EOF then wait; no PTY/truncation/normalization"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js",
+        "test",
+        "--global-timeout=120000",
+        "--reporter=list,json",
+        "--project=chromium-desktop",
+        "--project=chromium-small"
+      ],
+      "command": "/usr/local/bin/node /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js test --global-timeout=120000 --reporter=list,json --project=chromium-desktop --project=chromium-small",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv",
+      "output": "\nRunning 2 tests using 1 worker\n\n(node:28328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:28328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nR04 browser=141.0.7390.37 project=chromium-desktop\n  ✓  1 [chromium-desktop] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot (6.9s)\n(node:33296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:33296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nR04 browser=141.0.7390.37 project=chromium-small\n  ✓  2 [chromium-small] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot (1.8s)\n\n  2 passed (46.5s)\n",
+      "bytes": 1033,
+      "sha256": "ec9d812fc301ce07a87c3bfbf58fd441496eb38054980585b2b7310f7a3bb699",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "environmentDelta": {
+        "PLAYWRIGHT_JSON_OUTPUT_NAME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/report.json"
+      },
+      "timeoutSeconds": 180,
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20706173736564202834362e3573290a"
+      },
+      "completionAt": "2026-10-09T16:52:51.008568+00:00",
+      "name": "R04-browser-success-list",
+      "family": "playwright",
+      "version": "Playwright 1.56.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "status": "passthrough",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1033,
+      "outputBytes": 1033,
+      "disposition": "pending lead policy; zero approved removable bytes",
+      "provenance": {
+        "sha256": "ec9d812fc301ce07a87c3bfbf58fd441496eb38054980585b2b7310f7a3bb699",
+        "record": "browser-recovery-receipt.json",
+        "originalCase": "R04-browser-success-list"
+      },
+      "boundary": "stdout pipe; stderr redirected into same pipe before exec; EOF then wait; no PTY/truncation/normalization"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js",
+        "test",
+        "--global-timeout=120000",
+        "--reporter=line,json",
+        "--project=chromium-desktop",
+        "--project=chromium-small"
+      ],
+      "command": "/usr/local/bin/node /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js test --global-timeout=120000 --reporter=line,json --project=chromium-desktop --project=chromium-small",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv",
+      "output": "\nRunning 2 tests using 1 worker\n\n\u001b[1A\u001b[2K(node:35960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n\u001b[1A\u001b[2K(node:35960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n\u001b[1A\u001b[2K[1/2] [chromium-desktop] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot\n\u001b[1A\u001b[2K[chromium-desktop] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot\nR04 browser=141.0.7390.37 project=chromium-desktop\n\n\u001b[1A\u001b[2K(node:36549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n\u001b[1A\u001b[2K(node:36549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n\u001b[1A\u001b[2K[2/2] [chromium-small] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot\n\u001b[1A\u001b[2K[chromium-small] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot\nR04 browser=141.0.7390.37 project=chromium-small\n\n\u001b[1A\u001b[2K  2 passed (54.3s)\n",
+      "bytes": 1286,
+      "sha256": "5fb5eb3feb76da256b0ec12730a4aa161cfb28518f01f31828234fe857b19089",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "environmentDelta": {
+        "PLAYWRIGHT_JSON_OUTPUT_NAME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/report.json"
+      },
+      "timeoutSeconds": 180,
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20706173736564202835342e3373290a"
+      },
+      "completionAt": "2026-10-09T16:53:59.736409+00:00",
+      "name": "R04-browser-success-line",
+      "family": "playwright",
+      "version": "Playwright 1.56.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "status": "passthrough",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 1286,
+      "outputBytes": 1286,
+      "disposition": "pending lead policy; zero approved removable bytes",
+      "provenance": {
+        "sha256": "5fb5eb3feb76da256b0ec12730a4aa161cfb28518f01f31828234fe857b19089",
+        "record": "browser-recovery-receipt.json",
+        "originalCase": "R04-browser-success-line"
+      },
+      "boundary": "stdout pipe; stderr redirected into same pipe before exec; EOF then wait; no PTY/truncation/normalization"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js",
+        "test",
+        "--global-timeout=120000",
+        "--reporter=json",
+        "--project=chromium-desktop",
+        "--project=chromium-small"
+      ],
+      "command": "/usr/local/bin/node /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js test --global-timeout=120000 --reporter=json --project=chromium-desktop --project=chromium-small",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv",
+      "output": "{\n  \"config\": {\n    \"configFile\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/playwright.config.cjs\",\n    \"rootDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tests\",\n    \"forbidOnly\": false,\n    \"fullyParallel\": false,\n    \"globalSetup\": null,\n    \"globalTeardown\": null,\n    \"globalTimeout\": 120000,\n    \"grep\": {},\n    \"grepInvert\": null,\n    \"maxFailures\": 0,\n    \"metadata\": {\n      \"actualWorkers\": 1\n    },\n    \"preserveOutput\": \"always\",\n    \"reporter\": [\n      [\n        \"json\"\n      ]\n    ],\n    \"reportSlowTests\": {\n      \"max\": 5,\n      \"threshold\": 300000\n    },\n    \"quiet\": false,\n    \"projects\": [\n      {\n        \"outputDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results\",\n        \"repeatEach\": 1,\n        \"retries\": 1,\n        \"metadata\": {\n          \"actualWorkers\": 1\n        },\n        \"id\": \"api-a\",\n        \"name\": \"api-a\",\n        \"testDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tests\",\n        \"testIgnore\": [],\n        \"testMatch\": [\n          \"api.spec.cjs\"\n        ],\n        \"timeout\": 45000\n      },\n      {\n        \"outputDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results\",\n        \"repeatEach\": 1,\n        \"retries\": 1,\n        \"metadata\": {\n          \"actualWorkers\": 1\n        },\n        \"id\": \"api-b\",\n        \"name\": \"api-b\",\n        \"testDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tests\",\n        \"testIgnore\": [],\n        \"testMatch\": [\n          \"api.spec.cjs\"\n        ],\n        \"timeout\": 45000\n      },\n      {\n        \"outputDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results\",\n        \"repeatEach\": 1,\n        \"retries\": 1,\n        \"metadata\": {\n          \"actualWorkers\": 1\n        },\n        \"id\": \"chromium-desktop\",\n        \"name\": \"chromium-desktop\",\n        \"testDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tests\",\n        \"testIgnore\": [],\n        \"testMatch\": [\n          \"browser.spec.cjs\"\n        ],\n        \"timeout\": 45000\n      },\n      {\n        \"outputDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results\",\n        \"repeatEach\": 1,\n        \"retries\": 1,\n        \"metadata\": {\n          \"actualWorkers\": 1\n        },\n        \"id\": \"chromium-small\",\n        \"name\": \"chromium-small\",\n        \"testDir\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tests\",\n        \"testIgnore\": [],\n        \"testMatch\": [\n          \"browser.spec.cjs\"\n        ],\n        \"timeout\": 45000\n      }\n    ],\n    \"shard\": null,\n    \"updateSnapshots\": \"missing\",\n    \"updateSourceMethod\": \"patch\",\n    \"version\": \"1.56.1\",\n    \"workers\": 1,\n    \"webServer\": null\n  },\n  \"suites\": [\n    {\n      \"title\": \"browser.spec.cjs\",\n      \"file\": \"browser.spec.cjs\",\n      \"column\": 0,\n      \"line\": 0,\n      \"specs\": [\n        {\n          \"title\": \"real isolated Chromium page and screenshot\",\n          \"ok\": true,\n          \"tags\": [],\n          \"tests\": [\n            {\n              \"timeout\": 45000,\n              \"annotations\": [],\n              \"expectedStatus\": \"passed\",\n              \"projectId\": \"chromium-desktop\",\n              \"projectName\": \"chromium-desktop\",\n              \"results\": [\n                {\n                  \"workerIndex\": 0,\n                  \"parallelIndex\": 0,\n                  \"status\": \"passed\",\n                  \"duration\": 1037,\n                  \"errors\": [],\n                  \"stdout\": [\n                    {\n                      \"text\": \"R04 browser=141.0.7390.37 project=chromium-desktop\\n\"\n                    }\n                  ],\n                  \"stderr\": [],\n                  \"retry\": 0,\n                  \"startTime\": \"2026-10-09T16:54:10.739Z\",\n                  \"annotations\": [],\n                  \"attachments\": [\n                    {\n                      \"name\": \"browser-proof\",\n                      \"contentType\": \"application/json\",\n                      \"body\": \"eyJwcm9qZWN0IjoiY2hyb21pdW0tZGVza3RvcCIsImJyb3dzZXIiOiIxNDEuMC43MzkwLjM3IiwiZXhlY3V0YWJsZSI6Ii9wcml2YXRlL3Zhci9mb2xkZXJzL2x0L3oxMXB5emhqMG0xN3ZuNzk4amtrNjloaDAwMDBnbi9UL29wZW5jb2RlL1IwNC1wbGF5d3JpZ2h0LXJlY292ZXJ5LXFjZXlrOXB2L2Jyb3dzZXJzL2Nocm9taXVtX2hlYWRsZXNzX3NoZWxsLTExOTQvY2hyb21lLW1hYy9oZWFkbGVzc19zaGVsbCIsImJpbmFyeVNoYTI1NiI6IjkyMjAzYWY4MGM3MmQyZTM1Mjg3MWUyODliZGZjZjljYTk3MTlkYWQ5Y2NkNzE4MGI0ZDkxYzRhZTVmZjk3ZTUiLCJ2aWV3cG9ydCI6eyJ3aWR0aCI6ODAwLCJoZWlnaHQiOjYwMH0sInRpdGxlIjoiUjA0IGlzb2xhdGVkIn0=\"\n                    },\n                    {\n                      \"name\": \"browser-screenshot\",\n                      \"contentType\": \"image/png\",\n                      \"path\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png\"\n                    }\n                  ]\n                }\n              ],\n              \"status\": \"expected\"\n            }\n          ],\n          \"id\": \"fd0d505920749cd44336-18504ac5221a5ccf3794\",\n          \"file\": \"browser.spec.cjs\",\n          \"line\": 2,\n          \"column\": 1\n        },\n        {\n          \"title\": \"real isolated Chromium page and screenshot\",\n          \"ok\": true,\n          \"tags\": [],\n          \"tests\": [\n            {\n              \"timeout\": 45000,\n              \"annotations\": [],\n              \"expectedStatus\": \"passed\",\n              \"projectId\": \"chromium-small\",\n              \"projectName\": \"chromium-small\",\n              \"results\": [\n                {\n                  \"workerIndex\": 1,\n                  \"parallelIndex\": 0,\n                  \"status\": \"passed\",\n                  \"duration\": 1065,\n                  \"errors\": [],\n                  \"stdout\": [\n                    {\n                      \"text\": \"R04 browser=141.0.7390.37 project=chromium-small\\n\"\n                    }\n                  ],\n                  \"stderr\": [],\n                  \"retry\": 0,\n                  \"startTime\": \"2026-10-09T16:54:19.233Z\",\n                  \"annotations\": [],\n                  \"attachments\": [\n                    {\n                      \"name\": \"browser-proof\",\n                      \"contentType\": \"application/json\",\n                      \"body\": \"eyJwcm9qZWN0IjoiY2hyb21pdW0tc21hbGwiLCJicm93c2VyIjoiMTQxLjAuNzM5MC4zNyIsImV4ZWN1dGFibGUiOiIvcHJpdmF0ZS92YXIvZm9sZGVycy9sdC96MTFweXpoajBtMTd2bjc5OGprazY5aGgwMDAwZ24vVC9vcGVuY29kZS9SMDQtcGxheXdyaWdodC1yZWNvdmVyeS1xY2V5azlwdi9icm93c2Vycy9jaHJvbWl1bV9oZWFkbGVzc19zaGVsbC0xMTk0L2Nocm9tZS1tYWMvaGVhZGxlc3Nfc2hlbGwiLCJiaW5hcnlTaGEyNTYiOiI5MjIwM2FmODBjNzJkMmUzNTI4NzFlMjg5YmRmY2Y5Y2E5NzE5ZGFkOWNjZDcxODBiNGQ5MWM0YWU1ZmY5N2U1Iiwidmlld3BvcnQiOnsid2lkdGgiOjMyMCwiaGVpZ2h0Ijo0ODB9LCJ0aXRsZSI6IlIwNCBpc29sYXRlZCJ9\"\n                    },\n                    {\n                      \"name\": \"browser-screenshot\",\n                      \"contentType\": \"image/png\",\n                      \"path\": \"/private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/test-results/browser-real-isolated-Chromium-page-and-screenshot-chromium-small/attachments/browser-screenshot-d8dd7d338304ec2609b487279fce48687280279b.png\"\n                    }\n                  ]\n                }\n              ],\n              \"status\": \"expected\"\n            }\n          ],\n          \"id\": \"fd0d505920749cd44336-c9e00d7ae006561470fe\",\n          \"file\": \"browser.spec.cjs\",\n          \"line\": 2,\n          \"column\": 1\n        }\n      ]\n    }\n  ],\n  \"errors\": [],\n  \"stats\": {\n    \"startTime\": \"2026-10-09T16:54:05.134Z\",\n    \"duration\": 16503.96,\n    \"expected\": 2,\n    \"skipped\": 0,\n    \"unexpected\": 0,\n    \"flaky\": 0\n  }\n}\n",
+      "bytes": 8145,
+      "sha256": "be0c6067e9bfbdce962eb64a7fa5351f6449dc1b60b0f8325c644bbbca6e9d57",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "environmentDelta": {},
+      "timeoutSeconds": 180,
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "666c616b79223a20300a20207d0a7d0a"
+      },
+      "completionAt": "2026-10-09T16:54:21.695097+00:00",
+      "name": "R04-browser-success-json",
+      "family": "playwright",
+      "version": "Playwright 1.56.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "status": "passthrough",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 8145,
+      "outputBytes": 8145,
+      "disposition": "pending lead policy; zero approved removable bytes",
+      "provenance": {
+        "sha256": "be0c6067e9bfbdce962eb64a7fa5351f6449dc1b60b0f8325c644bbbca6e9d57",
+        "record": "browser-recovery-receipt.json",
+        "originalCase": "R04-browser-success-json"
+      },
+      "boundary": "stdout pipe; stderr redirected into same pipe before exec; EOF then wait; no PTY/truncation/normalization"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/node",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js",
+        "test",
+        "--global-timeout=120000",
+        "--reporter=list,json",
+        "--project=chromium-desktop",
+        "--project=chromium-small"
+      ],
+      "command": "/usr/local/bin/node /var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/node_modules/@playwright/test/cli.js test --global-timeout=120000 --reporter=list,json --project=chromium-desktop --project=chromium-small",
+      "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv",
+      "output": "\nRunning 2 tests using 1 worker\n\n(node:37110) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:37110) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n  \u001b[30;1mpw:browser \u001b[0m<launching> /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/browsers/chromium_headless_shell-1194/chrome-mac/headless_shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tmp/playwright_chromiumdev_profile-wE62P7 --remote-debugging-pipe --no-startup-window \u001b[30m+0ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m<launched> pid=37551 \u001b[30m+114ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551][err] [1009/135435.917273:ERROR:ui/display/mac/cv_display_link_mac.mm:165] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670 \u001b[30m+1s\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551][err] [1009/135435.928943:ERROR:gpu/ipc/client/command_buffer_proxy_impl.cc:128] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. \u001b[30m+9ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551][err] [1009/135436.019605:INFO:CONSOLE:3] \"--playwright--set--content--EAF9880FA7D75F59624DE80900FE097E--1--\", source:  (3) \u001b[30m+90ms\u001b[0m\nR04 browser=141.0.7390.37 project=chromium-desktop\n  ✓  1 [chromium-desktop] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot (1.3s)\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551] <gracefully close start> \u001b[30m+536ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551] <process did exit: exitCode=0, signal=null> \u001b[30m+399ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551] starting temporary directories cleanup \u001b[30m+2ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551] finished temporary directories cleanup \u001b[30m+44ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=37551] <gracefully close end> \u001b[30m+1ms\u001b[0m\n(node:37781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:37781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n  \u001b[30;1mpw:browser \u001b[0m<launching> /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/browsers/chromium_headless_shell-1194/chrome-mac/headless_shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/tmp/playwright_chromiumdev_profile-xjoOQJ --remote-debugging-pipe --no-startup-window \u001b[30m+0ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m<launched> pid=38165 \u001b[30m+43ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165][err] [1009/135444.709229:ERROR:ui/display/mac/cv_display_link_mac.mm:165] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670 \u001b[30m+1s\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165][err] [1009/135444.719902:ERROR:gpu/ipc/client/command_buffer_proxy_impl.cc:128] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer. \u001b[30m+9ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165][err] [1009/135444.765213:INFO:CONSOLE:3] \"--playwright--set--content--CC6E2C6E4D2BA7F7EC974F9A9258F99C--1--\", source:  (3) \u001b[30m+44ms\u001b[0m\nR04 browser=141.0.7390.37 project=chromium-small\n  ✓  2 [chromium-small] › tests/browser.spec.cjs:2:1 › real isolated Chromium page and screenshot (1.1s)\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165] <gracefully close start> \u001b[30m+502ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165] <process did exit: exitCode=0, signal=null> \u001b[30m+189ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165] starting temporary directories cleanup \u001b[30m+3ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165] finished temporary directories cleanup \u001b[30m+52ms\u001b[0m\n  \u001b[30;1mpw:browser \u001b[0m[pid=38165] <gracefully close end> \u001b[30m+1ms\u001b[0m\n\n  2 passed (16.9s)\n",
+      "bytes": 6648,
+      "sha256": "e2f1d4bf2a6ff30779ca49d825a43c26c39a938249fad5f39e9d725092264186",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "environmentDelta": {
+        "PLAYWRIGHT_JSON_OUTPUT_NAME": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-playwright-recovery-qceyk9pv/report.json",
+        "DEBUG": "pw:browser"
+      },
+      "timeoutSeconds": 180,
+      "eof": {
+        "readThroughEOF": true,
+        "finalLF": true,
+        "lastBytesHex": "20706173736564202831362e3973290a"
+      },
+      "completionAt": "2026-10-09T16:54:45.683504+00:00",
+      "name": "R04-browser-success-launch-debug",
+      "family": "playwright",
+      "version": "Playwright 1.56.1",
+      "platform": "macOS-15.3.2-x86_64-i386-64bit-Mach-O",
+      "status": "passthrough",
+      "source": "shell",
+      "completeness": "complete",
+      "presentation": "unknown",
+      "inputBytes": 6648,
+      "outputBytes": 6648,
+      "disposition": "pending lead policy; zero approved removable bytes",
+      "provenance": {
+        "sha256": "e2f1d4bf2a6ff30779ca49d825a43c26c39a938249fad5f39e9d725092264186",
+        "record": "browser-recovery-receipt.json",
+        "originalCase": "R04-browser-success-launch-debug"
+      },
+      "boundary": "stdout pipe; stderr redirected into same pipe before exec; EOF then wait; no PTY/truncation/normalization"
     }
   ]
 }
