@@ -68,11 +68,18 @@ test("routing closure: Go mod reaches nonempty native goldens", async () => {
   }
 });
 test("S00 delta keeps exact-candidate manual workflow with no push or PR trigger", () => {
-  const workflow = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
-  const eventBlock = workflow.slice(workflow.indexOf("on:\n"), workflow.indexOf("concurrency:\n"));
-  assert.equal(eventBlock, "on:\n  workflow_dispatch:\n    inputs:\n      candidate_sha:\n        description: Exact candidate commit (40 lowercase hexadecimal characters)\n        required: true\n        type: string\n");
-  assert.ok(workflow.includes("ref: ${{ inputs.candidate_sha }}"));
-  assert.ok(workflow.includes("run: node scripts/ci-candidate.mjs"));
+  const source = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
+  const expected = "on:\n  workflow_dispatch:\n    inputs:\n      candidate_sha:\n        description: Exact candidate commit (40 lowercase hexadecimal characters)\n        required: true\n        type: string\n";
+  for (const ending of ["\n", "\r\n"]) {
+    const rendered = source.replace(/\r?\n/g, ending);
+    const workflow = rendered.replaceAll("\r\n", "\n");
+    const eventBlock = workflow.slice(workflow.indexOf("on:\n"), workflow.indexOf("concurrency:\n"));
+    assert.equal(eventBlock, expected);
+    const pushed = workflow.replace("  workflow_dispatch:\n", "  push:\n  workflow_dispatch:\n");
+    assert.notEqual(pushed.slice(pushed.indexOf("on:\n"), pushed.indexOf("concurrency:\n")), expected);
+    assert.ok(workflow.includes("ref: ${{ inputs.candidate_sha }}"));
+    assert.ok(workflow.includes("run: node scripts/ci-candidate.mjs"));
+  }
 });
 test("routing closure: Pyright reaches nonempty native goldens", async () => {
   const entries = (await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url))))
