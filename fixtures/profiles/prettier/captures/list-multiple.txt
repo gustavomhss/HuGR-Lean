@@ -1,0 +1,2 @@
+dirty.js
+space dir/雪 file.js
