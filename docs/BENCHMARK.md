@@ -101,10 +101,10 @@ Whole host sessions include startup/SDK/provider/native work. Provider-request w
 would exclude startup but not isolate adapter CPU. Neither is reported as adapter latency.
 Mechanical byte reduction is not a token estimate or causal LLM cost/quality benefit.
 
-The manifest allows all fixture SOURCES.md, but smoke's closed snapshot currently copies
-only runner/format and four utility notes, not native-family notes. Installed native cases
-are supplied as external evidence JSON; replay does not prove shipment of every provenance
-note. Final normal-pack contents/notices/link inspection remains a lead-owned artifact check.
+Lead fix `21586c2` makes smoke snapshot every allowlisted fixture SOURCES.md and check
+packed presence plus installed byte equality. Native cases remain external evidence JSON;
+their replay is separate from provenance-note shipment checks.
+Final normal-pack contents/notices/link inspection remains a lead-owned artifact check.
 
 ## Historical baseline: 2026-09-30T07:17:05.204Z
 
