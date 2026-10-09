@@ -1,0 +1,126 @@
+{
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-15.3.2-x86_64-i386-64bit",
+  "packages": {
+    "mypy": "1.18.2",
+    "mypy-extensions": "1.1.0",
+    "typing-extensions": "4.15.0",
+    "pathspec": "0.12.1"
+  },
+  "venv": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L07-mypy-venv",
+  "sourceOrigin": "Original campaign tiny projects; no donor material copied",
+  "recipeSha256": "ea4f80f4457788bfb7872cbfbf1e80ed663e1cc1d63eeb2e376ae0284b8393dd",
+  "environment": {
+    "set": {
+      "LC_ALL": "C.UTF-8",
+      "LANG": "C.UTF-8",
+      "TERM": "dumb",
+      "NO_COLOR": "1"
+    },
+    "removed": [
+      "MYPYPATH",
+      "FORCE_COLOR",
+      "CLICOLOR_FORCE",
+      "MYPY_FORCE_COLOR"
+    ],
+    "otherwise": "inherited"
+  },
+  "sources": {
+    "clean.py": {
+      "output": "def double(value: int) -> int:\n    return value * 2\n",
+      "sha256": "3774bce8bdb418722cf0830e56c4380cc833e8636357b6fe632ceb6121e9300e",
+      "bytes": 52
+    },
+    "context.py": {
+      "output": "def broken_return(value: int) -> str:\n    return value\n",
+      "sha256": "87721985e7ec9182d52694a5a16d67f6594711fedb23be1c0dbe0e5e2ce7727c",
+      "bytes": 55
+    },
+    "errors.py": {
+      "output": "from typing import overload\n\n@overload\ndef convert(value: int) -> int: ...\n@overload\ndef convert(value: str) -> str: ...\ndef convert(value: int | str) -> int | str:\n    return value\n\nresult: int = 'bad'\nconvert(1.5)\nreveal_type(result)\n",
+      "sha256": "19399042e3ddd341b984a9405c64cc041f8fa85125a40de3e849c9187a1da3a8",
+      "bytes": 236
+    },
+    "defs.py": {
+      "output": "def take(value: int) -> int:\n    return value\n",
+      "sha256": "68b878bc78e606eed179767c87975edb705e01fc41af863bcbc4d7dad09eb125",
+      "bytes": 46
+    },
+    "use.py": {
+      "output": "from defs import take\nfrom absent_l07 import missing\nanswer: str = take('wrong')\n",
+      "sha256": "d90361ada9fbd10dec1597afd93e883258a2d1b714221dbf425ae73457ff476d",
+      "bytes": 81
+    },
+    "inconsistent.py": {
+      "output": "def repeat(value: int) -> int:\n    return value\ndef repeat(value: str) -> str:\n    return value\n",
+      "sha256": "eb38053e2618bd26c660d21975579a4c520599a3021862497333af0e48fb3ba9",
+      "bytes": 96
+    },
+    "path space/雪.py": {
+      "output": "label = '雪😀'; value: int = '错'\nreveal_type(label)\n",
+      "sha256": "7da928d0b6f9a14a6cf31e278fbc891339396916bb9d83003505a9060dfc73b4",
+      "bytes": 57
+    },
+    "bad.ini": {
+      "output": "[mypy]\npython_version = invalid\n",
+      "sha256": "3b1cb3a82bee870d49ac2856debea92daaec44a002ab9c9a2c8f56dd4738d05c",
+      "bytes": 32
+    },
+    "warning.ini": {
+      "output": "[mypy]\nunknown_l07_option = True\n",
+      "sha256": "277dbf1462921559dde93eb84352c45ae7c4ca94be66f7205bc2eeb56d2248f7",
+      "bytes": 33
+    },
+    "strict.ini": {
+      "output": "[mypy]\nstrict = True\nshow_error_codes = True\nshow_column_numbers = True\n",
+      "sha256": "ee8ddf9d4185590d76eeaccecb895d2942e16634e1d87138a302162dbea7f974",
+      "bytes": 72
+    },
+    "syntax.py": {
+      "output": "def broken(:\n    pass\n",
+      "sha256": "6b8c8a725c23dc076d9a2c185ce4e02435746bc3b4f99906d13de360e56898c7",
+      "bytes": 22
+    },
+    "plugin.ini": {
+      "output": "[mypy]\nplugins = collision_plugin.py\n",
+      "sha256": "4b83344fb00f0c0eeea4ec193f04d01b512108c5d9eea971068d6ebf1cc93209",
+      "bytes": 37
+    },
+    "collision_plugin.py": {
+      "output": "import sys\nfrom mypy.plugin import Plugin\n\ndef plugin(version: str):\n    print('Success: no issues found in 1 source file', flush=True)\n    print('clean.py:1:1: note: native-shaped plugin stdout', flush=True)\n    print('LOG:  Building graph', file=sys.stderr, flush=True)\n    return Plugin\n",
+      "sha256": "9abbea9d152764a30183220b6dc5845ebd418770af8efcce494d529b6af5e412",
+      "bytes": 290
+    }
+  },
+  "caseIds": [
+    "L07-version",
+    "L07-summary-success",
+    "L07-silent-success",
+    "L07-errors-notes",
+    "L07-columns-context",
+    "L07-function-context",
+    "L07-multi-file-imports",
+    "L07-unicode-space",
+    "L07-config-warning",
+    "L07-config-failure",
+    "L07-config-strict",
+    "L07-config-missing",
+    "L07-syntax-failure",
+    "L07-requested-json",
+    "L07-requested-json-success",
+    "L07-requested-json-unicode",
+    "L07-module-launcher",
+    "L07-plugin-collision",
+    "L07-plugin-verbose-collision",
+    "L07-requested-verbose"
+  ],
+  "verboseEvidence": {
+    "L07-plugin-verbose-collision": [
+      "LOG:  Building graph",
+      "LOG:  Build finished in 2.370 seconds with 59 modules, and 0 errors"
+    ],
+    "L07-requested-verbose": [
+      "LOG:  Build finished in 1.224 seconds with 59 modules, and 0 errors"
+    ]
+  }
+}
