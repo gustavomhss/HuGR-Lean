@@ -122,6 +122,40 @@ test("C02 baseline utility regression by reference: full/lib delegation, warning
     if (id === "full" || id === "lib") accepted(obs, expected); else exact(obs);
   }
 });
+test("CI-C02-library-boundary: captured full/lib and raw main/context mismatches preserve legacy refusals", () => {
+  const base = new URL("../fixtures/utility/cargo/", import.meta.url);
+  const lib = readFileSync(new URL("lib/original.log", base), "utf8");
+  const full = readFileSync(new URL("full/original.log", base), "utf8");
+  const expected = readFileSync(new URL("lib/lib.expected.log", base), "utf8");
+  const c = cases.find(c => c.name === "C02/default-workspace")!;
+  for (const command of ["cargo test --lib", "cargo test '--lib' --color 'never'", "cargo\ttest\t--color=never\t\"--lib\""]) {
+    const obs = { ...observation(c, lib), command };
+    accepted(obs, expected);
+    for (const output of [full, full.slice(0, full.indexOf("   Doc-tests")),
+      ...["unittests src/main.rs", "tests/native_integration.rs", "unittests code/library.rs"].map(header =>
+        lib.replace("unittests src/lib.rs", header))]) {
+      assert.notEqual(output, lib); exact({ ...obs, output });
+    }
+  }
+});
+test("CI-C02-default-headers: native fallback positive; examples/deps and custom nonunit mismatches refuse", () => {
+  const c = cases.find(c => c.name === "C02/default-workspace")!, obs = observation(c);
+  accepted(obs, read(c.expectedFile));
+  for (const header of ["examples/selected.rs", "checks/contract.rs", "src/main.rs"]) {
+    const output = obs.output.replace("Running tests/selected.rs", `Running ${header}`);
+    assert.notEqual(output, obs.output); exact({ ...obs, output });
+  }
+});
+test("CI-C02-expanded-library-role: native package positive and custom path; conventional foreign roles refuse", () => {
+  const c = cases.find(c => c.name === "C02/package")!, obs = observation(c), expected = read(c.expectedFile);
+  accepted(obs, expected);
+  const custom = (s: string) => s.replace("src/lib.rs", "code/library.rs");
+  accepted({ ...obs, output: custom(obs.output) }, custom(expected));
+  for (const path of ["src/main.rs", "src/bin/selected.rs", "tests/selected.rs", "examples/selected.rs"]) {
+    const output = obs.output.replace("src/lib.rs", path);
+    assert.notEqual(output, obs.output); exact({ ...obs, output });
+  }
+});
 test("C02 closed argv: flag boundaries, arity, duplicates, selectors, finite target/profile/thread values", () => {
   const c = cases.find(c => c.name === "C02/workspace-exclude")!;
   const invalid = ["--workspace --exclude", "-p", "--features", "--target", "--profile", "--test", "--bin", "--example",
