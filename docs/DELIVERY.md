@@ -1,16 +1,18 @@
-# Public GitHub delivery candidate — utility update 2026-10-08
+# Public GitHub delivery candidate — verified CI update 2026-10-09 UTC
 
-**Candidate pending human approval; not a new release or a completed gate.**
+**Code and required three-platform CI verified; not a new release or complete PLAN delivery.**
 Local Git is canonical. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 This is the single operational status record; historical release/benchmark reports remain dated evidence.
 
 ## Identity and evidence boundary
 
-Frozen code baseline: `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`, locally proved on **2026-10-08 UTC**.
+Verified code/CI checkpoint: `310666cc4dfcf08d7c91396a562d896c7bb3b965`.
+Original host/latency baseline: `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`, locally proved on **2026-10-08 UTC**.
 All four native parser cold reviews are approved. The integrated source declares 10 profile IDs
 (nine reducers plus inert `tsc`); full-suite, normal installed-package, host and latency receipts
-for that code baseline are recorded below. This new docs head is **not yet packed**; final scoped
-package binding is pending. [Utility evaluation](UTILITY_EVALUATION.md) defines the corpus and limits.
+for their named execution checkpoints are recorded below. Exact documentation-head/package binding
+and the lead's technical verdict belong in the [external PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85).
+[Utility evaluation](UTILITY_EVALUATION.md) defines the corpus and limits.
 
 The delivery PR and candidate evidence receipt must record the exact full 40-character head
 after documentation integration. Use that approved head as `FULL_REVIEWED_DELIVERY_SHA` in
@@ -25,14 +27,14 @@ and existing witnesses, not fresh executions by this documentation change.
 | PLAN item | Actual implementation / witnesses | Current evidence and remaining decision |
 | --- | --- | --- |
 | 1. Foundation | [Manifest](../package.json), [types](../src/core/types.ts), [LICENSE](../LICENSE), [build](../scripts/build.mjs), [structure tests](../tests/structure.test.ts) | One MIT TypeScript package, Node 22+, five modules. Baseline local structure/typecheck/build passed. |
-| 2. Pure core | [Engine](../src/core/engine.ts), [command identity](../src/core/command.ts), [lines](../src/core/lines.ts), [core tests](../tests/core.test.ts), [normalization tests](../tests/normalize.test.ts) | Bounded input, fail-open, UTF-16 spans and UTF-8 byte metrics. Dated f9d2 full suite passed with observed controls; earlier mutation controls retained/restored. Final docs-artifact binding pending. |
-| 3. OpenCode | [Adapter](../src/opencode/index.ts), [plugin tests](../tests/plugin.test.ts), [host proof](OPENCODE.md) | Dated f9d2 installed model-bound proof: 1.18.17 legacy CLI, macOS x64, 23 scenarios. Final docs-artifact binding pending; V2/other routes unproved. |
+| 2. Pure core | [Engine](../src/core/engine.ts), [command identity](../src/core/command.ts), [lines](../src/core/lines.ts), [core tests](../tests/core.test.ts), [normalization tests](../tests/normalize.test.ts) | Bounded input, fail-open, UTF-16 spans and UTF-8 byte metrics. Local f9d2 proof and three-platform CI at310666 passed; mutation controls retained/restored. |
+| 3. OpenCode | [Adapter](../src/opencode/index.ts), [plugin tests](../tests/plugin.test.ts), [host proof](OPENCODE.md) | Dated f9d2 installed model-bound proof: 1.18.17 legacy CLI, macOS x64, 23 scenarios; ten artifact-route scenarios at9285. Package equivalence measured; V2/other host routes unproved. |
 | 4. Profiles | [Registry](../src/profiles/index.ts), [runner barrel](../src/profiles/runners.ts), [Node TAP](../src/profiles/node-test.ts), [formats](../src/profiles/formats.ts), [combined tests](../tests/combined.test.ts), [coverage](COVERAGE.md) | Cargo/Go/pytest expansion and Node TAP cold reviews approved. Closed diagnostic contexts preserved; unsupported diagnostics/install progress pass through. Dated utility 25/25 passed; Jest/Vitest utility strategy unchanged. |
-| 5. UX | [Options](../src/opencode/config.ts), [CLI](../src/cli/index.ts), [CLI tests](../tests/cli.test.ts), [README lifecycle](../README.md#lifecycle) | Baseline installed CLI/doctor and normal lifecycle installation passed. Upgrade/rollback/remove documented; final docs-artifact installation pending; no registry availability claim. |
+| 5. UX | [Options](../src/opencode/config.ts), [CLI](../src/cli/index.ts), [CLI tests](../tests/cli.test.ts), [README lifecycle](../README.md#lifecycle) | Installed CLI/doctor and normal lifecycle installation passed; three-platform CI passed compiled CLI/smoke. Upgrade/rollback/remove documented; registry availability unclaimed. |
 | 6. Optional raw | [Store](../src/raw/index.ts), [raw tests](../tests/raw.test.ts), [TTL tests](../tests/raw-ttl.test.ts), [real-host raw script](../scripts/opencode-raw-smoke.mjs) | Raw off by default; exact captured boundary, byte/TTL limits and safe IDs implemented. Fresh baseline raw off/on host and exact CLI recovery passed. |
-| 7. Proof/release | [Combined corpus tests](../tests/combined.test.ts), [installed smoke](../scripts/package-smoke.mjs), [smoke controls](../tests/package-smoke.test.ts), [historical benchmarks](BENCHMARK.md), [historical native evaluation](BENCHMARK_REAL.md), [utility evaluation](UTILITY_EVALUATION.md), [distribution](DISTRIBUTION.md) | Dated f9d2 local receipts below. Final docs-head scoped package/runtime binding, three-OS CI, missing historical replay and human publication/usefulness decisions remain pending. Docs alone do not complete PLAN delivery. |
+| 7. Proof/release | [Combined corpus tests](../tests/combined.test.ts), [installed smoke](../scripts/package-smoke.mjs), [smoke controls](../tests/package-smoke.test.ts), [historical benchmarks](BENCHMARK.md), [historical native evaluation](BENCHMARK_REAL.md), [utility evaluation](UTILITY_EVALUATION.md), [distribution](DISTRIBUTION.md) | Local receipts and three-platform CI passed; exact source/artifact linkage recorded externally. Historical replay, release/publication and practical-usefulness decisions remain open. |
 
-## Dated code-baseline proof; final docs-artifact binding pending
+## Dated local proof and artifact linkage
 
 Private local evidence in the proof worktree: `.closure-proof/final-f9d2/summary.json`, `SUMMARY.md`,
 `next-host.json`, and `.closure-proof/host-f9d2-sdk/summary.json`, `SUMMARY.md`, `receipt.json`.
@@ -63,9 +65,11 @@ one run, 20 warmups/100 samples, fixture/control/synthetic workloads; start load
 Prior 52dee1 latency failure, 3f92 `LIVE_LOG_DELAY_CONTROL_MISSING`, blocked host attempt and all
 other failure records remain retained. Default npm test/check scheduling is unchanged.
 
-This docs head is not yet packed. The lead next binds the final full docs SHA and scoped package receipt,
-comparing runtime blobs with the proved artifact **before claiming equivalence**. Dated code-baseline
-proof is not automatic final docs-artifact proof, candidate approval or PLAN completion.
+Normal package proof at `9285fadb` produced 110,233 bytes, SHA-256
+`3739538c553c2ae223d6cc2632a31e80f36af016fc7aa7711b29925418ab5831`.
+Fresh pack at `310666cc` was byte-identical: all 98 payload files and 40 compiled files matched. Its repaired
+developer reader passed a fresh 25/25 evaluation. Later docs-only heads receive scoped package binding
+in the external receipt; previous host/latency experiments are not relabelled as fresh executions.
 
 Installed package proof, actual host/model-bound proof and raw off/on recovery are separate
 checks. Smoke without `--opencode` can prove package paths but reports incomplete release proof;
@@ -85,19 +89,20 @@ primary cases: **the practical noise-reduction criterion failed on that corpus**
 Historical sampled preservation and engineering latency results do not establish general
 utility, token/cost savings or wider host support. No new utility goal or waiver is inferred.
 
-## Deferred GitHub Actions
+## Verified GitHub Actions
 
-Actions must stay disabled until complete candidate local verification is recorded and the
-lead explicitly declares completion. No AppVeyor or GitLab execution route remains active.
-The candidate Linux/macOS/Windows matrix is **pending**, not green or replaced by local macOS.
+The user explicitly authorized reactivating Actions, running CI, then repairing Windows.
+[Run 37861421060](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37861421060) passed all required lanes
+at `310666cc4dfcf08d7c91396a562d896c7bb3b965`: Linux/x64 and macOS/arm64 each passed 1,030 tests;
+Windows/x64 passed 997, with 33 existing platform skips and zero failures. Install/structure/typecheck/build,
+installed smoke (39 cases / 10 IDs) and pack dry-run passed on all three. Identity artifacts verify input/event/workflow/checkout SHA equality.
 
-After that completion decision, publish the exact candidate to `delivery/github-ready` and
-make that branch the new repository default so manual dispatch is available. This setup does
-not merge into `main`. Enable Actions only then. Confirm the default/dispatch branch resolves
-to the approved full SHA and replace the placeholder before issuing the single dispatch:
+Actions remains enabled; no AppVeyor/GitLab route is active. Original failed run 37854791168 remains
+retained. Dispatch ref is `delivery/utility-ready`; the older default branch provides workflow discovery.
+For a future authorized run, confirm the dispatch ref matches the full candidate input:
 
 ```sh
-gh workflow run ci.yml --repo gustavomhss/HuGR-Lean --ref delivery/github-ready -f candidate_sha=FULL_REVIEWED_DELIVERY_SHA
+gh workflow run ci.yml --repo gustavomhss/HuGR-Lean --ref delivery/utility-ready -f candidate_sha=FULL_REVIEWED_DELIVERY_SHA
 ```
 
 The [workflow](../.github/workflows/ci.yml) uses `workflow_dispatch` only and checks out the input.
@@ -109,10 +114,10 @@ and pack dry-run. Require all three actual completed lanes; retain failures, can
 skips explicitly. Uploaded provenance records identity only, not later gate success. CI does
 not execute OpenCode, native recapture or latency acceptance.
 
-## Human decisions still open
+## Remaining delivery items
 
-Candidate approval and completion, missing-corpus disposition, practical usefulness, release
-version/tag/GitHub publication and npm authorization remain explicit lead decisions. Missing
-evidence is not silently waived by source publication or future CI. The public repository is
-source-only at this handoff; the original local tarball remains retained separately. Agents stop
-for review, never merge. Historical [0.2.0 release notes](RELEASE.md) are not this candidate's receipt.
+The lead owns technical review and records its verdict in the external PR receipt. Missing-corpus
+disposition, practical usefulness, release version/tag/GitHub publication and npm authorization are
+separate delivery items. CI and technical approval do not waive missing historical evidence or publish
+a package. Main/version remain unchanged; the parallel campaign/native-* expansion is separate.
+Historical [0.2.0 release notes](RELEASE.md) are not this candidate's receipt.

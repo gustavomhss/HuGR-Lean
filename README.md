@@ -41,7 +41,7 @@ directory on `PATH`. The package version remains `0.2.0` pending a human release
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for dated code-baseline proof, pending final docs-artifact binding, deferred CI and human decisions.
+for dated execution proof, exact artifact binding, three-platform CI and remaining release items.
 The new repository is source-only;
 old release assets and npm publication are not implied by its existence.
 
@@ -61,9 +61,12 @@ Private local receipts record 1,026 passing tests, installed-package/latency pro
 7 file, 5 package-name, 8 baseline/on replays across four native families, and 3 raw scenarios with exact CLI recovery.
 File/package-name routes use the same preinstalled normal tarball, not npm registry availability.
 Native fixture text replay proves model-bound bytes, not upstream recapture or model quality.
-This docs head is not yet packed; scoped package/runtime-blob binding remains pending before claiming equivalence.
-Linux/macOS/Windows CI is unrun. Actions stays disabled until complete candidate verification
-is recorded and the lead explicitly declares completion.
+Actions is enabled. [Run 37861421060](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37861421060)
+passed at code checkpoint `310666cc4dfcf08d7c91396a562d896c7bb3b965`:
+Linux/macOS 1,030 tests each; Windows 997 passed, 33 existing platform skips, zero failures.
+Build, installed smoke and pack passed on all three platforms. Exact delivery-head/package linkage
+is recorded in the [PR receipt](https://github.com/gustavomhss/HuGR-Lean/pull/85); later docs-only
+updates do not relabel the checkpoint's tests or historical host experiments as new executions.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
 Npm registry installation is not currently available. If publication is authorized, the package
@@ -85,7 +88,7 @@ English Git status and numbered ripgrep. Coverage is deliberately format-specifi
 [Native utility evaluation](docs/UTILITY_EVALUATION.md) records original local fixture projects:
 25 cases (12 reduced, 11 material, 13 exact) passed at the dated code baseline, with deliberate
 long names and many tests. These are not representative real-agent sessions. Normal installed
-proof passed 39 cases / 10 IDs (nine reducers and inert `tsc`); final docs-artifact binding is pending.
+proof passed 39 cases / 10 IDs (nine reducers and inert `tsc`), with package linkage in the delivery receipt.
 Jest/Vitest retain their existing prefix/per-file-timing strategy; no utility improvement is claimed.
 
 ## Options and raw recovery

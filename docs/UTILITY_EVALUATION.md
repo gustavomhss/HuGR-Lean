@@ -2,9 +2,10 @@
 
 Dated local proof: **2026-10-08 UTC**, code baseline `f9d2f6c8540b9bc3479de59cbd301074f1ff80df`.
 All four parser cold reviews were approved; private receipts record full-suite, normal installed-package,
-actual host and latency outcomes. This docs head is not yet packed; final scoped package binding is pending.
-Source/runtime hash bindings belong in the external final receipt, avoiding a self-hash cycle; the lead
-must compare runtime blobs before claiming equivalence. [Delivery status](DELIVERY.md) owns that handoff.
+actual host and latency outcomes. The repaired reader's fresh 25/25 evaluation and successful three-platform
+CI ran at `310666cc4dfcf08d7c91396a562d896c7bb3b965`; original host/latency receipts retain their execution heads.
+Source/runtime/package hash bindings belong in the external delivery receipt, avoiding a self-hash cycle.
+[Delivery status](DELIVERY.md) records the current result and remaining release items.
 
 ## What the corpus measures
 
@@ -93,7 +94,10 @@ Its 23 scenarios comprise 7 file, 5 preinstalled/cached package-name, 8 four-fam
 and 3 raw scenarios with exact CLI recovery, all using the same normal artifact identified in delivery status.
 These private receipts are not public downloads; replay is not upstream recapture or model-quality proof,
 and package-name routing does not establish npm availability. This docs change runs static checks only.
-Final docs-artifact scoped binding, disabled CI/three-OS runs and human decisions remain pending.
+The [three-platform CI run](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37861421060)
+passed at checkpoint `310666cc4dfcf08d7c91396a562d896c7bb3b965`; the repaired reader also passed a fresh
+25-case evaluation there. Package linkage after documentation updates is recorded externally.
+Registry publication and historical-corpus recovery remain separate pending items.
 
 Jest/Vitest still use the existing prefix/per-file-timing strategy; no utility improvement is claimed.
 Actual argv, reporter grammar, colors and npm child identity constrain admission. The after-hook handles
