@@ -1,5 +1,5 @@
 import { lines } from "../core/lines.js";
-import type { Line, Observation, Piece, Profile, Reduction, Span } from "../core/types.js";
+import type { Observation, Piece, Profile, Reduction, Span } from "../core/types.js";
 
 type Draft = { pieces: Piece[]; required: Span[] };
 const draft = (): Draft => ({ pieces: [], required: [] });
@@ -36,11 +36,6 @@ function numberedRipgrep(argv: readonly string[]): boolean {
     if (option.startsWith("-") && option !== "-") return false;
   }
   return numbered;
-}
-function successLine(result: Draft, line: Line, length: number): void {
-  keep(result, [line.span[0], line.span[0] + length]);
-  const ending = line.span[0] + line.text.length;
-  if (ending < line.span[1]) keep(result, [ending, line.span[1]]);
 }
 function equalCounts(text: string, pattern: RegExp, expected?: number): boolean {
   const match = pattern.exec(text);
@@ -110,7 +105,8 @@ function vitest(output: string, observation: Observation): Reduction | undefined
     const match = /^ ✓ (.+) \(([1-9]\d*) tests?\)(?: (\d+(?:\.\d+)?)ms)?$/u.exec(text);
     if (!match) return undefined;
     files++; tests += Number(match[2]);
-    successLine(result, line, text.length - (match[3] ? match[3].length + 3 : 0));
+    // Configured reporters can emit this entire grammar as user evidence.
+    keep(result, line.span);
   }
   if (!files || !equalCounts(rows[index]?.text ?? "", /^ Test Files +(\d+) passed \((\d+)\)$/u, files)) return undefined;
   keep(result, rows[index++]!.span);
