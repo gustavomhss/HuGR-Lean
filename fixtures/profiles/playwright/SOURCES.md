@@ -146,3 +146,35 @@ material. Prior blind control accepted `CORRUPTED`; current named controls
 reject it, including coordinated companion/evidence edits that still agree.
 Original immutable records pass after controls. This is offline inspection,
 not native replay, runtime-profile testing or independent source/build attestation.
+
+## Field type correction and pinned domain
+
+Immediate predecessor: `e73ce031458b8954ae163098759f0100880dcc09`.
+`audit-history-e73ce03.json` archives its auditor, audit receipt and process-control
+receipt unchanged with commit/path/license/hash. Prior `audit-history-740cffb.json`
+is unchanged. Current read-time receipt includes `typeHelperSha256` alongside
+`auditRecipeSha256`; neither is represented as a native capture-time check.
+
+Native shape/range knowledge was read from these pinned upstream paths at
+`54c711571a37de525377e6f3d3608c3e029b1829`:
+- `packages/playwright/types/testReporter.d.ts`: report, result/error/location,
+  annotation, STDIO, attachment and optional step field types.
+- `packages/playwright/src/reporters/json.ts`: actual serialization/extraction,
+  undefined optional fields omitted, string versus base64 STDIO entries.
+- `packages/playwright/src/common/test.ts`: `_appendTestResult` initializes
+  workerIndex/parallelIndex to -1, retry to result count, duration to 0 and
+  errors/annotations/streams/attachments to empty lists.
+
+Original `audit_types.py` implements validation informed by that Apache-2.0
+source; no upstream implementation copied. Same-repository MIT code. Numeric
+integer fields exclude bool/floats and exceed no JS MAX_SAFE_INTEGER; durations
+exclude bool/NaN/infinities/negatives and exceed no finite JS Number. Optional
+fields are validated when present; valid empty native lists are not removed.
+This helper covers report/projection fields used by this fixture audit, not
+arbitrary Playwright config objects, complete timestamp grammar or all tool versions.
+
+`audit-type-controls-receipt.json` records the temporary-record script snapshot,
+auditor/helper hashes, before-repair acceptances, after-repair named failures,
+actual captured index domains and restored original positive control. Temporary
+envelopes were recomputed expressly to exercise semantic guards. Source recipe,
+producer output, native artifacts and historical capture receipts were not changed.

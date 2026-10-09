@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import struct
+import audit_types as native_types
 
 ROOT = Path(__file__).resolve().parent
 
@@ -19,12 +20,26 @@ def extracted_tests(report):
 
     def visit(suites):
         for suite in suites:
+            native_types.shape(suite, ('title', 'file', 'line', 'column', 'specs'), ('suites',), 'report suite')
+            native_types.location({key: suite[key] for key in ('file', 'line', 'column')}, 'report suite location')
+            native_types.string(suite['title'], 'report suite title')
+            native_types.array(suite['specs'], 'report suite specs')
             if 'suites' in suite:
                 assert isinstance(suite['suites'], list), 'invalid nested suites'
                 visit(suite['suites'])
             for spec in suite.get('specs', []):
+                native_types.shape(spec, ('title', 'ok', 'tags', 'tests', 'id', 'file', 'line', 'column'), (), 'report spec')
+                assert type(spec['ok']) is bool, 'report spec ok must be bool'
+                native_types.array(spec['tags'], 'report spec tags')
+                for tag in spec['tags']:
+                    native_types.string(tag, 'report spec tag')
+                for key in ('title', 'id'):
+                    native_types.string(spec[key], 'report spec ' + key)
+                native_types.location({key: spec[key] for key in ('file', 'line', 'column')}, 'report spec location')
+                native_types.array(spec['tests'], 'report spec tests', nonempty=True)
                 assert spec['tests'], 'empty reporter test list'
                 for test in spec['tests']:
+                    native_types.raw_test(test, 'raw reporter test')
                     assert isinstance(test['results'], list) and test['results'], 'empty reporter results'
                     tests.append({'title': spec['title'], 'project': test['projectName'], 'status': test['status'],
                                   'annotations': test['annotations'], 'results': test['results']})
@@ -60,7 +75,7 @@ def source_attachment_bytes(sources, project, retry):
 
 
 def check(manifest, receipt):
-    assert manifest['cases'], 'empty native cases'
+    native_types.array(manifest['cases'], 'native cases', nonempty=True)
     names = [case['name'] for case in manifest['cases']]
     assert len(names) == len(set(names)), 'duplicate native cases'
     assert set(names) == set(receipt['evidence']) == set(receipt['artifacts']), 'case/receipt correspondence'
@@ -96,8 +111,16 @@ def check_case(manifest, receipt):
         if sidecar:
             assert hashlib.sha256(document.encode()).hexdigest() == sidecar['sha256']
         report = json.loads(document)
+        native_types.stats(report['stats'], 'raw report stats')
+        native_types.stats(facts['stats'], 'evidence stats')
+        native_types.array(report['errors'], 'raw report errors')
+        for item in report['errors']:
+            native_types.error(item, 'raw report error')
+        raw_tests = extracted_tests(report)
+        native_types.tests(raw_tests, 'raw report tests')
+        native_types.tests(facts['tests'], 'evidence tests')
         assert report['stats'] == facts['stats']
-        assert extracted_tests(report) == facts['tests'], 'complete reporter test/results structure mismatch'
+        assert raw_tests == facts['tests'], 'complete reporter test/results structure mismatch'
         sources = receipt['sourcesByCase'][name]
         for source in sources.values():
             data = source['output'].encode('utf-8')
@@ -162,6 +185,10 @@ def check_case(manifest, receipt):
                 assert [(item['name'], item['contentType']) for item in items] == [
                     ('browser-proof', 'application/json'), ('browser-screenshot', 'image/png')], 'browser attachment names/types/order mismatch'
                 proof = json.loads(base64.b64decode(next(item['body'] for item in items if item['name'] == 'browser-proof')))
+                native_types.shape(proof, ('project', 'browser', 'executable', 'binarySha256', 'viewport', 'title'), (), 'browser proof')
+                native_types.viewport(proof['viewport'], 'browser proof viewport')
+                for key in ('project', 'browser', 'executable', 'binarySha256', 'title'):
+                    native_types.string(proof[key], 'browser proof ' + key)
                 viewport = (800, 600) if test['project'] == 'chromium-desktop' else (320, 480)
                 assert proof == {'project': test['project'], 'browser': '141.0.7390.37',
                                  'executable': receipt['binary']['path'], 'binarySha256': receipt['binary']['sha256'],
@@ -273,11 +300,13 @@ def main():
         audit = {'scope': 'read-time offline capture artifacts only; no native replay/runtime verification',
                  'auditAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                  'auditRecipeSha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                 'typeHelperSha256': hashlib.sha256((ROOT / 'audit_types.py').read_bytes()).hexdigest(),
                  'inputSha256': {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs},
-                 'predecessor': {'commit': '740cffb77449c5b4be1543b1af3d7e8e84aeac77', 'path': 'fixtures/profiles/playwright/audit.py',
-                                 'auditRecipeSha256': 'baf4eed88bc50c9498022fd167a20e7e38272ddb9eb52c6278ae99a6510f7896',
-                                 'auditReceiptSha256': '02b5126814041821a5e38c1e803e3a300d288a46690ca43b7cde593cb98836bf',
-                                 'limitation': 'nonempty CORRUPTED API body was accepted; current inspection repairs that blind spot'},
+                 'predecessor': {'commit': 'e73ce031458b8954ae163098759f0100880dcc09', 'path': 'fixtures/profiles/playwright/audit.py',
+                                 'archive': 'audit-history-e73ce03.json',
+                                 'auditRecipeSha256': '3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9',
+                                 'auditReceiptSha256': 'cebd36d06eafc605b25a44701e4267a54fe41469306f5baa15510354a90ab963',
+                                 'limitation': 'Python equality accepted bool/integer masquerades and invalid coordinated field types'},
                  'cases': summaries, 'probes': probes}
         (ROOT / 'audit-receipt.json').write_text(json.dumps(audit, ensure_ascii=False, indent=2) + '\n')
     for name, summary in summaries.items():

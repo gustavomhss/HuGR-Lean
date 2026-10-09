@@ -151,3 +151,41 @@ No native browser replay or lead-owned reader edits. Lead reader EOF strengtheni
 `2049eec` is separate work, not proof supplied by this fixture audit. Chromium-only
 exact scope still has no cross-engine coverage; approved removable bytes **0**,
 runtime grammar/disposition pending policy.
+
+## Native field type repair (after `e73ce03`)
+
+Independent recheck found six accepted counterexamples: evidence-only worker
+index/retry `false`, coordinated duration `NOT_A_DURATION`, result errors or
+annotations `{}`, and browser proof viewport width `800.0`. Prior auditor
+reproduced acceptance of all six with temporary envelopes recomputed; original
+fourteen records also passed. Python equality was not a native type oracle.
+
+`audit_types.py` now validates both raw-report projection and receipt evidence
+**before** structural equality, plus proof viewport before object equality.
+Worker/parallel indices: exact Python int, not bool/float, JS-safe range from
+-1; retry/count/location indices: exact int, JS-safe and nonnegative. Durations:
+finite nonnegative JS numeric range, int or float but not bool. Viewport width
+and height: positive JS-safe exact ints. Raw optional error/location/cause/steps
+and list entries are checked against pinned native element shapes; unknown
+fields in these closed structures fail. Valid empty errors, annotations,
+stdout/stderr, attachments and optional steps lists remain valid. Native cases,
+extracted tests and results must remain nonempty lists, not missing/replaced lists.
+
+Captured worker indices are 0–5, parallel indices 0; initial recovery timeout
+records skipped worker/parallel index 0, not -1. -1 lower bound is preserved
+because pinned upstream `_appendTestResult` initializes both indices to -1;
+this is source-backed native domain, not claimed captured -1 browser coverage.
+
+`audit-type-controls-receipt.json` records named process failures for those six
+reviewer examples plus parallel bool, boolean/NaN/negative durations, wrong
+stdout/stderr/attachment types, malformed optional error/location fields,
+empty results and non-list cases. Coordinated mutations repair sidecar hashes
+and temporary historical envelope so semantic type guards, not stale hashes,
+reject them. Final original control exits 0 with all fourteen cases inspected.
+Prior body/path/retry/partial/screenshot controls remain protecting checks.
+
+Immediate prior recipe/receipt/control receipt archived verbatim in
+`audit-history-e73ce03.json`; original `740cffb` history remains intact. Current
+audit receipt pins both auditor and type-helper hashes with read-time timestamp.
+No producer/browser execution, raw/source/capture rewrites or broad checks.
+Chromium-only scope, missing cross-engine reach and zero approved bytes unchanged.

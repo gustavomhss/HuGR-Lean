@@ -1,7 +1,8 @@
 {
   "scope": "read-time offline capture artifacts only; no native replay/runtime verification",
-  "auditAt": "2026-10-09T19:01:48.479882+00:00",
-  "auditRecipeSha256": "3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9",
+  "auditAt": "2026-10-09T20:10:20.792678+00:00",
+  "auditRecipeSha256": "705e5365493f706519b7cbd8e32c42ce83a8f9fd2de3e37bc79a5e0efd45fa01",
+  "typeHelperSha256": "2094f274b820696f5d1b0485eff7b57dab0a5a3929226ead6c2c69f2b214e9f5",
   "inputSha256": {
     "cases.json": "218e554589ecc097405f3fc4d71ca0d87b6b4d7add66db985b3a2b82b0fe8c89",
     "capture-receipt.json": "5a1b5d6b3c4b1a4198fec95e05cef034ee4a9987da797d69580c94fe96d9406a",
@@ -9,11 +10,12 @@
     "setup-receipt.json": "a95fcfd085d20b73f3d1d71fccade92b0a87b4b870b48391e79f2c8baf4abad6"
   },
   "predecessor": {
-    "commit": "740cffb77449c5b4be1543b1af3d7e8e84aeac77",
+    "commit": "e73ce031458b8954ae163098759f0100880dcc09",
     "path": "fixtures/profiles/playwright/audit.py",
-    "auditRecipeSha256": "baf4eed88bc50c9498022fd167a20e7e38272ddb9eb52c6278ae99a6510f7896",
-    "auditReceiptSha256": "02b5126814041821a5e38c1e803e3a300d288a46690ca43b7cde593cb98836bf",
-    "limitation": "nonempty CORRUPTED API body was accepted; current inspection repairs that blind spot"
+    "archive": "audit-history-e73ce03.json",
+    "auditRecipeSha256": "3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9",
+    "auditReceiptSha256": "cebd36d06eafc605b25a44701e4267a54fe41469306f5baa15510354a90ab963",
+    "limitation": "Python equality accepted bool/integer masquerades and invalid coordinated field types"
   },
   "cases": {
     "R04-api-list": {
@@ -568,14 +570,14 @@
       "mutation": "partial-result",
       "case": "R04-api-list",
       "rejected": true,
-      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "failure": "R04-api-list: evidence tests[0].results[0] missing/unknown fields",
       "restoration": "deep-copy only; committed artifacts never mutated"
     },
     {
       "mutation": "partial-report-result",
       "case": "R04-api-list",
       "rejected": true,
-      "failure": "R04-api-list: partial reporter result",
+      "failure": "R04-api-list: raw report tests[0].results[0] missing/unknown fields",
       "restoration": "deep-copy only; committed artifacts never mutated"
     },
     {
