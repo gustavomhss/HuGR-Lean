@@ -110,8 +110,44 @@ referenced path artifact, retry result, or successful screenshot artifact;
 each rejected, original checked again. Browser proof bodies and PNG dimensions
 checked against pinned binary/version/projects. Historical manifest and receipt
 hashes verified unchanged; no historical native case rewritten.
-No disk mutations or runtime preservation test claims. Initial audit equality
+No committed native mutations or runtime preservation test claims. Initial audit equality
 assumed annotations had no location field; corrected to compare required fields.
 First path-loss probe removed original unreferenced file, did not reject;
 corrected to remove reporter-referenced copied attachment, then rejected.
 No full checks, typecheck, smoke, benchmark, test suite or CI run requested.
+
+## Independent-review audit repair (after `740cffb`)
+
+Independent review approved actual artifacts but found auditor blind: replacing
+API `body-evidence` with nonempty `CORRUPTED` passed. Reproduced that failure of
+the prior instrument before editing. This change repairs/strengthens only
+read-time artifact inspection; native captures and source recipes stay exact.
+
+Current auditor re-extracts every captured test (title, project, status,
+annotations and entire original results objects) from raw companion JSON or
+native JSON stdout. Ordered equality with receipt evidence checks every result
+field, error/snippet/location, log and attachment, not totals or selected keys.
+Missing/empty extractions and partial result structures fail with case name.
+
+API body/path bytes are compared against immutable tiny source literals,
+substituting actual project and retry index. Source checks cover `body-evidence`,
+`retry-evidence`, `path-evidence` and `failure-path`; source delimiter decoding
+is deliberately restricted to these pinned fixtures, not a JavaScript parser.
+Browser proof bodies compare complete expected objects; PNG dimensions and
+referenced snapshot hashes remain checked. Earlier checks are retained.
+
+`audit-receipt.json` records current read-time timestamp/recipe hash/input hashes
+and twelve named in-memory negative controls. `audit-controls-receipt.json`
+records separate process-level inspections of temporary JSON receipts: nonempty
+body corruption, body loss, coordinated raw-report/evidence body corruption,
+retry loss, partial results, path loss and screenshot-size corruption all exit
+1 with affected case name. Original records then exit 0: all fourteen audited,
+no inspection skips (native skip outcomes remain original evidence).
+
+Prior auditor/receipt are archived verbatim in `audit-history-740cffb.json`,
+including pinned commit/path/license/SHA-256 and modification record. Current
+inspection is not backdated to capture time; old audit's weaker reach is explicit.
+No native browser replay or lead-owned reader edits. Lead reader EOF strengthening
+`2049eec` is separate work, not proof supplied by this fixture audit. Chromium-only
+exact scope still has no cross-engine coverage; approved removable bytes **0**,
+runtime grammar/disposition pending policy.

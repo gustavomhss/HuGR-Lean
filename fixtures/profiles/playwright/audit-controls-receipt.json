@@ -1,0 +1,169 @@
+{
+  "scope": "process-level read-time audit controls; no native replay or corpus changes",
+  "auditAt": "2026-10-09T19:01:49.441700+00:00",
+  "auditRecipeSha256": "3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9",
+  "controlRecipe": {
+    "output": "\"\"\"Process-level controls using temporary JSON receipt records, not native replay.\"\"\"\nimport base64\nimport copy\nimport datetime\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport tempfile\n\nroot = Path('/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright')\nscratch = Path('/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode')\nhistorical = json.loads((root / 'capture-receipt.json').read_text())\nrecovery = json.loads((root / 'browser-recovery-receipt.json').read_text())\ncontrols = []\nwith tempfile.TemporaryDirectory(prefix='R04-audit-controls-', dir=scratch) as directory:\n    for label in ('body-changed', 'body-loss', 'coordinated-body-changed', 'retry-loss',\n                  'partial-results', 'path-missing', 'screenshot-size', 'original'):\n        old, new = copy.deepcopy(historical), copy.deepcopy(recovery)\n        name = 'R04-browser-success-list' if label == 'screenshot-size' else 'R04-api-list'\n        receipt = new if label == 'screenshot-size' else old\n        tests = receipt['evidence'][name]['tests']\n        items = [item for test in tests for result in test['results'] for item in result['attachments']]\n        if label in ('body-changed', 'coordinated-body-changed'):\n            next(item for item in items if item['name'] == 'body-evidence')['body'] = base64.b64encode(b'CORRUPTED').decode()\n        elif label == 'body-loss':\n            del next(item for item in items if item['name'] == 'body-evidence')['body']\n        elif label == 'retry-loss':\n            next(test for test in tests if test['title'] == 'flaky first attempt')['results'].pop()\n        elif label == 'partial-results':\n            del tests[0]['results'][0]['errors']\n        elif label in ('path-missing', 'screenshot-size'):\n            attachment = next(item for item in items if 'path' in item)\n            files = receipt['artifacts'][name]['test-results']\n            relative = attachment['path'].split('/test-results/', 1)[1]\n            if label == 'path-missing':\n                del files[relative]\n            else:\n                data = base64.b64decode(files[relative]['base64'])\n                data = data[:16] + (799).to_bytes(4, 'big') + data[20:]\n                files[relative] = {'base64': base64.b64encode(data).decode(), 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()}\n        if label == 'coordinated-body-changed':\n            sidecar = old['artifacts'][name]['report.json']\n            report = json.loads(sidecar['output'])\n            def change(suites):\n                for suite in suites:\n                    change(suite.get('suites', []))\n                    for spec in suite.get('specs', []):\n                        for test in spec['tests']:\n                            for result in test['results']:\n                                for item in result['attachments']:\n                                    if item['name'] == 'body-evidence' and test['projectName'] == 'api-a':\n                                        item['body'] = base64.b64encode(b'CORRUPTED').decode()\n            change(report['suites'])\n            sidecar['output'] = json.dumps(report, ensure_ascii=False, indent=2) + '\\n'\n            sidecar['sha256'] = hashlib.sha256(sidecar['output'].encode()).hexdigest()\n        old_path, new_path = Path(directory) / 'historical.json', Path(directory) / 'recovery.json'\n        old_path.write_text(json.dumps(old, ensure_ascii=False, indent=2) + '\\n')\n        new_path.write_text(json.dumps(new, ensure_ascii=False, indent=2) + '\\n')\n        argv = [sys.executable, '-B', str(root / 'audit.py'), '--verify-only',\n                '--historical-receipt', str(old_path), '--recovery-receipt', str(new_path)]\n        proc = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)\n        output = proc.stdout.decode()\n        if label == 'original':\n            assert proc.returncode == 0 and '14 cases' in output\n        else:\n            assert proc.returncode != 0 and name + ':' in output, (label, output)\n        controls.append({'mutation': label, 'case': name if label != 'original' else 'all 14',\n                         'exit': proc.returncode, 'argv': argv, 'output': output,\n                         'outputSha256': hashlib.sha256(proc.stdout).hexdigest(),\n                         'boundary': 'merged stdout/stderr pipe; completed process; UTF-8 exact',\n                         'temporaryRecordOnly': True})\n        print(label, 'exit', proc.returncode, 'case', name if label != 'original' else 'all 14')\nreceipt = {'scope': 'process-level read-time audit controls; no native replay or corpus changes',\n           'auditAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),\n           'auditRecipeSha256': hashlib.sha256((root / 'audit.py').read_bytes()).hexdigest(),\n           'controlRecipe': {'output': Path(__file__).read_text(), 'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},\n           'priorBlindControl': json.loads((scratch / 'R04-audit-before.json').read_text()),\n           'restoration': 'temporary receipts disposed; original capture/recovery receipts never written', 'controls': controls}\n(root / 'audit-controls-receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\\n')\n",
+    "sha256": "f336f003db462d810463c4591272ea963604a5cbe357bb9c29c64b8e785c38b6"
+  },
+  "priorBlindControl": {
+    "audit.py": "baf4eed88bc50c9498022fd167a20e7e38272ddb9eb52c6278ae99a6510f7896",
+    "audit-receipt.json": "02b5126814041821a5e38c1e803e3a300d288a46690ca43b7cde593cb98836bf",
+    "blindControl": "R04-api-list nonempty CORRUPTED body accepted by prior auditor"
+  },
+  "restoration": "temporary receipts disposed; original capture/recovery receipts never written",
+  "controls": [
+    {
+      "mutation": "body-changed",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 100, in check_case\n    assert extracted_tests(report) == facts['tests'], 'complete reporter test/results structure mismatch'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: complete reporter test/results structure mismatch\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: complete reporter test/results structure mismatch\n",
+      "outputSha256": "71feaed65b688c3826ddbf78bd129f88c4588e99ece6e40b7abc434c17df1905",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "body-loss",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 100, in check_case\n    assert extracted_tests(report) == facts['tests'], 'complete reporter test/results structure mismatch'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: complete reporter test/results structure mismatch\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: complete reporter test/results structure mismatch\n",
+      "outputSha256": "71feaed65b688c3826ddbf78bd129f88c4588e99ece6e40b7abc434c17df1905",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "coordinated-body-changed",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 149, in check_case\n    assert actual == expected[item['name']], f\"{item['name']} bytes differ from source/project/retry\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: body-evidence bytes differ from source/project/retry\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: body-evidence bytes differ from source/project/retry\n",
+      "outputSha256": "f6d3a87e20b0e8d455948841a3c930984aedc460a8ebabfade46867159e6d1d1",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "retry-loss",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 100, in check_case\n    assert extracted_tests(report) == facts['tests'], 'complete reporter test/results structure mismatch'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: complete reporter test/results structure mismatch\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: complete reporter test/results structure mismatch\n",
+      "outputSha256": "71feaed65b688c3826ddbf78bd129f88c4588e99ece6e40b7abc434c17df1905",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "partial-results",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 100, in check_case\n    assert extracted_tests(report) == facts['tests'], 'complete reporter test/results structure mismatch'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: complete reporter test/results structure mismatch\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: complete reporter test/results structure mismatch\n",
+      "outputSha256": "71feaed65b688c3826ddbf78bd129f88c4588e99ece6e40b7abc434c17df1905",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "path-missing",
+      "case": "R04-api-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 113, in check_case\n    assert relative in files, (name, relative)\n           ^^^^^^^^^^^^^^^^^\nAssertionError: ('R04-api-list', 'api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log')\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-api-list: ('R04-api-list', 'api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log')\n",
+      "outputSha256": "1e0a104c24ea46d2c538c7a5c50f635c72199a478b96d9d12e43344f3ba04555",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "screenshot-size",
+      "case": "R04-browser-success-list",
+      "exit": 1,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "Traceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 72, in check\n    summaries.update(check_case(dict(manifest, cases=[case]), single))\n                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 173, in check_case\n    assert struct.unpack('>II', png[16:24]) == viewport, 'screenshot dimensions differ from project viewport'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: screenshot dimensions differ from project viewport\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 289, in <module>\n    main()\n    ~~~~^^\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 258, in main\n    summaries = check(manifest, receipt)\n  File \"/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py\", line 74, in check\n    raise AssertionError(f'{name}: {str(error) or \"artifact invariant failed\"}') from error\nAssertionError: R04-browser-success-list: screenshot dimensions differ from project viewport\n",
+      "outputSha256": "564e8bb806bc26267dbadb3ebd4c98fce903fc875e34503c78b945a34a869159",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    },
+    {
+      "mutation": "original",
+      "case": "all 14",
+      "exit": 0,
+      "argv": [
+        "/usr/local/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/lean-native-v2-R04/fixtures/profiles/playwright/audit.py",
+        "--verify-only",
+        "--historical-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/historical.json",
+        "--recovery-receipt",
+        "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/R04-audit-controls-aqyyud2y/recovery.json"
+      ],
+      "output": "R04-api-list {'bytes': 5650, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-line {'bytes': 6134, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-api-json {'bytes': 21221, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-failure-list {'bytes': 13246, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-line {'bytes': 13974, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-failure-json {'bytes': 37721, 'exit': 1, 'attemptsIncludingSkips': 12, 'attachments': 12, 'stdoutChunks': 10, 'stderrChunks': 2}\nR04-browser-list {'bytes': 7509, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-line {'bytes': 7626, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-browser-json {'bytes': 20915, 'exit': 1, 'attemptsIncludingSkips': 4, 'attachments': 0, 'stdoutChunks': 0, 'stderrChunks': 0}\nR04-custom-collision {'bytes': 1584, 'exit': 0, 'attemptsIncludingSkips': 8, 'attachments': 8, 'stdoutChunks': 6, 'stderrChunks': 2}\nR04-browser-success-list {'bytes': 1033, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-line {'bytes': 1286, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-json {'bytes': 8145, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 0}\nR04-browser-success-launch-debug {'bytes': 6648, 'exit': 0, 'attemptsIncludingSkips': 2, 'attachments': 4, 'stdoutChunks': 2, 'stderrChunks': 10}\nRead-time inspection complete: 14 cases; rejected probes: []\n",
+      "outputSha256": "f19c53f9da830605e9f3a4eef6119cacd2e57ccc3e0390d037c2136f4baf03e4",
+      "boundary": "merged stdout/stderr pipe; completed process; UTF-8 exact",
+      "temporaryRecordOnly": true
+    }
+  ]
+}

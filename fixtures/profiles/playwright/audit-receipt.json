@@ -1,5 +1,20 @@
 {
-  "scope": "offline capture artifacts only; no runtime verification",
+  "scope": "read-time offline capture artifacts only; no native replay/runtime verification",
+  "auditAt": "2026-10-09T19:01:48.479882+00:00",
+  "auditRecipeSha256": "3a50f88a960ec0126b7e13143c4057d3348def0b16e84c239fd85c3f5cc1f8a9",
+  "inputSha256": {
+    "cases.json": "218e554589ecc097405f3fc4d71ca0d87b6b4d7add66db985b3a2b82b0fe8c89",
+    "capture-receipt.json": "5a1b5d6b3c4b1a4198fec95e05cef034ee4a9987da797d69580c94fe96d9406a",
+    "browser-recovery-receipt.json": "c09a1dfdb53efd794937b8ee0263893d2dcc322489c0652c8dc61d25d34aa115",
+    "setup-receipt.json": "a95fcfd085d20b73f3d1d71fccade92b0a87b4b870b48391e79f2c8baf4abad6"
+  },
+  "predecessor": {
+    "commit": "740cffb77449c5b4be1543b1af3d7e8e84aeac77",
+    "path": "fixtures/profiles/playwright/audit.py",
+    "auditRecipeSha256": "baf4eed88bc50c9498022fd167a20e7e38272ddb9eb52c6278ae99a6510f7896",
+    "auditReceiptSha256": "02b5126814041821a5e38c1e803e3a300d288a46690ca43b7cde593cb98836bf",
+    "limitation": "nonempty CORRUPTED API body was accepted; current inspection repairs that blind spot"
+  },
   "cases": {
     "R04-api-list": {
       "bytes": 5650,
@@ -488,22 +503,86 @@
   "probes": [
     {
       "mutation": "raw-byte-loss",
+      "case": "R04-api-list",
       "rejected": true,
+      "failure": "R04-api-list: artifact invariant failed",
       "restoration": "deep-copy only; committed artifacts never mutated"
     },
     {
       "mutation": "missing-path-artifact",
+      "case": "R04-api-list",
       "rejected": true,
+      "failure": "R04-api-list: ('R04-api-list', 'api-pass-with-stdout-stderr-and-attachments-雪-api-a/attachments/path-evidence-83f94391ed3a0620b856f67d3a041ffb88e23a36.log')",
       "restoration": "deep-copy only; committed artifacts never mutated"
     },
     {
       "mutation": "retry-evidence-loss",
+      "case": "R04-api-list",
       "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
       "restoration": "deep-copy only; committed artifacts never mutated"
     },
     {
       "mutation": "missing-screenshot-artifact",
+      "case": "R04-browser-success-list",
       "rejected": true,
+      "failure": "R04-browser-success-list: ('R04-browser-success-list', 'browser-real-isolated-Chromium-page-and-screenshot-chromium-desktop/attachments/browser-screenshot-34dfa0f368d82aa9c198704bdd93cdf136598027.png')",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "body-loss",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "body-changed",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "report-body-changed",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: body-evidence bytes differ from source/project/retry",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "path-content",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: path-evidence bytes differ from source/project/retry",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "screenshot-size",
+      "case": "R04-browser-success-list",
+      "rejected": true,
+      "failure": "R04-browser-success-list: screenshot dimensions differ from project viewport",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "partial-result",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: complete reporter test/results structure mismatch",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "partial-report-result",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: partial reporter result",
+      "restoration": "deep-copy only; committed artifacts never mutated"
+    },
+    {
+      "mutation": "retry-body-changed",
+      "case": "R04-api-list",
+      "rejected": true,
+      "failure": "R04-api-list: retry-evidence bytes differ from source/project/retry",
       "restoration": "deep-copy only; committed artifacts never mutated"
     }
   ]

@@ -121,3 +121,28 @@ adds process-group timeout cleanup and native global bound; final ten captures
 all exited and reached EOF. No runtime/shared/test-suite edits, full checks,
 typecheck, smoke, benchmark or CI execution. Public-filter disposition is
 pending lead review, represented as passthrough with unchanged bytes.
+
+## Read-time audit history and modification record
+
+Independent-review correction starts from author commit
+`740cffb77449c5b4be1543b1af3d7e8e84aeac77`. Prior audit recipe SHA-256:
+`baf4eed88bc50c9498022fd167a20e7e38272ddb9eb52c6278ae99a6510f7896`;
+prior audit receipt SHA-256:
+`02b5126814041821a5e38c1e803e3a300d288a46690ca43b7cde593cb98836bf`.
+`audit-history-740cffb.json` archives both verbatim, with original repository
+paths/commit, MIT license, byte lengths and hashes. No capture/source material
+rewritten. Modification category: **repair/strengthening**, no exception/waiver.
+
+New `audit.py` compares full raw-report extraction against complete receipt
+tests/results; checks source-bound body/path content and retry markers; retains
+previous envelope/EOF/attachment/browser/PNG checks. It records `auditAt` and
+`auditRecipeSha256` on read-time audit receipt. Those identify this later
+inspection, not the code or checks that ran at native capture time.
+
+`audit-controls-receipt.json` snapshots the separate temporary-record control
+script with SHA-256 and exact subprocess argv/outputs/exits. Only temporary
+JSON receipts are corrupted; `--verify-only` runs never write native/audit
+material. Prior blind control accepted `CORRUPTED`; current named controls
+reject it, including coordinated companion/evidence edits that still agree.
+Original immutable records pass after controls. This is offline inspection,
+not native replay, runtime-profile testing or independent source/build attestation.
