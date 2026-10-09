@@ -309,6 +309,19 @@ test("Vitest whole rows including timing stay exact; damaged replacements fail e
   green(verdict("vitest", verbose, actual(entry.command, verbose)));
   red(verdict("vitest", verbose, replacement(verbose, entry.output)), /no_replacement/);
 });
+test("Vitest independent oracle rejects timing-only deletion from native-shaped user evidence", () => {
+  const entry = controls.find((item) => item.oracle === "vitest")!;
+  const result = actual(entry.command, entry.output);
+  green(verdict("vitest", entry.output, result));
+  for (const timing of [" 24ms", " 7ms"]) {
+    const damaged = entry.output.replace(timing, "");
+    assert.notEqual(damaged, entry.output, "Known timing control must be present");
+    red(verdict("vitest", entry.output, replacement(entry.output, damaged)), /native_evidence/);
+  }
+  const allTimingsDeleted = entry.output.replace(/ \d+ms(?=\n)/g, "");
+  assert.notEqual(allTimingsDeleted, entry.output);
+  red(verdict("vitest", entry.output, replacement(entry.output, allTimingsDeleted)), /native_evidence/);
+});
 
 test("Git every fact row survives, including branch/tracking/status/rename/submodule/path facts", () => {
   const entry = controls.find((item) => item.oracle === "git")!, result = actual(entry.command, entry.output);

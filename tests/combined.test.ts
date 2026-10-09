@@ -9,7 +9,7 @@ import { profiles } from "../src/profiles/index.js";
 import { formatProfiles } from "../src/profiles/formats.js";
 import { nodeTestProfile } from "../src/profiles/node-test.js";
 import type { FilterResult, Observation, Reduction, Span } from "../src/types.js";
-import { readNativeCorpus } from "../scripts/native-corpus.mjs";
+import { assertCorpusCoverage, readNativeCorpus } from "../scripts/native-corpus.mjs";
 
 // Replay existing captures without rewriting bytes. Provenance, pinned donor
 // paths/commit/license and native tool versions live in fixtures/*/SOURCES.md.
@@ -256,7 +256,14 @@ test("source fixture inventory and default production registry are nonempty and 
   assert.deepEqual(utility.families.map((entry: { family: string }) => entry.family).sort(), ["cargo", "go", "node", "pytest"]);
   assert.equal(utility.cases.length, 25, "Independent native corpus contract changed");
   const delta = await readNativeCorpus(join(fixtureRoot, "profiles"));
-  assert.deepEqual(ids, [...new Set([...corpus.map(entry => entry.profile), ...utility.cases.map((entry: { profile: string }) => entry.profile), ...delta.map(entry => entry.family)])].sort(), "Every shipped profile needs a corpus case");
+  assert.deepEqual(ids, assertCorpusCoverage(profiles, [
+    ...corpus.map(entry => ({ name: entry.path, family: entry.profile, status: "passthrough" as const,
+      expected: entry.expected ?? entry.input, observation: observation(entry.input, entry.command), provenance: "legacy native corpus" })),
+    ...utility.cases.map((entry: { qualifiedID: string; profile: string; expectedStatus: "reduced" | "passthrough"; expectedText: string; observation: Observation }) => ({
+      name: `utility/${entry.qualifiedID}`, family: entry.profile, status: entry.expectedStatus,
+      expected: entry.expectedText, observation: entry.observation, provenance: "authenticated utility corpus" })),
+    ...delta,
+  ], delta.exactFamilies).sort(), "Every shipped profile needs a corpus case");
   for (const entry of delta) {
     const result = run(entry.observation);
     assert.equal(result.status, entry.status, entry.name);

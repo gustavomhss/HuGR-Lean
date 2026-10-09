@@ -159,7 +159,8 @@ function runnerEvidence(oracle, source) {
       const file = /^ ✓ (.+) \(([1-9]\d*) tests?\)(?: (\d+(?:\.\d+)?)ms)?$/.exec(text);
       if (file && uint(file[2])) {
         shape += "f"; counts.files++; counts.leaves += Number(file[2]);
-        keep(row, file[3] === undefined ? text : text.slice(0, -(file[3].length + 3))); continue;
+        // Configured reporters can emit this exact shape; timing remains user evidence.
+        keep(row); continue;
       }
       const total = /^ +(Test Files|Tests) +(\d+) passed \((\d+)\)$/.exec(text);
       if (total && uint(total[2]) && total[2] === total[3]) {

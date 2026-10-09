@@ -180,6 +180,12 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | C08 | CAPTURED | campaign/native-v2/C08 / #105 | Cargo 1.98 fetch/install; resolution/artifacts/build-script logs retained; registry installed skip unobserved |
 | B04 | CAPTURED | campaign/native-v2/B04 / #106 | Rollup 4.52.4; artifact/warning/plugin output retained, including silent-mode progress collision |
 | B05 | CAPTURED | campaign/native-v2/B05 / #107 | webpack 5.102.1/CLI 6.0.1; compact JSON, stats/artifacts/plugin logs retained |
+| B02 | CAPTURED | campaign/native-v2/B02 / #113 | Next bounded tiny builds/routes/artifacts/typechecks/warnings/collisions; ENOSPC and timeout history retained |
+| R01 | CAPTURED | campaign/native-v2/R01 / #112 | pytest 9.0.3/xdist 3.8.0 delta only; baseline anchors reused, default-filter admission pending |
+| R02 | CAPTURED | campaign/native-v2/R02 / #114 | Jest package 30.2.0/native CLI 30.1.3; projects/coverage/reporters/snapshots/log delta |
+| R03 | CAPTURED_FIX_PENDING | campaign/native-v2/R03 / #116 | Vitest 3.2.4 delta; configured reporter proved existing timing-deletion bug, preservation repair reviewed |
+| R04 | CAPTURED | campaign/native-v2/R04 / #115 | Playwright 1.56.1 API reporters plus real isolated Chromium 1194/two viewport projects/screenshots; no cross-engine claim |
+| R05 | CAPTURED | campaign/native-v2/R05 / #111 | Bun 1.3.14 suites/skips/todo/logs/coverage/retries/reruns/collision evidence; admission pending |
 
 All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
@@ -235,6 +241,23 @@ native goldens save 1,894 UTF-8 bytes; the clean JSON2 `10.0` variant remains ex
 canonical-token guard. The lead ran only new Pylint default-routing/corpus closure and scoped typing;
 both passed. No shared helper changes or full-suite replay. Other latest capture checkpoints remain
 on exclusive branches: L04 `d9d488d`, C07 `d3d9cbc`, C08 `2e51948`, B04 `2c686e9`, B05 `329215a`.
+Disk incident: ENOSPC interrupted Next, Vitest and private Chromium setup. User explicitly authorized
+shell cleanup of campaign-owned reconstructible installs/caches/builds after evidence preservation.
+Receipt-pinned paths only were removed; source/captures/locks/recipes/commits remained intact.
+Sidecar `/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/L08-pyright-native/cleanup-preservation.json`
+records exact paths and before/after hash inventories; SHA-256
+`736116d999637ffc72cfa6c5e250e05afb53446b55b77462da777fb1ba022784`.
+Concurrent disk activity contributed to free-space gains; those gains are not attributed wholly to
+cleanup. Recovery checkpoints: B02 `db660e0`, R03 `efad2b6`, R04 `740cffb`. Historical incomplete
+outputs remain archives with unknown completeness, not relabeled as complete native witnesses.
+Vitest repair PR #117 `672c8e1` independently approved: whole successful rows, including timing-like
+user data, remain required source spans. Legacy plain text reductions intentionally withdrawn;
+native/donor installed goldens now equal raw. Exact-corpus gate repair PR #118 `340bb3c` independently
+approved: explicit index `exactFamilies` ledger, full runtime correspondence, installed identity and
+nonempty/missing/extra/stale exceptions still checked. Both integrated; combined closure uses the same
+validator. Independent real-world oracle strengthened to require whole Vitest rows. A timing-only
+mutation initially remained green because only one of two rows changed; the revised control removes
+both timing suffixes, fails under the old oracle, then passes after restoration. Scoped typing passed.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.
