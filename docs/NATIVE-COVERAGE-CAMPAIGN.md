@@ -174,6 +174,12 @@ C01/C02/G01: existing variants preserved; only missing flags/grammar may become 
 | L09 | CAPTURED | campaign/native-v2/L09 / #102 | Stylelint 16.25.0; compact JSON, fixes and plugin/config output retained; LF candidates unapproved |
 | L10 | EXACT_CORPUS_INTEGRATED | campaign/native-v2/L10 / #103 | ShellCheck 0.11.0; compact JSON, silence and nonzero diagnostics retained; binary/source correspondence unattested |
 | L11 | CAPTURED | campaign/native-v2/L11 / #104 | markdownlint-cli2 0.23.3 only; custom reporter progress collision; no approved deletion |
+| L04 | CAPTURED | campaign/native-v2/L04 / #108 | golangci-lint 2.11.4; compact JSON and mixed warning/stat boundaries retained |
+| L06 | INTEGRATED | campaign/native-v2/L06 / #109 | Pylint 4.0.4 distinct explicit exit-zero JSON/JSON2 layout; every token and terminal whitespace retained |
+| C07 | CAPTURED | campaign/native-v2/C07 / #110 | cargo-nextest 0.9.148; multisuite/count/log/collision evidence exact; no approved deletion |
+| C08 | CAPTURED | campaign/native-v2/C08 / #105 | Cargo 1.98 fetch/install; resolution/artifacts/build-script logs retained; registry installed skip unobserved |
+| B04 | CAPTURED | campaign/native-v2/B04 / #106 | Rollup 4.52.4; artifact/warning/plugin output retained, including silent-mode progress collision |
+| B05 | CAPTURED | campaign/native-v2/B05 / #107 | webpack 5.102.1/CLI 6.0.1; compact JSON, stats/artifacts/plugin logs retained |
 
 All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
 precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
@@ -223,6 +229,12 @@ Only C05 fixtures imported: its no-reduction parser/tests excluded. ShellCheck a
 normalized to path strings; raw bytes and receipt remain unchanged. The nonempty per-family
 default-filter identity closure and scoped closure typing passed. No new runtime profile introduced.
 These states attest bounded exact native evidence, not blanket family completeness or new reductions.
+L06 `b2fb51abb69f49645399dbe2d060fb9d57f4bd68` independently approved after counts and
+terminal-whitespace mutations failed their narrow guards, then restored guards passed. Four original
+native goldens save 1,894 UTF-8 bytes; the clean JSON2 `10.0` variant remains exact under the frozen
+canonical-token guard. The lead ran only new Pylint default-routing/corpus closure and scoped typing;
+both passed. No shared helper changes or full-suite replay. Other latest capture checkpoints remain
+on exclusive branches: L04 `d9d488d`, C07 `d3d9cbc`, C08 `2e51948`, B04 `2c686e9`, B05 `329215a`.
 Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
 made five selected native tests fail; restoration made all five pass. Removing T01 from the native
 index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.
