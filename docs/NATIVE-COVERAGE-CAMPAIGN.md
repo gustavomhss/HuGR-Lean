@@ -95,12 +95,27 @@ seams initially delegate to baseline objects; new implementation extends rather 
 Registry/shared helpers/types/global docs/corpus reader/goldens/workflow are lead-owned.
 Oversized rows split before coding into exclusive child files with frozen seams; parent ACs remain total.
 
-Per agent: own named test file + npm run typecheck, meaningful preservation/admission mutation goes
-red, restore, rerun. No npm test/check/full build/smoke/benchmark/CI. Native tiny capture projects allowed;
+Verification policy corrected by human feedback: do not repeat whole owned suites across author,
+reviewer and integration. During iteration run only new/changed acceptance names with
+`npx --no-install tsx --test --test-name-pattern='<exact affected names>' tests/profile-<stem>.test.ts`.
+Mutation probe runs only its protecting test; restore and repeat that same test, not the whole file.
+Run the owned test file once when the packet closes. Further whole-file runs require new changes,
+failure or a concrete unresolved concern, not merely another reviewer/integration phase.
+Typecheck the affected source/test closure once at compiling checkpoint and again only if later changes
+affect typing; use the frozen compiler options below, not repeated full-package typechecks:
+
+```
+npx --no-install tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes --skipLibCheck --types node src/profiles/<stem>.ts tests/profile-<stem>.test.ts
+```
+
+Full-package typecheck remains in the sole final CI. Reviewers inspect code and run only their concrete
+counterexample/protecting named test; they do not rerun the author's full file by default. Integration
+runs only changed routing/corpus seams or actual failures; previously verified unchanged families are
+not replayed repeatedly. No npm test/check/full build/smoke/benchmark/CI. Native tiny capture projects allowed;
 no global installs/private registries/large builds. First compiling commit pushed; PR targets campaign
 integration branch; agents stop, never merge. Tests at root are discovered by existing tests/*.test.ts.
 Lead independently reviews complete diff and probes changed behavior; integrates by cherry-pick only.
-DoD: all owned cases, red/green or preservation witnesses, native source/evidence/goldens, focused checks,
+DoD: all owned cases, red/green or preservation witnesses, native source/evidence/goldens, one closure check,
 restored mutations, provenance and source-size policy. No silent missing variant or waiver.
 
 ## Final verification
@@ -126,7 +141,37 @@ candidate CI green. Stop for human review. Existing host compatibility claims re
 
 S00: preserve existing baseline and manual CI; freeze only delta seams/routing and corpus metadata.
 C01/C02/G01: existing variants preserved; only missing flags/grammar may become new work.
-All other rows: SPEC until packet frozen; no implementation result claimed.
+### Current receipts
+
+| ID | State | Source branch / PR | Accepted boundary |
+| --- | --- | --- | --- |
+| C01 | INTEGRATED | campaign/native-v2/C01 / #70 | Generic build/check/default/release/projects; bounded warning layout, leading progress only |
+| C02 | INTEGRATED | campaign/native-v2/C02 / #72 | Default workspace and feature lists; suite/doctest/skip evidence retained |
+| G01 | INTEGRATED | campaign/native-v2/G01 / #69 | Nested/parallel trees retained; unrelated quiet flat roots may shrink; raw stdout authentication not claimed |
+| G02 | INTEGRATED | campaign/native-v2/G02 / #71 | Complete JSON lifecycle; every Output event retained |
+| T01 | INTEGRATED | campaign/native-v2/T01 / #74 | Bound plain verbose solution-build timestamp layout only |
+| P02 | INTEGRATED | campaign/native-v2/P02 / #77 | Native install progress only with original ignore-scripts + ignore-pnpmfile |
+| L03 | REVIEWED | campaign/native-v2/L03 / #82 | Ruff explicit JSON/exit-zero, all data tokens retained; inline artifacts preserve no-LF EOF |
+| C03 | REVIEW | campaign/native-v2/C03 / #81 | Clippy suffix preserved; format-control/prefixed-warning fixes pending cold follow-up |
+| L02 | REVIEW | campaign/native-v2/L02 / #80 | Biome decorative header bars only; terminal blank-pair fix pending cold follow-up |
+| L01 | REVIEW | campaign/native-v2/L01 / #83 | ESLint stylish outer LF only; tiny savings, no material-profit claim |
+| P01 | CAPTURED | campaign/native-v2/P01 / #73 | No meaningful progress observed in captured pipe outputs; successful peer-warning case incomplete |
+| C04 | CAPTURED | campaign/native-v2/C04 / #87 | rustfmt silent success and nonzero diffs; no removable material found |
+| C05 | CAPTURED | campaign/native-v2/C05 / #92 | Cargo doc progress candidate, artifacts/warnings retained |
+| C06 | BLOCKED | campaign/native-v2/C06 / #88 | Stable toolchains reject builtin bench; arbitrary custom harness retained, native metrics unproven |
+| G03 | CAPTURED | campaign/native-v2/G03 / #90 | Bench metrics/logs retained; nested-progress deletion not approved |
+| G04 | CAPTURED | campaign/native-v2/G04 / #91 | Build/vet/run silent or meaningful output; no reduction proposed |
+| G05 | CAPTURED | campaign/native-v2/G05 / #89 | Mixed module/download progress candidate; changes and advice retained |
+
+All other rows remain SPEC, not silently completed. Independent cold reviews and restored lead probes
+precede integration. Current native-directory index is an explicit promoted-fixture ledger, not a
+claim that the full campaign is complete. Source/checkpoint SHA and detailed probes live in each PR.
+Lead corpus wiring checks family absence/extra, local references, declared receipt bindings, raw hashes
+where supplied, independent goldens and actual default-filter results. It does not authenticate every
+historical collector or replace existing family-specific provenance verifiers.
+Lead destructive probes: dropping warning/suite summary/JSON Output/tsc body/peer-warning evidence
+made five selected native tests fail; restoration made all five pass. Removing T01 from the native
+index made real corpus correspondence fail; index restored. No full CI or benchmark run yet.
 States: SPEC -> CAPTURED -> BASELINE_RED/PRESERVED -> READY -> RUNNING -> REVIEW -> INTEGRATED -> FINAL_VERIFIED.
 Per row receipt: owner, baseline SHA, branch/worktree, packet/version, final SHA/PR, tests/mutation, blockers.
 Old-main planning branch remains historical and is not part of this integration.

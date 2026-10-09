@@ -6,10 +6,32 @@ import { runnerProfiles } from "../src/profiles/runners.js";
 import { formatProfiles } from "../src/profiles/formats.js";
 import { nodeTestProfile } from "../src/profiles/node-test.js";
 import { goMode } from "../src/profiles/go-mode.js";
+import { filter } from "../src/core/engine.js";
+import { readNativeCorpus } from "../scripts/native-corpus.mjs";
+import { fileURLToPath } from "node:url";
 
-test("S00 delta scaffold retains all original profile objects and order", () => {
-  assert.deepEqual(profiles, [...runnerProfiles, ...formatProfiles, nodeTestProfile]);
+test("S00 delta scaffold retains untouched profiles and original native evidence", () => {
+  for (const original of [...runnerProfiles, ...formatProfiles, nodeTestProfile]) {
+    if (!["cargo-test", "cargo-build", "go-test-verbose", "tsc"].includes(original.id)) assert.ok(profiles.includes(original));
+  }
+  const goldens = JSON.parse(readFileSync(new URL("../fixtures/installed-goldens.json", import.meta.url), "utf8")) as { outputs: Record<string, string> };
+  for (const [fixture, command] of [["runners/cargo_test_success.txt", "cargo test --color never"], ["runners/cargo_build_success.txt", "cargo build --color never"], ["runners/go_test_success.txt", "go test -v"]]) {
+    const output = readFileSync(new URL(`../fixtures/${fixture}`, import.meta.url), "utf8");
+    const result = filter({ source: "shell", command: command!, output, termination: { kind: "exited", code: 0 }, completeness: "complete", presentation: "unknown" });
+    assert.ok("replacement" in result);
+    const expected = output.includes("\r\n") ? goldens.outputs[fixture!]!.replaceAll("\n", "\r\n") : goldens.outputs[fixture!]!;
+    assert.equal(result.replacement, expected);
+  }
   assert.equal(new Set(profiles.map((profile) => profile.id)).size, profiles.length);
+});
+test("S00 every delta corpus case reaches its declared default-profile result", async () => {
+  const cases = await readNativeCorpus(fileURLToPath(new URL("../fixtures/profiles", import.meta.url)));
+  for (const entry of cases) {
+    const result = filter(entry.observation);
+    assert.equal(result.status, entry.status, entry.name);
+    assert.equal("replacement" in result ? result.replacement : entry.observation.output, entry.expected, entry.name);
+    if (result.status === "reduced") assert.equal(result.profile, entry.family, entry.name);
+  }
 });
 test("S00 delta Go routing is disjoint and closed", () => {
   assert.equal(goMode(["go", "test", "-v", "./..."]), "text");

@@ -82,8 +82,7 @@ test("installed positive control packs/installs actual engine, loads default, fi
     assert.ok(!result.cli.target.startsWith(root + path.sep), "Consumer must live outside source ancestry");
     const corpus = await benchmark.readCorpus(directory);
     assert.equal(result.fixtureCount, corpus.length);
-    assert.equal(result.fixtureCount, 39);
-    assert.equal(result.profileIds.length, 10);
+    assert.deepEqual(result.profileIds.toSorted(), [...new Set(corpus.map((item: { family: string }) => item.family))].sort());
     assert.equal(result.plugin.fixtureCount, corpus.length, "Every fixture must traverse installed after-hook");
     assert.deepEqual(result.fixtures.map((item: { name: string }) => item.name), corpus.map((item: { name: string }) => item.name));
     assert.ok(result.fixtures.some((item: { status: string }) => item.status === "reduced"));
@@ -95,26 +94,26 @@ test("installed positive control packs/installs actual engine, loads default, fi
 test("installed Node omission mutates actual compiled registry; restored artifact passes", async () => {
   await fixture(async (directory) => {
     const file = path.join(directory, "dist/profiles/index.js"), original = await readFile(file, "utf8");
-    assert.equal((await smoke.runPackageSmoke({ root: directory })).profileIds.length, 10);
-    const mutant = original.replace(", nodeTestProfile]", "]");
+    assert.ok((await smoke.runPackageSmoke({ root: directory })).profileIds.includes("node-test"));
+    const mutant = original.replace("nodeTestProfile,", "");
     assert.notEqual(mutant, original, "Control must omit actual compiled Node registration");
     await writeFile(file, mutant);
-    await assert.rejects(smoke.runPackageSmoke({ root: directory }), /Installed default registry must ship ten real profiles/);
+    await assert.rejects(smoke.runPackageSmoke({ root: directory }), /Installed profile\/corpus coverage differs/);
     await writeFile(file, original);
-    assert.equal((await smoke.runPackageSmoke({ root: directory })).profileIds.length, 10);
+    assert.ok((await smoke.runPackageSmoke({ root: directory })).profileIds.includes("node-test"));
   });
 });
 
 test("installed required-context loss fails despite unchanged pieces; restored artifact passes", async () => {
   await fixture(async (directory) => {
     const file = path.join(directory, "dist/profiles/go.js"), original = await readFile(file, "utf8");
-    assert.equal((await smoke.runPackageSmoke({ root: directory })).fixtureCount, 39);
+    assert.equal((await smoke.runPackageSmoke({ root: directory })).fixtureCount, (await benchmark.readCorpus(directory)).length);
     const mutant = original.replace("reduction(kept) : undefined", '{ ...reduction(kept), required: kept.filter(line => !line.text.startsWith("=== RUN")).map(line => line.span) } : undefined');
     assert.notEqual(mutant, original, "Control must remove actual compiled Go required RUN context, retaining emitted pieces");
     await writeFile(file, mutant);
     await assert.rejects(smoke.runPackageSmoke({ root: directory }), /utility\/go\/.*independent critical anchor missing from required: === RUN/);
     await writeFile(file, original);
-    assert.equal((await smoke.runPackageSmoke({ root: directory })).fixtureCount, 39);
+    assert.equal((await smoke.runPackageSmoke({ root: directory })).fixtureCount, (await benchmark.readCorpus(directory)).length);
   });
 });
 
@@ -129,7 +128,7 @@ test("native fixture folder is required; missing or empty corpus cannot fall bac
 
 test("compiled default inventory includes Node once and dispatches real source capture", async () => {
   const { filter, profiles } = await benchmark.compiled(seed);
-  assert.equal(profiles.length, 10, "Compiled default inventory must contain ten profiles");
+  benchmark.assertCoverage(profiles, await benchmark.readCorpus(seed));
   assert.equal(profiles.filter((item: { id: string }) => item.id === "node-test").length, 1);
   // Narrow registration control reads independent bytes; authenticated full-corpus proof remains mandatory above.
   const directory = path.join(seed, "fixtures/utility/node/captures/node-flat-default");

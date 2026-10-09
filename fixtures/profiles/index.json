@@ -1,0 +1,4 @@
+{
+  "schema": "hugr-lean/native-index/1",
+  "families": ["cargo-build", "cargo-test", "go-test-json", "go-test-text", "pnpm-install", "tsc"]
+}
