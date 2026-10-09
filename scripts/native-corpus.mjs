@@ -7,6 +7,40 @@ import path from "node:path";
 const utf8 = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 const text = (value) => typeof value === "string" && value.length > 0;
 
+/** Shared with the isolated inspector via function source; absent ledger grants no exceptions. */
+export function assertCorpusCoverage(profiles, cases, exactFamilies = cases.exactFamilies ?? [], context = "Default") {
+  assert.ok(Array.isArray(profiles) && profiles.length, `${context} profile registry is missing or empty`);
+  const ids = profiles.map(profile => {
+    assert.ok(profile && typeof profile.id === "string" && profile.id.length &&
+      typeof profile.match === "function" && typeof profile.reduce === "function", `Invalid ${context} profile`);
+    return profile.id;
+  });
+  assert.equal(new Set(ids).size, ids.length, `Duplicate ${context.toLowerCase()} profile IDs`);
+  assert.ok(Array.isArray(cases) && cases.length, "Workload corpus is empty");
+  assert.equal(new Set(cases.map(entry => entry.name)).size, cases.length, "Duplicate fixture case names");
+  assert.ok(Array.isArray(exactFamilies) && exactFamilies.every(name => typeof name === "string" && /^[a-z][a-z0-9-]*$/.test(name)), "Invalid exact family ledger");
+  assert.equal(new Set(exactFamilies).size, exactFamilies.length, "Duplicate exact family exception");
+  for (const family of exactFamilies) {
+    assert.ok(!ids.includes(family), `${family}: exact exception masks registered profile`);
+    const rows = cases.filter(entry => entry.family === family);
+    assert.ok(rows.length, `${family}: stale exact family exception`);
+    for (const entry of rows) assert.equal(entry.scope, "exact-corpus", `${entry.name}: missing exact scope`);
+  }
+  for (const entry of cases) {
+    assert.ok(typeof entry.name === "string" && entry.name.length && typeof entry.family === "string" && entry.family.length, "Invalid corpus case identity");
+    assert.ok(entry.scope === undefined || entry.scope === "exact-corpus", `${entry.name}: invalid corpus scope`);
+    if (entry.scope === "exact-corpus") {
+      assert.ok(exactFamilies.includes(entry.family), `${entry.family}: undeclared exact family`);
+      assert.equal(entry.status, "passthrough", `${entry.name}: exact case must passthrough`);
+      assert.equal(typeof entry.observation?.output, "string", `${entry.name}: missing exact output`);
+      assert.equal(entry.expected, entry.observation.output, `${entry.name}: exact golden changed original`);
+    }
+  }
+  assert.deepEqual([...new Set(cases.filter(entry => entry.scope !== "exact-corpus").map(entry => entry.family))].sort(), ids.toSorted(),
+    `${context} profile/corpus coverage differs (missing profile or fixture)`);
+  return ids;
+}
+
 async function regular(directory, name) {
   assert.ok(text(name) && !path.isAbsolute(name) && !name.includes("\\"), `Invalid corpus path: ${name}`);
   const components = name.split("/");
@@ -34,6 +68,9 @@ export async function readNativeCorpus(root) {
   assert.equal(index.schema, "hugr-lean/native-index/1", "Invalid native corpus index");
   assert.ok(Array.isArray(index.families) && index.families.length && index.families.every(name => text(name) && /^[a-z][a-z0-9-]*$/.test(name)), "Empty/invalid native family index");
   assert.equal(new Set(index.families).size, index.families.length, "Duplicate native family declaration");
+  const exactFamilies = index.exactFamilies ?? [];
+  assert.ok(Array.isArray(exactFamilies) && exactFamilies.every(name => index.families.includes(name)), "Invalid/stale exact family ledger");
+  assert.equal(new Set(exactFamilies).size, exactFamilies.length, "Duplicate exact family exception");
   const entries = await readdir(root, { withFileTypes: true });
   assert.deepEqual(entries.map(entry => entry.name).sort(), ["index.json", ...index.families].sort(), "Native directory/index correspondence differs");
   const families = entries.filter(entry => entry.name !== "index.json");
@@ -55,6 +92,10 @@ export async function readNativeCorpus(root) {
       assert.ok(text(entry.name) && !names.has(entry.name), `${label}: duplicate/missing case name`);
       names.add(entry.name);
       assert.ok(text(entry.family) && text(entry.version) && text(entry.platform), `${label}: missing native facts`);
+      if (exactFamilies.includes(family.name)) {
+        assert.equal(entry.family, family.name, `${label}: exact family identity differs`);
+        assert.equal(entry.status, "passthrough", `${label}: exact case must passthrough`);
+      }
       assert.ok(entry.provenance && typeof entry.provenance === "object" && !Array.isArray(entry.provenance) && Object.keys(entry.provenance).length, `${label}: missing provenance`);
       assert.ok(entry.status === "reduced" || entry.status === "passthrough", `${label}: unresolved disposition`);
       assert.ok(entry.termination?.kind === "exited" && Number.isSafeInteger(entry.termination.code) && entry.termination.code >= 0, `${label}: missing termination`);
@@ -107,6 +148,7 @@ export async function readNativeCorpus(root) {
           `${label}: missing/non-smaller independent golden`);
       } else assert.equal(expected, output, `${label}: passthrough golden changed original`);
       cases.push({ name: `native/${entry.name}`, family: entry.family, status: entry.status, expected,
+        ...(exactFamilies.includes(family.name) ? { scope: "exact-corpus" } : {}),
         provenance: `native ${entry.version}; ${entry.platform}; ${family.name}/cases.json`,
         observation: { source: "shell", command: command(entry.command), output, termination: entry.termination,
           completeness: entry.completeness, presentation: entry.presentation } });
@@ -124,5 +166,5 @@ export async function readNativeCorpus(root) {
     }
     await inspect();
   }
-  return cases;
+  return Object.assign(cases, { exactFamilies });
 }

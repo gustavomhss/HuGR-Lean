@@ -12,7 +12,7 @@ The [registry](../src/profiles/index.ts) contains eight reducers plus identity-o
 | `pytest` | pytest 9.0.3/pluggy 1.6.0, plugin-free default human session, unwrapped file dot/skip rows and consistent totals; retain skipped-file evidence | [runner tests](../tests/runners.test.ts) |
 | `go-test-verbose` | `go test -v [.]`, one flat sequential package, RUN/result pairs, native PASS/timed summary; no logs/subtests/parallel/cached grammar | [runner tests](../tests/runners.test.ts) |
 | `jest` | Plain successful human suites/describe/tests and consistent summaries; preserve bodies/timings, shorten fixed success prefixes | [format tests](../tests/formats.test.ts) |
-| `vitest` | Plain successful human file/count/clock/duration grammar; preserve evidence, omit only delimited per-file timings | [format tests](../tests/formats.test.ts) |
+| `vitest` | Exact fixture preservation; no timing removal approved. Runtime/source golden alignment pending PR117 | [format tests](../tests/formats.test.ts) |
 | `git-status` | English human long status, known ordered sections/state/advice, restricted unquoted paths; exact conflicts/renames/submodules, native footer where required | [format tests](../tests/formats.test.ts) |
 | `rg` | Explicit `-n`/`--line-number`, known options, unambiguous filename/positive-line/content records; consecutive path grouping only | [format tests](../tests/formats.test.ts) |
 | `tsc` | Identity stub, always `undefined`; multiline/pretty diagnostics remain exact | [format tests](../tests/formats.test.ts) |
