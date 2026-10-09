@@ -6,20 +6,26 @@ import type { Observation, Profile, Reduction, Span } from "../core/types.js";
 // literal tokenizer; this profile never rewrites them or widens that grammar.
 const modulePath = /^[a-z0-9]+(?:[.-][a-z0-9]+)+(?:\/[A-Za-z0-9_][A-Za-z0-9_.-]*)+$/;
 const version = /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(\+incompatible)?$/;
+// Independently authored constraints; authoritative source pin in G05 SOURCES.md.
+const reservedComponent = /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
 function moduleName(value: string): boolean {
-  return modulePath.test(value) && value.split("/").every(part => !part.endsWith("."));
+  if (!modulePath.test(value) || !value.split("/")[0]!.includes(".") ||
+      value.startsWith("gopkg.in/")) return false;
+  const suffix = /\/v([0-9.]+)$/.exec(value);
+  if (suffix && (!/^[1-9]\d*$/.test(suffix[1]!) || BigInt(suffix[1]!) < 2n)) return false;
+  return value.split("/").every(part => !part.endsWith(".") &&
+    !reservedComponent.test(part.split(".")[0]!));
 }
 type Release = { core: bigint[]; prerelease: string[] };
 function moduleRelease(name: string, value: string): Release | undefined {
   const parsed = version.exec(value);
-  if (!moduleName(name) || !parsed || name.startsWith("gopkg.in/")) return undefined;
+  if (!moduleName(name) || !parsed) return undefined;
   const prerelease = parsed[4]?.split(".") ?? [];
   if (prerelease.some(part => /^0\d+$/.test(part))) return undefined;
   const major = BigInt(parsed[1]!);
   const suffix = /\/v([0-9.]+)$/.exec(name);
   if (suffix) {
-    if (!/^[1-9]\d*$/.test(suffix[1]!) || BigInt(suffix[1]!) < 2n ||
-        BigInt(suffix[1]!) !== major || parsed[5]) return undefined;
+    if (BigInt(suffix[1]!) !== major || parsed[5]) return undefined;
   } else if (major >= 2n ? !parsed[5] : parsed[5]) return undefined;
   return { core: parsed.slice(1, 4).map(part => BigInt(part!)), prerelease };
 }

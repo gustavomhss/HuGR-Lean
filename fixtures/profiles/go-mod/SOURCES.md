@@ -65,3 +65,21 @@ Independent expected files transcribe only original added/upgraded rows, preserv
 order and final LF. Focused tests inject the exported `go-mod` family into public
 filter and verify reductions, exact refusals and source evidence. Default registry
 registration is lead-owned and is not claimed by this branch.
+
+## Path validation reference (cold-review correction)
+
+Authoritative local source read: Go 1.27.1 at
+`/usr/local/Cellar/go/1.27.1/libexec/src/cmd/vendor/golang.org/x/mod/module/module.go`,
+lines 234–259, 297–342, 385–481, 503–558. Its vendored module pin in
+`src/cmd/vendor/modules.txt` is `golang.org/x/mod v0.36.1-0.20260813213634-8569e2639ca1`.
+Upstream repository: `https://github.com/golang/mod`; immutable commit:
+`8569e2639ca10cf2c77d73ec4eb87a6b8e15ed69`; upstream path: `module/module.go`.
+License: BSD-3-Clause, upstream `LICENSE` at that commit (local vendored LICENSE read).
+
+No source code or comments copied. Independently authored TypeScript checks express
+the domain-dot requirement and finite Windows-reserved component rule, matching
+the case-insensitive component prefix before its first dot. Reserved names are
+CON, PRN, AUX, NUL, COM1–COM9 and LPT1–LPT9, on every platform. Existing narrower
+ASCII grammar remains closed. Path-only canonical major suffix checks and refusal
+of unsupported gopkg.in conventions now apply to command operands as well as rows.
+Tests are authored synthetic refusals and positive controls, not native captures.
