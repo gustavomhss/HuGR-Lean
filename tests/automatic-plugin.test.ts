@@ -68,3 +68,44 @@ test("aggregate MCP budget is validated before parsing the first eligible block"
   try { await createAfterHook()(input, output); assert.equal(calls, 0); }
   finally { JSON.parse = parse; }
 });
+test("hook reads tool, args and command once; exclusion and core see the same frozen values", async () => {
+  let commandReads = 0, toolReads = 0;
+  const seen: unknown[] = [];
+  const hook = createAfterHook({ excludeCommands: ["curl"] }, {
+    filter: () => ({ status: "passthrough", reason: "no_profile", inputBytes: 0, outputBytes: 0 }) as never,
+    automaticFilter: observation => { seen.push(observation.tool, observation.args.command); return { status: "passthrough", reason: "probe", inputBytes: 0, outputBytes: 0 } as never; },
+  });
+  const args = { get command() { return ++commandReads <= 2 ? "mytool --json" : "curl http://local"; } };
+  await hook({ tool: "bash", args }, { output: ' { "x": 1 } ', metadata: { exit: 0, truncated: false } });
+  assert.equal(commandReads, 1); assert.deepEqual(seen, ["bash", "mytool --json"]);
+  const switching = { get tool() { return ++toolReads <= 2 ? "glob" : "bash"; }, args: { pattern: "*" } };
+  await hook(switching, { output: "/a\n/b\n", metadata: { truncated: false } });
+  assert.equal(toolReads, 1); assert.deepEqual(seen.slice(2, 3), ["glob"]);
+});
+test("MCP validation and commit use one snapshot of the content array and each block", async () => {
+  const text = { type: "text", text: " ".repeat(256) + '{"ref":"e42"}' };
+  class Sneaky extends Array<unknown> { override entries(): ArrayIterator<[number, unknown]> { return [[0, text]].values() as never; } }
+  const sneaky = Sneaky.from([text, { type: "resource", resource: { uri: "file:x", blob: "AAAA" } }]);
+  const output = { content: sneaky }; await createAfterHook()(input, output); assert.equal(output.content, sneaky);
+  let typeReads = 0;
+  const flipping = { get type() { return ++typeReads === 1 ? "text" : "image"; }, text: ' { "ref": "e42" } ', annotations: { audience: ["assistant"] } };
+  const flippedContent: unknown[] = [flipping], flipped = { content: flippedContent };
+  await createAfterHook()(input, flipped);
+  // Validated as text, re-read at commit as image: the live block changed, so nothing is committed.
+  assert.ok(typeReads >= 1); assert.equal(flipped.content, flippedContent); assert.equal(flipped.content[0], flipping);
+});
+test("MCP commit after raw save requires the exact validated packet and keeps in-place host additions", async () => {
+  const text = " ".repeat(2048) + '{"ref":"e42"}';
+  const pushed = packet(text);
+  await createAfterHook({ raw: {} }, { raw: { put: async () => { pushed.content.push({ type: "text", text: "host added" } as never); return "id"; } } })(input, pushed);
+  assert.equal(pushed.content[0]!.text, text); assert.equal(pushed.content.length, 5);
+  const replaced = packet(text), image = { type: "image", mimeType: "image/png", data: "new-image" };
+  await createAfterHook({ raw: {} }, { raw: { put: async () => { replaced.content[2] = image as never; return "id"; } } })(input, replaced);
+  assert.equal(replaced.content[0]!.text, text); assert.equal(replaced.content[2], image);
+  const failed = packet(text) as ReturnType<typeof packet> & { isError?: boolean };
+  await createAfterHook({ raw: {} }, { raw: { put: async () => { failed.isError = true; return "id"; } } })(input, failed);
+  assert.equal(failed.content[0]!.text, text);
+  const annotated = packet(text);
+  await createAfterHook({ raw: {} }, { raw: { put: async () => { (annotated.content[0] as Record<string, unknown>).annotations = { priority: 1 }; return "id"; } } })(input, annotated);
+  assert.equal(annotated.content[0]!.text, '{"ref":"e42"}'); assert.deepEqual(annotated.content[0]!.annotations, { priority: 1 });
+});

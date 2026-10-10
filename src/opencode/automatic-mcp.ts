@@ -21,32 +21,46 @@ const flagsValid = (metadata: unknown): boolean => metadata === undefined || (re
 /** OpenCode 1.18.17 passes native decoded MCP content BEFORE host text joining/truncation. */
 export async function filterMcpResult(input: Record<string, unknown>, output: Record<string, unknown>,
   process: typeof filterAutomatic, maxInputBytes: number | undefined, save?: (text: string) => Promise<unknown>): Promise<void> {
-  const { tool, args } = input, { isError, content, metadata: actualMetadata, _meta: actualMeta } = output;
+  // Every caller-owned value is read once into plain frozen copies; later checks never re-read live objects.
+  const { tool, args: actualArgs } = input, { isError, content, metadata: actualMetadata, _meta: actualMeta } = output;
   const metadata = record(actualMetadata) ? Object.freeze({ ...actualMetadata }) : actualMetadata;
   const meta = record(actualMeta) ? Object.freeze({ ...actualMeta }) : actualMeta;
-  if (typeof tool !== "string" || !tool.length || !record(args) ||
+  if (typeof tool !== "string" || !tool.length || !record(actualArgs) ||
       (isError !== undefined && isError !== false) || !flagsValid(metadata) || !flagsValid(meta)) return;
-  if (!Array.isArray(content) || !content.length || content.length > 64) return;
+  const args = Object.freeze({ ...actualArgs });
+  if (!Array.isArray(content)) return;
+  const length = content.length;
+  if (!Number.isSafeInteger(length) || length < 1 || length > 64) return;
   const limit = maxInputBytes ?? 4 * 1024 * 1024;
   if (!Number.isSafeInteger(limit) || limit < 1024 * 1024 || limit > 16 * 1024 * 1024) return;
-  const parts: string[] = [], texts = new Map<number, string>();
+  const items: unknown[] = [];
+  const segments: { index: number; text: string }[] = [], texts = new Map<number, string>();
   let bytes = 0;
-  const append = (text: string) => { bytes += Buffer.byteLength(text, "utf8") + (parts.length ? 2 : 0); if (bytes > limit) return false; parts.push(text); return true; };
-  for (const [index, block] of content.entries()) {
-    if (!record(block) || typeof block.type !== "string") return;
-    if (block.type === "text") {
-      const text = block.text;
-      if (typeof text !== "string" || !append(text)) return;
+  const append = (index: number, text: string) => {
+    bytes += Buffer.byteLength(text, "utf8") + (segments.length ? 2 : 0);
+    if (bytes > limit) return false;
+    segments.push({ index, text }); return true;
+  };
+  for (let index = 0; index < length; index++) {
+    const block = content[index];
+    if (!record(block)) return;
+    const copy = Object.freeze({ ...block }), type = copy.type;
+    items.push(block);
+    if (typeof type !== "string") return;
+    if (type === "text") {
+      const text = copy.text;
+      if (typeof text !== "string" || !append(index, text)) return;
       texts.set(index, text);
-    } else if (block.type === "resource") {
-      if (!record(block.resource) || typeof block.resource.uri !== "string" || block.resource.blob !== undefined ||
-          (block.resource.text !== undefined && typeof block.resource.text !== "string")) return;
-      if (block.resource.text && !append(block.resource.text as string)) return;
-    } else if (block.type === "image" || block.type === "audio") {
-      if (typeof block.data !== "string" || typeof block.mimeType !== "string") return;
-    } else if (block.type !== "resource_link" || typeof block.uri !== "string" || typeof block.name !== "string") return;
+    } else if (type === "resource") {
+      if (!record(copy.resource)) return;
+      const { uri, blob, text } = copy.resource;
+      if (typeof uri !== "string" || blob !== undefined || (text !== undefined && typeof text !== "string")) return;
+      if (text && !append(-1, text)) return;
+    } else if (type === "image" || type === "audio") {
+      if (typeof copy.data !== "string" || typeof copy.mimeType !== "string") return;
+    } else if (type !== "resource_link" || typeof copy.uri !== "string" || typeof copy.name !== "string") return;
   }
-  const original = parts.join("\n\n"), beforeBytes = Buffer.byteLength(original, "utf8");
+  const original = segments.map(segment => segment.text).join("\n\n"), beforeBytes = Buffer.byteLength(original, "utf8");
   if (beforeBytes > limit || !texts.size) return;
   if ([...texts.values()].some(errorText)) return;
   const candidates = new Map<number, string>();
@@ -61,13 +75,23 @@ export async function filterMcpResult(input: Record<string, unknown>, output: Re
     candidates.set(index, result.replacement);
   }
   if (!candidates.size) return;
-  const changed = content.map((block, index) => candidates.has(index) ? { ...block, text: candidates.get(index)! } : block);
-  const after = changed.flatMap(block => block.type === "text" ? [block.text as string] :
-    block.type === "resource" && block.resource.text ? [block.resource.text as string] : []).join("\n\n");
+  const after = segments.map(({ index, text }) => candidates.get(index) ?? text).join("\n\n");
   const afterBytes = Buffer.byteLength(after, "utf8");
   if (afterBytes >= beforeBytes) return;
   if (save && beforeBytes - afterBytes >= 1024 && (beforeBytes - afterBytes) / beforeBytes >= 0.1) await save(original);
-  if (output.content !== content || [...texts].some(([index, text]) => content[index].text !== text)) return;
+  // The host may have changed the packet while persistence awaited: commit only onto the exact validated packet.
+  if (output.content !== content || content.length !== length || (output.isError !== undefined && output.isError !== false)) return;
+  const changed: unknown[] = [];
+  for (let index = 0; index < length; index++) {
+    const current = content[index];
+    if (current !== items[index]) return;
+    const replacement = candidates.get(index);
+    if (replacement === undefined) { changed.push(current); continue; }
+    // Rebuild from the live block's current fields so in-place host additions (annotations etc.) survive.
+    const fresh = Object.freeze({ ...(current as Record<string, unknown>) });
+    if (fresh.type !== "text" || fresh.text !== texts.get(index)) return;
+    changed.push({ ...fresh, text: replacement });
+  }
   // One assignment, after all validation and persistence; no partial block mutation.
   output.content = changed;
 }

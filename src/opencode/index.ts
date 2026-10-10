@@ -19,18 +19,21 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
   return async (input, output) => {
     try {
       if (options.enabled === false || !isRecord(input) || !isRecord(output)) return;
-      if (typeof output.output !== "string") {
+      // Read caller-owned fields once; every decision and the core see the same frozen values.
+      const original = output.output;
+      if (typeof original !== "string") {
         if (options.automatic !== false) await filterMcpResult(input, output, processAutomatic, options.maxInputBytes, store ? text => store.put(text) : undefined);
         return;
       }
-      const original = output.output;
-      const metadata = isRecord(output.metadata) ? output.metadata : {};
+      const { tool, args: actualArgs } = input, actualMetadata = output.metadata;
+      const args = isRecord(actualArgs) ? Object.freeze({ ...actualArgs }) : undefined;
+      const metadata: Readonly<Record<string, unknown>> = isRecord(actualMetadata) ? Object.freeze({ ...actualMetadata }) : {};
       const exit = metadata.exit;
       const limits = options.maxInputBytes === undefined ? {} : { maxInputBytes: options.maxInputBytes };
       let result: FilterResult;
-      if (input.tool === "bash") {
-        if (!isRecord(input.args) || typeof input.args.command !== "string") return;
-        const command = input.args.command, literal = command.trimStart();
+      if (tool === "bash") {
+        if (!args || typeof args.command !== "string") return;
+        const command = args.command, literal = command.trimStart();
         if (options.excludeCommands?.some((prefix) => literal === prefix || (literal.startsWith(prefix) && /^[ \t]/.test(literal.slice(prefix.length))))) return;
         const observation: Observation = {
           source: "shell", command, output: original, presentation: "unknown",
@@ -39,22 +42,22 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
         };
         result = process(observation, limits);
         if (options.automatic !== false && result.status === "passthrough" && ["no_profile", "unsupported_command"].includes(result.reason) && exit === 0 && metadata.truncated === false) {
-          result = processAutomatic({ source: "native", tool: "bash", output: original, args: input.args, metadata,
+          result = processAutomatic({ source: "native", tool: "bash", output: original, args, metadata,
             status: "success", completeness: "complete" }, { ...limits, legacyFilter: () => result });
         }
       } else {
-        const binding = options.structuredTools?.find(({ tool }) => tool === input.tool);
+        const binding = options.structuredTools?.find((entry) => entry.tool === tool);
         if (binding) {
           if (exit !== 0 || metadata.truncated !== false) return;
-          const scopeRef = binding.format === "accessibility-scope" && isRecord(input.args) ? input.args.scopeRef : undefined;
+          const scopeRef = binding.format === "accessibility-scope" && args ? args.scopeRef : undefined;
           if (binding.format === "accessibility-scope" && (typeof scopeRef !== "string" || !scopeRef.length)) return;
           result = processStructured({ format: binding.format, output: original,
             termination: { kind: "exited", code: 0 }, completeness: "complete",
             ...(typeof scopeRef === "string" ? { scopeRef } : {}) }, limits);
         } else {
-          if (options.automatic === false || !["glob", "grep", "read", "list_mcp_resources", "list_mcp_resource_templates"].includes(input.tool as string) ||
-              metadata.truncated !== false || !isRecord(input.args)) return;
-          result = processAutomatic({ source: "native", tool: input.tool as string, output: original, args: input.args, metadata,
+          if (options.automatic === false || typeof tool !== "string" || !["glob", "grep", "read", "list_mcp_resources", "list_mcp_resource_templates"].includes(tool) ||
+              metadata.truncated !== false || !args) return;
+          result = processAutomatic({ source: "native", tool, output: original, args, metadata,
             status: "success", completeness: "complete" }, limits);
         }
       }
