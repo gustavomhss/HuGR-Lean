@@ -137,6 +137,24 @@ export function resultJson(response) {
   return JSON.parse(text.slice(marker.length, end < 0 ? undefined : end));
 }
 
+export function nativeText(response) {
+  if (response.error || response.result?.isError || response.result?.content?.length !== 1 || response.result.content[0].type !== 'text') throw new Error('Expected successful single native text block');
+  return response.result.content[0].text;
+}
+export function selectedPageId(response, tools) {
+  for (const name of ['navigate_page', 'evaluate_script', 'take_snapshot']) {
+    const schema = tools.find(tool => tool.name === name)?.inputSchema;
+    if (schema?.properties?.pageId?.type !== 'number' || !schema.required?.includes('pageId')) throw new Error(`Unsupported native pageId schema: ${name}`);
+  }
+  const text = nativeText(response);
+  if (!text.startsWith('## Pages\n')) throw new Error('Unsupported native list_pages header');
+  const selected = text.split('\n').filter(line => line.endsWith(' [selected]'));
+  const match = selected.length === 1 && /^(\d+): .+ \[selected\]$/.exec(selected[0]);
+  const id = match ? Number(match[1]) : NaN;
+  if (!Number.isSafeInteger(id) || id < 0) throw new Error('Missing unambiguous native selected page ID');
+  return id;
+}
+
 export async function capture(options) {
   const output = resolve(options.output);
   await mkdir(output, { recursive: true, mode: 0o700 });
@@ -199,11 +217,14 @@ export async function capture(options) {
       receipt.sources.devtools.version = JSON.parse(await readFile(resolve(dirname(options.devtools), '../../../package.json'), 'utf8')).version;
       receipt.sources.devtools.formatterSha256 = sha256(await readFile(resolve(dirname(options.devtools), '../formatters/SnapshotFormatter.js')));
       await run('devtools', [process.execPath, options.devtools, '--headless', '--isolated',
-        '--executablePath', options.executable, '--no-usage-statistics', '--no-performance-crux', '--no-page-id-routing'], async client => {
-        await client.call('navigate_page', { type: 'url', url: receipt.url });
-        await client.call('take_snapshot', {});
-        await client.call('evaluate_script', { function: '() => { document.querySelector("#open").click(); return {focused:document.activeElement.id}; }' });
-        await client.call('take_snapshot', {});
+        '--executablePath', options.executable, '--no-usage-statistics', '--no-performance-crux'], async client => {
+        const pageId = selectedPageId(await client.call('list_pages', {}), client.tools);
+        receipt.devtoolsRouting = { mode: 'producer-default', pageId, type: typeof pageId,
+          schemas: client.tools.filter(tool => ['list_pages', 'navigate_page', 'evaluate_script', 'take_snapshot'].includes(tool.name)).map(tool => ({ name: tool.name, inputSchema: tool.inputSchema })) };
+        await client.call('navigate_page', { pageId, type: 'url', url: receipt.url });
+        await writeFile(resolve(output, 'devtools-before.txt'), nativeText(await client.call('take_snapshot', { pageId })));
+        await client.call('evaluate_script', { pageId, function: '() => { document.querySelector("#open").click(); return {focused:document.activeElement.id}; }' });
+        await writeFile(resolve(output, 'devtools-modal.txt'), nativeText(await client.call('take_snapshot', { pageId })));
       });
     } else receipt.failures.push({ producer: 'devtools', error: 'No --devtools entry supplied; no native DevTools capture claimed.' });
   } catch (error) { receipt.failures.push({ producer: 'setup', error: String(error) }); }
