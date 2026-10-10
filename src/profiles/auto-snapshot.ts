@@ -77,12 +77,19 @@ function playwright(source: string): Reduction | undefined {
   if (fenced) return undefined;
   const out = builder(source), refs = new Set<string>();
   out.keep(0, open.start + 3); out.fixed("text"); out.keep(open.start + 7, open.end);
+  // Native hierarchy: root rows at depth 0, one 2-space level per step, and only an
+  // element row ending in an empty-valued unquoted colon (`- generic [ref=e1]:`) owns children.
+  let previousDepth = -1, previousContainer = false;
   for (const row of lines.slice(index + 2, closeIndex)) {
     const match = /^( *)(- )([a-z][a-z0-9-]*(?=[ :]|$)|\/(?:url|placeholder|description):)/.exec(row.text);
     if (!match || match[1]!.length % 2) return undefined;
     const indent = match[1]!.length, payloadStart = indent + 2;
     const payload = row.text.slice(payloadStart), parsed = scan(payload);
     if (!parsed) return undefined;
+    const depth = indent / 2;
+    if (depth > previousDepth + 1 || (depth === previousDepth + 1 && previousDepth >= 0 && !previousContainer)) return undefined;
+    previousDepth = depth;
+    previousContainer = !match[3]!.startsWith("/") && parsed.colon === payload.length - 1;
     const candidates = parsed.attributes.filter(attr => /^ref(?:[^a-z0-9-]|$)/.test(attr.text));
     if (!candidates.length) { out.keep(row.start, row.end); continue; }
     if (candidates.length !== 1 || match[3]!.startsWith("/")) return undefined;
@@ -106,9 +113,14 @@ function devtools(source: string): Reduction | undefined {
   if (!source.startsWith(header)) return undefined;
   const out = builder(source), refs = new Set<string>();
   out.keep(0, header.length);
+  // Native hierarchy: exactly one depth-0 RootWebArea first, then one 2-space level per step.
+  let previousDepth = -1;
   for (const row of rows(source, header.length)) {
     const match = /^( *)uid=(\d+_\d+) (.+)$/.exec(row.text);
     if (!match || match[1]!.length % 2 || !scan(match[3]!)) return undefined;
+    const depth = match[1]!.length / 2;
+    if (previousDepth < 0 ? depth !== 0 || !/^RootWebArea(?: |$)/.test(match[3]!) : depth < 1 || depth > previousDepth + 1) return undefined;
+    previousDepth = depth;
     const ref = match[2]!;
     if (refs.has(ref)) return undefined;
     refs.add(ref);

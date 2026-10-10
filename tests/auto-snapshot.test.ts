@@ -12,10 +12,11 @@ import { reduceAutomaticSnapshot } from "../src/profiles/auto-snapshot.js";
 const preamble = '### Page state\n- Page URL: https://example.test/😀\n- Page Title: Form\n### Events\n- dialog opened\n### Snapshot\n```';
 const suffix = '```\n### Modal state\n- dialog: "Keep me"\n### Events\n- console: ready\n';
 const nodes = [
-  { indent: "", ref: "e1", before: 'document "Form 😀" ', after: '' },
-  { indent: "  ", ref: "f2e3", before: 'button "Pay [ref=e99]: \\"now\\"" [disabled] ', after: ' [pressed=false]' },
+  { indent: "", ref: "e1", before: 'document "Form 😀" ', after: ':' },
+  { indent: "  ", ref: "f2e3", before: 'button "Pay [ref=e99]: \\"now\\"" [disabled] ', after: ' [pressed=false]:' },
   { indent: "    ", ref: "e4", before: 'textbox "Account" [required] ', after: ' [focused]: "abc: [ref=e99] opaque"' },
   { indent: "  ", ref: "e5", before: 'mystery-role "Extension" [level=3] [box=1,2,3,4] [description="literal [ref=e99]"] ', after: ': false' },
+  { indent: "  ", ref: "e6", before: 'link "Plain" [cursor=pointer] ', after: ':' },
 ];
 const plain = '    - /url: https://example.test/path\n    - /placeholder: "Name"\n    - /description: "### Error [ref=e99]"\n    - text: "No ref, keep dash"\n';
 const body = nodes.map(n => `${n.indent}- ${n.before}[ref=${n.ref}]${n.after}\n`).join("") + plain;
@@ -172,8 +173,8 @@ function nativeSnapshots(producer: string, tool: string, variant = "native") {
   const root = process.env.HUGR_NATIVE_BROWSER_FIXTURES ?? fileURLToPath(new URL("../fixtures/automatic/browser/native/", import.meta.url));
   const directory = variant === "native" ? root : resolve(root, "..", variant);
   const { records, argv } = JSON.parse(readFileSync(resolve(directory, `${producer}.json`), "utf8")) as { records: CaptureRecord[]; argv: string[] };
-  if (variant === "native-default") {
-    assert.ok(!argv.includes("--no-page-id-routing"), "real default routing is enabled");
+  if (variant === "native-default") assert.ok(!argv.includes("--no-page-id-routing"), "real default routing is enabled");
+  if (variant === "native-default" && producer === "devtools") {
     const schema = records.flatMap(r => r.direction === "receive" ? r.message.result?.tools ?? [] : []).find(t => t.name === tool)!.inputSchema;
     assert.equal(schema.properties.pageId!.type, "number");
     assert.ok(schema.required.includes("pageId"));
@@ -264,11 +265,89 @@ test("Chrome whole-page pageId admission is numeric, safe and positive only", ()
   }
 });
 
+test("native Playwright default replay reduces before and modal trees", () => {
+  for (const input of nativeSnapshots("playwright", "browser_snapshot", "native-default")) {
+    assert.deepEqual(input.args, {}, "replay actual default before/modal request args");
+    const result = filterAutomatic(input, adapter);
+    assert.equal(result.status, "reduced");
+    if (result.status === "reduced") nativeOracle(input, result.replacement);
+  }
+});
+
 test("native Chrome default API pageId calls reduce without routing overrides", () => {
   for (const input of nativeSnapshots("devtools", "take_snapshot", "native-default")) {
     assert.deepEqual(input.args, { pageId: 1 }, "replay actual default before/modal request args");
     const result = filterAutomatic(input, adapter);
     assert.equal(result.status, "reduced");
     if (result.status === "reduced") nativeOracle(input, result.replacement);
+  }
+});
+
+// Hierarchy counterexamples: each malformed tree must refuse directly AND pass through the default path untouched.
+function assertPreserved(input: AutomaticObservation, label: string): void {
+  assert.equal(reduceAutomaticSnapshot(input), undefined, `${label}: reducer refuses`);
+  const result = filterAutomatic(input, adapter);
+  assert.equal(result.status, "passthrough", `${label}: default path preserves original`);
+  assert.ok(!("replacement" in result), `${label}: no replacement emitted`);
+  assert.equal(result.outputBytes, Buffer.byteLength(input.output), `${label}: original bytes exact`);
+  assert.equal(result.inputBytes, result.outputBytes);
+}
+const wrap = (tree: string) => `${preamble}yaml\n${tree}${suffix}`;
+function mutate(input: AutomaticObservation, from: string, to: string): AutomaticObservation {
+  assert.ok(input.output.includes(from), `native production present: ${JSON.stringify(from)}`);
+  return { ...input, output: input.output.replace(from, to) };
+}
+
+test("Playwright hierarchy: orphan first heading in real capture refuses", () => {
+  for (const variant of ["native", "native-default"]) {
+    for (const input of nativeSnapshots("playwright", "browser_snapshot", variant)) {
+      assertPreserved(mutate(input, '\n  - heading "Account', '\n      - heading "Account'), `${variant} orphan heading`);
+    }
+  }
+});
+
+test("Playwright hierarchy: child under value-bearing native rows refuses", () => {
+  for (const input of nativeSnapshots("playwright", "browser_snapshot")) {
+    assertPreserved(mutate(input, '    - textbox "Name', '      - textbox "Name'), "child under text: value row");
+    assertPreserved(mutate(input, ': Zoë\n', ': Zoë\n      - text: child\n'), "child under textbox value row");
+    assertPreserved(mutate(input, '    - /url: /details\n', '    - /url: /details\n      - text: child\n'), "child under property row");
+    assertPreserved(mutate(input, '[ref=e9] [cursor=pointer]:', '[ref=e9] [cursor=pointer]'), "property row under link missing colon");
+    assertPreserved(mutate(input, '    - option "Paris"', '      - option "Paris"'), "child under leaf option");
+  }
+});
+
+test("Playwright hierarchy: authored depth gap, non-container parent and root depth refuse", () => {
+  const cases: [string, string][] = [
+    [playwright.replace('    - textbox "Account"', '      - textbox "Account"'), "depth gap"],
+    [wrap('- button [ref=e1]\n  - textbox [ref=e2]\n'), "child under parent lacking colon"],
+    [wrap('- textbox [ref=e1]: hello\n  - button [ref=e2]\n'), "child under value-bearing row"],
+    [wrap('- generic [ref=e1]:\n  - text: foo\n    - button [ref=e2]\n'), "child under text value row"],
+    [wrap('- link [ref=e1]:\n  - /url:\n    - button [ref=e2]\n'), "child under empty property row"],
+    [wrap('- generic [ref=e1]: "x:"\n  - button [ref=e2]\n'), "quoted colon value is not a container"],
+    [wrap('  - button [ref=e1]\n  - button [ref=e2]\n'), "first row not at base depth"],
+    [wrap('- generic [ref=e1]:\n      - button [ref=e2]\n'), "multi-level jump"],
+  ];
+  for (const [output, label] of cases) assertPreserved(observation(output), label);
+  // Positive control: same shapes with native container colon reduce.
+  assert.ok(reduceAutomaticSnapshot(observation(wrap('- generic [ref=e1]:\n  - textbox [ref=e2]\n  - button [ref=e3]\n'))));
+});
+
+test("Chrome hierarchy: missing levels, extra or indented roots refuse", () => {
+  const cases: [string, string][] = [
+    ['## Latest page snapshot\nuid=1_0 RootWebArea "Page"\n      uid=1_1 button "Child"\n', "missing intermediate level"],
+    ['## Latest page snapshot\nuid=1_0 RootWebArea "Page"\nuid=1_1 RootWebArea "Second"\n', "second root"],
+    ['## Latest page snapshot\nuid=1_0 RootWebArea "Page"\n  uid=1_1 button "A"\nuid=1_2 button "B"\n', "later depth-0 row"],
+    ['## Latest page snapshot\n  uid=1_0 RootWebArea "Page"\n  uid=1_1 button "A"\n', "indented root"],
+    ['## Latest page snapshot\nuid=1_0 generic "Page"\n  uid=1_1 button "A"\n', "non-RootWebArea root"],
+    [chrome.replace('    uid=1_2', '      uid=1_2'), "authored depth gap"],
+  ];
+  for (const [output, label] of cases) assertPreserved(observation(output, "take_snapshot"), label);
+  for (const variant of ["native", "native-default"]) {
+    for (const input of nativeSnapshots("devtools", "take_snapshot", variant)) {
+      const child = input.output.includes("\n  uid=1_1 ") ? "\n  uid=1_1 " : "\n  uid=2_0 ";
+      assertPreserved(mutate(input, child, child.replace("  uid", "      uid")), `${variant} native depth gap`);
+      assertPreserved(mutate(input, child, child.replace("  uid", "uid")), `${variant} native extra root`);
+      assertPreserved(mutate(input, "\nuid=1_0 ", "\n  uid=1_0 "), `${variant} native indented root`);
+    }
   }
 });
