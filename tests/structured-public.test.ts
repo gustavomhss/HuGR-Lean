@@ -137,6 +137,25 @@ test("public scope requires an explicit live ref and refuses scope on other form
   assertPreserved({ ...observation("accessibility-scope"), scopeRef: "stale" }, "unsupported_output");
   for (const format of structuredFormats.filter(format => format !== "accessibility-scope")) assertPreserved({ ...observation(format), scopeRef: "chosen" }, "invalid_scope");
 });
+test("public scope preserves outside modal descendants, actionable controls and parent closure", () => {
+  const modalDescendants = [
+    { ref: "modal-panel", parent: "modal", role: "group", name: "Confirmation controls" },
+    { ref: "modal-action", parent: "modal-panel", role: "button", name: "Confirm deletion", states: ["enabled"], actions: ["click"], value: false },
+  ];
+  const nodes = [...tree.nodes, ...modalDescendants,
+    { ref: "focus-child", parent: "focus", role: "label", name: "Not protected by focus" }];
+  const input = observation("accessibility-scope", pretty({ ...tree, nodes }));
+  const result = filterStructured(input);
+  assert.equal(result.status, "reduced", `accessibility-scope: ${result.reason}; integration must wire the default registry`);
+  assert.ok("replacement" in result);
+  const scoped = JSON.parse(result.replacement) as { nodes: { ref: string; parent: string | null }[] };
+  assert.deepEqual(scoped, { ...tree, scope: "chosen", nodes: [...tree.nodes.filter(node => node.ref !== "unrelated"), ...modalDescendants] });
+  const refs = new Set(scoped.nodes.map(node => node.ref));
+  for (const node of scoped.nodes) {
+    if (node.parent === null) assert.equal(node.ref, tree.root);
+    else assert.ok(refs.has(node.parent), `missing retained parent ${node.parent} of ${node.ref}`);
+  }
+});
 test("public tree views refuse broken stable references", () => {
   for (const format of ["accessibility", "accessibility-properties", "accessibility-scope"] as const) {
     for (const patch of [{ ref: "root🦀" }, { parent: "missing" }, { parent: "child" }]) {
