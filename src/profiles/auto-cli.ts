@@ -2,7 +2,7 @@ import { tokenizeCommand } from "../core/command.js";
 import type { AutomaticReducer } from "../core/automatic-types.js";
 import type { Piece, Reduction, Span } from "../core/types.js";
 
-// Only observed fixed-width native layouts. Never split the command/name tail.
+// Narrow fixed-width Darwin/procps layouts. Never split the command/name tail.
 function processes(output: string): Reduction | undefined {
   const lines = output.slice(0, -1).split("\n"), header = lines.shift()!;
   if (!["  PID  PPID STAT COMM", "    PID    PPID STAT COMMAND"].includes(header) || !lines.length) return;
@@ -19,7 +19,7 @@ function processes(output: string): Reduction | undefined {
     if (line[first] !== " " || line[second] !== " " || line[command - 1] !== " ") return;
     const pid = line.slice(0, first), ppid = line.slice(first + 1, second), stat = line.slice(state, command - 1);
     if (!/^ *[1-9]\d*$/.test(pid) || !/^ *(?:0|[1-9]\d*)$/.test(ppid) ||
-        !/^[IDRSTUVWZX][<NLPsl+EXW-]* *$/.test(stat) || !line.slice(command).trim() || ids.has(pid.trim())) return;
+        !/^[IDRSTtUVWZX][<NLPsl+EXW-]* *$/.test(stat) || !line.slice(command).trim() || ids.has(pid.trim())) return;
     ids.add(pid.trim());
     cells([[offset + pid.search(/\d/), offset + first], [offset + first + 1 + ppid.search(/\d/), offset + second],
       [offset + state, offset + state + stat.trimEnd().length], [offset + command, offset + line.length]]);
@@ -61,23 +61,24 @@ function ffmpegArgv(args: readonly string[]): boolean {
       if (!input || destination || i !== args.length - 1) return false;
       destination = true; continue;
     }
-    const key = arg === "-v" ? "-loglevel" : arg;
+    const key = arg === "-v" ? "-loglevel" : arg, identity = key === "-f" ? `${key}:${input}` : key;
     if (["-hide_banner", "-nostats", "-re", "-an", "-vn", "-y", "-n"].includes(key)) {
       if (seen.has(key)) return false; seen.add(key); continue;
     }
     if (!["-loglevel", "-progress", "-f", "-i", "-t", "-c:v", "-c:a", "-threads"].includes(key)) return false;
-    if (key !== "-f" && seen.has(key)) return false;
+    if (seen.has(identity)) return false;
     const value = args[++i];
     if (!value || value.startsWith("-") || (key === "-loglevel" && value !== "error") || (key === "-progress" && value !== "pipe:1")) return false;
     if (key === "-i") input = true;
-    seen.add(key);
+    seen.add(identity);
   }
   return input && destination && !(seen.has("-y") && seen.has("-n")) &&
     ["-hide_banner", "-loglevel", "-nostats", "-progress"].every(key => seen.has(key));
 }
 
 function progress(output: string): Reduction | undefined {
-  const keys = ["frame", "fps", "stream_0_0_q", "bitrate", "total_size", "out_time_us", "out_time_ms", "out_time", "dup_frames", "drop_frames", "speed", "progress"];
+  const video = output.startsWith("frame="), prefix = video ? ["frame", "fps", "stream_0_0_q"] : [];
+  const keys = [...prefix, "bitrate", "total_size", "out_time_us", "out_time_ms", "out_time", "dup_frames", "drop_frames", "speed", "progress"];
   const lines = output.slice(0, -1).split("\n");
   if (lines.length % keys.length) return;
   let previous: bigint[] | undefined, sizeKind: boolean | undefined, offset = 0, finalStart = 0;
@@ -89,11 +90,11 @@ function progress(output: string): Reduction | undefined {
       if (!line.startsWith(`${key}=`)) return;
       values.push(line.slice(key.length + 1)); offset += line.length + 1;
     }
-    const [frame, fps, quality, bitrate, size, us, ms, time, dup, drop, speed, status] = values as [string, string, string, string, string, string, string, string, string, string, string, string];
+    const [frame, fps, quality, bitrate, size, us, ms, time, dup, drop, speed, status] = (video ? values : ["0", "0", "0", ...values]) as [string, string, string, string, string, string, string, string, string, string, string, string];
     const clock = /^(\d{2,}):([0-5]\d):([0-5]\d)\.(\d{6})$/.exec(time);
     if (![frame, us, ms, dup, drop].every(v => integer.test(v)) || !decimal.test(fps) ||
         !/^-?\d+(?:\.\d+)?$/.test(quality) || !/^(?:N\/A|\s*\d+(?:\.\d+)?kbits\/s)$/.test(bitrate) ||
-        !(size === "N/A" || integer.test(size)) || !/^(?:N\/A| *\d+(?:\.\d+)?x)$/.test(speed) || !clock ||
+        !(size === "N/A" || integer.test(size)) || !/^(?:N\/A| *\d+(?:\.\d+)?(?:e[+-]?\d+)?x)$/.test(speed) || !clock ||
         status !== (start + keys.length === lines.length ? "end" : "continue")) return;
     const micros = ((BigInt(clock[1]!) * 60n + BigInt(clock[2]!)) * 60n + BigInt(clock[3]!)) * 1000000n + BigInt(clock[4]!);
     if (BigInt(us) !== BigInt(ms) || BigInt(us) !== micros || (sizeKind !== undefined && sizeKind !== (size === "N/A"))) return;
