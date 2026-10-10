@@ -25,6 +25,8 @@ export function filterAutomatic(observation: AutomaticObservation, options: Auto
     if (inputBytes > maxInputBytes) return unchanged("passthrough", "input_limit");
     if (status !== "success" || completeness !== "complete") return unchanged("passthrough", "incomplete_or_failed_tool");
     const frozen = Object.freeze({ source, tool, output, status, completeness, args: Object.freeze({ ...args }), metadata: Object.freeze({ ...metadata }) });
+    const { truncated, exit } = frozen.metadata;
+    if ((truncated !== undefined && truncated !== false) || (exit !== undefined && exit !== 0)) return unchanged("passthrough", "contradictory_tool_facts");
     if (source === "native" && tool === "bash") {
       if (frozen.metadata.exit !== 0 || frozen.metadata.truncated !== false || typeof frozen.args.command !== "string") return unchanged("passthrough", "missing_shell_facts");
       const legacy = legacyFilter({ source: "shell", command: frozen.args.command, output,
@@ -34,11 +36,13 @@ export function filterAutomatic(observation: AutomaticObservation, options: Auto
       if (!argv || (legacy.reason === "unsupported_command" && profiles.some(profile => profile.match(argv)))) return legacy;
     }
     for (const entry of reducers) {
-      ensure(record(entry) && typeof entry.id === "string" && entry.id.length > 0 && typeof entry.reduce === "function");
-      const reduction = entry.reduce(frozen);
+      ensure(record(entry));
+      const { id, reduce } = entry;
+      ensure(typeof id === "string" && id.length > 0 && typeof reduce === "function");
+      const reduction = reduce(frozen);
       if (!reduction) continue;
       const replacement = renderReduction(output, reduction), outputBytes = Buffer.byteLength(replacement, "utf8");
-      if (replacement.length && outputBytes < inputBytes) return { status: "reduced", profile: entry.id, reason: "automatic_native_view", replacement, inputBytes, outputBytes };
+      if (replacement.length && outputBytes < inputBytes) return { status: "reduced", profile: id, reason: "automatic_native_view", replacement, inputBytes, outputBytes };
     }
     return unchanged("passthrough", "unsupported_or_not_smaller");
   } catch { return unchanged("failed_open", "invalid_automatic_input_or_reduction"); }

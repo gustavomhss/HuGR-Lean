@@ -43,3 +43,18 @@ test("automatic literal argv admits quoted data but never shell expansions or op
   for (const command of [`docker ps | jq '.'`, `node -e "$CODE"`, "node -e 'unterminated", "ps -axo $FLAGS", "ls *.json", "ls; other", "node `other`"])
     assert.equal(tokenizeAutomaticCommand(command), undefined, command);
 });
+test("automatic evidence cannot be bypassed by live formatting or reducer getters", () => {
+  let reads = 0;
+  const text = { get text() { return ++reads <= 2 ? ":" : "FAKE"; } };
+  const result = filterAutomatic(input("ab" + " ".repeat(100)), { reducers: [{ id: "probe", reduce: () => ({ pieces: [[0, 2], text], required: [[0, 2]] }) }] });
+  assert.equal(reads, 1); assert.equal(result.status, "reduced"); assert.ok("replacement" in result); assert.equal(result.replacement, "ab:");
+  let calls = 0;
+  const entry = { id: "probe", get reduce() { calls++; return () => ({ pieces: [[0, 2] as const], required: [[0, 2] as const] }); } };
+  assert.equal(filterAutomatic(input("ab    "), { reducers: [entry] }).status, "reduced"); assert.equal(calls, 1);
+});
+test("automatic facts reject contradictory failure and truncation metadata for every source", () => {
+  for (const metadata of [{ truncated: true }, { truncated: "false" }, { exit: 1 }, { exit: null }]) {
+    const result = filterAutomatic({ ...input(' { "x": 1 } '), metadata });
+    assert.equal(result.status, "passthrough"); assert.equal("replacement" in result, false);
+  }
+});
