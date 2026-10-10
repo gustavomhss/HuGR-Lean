@@ -32,29 +32,48 @@ function decodePaths(view: string): string[] {
   assert.ok(scope?.endsWith(":"));
   return rows.map(row => scope!.slice(0, -1) + row);
 }
-function decodeMatches(text: string, factored: boolean): { raw: string; header: string; groups: { path: string; rows: { line: string; text: string }[] }[] } {
+// Grep grammar (native and compact): line 1 is the count header; a compact view
+// adds line 2 `PREFIX:`. Every later line is classified by its first character:
+// "" is a blank tail line, a leading space must be a complete `  Line N: text`
+// row, anything else is a path header ending in exactly one appended ":".
+// A header beginning with whitespace has no unambiguous reading and fails.
+type Groups = { path: string; rows: { line: string; text: string }[] }[];
+function decodeMatches(text: string, factored: boolean): { raw: string; header: string; groups: Groups } {
   const lines = text.split("\n");
   const header = lines.shift()!;
-  const prefix = factored ? lines.shift()!.slice(0, -1) : "";
-  const groups: { path: string; rows: { line: string; text: string }[] }[] = [];
+  assert.match(header, /^Found [1-9]\d* matches$/u);
+  let prefix = "";
+  if (factored) {
+    const scope = lines.shift()!;
+    assert.ok(scope.endsWith(":"));
+    prefix = scope.slice(0, -1);
+  }
+  const groups: Groups = [];
   const restored = [header];
   for (const row of lines) {
     if (row === "") { restored.push(row); continue; }
-    if (row.startsWith("  Line ")) {
-      const match = /^  Line (\d+): (.*)$/u.exec(row);
-      assert.ok(match);
+    if (/^\s/u.test(row)) {
+      const match = /^  Line ([1-9]\d*): (.*)$/u.exec(row);
+      assert.ok(match, `not a match row: ${JSON.stringify(row)}`);
       assert.ok(groups.length);
       groups.at(-1)!.rows.push({ line: match[1]!, text: match[2]! });
       restored.push(row);
     } else {
-      assert.ok(row.endsWith(":"));
+      assert.ok(row.endsWith(":"), `not a path header: ${JSON.stringify(row)}`);
       groups.push({ path: prefix + row.slice(0, -1), rows: [] });
       restored.push(prefix + row);
     }
   }
-  assert.ok(groups.every(group => group.rows.length));
+  assert.ok(groups.length && groups.every(group => group.rows.length));
   return { raw: restored.join("\n"), header, groups };
 }
+/** Round-trip oracle: decoded view equals the exact original bytes and ordered associations. */
+function roundTrip(input: AutomaticObservation): void {
+  const view = decodeMatches(replacement(input), true);
+  assert.equal(view.raw, input.output);
+  assert.deepEqual(view.groups, decodeMatches(input.output, false).groups);
+}
+const countedGrep = (output: string): AutomaticObservation => observation("grep", output, { matches: Number(/^Found (\d+)/u.exec(output)![1]) });
 
 test("actual installed 1.18.17 grep capture: exact native packet and LF reconstruction", () => {
   const bytes = readFileSync(new URL("../fixtures/automatic/files/host-grep.jsonl", import.meta.url));
@@ -130,4 +149,64 @@ test("shared core refuses non-shrinking candidate; source spans use UTF-16", () 
   const reduction = reduceAutomaticFiles(glob())!;
   assert.deepEqual(decodePaths(renderReduction(fixture.glob!, reduction)), fixture.glob!.split("\n"));
   assert.throws(() => renderReduction(fixture.glob!, { ...reduction, pieces: reduction.pieces.slice(0, -1) }));
+});
+
+test("grep suffix collision: path text mimicking a match row refuses factoring", () => {
+  const scope = "/workspace/long-common-prefix/";
+  // A: second path is `<scope>  Line 9: report`, owning lines 2, 8, 3.
+  const a = `Found 4 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n${scope}  Line 9: report:\n  Line 2: beta\n\n  Line 8: other:\n  Line 3: gamma`;
+  // B: normal.ts owns lines 1, 9, 2; second path is `<scope>  Line 8: other`, owning line 3.
+  const b = `Found 4 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n  Line 9: report:\n  Line 2: beta\n\n${scope}  Line 8: other:\n  Line 3: gamma`;
+  assert.notEqual(a, b);
+  assert.notDeepEqual(decodeMatches(a, false).groups, decodeMatches(b, false).groups);
+  for (const input of [countedGrep(a), countedGrep(b)]) {
+    assert.equal(input.metadata.matches, 4);
+    refuse(input); // Host keeps the exact original packet.
+  }
+  // Every other whitespace-led or line-breaking suffix also refuses.
+  for (const suffix of [" lead.ts", "\u00a0nbsp.ts", "\u2003em.ts", "a\u2028b.ts", "a\u2029b.ts", "a\u0085b.ts"]) {
+    refuse(countedGrep(`Found 2 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n${scope}${suffix}:\n  Line 2: beta`));
+  }
+  // Positive controls: `Line` without leading space and trailing colons stay unambiguous.
+  for (const suffix of ["Line 9: report", "odd:name:", "日本語😀 Line 1: x"]) {
+    roundTrip(countedGrep(`Found 2 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n${scope}${suffix}:\n  Line 2: beta`));
+  }
+  // Glob has no record grammar: such filenames still factor and decode.
+  const paths = [`${scope}normal.ts`, `${scope}  Line 9: report`, `${scope}Line 8: other`];
+  assert.deepEqual(decodePaths(replacement(glob(paths.join("\n")))), paths);
+});
+
+test("grep round-trip property: every accepted reduction decodes to exact original and is injective", () => {
+  const host = JSON.parse(readFileSync(new URL("../fixtures/automatic/files/host-grep.jsonl", import.meta.url), "utf8").split("\n")[0]!);
+  const inputs: AutomaticObservation[] = [
+    observation(host.input.tool, host.output.output, host.output.metadata, host.input.args),
+    grep(),
+    countedGrep("Found 3 matches\n/workspace/project with spaces/日本語😀/alpha.ts:\n  Line 1: first\n\n  Line 2: \n\n\n/workspace/project with spaces/日本語😀/beta.ts:\n  Line 9: last\n"),
+    ...["C:\\workspace\\日本語😀\\", "\\\\server\\share\\日本語😀\\"].map(prefix => grep(fixture.grep!.replaceAll("/workspace/project with spaces/日本語😀/", prefix))),
+  ];
+  // Enumerated adversarial space: tricky suffixes x row layouts (same-file blank, LF tails).
+  const suffixes = ["a.ts", "  Line 9: report", "  Line 2: beta", "Line 9: report", " lead", "odd:", ":", "\u00a0x", "x\u2028y"];
+  const layouts = [["\n", "\n\n"], ["\n\n", "\n\n\n"]];
+  for (const first of suffixes) for (const second of suffixes) for (const [same, group] of layouts) {
+    for (const split of [1, 2]) {
+      const rows = ["  Line 1: alpha", "  Line 9: report:", "  Line 2: beta"];
+      const output = `Found 3 matches\n/w/p/${first}:\n${rows.slice(0, split).join(same)}${group}/w/p/${second}:\n${rows.slice(split).join(same)}`;
+      inputs.push(countedGrep(output));
+    }
+  }
+  const seen = new Map<string, string>();
+  let accepted = 0, refused = 0;
+  for (const input of inputs) {
+    const reduction = reduceAutomaticFiles(input);
+    if (!reduction) { refused++; continue; }
+    const view = renderReduction(input.output, reduction);
+    const prior = seen.get(view);
+    assert.ok(prior === undefined || prior === input.output, `collision: ${JSON.stringify(view)}`);
+    seen.set(view, input.output);
+    const decoded = decodeMatches(view, true);
+    assert.equal(decoded.raw, input.output);
+    assert.deepEqual(decoded.groups, decodeMatches(input.output, false).groups);
+    accepted++;
+  }
+  assert.ok(accepted >= 5 + 4 * 4 * 2 * 2 && refused > 0, `accepted ${accepted}, refused ${refused}`);
 });
