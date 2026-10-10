@@ -14,7 +14,7 @@ export const reduceAccessibilityScope: StructuredReducer = (output, observation)
   if (!envelope || scalar(envelope.get("schema")) !== "hugr-lean/a11y-v1") return undefined;
   const root = scalar(envelope.get("root")), array = envelope.get("nodes");
   if (typeof root !== "string" || array?.kind !== "array" || !array.items.length) return undefined;
-  const nodes = new Map<string, { raw: JsonNode; ref: JsonNode; parent: string | null; protected: boolean }>();
+  const nodes = new Map<string, { raw: JsonNode; ref: JsonNode; parent: string | null; protected: boolean; modal: boolean }>();
   const children = new Map<string, string[]>();
   for (const raw of array.items) {
     const props = fields(raw, nodeFields, ["ref", "parent", "role", "name"]);
@@ -33,7 +33,8 @@ export const reduceAccessibilityScope: StructuredReducer = (output, observation)
         !bounds.items.every(item => typeof scalar(item) === "number" && Number.isFinite(scalar(item))))) return undefined;
     const states = props.get("states");
     const protectedNode = states?.kind === "array" && states.items.some(item => ["focused", "modal"].includes(String(scalar(item))));
-    nodes.set(ref, { raw, ref: props.get("ref")!, parent, protected: protectedNode });
+    const modal = states?.kind === "array" && states.items.some(item => scalar(item) === "modal");
+    nodes.set(ref, { raw, ref: props.get("ref")!, parent, protected: protectedNode, modal });
     if (parent !== null) {
       const list = children.get(parent) ?? [];
       list.push(ref); children.set(parent, list);
@@ -51,11 +52,16 @@ export const reduceAccessibilityScope: StructuredReducer = (output, observation)
     connected.add(ref); pending.push(...(children.get(ref) ?? []));
   }
   if (connected.size !== nodes.size) return undefined;
-  const keep = new Set<string>(), subtree = [observation.scopeRef];
-  while (subtree.length) {
-    const ref = subtree.pop()!;
-    keep.add(ref); subtree.push(...(children.get(ref) ?? []));
-  }
+  const keep = new Set<string>(), expanded = new Set<string>();
+  const retainSubtree = (start: string) => {
+    const subtree = [start];
+    while (subtree.length) {
+      const ref = subtree.pop()!;
+      if (expanded.has(ref)) continue;
+      expanded.add(ref); keep.add(ref); subtree.push(...(children.get(ref) ?? []));
+    }
+  };
+  retainSubtree(observation.scopeRef);
   const ancestry = new Set<string>();
   const retainAncestors = (start: string) => {
     let ref: string | null = start;
@@ -64,7 +70,10 @@ export const reduceAccessibilityScope: StructuredReducer = (output, observation)
     }
   };
   retainAncestors(observation.scopeRef);
-  for (const [ref, node] of nodes) if (node.protected) retainAncestors(ref);
+  for (const [ref, node] of nodes) {
+    if (node.protected) retainAncestors(ref);
+    if (node.modal) retainSubtree(ref);
+  }
   const pieces: Piece[] = [{ text: "{" }], required: Span[] = [];
   if (parsed.kind !== "object") return undefined;
   for (const [index, entry] of parsed.entries.entries()) {
