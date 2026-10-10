@@ -4,6 +4,8 @@ Implementation: `feat/lean-cli@7c6a04f`, integrated in rebuild `795df94`; `tests
 
 ```text
 hugr-lean filter --command 'cargo build' [--exit-code 0] [--complete] [--terminal-rendered]
+hugr-lean filter --format json --exit-code 0 --complete
+hugr-lean filter --format accessibility-scope --scope-ref REF --exit-code 0 --complete
 hugr-lean raw list [--directory PATH]
 hugr-lean raw get ID [--directory PATH]
 hugr-lean raw purge [--directory PATH]
@@ -11,7 +13,7 @@ hugr-lean doctor
 hugr-lean --version
 ```
 - On the integrated rebuild, run `npm run build`, then `node dist/cli/index.js` with these arguments. The manifest declares bin `hugr-lean` at that compiled path; brackets above mark optional arguments.
-- `filter` requires nonempty `--command COMMAND` and never executes it. Unknown, duplicate, missing-value, or extra arguments fail; `--exit-code N` accepts decimal nonnegative safe integers only.
+- Shell `filter` requires nonempty `--command COMMAND` and never executes it. Structured mode uses explicit `--format` instead; mixing command/presentation flags refuses. `--scope-ref` is required only for `accessibility-scope`. See [formats and producer contracts](../../docs/STRUCTURED-TOOLS.md). Unknown, duplicate, missing-value, or extra arguments fail; `--exit-code N` accepts decimal nonnegative safe integers only.
 - Exit status and completeness default to `unknown`; supply actual `--exit-code N` and `--complete` facts. Only complete exit 0 attempts [core filtering](../core/MANUAL.md); failed/unknown facts pass through.
 - Presentation defaults to `unknown`; `--terminal-rendered` explicitly enables conditional SGR handling for admitted grammar. Any CR prevents normalization; there is no redraw collapse.
 - stdin is raw bytes. stdout is only the UTF-8 replacement or byte-exact original, without a result envelope or added newline; unsupported grammar, fatal UTF-8 decoding failure, or filtering exceptions retain original bytes. BOMs are not stripped.
