@@ -121,6 +121,8 @@ function listFixtures(path = ""): string[] {
   for (const item of readdirSync(join(fixtureRoot, path), { withFileTypes: true })) {
     // These two explicit namespaces have their own non-vacuous readers in the inventory test below.
     if (path === "" && (item.name === "utility" || item.name === "profiles")) continue;
+    // Automatic native-view captures are replayed by tests/auto-*.test.ts and tests/automatic-*.test.ts.
+    if (path === "" && item.name === "automatic") continue;
     const name = path ? `${path}/${item.name}` : item.name;
     assert.ok(item.isDirectory() || item.isFile(), `Cannot enumerate fixture entry: ${name}`);
     if (item.isDirectory()) files.push(...listFixtures(name));
