@@ -77,8 +77,9 @@ function playwright(source: string): Reduction | undefined {
   if (fenced) return undefined;
   const out = builder(source), refs = new Set<string>();
   out.keep(0, open.start + 3); out.fixed("text"); out.keep(open.start + 7, open.end);
-  // Native hierarchy: root rows at depth 0, one 2-space level per step, and only an
-  // element row ending in an empty-valued unquoted colon (`- generic [ref=e1]:`) owns children.
+  // Native hierarchy: root rows at depth 0, one 2-space level per step. Exactly the element
+  // rows ending in an empty-valued unquoted colon (`- generic [ref=e1]:`) own children, and
+  // each owns at least one; `text`/property rows are leaf-only. No space precedes the colon.
   let previousDepth = -1, previousContainer = false;
   for (const row of lines.slice(index + 2, closeIndex)) {
     const match = /^( *)(- )([a-z][a-z0-9-]*(?=[ :]|$)|\/(?:url|placeholder|description):)/.exec(row.text);
@@ -86,10 +87,11 @@ function playwright(source: string): Reduction | undefined {
     const indent = match[1]!.length, payloadStart = indent + 2;
     const payload = row.text.slice(payloadStart), parsed = scan(payload);
     if (!parsed) return undefined;
+    if (parsed.colon < payload.length && payload[parsed.colon - 1] === " ") return undefined;
     const depth = indent / 2;
-    if (depth > previousDepth + 1 || (depth === previousDepth + 1 && previousDepth >= 0 && !previousContainer)) return undefined;
+    if (previousDepth < 0 ? depth !== 0 : previousContainer ? depth !== previousDepth + 1 : depth > previousDepth) return undefined;
     previousDepth = depth;
-    previousContainer = !match[3]!.startsWith("/") && parsed.colon === payload.length - 1;
+    previousContainer = match[3] !== "text" && !match[3]!.startsWith("/") && parsed.colon === payload.length - 1;
     const candidates = parsed.attributes.filter(attr => /^ref(?:[^a-z0-9-]|$)/.test(attr.text));
     if (!candidates.length) { out.keep(row.start, row.end); continue; }
     if (candidates.length !== 1 || match[3]!.startsWith("/")) return undefined;
@@ -103,7 +105,7 @@ function playwright(source: string): Reduction | undefined {
     out.keep(base + ref.start + 5, base + ref.end - 1); out.fixed(" ");
     out.keep(base, base + ref.start); out.keep(base + ref.end, row.end);
   }
-  if (refs.size < 2) return undefined;
+  if (previousContainer || refs.size < 2) return undefined;
   out.keep(lines[closeIndex]!.start, source.length);
   return out.finish();
 }

@@ -313,6 +313,9 @@ test("Playwright hierarchy: child under value-bearing native rows refuses", () =
     assertPreserved(mutate(input, '    - /url: /details\n', '    - /url: /details\n      - text: child\n'), "child under property row");
     assertPreserved(mutate(input, '[ref=e9] [cursor=pointer]:', '[ref=e9] [cursor=pointer]'), "property row under link missing colon");
     assertPreserved(mutate(input, '    - option "Paris"', '      - option "Paris"'), "child under leaf option");
+    assertPreserved(mutate(input, '    - /url: /details\n', ''), "real link container stripped of its only child");
+    assertPreserved(mutate(input, '[ref=e9] [cursor=pointer]:', '[ref=e9] [cursor=pointer] :'), "real container with space before colon");
+    assertPreserved(mutate(input, '    - text: Name "東京"\n', '    - text:\n      - text: Name "東京"\n'), "real text pseudo-role as parent");
   }
 });
 
@@ -328,6 +331,15 @@ test("Playwright hierarchy: authored depth gap, non-container parent and root de
     [wrap('- generic [ref=e1]:\n      - button [ref=e2]\n'), "multi-level jump"],
   ];
   for (const [output, label] of cases) assertPreserved(observation(output), label);
+  for (const [output, label] of [
+    [wrap('- generic [ref=e1]:\n  - text:\n    - button [ref=e2]\n'), "child under empty text pseudo-role"],
+    [wrap('- text:\n  - button [ref=e1]\n  - button [ref=e2]\n'), "root text pseudo-role with children"],
+    [wrap('- generic [ref=e1] :\n  - button [ref=e2]\n'), "space before container colon"],
+    [wrap('- textbox [ref=e1] : hello\n- button [ref=e2]\n'), "space before value colon"],
+    [wrap('- generic [ref=e1]:\n- button [ref=e2]\n'), "container without children followed by sibling"],
+    [wrap('- button [ref=e1]\n- generic [ref=e2]:\n'), "container without children at end of tree"],
+    [wrap('- generic [ref=e1]:\n  - generic [ref=e2]:\n  - button [ref=e3]\n'), "nested empty container"],
+  ] as [string, string][]) assertPreserved(observation(output), label);
   // Positive control: same shapes with native container colon reduce.
   assert.ok(reduceAutomaticSnapshot(observation(wrap('- generic [ref=e1]:\n  - textbox [ref=e2]\n  - button [ref=e3]\n'))));
 });
