@@ -28,16 +28,28 @@ function processes(output: string): Reduction | undefined {
   return { pieces, required };
 }
 
+// Producer-native bounds, checked lexically BEFORE any Number/BigInt conversion. printf-family
+// decimal output never has leading zeros, so a canonical digit string compares by length then text.
+const INT64_MAX = "9223372036854775807", UINT64_MAX = "18446744073709551615";
+// ffmpeg out_time hours = |pts| / AV_TIME_BASE / 3600 with int64 pts: floor(INT64_MAX / 1e6 / 3600).
+const CLOCK_HOURS_MAX = "2562047788";
+function within(value: string, max: string): boolean {
+  return /^(?:0|[1-9]\d*)$/.test(value) && (value.length < max.length || (value.length === max.length && value <= max));
+}
+
 function listing(output: string): Reduction | undefined {
   const pieces: Piece[] = [], required: Span[] = [];
   let offset = 0, rows = 0;
   for (const line of output.slice(0, -1).split("\n")) {
-    if (offset === 0 && /^total \d+$/.test(line)) {
+    // Apple ls prints total with %llu, GNU ls as uintmax_t: unsigned 64-bit.
+    if (offset === 0 && /^total \d+$/.test(line) && within(line.slice(6), UINT64_MAX)) {
       const span: Span = [0, line.length]; pieces.push(span, { text: "\n" }); required.push(span);
     } else {
       // English C locale ordinary file/directory/link, ACL/xattr marker, all nine cells.
       const match = /^([-dl][r-][w-][xSs-][r-][w-][xSs-][r-][w-][xTt-][@+.]?) +(\d+) +(\S+) +(\S+) +(\d+) +(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) +(\d{1,2}) +(\d{2}:\d{2}|\d{4}) (.+)$/.exec(line);
-      if (!match || Number(match[2]) < 1 || Number(match[7]) < 1 || Number(match[7]) > 31 ||
+      // nlink: Darwin nlink_t uint16 (%ju), Linux nlink_t up to uint64 (uintmax_t); size: off_t int64.
+      if (!match || !within(match[2]!, UINT64_MAX) || !within(match[5]!, INT64_MAX) ||
+          Number(match[2]) < 1 || Number(match[7]) < 1 || Number(match[7]) > 31 ||
           (match[8]!.includes(":") && !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(match[8]!)) ||
           (match[1]![0] === "l" && !/^.+ -> .+$/.test(match[9]!))) return;
       let cursor = 0;
@@ -82,7 +94,7 @@ function progress(output: string): Reduction | undefined {
   const lines = output.slice(0, -1).split("\n");
   if (lines.length % keys.length) return;
   let previous: bigint[] | undefined, sizeKind: boolean | undefined, offset = 0, finalStart = 0;
-  const integer = /^\d+$/, decimal = /^\d+(?:\.\d+)?$/;
+  const decimal = /^\d+(?:\.\d+)?$/;
   for (let start = 0; start < lines.length; start += keys.length) {
     const values: string[] = []; finalStart = offset;
     for (const [i, key] of keys.entries()) {
@@ -92,9 +104,12 @@ function progress(output: string): Reduction | undefined {
     }
     const [frame, fps, quality, bitrate, size, us, ms, time, dup, drop, speed, status] = (video ? values : ["0", "0", "0", ...values]) as [string, string, string, string, string, string, string, string, string, string, string, string];
     const clock = /^(\d{2,}):([0-5]\d):([0-5]\d)\.(\d{6})$/.exec(time);
-    if (![frame, us, ms, dup, drop].every(v => integer.test(v)) || !decimal.test(fps) ||
+    // ffmpeg print_report writes frame/total_size/out_time_us/out_time_ms/dup_frames/drop_frames
+    // with %PRId64, so admitted values are non-negative signed 64-bit; out_time hours use %02PRId64.
+    if (![frame, us, ms, dup, drop].every(v => within(v, INT64_MAX)) || !decimal.test(fps) ||
+        !clock || !(clock[1]!.length === 2 || within(clock[1]!, CLOCK_HOURS_MAX)) ||
         !/^-?\d+(?:\.\d+)?$/.test(quality) || !/^(?:N\/A|\s*\d+(?:\.\d+)?kbits\/s)$/.test(bitrate) ||
-        !(size === "N/A" || integer.test(size)) || !/^(?:N\/A| *\d+(?:\.\d+)?(?:e[+-]?\d+)?x)$/.test(speed) || !clock ||
+        !(size === "N/A" || within(size, INT64_MAX)) || !/^(?:N\/A| *\d+(?:\.\d+)?(?:e[+-]?\d+)?x)$/.test(speed) ||
         status !== (start + keys.length === lines.length ? "end" : "continue")) return;
     const micros = ((BigInt(clock[1]!) * 60n + BigInt(clock[2]!)) * 60n + BigInt(clock[3]!)) * 1000000n + BigInt(clock[4]!);
     if (BigInt(us) !== BigInt(ms) || BigInt(us) !== micros || (sizeKind !== undefined && sizeKind !== (size === "N/A"))) return;

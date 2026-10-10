@@ -53,6 +53,43 @@ test("ffmpeg retains final WHOLE block only after complete consistent monotonic 
   assert.equal(result.status, "reduced"); assert.equal(result.replacement, block(5, 1, "end"));
 });
 
+// Producer-native ranges: ffmpeg %PRId64 counters (non-negative int64), ls nlink/total uint64, size off_t int64.
+const INT64_MAX = "9223372036854775807", INT64_OVER = "9223372036854775808";
+const UINT64_MAX = "18446744073709551615", UINT64_OVER = "18446744073709551616", HUGE = "1" + "0".repeat(199999);
+function outOfRange(command: string, output: string) {
+  refusal(command, output);
+  for (const options of [undefined, { reducers: [{ id: "cli", reduce: reduceAutomaticCli }] }]) {
+    const result = filterAutomatic(observe(command, output), options);
+    assert.notEqual(result.status, "reduced", command); assert.equal("replacement" in result, false);
+    assert.equal(result.inputBytes, Buffer.byteLength(output)); assert.equal(result.outputBytes, result.inputBytes);
+  }
+}
+const atMax = progress.replace(/frame=\d+/g, `frame=${INT64_MAX}`).replace(/total_size=N\/A/g, `total_size=${INT64_MAX}`)
+  .replace(/dup_frames=0/g, `dup_frames=${INT64_MAX}`).replace(/drop_frames=0/g, `drop_frames=${INT64_MAX}`)
+  .replace(/out_time_us=\d+/g, `out_time_us=${INT64_MAX}`).replace(/out_time_ms=\d+/g, `out_time_ms=${INT64_MAX}`)
+  .replace(/out_time=\S+/g, "out_time=2562047788:00:54.775807");
+test("ffmpeg int64 counters refuse beyond producer range before numeric conversion", () => {
+  const final = atMax.slice(atMax.lastIndexOf("frame="));
+  assert.equal(view(ff, atMax), final);
+  const result = filterAutomatic(observe(ff, atMax), { reducers: [{ id: "cli", reduce: reduceAutomaticCli }] });
+  assert.equal(result.status, "reduced"); assert.equal(result.replacement, final);
+  for (const big of [UINT64_OVER, INT64_OVER, HUGE]) {
+    for (const key of ["frame", "dup_frames", "drop_frames"]) outOfRange(ff, progress.replace(new RegExp(`${key}=\\d+`, "g"), `${key}=${big}`));
+    outOfRange(ff, progress.replace(/total_size=N\/A/g, `total_size=${big}`));
+  }
+  outOfRange(ff, atMax.replace(/out_time_(u|m)s=\d+/g, `out_time_$1s=${INT64_OVER}`).replace(/out_time=\S+/g, "out_time=2562047788:00:54.775808"));
+  outOfRange(ff, progress.replace(/out_time=\d+/g, `out_time=${HUGE}`));
+});
+test("ls nlink, size and total refuse beyond producer range before numeric conversion", () => {
+  const max = ls.replace("total 8", `total ${UINT64_MAX}`).replaceAll("  1 owner", `  ${UINT64_MAX} owner`).replace("staff  5", `staff  ${INT64_MAX}`);
+  assert.equal(view("ls -l", max), `total ${UINT64_MAX}\n-rw-r--r--\t${UINT64_MAX}\towner\tstaff\t${INT64_MAX}\tOct\t10\t12:34\tfile 日本 😀 suffix  \nlrwxr-xr-x\t${UINT64_MAX}\towner\tstaff\t6\tOct\t10\t2025\tlink name -> target 日本 suffix  \n`);
+  for (const big of [UINT64_OVER, "1" + "0".repeat(399), HUGE]) {
+    outOfRange("ls -l", ls.replace("  1 owner", `  ${big} owner`));
+    outOfRange("ls -l", ls.replace("total 8", `total ${big}`));
+  }
+  for (const big of [INT64_OVER, HUGE]) outOfRange("ls -l", ls.replace("staff  5", `staff  ${big}`));
+});
+
 interface Receipt { argv: string[]; cwd: string; original: string; stderr: string; exit: number; platform: string; stdoutSha256: string; binarySha256: string; version: string; source: string; license: string; capturedAt: string; }
 const hash = (data: string | Buffer) => createHash("sha256").update(data).digest("hex");
 function semanticOracle(receipt: Receipt) {
