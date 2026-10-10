@@ -1,8 +1,59 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import path from "node:path";
+import { spawn } from "node:child_process";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import { setTimeout as delay } from "node:timers/promises";
 const proof = await import(new URL("../scripts/automatic-host-proof.mjs", import.meta.url).href);
 const producer = await import(new URL("../scripts/automatic-proof-server.mjs", import.meta.url).href);
+const boundary = await import(new URL("../scripts/opencode-boundary.mjs", import.meta.url).href);
+const temporary = "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode";
+
+test("whole-case deadline bounds setup and refuses late process launch", async () => {
+  const root = await mkdtemp(path.join(temporary, "automatic-deadline-test-")); let success = false;
+  try {
+    const control = path.join(root, "control"); await mkdir(control);
+    const result = await proof.hostProcess(process.execPath, ["-e", 'console.log("OWNED_CONTROL")'], { cwd: root, timeout: 10000 }, control);
+    assert.equal(result.stdout, "OWNED_CONTROL\n"); assert.ok(JSON.parse(await readFile(path.join(control, "process-start.json"), "utf8")).pid > 0);
+    let finished = false;
+    await assert.rejects(proof.caseDeadline(root, 30, async (signal: AbortSignal) => {
+      await delay(100);
+      try { await proof.hostProcess(process.execPath, ["-e", 'console.log("LATE_LAUNCH")'], { cwd: root, timeout: 10000, signal }, root); }
+      finally { finished = true; }
+    }), /Case deadline 30 ms/);
+    const deadline = Date.now() + 10000; while (!finished && Date.now() < deadline) await delay(10);
+    assert.equal(finished, true, "Aborted setup stayed pending");
+    await assert.rejects(readFile(path.join(root, "process-start.json")), { code: "ENOENT" });
+    assert.match(await readFile(path.join(root, "deadline.json"), "utf8"), /Case deadline/); success = true;
+  } finally { if (success) await rm(root, { recursive: true, force: true }); else console.error(`Deadline test artifacts: ${root}`); }
+});
+
+test("SIGTERM records failure streams and kills only owned live host group", async () => {
+  const root = await mkdtemp(path.join(temporary, "automatic-signal-test-")); let success = false, pid = 0;
+  const moduleURL = new URL("../scripts/automatic-host-proof.mjs", import.meta.url).href;
+  const childCode = 'console.log("OWNED_STDOUT"); console.error("OWNED_STDERR"); setInterval(()=>{},1000);';
+  const script = `import {caseDeadline,hostProcess} from ${JSON.stringify(moduleURL)}; try { await caseDeadline(${JSON.stringify(root)}, 30000, signal => hostProcess(process.execPath, ["-e", ${JSON.stringify(childCode)}], {cwd:${JSON.stringify(root)},timeout:30000,signal}, ${JSON.stringify(root)})); } catch(e) { console.error(e.message); }`;
+  const runner = spawn(process.execPath, ["--input-type=module", "-e", script], { detached: true, env: boundary.isolatedEnvironment(root), stdio: ["ignore", "pipe", "pipe"] });
+  let stderr = ""; runner.stderr.on("data", (chunk: Buffer) => { stderr += chunk; }); runner.stdout.resume();
+  const exited = new Promise<number | null>((resolve, reject) => { runner.once("close", resolve); runner.once("error", reject); });
+  const watchdog = setTimeout(() => runner.kill("SIGKILL"), 20000);
+  try {
+    const deadline = Date.now() + 12000; let ready = false;
+    while (!ready && Date.now() < deadline) { try { ready = await readFile(path.join(root, "process-stdout"), "utf8") === "OWNED_STDOUT\n" && await readFile(path.join(root, "process-stderr"), "utf8") === "OWNED_STDERR\n"; } catch (e) { if ((e as NodeJS.ErrnoException).code !== "ENOENT") throw e; } if (!ready) await delay(10); }
+    assert.equal(ready, true, "Owned process streams never became ready");
+    const record = JSON.parse(await readFile(path.join(root, "process-start.json"), "utf8")); pid = record.pid;
+    assert.deepEqual(record.args, ["-e", childCode]); assert.equal(record.binary, process.execPath); process.kill(pid, 0);
+    runner.kill("SIGTERM"); assert.equal(await exited, 143, stderr);
+    assert.match(stderr, /Harness received SIGTERM/);
+    assert.throws(() => process.kill(pid, 0), { code: "ESRCH" });
+    assert.equal(await readFile(path.join(root, "process-stdout"), "utf8"), "OWNED_STDOUT\n");
+    assert.equal(await readFile(path.join(root, "process-stderr"), "utf8"), "OWNED_STDERR\n"); success = true;
+  } finally {
+    clearTimeout(watchdog); if (pid) { try { process.kill(-pid, "SIGKILL"); } catch (e) { if ((e as NodeJS.ErrnoException).code !== "ESRCH") throw e; } }
+    if (runner.pid) { try { process.kill(-runner.pid, "SIGKILL"); } catch (e) { if ((e as NodeJS.ErrnoException).code !== "ESRCH") throw e; } }
+    if (success) await rm(root, { recursive: true, force: true }); else console.error(`Signal test artifacts: ${root}`);
+  }
+});
 
 test("native view oracle reconstructs full paths and rejects changed prefix/order", () => {
   const before = { input: { tool: "glob", args: { path: "/owned" } }, output: { output: "/owned/a.txt\n/owned/b.txt" } };
