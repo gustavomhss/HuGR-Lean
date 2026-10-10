@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 
-const { StdioClient, saveClient, decodeLine, resultJson, sha256, PAGE } = await import(
+const { StdioClient, saveClient, decodeLine, resultJson, nativeText, selectedPageId, sha256, PAGE } = await import(
   new URL("../scripts/automatic-browser-capture.mjs", import.meta.url).href
 );
 
@@ -65,36 +65,66 @@ test("decoded extraction refuses errors, malformed JSON and unknown section gram
 });
 
 const fixtures = new URL("../fixtures/automatic/browser/native/", import.meta.url);
-const load = async (name: string) => JSON.parse(await readFile(new URL(name, fixtures), "utf8"));
+const defaults = new URL("../fixtures/automatic/browser/native-default/", import.meta.url);
+const load = async (name: string, directory = fixtures) => JSON.parse(await readFile(new URL(name, directory), "utf8"));
 function calls(data: any, name: string) {
   return data.records.filter((r: any) => r.direction === "send" && r.message.method === "tools/call" && r.message.params.name === name)
     .map((r: any) => ({ request: r.message, response: data.records.find((s: any) => s.direction === "receive" && s.message.id === r.message.id)?.message }));
 }
 
-test("real fixture provenance binds every raw byte and complete decoded MCP field", async () => {
-  const receipt = await load("receipt.json");
+for (const directory of [fixtures, defaults]) test(`real ${directory === fixtures ? "alternative" : "default"} provenance binds every raw byte and complete decoded MCP field`, async () => {
+  const receipt = await load("receipt.json", directory);
   assert.equal(receipt.sources.playwright.commit, "1b025d7e20a026371cd5f98ba0cdce48892737c8");
   assert.equal(receipt.sources.devtools.commit, "f08dbe152502d66e75fa07fb2588dc0feb42bc20");
   assert.equal(receipt.sources.playwright.version, "1.63.0");
   assert.equal(receipt.sources.devtools.version, "1.10.1");
   assert.equal(receipt.runtime.product, "HeadlessChrome/147.0.7727.15");
   assert.deepEqual(receipt.failures, []);
-  assert.equal(await readFile(new URL("owned-page.html", fixtures), "utf8"), PAGE);
+  assert.equal(await readFile(new URL("owned-page.html", directory), "utf8"), PAGE);
   for (const [file, info] of Object.entries(receipt.artifacts) as [string, any][]) {
-    const bytes = await readFile(new URL(file, fixtures));
+    const bytes = await readFile(new URL(file, directory));
     assert.equal(bytes.length, info.bytes, file);
     assert.equal(sha256(bytes), info.sha256, file);
   }
   for (const producer of ["playwright", "devtools"]) {
-    const decoded = await load(`${producer}.json`);
+    const decoded = await load(`${producer}.json`, directory);
     for (const [stream, direction] of [["stdout", "receive"], ["stdin", "send"]]) {
-      const wire = await readFile(new URL(`${producer}.${stream}.bin`, fixtures), "utf8");
+      const wire = await readFile(new URL(`${producer}.${stream}.bin`, directory), "utf8");
       const messages = wire.trimEnd().split("\n").map((line: string) => JSON.parse(line));
       assert.deepEqual(messages, decoded.records.filter((r: any) => r.direction === direction).map((r: any) => r.message));
     }
     assert.ok(decoded.records.some((r: any) => r.message.result?.tools?.some((t: any) => t.inputSchema)));
     assert.ok(decoded.argv.includes("--headless") && decoded.argv.includes("--isolated"));
   }
+});
+
+test("default native routing binds numeric pageId, full UID rows and terminal text", async () => {
+  const data = await load("devtools.json", defaults), receipt = await load("receipt.json", defaults);
+  const tools = data.records.find((r: any) => r.message.result?.tools).message.result.tools;
+  const listed = calls(data, "list_pages");
+  assert.equal(listed.length, 1); assert.deepEqual(listed[0].request.params.arguments, {});
+  const pageId = selectedPageId(listed[0].response, tools);
+  assert.equal(pageId, 1); assert.equal(typeof pageId, "number");
+  assert.equal(receipt.devtoolsRouting.pageId, pageId);
+  assert.ok(!data.argv.some((arg: string) => /page-id-routing|pageIdRouting/.test(arg)));
+  for (const name of ["navigate_page", "evaluate_script", "take_snapshot"]) {
+    const schema = tools.find((t: any) => t.name === name).inputSchema;
+    assert.deepEqual(schema.required, ["pageId"]); assert.equal(schema.properties.pageId.type, "number");
+    for (const call of calls(data, name)) assert.equal(call.request.params.arguments.pageId, pageId);
+  }
+  const snapshots = calls(data, "take_snapshot"); assert.equal(snapshots.length, 2);
+  const expected = [["1_0", "1_1", "1_2", "1_3", "1_4", "1_5", "1_6", "1_7", "1_9", "1_10", "1_11"], ["1_0", "2_0", "2_1", "2_2", "2_3"]];
+  for (const [i, file] of ["devtools-before.txt", "devtools-modal.txt"].entries()) {
+    const text = nativeText(snapshots[i].response);
+    assert.equal(text, snapshots[i].response.result.content[0].text);
+    assert.equal(text, await readFile(new URL(file, defaults), "utf8"));
+    assert.deepEqual([...text.matchAll(/^\s*uid=(\d+_\d+) /gm)].map(m => m[1]), expected[i]);
+    assert.ok(text.endsWith("\n")); assert.deepEqual(snapshots[i].request.params.arguments, { pageId });
+  }
+  assert.match(nativeText(snapshots[1].response), /uid=2_3 button "Close"\n$/);
+  assert.equal(receipt.sources.devtools.formatterSha256, "725dfb481c6a4779cb480fbd3afdd8439fadf221b0d09154afa636cd00580669");
+  assert.throws(() => selectedPageId({ result: { content: [{ type: "text", text: "## Pages\n" }] } }, tools), /Missing unambiguous/);
+  assert.throws(() => nativeText({ result: { isError: true } }), /Expected successful/);
 });
 
 test("real AX and native snapshot oracles see states, names, hierarchy and intentional failure", async () => {
