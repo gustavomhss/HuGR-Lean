@@ -88,6 +88,8 @@ function playwright(source: string): Reduction | undefined {
     const payload = row.text.slice(payloadStart), parsed = scan(payload);
     if (!parsed) return undefined;
     if (parsed.colon < payload.length && payload[parsed.colon - 1] === " ") return undefined;
+    // Native text pseudo-rows always carry inline value text: `- text: Name`.
+    if (match[3] === "text" && !/^text: \S/.test(payload)) return undefined;
     const depth = indent / 2;
     if (previousDepth < 0 ? depth !== 0 : previousContainer ? depth !== previousDepth + 1 : depth > previousDepth) return undefined;
     previousDepth = depth;
