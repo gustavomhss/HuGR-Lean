@@ -17,7 +17,12 @@ function view(command: string, output: string) {
   const reduction = reduceAutomaticCli(observe(command, output));
   assert.ok(reduction, command); return renderReduction(output, reduction);
 }
-function refusal(command: string, output: string) { assert.equal(reduceAutomaticCli(observe(command, output)), undefined, command); }
+function refusal(command: string, output: string) {
+  const observation = observe(command, output);
+  assert.equal(reduceAutomaticCli(observation), undefined, command);
+  const result = filterAutomatic(observation, { reducers: [{ id: "cli", reduce: reduceAutomaticCli }] });
+  assert.equal("replacement" in result, false, command); assert.equal(result.inputBytes, Buffer.byteLength(output));
+}
 const ps = "  PID  PPID STAT COMM\n    1     0 Ss   /sbin/launchd\n  123     1 S+   /Applications/日本 😀 app/command suffix  \n";
 const ls = "total 8\n-rw-r--r--  1 owner  staff  5 Oct 10 12:34 file 日本 😀 suffix  \nlrwxr-xr-x  1 owner  staff  6 Oct 10  2025 link name -> target 日本 suffix  \n";
 const block = (frame: number, time: number, status: string) => `frame=${frame}\nfps=0.00\nstream_0_0_q=-0.0\nbitrate=N/A\ntotal_size=N/A\nout_time_us=${time * 1000000}\nout_time_ms=${time * 1000000}\nout_time=00:00:0${time}.000000\ndup_frames=0\ndrop_frames=0\nspeed= 312x\nprogress=${status}\n`;
@@ -48,32 +53,41 @@ test("ffmpeg retains final WHOLE block only after complete consistent monotonic 
   assert.equal(result.status, "reduced"); assert.equal(result.replacement, block(5, 1, "end"));
 });
 
-interface Receipt { argv: string[]; original: string; stderr: string; exit: number; platform: string; stdoutSha256: string; binarySha256: string; version: string; }
+interface Receipt { argv: string[]; cwd: string; original: string; stderr: string; exit: number; platform: string; stdoutSha256: string; binarySha256: string; version: string; source: string; license: string; capturedAt: string; }
 const hash = (data: string | Buffer) => createHash("sha256").update(data).digest("hex");
 function semanticOracle(receipt: Receipt) {
   const command = receipt.argv.map((arg, i) => i && arg.includes(" ") ? `'${arg}'` : arg).join(" ");
-  const result = view(command, receipt.original), rows = receipt.original.trimEnd().split("\n");
+  const result = view(command, receipt.original), rows = receipt.original.slice(0, -1).split("\n");
+  const automatic = filterAutomatic(observe(command, receipt.original), { reducers: [{ id: "cli", reduce: reduceAutomaticCli }] });
+  assert.equal(automatic.inputBytes, Buffer.byteLength(receipt.original, "utf8"));
+  if (Buffer.byteLength(result, "utf8") < automatic.inputBytes) {
+    assert.equal(automatic.status, "reduced"); assert.equal(automatic.replacement, result); assert.equal(automatic.outputBytes, Buffer.byteLength(result, "utf8"));
+  } else assert.equal("replacement" in automatic, false);
   if (receipt.argv[0]!.endsWith("ps")) {
     // Independent semantic oracle, not reducer-required spans: compare all row cells and full tails.
     const start = rows.shift()!.indexOf("COMM");
     const expected = rows.map(row => [...row.slice(0, start).trim().split(/ +/), row.slice(start)].join("\t"));
-    assert.deepEqual(result.trimEnd().split("\n").slice(1).map((row, i) => i === expected.length - 1 ? row.trimEnd() : row), expected.map((row, i) => i === expected.length - 1 ? row.trimEnd() : row));
+    assert.deepEqual(result.slice(0, -1).split("\n").slice(1), expected);
   } else if (receipt.argv[0]!.endsWith("ls")) {
     const native = rows.filter(row => !row.startsWith("total "));
-    const compact = result.trimEnd().split("\n").filter(row => !row.startsWith("total "));
+    const compact = result.slice(0, -1).split("\n").filter(row => !row.startsWith("total "));
     assert.equal(compact.length, native.length);
     native.forEach((row, i) => {
       const match = /^(\S+) +(\d+) +(\S+) +(\S+) +(\d+) +(\S+) +(\d+) +(\S+) (.*)$/.exec(row)!;
       assert.deepEqual(compact[i]!.split("\t"), match.slice(1));
     });
   } else {
-    const final = receipt.original.lastIndexOf("frame=");
+    const final = receipt.original.lastIndexOf(receipt.original.startsWith("frame=") ? "frame=" : "bitrate=");
     assert.equal(result, receipt.original.slice(final)); assert.ok(result.endsWith("progress=end\n"));
   }
 }
-for (const file of readdirSync(fixtures).filter(file => file.endsWith(".json"))) test(`full native receipt ${file}`, () => {
+const receipts = readdirSync(fixtures).filter(file => file.endsWith(".json"));
+test("committed native receipt set exists, contains ps/ls/video/audio/file evidence", () => {
+  for (const name of ["ps-axo", "ps-eo", "ls-l", "ls-la", "ls-al", "ls-cwd", "ls-file", "ls-link", "ffmpeg", "ffmpeg-audio", "ffmpeg-file"]) assert.ok(receipts.includes(`darwin-${name}.json`), name);
+});
+for (const file of receipts) test(`full native receipt ${file}`, () => {
   const receipt: Receipt = JSON.parse(readFileSync(new URL(file, fixtures), "utf8"));
-  assert.equal(receipt.exit, 0); assert.equal(hash(receipt.original), receipt.stdoutSha256); semanticOracle(receipt);
+  assert.equal(receipt.exit, 0); assert.equal(receipt.stderr, ""); assert.equal(hash(receipt.original), receipt.stdoutSha256); semanticOracle(receipt);
 });
 
 test("operational: actual platform ps/ls and available ffmpeg (no core I/O)", { skip: !["darwin", "linux"].includes(process.platform) }, () => {
@@ -82,17 +96,26 @@ test("operational: actual platform ps/ls and available ffmpeg (no core I/O)", { 
     writeFileSync(join(dir, "notes.txt"), "notes\n"); writeFileSync(join(dir, "file 日本 😀.txt"), "hello\n");
     chmodSync(join(dir, "notes.txt"), 0o644); mkdirSync(join(dir, "folder name")); symlinkSync("file 日本 😀.txt", join(dir, "link name"));
     function capture(name: string, argv: string[], version: string) {
-      const run = spawnSync(argv[0]!, argv.slice(1), { encoding: "utf8", env: { ...process.env, LC_ALL: "C", LANG: "C" }, timeout: 15000, maxBuffer: 4 * 1024 * 1024 });
-      assert.ifError(run.error); assert.equal(run.status, 0, run.stderr);
-      const receipt: Receipt = { argv, original: run.stdout, stderr: run.stderr, exit: run.status!, platform: process.platform, stdoutSha256: hash(run.stdout), binarySha256: hash(readFileSync(argv[0]!)), version };
+      const run = spawnSync(argv[0]!, argv.slice(1), { cwd: dir, encoding: "utf8", env: { ...process.env, LC_ALL: "C", LANG: "C" }, timeout: 15000, maxBuffer: 4 * 1024 * 1024 });
+      assert.ifError(run.error); assert.equal(run.status, 0, run.stderr); assert.equal(run.stderr, "");
+      const producer = argv[0]!.endsWith("ffmpeg") ? "ffmpeg" : process.platform === "darwin" ? "apple" : argv[0]!.endsWith("ps") ? "procps" : "coreutils";
+      const apple = argv[0]!.endsWith("ps") ? "adv_cmds/blob/60bc9ebf1df7e0a3d8500ecd7e4dd1e008765af5/ps/ps.c" : "file_cmds/blob/6b3b4403a5e9f4db7b904a795bcfe9f2c321c821/ls/ls.c";
+      const sources = { ffmpeg: [`https://ffmpeg.org/releases/ffmpeg-${version.split(" ")[2]}.tar.xz`, version.includes("--enable-gpl") ? version.includes("--enable-version3") ? "GPL-3.0-or-later" : "GPL-2.0-or-later" : "LGPL; see captured build configuration"], apple: [`https://github.com/apple-oss-distributions/${apple}`, "BSD-3-Clause; source reference for license only, binary pinned by hash/build"], procps: ["https://gitlab.com/procps-ng/procps", "GPL-2.0-or-later"], coreutils: ["https://www.gnu.org/software/coreutils/", "GPL-3.0-or-later"] };
+      const receipt: Receipt = { argv, cwd: dir, original: run.stdout, stderr: run.stderr, exit: run.status!, platform: process.platform, stdoutSha256: hash(run.stdout), binarySha256: hash(readFileSync(argv[0]!)), version, source: sources[producer][0]!, license: sources[producer][1]!, capturedAt: new Date().toISOString() };
       semanticOracle(receipt);
       if (process.env.HUGR_CAPTURE_CLI === "1") writeFileSync(new URL(`${process.platform}-${name}.json`, fixtures), JSON.stringify(receipt, null, 2) + "\n");
     }
     const version = process.platform === "darwin" ? spawnSync("/usr/bin/sw_vers", [], { encoding: "utf8" }).stdout : spawnSync("/usr/bin/ps", ["--version"], { encoding: "utf8" }).stdout;
     for (const flag of ["-axo", "-eo"]) capture(`ps${flag}`, ["/bin/ps", flag, "pid,ppid,stat,comm"], version);
     for (const flag of ["-l", "-la", "-al"]) capture(`ls${flag}`, ["/bin/ls", flag, "--", dir], process.platform === "darwin" ? version : spawnSync("/bin/ls", ["--version"], { encoding: "utf8" }).stdout);
+    for (const [name, args] of [["ls-cwd", []], ["ls-file", ["notes.txt"]], ["ls-link", ["link name"]]] as const) capture(name, ["/bin/ls", "-l", ...args], version);
     const binary = spawnSync("which", ["ffmpeg"], { encoding: "utf8" }).stdout.trim();
-    if (binary) capture("ffmpeg", [binary, ...ff.split(" ").slice(1)], spawnSync(binary, ["-version"], { encoding: "utf8" }).stdout);
+    if (binary) {
+      const version = spawnSync(binary, ["-version"], { encoding: "utf8" }).stdout;
+      capture("ffmpeg", [binary, ...ff.split(" ").slice(1)], version);
+      capture("ffmpeg-audio", [binary, ...ff.replace("color=size=16x16:rate=5", "anullsrc").split(" ").slice(1)], version);
+      capture("ffmpeg-file", [binary, ...ff.replace("-f null -", `-c:v ffv1 -f matroska ${join(dir, "video.mkv")}`).split(" ").slice(1)], version);
+    }
     else assert.equal(process.env.HUGR_CAPTURE_CLI, undefined, "capture requires actual ffmpeg");
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
