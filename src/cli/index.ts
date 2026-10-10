@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { filter } from "../core/index.js";
+import { filterStructured } from "../core/structured.js";
+import { structuredFormats, type StructuredFormat } from "../core/structured-types.js";
 import { profiles } from "../profiles/index.js";
 import { RawStore, defaultRawDirectory } from "../raw/index.js";
 
 // Match the core's default admission limit; larger streams retain every byte.
 const INPUT_LIMIT = 4 * 1024 * 1024;
-type FilterArguments = { command: string; exitCode: number | undefined; complete: boolean; terminal: boolean };
+type FilterArguments = { command: string; format?: StructuredFormat; scopeRef?: string; exitCode: number | undefined; complete: boolean; terminal: boolean };
 
 function flags(args: string[], values: readonly string[], switches: readonly string[] = []): Map<string, string | true> {
   const result = new Map<string, string | true>();
@@ -24,13 +26,23 @@ function flags(args: string[], values: readonly string[], switches: readonly str
 }
 
 function filterArguments(args: string[]): FilterArguments {
-  const options = flags(args, ["--command", "--exit-code"], ["--complete", "--terminal-rendered"]);
+  const options = flags(args, ["--command", "--exit-code", "--format", "--scope-ref"], ["--complete", "--terminal-rendered"]);
   const command = options.get("--command"), exit = options.get("--exit-code");
-  if (typeof command !== "string") throw new Error("filter requires --command <literal command>");
+  const format = options.get("--format"), scopeRef = options.get("--scope-ref");
+  if (format !== undefined) {
+    if (typeof format !== "string" || !structuredFormats.includes(format as StructuredFormat)) throw new Error("--format must be a supported structured format");
+    if (command !== undefined || options.has("--terminal-rendered")) throw new Error("--format cannot be combined with --command or --terminal-rendered");
+    if (format === "accessibility-scope" ? typeof scopeRef !== "string" : scopeRef !== undefined) throw new Error("--scope-ref is required exclusively for accessibility-scope");
+  } else {
+    if (typeof command !== "string") throw new Error("filter requires --command <literal command>");
+    if (scopeRef !== undefined) throw new Error("--scope-ref is required exclusively for accessibility-scope");
+  }
   if (exit !== undefined && (typeof exit !== "string" || !/^\d+$/.test(exit) || !Number.isSafeInteger(Number(exit)))) {
     throw new Error("--exit-code must be a nonnegative safe integer");
   }
-  return { command, exitCode: exit === undefined ? undefined : Number(exit),
+  return { command: typeof command === "string" ? command : "",
+    ...(typeof format === "string" ? { format: format as StructuredFormat } : {}),
+    ...(typeof scopeRef === "string" ? { scopeRef } : {}), exitCode: exit === undefined ? undefined : Number(exit),
     complete: options.has("--complete"), terminal: options.has("--terminal-rendered") };
 }
 
@@ -67,9 +79,11 @@ async function filterStdin(options: FilterArguments): Promise<void> {
   try {
     // Fatal decoding prevents malformed UTF-8 from being silently replaced. Keep BOMs.
     const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(original);
-    const result = filter({ source: "shell", command: options.command, output: text,
-      termination: options.exitCode === undefined ? { kind: "unknown" } : { kind: "exited", code: options.exitCode },
-      completeness: options.complete ? "complete" : "unknown",
+    const termination = options.exitCode === undefined ? { kind: "unknown" as const } : { kind: "exited" as const, code: options.exitCode };
+    const completeness = options.complete ? "complete" : "unknown";
+    const result = options.format ? filterStructured({ format: options.format, output: text, termination, completeness,
+      ...(options.scopeRef === undefined ? {} : { scopeRef: options.scopeRef }) }) : filter({ source: "shell", command: options.command, output: text,
+      termination, completeness,
       presentation: options.terminal ? "terminal-rendered" : "unknown" });
     if (result.status === "reduced" || result.status === "normalized") output = result.replacement;
   } catch {
