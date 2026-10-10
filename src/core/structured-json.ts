@@ -55,6 +55,27 @@ export function fields(node: JsonNode, allowed: readonly string[], required: rea
   return required.every(name => result.has(name)) ? result : undefined;
 }
 export function scalar(node: JsonNode | undefined): string | number | boolean | null | undefined { return node?.kind === "scalar" ? node.value : undefined; }
+/** Exact decimal check, adapted from structured-files.ts@1d28291 (MIT). No rounded fractions. */
+export function nonnegativeInteger(node: JsonNode | undefined, output: string): number | undefined {
+  const numeric = node?.kind === "scalar" ? node.value : undefined;
+  if (typeof numeric !== "number" || !Number.isSafeInteger(numeric) || numeric < 0 || !node) return undefined;
+  const match = /^(-?)(\d+)(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/.exec(output.slice(...node.span));
+  if (!match) return undefined;
+  let digits = (match[2]! + (match[3] ?? "")).replace(/^0+/, "");
+  if (!digits) return numeric;
+  if (match[1]) return undefined;
+  const shift = Number(match[4] ?? 0) - (match[3]?.length ?? 0);
+  if (!Number.isSafeInteger(shift)) return undefined;
+  if (shift < 0) {
+    const cut = -shift;
+    if (cut >= digits.length || !/^0+$/.test(digits.slice(-cut))) return undefined;
+    digits = digits.slice(0, -cut);
+  } else {
+    if (digits.length + shift > 16) return undefined;
+    digits += "0".repeat(shift);
+  }
+  return digits.length <= 16 && BigInt(digits) <= BigInt(Number.MAX_SAFE_INTEGER) ? numeric : undefined;
+}
 export function compactPieces(node: JsonNode): Piece[] {
   if (node.kind === "scalar") return [node.span];
   const pieces: Piece[] = [{ text: node.kind === "array" ? "[" : "{" }];
