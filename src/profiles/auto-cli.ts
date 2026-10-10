@@ -8,6 +8,9 @@ function processes(output: string): Reduction | undefined {
   if (!["  PID  PPID STAT COMM", "    PID    PPID STAT COMMAND"].includes(header) || !lines.length) return;
   const second = header.indexOf("PPID") + 4, first = header.indexOf("PID") + 3;
   const state = second + 1, command = header.indexOf("COMM");
+  // Fixed widths already cap Darwin at 5 and procps at 7 digits (inside int32 pid_t). Bound to the
+  // kernel ranges: xnu PID_MAX 99999; Linux pid < pid_max <= PID_MAX_LIMIT 4*1024*1024 (threads.h).
+  const pidMax = header.startsWith("    PID") ? "4194303" : "99999";
   const pieces: Piece[] = [], required: Span[] = [], ids = new Set<string>();
   function cells(spans: Span[]) {
     spans.forEach((span, i) => { if (i) pieces.push({ text: "\t" }); pieces.push(span); required.push(span); });
@@ -19,6 +22,7 @@ function processes(output: string): Reduction | undefined {
     if (line[first] !== " " || line[second] !== " " || line[command - 1] !== " ") return;
     const pid = line.slice(0, first), ppid = line.slice(first + 1, second), stat = line.slice(state, command - 1);
     if (!/^ *[1-9]\d*$/.test(pid) || !/^ *(?:0|[1-9]\d*)$/.test(ppid) ||
+        !within(pid.trim(), pidMax) || !within(ppid.trim(), pidMax) ||
         !/^[IDRSTtUVWZX][<NLPsl+EXW-]* *$/.test(stat) || !line.slice(command).trim() || ids.has(pid.trim())) return;
     ids.add(pid.trim());
     cells([[offset + pid.search(/\d/), offset + first], [offset + first + 1 + ppid.search(/\d/), offset + second],
