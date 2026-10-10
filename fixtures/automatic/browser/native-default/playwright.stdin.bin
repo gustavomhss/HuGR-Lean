@@ -1,0 +1,14 @@
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"hugr-owned-capture","version":"1.0.0"}}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"browser_navigate","arguments":{"url":"http://127.0.0.1:61647/"}}}
+{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"browser_snapshot","arguments":{}}}
+{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"browser_evaluate","arguments":{"function":"() => ({title: document.title, inputs: Array.from(document.querySelectorAll(\"input\")).map(e => ({type:e.type,value:e.value,checked:e.checked,disabled:e.disabled}))})"}}}
+{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"browser_run_code_unsafe","arguments":{"code":"async (page) => {\n  const session = await page.context().newCDPSession(page);\n  await session.send('Accessibility.enable');\n  const accessibility = await session.send('Accessibility.getFullAXTree');\n  const version = await session.send('Browser.getVersion');\n  const target = await session.send('Target.getTargetInfo');\n  const window = await session.send('Browser.getWindowForTarget', { targetId: target.targetInfo.targetId });\n  await session.detach();\n  return { accessibility, version, target, window };\n}"}}}
+{"jsonrpc":"2.0","id":7,"method":"tools/call","params":{"name":"browser_console_messages","arguments":{"level":"info"}}}
+{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"browser_network_requests","arguments":{"static":true}}}
+{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"browser_click","arguments":{"target":"#open"}}}
+{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"browser_evaluate","arguments":{"function":"() => ({focused:document.activeElement.id,modal:document.querySelector(\"dialog\").open})"}}}
+{"jsonrpc":"2.0","id":11,"method":"tools/call","params":{"name":"browser_snapshot","arguments":{}}}
+{"jsonrpc":"2.0","id":12,"method":"tools/call","params":{"name":"browser_run_code_unsafe","arguments":{"code":"async (page) => {\n  const session = await page.context().newCDPSession(page);\n  await session.send('Accessibility.enable');\n  const accessibility = await session.send('Accessibility.getFullAXTree');\n  const version = await session.send('Browser.getVersion');\n  const target = await session.send('Target.getTargetInfo');\n  const window = await session.send('Browser.getWindowForTarget', { targetId: target.targetInfo.targetId });\n  await session.detach();\n  return { accessibility, version, target, window };\n}"}}}
+{"jsonrpc":"2.0","id":13,"method":"tools/call","params":{"name":"browser_evaluate","arguments":{"function":"() => { throw new Error(\"Owned intentional failure — 雪\"); }"}}}
