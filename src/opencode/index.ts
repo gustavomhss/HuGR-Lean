@@ -55,7 +55,7 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
             termination: { kind: "exited", code: 0 }, completeness: "complete",
             ...(typeof scopeRef === "string" ? { scopeRef } : {}) }, limits);
         } else {
-          if (options.automatic === false || typeof tool !== "string" || !["glob", "grep", "read", "list_mcp_resources", "list_mcp_resource_templates"].includes(tool) ||
+          if (options.automatic === false || typeof tool !== "string" || !["glob", "grep", "read"].includes(tool) ||
               metadata.truncated !== false || !args) return;
           result = processAutomatic({ source: "native", tool, output: original, args, metadata,
             status: "success", completeness: "complete" }, limits);

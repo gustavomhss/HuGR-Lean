@@ -130,3 +130,12 @@ test("MCP commit after raw save revalidates failure, truncation and binary facts
   await createAfterHook({ raw: {} }, { raw: { put: async () => "id" } })(input, flipping);
   assert.equal(flipping.content[0]!.text, text); assert.equal(reads, 2);
 });
+test("native tools without an automatic reducer are never routed, even with complete JSON output", async () => {
+  let calls = 0;
+  const hook = createAfterHook({}, { automaticFilter: () => { calls++; throw new Error("must not route"); } });
+  for (const tool of ["list_mcp_resources", "list_mcp_resource_templates", "webfetch"]) {
+    const output = { output: ' { "resources": [] } ', metadata: { truncated: false } };
+    await hook({ tool, args: {} }, output); assert.equal(output.output, ' { "resources": [] } ');
+  }
+  assert.equal(calls, 0);
+});
