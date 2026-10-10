@@ -15,7 +15,10 @@ const tree = () => ({ schema: "hugr-lean/a11y-v1", root: "root", nodes: [
   node("focus-parent", "root", { description: "Focus ancestry", actions: ["open"] }),
   node("modal", "modal-parent", { states: ["modal"] }),
   node("modal-parent", "root", { description: "Modal ancestry", bounds: [-1, 0, 3.5, 4] }),
-  node("modal-child", "modal"),
+  node("modal-nested-child", "modal-child", { value: "Confirm 😀", actions: ["activate", "inspect"] }),
+  node("modal-child", "modal", { states: ["modal"], value: 0, actions: ["open"] }),
+  node("hidden-child", "hidden", { value: "Unrelated", actions: ["activate"] }),
+  node("focus-child", "focus", { value: "Not selected", actions: ["activate"] }),
 ] });
 function observation(output: string, scopeRef: string | undefined = "selected"): StructuredObservation {
   return { format: "accessibility-scope", output, scopeRef, termination: { kind: "exited", code: 0 }, completeness: "complete" };
@@ -48,12 +51,22 @@ function projected(input: ReturnType<typeof tree>, scope = "selected") {
 
 test("selected subtree and full ancestor nodes retain original order and details", () => {
   const view = projected(tree());
-  assert.deepEqual(view.nodes.map(item => item.ref), ["child", "root", "selected", "ancestor", "focus", "focus-parent", "modal", "modal-parent"]);
+  assert.deepEqual(view.nodes.map(item => item.ref), ["child", "root", "selected", "ancestor", "focus", "focus-parent", "modal", "modal-parent", "modal-nested-child", "modal-child"]);
 });
 test("off-scope focused/modal nodes and full ancestry survive", () => {
   const view = projected(tree());
   for (const ref of ["focus", "focus-parent", "modal", "modal-parent"]) assert.ok(view.nodes.some(item => item.ref === ref), ref);
-  assert.ok(!view.nodes.some(item => item.ref === "modal-child"));
+  assert.ok(!view.nodes.some(item => item.ref === "focus-child"));
+});
+test("off-scope modal complete subtree retains actionable descendants unchanged", () => {
+  const input = tree(), view = projected(input);
+  for (const ref of ["modal-child", "modal-nested-child"]) {
+    assert.deepEqual(view.nodes.find(item => item.ref === ref), input.nodes.find(item => item.ref === ref), ref);
+  }
+  assert.deepEqual(view.nodes, input.nodes.filter(item => !["hidden", "hidden-child", "focus-child"].includes(item.ref)));
+  // An ordinary child must survive solely because its modal ancestor is retained.
+  const ordinary = tree(); Object.assign(ordinary.nodes.find(item => item.ref === "modal-child")!, { states: [] });
+  assert.deepEqual(projected(ordinary).nodes, ordinary.nodes.filter(item => !["hidden", "hidden-child", "focus-child"].includes(item.ref)));
 });
 test("scope source lexeme and Unicode stay exact; root scope keeps all nodes", () => {
   const input = tree(), output = JSON.stringify(input, null, 2).replace('"ref": "selected"', '"ref": "sel\\u0065cted"');
