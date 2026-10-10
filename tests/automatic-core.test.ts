@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { filterAutomatic } from "../src/core/automatic.js";
 import type { AutomaticObservation } from "../src/core/automatic-types.js";
+import { tokenizeAutomaticCommand } from "../src/core/automatic-command.js";
 
 const input = (output: string): AutomaticObservation => ({ source: "mcp", tool: "actual_tool", output, args: {}, metadata: {}, status: "success", completeness: "complete" });
 const tail = [{ id: "probe", reduce: () => ({ pieces: [[0, 2] as const], required: [[0, 2] as const] }) }];
@@ -35,4 +36,10 @@ test("automatic shared renderer rejects rearranged required spans and made-up da
     const result = filterAutomatic(input("ab    "), { reducers: [{ id: "probe", reduce: () => ({ pieces, required: [[0, 2]] }) as never }] });
     assert.equal(result.status, "failed_open"); assert.equal("replacement" in result, false);
   }
+});
+test("automatic literal argv admits quoted data but never shell expansions or operators", () => {
+  assert.deepEqual(tokenizeAutomaticCommand(`docker ps --format '{{json .}}'`), ["docker", "ps", "--format", "{{json .}}"]);
+  assert.deepEqual(tokenizeAutomaticCommand(`node -e 'console.log(JSON.stringify({"$literal": 1}))'`), ["node", "-e", 'console.log(JSON.stringify({"$literal": 1}))']);
+  for (const command of [`docker ps | jq '.'`, `node -e "$CODE"`, "node -e 'unterminated", "ps -axo $FLAGS", "ls *.json", "ls; other", "node `other`"])
+    assert.equal(tokenizeAutomaticCommand(command), undefined, command);
 });
