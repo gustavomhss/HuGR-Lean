@@ -16,6 +16,8 @@ Initial failed attempts remain private at `/var/folders/lt/z11pyzhj0m17vn798jkk6
 
 Later latest-harness run `wp-f-native-final` captured working Playwright/CDP but DevTools initialization exceeded the bounded default 30 seconds (`Error: Timeout: initialize`); full stderr/partial streams/argv/receipt remain there. Committed `native/` is the earlier successful two-producer capture, not that timeout run.
 
+Latest harness verified again with `--timeout 120000`: `/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-native-verified/receipt.json` records successful complete Playwright and DevTools captures, bundle/formatter hashes, and no unexpected tool/transport failures. Original timeout run retained. Verification stream SHA-256: Playwright stdout `9cfb4137b1a77e83ca62dd531c88c718c5402b5640906f55b24f5de2f4f5b217`; DevTools stdout `72a336026192027443a4a47ff64148354e2498215029fdf6b14faebeded8eda2`.
+
 Manual reproduction: `node scripts/automatic-browser-capture.mjs --output PRIVATE_TEMP --playwright /absolute/playwright/cli.js --executable /absolute/chrome-headless-shell --devtools /absolute/source/build/src/bin/chrome-devtools-mcp.js`. Output must be a fresh private directory. Native execution is manual; portable tests replay committed responses and run original protocol controls, requiring no GUI/browser installation. No CI configuration changes.
 
 ## Native grammar findings

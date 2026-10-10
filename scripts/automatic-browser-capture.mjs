@@ -2,7 +2,7 @@
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import { createInterface } from 'node:readline';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, readdir, cp, access } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -19,6 +19,18 @@ export const PAGE = `<!doctype html><html lang="en"><meta charset="utf-8">
 console.info('Owned page ready — 雪');fetch('/owned.json').then(r=>r.json());</script></html>`;
 
 export const sha256 = value => createHash('sha256').update(value).digest('hex');
+// Recover assets omitted by an interrupted upstream tsc build, without changing source.
+export async function completeDevtoolsAssets(root, relative = 'third_party/devtools-frontend') {
+  for (const entry of await readdir(resolve(root, relative), { withFileTypes: true })) {
+    const path = `${relative}/${entry.name}`;
+    if (entry.isDirectory() && !['node_modules', '.git'].includes(entry.name)) await completeDevtoolsAssets(root, path);
+    else if (entry.isFile() && /\.(?:js|mjs|json)$/.test(entry.name)) {
+      const target = resolve(root, 'build', path);
+      try { await access(target); }
+      catch { await mkdir(dirname(target), { recursive: true }); await cp(resolve(root, path), target); }
+    }
+  }
+}
 export function decodeLine(line) {
   const value = JSON.parse(line);
   if (!value || value.jsonrpc !== '2.0') throw new Error('Non JSON-RPC stdout');
@@ -28,6 +40,7 @@ export function decodeLine(line) {
 // Retain original wire chunks separately; JSON files serialize decoded values, not wire bytes.
 export class StdioClient {
   constructor(argv, cwd, timeout = 30000) {
+    if (!Number.isFinite(timeout) || timeout <= 0 || timeout > 120000) throw new Error('Timeout must be 1..120000 milliseconds');
     this.argv = argv; this.timeout = timeout; this.pending = new Map();
     this.records = []; this.stdout = []; this.stderr = []; this.stdin = []; this.next = 0;
     this.child = spawn(argv[0], argv.slice(1), { cwd, stdio: ['pipe', 'pipe', 'pipe'], detached: true });
@@ -37,6 +50,7 @@ export class StdioClient {
     this.child.on('exit', (code, signal) => {
       this.exit = { code, signal }; this.fail(new Error(`Producer exited: ${code}/${signal}`));
     });
+    this.child.on('close', () => { this.drained = true; });
     this.lines = createInterface({ input: this.child.stdout });
     this.lines.on('line', line => {
       try {
@@ -82,6 +96,7 @@ export class StdioClient {
     if (!exited()) { try { process.kill(-this.child.pid, 'SIGTERM'); } catch {} }
     for (let n = 0; n < 20 && !exited(); n++) await new Promise(r => setTimeout(r, 50));
     if (!exited()) { try { process.kill(-this.child.pid, 'SIGKILL'); } catch {} }
+    for (let n = 0; n < 10 && !this.drained; n++) await new Promise(r => setTimeout(r, 50));
     this.lines.close(); this.fail(new Error('Capture closed'));
   }
 }
@@ -125,6 +140,7 @@ export function resultJson(response) {
 export async function capture(options) {
   const output = resolve(options.output);
   await mkdir(output, { recursive: true, mode: 0o700 });
+  if ((await readdir(output)).length) throw new Error('Output directory must be empty; preserving previous artifacts');
   await writeFile(resolve(output, 'owned-page.html'), PAGE);
   const receipt = { serialization: 'Decoded JSON serialized with JSON.stringify; .bin files are exact stdio bytes.',
     started: new Date().toISOString(), node: process.version, page: { file: 'owned-page.html', sha256: sha256(PAGE), license: 'MIT' },
@@ -141,13 +157,20 @@ export async function capture(options) {
     const client = new StdioClient(argv, output, options.timeout);
     try { await client.start(); await body(client); }
     catch (error) { receipt.failures.push({ producer: prefix, error: String(error), argv }); }
-    finally { await client.close(); receipt.captures[prefix] = await saveClient(client, output, prefix); }
+    finally {
+      await client.close(); receipt.captures[prefix] = await saveClient(client, output, prefix);
+      for (const record of client.records.filter(r => r.direction === 'receive' && (r.message.error || r.message.result?.isError))) {
+        const request = client.records.find(r => r.direction === 'send' && r.message.id === record.message.id)?.message;
+        if (!request?.params?.arguments?.function?.includes('Owned intentional failure')) receipt.failures.push({ producer: prefix, request, response: record.message });
+      }
+    }
   }
   try {
     receipt.executable = { path: options.executable, sha256: sha256(await readFile(options.executable)) };
     const pkg = JSON.parse(await readFile(resolve(dirname(options.playwright), 'package.json'), 'utf8'));
     receipt.sources.playwright = { ...receipt.sources.playwright, path: options.playwright, version: pkg.version,
       cliSha256: sha256(await readFile(options.playwright)) };
+    receipt.sources.playwright.bundleSha256 = sha256(await readFile(resolve(dirname(options.playwright), '../playwright-core/lib/coreBundle.js')));
     receipt.sources.playwright.browsers = JSON.parse(await readFile(resolve(dirname(options.playwright), '../playwright-core/browsers.json'), 'utf8'));
     await run('playwright', [process.execPath, options.playwright, 'mcp', '--headless', '--isolated',
       '--executable-path', options.executable, '--sandbox', '--output-dir', output], async client => {
@@ -174,8 +197,9 @@ export async function capture(options) {
       receipt.sources.devtools.path = options.devtools;
       receipt.sources.devtools.entrySha256 = sha256(await readFile(options.devtools));
       receipt.sources.devtools.version = JSON.parse(await readFile(resolve(dirname(options.devtools), '../../../package.json'), 'utf8')).version;
+      receipt.sources.devtools.formatterSha256 = sha256(await readFile(resolve(dirname(options.devtools), '../formatters/SnapshotFormatter.js')));
       await run('devtools', [process.execPath, options.devtools, '--headless', '--isolated',
-        '--executablePath', options.executable, '--no-usage-statistics'], async client => {
+        '--executablePath', options.executable, '--no-usage-statistics', '--no-performance-crux', '--no-page-id-routing'], async client => {
         await client.call('navigate_page', { type: 'url', url: receipt.url });
         await client.call('take_snapshot', {});
         await client.call('evaluate_script', { function: '() => { document.querySelector("#open").click(); return {focused:document.activeElement.id}; }' });
@@ -186,6 +210,11 @@ export async function capture(options) {
   finally {
     await new Promise(r => server.close(r));
     receipt.finished = new Date().toISOString();
+    receipt.artifacts = {};
+    for (const entry of await readdir(output, { withFileTypes: true })) if (entry.isFile() && entry.name !== 'receipt.json') {
+      const bytes = await readFile(resolve(output, entry.name));
+      receipt.artifacts[entry.name] = { bytes: bytes.length, sha256: sha256(bytes) };
+    }
     await writeFile(resolve(output, 'receipt.json'), JSON.stringify(receipt) + '\n');
   }
   return receipt;
