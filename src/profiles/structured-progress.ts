@@ -1,4 +1,4 @@
-import { fields, parseJson, scalar } from "../core/structured-json.js";
+import { fields, nonnegativeInteger, parseJson, scalar } from "../core/structured-json.js";
 import type { StructuredReducer } from "../core/structured-types.js";
 import type { Piece, Span } from "../core/types.js";
 
@@ -19,10 +19,10 @@ export const reduceProgress: StructuredReducer = output => {
     const kind = scalar(common?.get("kind"));
     if (kind === "progress") {
       const values = fields(event, ["kind", "current", "total", "unit"], ["kind", "current", "total", "unit"]);
-      const next = scalar(values?.get("current")), limit = scalar(values?.get("total"));
+      const next = nonnegativeInteger(values?.get("current"), output);
+      const limit = nonnegativeInteger(values?.get("total"), output);
       const label = scalar(values?.get("unit"));
-      if (typeof next !== "number" || !Number.isSafeInteger(next) || next < 0 ||
-          typeof limit !== "number" || !Number.isSafeInteger(limit) || limit <= 0 || next > limit ||
+      if (next === undefined || limit === undefined || limit <= 0 || next > limit ||
           typeof label !== "string" || next < current ||
           (total !== undefined && total !== limit) || (unit !== undefined && unit !== label)) return undefined;
       current = next; total = limit; unit = label;

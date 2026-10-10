@@ -105,6 +105,34 @@ test("refuses malformed JSON, duplicate keys and non-finite or rounded unsafe nu
     input.replace('"current": 0', '"current": 9007199254740993')]) refused(broken);
 });
 
+test("refuses raw fractional rounding in current and changed total", () => {
+  const rawProgress = (current: string, total = "3") =>
+    `{"kind":"progress","current":${current},"total":${total},"unit":"files"}`;
+  const rawCapture = (events: string[]) =>
+    ` {"schema":"hugr-lean/progress-v1","events":[${events.join(",")},${JSON.stringify(result)}]} `;
+  for (const events of [
+    [rawProgress("0"), rawProgress("2.9999999999999999")],
+    [rawProgress("0"), rawProgress("3", "3.0000000000000001")],
+    [rawProgress("0", "3.0000000000000001"), rawProgress("3")],
+    [rawProgress("0"), rawProgress("1.0000000000000001"), rawProgress("3")],
+    [rawProgress("-1e-400"), rawProgress("3")],
+  ]) refused(rawCapture(events));
+});
+
+test("accepts exact integer exponent spellings and negative zero without rewriting lexemes", () => {
+  const prefix = ' {"schema":"hugr-lean/progress-v1","events":[';
+  const suffix = "]} ";
+  for (const [current, total] of [["3e0", "3.0000"], ["10e-1", "1e0"], ["30e-1", "3E+0"]]) {
+    const initial = `{"kind":"progress","current":-0,"total":${total},"unit":"files"}`;
+    const final = `{"kind":"progress","current":${current},"total":${total},"unit":"files"}`;
+    const done = JSON.stringify(result);
+    const filtered = filter(prefix + initial + "," + final + "," + done + suffix);
+    assert.equal(filtered.status, "reduced");
+    assert.ok("replacement" in filtered);
+    assert.equal(filtered.replacement, prefix + final + "," + done + suffix);
+  }
+});
+
 test("preserves failed and incomplete captures and already minimal valid output", () => {
   const input = capture([progress(0), progress(3), result]);
   for (const patch of [
