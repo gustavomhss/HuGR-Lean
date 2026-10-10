@@ -128,8 +128,12 @@ export const reduceAutomaticSnapshot: AutomaticReducer = observation => {
   const isPlaywright = tool === "browser_snapshot" || tool.endsWith("_browser_snapshot");
   const isDevtools = tool === "take_snapshot" || tool.endsWith("_take_snapshot");
   if (!isPlaywright && !isDevtools) return undefined;
-  const allowed = isPlaywright ? "boxes" : "verbose";
-  if (Object.keys(args).some(key => key !== allowed || typeof args[key] !== "boolean")) return undefined;
+  // pageId selects a whole page in the native default API, never an AX subtree.
+  if (Object.keys(args).some(key => {
+    if (isPlaywright) return key !== "boxes" || typeof args[key] !== "boolean";
+    if (key === "pageId") return typeof args[key] !== "number" || !Number.isSafeInteger(args[key]) || args[key] <= 0;
+    return key !== "verbose" || typeof args[key] !== "boolean";
+  })) return undefined;
   if (/^\.\.\.(?:output truncated|\d+ (?:lines|bytes) truncated)\.\.\./.test(output)) return undefined;
   return isPlaywright ? playwright(output) : devtools(output);
 };

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { AutomaticObservation } from "../src/core/automatic-types.js";
+import { filterAutomatic } from "../src/core/automatic.js";
 import { renderReduction } from "../src/core/structured-render.js";
 import { reduceAutomaticSnapshot } from "../src/profiles/auto-snapshot.js";
 
@@ -154,4 +158,117 @@ test("quoted brackets, escaped quotes and colons never become references", () =>
   assert.equal(rendered(observation(playwright.replace('[ref=e5]', '[ref=e99]'))), expected.replace('  e5 ', '  e99 '));
   const noRefs = `${preamble}yaml\n- button "[ref=e1]"\n- button "[ref=e2]"\n${suffix}`;
   assert.equal(reduceAutomaticSnapshot(observation(noRefs)), undefined);
+});
+
+interface CaptureRecord {
+  direction: string;
+  message: { id?: number; method?: string; params?: { name: string; arguments: Record<string, unknown> };
+    result?: { isError?: boolean; content?: { type: string; text: string }[];
+      tools?: { name: string; inputSchema: { properties: Record<string, { type: string }>; required: string[] } }[] } };
+}
+// Lead owns these unmodified F captures (initial data commit c80cc1d).
+// The override supports read-only dependency replay before lead integration.
+function nativeSnapshots(producer: string, tool: string, variant = "native") {
+  const root = process.env.HUGR_NATIVE_BROWSER_FIXTURES ?? fileURLToPath(new URL("../fixtures/automatic/browser/native/", import.meta.url));
+  const directory = variant === "native" ? root : resolve(root, "..", variant);
+  const { records, argv } = JSON.parse(readFileSync(resolve(directory, `${producer}.json`), "utf8")) as { records: CaptureRecord[]; argv: string[] };
+  if (variant === "native-default") {
+    assert.ok(!argv.includes("--no-page-id-routing"), "real default routing is enabled");
+    const schema = records.flatMap(r => r.direction === "receive" ? r.message.result?.tools ?? [] : []).find(t => t.name === tool)!.inputSchema;
+    assert.equal(schema.properties.pageId!.type, "number");
+    assert.ok(schema.required.includes("pageId"));
+  }
+  const requests = records.filter(r => r.direction === "send" && r.message.method === "tools/call" && r.message.params?.name === tool);
+  assert.equal(requests.length, 2, "native before and modal snapshots must both be present");
+  return requests.map(request => {
+    const responses = records.filter(r => r.direction === "receive" && r.message.id === request.message.id);
+    assert.equal(responses.length, 1, "match the actual response by request id");
+    const result = responses[0]!.message.result!;
+    assert.notEqual(result.isError, true);
+    assert.equal(result.content?.[0]?.type, "text");
+    return observation(result.content![0]!.text, tool, { args: request.message.params!.arguments });
+  });
+}
+const adapter = { reducers: [{ id: "auto-snapshot", reduce: reduceAutomaticSnapshot }] };
+
+function nativeOracle(input: AutomaticObservation, replacement: string) {
+  if (input.tool === "take_snapshot") {
+    const original = input.output.split("\n");
+    const reduced = replacement.split("\n");
+    assert.equal(reduced.shift(), original.shift(), "native header is unchanged");
+    const before = original.filter(Boolean).map(row => {
+      const match = /^( *)uid=(\d+_\d+) (.+)$/.exec(row);
+      assert.ok(match);
+      return { indent: match[1], ref: match[2], payload: match[3] };
+    });
+    const after = reduced.filter(Boolean).map(row => {
+      const match = /^( *)(\d+_\d+) (.+)$/.exec(row);
+      assert.ok(match, "all native UIDs retained");
+      return { indent: match[1], ref: match[2], payload: match[3] };
+    });
+    assert.deepEqual(after, before, "every native UID, payload, state and hierarchy retained");
+    assert.equal(replacement.endsWith("\n"), input.output.endsWith("\n"));
+    return;
+  }
+  const marker = "### Snapshot\n```yaml\n", compactMarker = "### Snapshot\n```text\n";
+  const start = input.output.indexOf(marker), compactStart = replacement.indexOf(compactMarker);
+  assert.equal(replacement.slice(0, compactStart), input.output.slice(0, start), "native page/preamble fields unchanged");
+  const end = input.output.indexOf("```", start + marker.length);
+  const compactEnd = replacement.indexOf("```", compactStart + compactMarker.length);
+  assert.equal(replacement.slice(compactEnd), input.output.slice(end), "native suffix unchanged");
+  const originals = input.output.slice(start + marker.length, end).split("\n");
+  const compact = replacement.slice(compactStart + compactMarker.length, compactEnd).split("\n");
+  assert.equal(compact.length, originals.length, "every native row retained");
+  originals.forEach((row, i) => {
+    // Independently identify native fixture attributes; quoted literal ref adversaries are above.
+    const match = /^( *)- (.*?)(\[ref=(e\d+|f\d+e\d+)\])(.*)$/.exec(row);
+    if (!match) { assert.equal(compact[i], row, "non-reference native row unchanged"); return; }
+    const emitted = /^( *)(e\d+|f\d+e\d+) (.*)$/.exec(compact[i]!);
+    assert.ok(emitted, "every native control reference retained");
+    assert.deepEqual({ indent: emitted[1], ref: emitted[2], payload: emitted[3] },
+      { indent: match[1], ref: match[4], payload: match[2]! + match[5]! }, "native name, value, attributes and hierarchy retained");
+  });
+}
+
+for (const [producer, tool] of [["playwright", "browser_snapshot"], ["devtools", "take_snapshot"]]) {
+  test(`native ${producer} default automatic replay preserves before and modal trees`, () => {
+    for (const input of nativeSnapshots(producer!, tool!)) {
+      const originalArgs = structuredClone(input.args);
+      const result = filterAutomatic(input, adapter);
+      assert.equal(result.status, "reduced");
+      if (result.status !== "reduced") assert.fail("native snapshot was not reduced");
+      nativeOracle(input, result.replacement);
+      assert.deepEqual(input.args, originalArgs, "actual native args unchanged");
+      assert.ok(result.outputBytes < result.inputBytes);
+    }
+  });
+}
+
+test("Chrome whole-page pageId admission is numeric, safe and positive only", () => {
+  for (const input of nativeSnapshots("devtools", "take_snapshot")) {
+    for (const pageId of [1, 2, Number.MAX_SAFE_INTEGER]) {
+      for (const args of [{ pageId }, { pageId, verbose: true }, { pageId, verbose: false }]) {
+        const result = filterAutomatic({ ...input, args }, adapter);
+        assert.equal(result.status, "reduced");
+        if (result.status === "reduced") nativeOracle(input, result.replacement);
+      }
+    }
+    for (const pageId of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1, "1", null, undefined, true, {}, []]) {
+      assert.equal(filterAutomatic({ ...input, args: { pageId } }, adapter).status, "passthrough");
+    }
+    for (const args of [{ pageId: 1, filePath: "x" }, { pageId: 1, target: "1_3" }, { pageId: 1, depth: 1 }, { pageId: 1, verbose: "true" }]) {
+      assert.equal(filterAutomatic({ ...input, args }, adapter).status, "passthrough");
+    }
+    const multiline = input.output.replace('"Dialog name"', '"Dialog\nname"');
+    if (multiline !== input.output) assert.equal(filterAutomatic({ ...input, output: multiline, args: { pageId: 1 } }, adapter).status, "passthrough");
+  }
+});
+
+test("native Chrome default API pageId calls reduce without routing overrides", () => {
+  for (const input of nativeSnapshots("devtools", "take_snapshot", "native-default")) {
+    assert.deepEqual(input.args, { pageId: 1 }, "replay actual default before/modal request args");
+    const result = filterAutomatic(input, adapter);
+    assert.equal(result.status, "reduced");
+    if (result.status === "reduced") nativeOracle(input, result.replacement);
+  }
 });
