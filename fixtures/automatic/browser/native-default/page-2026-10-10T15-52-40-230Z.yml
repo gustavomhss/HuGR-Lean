@@ -1,0 +1,20 @@
+- generic [ref=e1]:
+  - heading "Account “雪”" [level=1] [ref=e2]
+  - generic [ref=e3]:
+    - text: Name "東京"
+    - textbox "Name \"東京\"" [ref=e4]: Zoë
+  - generic [ref=e5]:
+    - checkbox "Keep “雪”" [checked] [ref=e6]
+    - text: Keep “雪”
+  - button "Unavailable" [disabled] [ref=e7]
+  - button "Open dialog" [ref=e8]
+  - link "Details" [ref=e9] [cursor=pointer]:
+    - /url: /details
+  - combobox "Region" [ref=e10]:
+    - option "東京" [selected]
+    - option "Paris"
+  - dialog "Edit \"雪\"" [ref=e11]:
+    - generic [ref=e12]:
+      - text: Dialog name
+      - textbox "Dialog name" [active] [ref=e13]: 東京
+    - button "Close" [ref=e14]

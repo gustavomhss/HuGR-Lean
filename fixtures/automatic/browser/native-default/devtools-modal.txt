@@ -1,0 +1,6 @@
+## Latest page snapshot
+uid=1_0 RootWebArea "Owned capture — 東京" url="http://127.0.0.1:61647/"
+  uid=2_0 dialog "Edit "雪"" modal
+    uid=2_1 "Dialog name"
+    uid=2_2 textbox "Dialog name" focusable focused value="東京"
+    uid=2_3 button "Close"
