@@ -1,4 +1,4 @@
-import { tokenizeCommand } from "../core/command.js";
+import { tokenizeAutomaticCommand } from "../core/automatic-command.js";
 import { parseJson, scalar, type JsonNode } from "../core/structured-json.js";
 import type { AutomaticObservation, AutomaticReducer } from "../core/automatic-types.js";
 import type { Piece, Reduction, Span } from "../core/types.js";
@@ -37,9 +37,9 @@ export function jsonCarrier(observation: AutomaticObservation): boolean {
   if (observation.source === "mcp") return true;
   if (observation.tool !== "bash" || observation.metadata.exit !== 0 || observation.metadata.truncated !== false
     || typeof observation.args.command !== "string") return false;
-  const argv = tokenizeCommand(observation.args.command);
+  const argv = tokenizeAutomaticCommand(observation.args.command);
   if (!argv) return false;
-  const [executable, ...args] = argv, name = executable!.split("/").at(-1);
+  const [executable, ...args] = argv, name = executable!.split(/[\\/]/).at(-1)!.replace(/\.exe$/i, "").toLowerCase();
   const pair = (flags: string[], value: string) => args.some((arg, i) => flags.includes(arg) && args[i + 1] === value);
   switch (name) {
     case "node": return args.length > 0 && !args.some(arg => arg === "--test" || arg.startsWith("--test="));
@@ -55,10 +55,41 @@ export function jsonCarrier(observation: AutomaticObservation): boolean {
   }
 }
 
+/** Exact native wrappers only. Payload spans are virtual UTF-16 offsets into the response. */
+export function nativeJsonSection(observation: AutomaticObservation): { output: string; start: number; end: number } | undefined {
+  const { output, tool, source } = observation;
+  if (Buffer.byteLength(output, "utf8") > 16 * 1024 * 1024) return;
+  const named = (name: string) => tool === name || tool.endsWith(`_${name}`);
+  let start = 0, end = output.length;
+  if (source === "mcp" && (named("browser_evaluate") || named("browser_run_code_unsafe")) && output.startsWith("### Result\n")) {
+    start = "### Result\n".length; end = output.indexOf("\n### Ran Playwright code\n", start);
+    if (end < start || output.length - end > 65536) return;
+  } else if (source === "mcp" && named("evaluate_script") && output.startsWith("Script ran on page and returned:\n```json\n")) {
+    start = "Script ran on page and returned:\n```json\n".length;
+    const closing = output.endsWith("\n```\n") ? 5 : output.endsWith("\n```") ? 4 : 0;
+    if (!closing) return;
+    end -= closing;
+  }
+  if (start && !parseJson(output.slice(start, end))) return;
+  return { output: output.slice(start, end), start, end };
+}
+export function nativeJsonReduction(observation: AutomaticObservation, section: { start: number; end: number }, reduction: Reduction): Reduction {
+  const shift = ([start, end]: Span): Span => [start + section.start, end + section.start];
+  const pieces: Piece[] = reduction.pieces.map(piece => Array.isArray(piece) ? shift(piece as Span) : piece);
+  const required = reduction.required.map(shift);
+  if (section.start) { const prefix: Span = [0, section.start]; pieces.unshift(prefix); required.push(prefix); }
+  if (section.end < observation.output.length) {
+    const suffix: Span = [section.end, observation.output.length]; pieces.push(suffix); required.push(suffix);
+  }
+  return { pieces, required };
+}
+
 /** JSON and NDJSON share one global syntax-node budget, never one budget per record. */
 export const reduceAutomaticJson: AutomaticReducer = observation => {
   if (!jsonCarrier(observation) || Buffer.byteLength(observation.output, "utf8") > 16 * 1024 * 1024) return;
-  const { output } = observation, pieces: Piece[] = [], required: Span[] = [];
+  const section = nativeJsonSection(observation);
+  if (!section) return;
+  const { output } = section, pieces: Piece[] = [], required: Span[] = [];
   let budget = 25000;
   const spend = (node: JsonNode): boolean => {
     if (--budget < 0) return false;
@@ -85,5 +116,5 @@ export const reduceAutomaticJson: AutomaticReducer = observation => {
     }
     if (output.endsWith("\n")) pieces.push({ text: "\n" });
   }
-  return required.length ? { pieces, required } satisfies Reduction : undefined;
+  return required.length ? nativeJsonReduction(observation, section, { pieces, required }) : undefined;
 };

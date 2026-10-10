@@ -4,8 +4,9 @@ import { filterAutomatic } from "../src/core/automatic.js";
 import { reduceAutomaticCdp } from "../src/profiles/auto-cdp.js";
 import { reduceAutomaticJson } from "../src/profiles/auto-json.js";
 import { renderReduction } from "../src/core/structured-render.js";
+import { readFileSync } from "node:fs";
 
-const run = (output: string) => filterAutomatic({ source: "mcp", tool: "cdp", output, args: {}, metadata: {}, status: "success", completeness: "complete" },
+const run = (output: string, tool = "cdp") => filterAutomatic({ source: "mcp", tool, output, args: {}, metadata: {}, status: "success", completeness: "complete" },
   { reducers: [{ id: "cdp", reduce: reduceAutomaticCdp }, { id: "json", reduce: reduceAutomaticJson }] });
 // Independent semantic oracle: no production parser, spans or column helpers.
 function decode(table: { columns: string[]; rows: unknown[][][]; cellEncoding: string }): Record<string, unknown>[] {
@@ -46,12 +47,54 @@ test("sparse expansion budget falls back losslessly; CDP value lexemes remain ex
   const result = run(JSON.stringify(wide, null, 2));
   assert.equal(result.status, "reduced"); assert.equal(result.profile, "json");
   assert.deepEqual(JSON.parse(result.replacement!), wide);
-  const input = '{ "nodes": [ { "nodeId":"1", "extension": 9007199254740993, "value": -0 }, { "nodeId":"2", "extension":1e+03, "value": "\\u0061" } ] }';
+  const input = '{ "nodes": [ { "nodeId":"1", "ignored":false, "extension": 9007199254740993, "value": -0 }, { "nodeId":"2", "ignored":true, "extension":1e+03, "value": "\\u0061" } ] }';
   const compact = run(input); assert.equal(compact.status, "reduced");
   const table = renderReduction(input, reduceAutomaticCdp({ source: "mcp", tool: "cdp", output: input,
     args: {}, metadata: {}, status: "success", completeness: "complete" })!);
   for (const lexeme of ['9007199254740993', '-0', '1e+03', '"\\u0061"']) {
     assert.ok(compact.replacement.includes(lexeme)); assert.ok(table.includes(lexeme));
+  }
+});
+
+test("real before/modal native AX and captured MCP Result reconstruct entire compound root", () => {
+  for (const state of ["before", "modal"]) {
+    const input = readFileSync(new URL(`../fixtures/automatic/browser/native/cdp-${state}.json`, import.meta.url), "utf8");
+    const original = JSON.parse(input), result = run(input);
+    assert.equal(result.status, "reduced"); assert.equal(result.profile, "cdp");
+    const compact = JSON.parse(result.replacement);
+    compact.accessibility.nodes = decode(compact.accessibility.nodes);
+    assert.deepEqual(compact, original);
+    compact.accessibility.nodes.forEach((node: object, i: number) => assert.deepEqual(Object.keys(node), Object.keys(original.accessibility.nodes[i])));
+  }
+  const capture = JSON.parse(readFileSync(new URL("../fixtures/automatic/browser/native/playwright.json", import.meta.url), "utf8"));
+  let checked = 0;
+  const calls = new Map<number, string>();
+  for (const record of capture.records) {
+    const message = record.message;
+    if (record.direction === "send" && message.method === "tools/call") calls.set(message.id, message.params.name);
+    if (record.direction !== "receive" || !["browser_run_code_unsafe", "browser_evaluate"].includes(calls.get(message.id) ?? "")) continue;
+    for (const block of record.message.result?.content ?? []) {
+      if (block.type !== "text" || !block.text.startsWith("### Result\n")) continue;
+      const start = "### Result\n".length, end = block.text.indexOf("\n### Ran Playwright code\n", start);
+      const original = JSON.parse(block.text.slice(start, end));
+      if (!original?.accessibility?.nodes) continue;
+      const result = run(block.text, "capture_browser_run_code_unsafe");
+      assert.equal(result.status, "reduced"); assert.equal(result.profile, "cdp");
+      const suffix = block.text.slice(end);
+      assert.ok(result.replacement.startsWith(block.text.slice(0, start)) && result.replacement.endsWith(suffix));
+      const compact = JSON.parse(result.replacement.slice(start, -suffix.length));
+      compact.accessibility.nodes = decode(compact.accessibility.nodes);
+      assert.deepEqual(compact, original); checked++;
+    }
+  }
+  assert.equal(checked, 2);
+});
+
+test("AX nodes require nonempty unique IDs and boolean ignored", () => {
+  for (const invalid of [[{ nodeId: "", ignored: false }], [{ nodeId: "x" }], [{ nodeId: "x", ignored: "false" }],
+    [{ nodeId: "x", ignored: false }, { nodeId: "x", ignored: true }]]) {
+    const result = run(JSON.stringify({ accessibility: { nodes: invalid }, control: { hasMore: true } }, null, 2));
+    assert.equal(result.status, "reduced"); assert.equal(result.profile, "json");
   }
 });
 
