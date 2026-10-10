@@ -45,6 +45,18 @@ test("process JSON refuses unknown, ambiguous, malformed and invalid records", (
     '[{"pid":1e400,"ppid":0,"state":"S","command":"x"}]']) preserved(input);
 });
 
+test("both process IDs require exact safe integer lexemes, not rounded JSON values", () => {
+  const input = (key: string, token: string) =>
+    ` [ { "pid": ${key === "pid" ? token : "1"}, "ppid": ${key === "ppid" ? token : "0"}, "state": "S", "command": "worker suffix" } ] `;
+  for (const key of ["pid", "ppid"]) {
+    for (const token of ["1.0000000000000001", "9007199254740991.1", "1e-400", "-1e-400", "9007199254740992"]) preserved(input(key, token));
+    for (const token of ["0e0", "-0", "10e-1", "9007199254740991"]) {
+      assert.equal(replacement(input(key, token)),
+        `"pid"\t"ppid"\t"state"\t"command"\n${key === "pid" ? token : "1"}\t${key === "ppid" ? token : "0"}\t"S"\t"worker suffix"`);
+    }
+  }
+});
+
 // Synthetic Darwin-layout cases; native compatibility comes from the opt-in capture below.
 const native = "  PID  PPID STAT COMM\n    1     0 Ss   /Applications/My App.app/worker  suffix  \n   22     1 R+    leading space🦀 command\n   22     1 R+    leading space🦀 command\n";
 test("native layout retains IDs, state, all rows and entire remaining command", () => {
