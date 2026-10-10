@@ -81,6 +81,17 @@ progress, process/file/window/event views and accessibility outline/property/sco
 Use `filterStructured` from `hugr-lean/core`, CLI `--format`, or declared `structuredTools`
 bindings. These are opt-in producer contracts, separate from the native command registry.
 
+Automatic native views are on by default: the plain plugin entry (no options, no `structuredTools`)
+also filters native `glob`, `grep` and directory `read` results, eligible `bash` output that the legacy
+registry declines (`no_profile`/unsupported command, genuine `metadata.exit === 0` and
+`metadata.truncated === false`), and raw MCP `content[]` text blocks: complete JSON/NDJSON, Playwright
+`browser_snapshot`, Chrome DevTools `take_snapshot` and CDP AX nodes. Changes are layout/prefix factoring
+and ref-leading reformatting only; every path, ref, row, key and value stays. Never touched: errors,
+MCP `isError`, truncation, unknown tools/carriers, file-content reads, attachments, binary
+(`resource.blob` refuses the packet) and `structuredContent`. Legacy reductions and refusals take
+precedence. Hook shapes are pinned to OpenCode 1.18.17 on macOS; Linux/Windows host behavior is not
+established. See [automatic native views](docs/COVERAGE.md#automatic-native-views).
+
 - Unknown commands, malformed/new formats, failures and incomplete/truncated results stay exact.
 - Every reduction must preserve declared evidence and be smaller in UTF-8 bytes.
 - Original summaries remain exact; only specifically admitted progress/layout can disappear after full validation. Native-looking plugin/reporter/lifecycle text does not authenticate its producer.
@@ -94,6 +105,7 @@ bindings. These are opt-in producer contracts, separate from the native command 
   "$schema": "https://opencode.ai/config.json",
   "plugin": [["file:///absolute/installed/path/hugr-lean/dist/index.js", {
     "enabled": true,
+    "automatic": true,
     "excludeCommands": ["git"],
     "maxInputBytes": 4194304,
     "raw": false
@@ -101,7 +113,9 @@ bindings. These are opt-in producer contracts, separate from the native command 
 }
 ```
 
-Defaults: enabled; 4 MiB input limit (configurable 1–16 MiB); raw off.
+Defaults: enabled; automatic native views on; 4 MiB input limit (configurable 1–16 MiB); raw off.
+`"automatic": false` restores the legacy behavior: registry `bash` reductions plus explicit `structuredTools` only.
+`excludeCommands` also skips automatic `bash` views; the MCP text budget is the same `maxInputBytes`.
 Invalid options disable filtering. Enable raw with `"raw": {}` or a `directory`, `maxBytes`, `ttlMs` object.
 Raw stores material reductions only: at least 1 KiB and 10% saved. Defaults: 64 MiB serialized records,
 seven-day lazy expiry; full store preserves existing records and makes the current reduction fail open.

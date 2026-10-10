@@ -9,5 +9,7 @@ npx --no-install tsx --test --test-name-pattern='<exact affected names>' tests/p
 3. Preserve each profile's declared evidence. Passing runner names may disappear only as documented; whole Jest/Vitest rows, JSON tokens/EOF and Git/rg associations remain protected. Collision-shaped text is not producer authentication.
 4. Mutation-probe changed preservation/refusal guard with its protecting named test; require failure, restore, rerun that test. Close owned file once; typecheck affected closure with campaign compiler flags. Registry/corpus/installed seams need independent review. Full-package tests/build/benchmark and exact-SHA CI belong to lead freeze; documentation-only audit does not run them.
 
+Automatic reducers: run `npx --no-install tsx --test tests/auto-<id>.test.ts`; capture real producer output into the matching `fixtures/automatic/**` subtree with pins in its `SOURCES.md`. Mutation-probe by shortening a span in BOTH emitted and required pieces; the independent decoder test must fail, not only the renderer.
+
 File budget: target 400 LOC, allow 600, tolerate 750; above 750 split by grammar family inside this package.
 Synchronize [manual](MANUAL.md)/[coverage](../../docs/COVERAGE.md) with actual registry, closed grammar and independent evidence. Exact-ledger enrollment is not reducer completion; safe-format gaps need explicit human decisions, not empty stubs.
