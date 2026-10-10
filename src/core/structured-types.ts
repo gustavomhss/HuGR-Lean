@@ -1,6 +1,6 @@
 import type { Observation, Reduction } from "./types.js";
 
-export const structuredFormats = ["json", "table", "progress", "processes", "files", "windows", "events", "accessibility", "accessibility-properties", "accessibility-scope"] as const;
+export const structuredFormats = Object.freeze(["json", "table", "progress", "processes", "files", "windows", "events", "accessibility", "accessibility-properties", "accessibility-scope"] as const);
 export type StructuredFormat = typeof structuredFormats[number];
 export interface StructuredObservation {
   readonly format: StructuredFormat;
