@@ -20,6 +20,8 @@ const structuredFilter: typeof filterStructured = (observation, options) => filt
 const native = (text = original) => ({ output: text, title: "host title", metadata: { exit: 0, truncated: false, extra: "keep" } });
 const input = { tool: "snapshot", args: { scopeRef: "ignored", command: "unchanged", other: 0 } };
 const options = { structuredTools: [{ tool: "snapshot", format: "json" as const }] };
+const table = '{ "columns": ["zero", "flag", "text"], "rows": [[0, false, "🔥"]] }';
+const tableView = '"zero"\t"flag"\t"text"\n0\tfalse\t"🔥"';
 
 test("structured config accepts every static format, copies and freezes nested bindings", () => {
   assert.deepEqual(parseOptions(undefined), {});
@@ -91,9 +93,24 @@ test("scope reads only args.scopeRef; stale, missing and invalid refs preserve o
   assert.equal(output.output, cell);
 });
 
-test("default registry, unsupported output and structured filter failures preserve text", async () => {
+test("production default hook reduces complete JSON", async () => {
   const output = native(); await createAfterHook(options)(input, output);
-  assert.equal(output.output, original, "registry remains unwired until lead integration");
+  assert.equal(output.output, cell);
+});
+
+test("production default hook preserves table zero, false, Unicode and host fields", async () => {
+  const args = structuredClone(input), before = structuredClone(args);
+  const output = native(table), metadata = output.metadata;
+  await createAfterHook({ structuredTools: [{ tool: "snapshot", format: "table" }] })(args, output);
+  assert.equal(output.output.trimEnd(), tableView);
+  assert.ok(Buffer.byteLength(output.output) < Buffer.byteLength(table));
+  assert.equal(output.title, "host title");
+  assert.equal(output.metadata, metadata);
+  assert.deepEqual(metadata, { exit: 0, truncated: false, extra: "keep" });
+  assert.deepEqual(args, before);
+});
+
+test("unsupported output and structured filter failures preserve text", async () => {
   for (const text of ["{broken", '{"unknown":1}', '"🔥', "", cell, "\ud800"]) {
     const result = native(text); await createAfterHook(options, { structuredFilter })(input, result);
     assert.equal(result.output, text);
@@ -134,14 +151,32 @@ async function run(args: string[], text: string | Buffer = original) {
 }
 const complete = ["--exit-code", "0", "--complete"];
 
-test("CLI accepts static formats; unwired registry and execution failures preserve bytes", async () => {
-  for (const format of structuredFormats) {
+test("production CLI reduces complete JSON", async () => {
+  assert.deepEqual(await run(["--format", "json", ...complete]), { code: 0, stdout: Buffer.from(cell), stderr: "" });
+});
+
+test("production CLI table retains zero, false and Unicode cells", async () => {
+  const result = await run(["--format", "table", ...complete], table);
+  assert.equal(result.code, 0, result.stderr);
+  assert.equal(result.stderr, "");
+  assert.equal(result.stdout.toString().trimEnd(), tableView);
+  assert.ok(result.stdout.length < Buffer.byteLength(table));
+});
+
+test("CLI accepts other static formats but preserves unsupported JSON scalar", async () => {
+  for (const format of structuredFormats.filter(format => format !== "json")) {
     const result = await run(["--format", format, ...complete, ...(format === "accessibility-scope" ? ["--scope-ref", "node"] : [])]);
     assert.deepEqual(result, { code: 0, stdout: Buffer.from(original), stderr: "" });
   }
+});
+
+test("CLI incomplete or failed execution metadata preserves bytes", async () => {
   for (const flags of [[], ["--complete"], ["--exit-code", "0"], ["--exit-code", "1", "--complete"]]) {
     assert.deepEqual(await run(["--format", "json", ...flags]), { code: 0, stdout: Buffer.from(original), stderr: "" });
   }
+});
+
+test("CLI invalid UTF-8 and malformed structured text preserve bytes", async () => {
   for (const text of [Buffer.from([0xff, 0xc3, 0x28]), Buffer.from("\ufeff{broken 🔥\r\n\0last")]) {
     assert.deepEqual(await run(["--format", "json", ...complete], text), { code: 0, stdout: text, stderr: "" });
   }
