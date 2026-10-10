@@ -2,32 +2,64 @@
 /** Real host proof. Observers only record source hooks; model mock never executes tools. */
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { cp, mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { createWriteStream } from "node:fs";
+import { finished } from "node:stream/promises";
+import { appendFile, cp, mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { isolatedEnvironment, runProcess, copySdkDependencies } from "./opencode-boundary.mjs";
+import { isolatedEnvironment, copySdkDependencies } from "./opencode-boundary.mjs";
 import { inventory } from "./automatic-proof-server.mjs";
-import { npmProcess, snapshotArtifact, assertPack } from "./package-smoke.mjs";
+import { snapshotArtifact, assertPack } from "./package-smoke.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const TEMP = "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode";
-async function hostProcess(binary, args, options, root) {
+let stopping = false;
+export async function caseDeadline(root, timeout, action) {
+  assert.ok(Number.isSafeInteger(timeout) && timeout > 0, "Finite positive case deadline required");
+  const controller = new AbortController(); let rejectDeadline;
+  const deadline = new Promise((_, reject) => { rejectDeadline = reject; });
+  const abort = (reason) => { controller.abort(reason); rejectDeadline(reason); };
+  const terminate = (signal) => {
+    stopping = true; const code = signal === "SIGTERM" ? 143 : 130; process.exitCode = code;
+    abort(new Error(`Harness received ${signal}`));
+    setTimeout(() => process.exit(code), 2000).unref();
+  };
+  const term = () => terminate("SIGTERM"), interrupt = () => terminate("SIGINT");
+  process.once("SIGTERM", term); process.once("SIGINT", interrupt);
+  const timer = setTimeout(() => abort(new Error(`Case deadline ${timeout} ms`)), timeout);
+  try { return await Promise.race([action(controller.signal), deadline]); }
+  catch (error) {
+    await writeFile(path.join(root, "deadline.json"), JSON.stringify({ at: new Date().toISOString(), message: error.message }));
+    throw new Error(`${error.message}\nArtifacts retained: ${root}`, { cause: error });
+  } finally { clearTimeout(timer); process.removeListener("SIGTERM", term); process.removeListener("SIGINT", interrupt); }
+}
+export async function hostProcess(binary, args, options, root) {
+  options.signal?.throwIfAborted();
   return await new Promise((resolve, reject) => {
     const child = spawn(binary, args, { cwd: options.cwd, env: options.env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
-    void writeFile(path.join(root, "process-start.json"), JSON.stringify({ pid: child.pid, group: child.pid })).catch(reject);
+    const label = options.label ?? "process";
+    const outputFile = createWriteStream(path.join(root, `${label}-stdout`)), errorFile = createWriteStream(path.join(root, `${label}-stderr`));
+    void writeFile(path.join(root, `${label}-start.json`), JSON.stringify({ pid: child.pid, group: child.pid, binary, args, cwd: options.cwd, at: new Date().toISOString() })).catch((error) => void finish(error));
     const stdout = [], stderr = []; let settled = false;
     const finish = async (error, code, signal) => {
-      if (settled) return; settled = true; clearTimeout(timer);
+      if (settled) return; settled = true; clearTimeout(timer); options.signal?.removeEventListener("abort", aborted);
       if (child.pid) { try { process.kill(-child.pid, "SIGKILL"); } catch (e) { if (e.code !== "ESRCH") error ??= e; } }
       child.stdout.destroy(); child.stderr.destroy(); child.unref();
       const result = { code, signal, stdoutBytes: Buffer.concat(stdout), stderrBytes: Buffer.concat(stderr) };
       result.stdout = result.stdoutBytes.toString("utf8"); result.stderr = result.stderrBytes.toString("utf8");
-      try { await writeFile(path.join(root, "process.json"), JSON.stringify({ pid: child.pid, code, signal })); } catch (e) { error ??= e; }
+      try {
+        outputFile.end(); errorFile.end(); await Promise.all([finished(outputFile), finished(errorFile)]);
+        await writeFile(path.join(root, `${label}.json`), JSON.stringify({ pid: child.pid, code, signal, at: new Date().toISOString() }));
+        await writeFile(path.join(root, `${label}-stdout`), result.stdoutBytes); await writeFile(path.join(root, `${label}-stderr`), result.stderrBytes);
+      } catch (e) { error ??= e; }
       if (error) reject(Object.assign(error, { diagnostics: result })); else resolve(result);
     };
     const timer = setTimeout(() => void finish(new Error(`Host deadline ${options.timeout} ms`)), options.timeout);
-    child.stdout.on("data", (data) => stdout.push(Buffer.from(data))); child.stderr.on("data", (data) => stderr.push(Buffer.from(data)));
+    const aborted = () => void finish(options.signal.reason);
+    options.signal?.addEventListener("abort", aborted, { once: true });
+    child.stdout.on("data", (data) => { stdout.push(Buffer.from(data)); outputFile.write(data); }); child.stderr.on("data", (data) => { stderr.push(Buffer.from(data)); errorFile.write(data); });
+    outputFile.on("error", (error) => void finish(error)); errorFile.on("error", (error) => void finish(error));
     child.once("error", (error) => void finish(error)); child.once("close", (code, signal) => void finish(undefined, code, signal));
   });
 }
@@ -52,6 +84,7 @@ export async function createProvider(tool, args, directory, log) {
     }
     const ordinal = ++arrivals, overlap = active; active = true;
     try {
+      await appendFile(path.join(log, "model-arrivals.jsonl"), JSON.stringify({ ordinal, at: new Date().toISOString() }) + "\n");
       assert.equal(overlap, false, "Overlapping model requests");
       assert.ok(ordinal <= 2 && errors.length === 0, "Extra/poisoned model request");
       assert.equal(req.method, "POST"); assert.equal(req.url, "/v1/chat/completions");
@@ -84,11 +117,14 @@ export async function createProvider(tool, args, directory, log) {
 
 function observer(log, phase) {
   return `import { appendFile } from "node:fs/promises";
-export default async () => ({ "tool.execute.after": async (input, output) => {
+export default async () => ({
+ event: async ({event}) => { if (${JSON.stringify(phase)} === "before") await appendFile(${JSON.stringify(log + ".events")}, JSON.stringify({at:Date.now(),event}) + "\\n"); },
+ "tool.execute.before": async (input, output) => { if (${JSON.stringify(phase)} === "before") await appendFile(${JSON.stringify(log + ".before")}, JSON.stringify({at:Date.now(),input,output}) + "\\n"); },
+ "tool.execute.after": async (input, output) => {
  const key = Symbol.for("hugr.automatic.proof");
  if (${JSON.stringify(phase)} === "before") globalThis[key] = { metadata: output.metadata, content: output.content, input: structuredClone(input) };
  const saved = globalThis[key];
- await appendFile(${JSON.stringify(log)}, JSON.stringify({ phase: ${JSON.stringify(phase)}, input, output, metadataSame: saved.metadata === output.metadata, inputSame: JSON.stringify(saved.input) === JSON.stringify(input), untouchedBlocksSame: !saved.content || saved.content.every((b,i) => b.type === "text" || b === output.content?.[i]) }) + "\\n");
+ await appendFile(${JSON.stringify(log)}, JSON.stringify({ at: Date.now(), phase: ${JSON.stringify(phase)}, input, output, metadataSame: saved.metadata === output.metadata, inputSame: JSON.stringify(saved.input) === JSON.stringify(input), untouchedBlocksSame: !saved.content || saved.content.every((b,i) => b.type === "text" || b === output.content?.[i]) }) + "\\n");
 } });\n`;
 }
 
@@ -201,18 +237,25 @@ export function assertObservation(before, after, result, expected = "preserved",
 }
 
 export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/bin/opencode", dependencies = process.env.HUGR_SMOKE_DEPS,
-  plugin, observe = false, disabled = false, kind = "glob", mcp, toolName, toolArgs, timeout = 60000 } = {}) {
+  plugin, observe = false, disabled = false, kind = "glob", mcp, toolName, toolArgs, timeout = 60000, logLevel = "INFO" } = {}) {
+  assert.equal(stopping, false, "Harness stopped; refusing another case");
   const root = await mkdtemp(path.join(TEMP, "automatic-host-")), cwd = path.join(root, "project"), directory = path.join(cwd, "owned-inventory");
+  return await caseDeadline(root, timeout, async (signal) => {
   const env = isolatedEnvironment(root); let mock, execution;
+  const stage = async (name) => { signal.throwIfAborted(); await appendFile(path.join(root, "stages.jsonl"), JSON.stringify({ name, at: new Date().toISOString() }) + "\n"); };
   try {
+    await stage("setup");
     if (kind === "snapshot") assert.ok(mcp && toolName, "Snapshot case requires native MCP config/toolName");
     await Promise.all([cwd, env.HOME, env.XDG_CONFIG_HOME, env.XDG_DATA_HOME, env.XDG_CACHE_HOME, env.XDG_STATE_HOME, env.OPENCODE_CONFIG_DIR].map((d) => mkdir(d, { recursive: true })));
     assert.ok(dependencies, "Private pinned SDK required: HUGR_SMOKE_DEPS");
     const sdk = JSON.parse(await readFile(path.join(dependencies, "node_modules/@opencode-ai/plugin/package.json"), "utf8"));
     assert.equal(sdk.version, "1.18.17", "SDK version must match real host");
-    await copySdkDependencies(dependencies, env.OPENCODE_CONFIG_DIR);
+    await stage("sdk-copy-start"); await copySdkDependencies(dependencies, env.OPENCODE_CONFIG_DIR); await stage("sdk-copy-end");
     await cp(path.join(ROOT, "fixtures/automatic/host/inventory"), directory, { recursive: true });
-    const version = await runProcess(binary, ["--version"], { cwd, env, timeout });
+    await writeFile(path.join(root, "paths.json"), JSON.stringify({ root, canonicalRoot: await realpath(root), directory, canonicalDirectory: await realpath(directory) }));
+    await stage("version-start");
+    const version = await hostProcess(binary, ["--version"], { cwd, env, timeout, signal, label: "version-process" }, root);
+    await stage("version-end");
     await writeFile(path.join(root, "version.json"), JSON.stringify(version)); assert.equal(version.stdout.trim(), "1.18.17");
     const hookLog = path.join(root, "hooks.jsonl"), before = path.join(root, "before.mjs"), after = path.join(root, "after.mjs");
     await writeFile(before, observer(hookLog, "before")); await writeFile(after, observer(hookLog, "after"));
@@ -235,9 +278,9 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
       mcp: mcp ?? { proof: { type: "local", command: [process.execPath, path.join(ROOT, "scripts/automatic-proof-server.mjs"), directory, path.join(root, "mcp.jsonl")], enabled: true } },
       ...(kind === "truncation" ? { tool_output: { max_lines: 3, max_bytes: 128 } } : {}) };
     await writeFile(env.OPENCODE_CONFIG, JSON.stringify(config, null, 2));
-    const argv = ["run", "--format", "json", "--model", "hugr-mock/boundary", "--title", "Automatic proof", "Execute requested native tool once, then finish."];
+    const argv = ["--log-level", logLevel, "run", "--format", "json", "--model", "hugr-mock/boundary", "--title", "Automatic proof", "Execute requested native tool once, then finish."];
     await writeFile(path.join(root, "argv.json"), JSON.stringify({ binary, argv, cwd, env, sdk: dependencies }));
-    execution = await hostProcess(binary, argv, { cwd, env, timeout }, root);
+    await stage("host-start"); execution = await hostProcess(binary, argv, { cwd, env, timeout, signal }, root); await stage("host-end");
     await writeFile(path.join(root, "stdout"), execution.stdoutBytes); await writeFile(path.join(root, "stderr"), execution.stderrBytes);
     assert.equal(execution.code, 0, execution.stderr); assert.deepEqual(mock.errors, []);
     assert.equal(mock.arrivals, 2, "Expected exactly two model requests"); assert.equal(mock.active, false);
@@ -282,18 +325,27 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
     await writeFile(path.join(root, "failure.json"), JSON.stringify({ message: error.message, stack: error.stack, requests: mock?.arrivals, errors: mock?.errors }, null, 2));
     throw new Error(`${error.message}\nArtifacts retained: ${root}`, { cause: error });
   } finally { if (mock) await mock.close(); }
+  });
 }
 
 export async function installCandidate() {
+  assert.equal(stopping, false, "Harness stopped; refusing installation");
   const root = await mkdtemp(path.join(TEMP, "automatic-installed-")), artifact = path.join(root, "artifact"), consumer = path.join(root, "consumer");
+  return await caseDeadline(root, 120000, async (signal) => {
   await mkdir(consumer); await snapshotArtifact(ROOT, artifact);
-  const options = { cwd: consumer, isolation: root, timeout: 120000 };
-  const pack = await npmProcess(["pack", "--json", "--ignore-scripts", "--pack-destination", root], { ...options, cwd: artifact });
+  const env = isolatedEnvironment(root), cli = await realpath(process.env.npm_execpath ?? path.join(path.dirname(process.execPath), "npm"));
+  await Promise.all([env.HOME, env.XDG_CONFIG_HOME, env.XDG_DATA_HOME, env.XDG_CACHE_HOME, env.XDG_STATE_HOME].map((d) => mkdir(d, { recursive: true })));
+  const npm = async (args, cwd, label) => {
+    const result = await hostProcess(process.execPath, [cli, ...args], { cwd, env, timeout: 120000, signal, label }, root);
+    assert.equal(result.code, 0, `npm ${label} failed: ${result.stderr}`); return result;
+  };
+  const pack = await npm(["pack", "--json", "--ignore-scripts", "--pack-destination", root], artifact, "pack-process");
   const tarball = path.join(root, assertPack(JSON.parse(pack.stdout)).filename);
   await writeFile(path.join(consumer, "package.json"), '{"private":true,"type":"module"}');
-  const install = await npmProcess(["install", tarball, "--ignore-scripts", "--no-audit", "--no-fund"], options);
+  const install = await npm(["install", tarball, "--ignore-scripts", "--no-audit", "--no-fund"], consumer, "install-process");
   await writeFile(path.join(root, "install.json"), JSON.stringify({ tarball, pack, install }));
   return path.join(consumer, "node_modules/hugr-lean/dist/index.js");
+  });
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -301,9 +353,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const cases = process.argv.filter((arg, i) => i > 1 && arg !== "--observe");
   const reports = [], failures = [];
   for (const kind of cases.length ? cases : ["json", "glob", "grep", "read", "readfile", "failure", "unknown", "readfailure", "truncation", "mcp-json", "mcp-error", "mcp-truncated", "mcp-unknown", "mcp-attachments", "mcp-blob", "optout"]) {
+    if (stopping) break;
     try { reports.push(await runHostCase({ plugin, observe, kind: kind === "optout" ? "mcp-json" : kind, disabled: kind === "optout" })); }
     catch (error) { failures.push({ kind, error: error.message }); }
   }
   console.log(JSON.stringify({ mode: observe ? "observation, not reduction proof" : "installed automatic proof", reports, failures }, null, 2));
-  if (failures.length) process.exitCode = 1;
+  if (failures.length && !stopping) process.exitCode = 1;
 }
