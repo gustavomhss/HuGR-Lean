@@ -9,4 +9,5 @@
 - Span/rendering changes affect critical identities, summaries, Unicode, order, and formatting; byte-limit changes affect admission and material-raw thresholds downstream.
 - Command/normalization changes alter which outputs reach parsers; run [command](../../tests/command.test.ts), [normalize](../../tests/normalize.test.ts), and [lines](../../tests/lines.test.ts) tests, including exact unknown/CR controls.
 - `FilterResult` statuses/reasons are public API data; replacement changes reach model-visible text and the adapter's raw-save decision, not native execution.
+- Automatic core/registry/renderer changes alter default model-visible text for native `glob`/`grep`/`read`, eligible `bash` and MCP text blocks in the [OpenCode adapter](../opencode/README.md) and CLI command mode; run [automatic core](../../tests/automatic-core.test.ts), [plugin](../../tests/automatic-plugin.test.ts) and `tests/auto-*.test.ts`. Registry order is precedence: specialized first, generic JSON last.
 - No persisted core schema exists; use [maintenance](MAINTENANCE.md) before revising the [public manual](MANUAL.md).
