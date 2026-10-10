@@ -109,3 +109,21 @@ test("MCP commit after raw save requires the exact validated packet and keeps in
   await createAfterHook({ raw: {} }, { raw: { put: async () => { (annotated.content[0] as Record<string, unknown>).annotations = { priority: 1 }; return "id"; } } })(input, annotated);
   assert.equal(annotated.content[0]!.text, '{"ref":"e42"}'); assert.deepEqual(annotated.content[0]!.annotations, { priority: 1 });
 });
+test("MCP commit after raw save revalidates failure, truncation and binary facts on the live packet", async () => {
+  const text = " ".repeat(2048) + '{"ref":"e42"}';
+  const mutations: ((output: Record<string, unknown>) => void)[] = [
+    output => { output.metadata = { truncated: true }; },
+    output => { output._meta = { truncated: true }; },
+    output => { output.metadata = { exit: 1 }; },
+    output => { ((output.content as Record<string, unknown>[])[1]!.resource as Record<string, unknown>).blob = "AAAA"; },
+  ];
+  for (const mutate of mutations) {
+    const output = packet(text) as unknown as Record<string, unknown>;
+    await createAfterHook({ raw: {} }, { raw: { put: async () => { mutate(output); return "id"; } } })(input, output);
+    assert.equal((output.content as { text?: string }[])[0]!.text, text);
+  }
+  let reads = 0;
+  const flipping = { ...packet(text), get isError() { reads++; return reads === 2 ? true : reads === 1 ? undefined : false; } };
+  await createAfterHook({ raw: {} }, { raw: { put: async () => "id" } })(input, flipping);
+  assert.equal(flipping.content[0]!.text, text); assert.equal(reads, 2);
+});

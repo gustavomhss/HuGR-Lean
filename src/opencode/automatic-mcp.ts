@@ -18,10 +18,11 @@ const flagsValid = (metadata: unknown): boolean => metadata === undefined || (re
   (metadata.truncated === undefined || metadata.truncated === false) &&
   (metadata.exit === undefined || metadata.exit === 0));
 
-/** OpenCode 1.18.17 passes native decoded MCP content BEFORE host text joining/truncation. */
-export async function filterMcpResult(input: Record<string, unknown>, output: Record<string, unknown>,
-  process: typeof filterAutomatic, maxInputBytes: number | undefined, save?: (text: string) => Promise<unknown>): Promise<void> {
-  // Every caller-owned value is read once into plain frozen copies; later checks never re-read live objects.
+type Packet = { tool: string; args: Readonly<Record<string, unknown>>; metadata: unknown; content: unknown[]; items: unknown[];
+  copies: Readonly<Record<string, unknown>>[]; segments: { index: number; text: string }[]; texts: Map<number, string> };
+
+/** Reads every caller-owned field once into plain frozen copies and validates the whole packet. */
+function readPacket(input: Record<string, unknown>, output: Record<string, unknown>, limit: number): Packet | undefined {
   const { tool, args: actualArgs } = input, { isError, content, metadata: actualMetadata, _meta: actualMeta } = output;
   const metadata = record(actualMetadata) ? Object.freeze({ ...actualMetadata }) : actualMetadata;
   const meta = record(actualMeta) ? Object.freeze({ ...actualMeta }) : actualMeta;
@@ -31,9 +32,7 @@ export async function filterMcpResult(input: Record<string, unknown>, output: Re
   if (!Array.isArray(content)) return;
   const length = content.length;
   if (!Number.isSafeInteger(length) || length < 1 || length > 64) return;
-  const limit = maxInputBytes ?? 4 * 1024 * 1024;
-  if (!Number.isSafeInteger(limit) || limit < 1024 * 1024 || limit > 16 * 1024 * 1024) return;
-  const items: unknown[] = [];
+  const items: unknown[] = [], copies: Readonly<Record<string, unknown>>[] = [];
   const segments: { index: number; text: string }[] = [], texts = new Map<number, string>();
   let bytes = 0;
   const append = (index: number, text: string) => {
@@ -45,7 +44,7 @@ export async function filterMcpResult(input: Record<string, unknown>, output: Re
     const block = content[index];
     if (!record(block)) return;
     const copy = Object.freeze({ ...block }), type = copy.type;
-    items.push(block);
+    items.push(block); copies.push(copy);
     if (typeof type !== "string") return;
     if (type === "text") {
       const text = copy.text;
@@ -60,6 +59,17 @@ export async function filterMcpResult(input: Record<string, unknown>, output: Re
       if (typeof copy.data !== "string" || typeof copy.mimeType !== "string") return;
     } else if (type !== "resource_link" || typeof copy.uri !== "string" || typeof copy.name !== "string") return;
   }
+  return { tool, args, metadata, content, items, copies, segments, texts };
+}
+
+/** OpenCode 1.18.17 passes native decoded MCP content BEFORE host text joining/truncation. */
+export async function filterMcpResult(input: Record<string, unknown>, output: Record<string, unknown>,
+  process: typeof filterAutomatic, maxInputBytes: number | undefined, save?: (text: string) => Promise<unknown>): Promise<void> {
+  const limit = maxInputBytes ?? 4 * 1024 * 1024;
+  if (!Number.isSafeInteger(limit) || limit < 1024 * 1024 || limit > 16 * 1024 * 1024) return;
+  const packet = readPacket(input, output, limit);
+  if (!packet) return;
+  const { tool, args, metadata, segments, texts } = packet;
   const original = segments.map(segment => segment.text).join("\n\n"), beforeBytes = Buffer.byteLength(original, "utf8");
   if (beforeBytes > limit || !texts.size) return;
   if ([...texts.values()].some(errorText)) return;
@@ -79,19 +89,17 @@ export async function filterMcpResult(input: Record<string, unknown>, output: Re
   const afterBytes = Buffer.byteLength(after, "utf8");
   if (afterBytes >= beforeBytes) return;
   if (save && beforeBytes - afterBytes >= 1024 && (beforeBytes - afterBytes) / beforeBytes >= 0.1) await save(original);
-  // The host may have changed the packet while persistence awaited: commit only onto the exact validated packet.
-  if (output.content !== content || content.length !== length || (output.isError !== undefined && output.isError !== false)) return;
-  const changed: unknown[] = [];
-  for (let index = 0; index < length; index++) {
-    const current = content[index];
-    if (current !== items[index]) return;
+  // Revalidate the live packet in full: the host may have changed anything while persistence awaited.
+  // Commit only when it is still the same array, every slot is the validated block and all text is unchanged.
+  const live = readPacket(input, output, limit);
+  if (!live || live.tool !== tool || live.content !== packet.content || live.items.length !== packet.items.length ||
+      live.items.some((item, index) => item !== packet.items[index]) || live.segments.length !== segments.length ||
+      live.segments.some((segment, index) => segment.index !== segments[index]!.index || segment.text !== segments[index]!.text)) return;
+  // Candidate blocks are rebuilt from their live copies so in-place host additions such as annotations survive.
+  const changed = live.items.map((item, index) => {
     const replacement = candidates.get(index);
-    if (replacement === undefined) { changed.push(current); continue; }
-    // Rebuild from the live block's current fields so in-place host additions (annotations etc.) survive.
-    const fresh = Object.freeze({ ...(current as Record<string, unknown>) });
-    if (fresh.type !== "text" || fresh.text !== texts.get(index)) return;
-    changed.push({ ...fresh, text: replacement });
-  }
+    return replacement === undefined ? item : { ...live.copies[index]!, text: replacement };
+  });
   // One assignment, after all validation and persistence; no partial block mutation.
   output.content = changed;
 }
