@@ -3,6 +3,7 @@ import test from "node:test";
 import { filterAutomatic } from "../src/core/automatic.js";
 import { reduceAutomaticCdp } from "../src/profiles/auto-cdp.js";
 import { reduceAutomaticJson } from "../src/profiles/auto-json.js";
+import { renderReduction } from "../src/core/structured-render.js";
 
 const run = (output: string) => filterAutomatic({ source: "mcp", tool: "cdp", output, args: {}, metadata: {}, status: "success", completeness: "complete" },
   { reducers: [{ id: "cdp", reduce: reduceAutomaticCdp }, { id: "json", reduce: reduceAutomaticJson }] });
@@ -37,6 +38,20 @@ test("native nodes and JSON-RPC result.nodes independently reconstruct every fie
     holder.nodes = decode(holder.nodes);
     assert.deepEqual(compact, native);
     holder.nodes.forEach((node: object, i: number) => assert.deepEqual(Object.keys(node), Object.keys(nodes[i]!)));
+  }
+});
+
+test("sparse expansion budget falls back losslessly; CDP value lexemes remain exact", () => {
+  const wide = { nodes: Array.from({ length: 180 }, (_, i) => ({ nodeId: String(i), [`extension${i}`]: {} })) };
+  const result = run(JSON.stringify(wide, null, 2));
+  assert.equal(result.status, "reduced"); assert.equal(result.profile, "json");
+  assert.deepEqual(JSON.parse(result.replacement!), wide);
+  const input = '{ "nodes": [ { "nodeId":"1", "extension": 9007199254740993, "value": -0 }, { "nodeId":"2", "extension":1e+03, "value": "\\u0061" } ] }';
+  const compact = run(input); assert.equal(compact.status, "reduced");
+  const table = renderReduction(input, reduceAutomaticCdp({ source: "mcp", tool: "cdp", output: input,
+    args: {}, metadata: {}, status: "success", completeness: "complete" })!);
+  for (const lexeme of ['9007199254740993', '-0', '1e+03', '"\\u0061"']) {
+    assert.ok(compact.replacement.includes(lexeme)); assert.ok(table.includes(lexeme));
   }
 });
 
