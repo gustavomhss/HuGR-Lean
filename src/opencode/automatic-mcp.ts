@@ -92,7 +92,11 @@ export async function filterMcpResult(input: Record<string, unknown>, output: Re
   // Revalidate the live packet in full: the host may have changed anything while persistence awaited.
   // Commit only when it is still the same array, every slot is the validated block and all text is unchanged.
   const live = readPacket(input, output, limit);
-  if (!live || live.tool !== tool || live.content !== packet.content || live.items.length !== packet.items.length ||
+  const sameArgs = (left: Readonly<Record<string, unknown>>, right: Readonly<Record<string, unknown>>) => {
+    const keys = Object.keys(left);
+    return keys.length === Object.keys(right).length && keys.every(key => Object.hasOwn(right, key) && Object.is(left[key], right[key]));
+  };
+  if (!live || live.tool !== tool || !sameArgs(live.args, args) || live.content !== packet.content || live.items.length !== packet.items.length ||
       live.items.some((item, index) => item !== packet.items[index]) || live.segments.length !== segments.length ||
       live.segments.some((segment, index) => segment.index !== segments[index]!.index || segment.text !== segments[index]!.text)) return;
   // Candidate blocks are rebuilt from their live copies so in-place host additions such as annotations survive.

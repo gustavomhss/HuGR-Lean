@@ -122,6 +122,9 @@ test("MCP commit after raw save revalidates failure, truncation and binary facts
     await createAfterHook({ raw: {} }, { raw: { put: async () => { mutate(output); return "id"; } } })(input, output);
     assert.equal((output.content as { text?: string }[])[0]!.text, text);
   }
+  const argsInput = { tool: "server_actual_inventory", args: { page: 1 } as Record<string, unknown> }, changedArgs = packet(text);
+  await createAfterHook({ raw: {} }, { raw: { put: async () => { argsInput.args.page = 2; return "id"; } } })(argsInput, changedArgs);
+  assert.equal(changedArgs.content[0]!.text, text);
   let reads = 0;
   const flipping = { ...packet(text), get isError() { reads++; return reads === 2 ? true : reads === 1 ? undefined : false; } };
   await createAfterHook({ raw: {} }, { raw: { put: async () => "id" } })(input, flipping);
