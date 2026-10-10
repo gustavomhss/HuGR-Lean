@@ -1,17 +1,26 @@
 import { parseJson, scalar, type JsonNode } from "../core/structured-json.js";
 import type { AutomaticReducer } from "../core/automatic-types.js";
 import type { Piece, Span } from "../core/types.js";
-import { jsonCarrier, jsonField, lexicalJson, protocolError } from "./auto-json.js";
+import { jsonCarrier, jsonField, lexicalJson, nativeJsonSection, nativeJsonReduction, protocolError } from "./auto-json.js";
 
 /** Native AX nodes only; sparse cells preserve absence separately from null/empty values. */
 export const reduceAutomaticCdp: AutomaticReducer = observation => {
   if (!jsonCarrier(observation) || Buffer.byteLength(observation.output, "utf8") > 16 * 1024 * 1024) return;
-  const root = parseJson(observation.output);
+  const section = nativeJsonSection(observation);
+  if (!section) return;
+  const root = parseJson(section.output);
   if (!root || protocolError(root)) return;
   const result = jsonField(root, "result");
-  const nodes = jsonField(root, "nodes") ?? (jsonField(root, "id") ? result && jsonField(result, "nodes") : undefined);
+  const accessibility = jsonField(root, "accessibility");
+  const nodes = jsonField(root, "nodes") ?? (jsonField(root, "id") ? result && jsonField(result, "nodes") : undefined)
+    ?? (accessibility && jsonField(accessibility, "nodes"));
+  const ids = new Set<string>();
   if (nodes?.kind !== "array" || nodes.items.length === 0 || !nodes.items.every(node => node.kind === "object"
-    && typeof scalar(jsonField(node, "nodeId")) === "string")) return;
+    && (() => {
+      const id = scalar(jsonField(node, "nodeId"));
+      if (typeof id !== "string" || !id.length || ids.has(id) || typeof scalar(jsonField(node, "ignored")) !== "boolean") return false;
+      ids.add(id); return true;
+    })())) return;
   const keys = new Map<string, JsonNode>(), edges = new Map<string, Set<string>>(), incoming = new Map<string, number>();
   for (const node of nodes.items) {
     if (node.kind !== "object") return;
@@ -19,7 +28,7 @@ export const reduceAutomaticCdp: AutomaticReducer = observation => {
     for (const entry of node.entries) {
       // Sparse rows must reconstruct each node's original field order and key lexemes.
       const key = keys.get(entry.name);
-      if (key && observation.output.slice(...key.span) !== observation.output.slice(...entry.key.span)) return;
+      if (key && section.output.slice(...key.span) !== section.output.slice(...entry.key.span)) return;
       if (!key) { keys.set(entry.name, entry.key); edges.set(entry.name, new Set()); incoming.set(entry.name, 0); }
       if (previous !== undefined && !edges.get(previous)!.has(entry.name)) {
         edges.get(previous)!.add(entry.name); incoming.set(entry.name, incoming.get(entry.name)! + 1);
@@ -67,5 +76,5 @@ export const reduceAutomaticCdp: AutomaticReducer = observation => {
     } else lexicalJson(node, pieces, required);
   }
   emit(root);
-  return { pieces, required };
+  return nativeJsonReduction(observation, section, { pieces, required });
 };

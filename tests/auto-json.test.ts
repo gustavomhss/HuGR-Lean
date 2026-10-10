@@ -4,6 +4,8 @@ import { filterAutomatic } from "../src/core/automatic.js";
 import type { AutomaticObservation } from "../src/core/automatic-types.js";
 import { reduceAutomaticJson } from "../src/profiles/auto-json.js";
 import { renderReduction } from "../src/core/structured-render.js";
+import { readFileSync } from "node:fs";
+import { nativeJsonSection } from "../src/profiles/auto-json.js";
 
 const observation = (output: string): AutomaticObservation => ({ source: "mcp", tool: "unknown_inventory", output,
   args: {}, metadata: {}, status: "success", completeness: "complete" });
@@ -20,6 +22,59 @@ test("JSON retains exact key/scalar lexemes, ordering, opaque flags and empty pu
   for (const token of ['"\\u006b"', '"empty"', '{', '}', '[', ']']) {
     assert.ok(reduction.required.some(span => input.slice(...span) === token), token);
   }
+});
+
+test("real captured MCP JSON results preserve wrappers and complete payloads", () => {
+  let checked = 0, reduced = 0;
+  for (const file of ["playwright", "devtools"]) {
+    const capture = JSON.parse(readFileSync(new URL(`../fixtures/automatic/browser/native/${file}.json`, import.meta.url), "utf8"));
+    const calls = new Map<number, string>();
+    for (const record of capture.records) {
+      const message = record.message;
+      if (record.direction === "send" && message.method === "tools/call") calls.set(message.id, message.params.name);
+      const tool = calls.get(message.id);
+      if (record.direction !== "receive" || !tool || !["browser_evaluate", "browser_run_code_unsafe", "evaluate_script"].includes(tool)) continue;
+      if (message.result.isError === true) {
+        for (const block of message.result.content) if (block.type === "text") {
+          assert.notEqual(run(block.text, { tool, status: "failure" }).status, "reduced");
+        }
+        continue;
+      }
+      for (const block of message.result.content) {
+        if (block.type !== "text") continue;
+        const section: { output: string; start: number; end: number } = nativeJsonSection({ ...observation(block.text), tool })!;
+        assert.ok(section && section.start > 0, tool);
+        const result = run(block.text, { tool: `capture_${tool}` });
+        const prefix = block.text.slice(0, section.start), suffix = block.text.slice(section.end);
+        assert.notEqual(result.status, "failed_open", tool);
+        const replacement = result.status === "reduced" ? result.replacement : block.text;
+        if (result.status === "reduced") reduced++;
+        else {
+          assert.equal(result.reason, "unsupported_or_not_smaller");
+          assert.equal(section.output.trim(), JSON.stringify(JSON.parse(section.output)), "native payload already compact");
+        }
+        assert.ok(replacement.startsWith(prefix) && replacement.endsWith(suffix));
+        assert.deepEqual(JSON.parse(replacement.slice(prefix.length, -suffix.length)), JSON.parse(section.output));
+        const reduction = reduceAutomaticJson({ ...observation(block.text), tool })!;
+        for (const [start, end] of [[0, section.start], [section.end, block.text.length]]) {
+          assert.ok(reduction.required.some(span => span[0] === start && span[1] === end));
+        }
+        checked++;
+      }
+    }
+  }
+  assert.ok(checked >= 4, `only ${checked} native JSON results checked`);
+  assert.equal(reduced, 2);
+});
+
+test("wrapped JSON refuses unknown carriers, partial grammar, oversized headers and standard errors", () => {
+  const wrap = (payload: string) => `### Result\n${payload}\n### Ran Playwright code\n\`\`\`js\nreturn result;\n\`\`\``;
+  for (const payload of ['{ "x": 1, }', '{ "jsonrpc":"2.0", "error":{"code":1,"message":"bad"} }']) {
+    assert.notEqual(run(wrap(payload), { tool: "browser_evaluate" }).status, "reduced");
+  }
+  assert.notEqual(run(wrap('{ "x": 1 }')).status, "reduced");
+  assert.notEqual(run(wrap('{ "x": 1 }') + "x".repeat(65536), { tool: "browser_evaluate" }).status, "reduced");
+  assert.notEqual(run('Script ran on page and returned:\n```json\n{ "x": 1 }', { tool: "evaluate_script" }).status, "reduced");
 });
 
 test("NDJSON preserves all records, CRLF values, ordering and control footer", () => {
@@ -49,11 +104,11 @@ test("native bash frozen producers, shell facts and legacy precedence", () => {
   const input = '{ "native": [ 1, 2 ] }';
   const native = { source: "native", tool: "bash", metadata: { exit: 0, truncated: false } } as const;
   for (const command of ['node script.js', 'python3 script.py', 'jq . file.json', 'curl localhost', 'system_profiler -json',
-    'npm ls --json', 'docker ps --format json', 'kubectl get pods -o json', 'gh api user', 'pwsh -Command ConvertTo-Json']) {
+    'npm ls --json', 'docker ps --format json', 'docker ps --format "{{json .}}"', 'kubectl get pods -o json', 'gh api user', 'pwsh -Command ConvertTo-Json', "'C:\\tools\\node.exe' script.js"]) {
     assert.equal(run(input, { ...native, args: { command } }).status, "reduced", command);
   }
   for (const command of ['unknown --json', 'node --test script.js', 'python -m pytest', 'npm ls', 'docker ps',
-    'kubectl get pods', 'gh issue list', 'curl localhost | jq .', 'git status', 'docker ps --format "{{json .}}"']) {
+    'kubectl get pods', 'gh issue list', 'curl localhost | jq .', 'git status']) {
     assert.notEqual(run(input, { ...native, args: { command } }).status, "reduced", command);
   }
   for (const metadata of [{}, { exit: 1, truncated: false }, { exit: 0, truncated: true }]) {
