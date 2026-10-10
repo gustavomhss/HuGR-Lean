@@ -53,7 +53,7 @@ test("native bash frozen producers, shell facts and legacy precedence", () => {
     assert.equal(run(input, { ...native, args: { command } }).status, "reduced", command);
   }
   for (const command of ['unknown --json', 'node --test script.js', 'python -m pytest', 'npm ls', 'docker ps',
-    'kubectl get pods', 'gh issue list', 'curl localhost | jq .', 'git status']) {
+    'kubectl get pods', 'gh issue list', 'curl localhost | jq .', 'git status', 'docker ps --format "{{json .}}"']) {
     assert.notEqual(run(input, { ...native, args: { command } }).status, "reduced", command);
   }
   for (const metadata of [{}, { exit: 1, truncated: false }, { exit: 0, truncated: true }]) {
