@@ -29,7 +29,7 @@ Docker daemon was unavailable during local capture; no Linux sample substituted.
 
 ## Preservation probe receipt
 
-Focused suite: `npx tsx --test tests/auto-cli.test.ts` (20 tests, no skips on Darwin).
+Focused suite: `npx tsx --test tests/auto-cli.test.ts` (24 tests, no skips on Darwin).
 Typecheck: scoped `tsc --noEmit --strict` over `src/profiles/auto-cli.ts` and
 `tests/auto-cli.test.ts`. Both passed after restoring the probes below.
 
@@ -44,6 +44,16 @@ Typecheck: scoped `tsc --noEmit --strict` over `src/profiles/auto-cli.ts` and
   400-digit nlink admitted). Restored; `git diff src/` showed only the gate.
 - ps PID/PPID gate bypassed: Linux-layout PID/PPID 4194304 and 9999999 were
   admitted and the regression failed. Restored.
+- out_time hours gate bypassed: zero-padded `000:` hours (clock agreement alone
+  admits) reduced and the conversion spy saw a 200,000-digit BigInt. Restored.
+
+## Live ps capture
+
+Darwin ps prints STAT `?` with comm `(name)` for processes exiting during the
+capture. The grammar refuses those rows and keeps the whole output. The live
+operational test accepts a refusal only when such a row is present, and only if
+the original is kept exactly; capture mode then fails instead of writing the
+receipt. Committed receipts and fixtures must still reduce.
 
 ## Numeric producer ranges
 

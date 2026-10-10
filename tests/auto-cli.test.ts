@@ -78,7 +78,31 @@ test("ffmpeg int64 counters refuse beyond producer range before numeric conversi
     outOfRange(ff, progress.replace(/total_size=N\/A/g, `total_size=${big}`));
   }
   outOfRange(ff, atMax.replace(/out_time_(u|m)s=\d+/g, `out_time_$1s=${INT64_OVER}`).replace(/out_time=\S+/g, "out_time=2562047788:00:54.775808"));
+  // Also caught by clock-vs-us disagreement: here the hours gate bounds pre-conversion cost (see spy test).
   outOfRange(ff, progress.replace(/out_time=\d+/g, `out_time=${HUGE}`));
+});
+test("ffmpeg out_time hours gate refuses non-native padding the clock agreement alone admits", () => {
+  // %02PRId64 never pads beyond two digits; BigInt("000") === 0n would otherwise agree with out_time_us=0.
+  outOfRange(ff, progress.replace("out_time=00:00:00.000000", "out_time=000:00:00.000000"));
+  outOfRange(ff, progress.replace("out_time=00:00:01.000000", "out_time=0000:00:01.000000"));
+});
+test("range gates run before Number/BigInt: no conversion argument exceeds 20 digits", () => {
+  const lengths: number[] = [], real = { BigInt: globalThis.BigInt, Number: globalThis.Number };
+  const spy = <T extends object>(target: T) => new Proxy(target, { apply(fn, self, args: unknown[]) { lengths.push(String(args[0]).length); return Reflect.apply(fn as (...a: unknown[]) => unknown, self, args); } });
+  const cases: [string, string][] = [
+    [ff, progress.replace(/out_time=\d+/g, `out_time=${HUGE}`)], [ff, progress.replace(/frame=\d+/g, `frame=${HUGE}`)],
+    [ff, progress.replace(/out_time_(u|m)s=\d+/g, `out_time_$1s=${HUGE}`)], [ff, progress.replace(/total_size=N\/A/g, `total_size=${HUGE}`)],
+    ["ls -l", ls.replace("  1 owner", `  ${HUGE} owner`)], ["ls -l", ls.replace("staff  5", `staff  ${HUGE}`)]];
+  const results: unknown[] = []; let control = 0;
+  globalThis.BigInt = spy(real.BigInt); globalThis.Number = spy(real.Number);
+  try {
+    // Positive control: a valid stream and listing reach the spied conversions.
+    assert.ok(reduceAutomaticCli(observe(ff, progress)) && reduceAutomaticCli(observe("ls -l", ls))); control = lengths.length;
+    for (const [command, output] of cases) results.push(reduceAutomaticCli(observe(command, output)));
+  } finally { globalThis.BigInt = real.BigInt; globalThis.Number = real.Number; }
+  assert.ok(control > 0, "spy observed no conversions");
+  assert.deepEqual(results, cases.map(() => undefined));
+  assert.ok(Math.max(0, ...lengths) <= 20, `conversion of ${Math.max(...lengths)} digits`);
 });
 test("ls nlink, size and total refuse beyond producer range before numeric conversion", () => {
   const max = ls.replace("total 8", `total ${UINT64_MAX}`).replaceAll("  1 owner", `  ${UINT64_MAX} owner`).replace("staff  5", `staff  ${INT64_MAX}`);
@@ -89,20 +113,38 @@ test("ls nlink, size and total refuse beyond producer range before numeric conve
   }
   for (const big of [INT64_OVER, HUGE]) outOfRange("ls -l", ls.replace("staff  5", `staff  ${big}`));
 });
-test("ps PID/PPID refuse beyond kernel pid range in either fixed layout", () => {
-  const linux = (pid: string, ppid: string) => `    PID    PPID STAT COMMAND\n${pid.padStart(7)} ${ppid.padStart(7)} Ss   systemd\n`;
-  const darwin = (pid: string, ppid: string) => `  PID  PPID STAT COMM\n${pid.padStart(5)} ${ppid.padStart(5)} Ss   launchd\n`;
-  assert.equal(view("ps -eo pid,ppid,stat,comm", linux("4194303", "4194303")), "PID\tPPID\tSTAT\tCOMMAND\n4194303\t4194303\tSs\tsystemd\n");
-  assert.equal(view("ps -axo pid,ppid,stat,comm", darwin("99999", "0")), "PID\tPPID\tSTAT\tCOMM\n99999\t0\tSs\tlaunchd\n");
-  for (const big of ["4194304", "9999999", "2147483648", HUGE]) for (const output of [linux(big, "1"), linux("2", big)]) outOfRange("ps -eo pid,ppid,stat,comm", output);
-  for (const big of ["100000", HUGE]) for (const output of [darwin(big, "1"), darwin("2", big)]) outOfRange("ps -axo pid,ppid,stat,comm", output);
-  for (const output of [linux("0", "1"), linux("01", "1"), linux("2", "00")]) outOfRange("ps -eo pid,ppid,stat,comm", output);
+const linuxPs = (pid: string, ppid: string) => `    PID    PPID STAT COMMAND\n${pid.padStart(7)} ${ppid.padStart(7)} Ss   systemd\n`;
+const darwinPs = (pid: string, ppid: string) => `  PID  PPID STAT COMM\n${pid.padStart(5)} ${ppid.padStart(5)} Ss   launchd\n`;
+test("ps PID/PPID gate refuses beyond Linux PID_MAX_LIMIT inside the 7-wide procps columns", () => {
+  assert.equal(view("ps -eo pid,ppid,stat,comm", linuxPs("4194303", "4194303")), "PID\tPPID\tSTAT\tCOMMAND\n4194303\t4194303\tSs\tsystemd\n");
+  assert.equal(view("ps -axo pid,ppid,stat,comm", darwinPs("99999", "0")), "PID\tPPID\tSTAT\tCOMM\n99999\t0\tSs\tlaunchd\n");
+  for (const big of ["4194304", "9999999"]) for (const output of [linuxPs(big, "1"), linuxPs("2", big)]) outOfRange("ps -eo pid,ppid,stat,comm", output);
+});
+test("ps column-width refusal: wider values break fixed layout (pid gate is defense in depth)", () => {
+  for (const big of ["2147483648", HUGE]) for (const output of [linuxPs(big, "1"), linuxPs("2", big)]) outOfRange("ps -eo pid,ppid,stat,comm", output);
+  for (const big of ["100000", HUGE]) for (const output of [darwinPs(big, "1"), darwinPs("2", big)]) outOfRange("ps -axo pid,ppid,stat,comm", output);
+  for (const output of [linuxPs("0", "1"), linuxPs("01", "1"), linuxPs("2", "00")]) outOfRange("ps -eo pid,ppid,stat,comm", output);
+});
+test("ps refuses native Darwin exiting-process rows (STAT ?) and preserves the whole listing", () => {
+  // adv_cmds ps print.c state(): unknown/exiting process state prints '?'; comm shows as (name).
+  outOfRange("ps -axo pid,ppid,stat,comm", ps + "46503 40672 ?    (gh)\n");
+  outOfRange("ps -axo pid,ppid,stat,comm", ps + "38889 38884 ?E   (bun)\n");
 });
 
 interface Receipt { argv: string[]; cwd: string; original: string; stderr: string; exit: number; platform: string; stdoutSha256: string; binarySha256: string; version: string; source: string; license: string; capturedAt: string; }
 const hash = (data: string | Buffer) => createHash("sha256").update(data).digest("hex");
-function semanticOracle(receipt: Receipt) {
+function semanticOracle(receipt: Receipt, live = false) {
   const command = receipt.argv.map((arg, i) => i && arg.includes(" ") ? `'${arg}'` : arg).join(" ");
+  if (live && receipt.argv[0]!.endsWith("ps") && reduceAutomaticCli(observe(command, receipt.original)) === undefined) {
+    // A live process list can legitimately contain transient exiting rows (Darwin STAT '?'), which the
+    // grammar refuses. Only that independently identified production excuses refusal; original must survive.
+    const [header, ...rows] = receipt.original.slice(0, -1).split("\n"), state = header!.indexOf("PPID") + 5;
+    assert.ok(rows.some(row => row[state] === "?"), `unexplained live ps refusal:\n${receipt.original}`);
+    assert.notEqual(process.env.HUGR_CAPTURE_CLI, "1", "do not commit an unsupported live ps receipt; recapture");
+    const preserved = filterAutomatic(observe(command, receipt.original), { reducers: [{ id: "cli", reduce: reduceAutomaticCli }] });
+    assert.equal("replacement" in preserved, false); assert.equal(preserved.inputBytes, Buffer.byteLength(receipt.original, "utf8"));
+    return;
+  }
   const result = view(command, receipt.original), rows = receipt.original.slice(0, -1).split("\n");
   const automatic = filterAutomatic(observe(command, receipt.original), { reducers: [{ id: "cli", reduce: reduceAutomaticCli }] });
   assert.equal(automatic.inputBytes, Buffer.byteLength(receipt.original, "utf8"));
@@ -148,7 +190,7 @@ test("operational: actual platform ps/ls and available ffmpeg (no core I/O)", { 
       const apple = argv[0]!.endsWith("ps") ? "adv_cmds/blob/60bc9ebf1df7e0a3d8500ecd7e4dd1e008765af5/ps/ps.c" : "file_cmds/blob/6b3b4403a5e9f4db7b904a795bcfe9f2c321c821/ls/ls.c";
       const sources = { ffmpeg: [`https://ffmpeg.org/releases/ffmpeg-${version.split(" ")[2]}.tar.xz`, version.includes("--enable-gpl") ? version.includes("--enable-version3") ? "GPL-3.0-or-later" : "GPL-2.0-or-later" : "LGPL; see captured build configuration"], apple: [`https://github.com/apple-oss-distributions/${apple}`, "BSD-3-Clause; source reference for license only, binary pinned by hash/build"], procps: ["https://gitlab.com/procps-ng/procps", "GPL-2.0-or-later"], coreutils: ["https://www.gnu.org/software/coreutils/", "GPL-3.0-or-later"] };
       const receipt: Receipt = { argv, cwd: dir, original: run.stdout, stderr: run.stderr, exit: run.status!, platform: process.platform, stdoutSha256: hash(run.stdout), binarySha256: hash(readFileSync(argv[0]!)), version, source: sources[producer][0]!, license: sources[producer][1]!, capturedAt: new Date().toISOString() };
-      semanticOracle(receipt);
+      semanticOracle(receipt, true);
       if (process.env.HUGR_CAPTURE_CLI === "1") writeFileSync(new URL(`${process.platform}-${name}.json`, fixtures), JSON.stringify(receipt, null, 2) + "\n");
     }
     const version = process.platform === "darwin" ? spawnSync("/usr/bin/sw_vers", [], { encoding: "utf8" }).stdout : spawnSync("/usr/bin/ps", ["--version"], { encoding: "utf8" }).stdout;
