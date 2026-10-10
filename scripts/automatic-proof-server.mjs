@@ -4,6 +4,18 @@ import { createInterface } from "node:readline";
 import { appendFile, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { deflateSync } from "node:zlib";
+
+function image() {
+  const chunk = (name, data) => {
+    const body = Buffer.concat([Buffer.from(name), data]); let crc = 0xffffffff;
+    for (const byte of body) { crc ^= byte; for (let i = 0; i < 8; i++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0); }
+    const size = Buffer.alloc(4), checksum = Buffer.alloc(4); size.writeUInt32BE(data.length); checksum.writeUInt32BE((crc ^ 0xffffffff) >>> 0);
+    return Buffer.concat([size, body, checksum]);
+  };
+  const header = Buffer.alloc(13); header.writeUInt32BE(1, 0); header.writeUInt32BE(1, 4); header[8] = 8; header[9] = 2;
+  return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]), chunk("IHDR", header), chunk("IDAT", deflateSync(Buffer.from([0,42,43,44]))), chunk("IEND", Buffer.alloc(0))]).toString("base64");
+}
 
 export async function inventory(root, prefix = "") {
   const rows = [];
@@ -24,7 +36,7 @@ export async function packet(root, mode) {
   if (mode === "truncated") content[0].text = "...output truncated...\n" + content[0].text;
   if (mode === "attachments") content.push(
     { type: "resource", resource: { uri: "file:///owned/e42.txt", mimeType: "text/plain", text: "attachment source e42\r\n" } },
-    { type: "image", mimeType: "image/png", data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=" },
+    { type: "image", mimeType: "image/png", data: image() },
     { type: "audio", mimeType: "audio/wav", data: "UklGRg==" });
   if (mode === "blob") content.push({ type: "resource", resource: { uri: "file:///owned/e42.bin", blob: "AAEC", mimeType: "application/octet-stream" } });
   return { content, structuredContent: json, ...(mode === "error" ? { isError: true } : {}), _meta: { source: "original-mit-local-producer", ref: "e42" } };

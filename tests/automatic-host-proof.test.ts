@@ -4,6 +4,13 @@ import path from "node:path";
 const proof = await import(new URL("../scripts/automatic-host-proof.mjs", import.meta.url).href);
 const producer = await import(new URL("../scripts/automatic-proof-server.mjs", import.meta.url).href);
 
+test("native view oracle reconstructs full paths and rejects changed prefix/order", () => {
+  const before = { input: { tool: "glob", args: { path: "/owned" } }, output: { output: "/owned/a.txt\n/owned/b.txt" } };
+  proof.assertNativePaths(before, "/owned/:\na.txt\nb.txt");
+  assert.throws(() => proof.assertNativePaths(before, "/wrong/:\na.txt\nb.txt"), /absolute directory prefix/);
+  assert.throws(() => proof.assertNativePaths(before, "/owned/:\nb.txt\na.txt"), /full paths\/order/);
+});
+
 // Synthetic packets calibrate oracle teeth only; real host compatibility is executable proof.
 test("next-model oracle rejects altered arguments, missing result and wrong IDs", () => {
   const call = { id: "native", type: "function", function: { name: "glob", arguments: '{"path":"/owned","pattern":"**/*"}' } };

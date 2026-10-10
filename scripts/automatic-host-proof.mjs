@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /** Real host proof. Observers only record source hooks; model mock never executes tools. */
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
 import { cp, mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
@@ -11,6 +12,25 @@ import { npmProcess, snapshotArtifact, assertPack } from "./package-smoke.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const TEMP = "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode";
+async function hostProcess(binary, args, options, root) {
+  return await new Promise((resolve, reject) => {
+    const child = spawn(binary, args, { cwd: options.cwd, env: options.env, detached: true, stdio: ["ignore", "pipe", "pipe"] });
+    void writeFile(path.join(root, "process-start.json"), JSON.stringify({ pid: child.pid, group: child.pid })).catch(reject);
+    const stdout = [], stderr = []; let settled = false;
+    const finish = async (error, code, signal) => {
+      if (settled) return; settled = true; clearTimeout(timer);
+      if (child.pid) { try { process.kill(-child.pid, "SIGKILL"); } catch (e) { if (e.code !== "ESRCH") error ??= e; } }
+      child.stdout.destroy(); child.stderr.destroy(); child.unref();
+      const result = { code, signal, stdoutBytes: Buffer.concat(stdout), stderrBytes: Buffer.concat(stderr) };
+      result.stdout = result.stdoutBytes.toString("utf8"); result.stderr = result.stderrBytes.toString("utf8");
+      try { await writeFile(path.join(root, "process.json"), JSON.stringify({ pid: child.pid, code, signal })); } catch (e) { error ??= e; }
+      if (error) reject(Object.assign(error, { diagnostics: result })); else resolve(result);
+    };
+    const timer = setTimeout(() => void finish(new Error(`Host deadline ${options.timeout} ms`)), options.timeout);
+    child.stdout.on("data", (data) => stdout.push(Buffer.from(data))); child.stderr.on("data", (data) => stderr.push(Buffer.from(data)));
+    child.once("error", (error) => void finish(error)); child.once("close", (code, signal) => void finish(undefined, code, signal));
+  });
+}
 export function assertNextRequest(body, call) {
   const calls = body.messages.flatMap((m) => m.role === "assistant" ? m.tool_calls ?? [] : []);
   assert.equal(calls.length, 1, "Next request must retain exactly one issued call");
@@ -73,7 +93,7 @@ export default async () => ({ "tool.execute.after": async (input, output) => {
 }
 
 function text(output) {
-  if (Array.isArray(output.content)) return output.content.flatMap((b) => b.type === "text" ? [b.text] : b.type === "resource" && typeof b.resource.text === "string" ? [b.resource.text] : []).join("\n\n");
+  if (Array.isArray(output.content)) return output.content.flatMap((b) => b.type === "text" ? [b.text] : b.type === "resource" && typeof b.resource.text === "string" ? [b.resource.text] : b.type === "resource" && b.resource.blob ? [`[Binary MCP resource omitted: ${b.resource.uri} (${b.resource.mimeType}, ${Buffer.from(b.resource.blob, "base64").length} B) is not a supported attachment type]`] : []).join("\n\n");
   return output.output;
 }
 function unfold(value) {
@@ -81,6 +101,29 @@ function unfold(value) {
   if (!value || typeof value !== "object") return value;
   if (Array.isArray(value.columns) && Array.isArray(value.rows)) return value.rows.map((row) => Object.fromEntries(value.columns.map((key, i) => [key, unfold(row[i])])));
   return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, unfold(v)]));
+}
+export function assertNativePaths(before, changed) {
+  const tool = before.input.tool, args = before.input.args, directory = args.path ?? args.filePath;
+  const lines = changed.split("\n"), prefix = lines.findIndex((line) => line === directory + ":" || line === directory + "/:");
+  assert.ok(prefix >= 0, "Native view lost absolute directory prefix");
+  if (tool === "glob") {
+    const paths = lines.slice(prefix + 1).filter(Boolean).map((line) => path.join(directory, line));
+    assert.deepEqual(paths, before.output.output.split("\n"), "Native view changed full paths/order");
+  } else if (tool === "read") {
+    const paths = lines.slice(prefix + 1).filter(Boolean).map((line) => path.join(directory, line));
+    assert.deepEqual(paths, before.output.metadata.display.entries.map((entry) => path.join(directory, entry)), "Directory view changed full paths/order");
+  } else {
+    const records = (source, compact) => {
+      let file; const rows = [];
+      for (const line of source.split("\n")) {
+        if (line.endsWith(".txt:")) file = compact ? path.join(directory, line.slice(0, -1)) : line.slice(0, -1);
+        const match = /^\s*(?:Line )?(\d+): (.*)$/.exec(line);
+        if (match) { assert.ok(file, "Grep location lacks source path"); rows.push([file, Number(match[1]), match[2]]); }
+      }
+      return rows;
+    };
+    assert.deepEqual(records(lines.slice(prefix + 1).join("\n"), true), records(before.output.output, false), "Grep changed path/line/data associations");
+  }
 }
 export function assertObservation(before, after, result, expected = "preserved", anchors = []) {
   assert.deepEqual(after.input, before.input, "Hook changed actual arguments");
@@ -125,10 +168,11 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
     await writeFile(path.join(root, "version.json"), JSON.stringify(version)); assert.equal(version.stdout.trim(), "1.18.17");
     const hookLog = path.join(root, "hooks.jsonl"), before = path.join(root, "before.mjs"), after = path.join(root, "after.mjs");
     await writeFile(before, observer(hookLog, "before")); await writeFile(after, observer(hookLog, "after"));
-    const tool = toolName ?? ({ json: "bash", failure: "bash", truncation: "bash", readfailure: "read" }[kind] ?? (kind.startsWith("mcp-") ? "proof_inventory" : kind));
+    const tool = toolName ?? ({ json: "bash", failure: "bash", unknown: "bash", truncation: "bash", readfailure: "read", readfile: "read" }[kind] ?? (kind.startsWith("mcp-") ? "proof_inventory" : kind));
     mock = await createProvider(tool, {}, directory, root);
     const args = toolArgs ?? ({ glob: { pattern: "**/*.txt", path: directory }, grep: { pattern: "inventory evidence", path: directory },
       read: { filePath: directory }, readfailure: { filePath: path.join(directory, "missing.txt") },
+      readfile: { filePath: path.join(directory, "project-source-component-alpha.txt") }, unknown: { command: "printf 'unknown native e42\\r\\n'", description: "Unknown native control" },
       json: { command: `curl -fsS ${mock.url}/inventory`, description: "Read local JSON API" },
       failure: { command: "printf 'native failure e42\\n'; exit 7", description: "Failure control" },
       truncation: { command: `curl -fsS ${mock.url}/inventory`, description: "Truncation control" } }[kind] ?? { mode: kind.slice(4) });
@@ -138,14 +182,14 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
     const config = { model: "hugr-mock/boundary", small_model: "hugr-mock/boundary", enabled_providers: ["hugr-mock"],
       shell: "/bin/sh", autoupdate: false, snapshot: false, share: "disabled", permission: { "*": "allow", edit: "deny", question: "deny" },
       compaction: { auto: false }, lsp: false, formatter: false, agent: { title: { disable: true }, summary: { disable: true } },
-      provider: { "hugr-mock": { npm: "@ai-sdk/openai-compatible", options: { baseURL: mock.url + "/v1", apiKey: "local-only" }, models: { boundary: { tool_call: true, limit: { context: 128000, output: 4096 } } } } },
+      provider: { "hugr-mock": { npm: "@ai-sdk/openai-compatible", options: { baseURL: mock.url + "/v1", apiKey: "local-only" }, models: { boundary: { tool_call: true, modalities: { input: ["text", "image"], output: ["text"] }, limit: { context: 128000, output: 4096 } } } } },
       plugin: [pathToFileURL(before).href, ...(observe ? [] : [disabled ? [spec, { automatic: false }] : spec]), pathToFileURL(after).href],
       mcp: mcp ?? { proof: { type: "local", command: [process.execPath, path.join(ROOT, "scripts/automatic-proof-server.mjs"), directory, path.join(root, "mcp.jsonl")], enabled: true } },
       ...(kind === "truncation" ? { tool_output: { max_lines: 3, max_bytes: 128 } } : {}) };
     await writeFile(env.OPENCODE_CONFIG, JSON.stringify(config, null, 2));
     const argv = ["run", "--format", "json", "--model", "hugr-mock/boundary", "--title", "Automatic proof", "Execute requested native tool once, then finish."];
     await writeFile(path.join(root, "argv.json"), JSON.stringify({ binary, argv, cwd, env, sdk: dependencies }));
-    execution = await runProcess(binary, argv, { cwd, env, timeout });
+    execution = await hostProcess(binary, argv, { cwd, env, timeout }, root);
     await writeFile(path.join(root, "stdout"), execution.stdoutBytes); await writeFile(path.join(root, "stderr"), execution.stderrBytes);
     assert.equal(execution.code, 0, execution.stderr); assert.deepEqual(mock.errors, []);
     assert.equal(mock.arrivals, 2, "Expected exactly two model requests"); assert.equal(mock.active, false);
@@ -156,8 +200,17 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
     assert.equal(tools.length, 1, "Missing unique native completion");
     const completed = tools[0].part; assert.equal(completed.tool, tool); assert.deepEqual(completed.state.input, args, "Host changed arguments");
     const hooks = await readFile(hookLog, "utf8").then((s) => s.trim().split("\n").map(JSON.parse)).catch((e) => { if (e.code === "ENOENT") return []; throw e; });
+    if (kind.startsWith("mcp-") && !mcp) {
+      const transcript = (await readFile(path.join(root, "mcp.jsonl"), "utf8")).trim().split("\n").map(JSON.parse);
+      const call = transcript.find((e) => e.request?.method === "tools/call").request;
+      assert.deepEqual(call.params.arguments, args, "MCP transport changed actual arguments");
+      const packet = transcript.find((e) => e.response?.id === call.id).response.result;
+      if (kind === "mcp-error") { assert.equal(packet.isError, true); assert.equal(result.content, packet.content[0].text, "MCP failure source changed"); }
+      else assert.deepEqual(hooks[0]?.output, packet, "SDK/host changed producer content before source hook");
+    }
     if (["mcp-error", "readfailure"].includes(kind)) {
       assert.equal(completed.state.status, "error", "Failure control did not fail"); assert.equal(hooks.length, 0, "Native error unexpectedly reached after-hook");
+      assert.equal(result.content, completed.state.error, "Next request changed native failure output");
       assert.ok(JSON.stringify(result.content).includes(kind === "mcp-error" ? "e42" : "missing.txt"), "Failure source missing from model");
     } else {
       assert.equal(completed.state.status, "completed"); assert.equal(hooks.length, 2, "Missing before/after source hooks");
@@ -166,6 +219,10 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
       const expected = observe || disabled || !positive ? "preserved" : kind.includes("json") || kind === "mcp-attachments" ? "json" : "paths";
       const rows = await inventory(directory), anchors = expected === "paths" ? rows.flatMap((r) => [path.basename(r.path), ...(kind === "grep" ? [r.text.trim()] : [])]) : [];
       assertObservation(hooks[0], hooks[1], result, expected, anchors);
+      if (expected === "paths") assertNativePaths(hooks[0], result.content);
+      const images = hooks[0].output.content?.filter((b) => b.type === "image") ?? [];
+      const modelImages = mock.requests[1].messages.flatMap((m) => Array.isArray(m.content) ? m.content.filter((b) => b.type === "image_url") : []);
+      assert.deepEqual(modelImages.map((b) => b.image_url.url), images.map((b) => `data:${b.mimeType};base64,${b.data}`), "Next request lost image attachment source");
       if (kind === "failure") assert.equal(hooks[0].output.metadata.exit, 7);
       if (kind === "truncation") assert.equal(hooks[0].output.metadata.truncated, true);
     }
@@ -195,7 +252,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const observe = process.argv.includes("--observe"), plugin = observe ? undefined : await installCandidate();
   const cases = process.argv.filter((arg, i) => i > 1 && arg !== "--observe");
   const reports = [], failures = [];
-  for (const kind of cases.length ? cases : ["json", "glob", "grep", "read", "failure", "readfailure", "truncation", "mcp-json", "mcp-error", "mcp-truncated", "mcp-unknown", "mcp-attachments", "mcp-blob", "optout"]) {
+  for (const kind of cases.length ? cases : ["json", "glob", "grep", "read", "readfile", "failure", "unknown", "readfailure", "truncation", "mcp-json", "mcp-error", "mcp-truncated", "mcp-unknown", "mcp-attachments", "mcp-blob", "optout"]) {
     try { reports.push(await runHostCase({ plugin, observe, kind: kind === "optout" ? "mcp-json" : kind, disabled: kind === "optout" })); }
     catch (error) { failures.push({ kind, error: error.message }); }
   }
