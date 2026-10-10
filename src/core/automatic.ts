@@ -1,5 +1,6 @@
 import { filter } from "./engine.js";
-import { tokenizeCommand } from "./command.js";
+import { tokenizeAutomaticCommand } from "./automatic-command.js";
+import { profiles } from "../profiles/index.js";
 import { renderReduction } from "./structured-render.js";
 import { automaticReducers } from "./automatic-registry.js";
 import type { AutomaticObservation, AutomaticOptions } from "./automatic-types.js";
@@ -28,8 +29,9 @@ export function filterAutomatic(observation: AutomaticObservation, options: Auto
       if (frozen.metadata.exit !== 0 || frozen.metadata.truncated !== false || typeof frozen.args.command !== "string") return unchanged("passthrough", "missing_shell_facts");
       const legacy = legacyFilter({ source: "shell", command: frozen.args.command, output,
         termination: { kind: "exited", code: 0 }, completeness: "complete", presentation: "unknown" }, { maxInputBytes });
-      if (legacy.status !== "passthrough" || legacy.reason !== "no_profile") return legacy;
-      if (!tokenizeCommand(frozen.args.command)) return unchanged("passthrough", "unsupported_command");
+      if (legacy.status !== "passthrough" || !["no_profile", "unsupported_command"].includes(legacy.reason)) return legacy;
+      const argv = tokenizeAutomaticCommand(frozen.args.command);
+      if (!argv || (legacy.reason === "unsupported_command" && profiles.some(profile => profile.match(argv)))) return legacy;
     }
     for (const entry of reducers) {
       ensure(record(entry) && typeof entry.id === "string" && entry.id.length > 0 && typeof entry.reduce === "function");
