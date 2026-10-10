@@ -1,9 +1,8 @@
-import { fields, parseJson, scalar, valueSpans } from "../core/structured-json.js";
+import { fields, nonnegativeInteger, parseJson, scalar, valueSpans } from "../core/structured-json.js";
 import type { StructuredReducer } from "../core/structured-types.js";
 import type { Piece, Reduction, Span } from "../core/types.js";
 
 const KEYS = ["pid", "ppid", "state", "command"] as const;
-const safeId = (value: unknown) => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const nonempty = (value: unknown) => typeof value === "string" && value.length > 0;
 
 function jsonProcesses(output: string): Reduction | undefined {
@@ -13,7 +12,7 @@ function jsonProcesses(output: string): Reduction | undefined {
   for (const [index, row] of root.items.entries()) {
     const values = fields(row, KEYS, KEYS);
     if (!values || row.kind !== "object" || row.entries.some((entry, i) => entry.name !== KEYS[i])) return undefined;
-    if (!safeId(scalar(values.get("pid"))) || !safeId(scalar(values.get("ppid"))) ||
+    if (nonnegativeInteger(values.get("pid"), output) === undefined || nonnegativeInteger(values.get("ppid"), output) === undefined ||
         !nonempty(scalar(values.get("state"))) || !nonempty(scalar(values.get("command")))) return undefined;
     if (index === 0) {
       row.entries.forEach((entry, i) => {
