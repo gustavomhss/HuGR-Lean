@@ -3,9 +3,14 @@ import test from "node:test";
 import { filterStructured } from "../src/core/structured.js";
 import { jsonReduction, parseJson } from "../src/core/structured-json.js";
 import type { StructuredObservation, StructuredReducer } from "../src/core/structured-types.js";
+import { structuredFormats } from "../src/core/structured-types.js";
 
 const observation = (output: string): StructuredObservation => ({ format: "json", output, completeness: "complete", termination: { kind: "exited", code: 0 } });
 const compact: StructuredReducer = output => { const node = parseJson(output); return node ? jsonReduction(node) : undefined; };
+test("structured public format vocabulary is frozen at runtime", () => {
+  assert.ok(Object.isFrozen(structuredFormats));
+  assert.throws(() => (structuredFormats as unknown as string[]).push("invented"), TypeError);
+});
 test("structured core preserves exact lexemes and Unicode with real byte accounting", () => {
   const input = ' { "café🦀": "a\\tb", "huge": 900719925474099312345, "negative": -0 } \n';
   const result = filterStructured(observation(input), { reducers: { json: compact } });
@@ -42,4 +47,23 @@ test("structured scope must be explicit and scoped formats do not leak to generi
   const reducer: StructuredReducer = compact;
   assert.equal(filterStructured({ ...observation(' {"a":1} '), scopeRef: "r1" }, { reducers: { json: reducer } }).status, "passthrough");
   assert.equal(filterStructured({ ...observation(' {"a":1} '), format: "accessibility-scope" }, { reducers: { "accessibility-scope": reducer } }).status, "passthrough");
+});
+test("required evidence stays intact across emitted order and formatting", () => {
+  const input = observation("ab      ");
+  for (const pieces of [[[1, 2], [0, 1]], [[0, 1], { text: ":" }, [1, 2]]]) {
+    assert.equal(filterStructured(input, { reducers: { json: () => ({ pieces, required: [[0, 2]] }) as never } }).status, "failed_open");
+  }
+  const result = filterStructured(input, { reducers: { json: () => ({ pieces: [[0, 1], { text: "" }, [1, 2]], required: [[0, 2]] }) } });
+  assert.equal(result.status, "reduced"); assert.ok("replacement" in result); assert.equal(result.replacement, "ab");
+});
+test("termination accessors are snapshotted once before admission", () => {
+  for (const first of [0, 1]) {
+    let reads = 0, calls = 0;
+    const termination = { kind: "exited" as const, get code() { return ++reads === 1 ? first : 1 - first; } };
+    const result = filterStructured({ ...observation("ab      "), termination }, { reducers: { json: (_output, frozen) => {
+      calls++; assert.deepEqual(frozen.termination, { kind: "exited", code: 0 });
+      return { pieces: [[0, 2]], required: [[0, 2]] };
+    } } });
+    assert.equal(reads, 1); assert.equal(calls, first === 0 ? 1 : 0); assert.equal(result.status, first === 0 ? "reduced" : "passthrough");
+  }
 });

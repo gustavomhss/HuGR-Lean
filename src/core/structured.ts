@@ -27,40 +27,44 @@ export function filterStructured(observation: StructuredObservation, options: St
     ensure(typeof output === "string" && structuredFormats.includes(format));
     ensure(["complete", "truncated", "unknown"].includes(completeness));
     ensure(scopeRef === undefined || (typeof scopeRef === "string" && scopeRef.length > 0));
-    ensure(record(termination) && ["exited", "unknown", "timed_out"].includes(termination.kind));
-    ensure(termination.kind !== "exited" || (Number.isSafeInteger(termination.code) && termination.code >= 0));
+    ensure(record(termination));
+    const { kind, code } = termination as { readonly kind: unknown; readonly code?: unknown };
+    ensure(typeof kind === "string" && ["exited", "unknown", "timed_out"].includes(kind));
+    ensure(kind !== "exited" || (typeof code === "number" && Number.isSafeInteger(code) && code >= 0));
     ensure(record(options));
     const { maxInputBytes = 4 * 1024 * 1024, reducers = structuredReducers } = options;
     ensure(typeof maxInputBytes === "number" && Number.isSafeInteger(maxInputBytes) && maxInputBytes >= 1024 * 1024 && maxInputBytes <= 16 * 1024 * 1024 && record(reducers));
     if (inputBytes > maxInputBytes) return unchanged("passthrough", "input_limit");
-    if (completeness !== "complete" || termination.kind !== "exited") return unchanged("passthrough", "incomplete_observation");
-    if (termination.code !== 0) return unchanged("passthrough", "nonzero_exit");
+    if (completeness !== "complete" || kind !== "exited") return unchanged("passthrough", "incomplete_observation");
+    if (code !== 0) return unchanged("passthrough", "nonzero_exit");
     if (format === "accessibility-scope" ? scopeRef === undefined : scopeRef !== undefined) return unchanged("passthrough", "invalid_scope");
     const reducer = reducers[format];
     if (reducer === undefined) return unchanged("passthrough", "unsupported_format");
     ensure(typeof reducer === "function");
-    const frozen = Object.freeze({ output, format, completeness, termination: Object.freeze({ kind: "exited" as const, code: termination.code }), ...(scopeRef === undefined ? {} : { scopeRef }) });
+    const frozen = Object.freeze({ output, format, completeness, termination: Object.freeze({ kind: "exited" as const, code }), ...(scopeRef === undefined ? {} : { scopeRef }) });
     const reduction = reducer(output, frozen);
     if (reduction === undefined) return unchanged("passthrough", "unsupported_output");
     ensure(record(reduction) && Array.isArray(reduction.pieces) && reduction.pieces.length > 0 && Array.isArray(reduction.required) && reduction.required.length > 0);
-    const emitted: Span[] = [], parts: string[] = [];
+    const emitted: [number, number][] = [], parts: string[] = [];
+    let adjacent = false;
     for (const piece of reduction.pieces) {
-      if (Array.isArray(piece)) { const span = checkedSpan(piece, output); emitted.push(span); parts.push(output.slice(...span)); }
-      else { ensure(record(piece) && typeof piece.text === "string" && FORMATTING.has(piece.text)); parts.push(piece.text); }
+      if (Array.isArray(piece)) {
+        const span = checkedSpan(piece, output), last = emitted[emitted.length - 1];
+        if (adjacent && last?.[1] === span[0]) last[1] = span[1];
+        else emitted.push([span[0], span[1]]);
+        parts.push(output.slice(...span)); adjacent = true;
+      } else {
+        ensure(record(piece) && typeof piece.text === "string" && FORMATTING.has(piece.text));
+        parts.push(piece.text); if (piece.text.length) adjacent = false;
+      }
     }
     ensure(emitted.length > 0);
     emitted.sort((a, b) => a[0] - b[0]);
-    const coverage: [number, number][] = [];
-    for (const [start, end] of emitted) {
-      const last = coverage[coverage.length - 1];
-      if (last && start <= last[1]) last[1] = Math.max(last[1], end);
-      else coverage.push([start, end]);
-    }
     const required = reduction.required.map(span => checkedSpan(span, output)).sort((a, b) => a[0] - b[0]);
-    let cursor = 0;
+    let cursor = 0, farthest = -1;
     for (const [start, end] of required) {
-      while (cursor < coverage.length && coverage[cursor]![1] <= start) cursor++;
-      ensure(coverage[cursor] !== undefined && coverage[cursor]![0] <= start && coverage[cursor]![1] >= end);
+      while (cursor < emitted.length && emitted[cursor]![0] <= start) farthest = Math.max(farthest, emitted[cursor++]![1]);
+      ensure(farthest >= end);
     }
     const replacement = parts.join(""), outputBytes = Buffer.byteLength(replacement, "utf8");
     if (!replacement.length || outputBytes >= inputBytes) return unchanged("passthrough", "not_smaller");
