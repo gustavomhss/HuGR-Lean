@@ -89,6 +89,15 @@ test("ls nlink, size and total refuse beyond producer range before numeric conve
   }
   for (const big of [INT64_OVER, HUGE]) outOfRange("ls -l", ls.replace("staff  5", `staff  ${big}`));
 });
+test("ps PID/PPID refuse beyond kernel pid range in either fixed layout", () => {
+  const linux = (pid: string, ppid: string) => `    PID    PPID STAT COMMAND\n${pid.padStart(7)} ${ppid.padStart(7)} Ss   systemd\n`;
+  const darwin = (pid: string, ppid: string) => `  PID  PPID STAT COMM\n${pid.padStart(5)} ${ppid.padStart(5)} Ss   launchd\n`;
+  assert.equal(view("ps -eo pid,ppid,stat,comm", linux("4194303", "4194303")), "PID\tPPID\tSTAT\tCOMMAND\n4194303\t4194303\tSs\tsystemd\n");
+  assert.equal(view("ps -axo pid,ppid,stat,comm", darwin("99999", "0")), "PID\tPPID\tSTAT\tCOMM\n99999\t0\tSs\tlaunchd\n");
+  for (const big of ["4194304", "9999999", "2147483648", HUGE]) for (const output of [linux(big, "1"), linux("2", big)]) outOfRange("ps -eo pid,ppid,stat,comm", output);
+  for (const big of ["100000", HUGE]) for (const output of [darwin(big, "1"), darwin("2", big)]) outOfRange("ps -axo pid,ppid,stat,comm", output);
+  for (const output of [linux("0", "1"), linux("01", "1"), linux("2", "00")]) outOfRange("ps -eo pid,ppid,stat,comm", output);
+});
 
 interface Receipt { argv: string[]; cwd: string; original: string; stderr: string; exit: number; platform: string; stdoutSha256: string; binarySha256: string; version: string; source: string; license: string; capturedAt: string; }
 const hash = (data: string | Buffer) => createHash("sha256").update(data).digest("hex");

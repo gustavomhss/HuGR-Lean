@@ -29,7 +29,7 @@ Docker daemon was unavailable during local capture; no Linux sample substituted.
 
 ## Preservation probe receipt
 
-Focused suite: `npx tsx --test tests/auto-cli.test.ts` (19 tests, no skips on Darwin).
+Focused suite: `npx tsx --test tests/auto-cli.test.ts` (20 tests, no skips on Darwin).
 Typecheck: scoped `tsc --noEmit --strict` over `src/profiles/auto-cli.ts` and
 `tests/auto-cli.test.ts`. Both passed after restoring the probes below.
 
@@ -42,6 +42,8 @@ Typecheck: scoped `tsc --noEmit --strict` over `src/profiles/auto-cli.ts` and
 - numeric range gate bypassed (any digit string admitted): both producer-range
   regressions failed (ffmpeg uint64+1/200,000-digit counters reduced; ls
   400-digit nlink admitted). Restored; `git diff src/` showed only the gate.
+- ps PID/PPID gate bypassed: Linux-layout PID/PPID 4194304 and 9999999 were
+  admitted and the regression failed. Restored.
 
 ## Numeric producer ranges
 
@@ -53,7 +55,11 @@ total_size, out_time_us, out_time_ms, dup_frames and drop_frames with
 of |pts|/AV_TIME_BASE/3600, so hours <= 2562047788 (two-digit zero padding
 allowed). ls nlink and `total` <= 18446744073709551615 (Linux nlink_t up to
 64-bit, printed as uintmax; Darwin nlink_t is narrower); size (off_t) <=
-9223372036854775807. Darwin receipts sit far inside these ranges.
+9223372036854775807. ps PID/PPID: fixed headers already cap Darwin at 5
+and procps at 7 digits (inside int32 pid_t); explicitly bounded to xnu
+PID_MAX 99999 and Linux pid < pid_max <= PID_MAX_LIMIT 4194304
+(`include/linux/threads.h`), so <= 4194303. PID 0 stays unadmitted (not
+observed in the receipts); PPID 0 is admitted. Darwin receipts sit far inside these ranges.
 
 All mutations reverted. Frozen argv rejects extra/conflicting flags and shell
 syntax. CR, unknown lines, warnings, incomplete blocks, inconsistent clocks and
