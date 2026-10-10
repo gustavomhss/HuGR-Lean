@@ -10,10 +10,11 @@ const syntax = (text: string): Piece => ({ text });
 // line 2 `PREFIX:`, then blank tail lines, `  Line N: text` rows, or `SUFFIX:`
 // headers. A suffix is the only free text standing where a header belongs, so
 // it must be nonempty (never a blank tail line), must not begin with any
-// whitespace (never a match row such as `  Line 9: report`), and must contain
+// whitespace, invisible format char or combining mark (never a match row such
+// as `  Line 9: report`, even behind U+200B/U+FEFF/U+0301), and must contain
 // no line break of any kind (never splits a record). Trailing `:` is harmless:
 // exactly one appended colon is always removed. Anything else refuses factoring.
-const ambiguousGrepSuffix = (suffix: string): boolean => suffix === "" || /^\s/u.test(suffix)
+const ambiguousGrepSuffix = (suffix: string): boolean => suffix === "" || /^[\s\p{Cf}\p{M}]/u.test(suffix)
   || /[\r\n\v\f\u0085\u2028\u2029]/u.test(suffix);
 
 function factored(output: string, paths: Span[], before: Piece[] = [], tails?: Span[]): Reduction | undefined {

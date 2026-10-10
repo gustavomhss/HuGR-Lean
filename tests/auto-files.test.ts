@@ -167,6 +167,10 @@ test("grep suffix collision: path text mimicking a match row refuses factoring",
   for (const suffix of [" lead.ts", "\u00a0nbsp.ts", "\u2003em.ts", "a\u2028b.ts", "a\u2029b.ts", "a\u0085b.ts"]) {
     refuse(countedGrep(`Found 2 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n${scope}${suffix}:\n  Line 2: beta`));
   }
+  // Invisible format chars and combining marks in front of a match-row lookalike also refuse.
+  for (const lead of ["\u200b", "\u2060", "\u180e", "\u202e", "\u00ad", "\ufeff", "\u0301"]) {
+    refuse(countedGrep(`Found 2 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n${scope}${lead}  Line 9: report:\n  Line 2: beta`));
+  }
   // Positive controls: `Line` without leading space and trailing colons stay unambiguous.
   for (const suffix of ["Line 9: report", "odd:name:", "日本語😀 Line 1: x"]) {
     roundTrip(countedGrep(`Found 2 matches\n${scope}normal.ts:\n  Line 1: alpha\n\n${scope}${suffix}:\n  Line 2: beta`));
