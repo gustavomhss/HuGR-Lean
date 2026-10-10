@@ -11,6 +11,23 @@ test("native view oracle reconstructs full paths and rejects changed prefix/orde
   assert.throws(() => proof.assertNativePaths(before, "/owned/:\nb.txt\na.txt"), /full paths\/order/);
 });
 
+test("directory oracle verifies actual display path/type/count and every exact entry", () => {
+  const view = "<path>/owned</path>\n<type>directory</type>\na.txt\nsub/\n\n(2 entries)";
+  const before = { input: { tool: "read", args: { filePath: "/owned" } }, output: { metadata: { display: { path: "/owned", type: "directory", totalEntries: 2, entries: ["a.txt", "sub/"] } } } };
+  proof.assertNativePaths(before, view);
+  for (const [changed, error] of [[view.replace("sub/\n", ""), /entries\/order/], [view.replace("directory", "file"), /changed type/], [view.replace("2 entries", "3 entries"), /changed count/], [view.replace("/owned", "/wrong"), /root path/]] as const) assert.throws(() => proof.assertNativePaths(before, changed), error);
+});
+
+test("snapshot oracle retains refs, indentation, complete payload and surrounding source", () => {
+  const source = '### Page\n- URL: http://localhost/\n### Snapshot\n```yaml\n- main [ref=e1]\n  - button "[ref=e99] quoted" [ref=e2] [disabled]\n```\n### Events\nsource suffix\n';
+  const view = '### Page\n- URL: http://localhost/\n### Snapshot\n```text\ne1 main \n  e2 button "[ref=e99] quoted"  [disabled]\n```\n### Events\nsource suffix\n';
+  proof.assertSnapshot(source, view, "browser_browser_snapshot");
+  for (const mutant of [view.replace("e2 button", "e3 button"), view.replace("  e2", "e2"), view.replace(" [disabled]", ""), view.replace("main \n", "main\n"), view.replace("source suffix", "lost"), view.replace("http://localhost/", "http://wrong/")]) assert.throws(() => proof.assertSnapshot(source, mutant, "browser_snapshot"), /Snapshot lost/);
+  const cdp = '## Latest page snapshot\nuid=1_0 RootWebArea "source"\n  uid=1_1 button "Keep"\n';
+  proof.assertSnapshot(cdp, cdp.replaceAll("uid=", ""), "devtools_take_snapshot");
+  assert.throws(() => proof.assertSnapshot(cdp, cdp.replaceAll("uid=", "").replace('"Keep"', '"Lost"'), "take_snapshot"), /Snapshot lost/);
+});
+
 // Synthetic packets calibrate oracle teeth only; real host compatibility is executable proof.
 test("next-model oracle rejects altered arguments, missing result and wrong IDs", () => {
   const call = { id: "native", type: "function", function: { name: "glob", arguments: '{"path":"/owned","pattern":"**/*"}' } };
