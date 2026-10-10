@@ -104,14 +104,26 @@ function unfold(value) {
 }
 export function assertNativePaths(before, changed) {
   const tool = before.input.tool, args = before.input.args, directory = args.path ?? args.filePath;
+  if (tool === "read") {
+    const view = /^<path>([^\n]*)<\/path>\n<type>([^\n]*)<\/type>\n([\s\S]*)\n\n\((\d+) entries\)\n?$/.exec(changed);
+    assert.ok(view, "Directory view lost native header/footer");
+    const display = before.output.metadata.display;
+    assert.equal(view[1], display.path, "Directory view changed root path");
+    assert.equal(view[1], directory, "Directory root differs from actual arguments");
+    assert.equal(view[2], display.type, "Directory view changed type");
+    assert.equal(view[2], "directory", "Read observation is not a directory");
+    assert.equal(Number(view[4]), display.totalEntries, "Directory view changed count");
+    const entries = view[3] === "" ? [] : view[3].split("\n");
+    assert.deepEqual(entries, display.entries, "Directory view changed entries/order");
+    assert.equal(entries.length, Number(view[4]), "Directory footer count differs from entries");
+    assert.deepEqual(entries.map((entry) => path.join(view[1], entry)), display.entries.map((entry) => path.join(display.path, entry)), "Directory view changed full paths");
+    return;
+  }
   const lines = changed.split("\n"), prefix = lines.findIndex((line) => line === directory + ":" || line === directory + "/:");
   assert.ok(prefix >= 0, "Native view lost absolute directory prefix");
   if (tool === "glob") {
     const paths = lines.slice(prefix + 1).filter(Boolean).map((line) => path.join(directory, line));
     assert.deepEqual(paths, before.output.output.split("\n"), "Native view changed full paths/order");
-  } else if (tool === "read") {
-    const paths = lines.slice(prefix + 1).filter(Boolean).map((line) => path.join(directory, line));
-    assert.deepEqual(paths, before.output.metadata.display.entries.map((entry) => path.join(directory, entry)), "Directory view changed full paths/order");
   } else {
     const records = (source, compact) => {
       let file; const rows = [];
@@ -124,6 +136,36 @@ export function assertNativePaths(before, changed) {
     };
     assert.deepEqual(records(lines.slice(prefix + 1).join("\n"), true), records(before.output.output, false), "Grep changed path/line/data associations");
   }
+}
+export function assertSnapshot(source, changed, tool) {
+  if (tool === "take_snapshot" || tool.endsWith("_take_snapshot")) {
+    assert.ok(source.startsWith("## Latest page snapshot\n"), "Missing native DevTools snapshot header");
+    const rows = source.slice("## Latest page snapshot\n".length).split("\n");
+    assert.ok(rows.filter(Boolean).length >= 2 && rows.filter(Boolean).every((row) => /^ *uid=\d+_\d+ .+$/.test(row)), "Missing native uid rows");
+    assert.equal(changed, "## Latest page snapshot\n" + rows.map((row) => row.replace(/^( *)uid=/, "$1")).join("\n"), "Snapshot lost uid/hierarchy/payload");
+    return;
+  }
+  assert.ok(tool === "browser_snapshot" || tool.endsWith("_browser_snapshot"), "Unknown snapshot tool");
+  const fence = "### Snapshot\n```yaml\n", start = source.indexOf(fence), end = source.indexOf("\n```", start + fence.length);
+  assert.ok(start >= 0 && end > start, "Missing native Playwright snapshot fence");
+  const refs = [], body = source.slice(start + fence.length, end).split("\n").map((row) => {
+    let quoted = false, escaped = false, found;
+    for (let i = 0; i < row.length; i++) {
+      if (escaped) { escaped = false; continue; }
+      if (quoted && row[i] === "\\") { escaped = true; continue; }
+      if (row[i] === '"') quoted = !quoted;
+      if (!quoted && row[i] === "[") {
+        const match = /^\[ref=(e\d+|f\d+e\d+)\]/.exec(row.slice(i));
+        if (match) { assert.ok(!found, "Duplicate row reference"); found = { at: i, token: match[0], ref: match[1] }; }
+      }
+    }
+    if (!found) return row;
+    const head = /^( *)- /.exec(row); assert.ok(head && row[found.at - 1] === " ", "Unknown native ref row");
+    refs.push(found.ref);
+    return head[1] + found.ref + " " + row.slice(head[0].length, found.at) + row.slice(found.at + found.token.length);
+  }).join("\n");
+  assert.ok(refs.length >= 2 && new Set(refs).size === refs.length, "Missing/duplicate native references");
+  assert.equal(changed, source.slice(0, start) + "### Snapshot\n```text\n" + body + source.slice(end), "Snapshot lost refs/hierarchy/payload/preamble/suffix");
 }
 export function assertObservation(before, after, result, expected = "preserved", anchors = []) {
   assert.deepEqual(after.input, before.input, "Hook changed actual arguments");
@@ -149,6 +191,11 @@ export function assertObservation(before, after, result, expected = "preserved",
       const original = before.output.content?.[0].text ?? raw, replacement = after.output.content?.[0].text ?? changed;
       assert.deepEqual(unfold(JSON.parse(replacement)), JSON.parse(original), "JSON lost full source values/refs");
     }
+    if (expected === "snapshot") {
+      const originals = before.output.content?.filter((b) => b.type === "text") ?? [{ text: raw }];
+      const replacements = after.output.content?.filter((b) => b.type === "text") ?? [{ text: changed }];
+      originals.forEach((block, i) => { if (block.text !== replacements[i].text) assertSnapshot(block.text, replacements[i].text, before.input.tool); });
+    }
     for (const anchor of anchors) assert.ok(changed.includes(anchor), `Lost native path/location evidence: ${anchor}`);
   }
 }
@@ -158,6 +205,7 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
   const root = await mkdtemp(path.join(TEMP, "automatic-host-")), cwd = path.join(root, "project"), directory = path.join(cwd, "owned-inventory");
   const env = isolatedEnvironment(root); let mock, execution;
   try {
+    if (kind === "snapshot") assert.ok(mcp && toolName, "Snapshot case requires native MCP config/toolName");
     await Promise.all([cwd, env.HOME, env.XDG_CONFIG_HOME, env.XDG_DATA_HOME, env.XDG_CACHE_HOME, env.XDG_STATE_HOME, env.OPENCODE_CONFIG_DIR].map((d) => mkdir(d, { recursive: true })));
     assert.ok(dependencies, "Private pinned SDK required: HUGR_SMOKE_DEPS");
     const sdk = JSON.parse(await readFile(path.join(dependencies, "node_modules/@opencode-ai/plugin/package.json"), "utf8"));
@@ -170,7 +218,7 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
     await writeFile(before, observer(hookLog, "before")); await writeFile(after, observer(hookLog, "after"));
     const tool = toolName ?? ({ json: "bash", failure: "bash", unknown: "bash", truncation: "bash", readfailure: "read", readfile: "read" }[kind] ?? (kind.startsWith("mcp-") ? "proof_inventory" : kind));
     mock = await createProvider(tool, {}, directory, root);
-    const args = toolArgs ?? ({ glob: { pattern: "**/*.txt", path: directory }, grep: { pattern: "inventory evidence", path: directory },
+    const args = toolArgs ?? ({ snapshot: {}, glob: { pattern: "**/*.txt", path: directory }, grep: { pattern: "inventory evidence", path: directory },
       read: { filePath: directory }, readfailure: { filePath: path.join(directory, "missing.txt") },
       readfile: { filePath: path.join(directory, "project-source-component-alpha.txt") }, unknown: { command: "printf 'unknown native e42\\r\\n'", description: "Unknown native control" },
       json: { command: `curl -fsS ${mock.url}/inventory`, description: "Read local JSON API" },
@@ -215,8 +263,8 @@ export async function runHostCase({ binary = "/Users/gustavoschneiter/.opencode/
     } else {
       assert.equal(completed.state.status, "completed"); assert.equal(hooks.length, 2, "Missing before/after source hooks");
       assert.equal(result.content, completed.state.output, "Next request differs from actual completion");
-      const positive = ["json", "glob", "grep", "read", "mcp-json", "mcp-attachments"].includes(kind);
-      const expected = observe || disabled || !positive ? "preserved" : kind.includes("json") || kind === "mcp-attachments" ? "json" : "paths";
+      const positive = ["json", "glob", "grep", "read", "mcp-json", "mcp-attachments", "snapshot"].includes(kind);
+      const expected = observe || disabled || !positive ? "preserved" : kind === "snapshot" ? "snapshot" : kind.includes("json") || kind === "mcp-attachments" ? "json" : "paths";
       const rows = await inventory(directory), anchors = expected === "paths" ? rows.flatMap((r) => [path.basename(r.path), ...(kind === "grep" ? [r.text.trim()] : [])]) : [];
       assertObservation(hooks[0], hooks[1], result, expected, anchors);
       if (expected === "paths") assertNativePaths(hooks[0], result.content);
