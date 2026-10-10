@@ -3,9 +3,14 @@ import test from "node:test";
 import { filterStructured } from "../src/core/structured.js";
 import { jsonReduction, parseJson } from "../src/core/structured-json.js";
 import type { StructuredObservation, StructuredReducer } from "../src/core/structured-types.js";
+import { structuredFormats } from "../src/core/structured-types.js";
 
 const observation = (output: string): StructuredObservation => ({ format: "json", output, completeness: "complete", termination: { kind: "exited", code: 0 } });
 const compact: StructuredReducer = output => { const node = parseJson(output); return node ? jsonReduction(node) : undefined; };
+test("structured public format vocabulary is frozen at runtime", () => {
+  assert.ok(Object.isFrozen(structuredFormats));
+  assert.throws(() => (structuredFormats as unknown as string[]).push("invented"), TypeError);
+});
 test("structured core preserves exact lexemes and Unicode with real byte accounting", () => {
   const input = ' { "café🦀": "a\\tb", "huge": 900719925474099312345, "negative": -0 } \n';
   const result = filterStructured(observation(input), { reducers: { json: compact } });
