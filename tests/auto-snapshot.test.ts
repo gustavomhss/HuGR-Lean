@@ -316,6 +316,7 @@ test("Playwright hierarchy: child under value-bearing native rows refuses", () =
     assertPreserved(mutate(input, '    - /url: /details\n', ''), "real link container stripped of its only child");
     assertPreserved(mutate(input, '[ref=e9] [cursor=pointer]:', '[ref=e9] [cursor=pointer] :'), "real container with space before colon");
     assertPreserved(mutate(input, '    - text: Name "東京"\n', '    - text:\n      - text: Name "東京"\n'), "real text pseudo-role as parent");
+    assertPreserved(mutate(input, '    - text: Name "東京"\n', '    - text\n'), "real bare text pseudo-role");
   }
 });
 
@@ -333,6 +334,8 @@ test("Playwright hierarchy: authored depth gap, non-container parent and root de
   for (const [output, label] of cases) assertPreserved(observation(output), label);
   for (const [output, label] of [
     [wrap('- generic [ref=e1]:\n  - text:\n    - button [ref=e2]\n'), "child under empty text pseudo-role"],
+    [wrap('- generic [ref=e1]:\n  - text\n  - button [ref=e2]\n'), "bare text pseudo-role without value"],
+    [wrap('- generic [ref=e1]:\n  - text:\n  - button [ref=e2]\n'), "empty-valued text pseudo-role leaf"],
     [wrap('- text:\n  - button [ref=e1]\n  - button [ref=e2]\n'), "root text pseudo-role with children"],
     [wrap('- generic [ref=e1] :\n  - button [ref=e2]\n'), "space before container colon"],
     [wrap('- textbox [ref=e1] : hello\n- button [ref=e2]\n'), "space before value colon"],
