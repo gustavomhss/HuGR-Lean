@@ -1,21 +1,28 @@
 import { filter } from "../core/engine.js";
 import { filterStructured } from "../core/structured.js";
+import { filterAutomatic } from "../core/automatic.js";
+import { filterMcpResult } from "./automatic-mcp.js";
 import type { FilterResult, Observation } from "../core/types.js";
 import { RawStore } from "../raw/index.js";
 import { parseOptions, type PluginOptions } from "./config.js";
 
 const isRecord = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 export type AfterHook = (input: unknown, output: unknown) => Promise<void>;
-type Dependencies = { filter?: typeof filter; structuredFilter?: typeof filterStructured; raw?: Pick<RawStore, "put"> };
+type Dependencies = { filter?: typeof filter; structuredFilter?: typeof filterStructured; automaticFilter?: typeof filterAutomatic; raw?: Pick<RawStore, "put"> };
 
 /** Adapter changes only model-visible text; native command, title and metadata stay host-owned. */
 export function createAfterHook(options: PluginOptions = {}, dependencies: Dependencies = {}): AfterHook {
   const process = dependencies.filter ?? filter;
   const processStructured = dependencies.structuredFilter ?? filterStructured;
+  const processAutomatic = dependencies.automaticFilter ?? filterAutomatic;
   const store = options.raw ? dependencies.raw ?? new RawStore(options.raw) : undefined;
   return async (input, output) => {
     try {
-      if (options.enabled === false || !isRecord(input) || !isRecord(output) || typeof output.output !== "string") return;
+      if (options.enabled === false || !isRecord(input) || !isRecord(output)) return;
+      if (typeof output.output !== "string") {
+        if (options.automatic !== false) await filterMcpResult(input, output, processAutomatic, options.maxInputBytes, store ? text => store.put(text) : undefined);
+        return;
+      }
       const original = output.output;
       const metadata = isRecord(output.metadata) ? output.metadata : {};
       const exit = metadata.exit;
@@ -31,14 +38,25 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
           termination: typeof exit === "number" && Number.isSafeInteger(exit) && exit >= 0 ? { kind: "exited", code: exit } : { kind: "unknown" },
         };
         result = process(observation, limits);
+        if (options.automatic !== false && result.status === "passthrough" && ["no_profile", "unsupported_command"].includes(result.reason) && exit === 0 && metadata.truncated === false) {
+          result = processAutomatic({ source: "native", tool: "bash", output: original, args: input.args, metadata,
+            status: "success", completeness: "complete" }, { ...limits, legacyFilter: () => result });
+        }
       } else {
         const binding = options.structuredTools?.find(({ tool }) => tool === input.tool);
-        if (!binding || exit !== 0 || metadata.truncated !== false) return;
-        const scopeRef = binding.format === "accessibility-scope" && isRecord(input.args) ? input.args.scopeRef : undefined;
-        if (binding.format === "accessibility-scope" && (typeof scopeRef !== "string" || !scopeRef.length)) return;
-        result = processStructured({ format: binding.format, output: original,
-          termination: { kind: "exited", code: 0 }, completeness: "complete",
-          ...(typeof scopeRef === "string" ? { scopeRef } : {}) }, limits);
+        if (binding) {
+          if (exit !== 0 || metadata.truncated !== false) return;
+          const scopeRef = binding.format === "accessibility-scope" && isRecord(input.args) ? input.args.scopeRef : undefined;
+          if (binding.format === "accessibility-scope" && (typeof scopeRef !== "string" || !scopeRef.length)) return;
+          result = processStructured({ format: binding.format, output: original,
+            termination: { kind: "exited", code: 0 }, completeness: "complete",
+            ...(typeof scopeRef === "string" ? { scopeRef } : {}) }, limits);
+        } else {
+          if (options.automatic === false || !["glob", "grep", "read", "list_mcp_resources", "list_mcp_resource_templates"].includes(input.tool as string) ||
+              metadata.truncated !== false || !isRecord(input.args)) return;
+          result = processAutomatic({ source: "native", tool: input.tool as string, output: original, args: input.args, metadata,
+            status: "success", completeness: "complete" }, limits);
+        }
       }
       if (!isRecord(result) || (result.status !== "reduced" && result.status !== "normalized") || typeof result.replacement !== "string") return;
       const before = Buffer.byteLength(original, "utf8"), after = Buffer.byteLength(result.replacement, "utf8");

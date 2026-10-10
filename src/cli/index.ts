@@ -2,6 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { filter } from "../core/index.js";
 import { filterStructured } from "../core/structured.js";
+import { filterAutomatic } from "../core/automatic.js";
 import { structuredFormats, type StructuredFormat } from "../core/structured-types.js";
 import { profiles } from "../profiles/index.js";
 import { RawStore, defaultRawDirectory } from "../raw/index.js";
@@ -82,9 +83,9 @@ async function filterStdin(options: FilterArguments): Promise<void> {
     const termination = options.exitCode === undefined ? { kind: "unknown" as const } : { kind: "exited" as const, code: options.exitCode };
     const completeness = options.complete ? "complete" : "unknown";
     const result = options.format ? filterStructured({ format: options.format, output: text, termination, completeness,
-      ...(options.scopeRef === undefined ? {} : { scopeRef: options.scopeRef }) }) : filter({ source: "shell", command: options.command, output: text,
-      termination, completeness,
-      presentation: options.terminal ? "terminal-rendered" : "unknown" });
+      ...(options.scopeRef === undefined ? {} : { scopeRef: options.scopeRef }) }) : options.terminal ? filter({ source: "shell", command: options.command, output: text,
+      termination, completeness, presentation: "terminal-rendered" }) : filterAutomatic({ source: "native", tool: "bash", args: { command: options.command },
+      output: text, metadata: { exit: options.exitCode, truncated: !options.complete }, status: options.exitCode === 0 ? "success" : "unknown", completeness });
     if (result.status === "reduced" || result.status === "normalized") output = result.replacement;
   } catch {
     // Decoding or filtering failures retain the original bytes.

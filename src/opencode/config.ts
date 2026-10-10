@@ -3,6 +3,7 @@ import { structuredFormats, type StructuredFormat } from "../core/structured-typ
 
 export interface PluginOptions {
   readonly enabled?: boolean;
+  readonly automatic?: boolean;
   readonly excludeCommands?: readonly string[];
   readonly maxInputBytes?: number;
   readonly raw?: false | RawOptions;
@@ -13,7 +14,8 @@ export function parseOptions(value: unknown): PluginOptions | undefined {
   if (value === undefined) return {};
   if (value === null || typeof value !== "object" || Array.isArray(value)) return undefined;
   const options = value as Record<string, unknown>;
-  if (Object.keys(options).some((key) => !["enabled", "excludeCommands", "maxInputBytes", "raw", "structuredTools"].includes(key))) return undefined;
+  if (Object.keys(options).some((key) => !["enabled", "automatic", "excludeCommands", "maxInputBytes", "raw", "structuredTools"].includes(key))) return undefined;
+  if (options.automatic !== undefined && typeof options.automatic !== "boolean") return undefined;
   if (options.structuredTools !== undefined) {
     if (!Array.isArray(options.structuredTools)) return undefined;
     const tools = new Set<string>();
