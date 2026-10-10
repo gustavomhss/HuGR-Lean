@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<title>Owned capture — 東京</title><h1>Account “雪”</h1>
+<label>Name &quot;東京&quot;<input id="name" value="Zoë"></label>
+<label><input type="checkbox" checked> Keep “雪”</label>
+<button disabled>Unavailable</button><button id="open">Open dialog</button>
+<a href="/details">Details</a><select aria-label="Region"><option>東京</option><option>Paris</option></select>
+<dialog id="modal" aria-label="Edit &quot;雪&quot;"><label>Dialog name<input id="focus" value="東京"></label>
+<button onclick="document.querySelector('dialog').close()">Close</button></dialog>
+<script>document.querySelector('#open').onclick=()=>{document.querySelector('dialog').showModal();document.querySelector('#focus').focus()};
+console.info('Owned page ready — 雪');fetch('/owned.json').then(r=>r.json());</script></html>
