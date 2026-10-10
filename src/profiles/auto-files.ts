@@ -6,6 +6,15 @@ const absolute = (path: string): boolean => /^(?:\/[^/]|\/(?:$)|\/\/[^/]+\/[^/]+
 const integer = (value: unknown): value is number => Number.isSafeInteger(value) && (value as number) >= 0;
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 const syntax = (text: string): Piece => ({ text });
+// Compact grep view frames records by line class only: line 1 count header,
+// line 2 `PREFIX:`, then blank tail lines, `  Line N: text` rows, or `SUFFIX:`
+// headers. A suffix is the only free text standing where a header belongs, so
+// it must be nonempty (never a blank tail line), must not begin with any
+// whitespace (never a match row such as `  Line 9: report`), and must contain
+// no line break of any kind (never splits a record). Trailing `:` is harmless:
+// exactly one appended colon is always removed. Anything else refuses factoring.
+const ambiguousGrepSuffix = (suffix: string): boolean => suffix === "" || /^\s/u.test(suffix)
+  || /[\r\n\v\f\u0085\u2028\u2029]/u.test(suffix);
 
 function factored(output: string, paths: Span[], before: Piece[] = [], tails?: Span[]): Reduction | undefined {
   if (paths.length < 2) return;
@@ -20,6 +29,7 @@ function factored(output: string, paths: Span[], before: Piece[] = [], tails?: S
   const prefix = first.slice(0, common);
   const length = (first.startsWith("/") ? prefix.lastIndexOf("/") : Math.max(prefix.lastIndexOf("/"), prefix.lastIndexOf("\\"))) + 1;
   if (!length || paths.some(([start, end]) => end - start <= length)) return;
+  if (tails && paths.some(([start, end]) => ambiguousGrepSuffix(output.slice(start + length, end)))) return;
   const scope: Span = [paths[0]![0], paths[0]![0] + length];
   const pieces: Piece[] = [...before, scope, syntax(":"), syntax("\n")];
   const required: Span[] = [...before.filter((p): p is Span => Array.isArray(p)), scope];
