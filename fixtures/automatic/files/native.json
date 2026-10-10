@@ -1,0 +1,7 @@
+{
+  "kind": "synthetic native OpenCode 1.18.17 grammar examples; not host captures",
+  "glob": "/workspace/project with spaces/日本語😀/src/alpha.ts\n/workspace/project with spaces/日本語😀/tests/beta.ts\n/workspace/project with spaces/日本語😀/src/alpha.ts",
+  "grep": "Found 3 matches\n/workspace/project with spaces/日本語😀/src/alpha.ts:\n  Line 12: const value = '😀';\n  Line 13: \n\n/workspace/project with spaces/日本語😀/tests/beta.ts:\n  Line 200:   keep spaces : and Line 9: text",
+  "directory": "<path>/workspace/project with spaces/日本語😀</path>\n<type>directory</type>\n<entries>\nalpha.ts\nfolder/\n日本語😀 file.ts\n\n(3 entries)\n</entries>",
+  "file": "<path>/workspace/data.json</path>\n<type>file</type>\n<content>\n\n1: {\n2:   \"keep\": true\n3: }\n\n(End of file - total 3 lines)\n</content>"
+}
