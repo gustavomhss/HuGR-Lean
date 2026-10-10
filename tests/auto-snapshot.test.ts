@@ -53,8 +53,8 @@ test("Playwright preserves every semantic record and surrounding section", () =>
   for (const tool of ["browser_snapshot", "mcp_playwright_browser_snapshot"]) {
     for (const args of [{}, { boxes: true }, { boxes: false }]) {
       const output = rendered(observation(playwright, tool, { args }));
-      assert.equal(output, expected);
       playwrightOracle(output!);
+      assert.equal(output, expected);
       assert.ok(Buffer.byteLength(output!) < Buffer.byteLength(playwright));
     }
   }
@@ -64,8 +64,8 @@ test("Chrome preserves every uid, payload, hierarchy and selected suffix", () =>
   for (const tool of ["take_snapshot", "mcp_chrome_take_snapshot"]) {
     for (const args of [{}, { verbose: true }, { verbose: false }]) {
       const output = rendered(observation(chrome, tool, { args }));
-      assert.equal(output, chrome.replace(/^( *)uid=/gm, "$1"));
       chromeOracle(output!);
+      assert.equal(output, chrome.replace(/^( *)uid=/gm, "$1"));
     }
   }
   assert.equal(rendered(observation(chrome.trimEnd(), "take_snapshot")), chrome.trimEnd().replace(/^( *)uid=/gm, "$1"));
