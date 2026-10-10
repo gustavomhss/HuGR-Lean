@@ -62,10 +62,17 @@ function grep(observation: AutomaticObservation): Reduction | undefined {
       if (!match || !Number.isSafeInteger(Number(match[1]))) return;
       matches++; groupMatches++;
       cursor = next < 0 ? output.length : next + 1;
-      if (next >= 0 && output[cursor] === "\n") { cursor++; break; }
-      if (next >= 0 && cursor === output.length) return;
+      let blanks = 0;
+      while (output[cursor] === "\n") { cursor++; blanks++; }
+      // Ripgrep text may retain one LF: same-file rows then have one blank,
+      // groups have two blanks, and the final match may end in LF.
+      // Keep all these bytes inside the source-backed whole tail.
+      if (cursor === output.length) { if (blanks) return; break; }
+      if (output.startsWith("  Line ", cursor)) { if (blanks > 1) return; continue; }
+      if (blanks < 1 || blanks > 2) return;
+      break; // Next iteration must validate a complete absolute path header.
     }
-    if (!groupMatches || output.endsWith("\n\n")) return;
+    if (!groupMatches) return;
     tails.push([tailStart, cursor]);
   }
   if (matches !== metadata.matches) return;

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import test from "node:test";
 import { filterAutomatic } from "../src/core/automatic.js";
 import type { AutomaticObservation } from "../src/core/automatic-types.js";
@@ -31,26 +32,51 @@ function decodePaths(view: string): string[] {
   assert.ok(scope?.endsWith(":"));
   return rows.map(row => scope!.slice(0, -1) + row);
 }
-function decodeMatches(text: string, factored: boolean): { header: string; groups: { path: string; rows: { line: string; text: string }[] }[] } {
+function decodeMatches(text: string, factored: boolean): { raw: string; header: string; groups: { path: string; rows: { line: string; text: string }[] }[] } {
   const lines = text.split("\n");
   const header = lines.shift()!;
   const prefix = factored ? lines.shift()!.slice(0, -1) : "";
   const groups: { path: string; rows: { line: string; text: string }[] }[] = [];
-  while (lines.length) {
-    const path = lines.shift()!;
-    assert.ok(path.endsWith(":"));
-    const rows: { line: string; text: string }[] = [];
-    while (lines.length && lines[0] !== "") {
-      const match = /^  Line (\d+): (.*)$/u.exec(lines.shift()!);
+  const restored = [header];
+  for (const row of lines) {
+    if (row === "") { restored.push(row); continue; }
+    if (row.startsWith("  Line ")) {
+      const match = /^  Line (\d+): (.*)$/u.exec(row);
       assert.ok(match);
-      rows.push({ line: match[1]!, text: match[2]! });
+      assert.ok(groups.length);
+      groups.at(-1)!.rows.push({ line: match[1]!, text: match[2]! });
+      restored.push(row);
+    } else {
+      assert.ok(row.endsWith(":"));
+      groups.push({ path: prefix + row.slice(0, -1), rows: [] });
+      restored.push(prefix + row);
     }
-    assert.ok(rows.length);
-    groups.push({ path: prefix + path.slice(0, -1), rows });
-    if (lines[0] === "") lines.shift();
   }
-  return { header, groups };
+  assert.ok(groups.every(group => group.rows.length));
+  return { raw: restored.join("\n"), header, groups };
 }
+
+test("actual installed 1.18.17 grep capture: exact native packet and LF reconstruction", () => {
+  const bytes = readFileSync(new URL("../fixtures/automatic/files/host-grep.jsonl", import.meta.url));
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), "b30f0aab179ddd1ed55447984c7c46930518da5e50591908b137bbb1dc94e470");
+  const events = bytes.toString("utf8").trimEnd().split("\n").map(line => JSON.parse(line));
+  const event = events[0];
+  assert.equal(event.phase, "before");
+  assert.equal(event.output.title, "inventory evidence");
+  assert.deepEqual(event.output.metadata, { matches: 3, truncated: false });
+  assert.deepEqual(events[1].output, event.output); // Original host proof did not reduce.
+  const input = observation(event.input.tool, event.output.output, event.output.metadata, event.input.args);
+  const original = JSON.stringify(event);
+  assert.deepEqual(decodeMatches(replacement(input), true), decodeMatches(input.output, false));
+  assert.equal(JSON.stringify(event), original);
+});
+
+test("synthetic extension: same-file native LF, empty text and final newline", () => {
+  const output = "Found 3 matches\n/workspace/project with spaces/日本語😀/alpha.ts:\n  Line 1: first\n\n  Line 2: \n\n\n/workspace/project with spaces/日本語😀/beta.ts:\n  Line 9: last\n";
+  assert.deepEqual(decodeMatches(replacement(grep(output)), true), decodeMatches(output, false));
+  for (const bad of [output.replace("\n\n  Line 2", "\n\nunknown\n  Line 2"), output + "unknown\n", output + "(Results truncated. Consider using a more specific path or pattern.)\n"]) refuse(grep(bad));
+  for (const matches of [2, 4, undefined]) refuse({ ...grep(output), metadata: { truncated: false, matches } });
+});
 
 test("synthetic native glob: reconstruct every full path, duplicate and order", () => {
   for (const prefix of ["/workspace/project with spaces/日本語😀/", "C:\\workspace\\project with spaces\\日本語😀\\", "\\\\server\\share\\project with spaces\\日本語😀\\", "//server/share/日本語😀/"]) {
@@ -91,7 +117,7 @@ test("full grammar refusal: native failures, clipping, unknown and count contrad
   for (const count of [0, 2, 4, undefined, "3", NaN]) refuse({ ...glob(), metadata: { truncated: false, count } });
   for (const matches of [0, 2, 4, undefined, "3", NaN]) refuse({ ...grep(), metadata: { truncated: false, matches } });
   for (const output of [fixture.glob! + "\n", fixture.glob!.replace("/workspace", "relative"), "No files found", "Error: permission denied"]) refuse(glob(output));
-  for (const output of [fixture.grep!.replace("Found 3", "Found 4"), fixture.grep!.replace(" matches", " matches (more matches available)"), fixture.grep!.replace("Line 12", "Line 0"), fixture.grep!.replace("  Line 13: ", "unknown"), fixture.grep! + "\n", fixture.grep!.replace("\n\n/workspace", "\n/workspace")]) refuse(grep(output));
+  for (const output of [fixture.grep!.replace("Found 3", "Found 4"), fixture.grep!.replace(" matches", " matches (more matches available)"), fixture.grep!.replace("Line 12", "Line 0"), fixture.grep!.replace("  Line 13: ", "unknown"), fixture.grep!.replace("\n\n/workspace", "\n/workspace")]) refuse(grep(output));
   for (const offset of [2, -1, "1", null]) refuse({ ...directory(), args: { ...directory().args, offset } });
   for (const output of [fixture.directory!.replace("(3 entries)", "(4 entries)"), fixture.directory!.replace("(3 entries)", "(Showing 3 of 4 entries. Use 'offset' parameter to read beyond entry 4)"), fixture.directory!.replace("folder/", "folder/nested"), fixture.directory! + "\n"]) refuse({ ...directory(), output });
   refuse({ ...directory(), args: { ...directory().args, limit: 2 } });
