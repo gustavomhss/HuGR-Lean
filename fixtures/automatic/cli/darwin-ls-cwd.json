@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/bin/ls",
+    "-l"
+  ],
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-cli-7nEHcx",
+  "original": "total 16\n-rw-r--r--@ 1 gustavoschneiter  staff   6 Oct 10 11:40 file 日本 😀.txt\ndrwxr-xr-x@ 2 gustavoschneiter  staff  64 Oct 10 11:40 folder name\nlrwxr-xr-x@ 1 gustavoschneiter  staff  20 Oct 10 11:40 link name -> file 日本 😀.txt\n-rw-r--r--@ 1 gustavoschneiter  staff   6 Oct 10 11:40 notes.txt\n",
+  "stderr": "",
+  "exit": 0,
+  "platform": "darwin",
+  "stdoutSha256": "34e9656a9c20a5eb0f937d604d63866a5f1e66a1ace854f968067b7017b6bbed",
+  "binarySha256": "db6beb98b2aed48f48634c59f1f6a82c2f719ce2334b2080634efb01e14c8344",
+  "version": "ProductName:\t\tmacOS\nProductVersion:\t\t15.3.2\nBuildVersion:\t\t24D81\n",
+  "source": "https://github.com/apple-oss-distributions/file_cmds/blob/6b3b4403a5e9f4db7b904a795bcfe9f2c321c821/ls/ls.c",
+  "license": "BSD-3-Clause; source reference for license only, binary pinned by hash/build",
+  "capturedAt": "2026-10-10T14:40:59.635Z"
+}
