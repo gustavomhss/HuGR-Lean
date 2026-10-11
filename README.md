@@ -76,6 +76,11 @@ Native corpus enrolls 41 bounded families, including 25 exact-ledger families wi
 runtime reducers. Missing/unimplemented/conservative variants remain explicit; see
 [coverage inventory](docs/COVERAGE.md) and [profile manual](src/profiles/MANUAL.md).
 
+Explicit [structured-output filtering](docs/STRUCTURED-TOOLS.md) adds lexical JSON, tables,
+progress, process/file/window/event views and accessibility outline/property/scope views.
+Use `filterStructured` from `hugr-lean/core`, CLI `--format`, or declared `structuredTools`
+bindings. These are opt-in producer contracts, separate from the native command registry.
+
 - Unknown commands, malformed/new formats, failures and incomplete/truncated results stay exact.
 - Every reduction must preserve declared evidence and be smaller in UTF-8 bytes.
 - Original summaries remain exact; only specifically admitted progress/layout can disappear after full validation. Native-looking plugin/reporter/lifecycle text does not authenticate its producer.
