@@ -29,7 +29,8 @@ test("whole-case deadline bounds setup and refuses late process launch", async (
   } finally { if (success) await rm(root, { recursive: true, force: true }); else console.error(`Deadline test artifacts: ${root}`); }
 });
 
-test("SIGTERM records failure streams and kills only owned live host group", async () => {
+test("SIGTERM records failure streams and kills only owned live host group",
+  { skip: process.platform === "win32" ? "POSIX signal handlers and process groups; host proof runs on macOS/Linux" : false }, async () => {
   const root = await mkdtemp(path.join(temporary, "automatic-signal-test-")); let success = false, pid = 0;
   const moduleURL = new URL("../scripts/automatic-host-proof.mjs", import.meta.url).href;
   const childCode = 'console.log("OWNED_STDOUT"); console.error("OWNED_STDERR"); setInterval(()=>{},1000);';
