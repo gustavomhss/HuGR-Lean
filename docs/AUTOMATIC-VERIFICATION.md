@@ -25,7 +25,7 @@ Every fix was re-reviewed cold until APPROVE. Two dead admissions found during d
 
 Installed tarball in an isolated consumer, plain plugin entry with no options, real OpenCode 1.18.17 (macOS x64), pinned SDK `@opencode-ai/plugin@1.18.17`, local deterministic model, local MCP and isolated headless browser producers. Each passing case completed the tool call and showed exactly two model requests; the hook output equals the next model request.
 
-First run on candidate `9d34282` (19 cases proved). Five cases hit their deadline before the host sent any model request, while the machine ran at load average 130–320 from an unrelated process; failures and artifacts are retained. Those five were rerun on `27f1948`, which includes the only later runtime change (`effc842`, native routing narrowed to `glob`/`grep`/`read`), with the native-read deadline raised from 120 s to 300 s; all passed.
+First run on candidate `9d34282` (19 cases proved). Five cases hit their deadline before the host sent any model request, while the machine ran at load average 130–320 from an unrelated process; failures and artifacts are retained. Those five were rerun on `27f1948`, which includes the only later runtime change (`effc842`, native routing narrowed to `glob`/`grep`/`read`), with the native-read deadline raised from 120 s to 300 s; all passed. The CI fix `0d3177a` later narrowed bash `node` admission; no proof case uses `node` (the native JSON case runs `curl`).
 
 | Case | Result | Bytes before → after |
 | --- | --- | --- |
@@ -43,4 +43,9 @@ Limits: explicit host byte-clipping wrapper not induced; Linux/Windows hosts and
 
 ## CI
 
-One manual run of the unchanged three-OS `verify` workflow on the exact frozen head; run link and identity receipts are recorded on the delivery PR.
+First run [38099473582](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38099473582) on `90f8ef9` failed tests on all three OS (structure/typecheck passed; build, smoke and pack did not run). Causes, all fixed:
+
+- Host-proof harness and unit tests used this machine's temporary directory as a hardcoded root (`mkdtemp` ENOENT on runners); the glob/grep oracle used platform `path.join` (Windows separators); `fixtures/automatic/**` lacked `-text`, so a pinned grep capture hash changed under CRLF checkout.
+- The installed default hook compacted three native corpus cases (Playwright/Vitest JSON reporters launched as `node node_modules/...`) that the ledger keeps exact. `node` package CLIs are now refused; a corpus replay through the built default hook matches all 833 goldens.
+
+Before the second run the lead ran the CI test command once locally. The second run's link and identity receipts are recorded on the delivery PR.
