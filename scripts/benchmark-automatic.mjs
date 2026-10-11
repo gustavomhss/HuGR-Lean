@@ -16,6 +16,9 @@ const count = (name, fallback, minimum) => {
   return Number(raw);
 };
 const WARMUPS = count("BENCH_WARMUPS", 20, 0), SAMPLES = count("BENCH_SAMPLES", 100, 1);
+// Optional local filter: BENCH_ONLY=<comma-separated case names (family@size) or family ids>. Unknown names fail.
+const ONLY = process.env.BENCH_ONLY === undefined ? undefined : process.env.BENCH_ONLY.split(",").map((name) => name.trim()).filter(Boolean);
+assert.ok(ONLY === undefined || ONLY.length > 0, "BENCH_ONLY must name at least one case or family");
 const KiB = 1024, MiB = 1024 * KiB;
 // Existing default-path budgets (docs/BENCHMARK.md); compared and reported, never enforced here.
 const BUDGETS = { "256KiB": { core: 5, adapter: 10 }, "1MiB": { core: 25, adapter: 35 } };
@@ -276,7 +279,9 @@ function commit() {
 export async function runAutomaticBenchmark() {
   const { filterAutomatic, createAfterHook } = await compiled();
   const t = await templates();
-  const all = families(t);
+  const known = families(t);
+  const wanted = (family) => ONLY === undefined || ONLY.some((name) => name === family.id || name.startsWith(`${family.id}@`));
+  const all = known.filter(wanted);
   // Builders at scale 1 must reproduce the pinned capture exactly where the capture is the template.
   for (const family of all) if (family.roundTrip !== undefined) assert.equal(family.build(1).text, family.roundTrip, `${family.id}: scale 1 differs from capture`);
   const reduced = (family) => ({ status: "reduced", reason: "automatic_native_view", profile: family.profile });
@@ -306,6 +311,10 @@ export async function runAutomaticBenchmark() {
     }
   }
   assert.equal(new Set(cases.map((entry) => entry.name)).size, cases.length, "Duplicate case names");
+  if (ONLY !== undefined) {
+    for (const name of ONLY) assert.ok(known.some((family) => family.id === name) || cases.some((entry) => entry.name === name), `BENCH_ONLY: unknown case or family ${name}`);
+    cases.splice(0, cases.length, ...cases.filter((entry) => ONLY.includes(entry.name) || ONLY.includes(entry.family)));
+  }
   const hook = createAfterHook({ raw: false }); // Actual compiled adapter, automatic default on; no injected engine or raw store.
   const rows = [];
   for (const entry of cases) {
