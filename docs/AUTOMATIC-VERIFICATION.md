@@ -69,6 +69,29 @@ By tool, over the whole history: glob −36%, grep −6%, bash −0.14%, read �
 
 These, not more JSON/snapshot formats, decide real savings.
 
+## Further expansion measured and declined (2026-10-11)
+
+Before building more reducers, candidate families were measured against the same local OpenCode history (1.42–1.44 GB of tool output, Lean not installed; only aggregates kept, raw exports deleted). Eligible means a single command with exit 0 and output not truncated by the host.
+
+| Candidate | Volume | Eligible | Lossless cut | Gain on total |
+| --- | ---: | ---: | ---: | ---: |
+| `gh run view --log` / `--log-failed` (factor the repeated `JOB\tSTEP` prefix) | 23.3 MB | 7.5 MB | 29% | ~0.15% |
+| `gh run watch` (drop superseded status frames) | 7.0 MB | 1.0 MB | ~90% | ~0.06% |
+| `git diff` / `git show` (only the reconstructable `diff --git` header) | 124 MB | 45 MB | 1.3% | ~0.04% |
+| `git status` | 47 MB | ~2 MB | small | ~0 |
+| Identical re-reads, earlier copy still in context | 1.42 GB (all tools) | — | — | 0.6% |
+| Repeated numbered lines from partial re-reads (optimistic) | 669 MB (`read`) | — | ~3% of `read` | ~1.5% |
+
+Why the ceiling is low:
+- 95% of `git status` and 80% of `git show` volume comes from compound commands whose output mixes producers.
+- 68% of `gh run` log volume is truncated by the host before the hook runs.
+- Diffs and file reads are evidence.
+- Agents rarely re-read identical content; most re-reads follow an edit or use a different range.
+
+Within the current contract (lossless, no command rewriting, only what reaches the hook), the practical ceiling in this usage is about 1.5–2% of tool output. The stakeholder decided to stop expanding compression here. Larger savings would need lossy views with guaranteed recovery, which trade agent quality for savings.
+
+For future context-level work, OpenCode 1.18.17 calls `experimental.chat.messages.transform` on the exact message list of each model request, after compaction and pruning, without persisting changes. That is the safe place for cross-call references (pinned source `anomalyco/opencode@02546df`, `packages/opencode/src/session/prompt.ts`).
+
 ## CI
 
 First run [38099473582](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38099473582) on `90f8ef9` failed tests on all three OS (structure/typecheck passed; build, smoke and pack did not run). Causes, all fixed:
