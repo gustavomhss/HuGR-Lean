@@ -1,0 +1,38 @@
+   Compiling c02w v0.1.0 (C:\Users\runneradmin\AppData\Local\Temp\c02-windows-affIoT\c02w)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.07s
+     Running unittests src\lib.rs (target\debug\deps\c02w-1e8182a8e4a3fcbe.exe)
+
+running 5 tests
+test tests::alpha_skipped ... ignored, native skip: café 🦀 — retained
+test tests::alpha_four ... ok
+test tests::alpha_one ... ok
+test tests::alpha_three ... ok
+test tests::alpha_two ... ok
+
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running checks\contract.rs (target\debug\deps\contract-ddc86189fad9da28.exe)
+
+running 2 tests
+test contract_0 ... ok
+test contract_1 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\integration.rs (target\debug\deps\integration-4306ede486c24489.exe)
+
+running 3 tests
+test integration_0 ... ok
+test integration_1 ... ok
+test integration_2 ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests c02w
+
+running 2 tests
+test src\lib.rs - identity (line 10) ... ok
+test src\lib.rs - add (line 3) ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+

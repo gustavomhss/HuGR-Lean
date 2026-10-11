@@ -20,6 +20,47 @@ const rustName = "[\\p{L}_][\\p{L}\\p{N}_]*(?:::[\\p{L}_][\\p{L}\\p{N}_]*)*";
 const rustTest = new RegExp(`^test (${rustName}) \\.\\.\\. (ok|ignored(?:, .+)?)$`, "u");
 const docTest = new RegExp(`^test ([^\\s()]+\\.rs - ${rustName} \\(line (\\d+)\\)) \\.\\.\\. (ok|ignored(?:, .+)?)$`, "u");
 const executableHeader = /^     Running (unittests [^\s()]+\.rs|tests\/[^\s()]+\.rs) \(((?:\/[^\s()]+\/)?target\/debug\/deps\/([^\s()]+))\)$/;
+/**
+ * Cargo prints source and artifact paths with the host separator. A Windows host prints
+ * `Running unittests src\lib.rs (target\debug\deps\NAME-HASH.exe)`, optionally behind an absolute directory
+ * when the target directory lies outside the working directory: drive `C:\`, UNC `\\server\share\`,
+ * verbatim drive `\\?\C:\` or verbatim UNC `\\?\UNC\server\share\` (Cargo echoes CARGO_TARGET_DIR's spelling).
+ * Windows spellings use backslashes only: no `/`, empty segment, whitespace, parenthesis or character Windows
+ * forbids in a path component (`: * ? " < > |`). POSIX spellings never contain `\` or a `.exe` executable.
+ */
+const windowsSegment = String.raw`[^\s()\\/:*?"<>|]+`;
+/** Executable stem `NAME-HASH`: no dot, so `.exe` is exactly the extension. */
+export const windowsStem = String.raw`[^\s()\\/:*?"<>|.]+`;
+/** UNC server: a component, but never `.` or `..` (`\\.\` is the device namespace). */
+const uncServer = String.raw`(?!\.\.?\\)${windowsSegment}`;
+export const windowsDirectory = String.raw`(?:[A-Za-z]:|\\\\\?\\[A-Za-z]:|\\\\\?\\UNC\\${uncServer}\\${windowsSegment}|` +
+  String.raw`\\\\${uncServer}\\${windowsSegment})\\(?:${windowsSegment}\\)*`;
+/** Windows manifest source path: backslash-separated, nonempty segments, ends in `.rs`. */
+export const windowsSource = String.raw`(?:${windowsSegment}\\)*${windowsSegment}\.rs`;
+const windowsSourceRow = new RegExp(`^${windowsSource}$`);
+/**
+ * Host spelling of a doc-test source path: true Windows (`src\lib.rs`), false POSIX (`src/lib.rs`),
+ * null when it has no separator (`native.rs`), undefined when it mixes separators or is not a Windows path.
+ */
+export function docPathHost(path: string): boolean | null | undefined {
+  const backslash = path.includes("\\"), slash = path.includes("/");
+  if (backslash) return !slash && windowsSourceRow.test(path) ? true : undefined;
+  return slash ? false : null;
+}
+/** Doc row `PATH - NAME (line N)` host; the path pattern holds no space, so the first ` - ` ends it. */
+export function docRowHost(identity: string): boolean | null | undefined {
+  return docPathHost(identity.slice(0, identity.indexOf(" - ")));
+}
+const windowsExecutableHeader = new RegExp(String.raw`^     Running (unittests ${windowsSource}|tests\\${windowsSource}) ` +
+  String.raw`\(((?:${windowsDirectory})?target\\debug\\deps\\(${windowsStem})\.exe)\)$`);
+/** One executable header in either host spelling. Windows contexts compare in `/` form; names exclude `.exe`. */
+function executableRow(text: string): { context: string; name: string; windows: boolean } | undefined {
+  const posix = executableHeader.exec(text);
+  // A POSIX header holding `\` or naming a `.exe` is a hybrid of two hosts: decline it outright.
+  if (posix) return text.includes("\\") || posix[3]!.endsWith(".exe") ? undefined : { context: posix[1]!, name: posix[3]!, windows: false };
+  const windows = windowsExecutableHeader.exec(text);
+  return windows ? { context: windows[1]!.replaceAll("\\", "/"), name: windows[3]!, windows: true } : undefined;
+}
 const docHeader = /^   Doc-tests ([A-Za-z0-9_-]+)$/;
 const finishRow = /^    Finished `(test|dev)` profile \[unoptimized \+ debuginfo\] target\(s\) in (?:(\d+)m )?(\d+(?:\.\d+)?)s$/;
 const summaryRow = /^test result: ok\. (\d+) passed; 0 failed; (\d+) ignored; 0 measured; (\d+) filtered out; finished in (\d+(?:\.\d+)?)s$/;
@@ -56,18 +97,21 @@ function cargo(output: string, observation: Observation, testing: boolean): Redu
   if (!testing) return current === undefined ? reduction(kept) : undefined;
 
   const contexts = new Set<string>(), executables = new Set<string>();
-  let suites = 0;
+  let suites = 0, windowsHost: boolean | undefined;
   while (current === "") advance();
   while (current !== undefined) {
-    const executable = executableHeader.exec(current), doc = docHeader.exec(current);
+    const executable = executableRow(current), doc = docHeader.exec(current);
     if (!executable && !doc) return undefined;
-    const context = executable ? `exec:${executable[1]}` : `doc:${doc![1]}`;
+    const context = executable ? `exec:${executable.context}` : `doc:${doc![1]}`;
     if (contexts.has(context)) return undefined;
-    if (libraryOnly && (suites !== 0 || executable?.[1] !== "unittests src/lib.rs")) return undefined;
+    if (libraryOnly && (suites !== 0 || executable?.context !== "unittests src/lib.rs")) return undefined;
     contexts.add(context);
     if (executable) {
+      // One host per output: Windows and POSIX spellings never mix.
+      if (windowsHost !== undefined && windowsHost !== executable.windows) return undefined;
+      windowsHost = executable.windows;
       // Absolute and relative spellings of the same target cannot supply a second context.
-      const target = executable[3]!;
+      const target = executable.name;
       if (executables.has(target)) return undefined;
       executables.add(target);
     }
@@ -84,6 +128,12 @@ function cargo(output: string, observation: Observation, testing: boolean): Redu
     while (current?.startsWith("test ") && !current.startsWith("test result:")) {
       const test = (doc ? docTest : rustTest).exec(current);
       if (!test || names.has(test[1]!) || (doc && (uint(test[2]) === undefined || Number(test[2]) < 1))) return undefined;
+      if (doc) {
+        // Doc rows carry the host spelling too; they must agree with every executable header and each other.
+        const host = docRowHost(test[1]!);
+        if (host === undefined || (host !== null && windowsHost !== undefined && windowsHost !== host)) return undefined;
+        if (host !== null) windowsHost = host;
+      }
       names.add(test[1]!);
       if (test[doc ? 3 : 2] === "ok") passed++;
       else { ignored++; kept.push(retain()); }
