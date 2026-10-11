@@ -1,0 +1,24 @@
+name: capture-windows-cargo
+# Temporary capture branch only; never merged. Records real Windows cargo test output for C02 fixtures.
+on: push
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.17.1
+      - run: rustup show
+      - run: node fixtures/profiles/cargo-test/provenance/windows-capture.mjs "${{ runner.temp }}\capture"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-cargo-capture-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}\capture
+          if-no-files-found: error
