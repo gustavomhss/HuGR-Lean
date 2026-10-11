@@ -1,0 +1,16 @@
+(node:55255) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/codemirror.next/codemirror.next.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/codemirror.next/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55255) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/third-party-web/third-party-web.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/third-party-web/package.json.
+(node:55255) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/legacy-javascript/legacy-javascript.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/legacy-javascript/package.json.
+(node:55255) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/intl-messageformat/package/intl-messageformat.esm.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /private/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode/wp-f-devtools-source/build/third_party/devtools-frontend/front_end/third_party/intl-messageformat/package/package.json.
+chrome-devtools-mcp exposes content of the browser instance to the MCP clients allowing them to inspect,
+debug, and modify any data in the browser or DevTools.
+Avoid sharing sensitive or personal information that you do not want to share with MCP clients.

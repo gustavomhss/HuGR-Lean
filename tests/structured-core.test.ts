@@ -67,3 +67,13 @@ test("termination accessors are snapshotted once before admission", () => {
     assert.equal(reads, 1); assert.equal(calls, first === 0 ? 1 : 0); assert.equal(result.status, first === 0 ? "reduced" : "passthrough");
   }
 });
+test("structured formatting and reduction fields are read once, so getters cannot fabricate data", () => {
+  let reads = 0;
+  const text = { get text() { return ++reads <= 2 ? ":" : "FAKE"; } };
+  const result = filterStructured(observation("ab" + " ".repeat(100)), { reducers: { json: () => ({ pieces: [[0, 2], text], required: [[0, 2]] }) as never } });
+  assert.equal(reads, 1); assert.equal(result.status, "reduced"); assert.ok("replacement" in result); assert.equal(result.replacement, "ab:");
+  let pieceReads = 0;
+  const reduction = { get pieces() { return ++pieceReads === 1 ? [[0, 2]] : [[0, 2], { text: "FAKE" }]; }, required: [[0, 2]] };
+  const second = filterStructured(observation("ab    "), { reducers: { json: () => reduction as never } });
+  assert.equal(pieceReads, 1); assert.ok("replacement" in second); assert.equal(second.replacement, "ab");
+});

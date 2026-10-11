@@ -9,6 +9,7 @@ Pure, synchronous post-execution filtering, exposed through `hugr-lean/core` in 
 - Any CR prevents normalization: terminal geometry is unavailable. CRLF source spans remain exact when profiles admit them.
 - [lines.ts](lines.ts) provides half-open UTF-16 spans; [types.ts](types.ts) defines the shared observation/reduction/result contract.
 - Unknown, failed, incomplete, ambiguous, or invalid processing leaves replacement absent so callers retain original text.
+- [automatic.ts](automatic.ts) exposes default `filterAutomatic` for host-observed native/MCP results: legacy `bash` result first, then the [automatic registry](automatic-registry.ts) (`auto-cli`, `auto-files`, `auto-snapshot`, `auto-cdp`, `auto-json`). [automatic-command.ts](automatic-command.ts) adds literal quoted-argument tokenization; [structured-render.ts](structured-render.ts) is the shared intact-evidence renderer. See [automatic native views](../../docs/COVERAGE.md#automatic-native-views).
 - [structured.ts](structured.ts) exposes explicit `filterStructured` for ten opt-in formats. It uses bounded lexical JSON spans, intact evidence checks and snapshotted execution facts. See [structured tools](../../docs/STRUCTURED-TOOLS.md).
 
 Evidence: [core tests](../../tests/core.test.ts), [command tests](../../tests/command.test.ts), [normalization tests](../../tests/normalize.test.ts), [line tests](../../tests/lines.test.ts).

@@ -44,23 +44,27 @@ export function filterStructured(observation: StructuredObservation, options: St
     const frozen = Object.freeze({ output, format, completeness, termination: Object.freeze({ kind: "exited" as const, code }), ...(scopeRef === undefined ? {} : { scopeRef }) });
     const reduction = reducer(output, frozen);
     if (reduction === undefined) return unchanged("passthrough", "unsupported_output");
-    ensure(record(reduction) && Array.isArray(reduction.pieces) && reduction.pieces.length > 0 && Array.isArray(reduction.required) && reduction.required.length > 0);
+    ensure(record(reduction));
+    const { pieces, required: evidence } = reduction;
+    ensure(Array.isArray(pieces) && pieces.length > 0 && Array.isArray(evidence) && evidence.length > 0);
     const emitted: [number, number][] = [], parts: string[] = [];
     let adjacent = false;
-    for (const piece of reduction.pieces) {
+    for (const piece of pieces) {
       if (Array.isArray(piece)) {
         const span = checkedSpan(piece, output), last = emitted[emitted.length - 1];
         if (adjacent && last?.[1] === span[0]) last[1] = span[1];
         else emitted.push([span[0], span[1]]);
         parts.push(output.slice(...span)); adjacent = true;
       } else {
-        ensure(record(piece) && typeof piece.text === "string" && FORMATTING.has(piece.text));
-        parts.push(piece.text); if (piece.text.length) adjacent = false;
+        ensure(record(piece));
+        const { text } = piece;
+        ensure(typeof text === "string" && FORMATTING.has(text));
+        parts.push(text); if (text.length) adjacent = false;
       }
     }
     ensure(emitted.length > 0);
     emitted.sort((a, b) => a[0] - b[0]);
-    const required = reduction.required.map(span => checkedSpan(span, output)).sort((a, b) => a[0] - b[0]);
+    const required = evidence.map(span => checkedSpan(span, output)).sort((a, b) => a[0] - b[0]);
     let cursor = 0, farthest = -1;
     for (const [start, end] of required) {
       while (cursor < emitted.length && emitted[cursor]![0] <= start) farthest = Math.max(farthest, emitted[cursor++]![1]);

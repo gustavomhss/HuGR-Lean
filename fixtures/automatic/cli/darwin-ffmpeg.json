@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "/usr/local/bin/ffmpeg",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-nostats",
+    "-progress",
+    "pipe:1",
+    "-re",
+    "-f",
+    "lavfi",
+    "-i",
+    "color=size=16x16:rate=5",
+    "-t",
+    "1.2",
+    "-f",
+    "null",
+    "-"
+  ],
+  "cwd": "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/hugr-cli-7nEHcx",
+  "original": "frame=5\nfps=0.00\nstream_0_0_q=-0.0\nbitrate=N/A\ntotal_size=N/A\nout_time_us=1000000\nout_time_ms=1000000\nout_time=00:00:01.000000\ndup_frames=0\ndrop_frames=0\nspeed=1.98x\nprogress=continue\nframe=6\nfps=0.00\nstream_0_0_q=-0.0\nbitrate=N/A\ntotal_size=N/A\nout_time_us=1200000\nout_time_ms=1200000\nout_time=00:00:01.200000\ndup_frames=0\ndrop_frames=0\nspeed=1.33x\nprogress=end\n",
+  "stderr": "",
+  "exit": 0,
+  "platform": "darwin",
+  "stdoutSha256": "522116945ebdab9e0d4a23a884066e6758ef838f75f82e8f9ca580657b133b10",
+  "binarySha256": "604a21d98efc0d35c12ca12721d860b64efc1f9354aa77ff376607684f09c54f",
+  "version": "ffmpeg version 8.1 Copyright (c) 2000-2026 the FFmpeg developers\nbuilt with Apple clang version 16.0.0 (clang-1600.0.26.6)\nconfiguration: --prefix=/usr/local/Cellar/ffmpeg/8.1 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox\nlibavutil      60. 26.100 / 60. 26.100\nlibavcodec     62. 28.100 / 62. 28.100\nlibavformat    62. 12.100 / 62. 12.100\nlibavdevice    62.  3.100 / 62.  3.100\nlibavfilter    11. 14.100 / 11. 14.100\nlibswscale      9.  5.100 /  9.  5.100\nlibswresample   6.  3.100 /  6.  3.100\n\nExiting with exit code 0\n",
+  "source": "https://ffmpeg.org/releases/ffmpeg-8.1.tar.xz",
+  "license": "GPL-3.0-or-later (local GPL/version3 build)",
+  "capturedAt": "2026-10-10T14:41:00.745Z"
+}
