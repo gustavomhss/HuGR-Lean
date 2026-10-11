@@ -3,31 +3,58 @@ import type { AutomaticReducer } from "../core/automatic-types.js";
 import type { Piece, Reduction, Span } from "../core/types.js";
 
 // Narrow fixed-width Darwin/procps layouts. Never split the command/name tail.
+// STAT grammar ^[IDRSTtUVWZX][<NLPsl+EXW-]* *$ as an ASCII table: bit 1 leading state, bit 2 modifier.
+const STAT = new Uint8Array(128);
+for (const char of "IDRSTtUVWZX") STAT[char.charCodeAt(0)]! |= 1;
+for (const char of "<NLPsl+EXW-") STAT[char.charCodeAt(0)]! |= 2;
+const TAB: Piece = Object.freeze({ text: "\t" });
+// String.prototype.trim and \s share WhiteSpace + LineTerminator; \n bounds the line.
+const NON_BLANK = /[^\S\n]*\S/y;
+const digit = (code: number) => code >= 48 && code <= 57;
 function processes(output: string): Reduction | undefined {
-  const lines = output.slice(0, -1).split("\n"), header = lines.shift()!;
-  if (!["  PID  PPID STAT COMM", "    PID    PPID STAT COMMAND"].includes(header) || !lines.length) return;
+  const headerEnd = output.indexOf("\n"), header = output.slice(0, headerEnd);
+  if (!["  PID  PPID STAT COMM", "    PID    PPID STAT COMMAND"].includes(header) || headerEnd + 1 >= output.length) return;
   const second = header.indexOf("PPID") + 4, first = header.indexOf("PID") + 3;
   const state = second + 1, command = header.indexOf("COMM");
   // Fixed widths already cap Darwin at 5 and procps at 7 digits (inside int32 pid_t). Bound to the
   // kernel ranges: xnu PID_MAX 99999; Linux pid < pid_max <= PID_MAX_LIMIT 4*1024*1024 (threads.h).
-  const pidMax = header.startsWith("    PID") ? "4194303" : "99999";
-  const pieces: Piece[] = [], required: Span[] = [], ids = new Set<string>();
-  function cells(spans: Span[]) {
-    spans.forEach((span, i) => { if (i) pieces.push({ text: "\t" }); pieces.push(span); required.push(span); });
-    pieces.push({ text: "\n" });
+  const pidMax = header.startsWith("    PID") ? 4194303 : 99999;
+  const pieces: Piece[] = [], required: Span[] = [], ids = new Set<number>();
+  function cells(a: Span, b: Span, c: Span, d: Span) {
+    // The source newline closes the tail cell: one span instead of span + text, identical bytes.
+    pieces.push(a, TAB, b, TAB, c, TAB, d); required.push(a, b, c, d);
   }
-  cells([[header.indexOf("PID"), first], [header.indexOf("PPID"), second], [state, state + 4], [command, header.length]]);
-  let offset = header.length + 1;
-  for (const line of lines) {
-    if (line[first] !== " " || line[second] !== " " || line[command - 1] !== " ") return;
-    const pid = line.slice(0, first), ppid = line.slice(first + 1, second), stat = line.slice(state, command - 1);
-    if (!/^ *[1-9]\d*$/.test(pid) || !/^ *(?:0|[1-9]\d*)$/.test(ppid) ||
-        !within(pid.trim(), pidMax) || !within(ppid.trim(), pidMax) ||
-        !/^[IDRSTtUVWZX][<NLPsl+EXW-]* *$/.test(stat) || !line.slice(command).trim() || ids.has(pid.trim())) return;
-    ids.add(pid.trim());
-    cells([[offset + pid.search(/\d/), offset + first], [offset + first + 1 + ppid.search(/\d/), offset + second],
-      [offset + state, offset + state + stat.trimEnd().length], [offset + command, offset + line.length]]);
-    offset += line.length + 1;
+  cells([header.indexOf("PID"), first], [header.indexOf("PPID"), second], [state, state + 4], [command, headerEnd + 1]);
+  for (let offset = headerEnd + 1; offset < output.length;) {
+    const end = output.indexOf("\n", offset);
+    if (end - offset < command || output.charCodeAt(offset + first) !== 32 || output.charCodeAt(offset + second) !== 32
+        || output.charCodeAt(offset + command - 1) !== 32) return;
+    // PID: ^ *[1-9]\d*$ over [0, first), within the kernel bound.
+    let i = offset, pid = 0;
+    while (i < offset + first && output.charCodeAt(i) === 32) i++;
+    const pidStart = i;
+    if (i === offset + first || output.charCodeAt(i) === 48) return;
+    for (; i < offset + first; i++) { const code = output.charCodeAt(i); if (!digit(code)) return; pid = pid * 10 + code - 48; }
+    // PPID: ^ *(?:0|[1-9]\d*)$ over [first + 1, second), within the kernel bound.
+    let j = offset + first + 1, ppid = 0;
+    while (j < offset + second && output.charCodeAt(j) === 32) j++;
+    const ppidStart = j;
+    if (j === offset + second || (output.charCodeAt(j) === 48 && j + 1 !== offset + second)) return;
+    for (; j < offset + second; j++) { const code = output.charCodeAt(j); if (!digit(code)) return; ppid = ppid * 10 + code - 48; }
+    if (pid > pidMax || ppid > pidMax || ids.has(pid)) return;
+    // STAT over [state, command - 1): one state letter, modifiers, then only spaces.
+    let k = offset + state;
+    const lead = output.charCodeAt(k++);
+    if (lead >= 128 || !(STAT[lead]! & 1)) return;
+    while (k < offset + command - 1) { const code = output.charCodeAt(k); if (code >= 128 || !(STAT[code]! & 2)) break; k++; }
+    const statEnd = k;
+    for (; k < offset + command - 1; k++) if (output.charCodeAt(k) !== 32) return;
+    // COMM/COMMAND tail must contain a non-whitespace character (trim() semantics).
+    const tail = output.charCodeAt(offset + command);
+    if (!(tail > 32 && tail < 127)) { NON_BLANK.lastIndex = offset + command; if (!NON_BLANK.test(output)) return; }
+    ids.add(pid);
+    cells([pidStart, offset + first], [ppidStart, offset + second], [offset + state, statEnd], [offset + command, end + 1]);
+    offset = end + 1;
   }
   return { pieces, required };
 }

@@ -26,6 +26,28 @@ distributions and aggregate savings below describe old behavior, not current sup
 Plaintext outputs now retain complete source rows and equal raw inputs; historical
 reports/artifacts remain unchanged. Current registry/corpus scope is [coverage](COVERAGE.md).
 
+## Automatic native views: 2026-10-11
+
+Script: `node scripts/benchmark-automatic.mjs` (set `BENCH_ONLY`, `BENCH_SAMPLES` or `BENCH_WARMUPS` for local runs). Workloads of about 256 KiB and 1 MiB are scaled from real native capture shapes and run through the default `filterAutomatic` core and the raw-off plugin hook. Each run uses 20 warmups and 100 samples, verifies every sample's output, and compares p95 against the existing budgets above. Measured on GitHub Actions (ubuntu-latest, macos-latest, windows-latest; Node 22.17.1). These are core/adapter latencies, not model or token cost.
+
+| State | Run | Core / adapter cases within budget (Linux · macOS · Windows) |
+| --- | --- | --- |
+| Merged plug-and-play (`4fcaa06` + script) | [38108520805](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38108520805) | 6/9 · 2/5 · 4/5 of 17 |
+| After four optimization rounds (`85dab86`) | [38120221434](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38120221434) | 17/17 · 17/17 · 17/17 |
+
+Final p95 at 1 MiB, core (Linux / macOS / Windows):
+
+| Workload | Before | After |
+| --- | --- | --- |
+| MCP JSON | 47 / 74 / 91 ms | 11 / 9 / 10 ms |
+| Playwright snapshot | 91 / 152 / 138 ms | 20 / 17 / 18 ms |
+| DevTools snapshot | 49 / 74 / 76 ms | 13 / 11 / 12 ms |
+| curl JSON | 49 / 98 / 97 ms | 12 / 9 / 10 ms |
+| Darwin ps | 35 / 51 / 53 ms | 16 / 9 / 13 ms |
+| CDP AX, largest admitted (196 KB) | 28 / 52 / 60 ms | 3.6 / 3.4 / 3.6 ms |
+
+The slowest remaining 256 KiB case is the Playwright snapshot at 4.1–4.8 ms core (budget 5). One earlier run on the same head ([38120091152](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38120091152)) had a slow macOS runner on which even the unchanged legacy benchmark missed its budgets; it is kept as evidence of runner variance. CDP AX inputs above the parser's 25,000-node limit are refused, now in about 2 ms, before any tree is allocated.
+
 ## Reproduction
 
 Use Node >=22 and npm. Build separately before packing; smoke never runs prepack/build.
