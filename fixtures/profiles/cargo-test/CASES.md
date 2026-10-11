@@ -244,3 +244,46 @@ Restored final owned-file run: **106 passed, 0 failed/skipped**. `npm run typech
 `git diff -- src/profiles/cargo-test.ts` was empty relative to the compiling checkpoint after restoration.
 Legacy positive results/required declarations remain equal; existing native captures and goldens remain unchanged.
 No shared registry/core/test/CI files were edited; no full suite/build/smoke/benchmark or CI dispatch.
+
+## Windows path spellings (2026-10-11)
+
+Problem: Cargo prints source and artifact paths with the host separator. On Windows the executable header reads
+`Running unittests src\lib.rs (target\debug\deps\NAME-HASH.exe)`; both the original (`cargo.ts`) and the delta
+(`cargo-test.ts`) grammars required `target/…/deps/NAME`, so every real Windows run passed through as
+`unsupported_output` (reported from hugr-lean 0.2.0, native build `465fb4c04773`; unchanged on `utility/integration`).
+The `Compiling … (C:\…)` row was already accepted. Cargo itself writes LF rows on Windows; CRLF only arrives via hosts.
+
+Native evidence: `provenance/windows-capture.mjs` (original, MIT, no donor) ran on GitHub Actions run
+[38154601673](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38154601673) (`windows-latest`, image
+`win25-vs2026` 20260925.250.1, temporary capture branch at `aef4dca`), Cargo `1.98.1 (797e8a9bc 2026-08-05)`,
+rustc/rustdoc `1.98.1 (48a229cea 2026-09-01)`, host `x86_64-pc-windows-msvc`. Same shared-descriptor boundary,
+offline/no-color environment, stdin ignored, no TTY. Producer hash, sources, runner identity, per-case argv, cwd,
+`CARGO_TARGET_DIR`, exit, bytes, SHA-256 and CRLF row count (0 everywhere) are in `provenance/windows-receipt.json`.
+Absolute target directories were set through `CARGO_TARGET_DIR`; Cargo echoes that spelling verbatim.
+
+| Stem `C02/windows-<stem>` | Native combination | Disposition | Independent keep rows |
+| --- | --- | --- | --- |
+| native-lib | bare `cargo test`, `[lib] path = "native.rs"`, 30 tests, empty doctests (Orchestra fixture shape) | reduced | 2,3,37,39,43 |
+| default | bare `cargo test`: lib, custom `checks\contract.rs`, `tests\integration.rs`, `src\lib.rs` doctests | passthrough: bare argv keeps the legacy header vocabulary, as on POSIX | exact |
+| lib | `cargo test --lib`; original parser and delta agree | reduced | 1,2,5,11 |
+| test-target | `--test integration` | reduced | 1,2,9 |
+| custom-test | `--test contract`, manifest path `checks/contract.rs` printed as `checks\contract.rs` | reduced | 1,2,8 |
+| release-target | `--lib --release --target x86_64-pc-windows-msvc` | reduced | 2,3,6,12 |
+| absolute-target | drive root `C:\…\shared\target` | reduced | 2,3,6,12 |
+| verbatim-target | verbatim `\\?\C:\…\verbatim\target` | reduced | 2,3,6,12 |
+| unc-target | UNC `\\localhost\C$\…\unc\target` | reduced | 2,3,6,12 |
+| verbatim-unc-target | verbatim UNC `\\?\UNC\localhost\C$\…\verbatim-unc\target` | reduced | 2,3,6,12 |
+| renamed-target | `C:\…\shared-target` (no final `target` directory) | passthrough, as its POSIX spelling | exact |
+| failure | failing test, panic at `src\lib.rs:4:26`, exit 101 | passthrough | exact |
+
+Grammar: Windows headers use backslashes only (no `/`, empty segment, whitespace or parenthesis), an optional
+drive, UNC, verbatim or verbatim-UNC root (UNC server never `?` or `.`), and a dotless `NAME-HASH` stem with
+exactly `.exe`. Windows contexts compare in `/` form, so selector, legacy-vocabulary, custom-path and alias rules are
+the POSIX ones; executable identity excludes `.exe`; a single output never mixes POSIX and Windows headers.
+Retained rows are still native source spans. `tests/profile-cargo-test-windows.test.ts` checks every capture against
+its POSIX spelling, plus accept, decline, failure and CRLF cases.
+
+Mutation probes (production only, both Cargo suites, restored from git afterwards): reverting all Windows acceptance
+failed 23 tests; delta only 18; original parser only 5; dropping `/` normalization 18; each host guard, `?` UNC server,
+dotted stem, `/` in segments, optional `.exe` and `\\.\` device root failed its own decline test. Keeping `.exe` in the
+identity is an equivalent mutant while the host guard holds.
