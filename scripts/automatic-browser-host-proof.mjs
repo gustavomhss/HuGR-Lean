@@ -204,6 +204,15 @@ async function attempt(context, name, ordinal) {
   return entry;
 }
 
+/** Install origin from the enclosing npm lockfile; a missing entry is recorded, never guessed. */
+async function origin(packageDir, name) {
+  const parts = packageDir.split(path.sep), at = parts.lastIndexOf("node_modules");
+  if (at < 0) return { lockfile: null, resolved: null, integrity: null };
+  const lockfile = path.join(parts.slice(0, at).join(path.sep) || path.sep, "package-lock.json");
+  const entry = await readFile(lockfile, "utf8").then((s) => JSON.parse(s).packages?.[`node_modules/${name}`], () => undefined);
+  return { lockfile, resolved: entry?.resolved ?? null, integrity: entry?.integrity ?? null };
+}
+
 async function provenance(flags) {
   const playwrightDir = path.dirname(flags.playwright), devtoolsPkg = path.resolve(path.dirname(flags.devtools), "../../../package.json");
   const pw = JSON.parse(await readFile(path.join(playwrightDir, "package.json"), "utf8")), dt = JSON.parse(await readFile(devtoolsPkg, "utf8"));
@@ -214,11 +223,10 @@ async function provenance(flags) {
     opencode: { path: flags.opencode, version: (await capture(flags.opencode, ["--version"], flags.output)).trim(), sha256: await fileHash(flags.opencode) },
     sdk: { path: flags.sdk, version: sdk.version },
     executable: { path: flags.executable, realpath: await realpath(flags.executable), sha256: await fileHash(flags.executable) },
-    playwright: { cli: flags.playwright, version: pw.version, cliSha256: await fileHash(flags.playwright),
+    playwright: { cli: flags.playwright, version: pw.version, origin: await origin(playwrightDir, "playwright"), cliSha256: await fileHash(flags.playwright),
       bundleSha256: await fileHash(path.resolve(playwrightDir, "../playwright-core/lib/coreBundle.js")) },
-    devtools: { entry: flags.devtools, version: dt.version, gitHead: dt.gitHead ?? null, entrySha256: await fileHash(flags.devtools),
-      formatterSha256: await fileHash(path.resolve(path.dirname(flags.devtools), "../formatters/SnapshotFormatter.js")),
-      origin: dt.gitHead ? "npm registry tarball (package gitHead recorded)" : "local build (no package gitHead)" },
+    devtools: { entry: flags.devtools, version: dt.version, origin: await origin(path.dirname(devtoolsPkg), "chrome-devtools-mcp"), entrySha256: await fileHash(flags.devtools),
+      formatterSha256: await fileHash(path.resolve(path.dirname(flags.devtools), "../formatters/SnapshotFormatter.js")) },
   };
 }
 
@@ -249,6 +257,7 @@ export async function main(argv) {
       receipt.cases.push(entry);
       if (entry.status === "failed" && entry.deadlineBeforeModel) { entry = await attempt(context, name, 2); receipt.cases.push(entry); }
       if (entry.status === "failed") receipt.failures.push({ case: name, error: entry.error, root: entry.root, dir: entry.dir });
+      if (/Harness (?:stopped|received SIG)/.test(entry.error ?? "")) break; // interrupted: record, do not continue
       console.log(JSON.stringify({ case: name, attempt: entry.attempt, status: entry.status, inputBytes: entry.inputBytes, outputBytes: entry.outputBytes, refs: entry.refs, roots: entry.roots, root: entry.root }));
     }
   } catch (error) { receipt.failures.push({ case: "setup", error: error.message }); }
