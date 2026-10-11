@@ -1,12 +1,10 @@
 import { tokenizeAutomaticCommand } from "../core/automatic-command.js";
-import { parseJson, scalar, type JsonNode } from "../core/structured-json.js";
+import { LEXICAL_TEXT, parseJson, recordJson, scalar, scanJson, scanned, type JsonNode, type JsonRecords } from "../core/structured-json.js";
 import type { AutomaticObservation, AutomaticReducer } from "../core/automatic-types.js";
 import type { Piece, Reduction, Span } from "../core/types.js";
 
-// Shared immutable formatting pieces: one allocation per token kind, never per emitted token.
-const text = (value: string): Piece => Object.freeze({ text: value });
-export const JSON_TEXT = Object.freeze({ openArray: text("["), closeArray: text("]"), openObject: text("{"), closeObject: text("}"),
-  comma: text(","), colon: text(":"), newline: text("\n") });
+// Shared immutable formatting pieces: one allocation per token kind, never per emitted token (the scanner's own).
+export const JSON_TEXT = LEXICAL_TEXT;
 const { openArray, closeArray, openObject, closeObject, comma, colon, newline } = JSON_TEXT;
 const MAX_BYTES = 16 * 1024 * 1024;
 /** UTF-8 bytes never exceed 3 per UTF-16 unit, so the exact byte count is only needed near the limit. */
@@ -121,14 +119,17 @@ export interface JsonSection { readonly output: string; readonly start: number; 
 interface JsonView {
   readonly output: string; readonly tool: string; readonly source: string;
   readonly section: JsonSection | undefined; parsed: boolean; root: JsonNode | undefined;
+  /** Whole-section scan verdict, once known: parseJson acceptance, the protocol error envelope and the records. */
+  checked: boolean; valid: boolean; envelope: boolean; records: JsonRecords | undefined;
 }
 /**
- * One section and one parse per observation: auto-cdp and auto-json (and the wrapper check) see the same
- * immutable text. Keyed weakly by the observation and revalidated against its carrier facts, so a reused
- * or mutated caller object can never receive another text's tree.
+ * One section per observation, scanned (and, only if a caller asks for the tree, parsed) at most once:
+ * auto-cdp and auto-json (and the wrapper check) see the same immutable text. Keyed weakly by the observation
+ * and revalidated against its carrier facts, so a reused or mutated caller object never receives another
+ * text's verdict or tree.
  */
 const views = new WeakMap<object, JsonView>();
-function sectionOf(output: string, tool: string, source: string): { section: JsonSection | undefined; root?: JsonNode } {
+function sectionOf(output: string, tool: string, source: string): { section: JsonSection | undefined; records?: JsonRecords; envelope?: boolean } {
   if (overByteLimit(output)) return { section: undefined };
   const named = (name: string) => tool === name || tool.endsWith(`_${name}`);
   let start = 0, end = output.length;
@@ -143,14 +144,16 @@ function sectionOf(output: string, tool: string, source: string): { section: Jso
   }
   const text = output.slice(start, end);
   if (!start) return { section: { output: text, start, end } };
-  const root = parseJson(text);
-  return root ? { section: { output: text, start, end }, root } : { section: undefined };
+  // A wrapped payload must be one whole JSON value; the scan decides it without a tree (refusing past the node limit early).
+  const records = recordJson(text, 25000);
+  return records ? { section: { output: text, start, end }, records, envelope: scanned.envelope } : { section: undefined };
 }
 function jsonView(observation: AutomaticObservation): JsonView {
   const { output, tool, source } = observation, hit = views.get(observation);
   if (hit && hit.output === output && hit.tool === tool && hit.source === source) return hit;
-  const { section, root } = sectionOf(output, tool, source);
-  const view: JsonView = { output, tool, source, section, parsed: root !== undefined || section === undefined, root };
+  const { section, records, envelope } = sectionOf(output, tool, source);
+  const checked = records !== undefined;
+  const view: JsonView = { output, tool, source, section, parsed: section === undefined, root: undefined, checked, valid: checked, envelope: envelope ?? false, records };
   views.set(observation, view);
   return view;
 }
@@ -158,8 +161,18 @@ function jsonView(observation: AutomaticObservation): JsonView {
 export function jsonSectionRoot(observation: AutomaticObservation): { section: JsonSection; root: JsonNode | undefined } | undefined {
   const view = jsonView(observation);
   if (!view.section) return undefined;
-  if (!view.parsed) { view.root = parseJson(view.section.output); view.parsed = true; }
+  if (!view.parsed) { view.root = view.checked && !view.valid ? undefined : parseJson(view.section.output); view.parsed = true; }
   return { section: view.section, root: view.root };
+}
+/** The section with its whole-payload verdict (parseJson acceptance, protocol error envelope, records), scanned at most once. */
+export function jsonSectionScan(observation: AutomaticObservation): { section: JsonSection; valid: boolean; envelope: boolean; records: JsonRecords | undefined } | undefined {
+  const view = jsonView(observation), section = view.section;
+  if (!section) return undefined;
+  if (!view.checked) {
+    view.records = recordJson(section.output, 25000);
+    view.valid = view.records !== undefined; view.envelope = view.valid && scanned.envelope; view.checked = true;
+  }
+  return { section, valid: view.valid, envelope: view.envelope, records: view.records };
 }
 
 /** Exact native wrappers only. Payload spans are virtual UTF-16 offsets into the response. */
@@ -185,29 +198,35 @@ export function wrapperSuffix(section: JsonSection, length: number, pieces: Piec
   if (section.end < length) { const suffix: Span = [section.end, length]; pieces.push(suffix); required.push(suffix); }
 }
 
-/** JSON and NDJSON share one global syntax-node budget, never one budget per record. */
+/**
+ * JSON and NDJSON share one global syntax-node budget, never one budget per record. The streaming scanner
+ * validates, counts, recognizes the protocol error envelope and emits the lexical view in one pass per text.
+ */
 export const reduceAutomaticJson: AutomaticReducer = observation => {
   if (!jsonCarrier(observation) || overByteLimit(observation.output)) return;
-  const parsed = jsonSectionRoot(observation);
-  if (!parsed) return;
-  const { section, root: whole } = parsed, { output } = section, pieces: Piece[] = [], required: Span[] = [];
-  const budget = { left: 25000 };
+  const view = jsonView(observation), section = view.section;
+  if (!section) return;
+  const { output } = section, pieces: Piece[] = [], required: Span[] = [];
   wrapperPrefix(section, pieces, required);
   const evidence = required.length;
-  if (whole) {
-    if (protocolError(whole) || emitLexical(whole, pieces, required, section.start, budget) < 0) return;
-  } else {
-    // A single-line payload is its only record, and that record is the text that just failed to parse whole.
+  // A whole payload holds at most the 25,000 nodes it may count, so the shared budget cannot run out on it.
+  if (view.checked && view.envelope) return;
+  let whole = false;
+  if (!view.checked || view.valid) {
+    if (scanJson(output, section.start, 25000, pieces, required) >= 0) { if (scanned.envelope) return; whole = true; }
+  }
+  if (!whole) {
+    // A single-line payload is its only record, and that record is the text that just failed to scan whole.
     if (!output.includes("\n")) return;
-    // A wrapped section always parsed whole, so records are only ever unwrapped (offset 0) payloads.
-    let offset = 0, records = 0;
+    // A wrapped section always scanned whole, so records are only ever unwrapped (offset 0) payloads.
+    let offset = 0, records = 0, left = 25000;
     for (const line of output.split("\n")) {
       if (offset === output.length && line === "") break;
       if (++records > 25000) return;
-      const node = parseJson(line);
-      if (!node || protocolError(node)) return;
       if (records > 1) pieces.push(newline);
-      if (emitLexical(node, pieces, required, section.start + offset, budget) < 0) return;
+      // Per record: parseJson's own 25,000-node limit, and whatever the shared budget has left.
+      if (scanJson(line, section.start + offset, left < 25000 ? left : 25000, pieces, required) < 0 || scanned.envelope) return;
+      left -= scanned.nodes;
       offset += line.length + 1;
     }
     if (output.endsWith("\n")) pieces.push(newline);

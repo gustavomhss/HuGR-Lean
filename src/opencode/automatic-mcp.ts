@@ -1,6 +1,5 @@
 import type { filterAutomatic } from "../core/automatic.js";
-import { parseJson } from "../core/structured-json.js";
-import { protocolError } from "../profiles/auto-json.js";
+import { scanJson, scanned } from "../core/structured-json.js";
 
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 // A protocol error envelope is a top-level JSON object with an "error" member. Without the literal key
@@ -13,10 +12,8 @@ function mayBeEnvelope(text: string): boolean {
 /** Host clipping notice, JSON-RPC error envelope or a Playwright `### Error` line outside fences. */
 export function errorText(text: string): boolean {
   if (/^\.\.\.(?:output truncated|\d+ (?:lines|bytes) truncated)\.\.\./.test(text)) return true;
-  if (mayBeEnvelope(text)) {
-    const json = parseJson(text);
-    if (json && protocolError(json)) return true;
-  }
+  // The non-allocating scan decides exactly what parseJson + protocolError decide, without building a tree.
+  if (mayBeEnvelope(text) && scanJson(text, 0, 25000) >= 0 && scanned.envelope) return true;
   // Line scan without splitting: a fence line is ``` followed by no further backtick on that line.
   let fenced = false;
   for (let start = 0; start <= text.length;) {
