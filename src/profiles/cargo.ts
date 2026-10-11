@@ -25,22 +25,39 @@ const executableHeader = /^     Running (unittests [^\s()]+\.rs|tests\/[^\s()]+\
  * `Running unittests src\lib.rs (target\debug\deps\NAME-HASH.exe)`, optionally behind an absolute directory
  * when the target directory lies outside the working directory: drive `C:\`, UNC `\\server\share\`,
  * verbatim drive `\\?\C:\` or verbatim UNC `\\?\UNC\server\share\` (Cargo echoes CARGO_TARGET_DIR's spelling).
- * Windows spellings use backslashes only: no `/`, empty segment, whitespace or parenthesis.
+ * Windows spellings use backslashes only: no `/`, empty segment, whitespace, parenthesis or character Windows
+ * forbids in a path component (`: * ? " < > |`). POSIX spellings never contain `\` or a `.exe` executable.
  */
-const windowsSegment = String.raw`[^\s()\\/]+`;
+const windowsSegment = String.raw`[^\s()\\/:*?"<>|]+`;
 /** Executable stem `NAME-HASH`: no dot, so `.exe` is exactly the extension. */
-export const windowsStem = String.raw`[^\s()\\/.]+`;
-const uncServer = String.raw`(?!\.\\)[^\s()\\/?]+`;
+export const windowsStem = String.raw`[^\s()\\/:*?"<>|.]+`;
+/** UNC server: a component, but never `.` or `..` (`\\.\` is the device namespace). */
+const uncServer = String.raw`(?!\.\.?\\)${windowsSegment}`;
 export const windowsDirectory = String.raw`(?:[A-Za-z]:|\\\\\?\\[A-Za-z]:|\\\\\?\\UNC\\${uncServer}\\${windowsSegment}|` +
   String.raw`\\\\${uncServer}\\${windowsSegment})\\(?:${windowsSegment}\\)*`;
 /** Windows manifest source path: backslash-separated, nonempty segments, ends in `.rs`. */
 export const windowsSource = String.raw`(?:${windowsSegment}\\)*${windowsSegment}\.rs`;
+const windowsSourceRow = new RegExp(`^${windowsSource}$`);
+/**
+ * Host spelling of a doc-test source path: true Windows (`src\lib.rs`), false POSIX (`src/lib.rs`),
+ * null when it has no separator (`native.rs`), undefined when it mixes separators or is not a Windows path.
+ */
+export function docPathHost(path: string): boolean | null | undefined {
+  const backslash = path.includes("\\"), slash = path.includes("/");
+  if (backslash) return !slash && windowsSourceRow.test(path) ? true : undefined;
+  return slash ? false : null;
+}
+/** Doc row `PATH - NAME (line N)` host; the path pattern holds no space, so the first ` - ` ends it. */
+export function docRowHost(identity: string): boolean | null | undefined {
+  return docPathHost(identity.slice(0, identity.indexOf(" - ")));
+}
 const windowsExecutableHeader = new RegExp(String.raw`^     Running (unittests ${windowsSource}|tests\\${windowsSource}) ` +
   String.raw`\(((?:${windowsDirectory})?target\\debug\\deps\\(${windowsStem})\.exe)\)$`);
 /** One executable header in either host spelling. Windows contexts compare in `/` form; names exclude `.exe`. */
 function executableRow(text: string): { context: string; name: string; windows: boolean } | undefined {
   const posix = executableHeader.exec(text);
-  if (posix) return { context: posix[1]!, name: posix[3]!, windows: false };
+  // A POSIX header holding `\` or naming a `.exe` is a hybrid of two hosts: decline it outright.
+  if (posix) return text.includes("\\") || posix[3]!.endsWith(".exe") ? undefined : { context: posix[1]!, name: posix[3]!, windows: false };
   const windows = windowsExecutableHeader.exec(text);
   return windows ? { context: windows[1]!.replaceAll("\\", "/"), name: windows[3]!, windows: true } : undefined;
 }
@@ -111,6 +128,12 @@ function cargo(output: string, observation: Observation, testing: boolean): Redu
     while (current?.startsWith("test ") && !current.startsWith("test result:")) {
       const test = (doc ? docTest : rustTest).exec(current);
       if (!test || names.has(test[1]!) || (doc && (uint(test[2]) === undefined || Number(test[2]) < 1))) return undefined;
+      if (doc) {
+        // Doc rows carry the host spelling too; they must agree with every executable header and each other.
+        const host = docRowHost(test[1]!);
+        if (host === undefined || (host !== null && windowsHost !== undefined && windowsHost !== host)) return undefined;
+        if (host !== null) windowsHost = host;
+      }
       names.add(test[1]!);
       if (test[doc ? 3 : 2] === "ok") passed++;
       else { ignored++; kept.push(retain()); }

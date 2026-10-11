@@ -1,4 +1,4 @@
-import { cargoProfiles, windowsDirectory, windowsSource, windowsStem } from "./cargo.js";
+import { cargoProfiles, docRowHost, windowsDirectory, windowsSource, windowsStem } from "./cargo.js";
 import { tokenizeCommand } from "../core/command.js";
 import { iterateLines } from "../core/lines.js";
 import type { Line, Observation, Profile, Reduction } from "../core/types.js";
@@ -150,6 +150,8 @@ function delta(output: string, c: Command, legacyArgv: boolean): Reduction | und
     const windows = posix ? null : windowsExecutableRow.exec(header.text), doc = docHeader.exec(header.text);
     const executable = posix ?? windows;
     if (!executable && !doc) return undefined;
+    // A POSIX header holding `\` or naming a `.exe` is a hybrid of two hosts: decline it outright.
+    if (posix && (header.text.includes("\\") || posix[7]!.endsWith(".exe"))) return undefined;
     // Windows source paths compare in `/` form; the retained row stays the native source text.
     const slash = (text: string) => windows ? text.replaceAll("\\", "/") : text;
     const isDoc = Boolean(doc), context = executable ? slash(executable[1]!) : doc![1]!;
@@ -177,6 +179,12 @@ function delta(output: string, c: Command, legacyArgv: boolean): Reduction | und
     while (row?.text.startsWith("test ") && !row.text.startsWith("test result:")) {
       const test = take()!, match = (isDoc ? docRow : nameRow).exec(test.text);
       if (!match || names.has(match[1]!) || (isDoc && uint(match[2]) === undefined)) return undefined;
+      if (isDoc) {
+        // Doc rows carry the host spelling too; they must agree with every executable header and each other.
+        const host = docRowHost(match[1]!);
+        if (host === undefined || (host !== null && windowsHost !== undefined && windowsHost !== host)) return undefined;
+        if (host !== null) windowsHost = host;
+      }
       const name = match[1]!, status = match[isDoc ? 3 : 2]!;
       if ((c.filter && name !== c.filter) || [...c.skips].some(skip => c.exact ? name === skip : name.includes(skip))) return undefined;
       names.add(name);

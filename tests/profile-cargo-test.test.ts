@@ -72,8 +72,12 @@ test("C02 exports cargo-test only; native inventory and original boundary hashes
 for (const c of cases) {
   test(`${c.name}: public filter native golden; original baseline red or exact witness`, () => {
     const obs = observation(c), expected = read(c.expectedFile);
-    // Windows captures of legacy-shaped argv reach the original parser's grammar in Windows spelling (see Windows suite).
-    if (!c.name.startsWith("C02/windows-")) assert.equal(filter(obs, { profiles: cargoProfiles }).status, "passthrough", "original parser remains narrow");
+    // Pinned original-parser outcomes: it stays narrow, except the two legacy-shaped Windows captures it now reads.
+    const original = filter(obs, { profiles: cargoProfiles });
+    if (["C02/windows-native-lib", "C02/windows-lib"].includes(c.name)) {
+      assert.equal(original.status, "reduced", "original parser reads legacy-shaped Windows argv");
+      assert.equal(original.status === "reduced" && original.replacement, expected);
+    } else assert.equal(original.status, "passthrough", "original parser remains narrow");
     if (c.status === "reduced") accepted(obs, expected);
     else { assert.equal(expected, obs.output); exact(obs); }
   });

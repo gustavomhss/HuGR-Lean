@@ -260,6 +260,9 @@ rustc/rustdoc `1.98.1 (48a229cea 2026-09-01)`, host `x86_64-pc-windows-msvc`. Sa
 offline/no-color environment, stdin ignored, no TTY. Producer hash, sources, runner identity, per-case argv, cwd,
 `CARGO_TARGET_DIR`, exit, bytes, SHA-256 and CRLF row count (0 everywhere) are in `provenance/windows-receipt.json`.
 Absolute target directories were set through `CARGO_TARGET_DIR`; Cargo echoes that spelling verbatim.
+Retention: the remote branch `capture/windows-cargo-output` (commit `aef4dca`, recorded as `runner.sha` in the receipt)
+is kept for reproducibility; it adds only the push-triggered capture workflow to this producer. The receipt is the
+Actions artifact byte for byte (SHA-256 `b1ece560…f254094`), so it is not edited to restate this.
 
 | Stem `C02/windows-<stem>` | Native combination | Disposition | Independent keep rows |
 | --- | --- | --- | --- |
@@ -277,9 +280,12 @@ Absolute target directories were set through `CARGO_TARGET_DIR`; Cargo echoes th
 | failure | failing test, panic at `src\lib.rs:4:26`, exit 101 | passthrough | exact |
 
 Grammar: Windows headers use backslashes only (no `/`, empty segment, whitespace or parenthesis), an optional
-drive, UNC, verbatim or verbatim-UNC root (UNC server never `?` or `.`), and a dotless `NAME-HASH` stem with
+drive (either case), UNC, verbatim or verbatim-UNC root (UNC server never `.` or `..`), components free of the
+characters Windows forbids (`: * ? " < > |`), and a dotless `NAME-HASH` stem with
 exactly `.exe`. Windows contexts compare in `/` form, so selector, legacy-vocabulary, custom-path and alias rules are
-the POSIX ones; executable identity excludes `.exe`; a single output never mixes POSIX and Windows headers.
+the POSIX ones; executable identity excludes `.exe`. A single output never mixes hosts: POSIX headers containing `\`
+or naming a `.exe` decline, and doc-test rows (`src\lib.rs - add (line 3)` on Windows) must match the executable
+host and each other; doc paths without a separator are host-neutral.
 Retained rows are still native source spans. `tests/profile-cargo-test-windows.test.ts` checks every capture against
 its POSIX spelling, plus accept, decline, failure and CRLF cases.
 
@@ -287,3 +293,10 @@ Mutation probes (production only, both Cargo suites, restored from git afterward
 failed 23 tests; delta only 18; original parser only 5; dropping `/` normalization 18; each host guard, `?` UNC server,
 dotted stem, `/` in segments, optional `.exe` and `\\.\` device root failed its own decline test. Keeping `.exe` in the
 identity is an equivalent mutant while the host guard holds.
+
+Review follow-up (cold review of PR #155): hybrid POSIX headers, doc-row host mixing, forbidden component
+characters, `..` UNC servers, lowercase drives, CRLF for all twelve captures, a 1 MB long-line timing probe, and an
+explicit pin of the original parser's outcome on every capture. Probes, each restored: allowing hybrid headers in
+the original parser or the delta, dropping either doc-row host check, accepting mixed doc separators, admitting
+forbidden characters, rejecting only `.` servers, or refusing lowercase drives each failed its named test; a planted
+nested quantifier in the source pattern hung the 1 MB test until the runner timeout cancelled it.

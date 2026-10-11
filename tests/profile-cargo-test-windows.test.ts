@@ -194,3 +194,96 @@ test("WIN-C02 one host per output: mixed POSIX/Windows suites and absolute/relat
   exact(observation(native, nativeInput + extra.replace("tests/other.rs (target/debug/deps/other-0123456789abcdef)",
     "tests\\other.rs (\\\\?\\C:\\w\\target\\debug\\deps\\native_item_fixture-d9b637244a1d2cfc.exe)")));
 });
+
+test("WIN-C02 review: hybrid POSIX headers with `\\` sources or `.exe` names decline on both parsers", () => {
+  const c = byName("native-lib"), input = read(c.file), header = rows(input)[2]!;
+  const posixHeader = "     Running unittests native.rs (target/debug/deps/native_item_fixture-d9b637244a1d2cfc)\n";
+  const control = input.replace(header, posixHeader);
+  for (const command of ["cargo test", "cargo test --offline --color never"]) {
+    accepted(observation(c, control, command), keep(control, 2, 3, 37, 39, 43));
+  }
+  for (const hybrid of [
+    "     Running unittests src\\lib.rs (target/debug/deps/native_item_fixture-d9b637244a1d2cfc)\n",
+    "     Running unittests native.rs (target/debug/deps/native_item_fixture-d9b637244a1d2cfc.exe)\n",
+    "     Running unittests src\\lib.rs (target/debug/deps/native_item_fixture-d9b637244a1d2cfc.exe)\n",
+    "     Running unittests native.rs (/w\\x/target/debug/deps/native_item_fixture-d9b637244a1d2cfc)\n",
+  ]) {
+    const output = input.replace(header, hybrid);
+    const obs = observation(c, output);
+    assert.equal(legacy.reduce(output, obs), undefined, hybrid);
+    for (const command of ["cargo test", "cargo test --offline --color never"]) exact(observation(c, output, command));
+  }
+});
+
+test("WIN-C02 review: doc-test rows follow the executable host; mixed or malformed doc paths decline", () => {
+  // Real Windows doc rows read `test src\lib.rs - add (line 3) ... ok` (windows-default capture).
+  const c = byName("default"), input = read(c.file), command = "cargo test --offline --color never";
+  assert.ok(input.includes("test src\\lib.rs - add (line 3) ... ok"));
+  for (const output of [input.replace("test src\\lib.rs - add (line 3)", "test src/lib.rs - add (line 3)"),
+    input.replaceAll("test src\\lib.rs - ", "test src/lib.rs - "),
+    input.replace("test src\\lib.rs - add (line 3)", "test src\\sub/lib.rs - add (line 3)"),
+    input.replace("test src\\lib.rs - add (line 3)", "test src\\\\lib.rs - add (line 3)"),
+    input.replace("test src\\lib.rs - add (line 3)", "test src\\l*b.rs - add (line 3)"),
+    posix(input).replace("test src/lib.rs - add (line 3)", "test src\\lib.rs - add (line 3)")]) {
+    assert.notEqual(output, input); exact(observation(c, output, command));
+  }
+  accepted(observation(c, posix(input), command), posix(keep(input, 2, 3, 6, 12, 14, 20, 22, 29, 31, 37)));
+  // Original parser: same rule on its own doc grammar (empty doctest suite given one row).
+  const native = byName("native-lib"), text = read(native.file);
+  const withDoc = (path: string) => text.replace("running 0 tests\n\ntest result: ok. 0 passed;",
+    `running 1 test\ntest ${path} - f (line 1) ... ok\n\ntest result: ok. 1 passed;`);
+  for (const [path, ok] of [["src\\lib.rs", true], ["native.rs", true], ["src/lib.rs", false], ["src\\a/lib.rs", false]] as const) {
+    const output = withDoc(path), obs = observation(native, output);
+    assert.equal(legacy.reduce(output, obs) !== undefined, ok, path);
+    if (ok) assert.equal(filter(obs, { profiles: familyProfiles }).status, "reduced", path);
+    else exact(obs);
+  }
+});
+
+test("WIN-C02 review: forbidden component characters, `.`/`..` UNC servers decline; lowercase drives reduce", () => {
+  const c = byName("absolute-target"), input = read(c.file), expected = read(c.expectedFile), header = rows(input)[2]!;
+  const mutate = (from: string, to: string) => { assert.ok(header.includes(from), from); return input.replace(header, header.replace(from, to)); };
+  for (const bad of [":", "*", "?", "\"", "<", ">", "|"]) {
+    exact(observation(c, mutate("runneradmin", `runner${bad}admin`)));
+    exact(observation(c, mutate("unittests src\\lib.rs", `unittests src\\li${bad}b.rs`)));
+    exact(observation(c, mutate("c02w-1e8182a8e4a3fcbe.exe", `c02w${bad}1e8182a8e4a3fcbe.exe`)));
+  }
+  for (const root of ["\\\\.\\C$\\", "\\\\..\\C$\\", "\\\\?\\UNC\\.\\C$\\", "\\\\?\\UNC\\..\\C$\\"]) {
+    exact(observation(c, mutate("C:\\", root)));
+  }
+  accepted(observation(c, mutate("C:\\", "\\\\..x\\C$\\")), expected.replace("C:\\", "\\\\..x\\C$\\"));
+  for (const lower of ["c:\\", "\\\\?\\c:\\"]) accepted(observation(c, mutate("C:\\", lower)), expected.replace("(C:\\", `(${lower}`));
+});
+
+test("WIN-C02 review: CRLF host rendering of all twelve captures keeps every disposition", () => {
+  for (const c of cases) {
+    const crlf = read(c.file).replaceAll("\n", "\r\n");
+    if (c.status === "reduced") accepted(observation(c, crlf), read(c.expectedFile).replaceAll("\n", "\r\n"));
+    else exact(observation(c, crlf));
+  }
+});
+
+test("WIN-C02 review: 1 MB header and doc lines decline in bounded time on both parsers", () => {
+  const c = byName("native-lib"), input = read(c.file), header = rows(input)[2]!, mb = 1 << 20;
+  const lines = [
+    `     Running unittests ${"a".repeat(mb)} (target\\debug\\deps\\x-0123456789abcdef.exe)\n`,
+    `     Running unittests ${"a\\".repeat(mb / 2)}.rx (target\\debug\\deps\\x-0123456789abcdef.exe)\n`,
+    `     Running unittests src\\lib.rs (C:\\${"a\\".repeat(mb / 2)}targe\\debug\\deps\\x-0123456789abcdef.exe)\n`,
+    `     Running unittests src\\lib.rs (\\\\${"a".repeat(mb)}\\s\\target\\debug\\deps\\x.ex)\n`,
+    `     Running unittests src/lib.rs (/${"a/".repeat(mb / 2)}targe/debug/deps/x-0123456789abcdef)\n`,
+    `     Running unittests src\\lib.rs (target\\debug\\deps\\${"x".repeat(mb)}.ex)\n`,
+  ];
+  for (const line of lines) {
+    for (const command of ["cargo test", "cargo test --offline --color never"]) {
+      const output = input.replace(header, line), obs = observation(c, output, command), start = performance.now();
+      assert.equal(profile.reduce(output, obs), undefined);
+      assert.equal(legacy.reduce(output, obs), undefined);
+      assert.ok(performance.now() - start < 2000, `slow decline: ${line.slice(0, 40)} ${performance.now() - start}ms`);
+    }
+  }
+  const doc = input.replace("running 0 tests\n\ntest result: ok. 0 passed;",
+    `running 1 test\ntest ${"a\\".repeat(mb / 2)}b.rx - f (line 1) ... ok\n\ntest result: ok. 1 passed;`);
+  const start = performance.now();
+  assert.equal(profile.reduce(doc, observation(c, doc)), undefined);
+  assert.ok(performance.now() - start < 2000, "slow doc decline");
+});
