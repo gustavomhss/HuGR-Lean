@@ -8,44 +8,88 @@ export type JsonNode =
 /** Bounded, duplicate-key-rejecting JSON parser. Keeps original lexemes and UTF-16 spans. */
 export function parseJson(text: string): JsonNode | undefined {
   try {
+    // Pre-validation makes every lexeme below well-formed; the scanner only recovers spans, limits and duplicates.
     JSON.parse(text);
-    let pos = 0, count = 0;
-    const whitespace = () => { while (/[\t\n\r ]/.test(text[pos] ?? "x")) pos++; };
+    const length = text.length;
+    let pos = 0, count = 0, backslash = -1;
+    const whitespace = (): void => {
+      let code = text.charCodeAt(pos);
+      while (code === 32 || code === 10 || code === 13 || code === 9) code = text.charCodeAt(++pos);
+    };
+    /** Advances past the string opening at pos; slice-decodes unless a backslash occurs before its closing quote. */
+    const string = (): string => {
+      const start = pos;
+      let cursor = pos + 1, escaped = false;
+      for (;;) {
+        if (backslash < cursor) { backslash = text.indexOf("\\", cursor); if (backslash < 0) backslash = length; }
+        const quote = text.indexOf('"', cursor);
+        if (quote < 0) throw new Error("Invalid JSON string");
+        if (quote < backslash) { pos = quote + 1; break; }
+        escaped = true; cursor = backslash + 2;
+      }
+      return escaped ? JSON.parse(text.slice(start, pos)) as string : text.slice(start + 1, pos - 1);
+    };
+    const admit = (depth: number): void => { if (depth > 64 || ++count > 25000) throw new Error("JSON admission limit"); };
     function value(depth: number): JsonNode {
-      if (depth > 64 || ++count > 25000) throw new Error("JSON admission limit");
+      admit(depth);
       whitespace();
-      const start = pos, token = text[pos++];
-      if (token === "{" || token === "[") {
-        const entries: { name: string; key: JsonNode; value: JsonNode }[] = [], items: JsonNode[] = [], names = new Set<string>();
-        const close = token === "{" ? "}" : "]";
-        whitespace();
-        while (text[pos] !== close) {
-          if (token === "{") {
-            const key = value(depth + 1);
-            if (key.kind !== "scalar" || typeof key.value !== "string" || names.has(key.value)) throw new Error("Invalid JSON key");
-            names.add(key.value); whitespace();
-            if (text[pos++] !== ":") throw new Error("Invalid JSON colon");
-            entries.push({ name: key.value, key, value: value(depth + 1) });
-          } else items.push(value(depth + 1));
+      const start = pos, code = text.charCodeAt(pos);
+      if (code === 123) {
+        const entries: { name: string; key: JsonNode; value: JsonNode }[] = [];
+        let names: Set<string> | undefined;
+        pos++; whitespace();
+        if (text.charCodeAt(pos) !== 125) for (;;) {
+          admit(depth + 1); whitespace();
+          if (text.charCodeAt(pos) !== 34) throw new Error("Invalid JSON key");
+          const keyStart = pos, name = string();
+          // Small objects compare names linearly; larger ones switch to a Set. Both reject by decoded name.
+          if (names) { if (names.has(name)) throw new Error("Invalid JSON key"); names.add(name); }
+          else {
+            for (let index = 0; index < entries.length; index++) if (entries[index]!.name === name) throw new Error("Invalid JSON key");
+            if (entries.length >= 8) { names = new Set(); for (const entry of entries) names.add(entry.name); names.add(name); }
+          }
+          const key: JsonNode = { kind: "scalar", value: name, span: [keyStart, pos] };
           whitespace();
-          if (text[pos] === close) break;
-          if (text[pos++] !== ",") throw new Error("Invalid JSON comma");
+          if (text.charCodeAt(pos++) !== 58) throw new Error("Invalid JSON colon");
+          entries.push({ name, key, value: value(depth + 1) });
           whitespace();
+          const next = text.charCodeAt(pos);
+          if (next === 125) break;
+          if (next !== 44) throw new Error("Invalid JSON comma");
+          pos++;
         }
         pos++;
-        return token === "{" ? { kind: "object", entries, span: [start, pos] } : { kind: "array", items, span: [start, pos] };
+        return { kind: "object", entries, span: [start, pos] };
       }
-      if (token === '"') {
-        while (pos < text.length) {
-          const char = text[pos++];
-          if (char === "\\") pos++;
-          else if (char === '"') break;
+      if (code === 91) {
+        const items: JsonNode[] = [];
+        pos++; whitespace();
+        if (text.charCodeAt(pos) !== 93) for (;;) {
+          items.push(value(depth + 1));
+          whitespace();
+          const next = text.charCodeAt(pos);
+          if (next === 93) break;
+          if (next !== 44) throw new Error("Invalid JSON comma");
+          pos++;
         }
-      } else while (pos < text.length && !/[\t\n\r ,\]}]/.test(text[pos]!)) pos++;
-      return { kind: "scalar", value: JSON.parse(text.slice(start, pos)) as string | number | boolean | null, span: [start, pos] };
+        pos++;
+        return { kind: "array", items, span: [start, pos] };
+      }
+      let scalar: string | number | boolean | null;
+      if (code === 34) scalar = string();
+      else if (code === 116 && text.startsWith("true", pos)) { scalar = true; pos += 4; }
+      else if (code === 102 && text.startsWith("false", pos)) { scalar = false; pos += 5; }
+      else if (code === 110 && text.startsWith("null", pos)) { scalar = null; pos += 4; }
+      else if (code === 45 || (code >= 48 && code <= 57)) {
+        // Number() equals JSON.parse() on a validated JSON number lexeme (incl. -0, overflow to Infinity, huge integers).
+        let next = text.charCodeAt(++pos);
+        while ((next >= 48 && next <= 57) || next === 46 || next === 101 || next === 69 || next === 43 || next === 45) next = text.charCodeAt(++pos);
+        scalar = Number(text.slice(start, pos));
+      } else throw new Error("Invalid JSON value");
+      return { kind: "scalar", value: scalar, span: [start, pos] };
     }
     const result = value(0); whitespace();
-    return pos === text.length ? result : undefined;
+    return pos === length ? result : undefined;
   } catch { return undefined; }
 }
 
