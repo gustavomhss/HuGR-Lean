@@ -10,7 +10,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { closeSync, openSync } from "node:fs";
-import { access, mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -23,7 +23,8 @@ const USAGE = `Usage: node scripts/automatic-browser-host-proof.mjs ${FLAGS.map(
   --playwright  installed playwright/cli.js     --devtools  chrome-devtools-mcp build/src/bin/chrome-devtools-mcp.js
   --executable  headless Chromium executable    --opencode  real OpenCode binary    --sdk  pinned @opencode-ai/plugin dir
   --output      durable artifact root (not under the OS temp dir)    --timeout  per-case deadline in ms
-  --sockets     short existing directory for Playwright IPC sockets (PWTEST_SOCKETS_DIR; macOS sun_path limit)`;
+  --sockets     short existing directory for Playwright IPC sockets (PWTEST_SOCKETS_DIR; macOS sun_path limit)
+  or: --revalidate <receipt.json>  re-apply the current oracles to a run's stored artifacts (no browser, no host)`;
 const EVALUATE = '() => ({title: document.title, inputs: Array.from(document.querySelectorAll("input")).map(e => ({type:e.type,value:e.value,checked:e.checked,disabled:e.disabled}))})';
 // Failure source carries e42: the harness requires the failure marker to reach the model unchanged.
 const FAILING = '() => { throw new Error("Owned intentional failure e42 — 雪"); }';
@@ -161,6 +162,39 @@ function teeth(assertObservation, report, expected) {
   assert.throws(() => assertObservation(before, tampered, { content: text }, expected), "Oracle accepted a tampered view");
 }
 
+const expectedFor = (kind) => ({ snapshot: "snapshot", "mcp-json": "json" })[kind] ?? "preserved";
+
+/** Re-applies the current oracles to every passed case of a stored run, from its artifacts alone. */
+export async function revalidate(file) {
+  const { assertObservation, assertNextRequest } = await import("./automatic-host-proof.mjs");
+  const receipt = JSON.parse(await readFile(file, "utf8")), results = [];
+  for (const entry of receipt.cases.filter((c) => c.status === "passed")) {
+    const spec = CASES[entry.case], result = { case: entry.case, root: entry.root };
+    try {
+      const report = JSON.parse(await readFile(path.join(entry.root, "report.json"), "utf8"));
+      const call = { id: "automatic_call", type: "function", function: { name: entry.tool, arguments: JSON.stringify(spec.args) } };
+      const next = assertNextRequest(JSON.parse(await readFile(path.join(entry.root, "model-2.json"), "utf8")), call);
+      if (spec.kind === "mcp-error") {
+        assert.equal(report.hooks.length, 0); assert.equal(report.tool.state.status, "error");
+        assert.equal(next.content, report.tool.state.error, "Next request changed native failure"); assert.ok(next.content.includes("e42"));
+      } else {
+        assert.equal(next.content, report.tool.state.output, "Next request differs from completion");
+        assertObservation(report.hooks[0], report.hooks[1], next, expectedFor(spec.kind));
+        if (expectedFor(spec.kind) !== "preserved") teeth(assertObservation, { ...report, result: next }, expectedFor(spec.kind));
+      }
+      result.status = "passed";
+    } catch (error) { result.status = "failed"; result.error = error.message; }
+    results.push(result);
+  }
+  const oracle = fileURLToPath(new URL("./automatic-json-oracle.mjs", import.meta.url));
+  const record = { at: new Date().toISOString(), head: (await capture("git", ["rev-parse", "HEAD"])).trim(),
+    oracles: { "automatic-json-oracle.mjs": await fileHash(oracle), "automatic-host-proof.mjs": await fileHash(fileURLToPath(new URL("./automatic-host-proof.mjs", import.meta.url))) }, results };
+  receipt.revalidations = [...(receipt.revalidations ?? []), record];
+  await writeFile(file, JSON.stringify(receipt, null, 2) + "\n");
+  console.log(JSON.stringify({ receipt: file, revalidated: results.length, failed: results.filter((r) => r.status !== "passed") }));
+  return record;
+}
+
 function metrics(name, spec, report) {
   const result = report.result.content, before = report.hooks[0] ? blockText(report.hooks[0].output) : result;
   const entry = { inputBytes: Buffer.byteLength(before), outputBytes: Buffer.byteLength(result) };
@@ -192,7 +226,7 @@ async function attempt(context, name, ordinal) {
       kind: spec.kind, mcp, toolName: entry.tool, toolArgs: spec.args });
     entry.root = report.root; entry.requests = report.requests;
     Object.assign(entry, metrics(name, spec, report));
-    if (spec.kind === "snapshot" || spec.kind === "mcp-json") teeth(assertObservation, report, spec.kind === "snapshot" ? "snapshot" : "json");
+    if (expectedFor(spec.kind) !== "preserved") teeth(assertObservation, report, expectedFor(spec.kind));
     entry.expected = { snapshot: "ref-leading view, every ref/name/state/hierarchy", "mcp-json": "compact JSON, wrapper and all values exact" }[spec.kind] ?? "preserved exactly";
     entry.status = "passed";
   } catch (error) {
@@ -238,18 +272,19 @@ export async function main(argv) {
   process.env.HUGR_PROOF_TEMP = output; // read once when the harness module loads
   const { installCandidate, runHostCase, assertObservation } = await import("./automatic-host-proof.mjs");
   const run = await mkdtemp(path.join(output, "browser-run-"));
-  // The host's isolated TMPDIR is too deep for a Unix socket path; sockets are transient IPC, not artifacts.
-  flags.socketDir = await mkdtemp(path.join(await realpath(flags.sockets), "pw-"));
-  assert.ok(Buffer.byteLength(flags.socketDir) <= 64, `--sockets path too long for Unix sockets: ${flags.socketDir}`);
   const receipt = { started: new Date().toISOString(), run, argv: process.argv.slice(1), flags, ...(await provenance(flags)), cases: [], failures: [] };
   assert.equal(receipt.opencode.version, receipt.sdk.version, "OpenCode host and pinned SDK versions differ");
+  // The host's isolated TMPDIR is too deep for a Unix socket path; sockets are transient IPC, not artifacts (removed at the end).
+  flags.socketDir = await mkdtemp(path.join(await realpath(flags.sockets), "pw-"));
   const server = createServer((req, res) => {
     if (req.url === "/owned.json") { res.setHeader("Content-Type", "application/json"); res.end('{"owned":true,"name":"雪"}'); }
     else { res.setHeader("Content-Type", "text/html; charset=utf-8"); res.end(PAGE); }
   });
-  await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
-  const url = `http://127.0.0.1:${server.address().port}/`, file = path.join(run, "receipt.json");
+  const file = path.join(run, "receipt.json"); let url;
   try {
+    assert.ok(Buffer.byteLength(flags.socketDir) <= 64, `--sockets path too long for Unix sockets: ${flags.socketDir}`);
+    await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
+    url = `http://127.0.0.1:${server.address().port}/`;
     receipt.plugin = await installCandidate();
     const context = { flags, run, url, runHostCase, assertObservation, plugin: receipt.plugin };
     for (const name of flags.cases) {
@@ -262,7 +297,8 @@ export async function main(argv) {
     }
   } catch (error) { receipt.failures.push({ case: "setup", error: error.message }); }
   finally {
-    await new Promise((resolve) => server.close(resolve));
+    if (server.listening) await new Promise((resolve) => server.close(resolve));
+    await rm(flags.socketDir, { recursive: true, force: true });
     receipt.finished = new Date().toISOString();
     await writeFile(file, JSON.stringify(receipt, null, 2) + "\n");
   }
@@ -271,6 +307,12 @@ export async function main(argv) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  try { const receipt = await main(process.argv.slice(2)); if (receipt.failures.length) process.exitCode = 1; }
+  try {
+    const args = process.argv.slice(2);
+    if (args[0] === "--revalidate") {
+      assert.ok(args.length === 2, USAGE);
+      if ((await revalidate(path.resolve(args[1]))).results.some((r) => r.status !== "passed")) process.exitCode = 1;
+    } else if ((await main(args)).failures.length) process.exitCode = 1;
+  }
   catch (error) { console.error(error.message); process.exitCode = 1; }
 }

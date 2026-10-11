@@ -11,6 +11,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isolatedEnvironment, copySdkDependencies } from "./opencode-boundary.mjs";
 import { inventory } from "./automatic-proof-server.mjs";
+import { assertJsonEquivalent } from "./automatic-json-oracle.mjs";
 import { snapshotArtifact, assertPack } from "./package-smoke.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -134,25 +135,6 @@ function text(output) {
   if (Array.isArray(output.content)) return output.content.flatMap((b) => b.type === "text" ? [b.text] : b.type === "resource" && typeof b.resource.text === "string" ? [b.resource.text] : b.type === "resource" && b.resource.blob ? [`[Binary MCP resource omitted: ${b.resource.uri} (${b.resource.mimeType}, ${Buffer.from(b.resource.blob, "base64").length} B) is not a supported attachment type]`] : []).join("\n\n");
   return output.output;
 }
-function unfold(value) {
-  if (Array.isArray(value)) return value.map(unfold);
-  if (!value || typeof value !== "object") return value;
-  if (Array.isArray(value.columns) && Array.isArray(value.rows)) {
-    // "optional" cells are [] (field absent) or [value]; anything else is a broken table.
-    const optional = value.cellEncoding === "optional";
-    return value.rows.map((row) => Object.fromEntries(value.columns.flatMap((key, i) => {
-      if (!optional) return [[key, unfold(row[i])]];
-      assert.ok(Array.isArray(row[i]) && row[i].length <= 1, "Malformed optional table cell");
-      return row[i].length ? [[key, unfold(row[i][0])]] : [];
-    })));
-  }
-  return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, unfold(v)]));
-}
-/** Native Playwright `### Result` wrapper: [prefix, JSON payload, suffix]; bare JSON otherwise. */
-function jsonParts(text) {
-  const head = "### Result\n", end = text.indexOf("\n### Ran Playwright code\n");
-  return text.startsWith(head) && end > 0 ? [head, text.slice(head.length, end), text.slice(end)] : ["", text, ""];
-}
 export function assertNativePaths(before, changed) {
   const tool = before.input.tool, args = before.input.args, directory = args.path ?? args.filePath;
   if (tool === "read") {
@@ -242,9 +224,7 @@ export function assertObservation(before, after, result, expected = "preserved",
     assert.ok(Buffer.byteLength(changed) < Buffer.byteLength(raw), "Automatic positive did not reduce");
     if (expected === "json") {
       const original = before.output.content?.[0].text ?? raw, replacement = after.output.content?.[0].text ?? changed;
-      const [head, payload, tail] = jsonParts(original), [newHead, newPayload, newTail] = jsonParts(replacement);
-      assert.equal(newHead, head, "JSON wrapper prefix changed"); assert.equal(newTail, tail, "JSON wrapper suffix changed");
-      assert.deepEqual(unfold(JSON.parse(newPayload)), JSON.parse(payload), "JSON lost full source values/refs");
+      assertJsonEquivalent(original, replacement);
     }
     if (expected === "snapshot") {
       const originals = before.output.content?.filter((b) => b.type === "text") ?? [{ text: raw }];
