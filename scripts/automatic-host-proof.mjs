@@ -222,14 +222,12 @@ export function assertObservation(before, after, result, expected = "preserved",
   if (expected === "preserved") assert.deepEqual(after.output, before.output, "Negative control changed output");
   else {
     assert.ok(Buffer.byteLength(changed) < Buffer.byteLength(raw), "Automatic positive did not reduce");
-    if (expected === "json") {
-      const original = before.output.content?.[0].text ?? raw, replacement = after.output.content?.[0].text ?? changed;
-      assertJsonEquivalent(original, replacement);
-    }
-    if (expected === "snapshot") {
-      const originals = before.output.content?.filter((b) => b.type === "text") ?? [{ text: raw }];
-      const replacements = after.output.content?.filter((b) => b.type === "text") ?? [{ text: changed }];
-      originals.forEach((block, i) => { if (block.text !== replacements[i].text) assertSnapshot(block.text, replacements[i].text, before.input.tool); });
+    // Every text block, in order, under the expected rule; non-text and resource blocks were required identical above.
+    const pairs = before.output.content ? before.output.content.flatMap((block, i) => block.type === "text" ? [[block.text, after.output.content[i].text]] : []) : [[raw, changed]];
+    for (const [original, replacement] of pairs) {
+      if (original === replacement) continue;
+      if (expected === "json") assertJsonEquivalent(original, replacement);
+      else if (expected === "snapshot") assertSnapshot(original, replacement, before.input.tool);
     }
     for (const anchor of anchors) assert.ok(changed.includes(anchor), `Lost native path/location evidence: ${anchor}`);
   }

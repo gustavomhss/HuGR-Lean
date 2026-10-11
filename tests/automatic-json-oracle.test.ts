@@ -63,3 +63,13 @@ test("duplicate keys, trailing data and wrapper changes are rejected", () => {
   rejects(wrapped(NATIVE), WRAP[0] + view() + WRAP[1] + "\n", /wrapper suffix changed/);
   rejects(wrapped(NATIVE), view(), /wrapper prefix changed/);
 });
+
+test("nested tables are decoded recursively and validated", () => {
+  const native = '{"nodes":[{"id":"1","kids":[{"k":"a"},{"k":"b","x":1}],"meta":{"inner":[{"q":true}]}}]}';
+  const inner = '{"columns":["q"],"rows":[[[true]]],"cellEncoding":"optional"}';
+  const kids = (rows = '[[["a"],[]],[["b"],[1]]]') => `{"columns":["k","x"],"rows":${rows},"cellEncoding":"optional"}`;
+  const outer = (kidsTable = kids()) => `{"nodes":{"columns":["id","kids","meta"],"rows":[[["1"],[${kidsTable}],[{"inner":${inner}}]]],"cellEncoding":"optional"}}`;
+  oracle.assertJsonEquivalent(native, outer());
+  rejects(native, outer(kids('[[["a"]],[["b"],[1]]]')), /row length differs/);
+  rejects(native, outer(kids('[[["a"],[]],[["b"],[2]]]')), /JSON lost full source values\/refs/);
+});

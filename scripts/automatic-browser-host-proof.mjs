@@ -164,13 +164,21 @@ function teeth(assertObservation, report, expected) {
 
 const expectedFor = (kind) => ({ snapshot: "snapshot", "mcp-json": "json" })[kind] ?? "preserved";
 
-/** Re-applies the current oracles to every passed case of a stored run, from its artifacts alone. */
+/** Fail closed: at least one case, and every recorded case's final attempt re-validated and passed. */
+export const revalidationPassed = (record) => record.results.length > 0 && record.results.every((r) => r.status === "passed");
+
+/** Re-applies the current oracles to the final attempt of every recorded case, from its artifacts alone. */
 export async function revalidate(file) {
   const { assertObservation, assertNextRequest } = await import("./automatic-host-proof.mjs");
   const receipt = JSON.parse(await readFile(file, "utf8")), results = [];
-  for (const entry of receipt.cases.filter((c) => c.status === "passed")) {
-    const spec = CASES[entry.case], result = { case: entry.case, root: entry.root };
+  assert.ok(Array.isArray(receipt.cases), "Receipt has no cases array");
+  // Earlier attempts of a retried case are superseded by its last attempt; only the last one decides.
+  const finals = [...new Map(receipt.cases.map((entry) => [entry.case, entry])).values()];
+  for (const entry of finals) {
+    const spec = CASES[entry.case], result = { case: entry.case, attempt: entry.attempt, root: entry.root };
     try {
+      assert.ok(spec, `Unknown case ${entry.case}`);
+      assert.equal(entry.status, "passed", "Case did not pass in the recorded run");
       const report = JSON.parse(await readFile(path.join(entry.root, "report.json"), "utf8"));
       const call = { id: "automatic_call", type: "function", function: { name: entry.tool, arguments: JSON.stringify(spec.args) } };
       const next = assertNextRequest(JSON.parse(await readFile(path.join(entry.root, "model-2.json"), "utf8")), call);
@@ -189,9 +197,10 @@ export async function revalidate(file) {
   const oracle = fileURLToPath(new URL("./automatic-json-oracle.mjs", import.meta.url));
   const record = { at: new Date().toISOString(), head: (await capture("git", ["rev-parse", "HEAD"])).trim(),
     oracles: { "automatic-json-oracle.mjs": await fileHash(oracle), "automatic-host-proof.mjs": await fileHash(fileURLToPath(new URL("./automatic-host-proof.mjs", import.meta.url))) }, results };
+  record.passed = revalidationPassed(record);
   receipt.revalidations = [...(receipt.revalidations ?? []), record];
   await writeFile(file, JSON.stringify(receipt, null, 2) + "\n");
-  console.log(JSON.stringify({ receipt: file, revalidated: results.length, failed: results.filter((r) => r.status !== "passed") }));
+  console.log(JSON.stringify({ receipt: file, passed: record.passed, revalidated: results.length, failed: results.filter((r) => r.status !== "passed") }));
   return record;
 }
 
@@ -311,7 +320,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const args = process.argv.slice(2);
     if (args[0] === "--revalidate") {
       assert.ok(args.length === 2, USAGE);
-      if ((await revalidate(path.resolve(args[1]))).results.some((r) => r.status !== "passed")) process.exitCode = 1;
+      if (!revalidationPassed(await revalidate(path.resolve(args[1])))) process.exitCode = 1;
     } else if ((await main(args)).failures.length) process.exitCode = 1;
   }
   catch (error) { console.error(error.message); process.exitCode = 1; }
