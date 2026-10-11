@@ -20,37 +20,44 @@ export const reduceAutomaticCdp: AutomaticReducer = observation => {
     ?? (accessibility && jsonField(accessibility, "nodes"));
   if (nodes?.kind !== "array" || nodes.items.length === 0) return;
   // One pass per node: unique nonempty string nodeId, boolean ignored, consistent key lexemes and field order.
-  const ids = new Set<string>(), keys = new Map<string, { key: JsonNode; lexeme: string }>();
-  const edges = new Map<string, Set<string>>(), incoming = new Map<string, number>();
+  // Per key name: its first key node and lexeme, successor names (field-order edges) and in-degree.
+  interface Column { readonly key: JsonNode; readonly lexeme: string; readonly plain: boolean; readonly next: Set<string>; incoming: number; last: string | undefined }
+  const ids = new Set<string>(), keys = new Map<string, Column>();
   for (const node of nodes.items) {
     if (node.kind !== "object") return;
-    let previous: string | undefined, nodeId: JsonNode | undefined, ignored: JsonNode | undefined;
+    let previous: Column | undefined, nodeId: JsonNode | undefined, ignored: JsonNode | undefined;
     for (const entry of node.entries) {
-      if (entry.name === "nodeId") nodeId = entry.value;
-      else if (entry.name === "ignored") ignored = entry.value;
-      // Sparse rows must reconstruct each node's original field order and key lexemes.
-      const known = keys.get(entry.name), [start, end] = entry.key.span;
+      const name = entry.name;
+      if (name === "nodeId") nodeId = entry.value;
+      else if (name === "ignored") ignored = entry.value;
+      // Sparse rows must reconstruct each node's original field order and key lexemes. A key lexeme exactly
+      // two units longer than its decoded name has no escape, so it is `"name"`; equal-length ones are equal.
+      let known = keys.get(name);
+      const [start, end] = entry.key.span;
       if (known) {
-        if (end - start !== known.lexeme.length || !source.startsWith(known.lexeme, start)) return;
+        if (end - start !== known.lexeme.length || (!known.plain && !source.startsWith(known.lexeme, start))) return;
       } else {
-        keys.set(entry.name, { key: entry.key, lexeme: source.slice(start, end) });
-        edges.set(entry.name, new Set()); incoming.set(entry.name, 0);
+        const lexeme = source.slice(start, end);
+        known = { key: entry.key, lexeme, plain: lexeme.length === name.length + 2, next: new Set(), incoming: 0, last: undefined };
+        keys.set(name, known);
       }
-      if (previous !== undefined && !edges.get(previous)!.has(entry.name)) {
-        edges.get(previous)!.add(entry.name); incoming.set(entry.name, incoming.get(entry.name)! + 1);
+      // `last` is the latest successor already recorded, so repeated field sequences skip the set lookup.
+      if (previous !== undefined && previous.last !== name) {
+        if (!previous.next.has(name)) { previous.next.add(name); known.incoming++; }
+        previous.last = name;
       }
-      previous = entry.name;
+      previous = known;
     }
     const id = scalar(nodeId);
     if (typeof id !== "string" || !id.length || ids.has(id) || typeof scalar(ignored) !== "boolean") return;
     ids.add(id);
   }
-  const ready = [...keys.keys()].filter(name => incoming.get(name) === 0), columns: { name: string; key: JsonNode }[] = [];
+  const ready = [...keys.keys()].filter(name => keys.get(name)!.incoming === 0), columns: { name: string; key: JsonNode }[] = [];
   for (let i = 0; i < ready.length; i++) {
-    const name = ready[i]!; columns.push({ name, key: keys.get(name)!.key });
-    for (const next of edges.get(name)!) {
-      incoming.set(next, incoming.get(next)! - 1);
-      if (incoming.get(next) === 0) ready.push(next);
+    const name = ready[i]!, column = keys.get(name)!; columns.push({ name, key: column.key });
+    for (const next of column.next) {
+      const successor = keys.get(next)!;
+      if (--successor.incoming === 0) ready.push(next);
     }
   }
   if (columns.length !== keys.size) return;

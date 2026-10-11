@@ -623,3 +623,72 @@ test("parse memo revalidates a reused, mutated observation object", () => {
     }
   }
 });
+
+// ---- round 3: review follow-ups and new fast paths ----
+const reduceTo = (reducer: AutomaticReducer, observation: Obs): string => outcome(reducer(Object.freeze({ ...observation })), observation.output);
+
+test("ps STAT keeps W as a modifier, not only as a leading state", () => {
+  const header = "  PID  PPID STAT COMM\n";
+  for (const stat of ["SW  ", "S<W ", "IW  ", "R+W ", "WW  ", "SNW ", "W<  ", "SWs "]) {
+    const output = `${header}    1     0 ${stat} launchd\n  123     1 Ss   /usr/bin/thing\n`;
+    check(bash("ps -axo pid,ppid,stat,comm", output), `ps W modifier ${stat}`);
+    assert.match(reduceTo(nextCli.reduceAutomaticCli, bash("ps -axo pid,ppid,stat,comm", output)), /^render:/, `STAT ${stat} admitted`);
+  }
+});
+
+test("CDP sparse-cell bound: exactly 25,000 cells admit and 25,001 refuse", () => {
+  // Few keys per node keep parser nodes far below 25,000; the column union sets the cell count.
+  const cdp = (columns: number, nodes: number) => JSON.stringify({ nodes: Array.from({ length: nodes }, (_, i) => {
+    const node: Record<string, unknown> = { nodeId: String(i + 1), ignored: false };
+    node[`k${i % (columns - 2)}`] = i % 3 ? null : "";
+    return node;
+  }) });
+  for (const [columns, nodes, admitted] of [[25, 1000, true], [23, 1087, false], [20, 1250, true], [20, 1251, false]] as const) {
+    const input = mcp(cdp(columns, nodes), "cdp");
+    check(input, `cdp cells ${columns}x${nodes}`);
+    assert.equal(reduceTo(nextCdp.reduceAutomaticCdp, input).startsWith("render:"), admitted, `${columns} columns x ${nodes} nodes`);
+  }
+});
+
+test("CDP key lexemes: equal length but different spelling (hex case) refuses like the original", () => {
+  for (const [first, second] of [['"\\u004a"', '"\\u004A"'], ['"\\u004a"', '"\\u004a"'], ['"J"', '"J"'], ['"\\u0041b"', '"A\\u0062"']]) {
+    const text = `{"nodes":[{"nodeId":"1","ignored":false,${first}:1},{"nodeId":"2","ignored":true,${second}:2}]}`;
+    check(mcp(text, "cdp"), `cdp lexeme ${first} ${second}`);
+  }
+});
+
+test("auto-json returns fresh span arrays, so mutating a reduction never reaches the memoized parse", () => {
+  for (const output of ['[1, "abc", 22]', '{ "a" : "abc" , "b" : [ 1 ] }', '[1, "abc", 22]\n[3]\n']) {
+    const observation = Object.freeze(mcp(output));
+    const first = nextJson.reduceAutomaticJson(observation)!, expected = renderReduction(output, first);
+    for (const span of first.required) { (span as unknown as number[])[0] = 1; (span as unknown as number[])[1] = 2; }
+    for (const piece of first.pieces) if (Array.isArray(piece)) { (piece as unknown as number[])[0] = 1; (piece as unknown as number[])[1] = 2; }
+    const again = nextJson.reduceAutomaticJson(observation)!;
+    assert.equal(renderReduction(output, again), expected, `${output}: reduction changed after mutating an earlier result`);
+    const cdpObservation = Object.freeze(mcp('{"nodes":[{"nodeId":"1","ignored":false,"v":"abc"}, {"nodeId":"2","ignored":true}]}', "cdp"));
+    const cdpFirst = nextCdp.reduceAutomaticCdp(cdpObservation)!, cdpExpected = renderReduction(cdpObservation.output, cdpFirst);
+    for (const span of cdpFirst.required) { (span as unknown as number[])[0] = 1; (span as unknown as number[])[1] = 2; }
+    assert.equal(renderReduction(cdpObservation.output, nextCdp.reduceAutomaticCdp(cdpObservation)!), cdpExpected, "cdp reduction changed");
+  }
+});
+
+test("shared formatting pieces are frozen: mutation throws and later reductions are unchanged", () => {
+  // Deliberate: one shared piece per token kind, so a mutable piece would leak into every later reduction.
+  const output = '[ 1 , 2 ]', observation = Object.freeze(mcp(output)), expected = renderReduction(output, nextJson.reduceAutomaticJson(observation)!);
+  for (const piece of Object.values(nextJson.JSON_TEXT)) {
+    assert.ok(Object.isFrozen(piece), `${JSON.stringify(piece)} is frozen`);
+    assert.throws(() => { (piece as { text: string }).text = "FAKE"; }, TypeError);
+  }
+  const reduction = nextJson.reduceAutomaticJson(observation)!;
+  for (const piece of reduction.pieces) if (!Array.isArray(piece)) assert.throws(() => { (piece as { text: string }).text = "FAKE"; }, TypeError);
+  assert.equal(renderReduction(output, nextJson.reduceAutomaticJson(observation)!), expected);
+});
+
+test("auto-json declares exactly its emitted spans as evidence (a collapsed subtree leaves no stale leaf spans)", () => {
+  for (const output of ['{"a": [1,2,{"b":3}], "c" : 1}', '[ {"x":[1,[2,[3]]]} , "s" , [] , [ ] , { } ]', '{"k":1}\n{ "k" : [1,2] }\n', '[[1,2],[3, 4],{"a":{"b":{}}}]']) {
+    const reduction = nextJson.reduceAutomaticJson(Object.freeze(mcp(output)))!;
+    const spans = reduction.pieces.filter(piece => Array.isArray(piece));
+    assert.deepEqual(reduction.required, spans, `${output}: required differs from emitted spans`);
+    check(mcp(output), `exact evidence ${output}`);
+  }
+});

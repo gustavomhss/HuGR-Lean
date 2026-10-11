@@ -21,51 +21,58 @@ export function overByteLimit(output: string): boolean {
  * Returns the lexical length, or -1 when the budget is exhausted.
  */
 export function emitLexical(node: JsonNode, pieces: Piece[], required: Span[], offset = 0, budget?: { left: number }): number {
+  // Both arrays are used as stacks with explicit tops: a collapsed subtree rewinds its tops instead of
+  // truncating the arrays, and one final truncation drops whatever was rewound past.
+  emitPieces = pieces; emitRequired = required; pieceTop = pieces.length; requiredTop = required.length;
+  try { return lexical(node, offset, budget); }
+  finally {
+    if (pieces.length !== pieceTop) pieces.length = pieceTop;
+    if (required.length !== requiredTop) required.length = requiredTop;
+    emitPieces = emitRequired = EMPTY;
+  }
+}
+const EMPTY: never[] = [];
+let emitPieces: Piece[] = EMPTY, emitRequired: Span[] = EMPTY, pieceTop = 0, requiredTop = 0;
+const evidence = (span: Span): void => { emitPieces[pieceTop++] = span; emitRequired[requiredTop++] = span; };
+function lexical(node: JsonNode, offset: number, budget: { left: number } | undefined): number {
   if (budget !== undefined && --budget.left < 0) return -1;
   const start = node.span[0], end = node.span[1];
-  if (node.kind === "scalar") {
-    const span: Span = offset ? [start + offset, end + offset] : node.span;
-    pieces.push(span); required.push(span); return end - start;
-  }
+  // Always a fresh array: the parse tree is memoized per observation, so a caller mutating a returned span
+  // must never reach a later reduction of the same observation.
+  if (node.kind === "scalar") { evidence([start + offset, end + offset]); return end - start; }
   const values = node.kind === "array" ? node.items : node.entries;
   if (values.length === 0) {
-    if (end - start === 2) { const span: Span = [start + offset, end + offset]; pieces.push(span); required.push(span); }
-    else {
-      const open: Span = [start + offset, start + offset + 1], close: Span = [end + offset - 1, end + offset];
-      pieces.push(open, close); required.push(open, close);
-    }
+    if (end - start === 2) evidence([start + offset, end + offset]);
+    else { evidence([start + offset, start + offset + 1]); evidence([end + offset - 1, end + offset]); }
     return 2;
   }
-  const pieceMark = pieces.length, requiredMark = required.length;
+  const pieceMark = pieceTop, requiredMark = requiredTop;
   let length: number;
   if (node.kind === "array") {
     const items = node.items;
-    length = items.length + 1; pieces.push(openArray);
+    length = items.length + 1; emitPieces[pieceTop++] = openArray;
     for (let i = 0; i < items.length; i++) {
-      if (i) pieces.push(comma);
-      const size = emitLexical(items[i]!, pieces, required, offset, budget);
+      if (i) emitPieces[pieceTop++] = comma;
+      const size = lexical(items[i]!, offset, budget);
       if (size < 0) return -1;
       length += size;
     }
-    pieces.push(closeArray);
+    emitPieces[pieceTop++] = closeArray;
   } else {
     const entries = node.entries;
-    length = 2 * entries.length + 1; pieces.push(openObject);
+    length = 2 * entries.length + 1; emitPieces[pieceTop++] = openObject;
     for (let i = 0; i < entries.length; i++) {
-      if (i) pieces.push(comma);
-      const entry = entries[i]!, key = emitLexical(entry.key, pieces, required, offset, budget);
+      if (i) emitPieces[pieceTop++] = comma;
+      const entry = entries[i]!, key = lexical(entry.key, offset, budget);
       if (key < 0) return -1;
-      pieces.push(colon);
-      const value = emitLexical(entry.value, pieces, required, offset, budget);
+      emitPieces[pieceTop++] = colon;
+      const value = lexical(entry.value, offset, budget);
       if (value < 0) return -1;
       length += key + value;
     }
-    pieces.push(closeObject);
+    emitPieces[pieceTop++] = closeObject;
   }
-  if (length === end - start) {
-    pieces.length = pieceMark; required.length = requiredMark;
-    const span: Span = [start + offset, end + offset]; pieces.push(span); required.push(span);
-  }
+  if (length === end - start) { pieceTop = pieceMark; requiredTop = requiredMark; evidence([start + offset, end + offset]); }
   return length;
 }
 
@@ -190,6 +197,8 @@ export const reduceAutomaticJson: AutomaticReducer = observation => {
   if (whole) {
     if (protocolError(whole) || emitLexical(whole, pieces, required, section.start, budget) < 0) return;
   } else {
+    // A single-line payload is its only record, and that record is the text that just failed to parse whole.
+    if (!output.includes("\n")) return;
     // A wrapped section always parsed whole, so records are only ever unwrapped (offset 0) payloads.
     let offset = 0, records = 0;
     for (const line of output.split("\n")) {
