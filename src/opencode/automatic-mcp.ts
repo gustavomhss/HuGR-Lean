@@ -3,14 +3,30 @@ import { parseJson } from "../core/structured-json.js";
 import { protocolError } from "../profiles/auto-json.js";
 
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
-function errorText(text: string): boolean {
+// A protocol error envelope is a top-level JSON object with an "error" member. Without the literal key
+// spelling or a \u escape (the only JSON escape that can spell letters), no parse can find one.
+function mayBeEnvelope(text: string): boolean {
+  let index = 0;
+  for (let code = text.charCodeAt(0); code === 32 || code === 9 || code === 10 || code === 13; code = text.charCodeAt(++index));
+  return text.charCodeAt(index) === 123 && (text.includes('"error"') || text.includes("\\u"));
+}
+/** Host clipping notice, JSON-RPC error envelope or a Playwright `### Error` line outside fences. */
+export function errorText(text: string): boolean {
   if (/^\.\.\.(?:output truncated|\d+ (?:lines|bytes) truncated)\.\.\./.test(text)) return true;
-  const json = parseJson(text);
-  if (json && protocolError(json)) return true;
+  if (mayBeEnvelope(text)) {
+    const json = parseJson(text);
+    if (json && protocolError(json)) return true;
+  }
+  // Line scan without splitting: a fence line is ``` followed by no further backtick on that line.
   let fenced = false;
-  for (const line of text.split("\n")) {
-    if (/^```[^`]*$/.test(line)) fenced = !fenced;
-    else if (!fenced && line === "### Error") return true;
+  for (let start = 0; start <= text.length;) {
+    let end = text.indexOf("\n", start);
+    if (end < 0) end = text.length;
+    if (text.startsWith("```", start)) {
+      const tick = text.indexOf("`", start + 3);
+      if (tick < 0 || tick >= end) fenced = !fenced;
+    } else if (!fenced && end - start === 9 && text.startsWith("### Error", start)) return true;
+    start = end + 1;
   }
   return false;
 }
