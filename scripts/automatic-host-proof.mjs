@@ -6,6 +6,7 @@ import { createWriteStream } from "node:fs";
 import { finished } from "node:stream/promises";
 import { appendFile, cp, mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isolatedEnvironment, copySdkDependencies } from "./opencode-boundary.mjs";
@@ -13,7 +14,8 @@ import { inventory } from "./automatic-proof-server.mjs";
 import { snapshotArtifact, assertPack } from "./package-smoke.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
-const TEMP = "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode";
+// Proof artifacts live under the OS temporary directory unless an operator selects another root.
+const TEMP = process.env.HUGR_PROOF_TEMP || tmpdir();
 let stopping = false;
 export async function caseDeadline(root, timeout, action) {
   assert.ok(Number.isSafeInteger(timeout) && timeout > 0, "Finite positive case deadline required");
@@ -157,14 +159,16 @@ export function assertNativePaths(before, changed) {
   }
   const lines = changed.split("\n"), prefix = lines.findIndex((line) => line === directory + ":" || line === directory + "/:");
   assert.ok(prefix >= 0, "Native view lost absolute directory prefix");
+  // Reconstruct by exact string concatenation of the printed prefix; never platform path normalization.
+  const base = lines[prefix].slice(0, -1);
   if (tool === "glob") {
-    const paths = lines.slice(prefix + 1).filter(Boolean).map((line) => path.join(directory, line));
+    const paths = lines.slice(prefix + 1).filter(Boolean).map((line) => base + line);
     assert.deepEqual(paths, before.output.output.split("\n"), "Native view changed full paths/order");
   } else {
     const records = (source, compact) => {
       let file; const rows = [];
       for (const line of source.split("\n")) {
-        if (line.endsWith(".txt:")) file = compact ? path.join(directory, line.slice(0, -1)) : line.slice(0, -1);
+        if (line.endsWith(".txt:")) file = compact ? base + line.slice(0, -1) : line.slice(0, -1);
         const match = /^\s*(?:Line )?(\d+): (.*)$/.exec(line);
         if (match) { assert.ok(file, "Grep location lacks source path"); rows.push([file, Number(match[1]), match[2]]); }
       }

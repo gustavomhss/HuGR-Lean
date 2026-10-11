@@ -1,13 +1,14 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import path from "node:path";
+import { tmpdir } from "node:os";
 import { spawn } from "node:child_process";
 import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import { setTimeout as delay } from "node:timers/promises";
 const proof = await import(new URL("../scripts/automatic-host-proof.mjs", import.meta.url).href);
 const producer = await import(new URL("../scripts/automatic-proof-server.mjs", import.meta.url).href);
 const boundary = await import(new URL("../scripts/opencode-boundary.mjs", import.meta.url).href);
-const temporary = "/var/folders/lt/z11pyzhj0m17vn798jkk69hh0000gn/T/opencode";
+const temporary = tmpdir();
 
 test("whole-case deadline bounds setup and refuses late process launch", async () => {
   const root = await mkdtemp(path.join(temporary, "automatic-deadline-test-")); let success = false;
