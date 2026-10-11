@@ -701,8 +701,9 @@ const BODY = ["a", "abc", "with space", "path/to/file.txt", "é", "東京", "�
 const BAD_BODY = ["\\x", "\\u12G4", "\\u12", "\\'", "\\", "\u0001", "\t", "\n", "\r", "\u001f", "\\U0041", "\\u{41}"];
 const NUMBERS = ["0", "-0", "1", "42", "-17", "1.5", "-0.0", "1e3", "1E+3", "1e-3", "2.5E-10", "9007199254740993", "123456789012345678901234567890",
   "1e400", "-1e400", "0.1", "100", "123456789012345", "1234567890123456"];
-const BAD_NUMBERS = ["01", "-01", "1.", ".5", "-", "+1", "1e", "1e+", "1.e3", "Infinity", "NaN", "0x10", "1_000", "--1", "1.2.3", "00"];
-const KEYS = ['"a"', '"\\u0061"', '"b"', '"ab1b"', '"ab2b"', '"aXb"', '""', '"error"', '"\\u0065rror"', '"err\\u006fr"', '"jsonrpc"', '"id"', '"\\u0069d"',
+const BAD_NUMBERS = ["01", "-01", "1.", ".5", "-", "+1", "1e", "1e+", "1.e3", "Infinity", "NaN", "0x10", "1_000", "--1", "1.2.3", "00",
+  "1e.5", "1E.5", "1e+-1", "1ee1", "-.5", "1.5e", "0.e1", "1e+.5", "-e1", "1.5E+"];
+const KEYS = ['"a"', '"\\u0061"', '"b"', '"ab1b"', '"ab2b"', '"ab1B"', '"aXb"', '""', '"error"', '"\\u0065rror"', '"err\\u006fr"', '"jsonrpc"', '"id"', '"\\u0069d"',
   '"result"', '"code"', '"message"', '"m\\u0065ssage"', '"nodes"', '"n\\u006fdes"', '"data"', '"k"', '"averyveryverylongkeyname"', '"averyveryverylongkeynamf"', '"😀"', '"\\uD83D\\uDE00"'];
 function stringToken(r: R, bad: boolean): string {
   let body = "";
@@ -826,11 +827,17 @@ function cdpPayload(r: R): string {
     () => ({ accessibility: { nodes, tree: "full" }, control: { hasMore: true } }), () => ({ jsonrpc: "2.0", id: 1, result: { nodes } }),
     () => ({ id: 1, error: { code: -1, message: "bad" } }), () => ({ hugr: { nodes } }), () => ({ nodes: null, accessibility: { nodes } }),
     () => ({ id: null, result: { nodes }, accessibility: { nodes: [] } }), () => ({ result: [], accessibility: { nodes } }), () => ({ before: [1, 2], nodes, after: { a: "b" } }),
-    () => ({ id: 3, result: "x", accessibility: { nodes } }), () => [{ nodes }]])();
+    () => ({ id: 3, result: "x", accessibility: { nodes } }), () => [{ nodes }], () => ({ jsonrpc: "2.0", error: { code: -1, message: "bad" }, nodes }),
+    () => ({ id: 2, error: { code: 1, message: "m" }, accessibility: { nodes } }), () => ({ id: 2, error: { code: "1", message: "m" }, accessibility: { nodes } })])();
   const kind = r.int(3), ws = style(r).ws;
   let text = kind === 0 ? JSON.stringify(envelopeValue) : kind === 1 ? JSON.stringify(envelopeValue, null, r.pick([1, 2, "\t"])) : serialize(envelopeValue, ws);
   if (r.chance(0.15)) { const key = `"${r.pick([...FIELDS, "nodes", "id", "result", "accessibility"])}":`; const at = text.lastIndexOf(key); if (at >= 0) text = `${text.slice(0, at)}"\\u00${key.charCodeAt(1).toString(16)}${key.slice(2)}${text.slice(at + key.length)}`; }
   if (r.chance(0.05)) { const key = `"${r.pick(FIELDS)}":`; const at = text.indexOf(key); if (at >= 0) text = `${text.slice(0, at)}"\\u00${key.charCodeAt(1).toString(16)}${key.slice(2)}${text.slice(at + key.length)}`; }
+  if (r.chance(0.1)) {
+    // Escaped key spellings per occurrence: equal decoded names whose lexemes differ only in hex case refuse.
+    const key = r.pick(["role", "name", "value", "extension", "parentId"]), hex = key.charCodeAt(0).toString(16);
+    text = text.replaceAll(`"${key}":`, () => `"\\u00${r.chance(0.5) ? hex : hex.toUpperCase()}${key.slice(1)}":`);
+  }
   if (r.chance(0.04)) text = mutate(r, text);
   return text;
 }
@@ -923,13 +930,28 @@ test("boundaries: nesting 63/64/65, node counts 24,999/25,000/25,001, NDJSON bud
     for (const junk of ["x", " x", "}", "]", ",", "\u0000", " 1", '""', "\n{}", "{}"]) texts.push(value + junk);
     texts.push("﻿" + value, "﻿ " + value);
   }
+  // CDP at the node limit: few cells, one long value (10 + n and 14 + (n - 4) nodes).
+  for (const n of [24989, 24990, 24991]) for (const indent of [0, 1]) {
+    texts.push(JSON.stringify({ nodes: [{ nodeId: "1", ignored: false, v: Array(n).fill(1) }] }, null, indent));
+    texts.push(JSON.stringify({ id: 1, result: { nodes: [{ nodeId: "1", ignored: true, v: Array(n - 4).fill(0) }] } }, null, indent));
+  }
   for (const text of texts) {
+    const wrapped = mcp(`### Result\n${text}\n### Ran Playwright code\n`, "browser_run_code_unsafe");
     checkText(text, `boundary ${text.length}`);
-    for (const observation of [mcp(text), bash("jq . big.json", text)]) checkObservation(observation, `boundary ${text.length}`, true);
+    for (const observation of [mcp(text), bash("jq . big.json", text), wrapped, mcp(text, "cdp")]) checkObservation(observation, `boundary ${text.length}`, true);
     checkErrorText(text, "boundary");
   }
+  // Positive controls for the arithmetic above: exactly 25,000 nodes admit, 25,001 refuse.
+  for (const [n, admitted] of [[24999, true], [25000, false]] as const) {
+    const text = `[ ${Array(n).fill("1").join(" , ")} ]`;
+    assert.equal(next.reduceAutomaticJson(Object.freeze(mcp(text))) !== undefined, admitted, `json at ${n + 1} nodes`);
+  }
+  for (const [n, admitted] of [[24990, true], [24991, false]] as const) {
+    const text = JSON.stringify({ nodes: [{ nodeId: "1", ignored: false, v: Array(n).fill(1) }] }, null, 1);
+    assert.equal(reduceAutomaticCdp(Object.freeze(mcp(text, "cdp"))) !== undefined, admitted, `cdp at ${10 + n} nodes`);
+  }
   // Duplicate keys around the 16-key switch to a Set, exact and through escaped aliases, plus signature collisions.
-  for (let keys = 14; keys <= 19; keys++) for (const duplicate of ['"k3"', '"\\u006b3"', '"k3 "', '"k' + (keys - 1) + '"', '"\\u006b' + (keys - 1) + '"', '"ab1b"', '"ab2b"']) {
+  for (let keys = 14; keys <= 19; keys++) for (const duplicate of ['"k3"', '"\\u006b3"', '"k3 "', '"k' + (keys - 1) + '"', '"\\u006b' + (keys - 1) + '"', '"ab1b"', '"ab2b"', '"ab1B"', '"ab\\u0031b"']) {
     const members = Array.from({ length: keys }, (_, i) => `"k${i}":${i}`);
     if (keys % 2) members.splice(2, 0, '"ab1b":0');
     const text = `{${members.join(",")},${duplicate}:true}`;
