@@ -415,3 +415,49 @@ test("fence-scoped ### Error markers and the control-character bound match the o
     }
   }
 });
+
+/* Round 3: duplicate-ref registry (numeric fast path), line-start search for protocol lines, row scan to the line feed. */
+test("ref registry, protocol-line search and row-terminating scan match the original", () => {
+  const before = tally.cases;
+  const tree = (refs: readonly string[]) => wrap(`- generic [ref=${refs[0]}]:\n${refs.slice(1).map(ref => `  - button "b" [ref=${ref}]\n`).join("")}`);
+  const big = (n: number) => `e${n}`;
+  const refSets: [readonly string[], boolean][] = [
+    [["e1", "e2"], true], [["e0", "e00"], true], [["e1", "e01"], true], [["e01", "e001"], true], [["e01", "e01"], false], [["e1", "e1"], false],
+    [["e0", "e0"], false], [["e00", "e00"], false], [["f1e2", "e2"], true], [["f1e2", "f1e2"], false], [["f1e2", "f01e2"], true], [["f1e2", "f1e02"], true],
+    [[big(1048575), big(1048576)], true], [[big(1048575), big(1048575)], false], [[big(1048576), big(1048576)], false], [[big(1048576), "e1", big(1048576)], false],
+    [["e123456789012345", "e123456789012345"], false], [["e123456789012345", "e12345678901234"], true], [["e999999999999999", "e999999999999999"], false],
+    [["e1234567890123456", "e1234567890123456"], false], [["e1234567890123456", "e123456789012345"], true], [["e9007199254740993", "e9007199254740992"], true],
+    [["e12345678901234567890", "e12345678901234567890"], false], [["e12345678901234567890", "e12345678901234567891"], true],
+    [["e31", "e32", "e33", "e63", "e64", "e65", "e32"], false], [["e31", "e32", "e33", "e63", "e64", "e65"], true], [["e8191", "e8192", "e8191"], false],
+  ];
+  for (const [refs, admitted] of refSets) {
+    const input = observation(tree(refs));
+    same(input, `refs ${refs.join(",")}`);
+    assert.equal(typeof outcome(reduceAutomaticSnapshot, input), admitted ? "string" : "undefined", `refs ${refs.join(",")}`);
+  }
+  const body = "```yaml\n- generic [ref=e1]:\n  - button [ref=e2]\n```";
+  const protocol = [
+    `### Snapshot\n${body}`, `### Snapshot\n${body}\n`, `### Snapshot`, `### Snapshot\n`, `### Snapshot\nx\n${body}`, `### Snapshot \n${body}\n`, `### Snapshots\n${body}\n`,
+    `x\n### Snapshot\n${body}\n### Error\n`, `x\n### Snapshot\n${body}\n### Error`, `### Error\n### Snapshot\n${body}\n`, `### Error \n### Snapshot\n${body}\n`,
+    `### Errors\n### Snapshot\n${body}\n`, `### Error\r\n### Snapshot\n${body}\n`, "```\n### Error\n```\n" + `### Snapshot\n${body}\n`, "```js\n### Error\n```\n" + `### Snapshot\n${body}\n`,
+    "````\n### Error\n````\n" + `### Snapshot\n${body}\n`, "```\n### Error\n" + `### Snapshot\n${body}\n`, "```\n### Snapshot\n```\n" + `### Snapshot\n${body}\n`,
+    `### Snapshot\n${body}\n### Snapshot\n`, `### Snapshot\n${body}\n\`\`\`\n### Error\n\`\`\`\n`, `### Snapshot\n${body}\n\`\`\`\n### Error\n`, `### Snapshot\n${body.replace(/```$/, "``` ")}\n`,
+    `### Snapshot\n${body.replace(/```$/, "````")}\n`, `### Snapshot\n${body.replace(/```$/, "```\r")}\n`, `### Snapshot\n${body}\n\`\`\`\n`, `### Snapshot\n${body}\n\`\`\`\n\`\`\`\n`,
+    `### Snapshot\n\`\`\`yaml\n\`\`\`\n${body}\n`, `### Snapshot\n\`\`\`yaml\n- generic [ref=e1]:\n\`\`\`\n  - button [ref=e2]\n\`\`\`\n`, `\n### Snapshot\n${body}\n`, `\`\`\`yaml\n### Snapshot\n${body}\n`,
+    `### Snapshot\n\`\`\`yaml\r\n- generic [ref=e1]:\n  - button [ref=e2]\n\`\`\`\n`, `### Snapshot\n\`\`\`yaml`, `### Snapshot\n\`\`\`yaml\n`, `#### Snapshot\n${body}\n`, `### Snapshot\n${body}\n## Error\n`,
+  ];
+  for (const output of protocol) same(observation(output), `protocol ${JSON.stringify(output)}`);
+  assert.equal(typeof outcome(reduceAutomaticSnapshot, observation(protocol[0]!)), "string", "positive control");
+  const rows = ['  - button "a" [ref=e2]', '  - button "a\\"" [ref=e2]', '  - button "a\\\\" [ref=e2]', '  - button "a\\" [ref=e2]', '  - button "a [ref=e2]', '  - button a" [ref=e2]',
+    "  - button [ref=e2] ..", "  - button [ref=e2] ...", "  - button [ref=e2] x..", "  - button [ref=e2] .", "  - button [ref=e2] …", "  - button [ref=e2] |", "  - button [ref=e2]:|",
+    "  - button [ref=e2] a|", "  - button [ref=e2]\t", "  - button [ref=e2]\r", "  - button [ref=e2]\v", "  - button [ref=e2]  ", "  - button [ref=e2] [", "  - button [ref=e2] ]",
+    "  - button [ref=e2] [x", "  - button [ref=e2]: \"x", "  - button [ref=e2]: [x]", "  - button", "  - ", "  -", "  ", "", "  - text: ..", "  - text: .", "  - text: a.", "  - /url: x..",
+    '  - button "..." [ref=e2]', '  - button "[" [ref=e2]', "  - button [ref=e2] >", "  - button [ref=e2] :>", "  - button [ref=e2]~{}^`'", "  - button [ref=e2] \x7f",
+    "  - button!", '  - button"', "  - button.", "  - b_", "  - text!", "  - button! [ref=e2]", "  - x", "  - x:", "  - x-1 [ref=e2]", "  - X [ref=e2]"];
+  for (const row of rows) {
+    same(observation(wrap(`- generic [ref=e1]:\n${row}\n`)), `row ${JSON.stringify(row)}`);
+    same(observation(wrap(`- generic [ref=e1]:\n${row}\n  - button [ref=e3]\n`)), `row+ ${JSON.stringify(row)}`);
+    same(observation(`### Snapshot\n\`\`\`yaml\n- generic [ref=e1]:\n${row}\n\`\`\``), `row last ${JSON.stringify(row)}`);
+  }
+  assert.ok(tally.cases - before >= 170, `only ${tally.cases - before} cases`);
+});
