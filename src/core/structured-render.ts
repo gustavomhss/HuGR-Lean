@@ -22,26 +22,57 @@ function holeFailure(): never {
   throw new Error("Invalid source-backed reduction");
 }
 
+/** Module-private sentinel: no piece can carry it, so the first text is always checked. */
+const NONE = Symbol("none");
+/** Pair storage grows by doubling; spans index a JS string, so every value fits in an Int32. */
+function grow(values: Int32Array): Int32Array { const next = new Int32Array(values.length * 2); next.set(values); return next; }
+/**
+ * Sorts (starts, ends) pairs by start. Coverage depends only on the multiset of pairs, so tie order is free.
+ * Nearly sorted input (local inversions, e.g. a reordered row) costs one insertion pass; beyond a linear move
+ * budget the remaining work falls back to a comparison sort.
+ */
+function sortPairs(starts: Int32Array, ends: Int32Array, count: number): void {
+  let budget = 8 * count + 64;
+  for (let index = 1; index < count; index++) {
+    const start = starts[index]!;
+    if (starts[index - 1]! <= start) continue;
+    const end = ends[index]!;
+    let at = index - 1;
+    while (at >= 0 && starts[at]! > start && budget > 0) { starts[at + 1] = starts[at]!; ends[at + 1] = ends[at]!; at--; budget--; }
+    starts[at + 1] = start; ends[at + 1] = end;
+    if (budget === 0) {
+      const order = Array.from({ length: count }, (_, position) => position).sort((a, b) => starts[a]! - starts[b]!);
+      const sortedStarts = order.map(position => starts[position]!), sortedEnds = order.map(position => ends[position]!);
+      starts.set(sortedStarts); ends.set(sortedEnds);
+      return;
+    }
+  }
+}
+
 /**
  * Shared intact-evidence renderer core. Output text is assembled from coalesced source runs: consecutive
  * contiguous spans, and formatting text identical to the source at the run's end, become one slice.
- * Evidence coverage keeps the original rule (each required span within one emitted adjacent-span run).
+ * Evidence coverage keeps the original rule (each required span within one emitted adjacent-span run):
+ * every required span is read and bounds-checked once, then both span lists are sorted by start and one
+ * linear merge tracks the farthest emitted end among emitted starts <= each required start.
  */
 export function renderPieces(output: string, pieces: unknown, evidence: unknown, formatting: ReadonlySet<string>): string {
-  ensure(Array.isArray(pieces) && pieces.length > 0 && Array.isArray(evidence) && evidence.length > 0);
-  const starts: number[] = [], ends: number[] = [];
-  let adjacent = false, ordered = true, rendered = "", runStart = -1, runEnd = -1;
+  let pieceCount = 0;
+  ensure(Array.isArray(pieces) && (pieceCount = pieces.length) > 0 && Array.isArray(evidence) && evidence.length > 0);
+  let starts: Int32Array = new Int32Array(pieceCount), ends: Int32Array = new Int32Array(pieceCount), count = 0;
+  // Callers pass module-private, never-mutated whitelists, so a text equal to the last admitted one is admitted.
+  let adjacent = false, ordered = true, rendered = "", runStart = -1, runEnd = -1, admitted: unknown = NONE;
   for (const piece of pieces as unknown[]) {
     if (Array.isArray(piece)) {
       ensure(piece.length === 2);
       const [rawStart, rawEnd] = piece as unknown[];
       checkBounds(rawStart, rawEnd, output);
       const start = rawStart as number, end = rawEnd as number;
-      const last = starts.length - 1;
-      if (adjacent && ends[last] === start) ends[last] = end;
+      if (adjacent && ends[count - 1] === start) ends[count - 1] = end;
       else {
-        if (last >= 0 && start < starts[last]!) ordered = false;
-        starts.push(start); ends.push(end);
+        if (count > 0 && start < starts[count - 1]!) ordered = false;
+        if (count === starts.length) { starts = grow(starts); ends = grow(ends); }
+        starts[count] = start; ends[count++] = end;
       }
       if (runEnd === start) runEnd = end;
       else {
@@ -51,8 +82,9 @@ export function renderPieces(output: string, pieces: unknown, evidence: unknown,
       adjacent = true;
     } else {
       ensure(record(piece));
-      const { text } = piece;
-      ensure(typeof text === "string" && formatting.has(text));
+      const { text: value } = piece;
+      if (value !== admitted) { ensure(typeof value === "string" && formatting.has(value)); admitted = value; }
+      const text = admitted as string;
       if (text.length) {
         adjacent = false;
         if (runStart >= 0 && output.startsWith(text, runEnd)) runEnd += text.length;
@@ -64,32 +96,26 @@ export function renderPieces(output: string, pieces: unknown, evidence: unknown,
     }
   }
   if (runStart >= 0) rendered += output.slice(runStart, runEnd);
-  const count = starts.length;
   ensure(count > 0);
-  if (!ordered) {
-    const order = starts.map((_, index) => index).sort((a, b) => starts[a]! - starts[b]!);
-    const sortedStarts = order.map(index => starts[index]!), sortedEnds = order.map(index => ends[index]!);
-    for (let index = 0; index < count; index++) { starts[index] = sortedStarts[index]!; ends[index] = sortedEnds[index]!; }
-  }
-  // farthest = largest emitted end among emitted starts <= the required start (original sweep, any required order).
-  const total = evidence.length;
-  let cursor = 0, farthest = -1, previous = -1, sparse = false, prefix: number[] | undefined;
+  if (!ordered) sortPairs(starts, ends, count);
+  const total = evidence.length, requiredStarts = new Int32Array(total), requiredEnds = new Int32Array(total);
+  let required = 0, requiredOrdered = true, sparse = false;
   for (let index = 0; index < total; index++) {
     const span: unknown = evidence[index];
     if (span === undefined && !(index in evidence)) { sparse = true; continue; }
     ensure(Array.isArray(span) && span.length === 2);
     const [rawStart, rawEnd] = span as unknown[];
     checkBounds(rawStart, rawEnd, output);
-    const start = rawStart as number, end = rawEnd as number;
-    if (start < previous) {
-      if (!prefix) { prefix = []; let max = -1; for (let at = 0; at < count; at++) prefix.push(max = Math.max(max, ends[at]!)); }
-      let low = 0, high = count;
-      while (low < high) { const middle = (low + high) >>> 1; if (starts[middle]! <= start) low = middle + 1; else high = middle; }
-      cursor = low; farthest = low ? prefix[low - 1]! : -1;
-    }
-    while (cursor < count && starts[cursor]! <= start) farthest = Math.max(farthest, ends[cursor++]!);
-    ensure(farthest >= end);
-    previous = start;
+    const start = rawStart as number;
+    if (required > 0 && start < requiredStarts[required - 1]!) requiredOrdered = false;
+    requiredStarts[required] = start; requiredEnds[required++] = rawEnd as number;
+  }
+  if (!requiredOrdered) sortPairs(requiredStarts, requiredEnds, required);
+  let cursor = 0, farthest = -1;
+  for (let index = 0; index < required; index++) {
+    const start = requiredStarts[index]!;
+    while (cursor < count && starts[cursor]! <= start) { const end = ends[cursor++]!; if (end > farthest) farthest = end; }
+    ensure(farthest >= requiredEnds[index]!);
   }
   if (sparse) holeFailure();
   return rendered;

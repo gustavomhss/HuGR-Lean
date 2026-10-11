@@ -5,29 +5,88 @@ export type JsonNode =
   | { readonly kind: "array"; readonly items: readonly JsonNode[]; readonly span: Span }
   | { readonly kind: "object"; readonly entries: readonly { readonly name: string; readonly key: JsonNode; readonly value: JsonNode }[]; readonly span: Span };
 
+/** Control characters other than tab, line feed and carriage return (those three are searched natively). */
+const CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g;
+/** Single-character JSON escapes by the code unit after the backslash. */
+const ESCAPES: Readonly<Record<number, string>> = Object.freeze(Object.assign(Object.create(null) as Record<number, string>,
+  { 34: '"', 92: "\\", 47: "/", 98: "\b", 102: "\f", 110: "\n", 114: "\r", 116: "\t" }));
 /** Bounded, duplicate-key-rejecting JSON parser. Keeps original lexemes and UTF-16 spans. */
 export function parseJson(text: string): JsonNode | undefined {
   try {
-    // Pre-validation makes every lexeme below well-formed; the scanner only recovers spans, limits and duplicates.
-    JSON.parse(text);
+    // The scanner is the validator (RFC 8259, exactly JSON.parse acceptance): structure and literals below,
+    // strict number syntax, and per string either JSON.parse of an escaped lexeme (which rejects bad escapes
+    // and controls) or a plain body free of control characters. It also recovers spans, limits and duplicates.
     const length = text.length;
-    let pos = 0, count = 0, backslash = -1;
+    let pos = 0, count = 0, backslash = -1, newline = -1, tab = -1, carriage = -1, control = -1;
     const whitespace = (): void => {
       let code = text.charCodeAt(pos);
       while (code === 32 || code === 10 || code === 13 || code === 9) code = text.charCodeAt(++pos);
     };
-    /** Advances past the string opening at pos; slice-decodes unless a backslash occurs before its closing quote. */
+    /** Index of the next `unit` at or after `from`, or length. */
+    const next = (unit: string, from: number): number => { const index = text.indexOf(unit, from); return index < 0 ? length : index; };
+    /**
+     * Advances past the string opening at pos. A short plain body (most keys) is proven inline: closing quote
+     * first, no escape or control character. Longer bodies use native searches with cached next positions of
+     * each backslash and control character. A plain body is sliced; an escaped lexeme (the unit after each
+     * backslash is skipped, as JSON tokenizes) is decoded by JSON.parse, which rejects bad escapes and controls.
+     */
     const string = (): string => {
       const start = pos;
-      let cursor = pos + 1, escaped = false;
-      for (;;) {
-        if (backslash < cursor) { backslash = text.indexOf("\\", cursor); if (backslash < 0) backslash = length; }
-        const quote = text.indexOf('"', cursor);
-        if (quote < 0) throw new Error("Invalid JSON string");
-        if (quote < backslash) { pos = quote + 1; break; }
-        escaped = true; cursor = backslash + 2;
+      let at = pos + 1;
+      for (const stop = Math.min(length, pos + 17); at < stop; at++) {
+        const code = text.charCodeAt(at);
+        if (code === 34) { pos = at + 1; return text.slice(start + 1, at); }
+        if (code < 32) throw new Error("Invalid JSON string");
+        if (code === 92) break;
       }
-      return escaped ? JSON.parse(text.slice(start, pos)) as string : text.slice(start + 1, pos - 1);
+      if (backslash < at) backslash = next("\\", at);
+      const first = backslash;
+      let quote = text.indexOf('"', at);
+      if (quote < 0) throw new Error("Invalid JSON string");
+      for (let cursor = first + 2; quote > first; ) {
+        if (backslash < cursor) backslash = next("\\", cursor);
+        quote = text.indexOf('"', cursor);
+        if (quote < 0) throw new Error("Invalid JSON string");
+        if (quote < backslash) break;
+        cursor = backslash + 2;
+      }
+      // No control character anywhere in [at, quote); [start + 1, at) was proven inline.
+      if (newline < at) newline = next("\n", at);
+      if (tab < at) tab = next("\t", at);
+      if (carriage < at) carriage = next("\r", at);
+      if (control < at) { CONTROL.lastIndex = at; control = CONTROL.test(text) ? CONTROL.lastIndex - 1 : length; }
+      if (newline < quote || tab < quote || carriage < quote || control < quote) throw new Error("Invalid JSON string");
+      pos = quote + 1;
+      if (quote < first) return text.slice(start + 1, quote);
+      // Escapes: \" \\ \/ \b \f \n \r \t and \u with exactly four hex digits (any code unit, lone surrogates too).
+      let decoded = "", from = start + 1;
+      for (let escape = first; escape < quote; escape = text.indexOf("\\", from)) {
+        if (escape < 0 || escape > quote) break;
+        decoded += text.slice(from, escape);
+        const code = text.charCodeAt(escape + 1);
+        from = escape + 2;
+        if (code === 117) {
+          let unit = 0;
+          for (; from < escape + 6; from++) {
+            const hex = text.charCodeAt(from);
+            unit = unit * 16 + (hex >= 48 && hex <= 57 ? hex - 48 : hex >= 97 && hex <= 102 ? hex - 87 : hex >= 65 && hex <= 70 ? hex - 55 : NaN);
+          }
+          if (!(unit >= 0)) throw new Error("Invalid JSON escape");
+          decoded += String.fromCharCode(unit);
+        } else {
+          const simple = ESCAPES[code];
+          if (simple === undefined) throw new Error("Invalid JSON escape");
+          decoded += simple;
+        }
+      }
+      return decoded + text.slice(from, quote);
+    };
+    const digit = (at: number): boolean => { const code = text.charCodeAt(at); return code >= 48 && code <= 57; };
+    /** Advances pos past the digit run starting at `at`; returns the code unit after it. */
+    const digits = (at: number): number => {
+      let code = text.charCodeAt(at);
+      while (code >= 48 && code <= 57) code = text.charCodeAt(++at);
+      pos = at; return code;
     };
     const admit = (depth: number): void => { if (depth > 64 || ++count > 25000) throw new Error("JSON admission limit"); };
     function value(depth: number): JsonNode {
@@ -46,7 +105,7 @@ export function parseJson(text: string): JsonNode | undefined {
           if (names) { if (names.has(name)) throw new Error("Invalid JSON key"); names.add(name); }
           else {
             for (let index = 0; index < entries.length; index++) if (entries[index]!.name === name) throw new Error("Invalid JSON key");
-            if (entries.length >= 8) { names = new Set(); for (const entry of entries) names.add(entry.name); names.add(name); }
+            if (entries.length >= 16) { names = new Set(); for (const entry of entries) names.add(entry.name); names.add(name); }
           }
           const key: JsonNode = { kind: "scalar", value: name, span: [keyStart, pos] };
           whitespace();
@@ -81,9 +140,20 @@ export function parseJson(text: string): JsonNode | undefined {
       else if (code === 102 && text.startsWith("false", pos)) { scalar = false; pos += 5; }
       else if (code === 110 && text.startsWith("null", pos)) { scalar = null; pos += 4; }
       else if (code === 45 || (code >= 48 && code <= 57)) {
-        // Number() equals JSON.parse() on a validated JSON number lexeme (incl. -0, overflow to Infinity, huge integers).
-        let next = text.charCodeAt(++pos);
-        while ((next >= 48 && next <= 57) || next === 46 || next === 101 || next === 69 || next === 43 || next === 45) next = text.charCodeAt(++pos);
+        // -?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?; the caller rejects anything but a delimiter after it.
+        if (code === 45) pos++;
+        let next = text.charCodeAt(pos);
+        if (next === 48) next = text.charCodeAt(++pos);
+        else if (next >= 49 && next <= 57) next = digits(pos + 1);
+        else throw new Error("Invalid JSON number");
+        if (next === 46) { if (!digit(pos + 1)) throw new Error("Invalid JSON number"); next = digits(pos + 2); }
+        if (next === 101 || next === 69) {
+          next = text.charCodeAt(++pos);
+          if (next === 43 || next === 45) pos++;
+          if (!digit(pos)) throw new Error("Invalid JSON number");
+          digits(pos + 1);
+        }
+        // Number() equals JSON.parse() on a valid JSON number lexeme (incl. -0, overflow to Infinity, huge integers).
         scalar = Number(text.slice(start, pos));
       } else throw new Error("Invalid JSON value");
       return { kind: "scalar", value: scalar, span: [start, pos] };

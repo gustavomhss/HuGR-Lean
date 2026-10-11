@@ -147,11 +147,30 @@ type Random = () => number;
 const int = (random: Random, n: number): number => Math.floor(random() * n);
 const pick = <T>(random: Random, list: readonly T[]): T => list[int(random, list.length)]!;
 let parseCases = 0, parsedCases = 0, renderCases = 0, renderedCases = 0;
+/** Cheap structural fingerprint (node count + rolling hash of kinds, spans and values), computed iteratively. */
+function fingerprint(root: JsonNode): string {
+  let count = 0, hash = 0x811c9dc5;
+  const mix = (value: string) => { for (let i = 0; i < value.length; i++) hash = Math.imul(hash ^ value.charCodeAt(i), 0x01000193) >>> 0; };
+  const stack: JsonNode[] = [root];
+  while (stack.length) {
+    const node = stack.pop()!;
+    count++; mix(`${node.kind}:${node.span[0]}:${node.span[1]};`);
+    if (node.kind === "scalar") mix(`${typeof node.value}:${String(Object.is(node.value, -0) ? "-0" : node.value)};`);
+    else if (node.kind === "array") for (let i = node.items.length - 1; i >= 0; i--) stack.push(node.items[i]!);
+    else for (let i = node.entries.length - 1; i >= 0; i--) { const entry = node.entries[i]!; mix(`${entry.name};`); stack.push(entry.value, entry.key); }
+  }
+  return `${count}/${hash.toString(16)}`;
+}
 function sameParse(text: string): void {
   const actual = parseJson(text), expected = referenceParseJson(text);
   parseCases++; if (expected !== undefined) parsedCases++;
-  if (actual === undefined && expected === undefined) return;
-  assert.deepStrictEqual(actual, expected, `parseJson diverged for ${JSON.stringify(text.slice(0, 160))}`);
+  const label = () => JSON.stringify(text.slice(0, 160));
+  // Admission and a cheap fingerprint first: a diverging large tree fails as a clean assertion, never by diffing it.
+  if ((actual === undefined) !== (expected === undefined)) assert.fail(`parseJson admission diverged (${actual === undefined ? "refused" : "admitted"}) for ${label()}`);
+  if (actual === undefined || expected === undefined) return;
+  const left = fingerprint(actual), right = fingerprint(expected);
+  if (left !== right) assert.fail(`parseJson tree diverged (${left} != ${right}) for ${label()}`);
+  assert.deepStrictEqual(actual, expected, `parseJson diverged for ${label()}`);
 }
 type Outcome = { readonly ok: true; readonly value: unknown } | { readonly ok: false; readonly type: string; readonly message: string };
 function outcome(run: () => unknown): Outcome {
@@ -407,4 +426,145 @@ test("renderers equal the original on real JSON reductions, coalesced runs, unso
   assert.equal(sparse.ok, false); assert.equal((sparse as { type: string }).type, "TypeError");
 });
 
-test("differential corpus size", t => { t.diagnostic(`parse cases ${parseCases} (${parsedCases} admitted); render cases ${renderCases} (${renderedCases} accepted)`); });
+/* ---- round 3: the scanner validates in place of JSON.parse; the oracle is JSON.parse acceptance itself ---- */
+let acceptanceCases = 0;
+/** Equal to the original parser, and never admitting text JSON.parse rejects (the validator's own contract). */
+function sameAcceptance(text: string): void {
+  acceptanceCases++;
+  let accepted = true;
+  try { JSON.parse(text); } catch { accepted = false; }
+  if (!accepted && parseJson(text) !== undefined) assert.fail(`parseJson admitted text JSON.parse rejects: ${JSON.stringify(text.slice(0, 160))}`);
+  sameParse(text);
+}
+const LONG = "abcdefghijklmnopqrstuvwxyz0123456789"; // pushes a string past the short inline scan
+test("in-scanner validation equals JSON.parse acceptance on >= 100,000 adversarial cases", () => {
+  const before = acceptanceCases;
+  // Every number-like token over -+019.eE up to five units, bare and in each value position.
+  const alphabet = ["-", "+", "0", "1", "9", ".", "e", "E"];
+  let tokens = [""];
+  for (let size = 1; size <= 5; size++) {
+    tokens = tokens.flatMap(prefix => alphabet.map(unit => prefix + unit));
+    for (const token of tokens) { sameAcceptance(token); sameAcceptance(`[${token}]`); sameAcceptance(`{"a":${token}}`); }
+  }
+  for (const token of ["1.5e+10", "-0.0e-0", "10", "100", "123456789", "1.25", "0.000", "1E400", "-1e-400", "2.", "2.e1", "2e", "2e+", "00.1", "-00", "0x1", "1_0", "١"]) {
+    for (const text of [token, ` ${token} `, `[${token},${token}]`, `{"a":${token},"b":[${token}]}`, `${token}x`, `[${token} 1]`]) sameAcceptance(text);
+  }
+  // Every code unit after a backslash, in short and long strings, plain and between other escapes.
+  for (let unit = 0; unit <= 0xffff; unit++) {
+    const char = String.fromCharCode(unit);
+    sameAcceptance(`"\\${char}"`);
+    if (unit < 0x100 || unit % 61 === 0) { sameAcceptance(`["${LONG}\\${char}x"]`); sameAcceptance(`{"\\n\\${char}":1}`); }
+  }
+  // \u with every four-unit combination over hex-boundary units, and short forms.
+  const hex = ["0", "9", "a", "f", "A", "F", "g", "G", '"', "\\", " "];
+  for (const a of hex) for (const b of hex) for (const c of hex) for (const d of hex) {
+    sameAcceptance(`"\\u${a}${b}${c}${d}"`);
+    if ((a + b).includes("0")) sameAcceptance(`["${LONG}\\u${a}${b}${c}${d}${LONG}"]`);
+  }
+  for (const tail of ["", "0", "00", "000", "\\u", "x"]) { sameAcceptance(`"\\u${tail}"`); sameAcceptance(`"\\u${tail}`); sameAcceptance(`"${LONG}\\u${tail}"`); }
+  // Every raw code unit below U+0100 plus separators, surrogates and BOM, inside short, long and escaped strings.
+  const raw = [...Array.from({ length: 0x100 }, (_, unit) => unit), 0x2028, 0x2029, 0xd800, 0xdbff, 0xdc00, 0xdfff, 0xfeff, 0xfffe, 0xffff];
+  for (const unit of raw) {
+    const char = String.fromCharCode(unit);
+    for (const text of [`"${char}"`, `"a${char}b"`, `"${LONG}${char}"`, `"${LONG}${char}${LONG}"`, `"${char}${LONG}"`, `"${LONG.slice(0, 15)}${char}"`, `"${LONG.slice(0, 16)}${char}"`,
+      `"\\n${char}"`, `"${LONG}\\n${char}"`, `"${LONG}${char}\\n"`, `{"${char}":1}`, `{"${LONG}${char}":1}`, `[${char}1]`, `[1${char}]`, `${char}1`, `1${char}`,
+      `["${LONG}", "${LONG}${char}"]`, `["${LONG}"${char},"${LONG}"]`, `["${LONG}",
+"${LONG}${char}"]`, `["\\t${LONG}",
+	"${char}${LONG}"]`]) sameAcceptance(text);
+  }
+  // Lone and paired surrogates, raw and escaped, as values and keys.
+  for (const surrogate of ["\ud800", "\udbff", "\udc00", "\udfff", "\ud83d\ude00", "\ude00\ud83d", "\\ud800", "\\udc00", "\\ud83d\\ude00", "\\ud83d\ude00"]) {
+    for (const text of [`"${surrogate}"`, `{"${surrogate}":1}`, `["${LONG}${surrogate}"]`, `{"${surrogate}":1,"${surrogate}":2}`]) sameAcceptance(text);
+  }
+  // Literal prefixes, extensions and one-unit edits.
+  for (const literal of ["true", "false", "null"]) {
+    for (let cut = 0; cut <= literal.length; cut++) { sameAcceptance(literal.slice(0, cut)); sameAcceptance(`[${literal.slice(0, cut)}]`); }
+    for (let at = 0; at < literal.length; at++) for (const unit of ["x", "T", "", " ", literal[at]!.toUpperCase()]) {
+      const edited = literal.slice(0, at) + unit + literal.slice(at + 1);
+      sameAcceptance(edited); sameAcceptance(`{"a":${edited}}`);
+    }
+    for (const text of [`${literal}x`, `${literal}1`, `${literal} ${literal}`, `[${literal}${literal}]`, `[${literal},]`]) sameAcceptance(text);
+  }
+  // Structure: every token sequence of up to four tokens.
+  const structure = ["[", "]", "{", "}", ",", ":", '"a"', "1", " ", "\n"];
+  let sequences = [""];
+  for (let size = 1; size <= 4; size++) {
+    sequences = sequences.flatMap(prefix => structure.map(unit => prefix + unit));
+    for (const text of sequences) sameAcceptance(text);
+  }
+  // Stateful multi-string documents: long strings, escapes and rare controls between pretty-printing whitespace.
+  const random = rng(0xacce97);
+  const parts = ["a", "é", "🦀", "\ud800", " ", "\\n", "\\t", "\\\"", "\\\\", "\\u0041", "\\u12", "\\x", "\t", "\n", "\r", "\u0001", "\u001f", "\u000b", LONG];
+  const spaces = ["", " ", "\n", "\r\n", "\t", "\n    ", " \t "];
+  for (let index = 0; index < 20000; index++) {
+    const items: string[] = [];
+    for (let count = 1 + int(random, 5); count > 0; count--) {
+      let body = "";
+      for (let length = int(random, 6); length > 0; length--) body += random() < 0.85 ? pick(random, parts.slice(0, 11).concat(LONG)) : pick(random, parts);
+      items.push(random() < 0.3 ? `"k${index}${count}":${pick(random, spaces)}"${body}"` : `"${body}"`);
+    }
+    const object = items.every(item => item.includes(":")), join = () => `${pick(random, spaces)},${pick(random, spaces)}`;
+    sameAcceptance(object ? `{${pick(random, spaces)}${items.join(join())}${pick(random, spaces)}}` : `[${pick(random, spaces)}${items.map(item => item.includes(":") ? `{${item}}` : item).join(join())}]`);
+  }
+  assert.ok(acceptanceCases - before >= 100000, `only ${acceptanceCases - before} acceptance cases`);
+});
+
+/* ---- round 3: large renderer inputs (nearly sorted, reversed past the insertion budget, shuffled) ---- */
+test("renderers equal the original on large reordered reductions, both span lists, and past the insertion budget", () => {
+  const random = rng(0x5ca1e), acceptedBefore = renderedCases;
+  // Span bounds sit on part boundaries, so no span splits a surrogate pair.
+  let output = "";
+  const bounds: number[] = [0];
+  for (let index = 0; index < 4000; index++) { output += pick(random, ["ab", "c", "é", "🦀", "\n", "xyz", " "]); bounds.push(output.length); }
+  const spans: [number, number][] = [];
+  for (let at = 0; at < bounds.length - 4; ) {
+    const end = at + 1 + int(random, 3);
+    spans.push([bounds[at]!, bounds[end]!]); at = end + int(random, 2);
+  }
+  const shuffle = <T>(list: T[]): T[] => { const copy = [...list]; for (let i = copy.length - 1; i > 0; i--) { const j = int(random, i + 1); [copy[i], copy[j]] = [copy[j]!, copy[i]!]; } return copy; };
+  // Snapshot-like rows: each group of three spans is emitted as [b, a, c] (a local inversion per row).
+  const local = spans.flatMap((_, i) => i % 3 === 1 ? [spans[i]!, spans[i - 1]!] : i % 3 === 0 && i + 1 < spans.length ? [] : [spans[i]!]);
+  const orders: [number, number][][] = [spans, local, [...spans].reverse(), shuffle(spans), [...spans.slice(0, 600)].reverse().concat(spans.slice(600))];
+  let cases = 0;
+  for (const emitted of orders) {
+    const pieces: Piece[] = emitted.flatMap((span, i) => i % 5 === 4 ? [[span[0], span[1]] as Span, { text: pick(random, [",", ":", " ", "\n"]) }] : [[span[0], span[1]] as Span]);
+    const requiredSets: unknown[][] = [emitted.map(span => [...span]), [...emitted].reverse().map(span => [...span]), shuffle(emitted).map(span => [...span]),
+      emitted.filter((_, i) => i % 7 === 0).map(span => [...span])];
+    for (const required of requiredSets) {
+      for (const variant of [required, [...required, [0, output.length]], [...required.slice(0, 50), [spans[3]![0], spans[4]![1]], ...required.slice(50)], (() => { const sparse = [...required]; delete sparse[sparse.length >> 1]; return sparse; })(),
+        [...required.slice(0, 9), [1, 0.5], ...required.slice(9)], [...required.slice(0, 9), , ...required.slice(9)]]) {
+        sameRender(output, { pieces, required: variant }); cases++;
+      }
+    }
+    sameRender(output, { pieces: [...pieces, [Number.MAX_SAFE_INTEGER, 1]], required: emitted.map(span => [...span]) }); cases++;
+  }
+  assert.ok(cases >= 100 && renderedCases - acceptedBefore >= 20, `${renderedCases - acceptedBefore} of ${cases} large reductions accepted`);
+});
+
+test("a required list whose species fakes sort() cannot pass coverage with an unemitted span", () => {
+  // The pre-round-1 renderer sorted evidence.map(...) through Symbol.species; the current one reads indices directly.
+  class Faked extends Array<unknown> { override sort(): this { return [[0, 1]] as unknown as this; } }
+  class Evidence extends Array<unknown> { static override get [Symbol.species](): ArrayConstructor { return Faked as unknown as ArrayConstructor; } }
+  const output = "abcdefgh", required = Evidence.from([[2, 4]]);
+  const result = outcome(() => renderReduction(output, { pieces: [[0, 1]], required } as unknown as Reduction));
+  assert.equal(result.ok, false, "renderReduction must refuse the unemitted span");
+  const structured = filterStructured(observation(output), { reducers: { json: () => ({ pieces: [[0, 1]], required } as unknown as Reduction) } });
+  assert.equal(structured.status, "failed_open");
+  assert.equal(outcome(() => referenceRenderReduction(output, { pieces: [[0, 1]], required } as unknown as Reduction)).ok, true, "the species trick fooled the original");
+});
+
+test("pieces appended during iteration (by a text getter) are rendered and counted like the original", () => {
+  const output = "abcdefghij";
+  const make = (extra: readonly Span[], required: readonly Span[]) => {
+    const pieces: unknown[] = [[0, 1]];
+    pieces.push({ get text() { pieces.push(...extra.map(span => [...span])); return ":"; } });
+    return { pieces, required: required.map(span => [...span]) } as unknown as Reduction;
+  };
+  for (const [extra, required] of [[[[2, 4], [5, 6], [7, 9]], [[7, 9], [0, 1]]], [[[2, 4], [4, 6], [6, 9]], [[2, 9]]], [[[2, 4]], [[2, 5]]], [[[9, 10], [1, 2], [3, 4]], [[1, 2], [9, 10]]]] as [Span[], Span[]][]) {
+    const expected = outcome(() => referenceRenderReduction(output, make(extra, required)));
+    assert.deepStrictEqual(outcome(() => renderReduction(output, make(extra, required))), expected, `appended ${JSON.stringify(extra)}`);
+    assert.deepStrictEqual(filterStructured(observation(output), { reducers: { json: () => make(extra, required) } }), structuredExpected(output, make(extra, required)));
+  }
+});
+
+test("differential corpus size", t => { t.diagnostic(`parse cases ${parseCases} (${parsedCases} admitted); acceptance cases ${acceptanceCases}; render cases ${renderCases} (${renderedCases} accepted)`); });
