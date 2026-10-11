@@ -298,5 +298,6 @@ Review follow-up (cold review of PR #155): hybrid POSIX headers, doc-row host mi
 characters, `..` UNC servers, lowercase drives, CRLF for all twelve captures, a 1 MB long-line timing probe, and an
 explicit pin of the original parser's outcome on every capture. Probes, each restored: allowing hybrid headers in
 the original parser or the delta, dropping either doc-row host check, accepting mixed doc separators, admitting
-forbidden characters, rejecting only `.` servers, or refusing lowercase drives each failed its named test; a planted
-nested quantifier in the source pattern hung the 1 MB test until the runner timeout cancelled it.
+forbidden characters, rejecting only `.` servers, or refusing lowercase drives each failed its named test. The 1 MB
+probe runs in a worker thread (`tests/cargo-windows-long-lines.ts`) that the test thread terminates after 5 s, since a
+blocking regex freezes its own event loop; a planted nested quantifier in the source pattern now fails it in 5.0 s.

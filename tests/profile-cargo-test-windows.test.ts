@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { Worker } from "node:worker_threads";
 import { filter } from "../src/core/engine.js";
 import { cargoProfiles } from "../src/profiles/cargo.js";
 import { familyProfiles } from "../src/profiles/cargo-test.js";
@@ -263,27 +264,28 @@ test("WIN-C02 review: CRLF host rendering of all twelve captures keeps every dis
   }
 });
 
-test("WIN-C02 review: 1 MB header and doc lines decline in bounded time on both parsers", () => {
-  const c = byName("native-lib"), input = read(c.file), header = rows(input)[2]!, mb = 1 << 20;
-  const lines = [
-    `     Running unittests ${"a".repeat(mb)} (target\\debug\\deps\\x-0123456789abcdef.exe)\n`,
-    `     Running unittests ${"a\\".repeat(mb / 2)}.rx (target\\debug\\deps\\x-0123456789abcdef.exe)\n`,
-    `     Running unittests src\\lib.rs (C:\\${"a\\".repeat(mb / 2)}targe\\debug\\deps\\x-0123456789abcdef.exe)\n`,
-    `     Running unittests src\\lib.rs (\\\\${"a".repeat(mb)}\\s\\target\\debug\\deps\\x.ex)\n`,
-    `     Running unittests src/lib.rs (/${"a/".repeat(mb / 2)}targe/debug/deps/x-0123456789abcdef)\n`,
-    `     Running unittests src\\lib.rs (target\\debug\\deps\\${"x".repeat(mb)}.ex)\n`,
-  ];
-  for (const line of lines) {
-    for (const command of ["cargo test", "cargo test --offline --color never"]) {
-      const output = input.replace(header, line), obs = observation(c, output, command), start = performance.now();
-      assert.equal(profile.reduce(output, obs), undefined);
-      assert.equal(legacy.reduce(output, obs), undefined);
-      assert.ok(performance.now() - start < 2000, `slow decline: ${line.slice(0, 40)} ${performance.now() - start}ms`);
-    }
+test("WIN-C02 review: 1 MB header and doc lines decline in bounded time on both parsers", async () => {
+  // A blocking regex freezes its own event loop, so the probe runs in a worker this thread terminates after 5 s.
+  const bound = 5000;
+  // Worker entries resolve before --import hooks, so the worker registers tsx itself, then loads the TypeScript probe.
+  const api = JSON.stringify(import.meta.resolve("tsx/esm/api"));
+  const probe = JSON.stringify(new URL("./cargo-windows-long-lines.ts", import.meta.url).href);
+  const worker = new Worker(`import(${api}).then(({ register }) => { register(); return import(${probe}); })`, { eval: true });
+  let timer: NodeJS.Timeout | undefined;
+  try {
+    const outcome = await Promise.race([
+      new Promise<{ declined: boolean; ms: number }[]>((resolve, reject) => {
+        worker.once("message", resolve); worker.once("error", reject);
+        worker.once("exit", code => reject(new Error(`long-line worker exited ${code} without a result`)));
+      }),
+      new Promise<"timeout">(resolve => { timer = setTimeout(() => resolve("timeout"), bound); }),
+    ]);
+    assert.notEqual(outcome, "timeout", `long-line declines did not finish within ${bound} ms (worker terminated)`);
+    const results = outcome as { declined: boolean; ms: number }[];
+    assert.equal(results.length, 14);
+    for (const result of results) { assert.equal(result.declined, true); assert.ok(result.ms < 2000, `slow decline ${result.ms} ms`); }
+  } finally {
+    clearTimeout(timer);
+    await worker.terminate();
   }
-  const doc = input.replace("running 0 tests\n\ntest result: ok. 0 passed;",
-    `running 1 test\ntest ${"a\\".repeat(mb / 2)}b.rx - f (line 1) ... ok\n\ntest result: ok. 1 passed;`);
-  const start = performance.now();
-  assert.equal(profile.reduce(doc, observation(c, doc)), undefined);
-  assert.ok(performance.now() - start < 2000, "slow doc decline");
 });
