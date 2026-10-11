@@ -110,3 +110,12 @@ test("preservation oracle detects metadata identity, refs, attachments and unkno
   assert.throws(() => proof.assertObservation(before, missingRef, { content: missingRef.output.content.map((b: { text?: string; resource?: { text: string } }) => b.text ?? b.resource?.text).filter(Boolean).join("\n\n") }, "json"), /full source values\/refs/);
   assert.throws(() => proof.assertObservation(before, after, { content: joined() }, "preserved"), /Negative control changed output/);
 });
+
+test("JSON observation oracle checks every text block, not only the first", () => {
+  const before = { input: { tool: "proof_inventory", args: {} }, output: { title: "", metadata: {}, content: [{ type: "text", text: '{ "a" : 1 }' }, { type: "text", text: '{ "b" : [ 1, 2 ] }' }] } };
+  const view = (second: string) => ({ ...structuredClone(before), metadataSame: true, inputSame: true, untouchedBlocksSame: true,
+    output: { ...structuredClone(before.output), content: [{ type: "text", text: '{"a":1}' }, { type: "text", text: second }] } });
+  const content = (second: string) => `{"a":1}\n\n${second}`;
+  proof.assertObservation(before, view('{"b":[1,2]}'), { content: content('{"b":[1,2]}') }, "json");
+  assert.throws(() => proof.assertObservation(before, view('{"b":[1,3]}'), { content: content('{"b":[1,3]}') }, "json"), /JSON lost full source values\/refs/);
+});

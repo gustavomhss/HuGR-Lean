@@ -11,6 +11,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isolatedEnvironment, copySdkDependencies } from "./opencode-boundary.mjs";
 import { inventory } from "./automatic-proof-server.mjs";
+import { assertJsonEquivalent } from "./automatic-json-oracle.mjs";
 import { snapshotArtifact, assertPack } from "./package-smoke.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
@@ -134,12 +135,6 @@ function text(output) {
   if (Array.isArray(output.content)) return output.content.flatMap((b) => b.type === "text" ? [b.text] : b.type === "resource" && typeof b.resource.text === "string" ? [b.resource.text] : b.type === "resource" && b.resource.blob ? [`[Binary MCP resource omitted: ${b.resource.uri} (${b.resource.mimeType}, ${Buffer.from(b.resource.blob, "base64").length} B) is not a supported attachment type]`] : []).join("\n\n");
   return output.output;
 }
-function unfold(value) {
-  if (Array.isArray(value)) return value.map(unfold);
-  if (!value || typeof value !== "object") return value;
-  if (Array.isArray(value.columns) && Array.isArray(value.rows)) return value.rows.map((row) => Object.fromEntries(value.columns.map((key, i) => [key, unfold(row[i])])));
-  return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, unfold(v)]));
-}
 export function assertNativePaths(before, changed) {
   const tool = before.input.tool, args = before.input.args, directory = args.path ?? args.filePath;
   if (tool === "read") {
@@ -227,14 +222,12 @@ export function assertObservation(before, after, result, expected = "preserved",
   if (expected === "preserved") assert.deepEqual(after.output, before.output, "Negative control changed output");
   else {
     assert.ok(Buffer.byteLength(changed) < Buffer.byteLength(raw), "Automatic positive did not reduce");
-    if (expected === "json") {
-      const original = before.output.content?.[0].text ?? raw, replacement = after.output.content?.[0].text ?? changed;
-      assert.deepEqual(unfold(JSON.parse(replacement)), JSON.parse(original), "JSON lost full source values/refs");
-    }
-    if (expected === "snapshot") {
-      const originals = before.output.content?.filter((b) => b.type === "text") ?? [{ text: raw }];
-      const replacements = after.output.content?.filter((b) => b.type === "text") ?? [{ text: changed }];
-      originals.forEach((block, i) => { if (block.text !== replacements[i].text) assertSnapshot(block.text, replacements[i].text, before.input.tool); });
+    // Every text block, in order, under the expected rule; non-text and resource blocks were required identical above.
+    const pairs = before.output.content ? before.output.content.flatMap((block, i) => block.type === "text" ? [[block.text, after.output.content[i].text]] : []) : [[raw, changed]];
+    for (const [original, replacement] of pairs) {
+      if (original === replacement) continue;
+      if (expected === "json") assertJsonEquivalent(original, replacement);
+      else if (expected === "snapshot") assertSnapshot(original, replacement, before.input.tool);
     }
     for (const anchor of anchors) assert.ok(changed.includes(anchor), `Lost native path/location evidence: ${anchor}`);
   }

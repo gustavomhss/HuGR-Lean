@@ -39,7 +39,19 @@ First run on candidate `9d34282` (19 cases proved). Five cases hit their deadlin
 | Playwright `browser_run_code_unsafe` full CDP AX tree (rerun) | every node and field reconstructed | 15814→13653 |
 | Playwright `browser_tabs`, `browser_snapshot {depth:1}`, failing `browser_evaluate` (rerun) | preserved exactly | — |
 
-Limits: explicit host byte-clipping wrapper not induced; Linux/Windows hosts and other OpenCode routes not proven; Linux `ps` grammar not observed natively. Proof harness: `scripts/automatic-host-proof.mjs`; operational bridges and artifact roots are local temporary files, retained with failures.
+**Re-run on final code (2026-10-11).** Head `c9c3da4` (runtime `src/` unchanged from `utility/integration` `b4d259e`; clean tree), via the versioned bridge `scripts/automatic-browser-host-proof.mjs` (every flag required; one fresh headless browser per case with its own `--user-data-dir` under the artifact root, owned local page at `127.0.0.1`, page state set over CDP, producer attached through `--cdp-endpoint`/`--browserUrl`). Producers: registry `playwright@1.63.0` (`cli.js mcp`, `coreBundle.js` SHA-256 `549070af…` as before) and registry `chrome-devtools-mcp@1.10.1` (lockfile URL/integrity in the receipt), not the earlier emitted source build of `f08dbe1`; browser `chromium_headless_shell-1217` (HeadlessChrome/147.0.7727.15, SHA-256 `a2bc52e9…`). All 9 cases passed on the first attempt, each with two model requests, next request equal to hook output, and the oracle rejecting a tampered view:
+
+| Case | Result | Bytes before → after |
+| --- | --- | --- |
+| Playwright `browser_snapshot {}` before/modal | all 10/14 refs, 1 root | 743→673, 909→811 |
+| DevTools `take_snapshot {pageId:1}` before/modal | all 12/5 UIDs, 1 root | 643→595, 268→248 |
+| Playwright `browser_evaluate` wrapped DOM JSON | wrapper exact, every value | 824→686 |
+| Playwright `browser_run_code_unsafe` CDP AX tree (34 nodes) | every node and field | 16710→14549 |
+| `browser_tabs {action:"list"}`, `browser_snapshot {depth:1}`, failing `browser_evaluate` (e42 marker) | preserved exactly | 205, 536, 507 |
+
+Differences from the earlier builds: the registry DevTools build emits the `StaticText "Details"` row (UID `1_8`) that the source build omitted, so the before view has 12 UIDs, not 11; CDP AX and DOM payload sizes differ because the browser is attached over CDP instead of producer-launched. The harness JSON oracle is now strict and independent of `src/` (`scripts/automatic-json-oracle.mjs`): byte-exact `### Result` wrapper, its own parser (duplicate keys and trailing data rejected, number lexemes and key order kept), and exact decoding of the optional-cell AX table (unique columns, full-length rows, cells of arity 0/1). `tests/automatic-json-oracle.test.ts` covers each rejection; every check was mutation-probed. Re-validation of all 9 stored cases of this run with the strict oracle at `b2efddc` (`--revalidate`, no browser re-run): 9/9 passed, repeated at `0546107` (every text block checked; `--revalidate` fails closed unless every recorded case re-validates): 9/9 passed, both recorded under `revalidations` in the receipt. An earlier run of the same bridge (`browser-run-A2DdmG`, 8/9) lost `dt-modal` when the DevTools server missed OpenCode's MCP connect bound at load average ~180; the bridge now sets `timeout: 60000`. Receipt (local): `/Users/gustavoschneiter/Documents/HuGR/_worktrees/hugr-lean-proof-artifacts/browser/browser-run-BOr35P/receipt.json`.
+
+Limits: explicit host byte-clipping wrapper not induced; Linux/Windows hosts and other OpenCode routes not proven; Linux `ps` grammar not observed natively. Proof harness: `scripts/automatic-host-proof.mjs`; browser bridge: `scripts/automatic-browser-host-proof.mjs`. Artifact roots are local, retained with failures.
 
 ## Measurements after merge
 
