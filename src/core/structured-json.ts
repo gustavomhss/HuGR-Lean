@@ -142,19 +142,24 @@ export function parseJson(text: string): JsonNode | undefined {
       else if (code === 45 || (code >= 48 && code <= 57)) {
         // -?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?; the caller rejects anything but a delimiter after it.
         if (code === 45) pos++;
-        let next = text.charCodeAt(pos);
+        let next = text.charCodeAt(pos), integer = 0, exact = true;
         if (next === 48) next = text.charCodeAt(++pos);
-        else if (next >= 49 && next <= 57) next = digits(pos + 1);
-        else throw new Error("Invalid JSON number");
-        if (next === 46) { if (!digit(pos + 1)) throw new Error("Invalid JSON number"); next = digits(pos + 2); }
+        else if (next >= 49 && next <= 57) {
+          const from = pos;
+          do { integer = integer * 10 + next - 48; next = text.charCodeAt(++pos); } while (next >= 48 && next <= 57);
+          exact = pos - from <= 15;
+        } else throw new Error("Invalid JSON number");
+        if (next === 46) { exact = false; if (!digit(pos + 1)) throw new Error("Invalid JSON number"); next = digits(pos + 2); }
         if (next === 101 || next === 69) {
+          exact = false;
           next = text.charCodeAt(++pos);
           if (next === 43 || next === 45) pos++;
           if (!digit(pos)) throw new Error("Invalid JSON number");
           digits(pos + 1);
         }
-        // Number() equals JSON.parse() on a valid JSON number lexeme (incl. -0, overflow to Infinity, huge integers).
-        scalar = Number(text.slice(start, pos));
+        // An integer lexeme of at most 15 digits is exact as accumulated (sign applied last, so "-0" is -0);
+        // otherwise Number() equals JSON.parse() on a valid JSON number lexeme (overflow, huge integers).
+        scalar = exact ? (code === 45 ? -integer : integer) : Number(text.slice(start, pos));
       } else throw new Error("Invalid JSON value");
       return { kind: "scalar", value: scalar, span: [start, pos] };
     }
