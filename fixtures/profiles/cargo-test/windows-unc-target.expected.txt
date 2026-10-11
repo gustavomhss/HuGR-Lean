@@ -1,0 +1,4 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.03s
+     Running unittests src\lib.rs (\\localhost\C$\Users\runneradmin\AppData\Local\Temp\c02-windows-affIoT\unc\target\debug\deps\c02w-1e8182a8e4a3fcbe.exe)
+test tests::alpha_skipped ... ignored, native skip: café 🦀 — retained
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s

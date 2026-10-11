@@ -1,0 +1,44 @@
+   Compiling native_item_fixture v0.1.0 (C:\Users\runneradmin\AppData\Local\Temp\c02-windows-affIoT\native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.30s
+     Running unittests native.rs (target\debug\deps\native_item_fixture-d9b637244a1d2cfc.exe)
+
+running 30 tests
+test case_1 ... ok
+test case_0 ... ok
+test case_10 ... ok
+test case_11 ... ok
+test case_12 ... ok
+test case_13 ... ok
+test case_14 ... ok
+test case_15 ... ok
+test case_16 ... ok
+test case_17 ... ok
+test case_18 ... ok
+test case_19 ... ok
+test case_2 ... ok
+test case_20 ... ok
+test case_21 ... ok
+test case_22 ... ok
+test case_23 ... ok
+test case_24 ... ok
+test case_25 ... ok
+test case_26 ... ok
+test case_27 ... ok
+test case_28 ... ok
+test case_29 ... ok
+test case_3 ... ok
+test case_4 ... ok
+test case_5 ... ok
+test case_6 ... ok
+test case_7 ... ok
+test case_8 ... ok
+test case_9 ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests native_item_fixture
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

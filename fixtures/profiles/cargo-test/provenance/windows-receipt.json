@@ -1,0 +1,516 @@
+{
+  "schema": "hugr-lean/c02-windows-receipt/1",
+  "license": "MIT",
+  "work": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT",
+  "versions": {
+    "cargo": {
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "executable": "C:\\Users\\runneradmin\\.cargo\\bin\\cargo.exe"
+    },
+    "rustc": {
+      "version": "rustc 1.98.1 (48a229cea 2026-09-01)",
+      "executable": "C:\\Users\\runneradmin\\.cargo\\bin\\rustc.exe"
+    },
+    "rustdoc": {
+      "version": "rustdoc 1.98.1 (48a229cea 2026-09-01)",
+      "executable": "C:\\Users\\runneradmin\\.cargo\\bin\\rustdoc.exe"
+    }
+  },
+  "rustcHost": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+  "runner": {
+    "os": "Windows",
+    "image": "win25-vs2026",
+    "imageVersion": "20260925.250.1",
+    "repository": "gustavomhss/HuGR-Lean",
+    "sha": "aef4dca635f1d872274a880f66f26cdc1c3a4816",
+    "runId": "38154601673",
+    "runAttempt": "1"
+  },
+  "environment": {
+    "CARGO_NET_OFFLINE": "true",
+    "CARGO_TERM_COLOR": "never",
+    "note": "CARGO_TARGET_DIR unset unless cargoTargetDir names it. Offline/color are environment facts. Other host configuration inherited."
+  },
+  "sourcesBefore": [
+    {
+      "file": "native/Cargo.toml",
+      "text": "[package]\nname = \"native_item_fixture\"\nversion = \"0.1.0\"\nedition = \"2021\"\n[lib]\npath = \"native.rs\"\n",
+      "bytes": 99,
+      "sha256": "cd029c65e288fd1425d2bd08a35b9fc9ea37a6f9ae835847c30c80e7c7dca6c7"
+    },
+    {
+      "file": "native/native.rs",
+      "text": "#[test] fn case_0() { assert_eq!(1, 1); }\n#[test] fn case_1() { assert_eq!(1, 1); }\n#[test] fn case_2() { assert_eq!(1, 1); }\n#[test] fn case_3() { assert_eq!(1, 1); }\n#[test] fn case_4() { assert_eq!(1, 1); }\n#[test] fn case_5() { assert_eq!(1, 1); }\n#[test] fn case_6() { assert_eq!(1, 1); }\n#[test] fn case_7() { assert_eq!(1, 1); }\n#[test] fn case_8() { assert_eq!(1, 1); }\n#[test] fn case_9() { assert_eq!(1, 1); }\n#[test] fn case_10() { assert_eq!(1, 1); }\n#[test] fn case_11() { assert_eq!(1, 1); }\n#[test] fn case_12() { assert_eq!(1, 1); }\n#[test] fn case_13() { assert_eq!(1, 1); }\n#[test] fn case_14() { assert_eq!(1, 1); }\n#[test] fn case_15() { assert_eq!(1, 1); }\n#[test] fn case_16() { assert_eq!(1, 1); }\n#[test] fn case_17() { assert_eq!(1, 1); }\n#[test] fn case_18() { assert_eq!(1, 1); }\n#[test] fn case_19() { assert_eq!(1, 1); }\n#[test] fn case_20() { assert_eq!(1, 1); }\n#[test] fn case_21() { assert_eq!(1, 1); }\n#[test] fn case_22() { assert_eq!(1, 1); }\n#[test] fn case_23() { assert_eq!(1, 1); }\n#[test] fn case_24() { assert_eq!(1, 1); }\n#[test] fn case_25() { assert_eq!(1, 1); }\n#[test] fn case_26() { assert_eq!(1, 1); }\n#[test] fn case_27() { assert_eq!(1, 1); }\n#[test] fn case_28() { assert_eq!(1, 1); }\n#[test] fn case_29() { assert_eq!(1, 1); }\n",
+      "bytes": 1280,
+      "sha256": "899133e9e9bcd98eafffb8b3400304b4ca24056b5cb633a4678c53b51ecf5641"
+    },
+    {
+      "file": "c02w/Cargo.toml",
+      "text": "[package]\nname = \"c02w\"\nversion = \"0.1.0\"\nedition = \"2021\"\n\n[[test]]\nname = \"contract\"\npath = \"checks/contract.rs\"\n",
+      "bytes": 115,
+      "sha256": "b75892172af53577172789c26a6e43f21dbaf0b9a5fcff2168b80dd4349b0d75"
+    },
+    {
+      "file": "c02w/src/lib.rs",
+      "text": "/// Adds two numbers.\n///\n/// ```\n/// assert_eq!(c02w::add(2, 2), 4);\n/// ```\npub fn add(a: u32, b: u32) -> u32 { a + b }\n\n/// Identity.\n///\n/// ```\n/// assert_eq!(c02w::identity(7), 7);\n/// ```\npub fn identity(v: u32) -> u32 { v }\n\n#[cfg(test)]\nmod tests {\n    #[test] fn alpha_one() { assert_eq!(super::add(1, 1), 2); }\n    #[test] fn alpha_two() { assert_eq!(super::add(1, 2), 3); }\n    #[test] fn alpha_three() { assert_eq!(super::identity(3), 3); }\n    #[test] fn alpha_four() { assert_eq!(super::identity(4), 4); }\n    #[test] #[ignore = \"native skip: café 🦀 — retained\"] fn alpha_skipped() {}\n}\n",
+      "bytes": 608,
+      "sha256": "833ef3981dbdd0774cc81ed5d04a0878cf73eb620ab5a9c80984841d6e0b6530"
+    },
+    {
+      "file": "c02w/tests/integration.rs",
+      "text": "#[test] fn integration_0() { assert_eq!(1, 1); }\n#[test] fn integration_1() { assert_eq!(1, 1); }\n#[test] fn integration_2() { assert_eq!(1, 1); }\n",
+      "bytes": 147,
+      "sha256": "fd3bfb0a334cf8e338d931623b35da017dd86af0b08c181ffae53fdb1717b798"
+    },
+    {
+      "file": "c02w/checks/contract.rs",
+      "text": "#[test] fn contract_0() { assert_eq!(1, 1); }\n#[test] fn contract_1() { assert_eq!(1, 1); }\n",
+      "bytes": 92,
+      "sha256": "743b128d5adb718d5b197fade5a46c8ebe3a5f299a263949cfe5f48f03b9151c"
+    },
+    {
+      "file": "c02f/Cargo.toml",
+      "text": "[package]\nname = \"c02f\"\nversion = \"0.1.0\"\nedition = \"2021\"\n",
+      "bytes": 59,
+      "sha256": "23d666975dde95e4cb9d68893533c420776af3d816facb9aa0ca51b7fb7db0cc"
+    },
+    {
+      "file": "c02f/src/lib.rs",
+      "text": "#[cfg(test)]\nmod tests {\n    #[test] fn passes() { assert_eq!(1, 1); }\n    #[test] fn fails() { assert_eq!(1, 2, \"NATIVE FAILURE MUST KEEP café 🦀\"); }\n}\n",
+      "bytes": 157,
+      "sha256": "ea07075213d75be04cd10aa343620fb594e4c3069f210bf82dab7530bd0af01c"
+    }
+  ],
+  "sourcesUnchangedAfter": true,
+  "unexpectedOutcomes": [],
+  "producer": {
+    "file": "provenance/windows-capture.mjs",
+    "bytes": 8861,
+    "sha256": "cf298819b291358402139a6e255c851ad2f05a1439aa4cf7de4d8fd717f67bd8",
+    "modifications": "Original continuation; no donor."
+  },
+  "cases": [
+    {
+      "name": "C02/windows-native-lib",
+      "command": "cargo test",
+      "argv": [
+        "test"
+      ],
+      "file": "windows-native-lib.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\native",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:15:59.080Z",
+      "end": "2026-10-11T16:16:09.882Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 1127,
+        "sha256": "ca6944733cde0ef88f362da799298bf688f4c484a50d70bb46e11980002c079f",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-default",
+      "command": "cargo test",
+      "argv": [
+        "test"
+      ],
+      "file": "windows-default.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:09.884Z",
+      "end": "2026-10-11T16:16:11.364Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 1284,
+        "sha256": "899181a2af052af14f0584c444b4deb0ad8ebff09515e929a0a7b191afb0e255",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-lib",
+      "command": "cargo test --lib",
+      "argv": [
+        "test",
+        "--lib"
+      ],
+      "file": "windows-lib.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:11.365Z",
+      "end": "2026-10-11T16:16:11.441Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 461,
+        "sha256": "109bf60d85b7a2702e54630ad2bddb1c7cbe37d8f7d96deb049d8201939af32b",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-test-target",
+      "command": "cargo test --offline --color never --test integration",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--test",
+        "integration"
+      ],
+      "file": "windows-test-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:11.441Z",
+      "end": "2026-10-11T16:16:11.508Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 351,
+        "sha256": "9a81d6d80eeb3b91565db08408de30bc268f0a5fa9e084c8dda61f1c12c783c2",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-custom-test",
+      "command": "cargo test --offline --color never --test contract",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--test",
+        "contract"
+      ],
+      "file": "windows-custom-test.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:11.509Z",
+      "end": "2026-10-11T16:16:11.566Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 314,
+        "sha256": "273e569daf9582e8cfc1e6a1bd9f9a54dd5e81688afd3eac93dcf05b7e398f1c",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-release-target",
+      "command": "cargo test --offline --color never --lib --release --target x86_64-pc-windows-msvc",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--lib",
+        "--release",
+        "--target",
+        "x86_64-pc-windows-msvc"
+      ],
+      "file": "windows-release-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:11.567Z",
+      "end": "2026-10-11T16:16:12.313Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 566,
+        "sha256": "cea56e9bc790acdfe06b30f57715e3c889d32ec1468b6a64fdbad55ab428be69",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-absolute-target",
+      "command": "cargo test --offline --color never --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--lib"
+      ],
+      "file": "windows-absolute-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\shared\\target",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:12.314Z",
+      "end": "2026-10-11T16:16:12.886Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 618,
+        "sha256": "2167782112f5387dc9e611359058af3a336b74497d964eb96c812d9ad21392ef",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-verbatim-target",
+      "command": "cargo test --offline --color never --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--lib"
+      ],
+      "file": "windows-verbatim-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": "\\\\?\\C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\verbatim\\target",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:12.887Z",
+      "end": "2026-10-11T16:16:13.343Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 624,
+        "sha256": "c4f1f36944d5d0a23b73c226f8f72bf8f5e14101a54a97a717938e98936e6ece",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-unc-target",
+      "command": "cargo test --offline --color never --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--lib"
+      ],
+      "file": "windows-unc-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": "\\\\localhost\\C$\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\unc\\target",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:13.343Z",
+      "end": "2026-10-11T16:16:14.460Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 627,
+        "sha256": "d39371fe581318722f2a4311881ddf5fc536566c6762ab60ab781d0fc12dcf10",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-verbatim-unc-target",
+      "command": "cargo test --offline --color never --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--lib"
+      ],
+      "file": "windows-verbatim-unc-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": "\\\\?\\UNC\\localhost\\C$\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\verbatim-unc\\target",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:14.460Z",
+      "end": "2026-10-11T16:16:15.579Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 642,
+        "sha256": "b1bb7c9fd071ce3faf7b3f1afa5b61ad4ce6450ce3fa2019ddd114f84136e43b",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-renamed-target",
+      "command": "cargo test --offline --color never --lib",
+      "argv": [
+        "test",
+        "--offline",
+        "--color",
+        "never",
+        "--lib"
+      ],
+      "file": "windows-renamed-target.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02w",
+      "cargoTargetDir": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\shared-target",
+      "termination": {
+        "kind": "exited",
+        "code": 0
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:15.579Z",
+      "end": "2026-10-11T16:16:16.162Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 618,
+        "sha256": "72a3e99b923f6cd33a00b0b4f4c7b70c456cc1bcdb139397561d266dbb41dbb0",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    },
+    {
+      "name": "C02/windows-failure",
+      "command": "cargo test",
+      "argv": [
+        "test"
+      ],
+      "file": "windows-failure.txt",
+      "cwd": "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\c02-windows-affIoT\\c02f",
+      "cargoTargetDir": null,
+      "termination": {
+        "kind": "exited",
+        "code": 101
+      },
+      "completeness": "complete",
+      "presentation": "unknown",
+      "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+      "platform": "win32/x64",
+      "start": "2026-10-11T16:16:16.163Z",
+      "end": "2026-10-11T16:16:16.674Z",
+      "error": null,
+      "signal": null,
+      "boundary": {
+        "mechanism": "shared open regular-file descriptor for stdout/stderr; native OS order, no rewriting",
+        "stdin": "ignored",
+        "tty": false,
+        "timeoutMs": 300000,
+        "bytes": 756,
+        "sha256": "2824987f4f2c8582acec71095b80e89bf20ec14cde069378ebc2736ba5d41e8b",
+        "crlfRows": 0,
+        "finalLF": true
+      }
+    }
+  ]
+}

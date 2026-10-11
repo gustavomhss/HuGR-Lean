@@ -53,7 +53,8 @@ function accepted(obs: Observation, expected: string): void {
 
 test("C02 exports cargo-test only; native inventory and original boundary hashes", () => {
   assert.deepEqual(familyProfiles.map(p => p.id), ["cargo-test"]);
-  assert.equal(cases.length, 35);
+  assert.equal(cases.length, 47);
+  assert.equal(cases.filter(c => c.name.startsWith("C02/windows-")).length, 12);
   assert.equal(new Set(cases.map(c => c.name)).size, cases.length);
   for (const c of cases) {
     const receipt = JSON.parse(read(c.provenance.receipt));
@@ -71,7 +72,8 @@ test("C02 exports cargo-test only; native inventory and original boundary hashes
 for (const c of cases) {
   test(`${c.name}: public filter native golden; original baseline red or exact witness`, () => {
     const obs = observation(c), expected = read(c.expectedFile);
-    assert.equal(filter(obs, { profiles: cargoProfiles }).status, "passthrough", "original parser remains narrow");
+    // Windows captures of legacy-shaped argv reach the original parser's grammar in Windows spelling (see Windows suite).
+    if (!c.name.startsWith("C02/windows-")) assert.equal(filter(obs, { profiles: cargoProfiles }).status, "passthrough", "original parser remains narrow");
     if (c.status === "reduced") accepted(obs, expected);
     else { assert.equal(expected, obs.output); exact(obs); }
   });

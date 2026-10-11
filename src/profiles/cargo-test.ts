@@ -1,4 +1,4 @@
-import { cargoProfiles } from "./cargo.js";
+import { cargoProfiles, windowsDirectory, windowsSource, windowsStem } from "./cargo.js";
 import { tokenizeCommand } from "../core/command.js";
 import { iterateLines } from "../core/lines.js";
 import type { Line, Observation, Profile, Reduction } from "../core/types.js";
@@ -101,6 +101,9 @@ const finishRow = new RegExp(`^    Finished \u0060(${identifier})\u0060 profile 
 const summaryRow = /^test result: ok\. (\d+) passed; 0 failed; (\d+) ignored; 0 measured; (\d+) filtered out; finished in (\d+(?:\.\d+)?)s$/;
 const executableRow = new RegExp(`^     Running ((?:unittests )?([^\\s()]+\\.rs)) \\(((?:/[^\\s()]+/)?target/(?:(` +
   `${tripleSyntax})/)?(${identifier})/(deps|examples)/([^/\\s()]+))\\)$`);
+/** Same groups in Windows spelling (see cargo.ts): backslash paths, optional absolute directory, `.exe` binary. */
+const windowsExecutableRow = new RegExp(String.raw`^     Running ((?:unittests )?(${windowsSource})) \(((?:${windowsDirectory})?target\\` +
+  String.raw`(?:(${tripleSyntax})\\)?(${identifier})\\(deps|examples)\\(${windowsStem})\.exe)\)$`);
 const docHeader = /^   Doc-tests ([A-Za-z0-9_-]+)$/;
 const docMetrics = /^all doctests ran in (\d+(?:\.\d+)?)s; merged doctests compilation took (\d+(?:\.\d+)?)s$/;
 function seconds(text: string, minute = false): boolean {
@@ -140,14 +143,21 @@ function delta(output: string, c: Command, legacyArgv: boolean): Reduction | und
       !seconds(finish[5]!, finish[4] !== undefined) || (finish[4] !== undefined && (!uint(finish[4]) || Number(finish[4]) < 1))) return undefined;
   const kept: Line[] = [finished], executables = new Set<string>(), docs = new Set<string>();
   const mode = c.profile === "test" || c.profile === "dev" ? "debug" : c.profile;
-  let suites = 0;
+  let suites = 0, windowsHost: boolean | undefined;
   blanks();
   while (row) {
-    const header = take()!, executable = executableRow.exec(header.text), doc = docHeader.exec(header.text);
+    const header = take()!, posix = executableRow.exec(header.text);
+    const windows = posix ? null : windowsExecutableRow.exec(header.text), doc = docHeader.exec(header.text);
+    const executable = posix ?? windows;
     if (!executable && !doc) return undefined;
-    const isDoc = Boolean(doc), context = executable?.[1] ?? doc![1]!;
+    // Windows source paths compare in `/` form; the retained row stays the native source text.
+    const slash = (text: string) => windows ? text.replaceAll("\\", "/") : text;
+    const isDoc = Boolean(doc), context = executable ? slash(executable[1]!) : doc![1]!;
     if (executable) {
-      const [, , source, , target, profile, kind, name] = executable;
+      // One host per output: Windows and POSIX spellings never mix.
+      if (windowsHost !== undefined && windowsHost !== Boolean(windows)) return undefined;
+      windowsHost = Boolean(windows);
+      const [, , rawSource, , target, profile, kind, name] = executable, source = slash(rawSource!);
       // Bare/color-only fallback retains the legacy header vocabulary. New argv owns custom paths.
       if (legacyArgv && (!/^(?:unittests [^\s()]+\.rs|tests\/[^\s()]+\.rs)$/.test(context) || kind !== "deps")) return undefined;
       const identity = `${target ?? ""}/${profile}/${kind}/${name}`;
