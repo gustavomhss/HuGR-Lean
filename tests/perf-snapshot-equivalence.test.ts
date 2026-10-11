@@ -393,3 +393,25 @@ test("seeded mutator: optimized reducer matches the original on >= 5,000 mutated
   assert.ok(reduced >= target / 10 && refused >= target / 10, `mutants reduced ${reduced}, refused ${refused}`);
   console.log(`differential cases: ${tally.cases} total (mutants ${target}: reduced ${reduced}, refused ${refused})`);
 });
+
+test("fence-scoped ### Error markers and the control-character bound match the original", () => {
+  const tree = "### Snapshot\n```yaml\n- button [ref=e1]\n- button [ref=e2]\n```\n";
+  const fencedError = observation("```\n### Error\n```\n" + tree), bareError = observation("### Error\n" + tree);
+  same(fencedError, "### Error inside an unrelated fence");
+  same(bareError, "unfenced ### Error");
+  assert.equal(typeof outcome(reduceAutomaticSnapshot, fencedError), "string", "fenced ### Error is content, not a protocol marker");
+  assert.equal(outcome(reduceAutomaticSnapshot, bareError), undefined, "unfenced ### Error refuses");
+  // Code units below 32 refuse anywhere in a payload (names, quoted text, attributes); DEL (0x7f) is ordinary text.
+  for (const [char, admitted] of [["\x00", false], ["\x1e", false], ["\x1f", false], ["\x7f", true], [" ", true]] as const) {
+    const label = `U+${char.charCodeAt(0).toString(16).padStart(4, "0")}`;
+    for (const input of [
+      observation(wrap(`- generic [ref=e1]:\n  - button "a${char}b" [ref=e2]\n`)),
+      observation(wrap(`- generic [ref=e1]:\n  - textbox [ref=e2]: x${char}y\n`)),
+      observation(wrap(`- generic [ref=e1]:\n  - button [ref=e2] [data=${char}]\n`)),
+      observation(`## Latest page snapshot\nuid=1_0 RootWebArea "a${char}b"\n  uid=1_1 button x${char}y\n`, "take_snapshot"),
+    ]) {
+      same(input, `${label} in ${input.tool}`);
+      assert.equal(typeof outcome(reduceAutomaticSnapshot, input), admitted ? "string" : "undefined", `${label} in ${input.tool}`);
+    }
+  }
+});
