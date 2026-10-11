@@ -108,7 +108,10 @@ test("native bash frozen producers, shell facts and legacy precedence", () => {
     assert.equal(run(input, { ...native, args: { command } }).status, "reduced", command);
   }
   for (const command of ['unknown --json', 'node --test script.js', 'python -m pytest', 'npm ls', 'docker ps',
-    'kubectl get pods', 'gh issue list', 'curl localhost | jq .', 'git status']) {
+    'kubectl get pods', 'gh issue list', 'curl localhost | jq .', 'git status',
+    // Package CLIs (native corpus: Playwright/Vitest JSON reporters) stay with their exact families.
+    '/usr/local/bin/node /p/node_modules/@playwright/test/cli.js test --reporter=json',
+    'node node_modules/vitest/vitest.mjs run --reporter=json', 'node C:\\p\\node_modules\\jest\\bin\\jest.js --json']) {
     assert.notEqual(run(input, { ...native, args: { command } }).status, "reduced", command);
   }
   for (const metadata of [{}, { exit: 1, truncated: false }, { exit: 0, truncated: true }]) {

@@ -42,7 +42,8 @@ export function jsonCarrier(observation: AutomaticObservation): boolean {
   const [executable, ...args] = argv, name = executable!.split(/[\\/]/).at(-1)!.replace(/\.exe$/i, "").toLowerCase();
   const pair = (flags: string[], value: string) => args.some((arg, i) => flags.includes(arg) && args[i + 1] === value);
   switch (name) {
-    case "node": return args.length > 0 && !args.some(arg => arg === "--test" || arg.startsWith("--test="));
+    // User scripts only: package CLIs under node_modules (test runners, bundlers) keep their own exact families.
+    case "node": return args.length > 0 && !args.some(arg => arg === "--test" || arg.startsWith("--test=") || arg.split(/[\\/]/).includes("node_modules"));
     case "python": case "python3": return args.length > 0 && !pair(["-m"], "pytest");
     case "jq": case "curl": return true;
     case "system_profiler": return args.includes("-json");
