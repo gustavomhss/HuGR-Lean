@@ -87,9 +87,12 @@ const host = spawnSync('rustc', ['-vV'], { env: base, encoding: 'utf8' }).stdout
 const triple = /^host: (\S+)$/m.exec(host)?.[1];
 if (!triple) throw Error('HOST_TRIPLE_UNKNOWN');
 const drive = work.slice(0, 1);
-const shared = path.join(work, 'shared-target');
-const verbatim = `\\\\?\\${path.join(work, 'verbatim-target')}`;
-const unc = `\\\\localhost\\${drive}$${path.join(work, 'unc-target').slice(2)}`;
+// Absolute target directories outside the package; the grammar keys on a final `target` directory, as on POSIX.
+const shared = path.join(work, 'shared', 'target');
+const renamed = path.join(work, 'shared-target');
+const verbatim = `\\\\?\\${path.join(work, 'verbatim', 'target')}`;
+const unc = `\\\\localhost\\${drive}$${path.join(work, 'unc', 'target').slice(2)}`;
+const verbatimUnc = `\\\\?\\UNC\\localhost\\${drive}$${path.join(work, 'verbatim-unc', 'target').slice(2)}`;
 const color = ['--offline', '--color', 'never'];
 // [name, project, argv, display command, target dir override, expected exit]
 const cases = [
@@ -103,6 +106,8 @@ const cases = [
   ['windows-absolute-target', 'c02w', ['test', ...color, '--lib'], 'cargo test --offline --color never --lib', shared, 0],
   ['windows-verbatim-target', 'c02w', ['test', ...color, '--lib'], 'cargo test --offline --color never --lib', verbatim, 0],
   ['windows-unc-target', 'c02w', ['test', ...color, '--lib'], 'cargo test --offline --color never --lib', unc, 0],
+  ['windows-verbatim-unc-target', 'c02w', ['test', ...color, '--lib'], 'cargo test --offline --color never --lib', verbatimUnc, 0],
+  ['windows-renamed-target', 'c02w', ['test', ...color, '--lib'], 'cargo test --offline --color never --lib', renamed, 0],
   ['windows-failure', 'c02f', ['test'], 'cargo test', undefined, 101],
 ];
 const receipts = [], surprises = [];
