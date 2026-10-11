@@ -41,6 +41,34 @@ First run on candidate `9d34282` (19 cases proved). Five cases hit their deadlin
 
 Limits: explicit host byte-clipping wrapper not induced; Linux/Windows hosts and other OpenCode routes not proven; Linux `ps` grammar not observed natively. Proof harness: `scripts/automatic-host-proof.mjs`; operational bridges and artifact roots are local temporary files, retained with failures.
 
+## Measurements after merge
+
+**Latency.** The merged plug-and-play head was then benchmarked on GitHub Actions; see [BENCHMARK.md](BENCHMARK.md#automatic-native-views-2026-10-11). Only native grep/glob met the existing p95 budgets; JSON, snapshots, CDP and ps were 2–6× over. Four optimization rounds brought all 17 workloads within budget on Linux, macOS and Windows, for core and adapter alike, without changing any result:
+- shared JSON scanner and renderer;
+- snapshot reducer;
+- JSON/CDP/ps reducers;
+- MCP error detection;
+- a streaming lexical JSON path with early refusal at the node limit.
+
+Every round passed differential tests against verbatim copies of the previous implementation (a few hundred thousand generated cases per round, including JSON.parse acceptance), mutation probes, and an independent cold review with its own fuzzing (up to 7.9M parser inputs). Every review ended APPROVE. Accepted P3 notes, none of which changes any result:
+- On an already refused reduction, the renderer may now throw a different error class or read more required spans before failing. Both callers catch every error and keep the original output.
+- Shared formatting piece objects in `auto-json` are frozen.
+
+**Savings in real use.** Recorded OpenCode tool results (the Lean plugin was not installed when they were produced) were replayed locally through the compiled plugin hook. Only aggregates were kept; the raw exports were deleted.
+
+| Set | Results | Bytes | Legacy only | Default (automatic) |
+| --- | ---: | ---: | ---: | ---: |
+| One long campaign session family | 8,190 | 37.0 MB | 0.0003% | 1.13% |
+| Whole local history | 307,681 | 1,444.9 MB | 0.015% | 0.81% |
+
+By tool, over the whole history: glob −36%, grep −6%, bash −0.14%, read −0.02%. Webfetch, skill and task results are never transformed, and file-content reads are excluded by contract. The largest unfiltered volumes are:
+- file reads: 669 MB (source and Markdown);
+- `git diff`/`git show`: 123 MB;
+- `git status`: 47 MB (outside the admitted English long form or behind `cd … &&`);
+- `gh run`: 45 MB.
+
+These, not more JSON/snapshot formats, decide real savings.
+
 ## CI
 
 First run [38099473582](https://github.com/gustavomhss/HuGR-Lean/actions/runs/38099473582) on `90f8ef9` failed tests on all three OS (structure/typecheck passed; build, smoke and pack did not run). Causes, all fixed:
