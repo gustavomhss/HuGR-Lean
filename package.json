@@ -1,6 +1,6 @@
 {
   "name": "hugr-lean",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Small, local, deterministic tool-output filtering for coding agents",
   "type": "module",
   "license": "MIT",

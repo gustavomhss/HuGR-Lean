@@ -31,5 +31,9 @@ No GPL runtime implementation was copied into HuGR-Lean.
 The package.json files allowlist includes docs, module Markdown and fixture
 SOURCES.md, not all raw fixtures, CASES, receipts, producer assets or fixture
 license archives. Root licenses/TRS-MIT.txt remains the shipped donor license.
-Final tarball inspection is pending; producer license references in SOURCES.md
-describe repository evidence, not shipment of those producers or their assets.
+Automatic fixture source notes under fixtures/automatic/{browser,cli,files,host}/
+SOURCES.md are shipped too. CI checks every tracked fixture SOURCES.md against
+the installed tarball byte-for-byte and retains copies with their SHA-256 hashes,
+the archive and package-provenance.json in lean-package-<candidate-sha>.
+Producer license references in SOURCES.md describe repository evidence, not
+shipment of those producers or their assets.

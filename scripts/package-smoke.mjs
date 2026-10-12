@@ -8,6 +8,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { ROOT, readCorpus } from "./benchmark.mjs";
 import { assertCorpusCoverage } from "./native-corpus.mjs";
 import { isolatedEnvironment, runProcess } from "./opencode-boundary.mjs";
+import { PACKAGE_API_INSPECT } from "./package-api.mjs";
 
 // The inspector executes in the temporary consumer, using package names (and Node's exports resolver).
 // Its built-in assertions cannot be replaced by a fixture package's own test script.
@@ -127,6 +128,7 @@ assert.equal(entries.length, 1);
 assert.equal(entries[0].id, id);
 await raw.purge();
 assert.equal(await raw.get(id), undefined, "Installed /raw purge failed");
+await (async () => { ${PACKAGE_API_INSPECT} })();
 console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, exactFamilies: evidence.exactFamilies, fixtureCount: rows.length, fixtures: rows,
   plugin: { loaded: true, reduced: true, nonzeroExitExact: true, fixtureCount: evidence.cases.length }, raw: { exact: true, inputBytes: Buffer.byteLength(text, "utf8"), tempfile: true, purged: true } }));
 `;

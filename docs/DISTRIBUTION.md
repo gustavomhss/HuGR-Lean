@@ -45,11 +45,12 @@ The private baseline receipt is not an available public evidence bundle.
 The README uses `npm ci`, then normal `npm pack` (whose `prepack` builds the package),
 then installation of that local archive into a writable npm prefix, followed by doctor.
 
-The snapshot retains package version `0.2.0`. Its filename and reported version do not establish
+The current candidate uses package version `0.3.0`. CI retains `lean-package-<candidate-sha>`
+with its tarball, candidate identity, archive digests/integrity and byte-verified shipped materials. Its filename and reported version do not establish
 identity with the original `v0.2.0` release tarball. Treat every rebuilt tarball as a separate
 snapshot artifact unless its bytes are independently matched to the original recorded checksum.
 Pinning source does not promise a byte-reproducible npm archive. Record the actual local path,
-checksum and full source SHA; keep separate artifacts for upgrade and rollback even at `0.2.0`.
+checksum and full source SHA; keep separate artifacts for upgrade and rollback even when the reported versions match.
 
 The historical native corpus remains unrecovered for a fresh verification pass:
 `hugr-lean-real-world-20260930.tar.gz`, 2,242,474 bytes, SHA-256
@@ -57,7 +58,7 @@ The historical native corpus remains unrecovered for a fresh verification pass:
 Git source history cannot replace it. Historical benchmark links retain their original identity;
 they do not claim current availability or new-head verification.
 
-The next release/version, publication, corpus disposition and practical-usefulness judgment
+The 0.3.0 version bump is authorized; release publication, corpus disposition and practical-usefulness judgment
 require explicit human decisions. See the single [delivery status](DELIVERY.md) for pending
 verification and deferred Actions. Historical measurements, donor pins and fixture provenance
 continue to describe their original evidence.
