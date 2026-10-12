@@ -171,27 +171,27 @@ function families(t) {
   const globArgs = { pattern: "**/*.txt", path: t.directory };
   const curl = "curl -fsS http://127.0.0.1:56643/inventory";
   return [
-    { id: "mcp-json", profile: "auto-json", source: "automatic-proof-server.mjs MCP packet (OpenCode 1.18.17 host proof shape), JSON.stringify(json, null, 2)",
+    { id: "mcp-json", profile: "mcp-json", source: "automatic-proof-server.mjs MCP packet (OpenCode 1.18.17 host proof shape), JSON.stringify(json, null, 2)",
       ...mcp("proof_inventory", { mode: "json" }), build: (n) => {
         const { text, structuredContent } = inventoryPacket(n);
         return { text, annotations: { audience: ["assistant"] }, packet: { structuredContent, _meta: { source: "original-mit-local-producer", ref: "e42" } } };
       } },
-    { id: "cdp-ax", profile: "auto-cdp", source: "fixtures/automatic/browser/native/playwright.json browser_run_code_unsafe (Accessibility.getFullAXTree)",
+    { id: "cdp-ax", profile: "mcp-cdp-accessibility", source: "fixtures/automatic/browser/native/playwright.json browser_run_code_unsafe (Accessibility.getFullAXTree)",
       ...mcp("browser_run_code_unsafe", t.pwRunCode.args), build: ((b) => (n) => ({ text: b(n) }))(cdpBuilder(t.pwRunCode)), roundTrip: t.pwRunCode.text },
-    { id: "playwright-snapshot", profile: "auto-snapshot", source: "fixtures/automatic/browser/native/playwright.json browser_snapshot",
+    { id: "playwright-snapshot", profile: "mcp-browser-snapshot", source: "fixtures/automatic/browser/native/playwright.json browser_snapshot",
       ...mcp("browser_snapshot", t.pwSnapshot.args), build: ((b) => (n) => ({ text: b(n) }))(playwrightBuilder(t.pwSnapshot)), roundTrip: t.pwSnapshot.text },
-    { id: "devtools-snapshot", profile: "auto-snapshot", source: "fixtures/automatic/browser/native/devtools.json take_snapshot",
+    { id: "devtools-snapshot", profile: "mcp-devtools-snapshot", source: "fixtures/automatic/browser/native/devtools.json take_snapshot",
       ...mcp("take_snapshot", t.devtools.args), build: ((b) => (n) => ({ text: b(n) }))(devtoolsBuilder(t.devtools)), roundTrip: t.devtools.text },
-    { id: "native-grep", profile: "auto-files", source: "fixtures/automatic/files/host-grep.jsonl (OpenCode 1.18.17 host capture)",
+    { id: "native-grep", profile: "native-grep", source: "fixtures/automatic/files/host-grep.jsonl (OpenCode 1.18.17 host capture)",
       carrier: "native", tool: "grep", args: t.grepArgs,
       build: (n) => { const text = grepText(n); return { text, metadata: { matches: n, truncated: false } }; } },
-    { id: "native-glob", profile: "auto-files", source: "OpenCode 1.18.17 glob grammar (fixtures/automatic/files/native.json, host BASELINE.md shape)",
+    { id: "native-glob", profile: "native-glob", source: "OpenCode 1.18.17 glob grammar (fixtures/automatic/files/native.json, host BASELINE.md shape)",
       carrier: "native", tool: "glob", args: globArgs,
       build: (n) => ({ text: inventoryRows(t, n).map((row) => row.path).join("\n"), metadata: { count: n, truncated: false } }) },
-    { id: "darwin-ps", profile: "auto-cli", source: "fixtures/automatic/cli/darwin-ps-axo.json (macOS 15.3.2 /bin/ps)",
+    { id: "darwin-ps", profile: "cli-ps", source: "fixtures/automatic/cli/darwin-ps-axo.json (macOS 15.3.2 /bin/ps)",
       carrier: "native", tool: "bash", args: { command: "ps -axo pid,ppid,stat,comm", description: "List processes" },
       build: ((b) => (n) => { const text = b(n); return { text, metadata: { output: text, exit: 0, truncated: false } }; })(psBuilder(t.ps)) },
-    { id: "bash-curl-json", profile: "auto-json", source: "automatic-host-proof.mjs curl JSON API (OpenCode 1.18.17 host proof), JSON.stringify(json, null, 2)",
+    { id: "bash-curl-json", profile: "cli-json-producers", source: "automatic-host-proof.mjs curl JSON API (OpenCode 1.18.17 host proof), JSON.stringify(json, null, 2)",
       carrier: "native", tool: "bash", args: { command: curl, description: "Read local JSON API" },
       build: (n) => { const text = JSON.stringify({ files: inventoryRows(t, n), scope: t.directory }, null, 2);
         return { text, metadata: { output: text, exit: 0, truncated: false } }; } },

@@ -53,7 +53,8 @@ test("automatic evidence cannot be bypassed by live formatting or reducer getter
   assert.equal(filterAutomatic(input("ab    "), { reducers: [entry] }).status, "reduced"); assert.equal(calls, 1);
 });
 test("automatic facts reject contradictory failure and truncation metadata for every source", () => {
-  for (const metadata of [{ truncated: true }, { truncated: "false" }, { exit: 1 }, { exit: null }]) {
+  for (const metadata of [{ truncated: true }, { truncated: "false" }, { exit: 1 }, { exit: null },
+    Object.create({ exit: 1 }), Object.defineProperty({}, "truncated", { value: true })]) {
     const result = filterAutomatic({ ...input(' { "x": 1 } '), metadata });
     assert.equal(result.status, "passthrough"); assert.equal("replacement" in result, false);
   }

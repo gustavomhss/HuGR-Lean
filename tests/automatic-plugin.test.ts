@@ -112,6 +112,8 @@ test("MCP commit after raw save requires the exact validated packet and keeps in
 test("MCP commit after raw save revalidates failure, truncation and binary facts on the live packet", async () => {
   const text = " ".repeat(2048) + '{"ref":"e42"}';
   const mutations: ((output: Record<string, unknown>) => void)[] = [
+    output => { output.metadata = Object.create({ exit: 1 }); },
+    output => { output._meta = Object.defineProperty({}, "truncated", { value: true }); },
     output => { output.metadata = { truncated: true }; },
     output => { output._meta = { truncated: true }; },
     output => { output.metadata = { exit: 1 }; },

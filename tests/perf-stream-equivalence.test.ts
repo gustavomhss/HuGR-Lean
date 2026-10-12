@@ -114,7 +114,9 @@ function checkText(text: string, label: string): void {
 
 const pairs: [string, AutomaticReducer, AutomaticReducer][] = [["auto-cdp", ref.reduceAutomaticCdp, reduceAutomaticCdp], ["auto-json", ref.reduceAutomaticJson, next.reduceAutomaticJson]];
 const referenceRegistry: AutomaticEntry[] = automaticReducers.map(entry =>
-  ({ id: entry.id, reduce: entry.id === "auto-cdp" ? ref.reduceAutomaticCdp : entry.id === "auto-json" ? ref.reduceAutomaticJson : entry.reduce }));
+  ({ id: entry.id, reduce: entry.id === "mcp-cdp-accessibility" || entry.id === "cli-json-producers"
+    ? observation => ref.reduceAutomaticCdp(observation) ?? ref.reduceAutomaticJson(observation)
+    : entry.id === "mcp-json" ? ref.reduceAutomaticJson : entry.reduce }));
 /** Reducer level: both reducers in registry order on one shared object per side, then reversed on fresh objects. */
 function checkObservation(observation: Obs, label: string, endToEnd = false): void {
   stats.observations++;

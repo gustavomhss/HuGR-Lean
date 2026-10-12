@@ -98,6 +98,10 @@ export function jsonCarrier(observation: AutomaticObservation): boolean {
     || typeof observation.args.command !== "string") return false;
   const argv = tokenizeAutomaticCommand(observation.args.command);
   if (!argv) return false;
+  return isAutomaticJsonProducer(argv);
+}
+/** Command identity only; execution and output validation remain in the reducer. */
+export function isAutomaticJsonProducer(argv: readonly string[]): boolean {
   const [executable, ...args] = argv, name = executable!.split(/[\\/]/).at(-1)!.replace(/\.exe$/i, "").toLowerCase();
   const pair = (flags: string[], value: string) => args.some((arg, i) => flags.includes(arg) && args[i + 1] === value);
   switch (name) {
