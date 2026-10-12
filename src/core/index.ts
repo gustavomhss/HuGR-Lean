@@ -1,4 +1,6 @@
 export { filter } from "./engine.js";
+export { getProfiles } from "./profile-selection.js";
+export { tokenizeCommand } from "./command.js";
 export { filterAutomatic } from "./automatic.js";
 export type { AutomaticObservation, AutomaticOptions, AutomaticReducer, AutomaticEntry } from "./automatic-types.js";
 export { filterStructured } from "./structured.js";
