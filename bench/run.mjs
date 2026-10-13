@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Runs the A/B benchmark. Arms: "base" (no plugin) and "lean" (hugr-lean 0.4.0, default options).
-// Usage: node bench/run.mjs --label full --runs 3 [--tasks a,b] [--parallel 25] [--seed 4242] [--timeout-min 25]
+// Usage: node bench/run.mjs --label full --runs 3 [--tasks a,b] [--parallel 6] [--seed 4242] [--timeout-min 25]
+//        [--min-free-mib 1024] [--max-attempts 3] [--resume] [--keep]
 import { execFileSync, spawn } from "node:child_process";
 import { closeSync, existsSync, mkdirSync, openSync, readFileSync, rmSync, statfsSync, writeFileSync } from "node:fs";
 import { arch, platform, release } from "node:os";
@@ -11,8 +12,8 @@ import { sessionMetrics, providerFailure } from "./metrics.mjs";
 import { MODEL, OPENCODE, benchDir, cloneDir, parseArgs, projectConfig, rng, runEnv } from "./common.mjs";
 
 const ARMS = ["base", "lean"];
-const MIN_FREE_BYTES = 1.5 * 2 ** 30;
 const args = parseArgs(process.argv.slice(2));
+const MIN_FREE_BYTES = Number(args["min-free-mib"] ?? 1024) * 2 ** 20;
 const root = benchDir();
 const label = String(args.label ?? "pilot");
 const runs = Number(args.runs ?? 1);
@@ -27,9 +28,13 @@ mkdirSync(join(outDir, "records"), { recursive: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const freeBytes = () => { const s = statfsSync(root); return s.bavail * s.bsize; };
 
+/** Launches wait (never fail) while free disk is below the floor; a full disk would break runs mid-session. */
 async function waitForDisk() {
-  for (let i = 0; i < 40 && freeBytes() < MIN_FREE_BYTES; i++) await sleep(15_000);
-  if (freeBytes() < MIN_FREE_BYTES) throw new Error(`disk: only ${(freeBytes() / 2 ** 20).toFixed(0)} MiB free`);
+  for (let i = 0; freeBytes() < MIN_FREE_BYTES; i++) {
+    if (existsSync(join(outDir, "STOP"))) throw new Error("stopped");
+    if (i % 20 === 0) console.log(`${new Date().toISOString()} waiting for disk: ${(freeBytes() / 2 ** 20).toFixed(0)} MiB free`);
+    await sleep(15_000);
+  }
 }
 
 function environment() {

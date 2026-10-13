@@ -14,9 +14,11 @@ Written and committed before the full run; nothing below was changed after seein
 - **Design.** 8 tasks × 2 arms × **3 runs** = 48 sessions. The owner chose n = 3 per arm per task to keep the
   wall time near one hour. With 3 runs per cell, per-task confidence intervals are wide; a per-task result is
   only called a difference when its whole 95% CI is on one side of zero.
-- **Order.** All 48 runs are shuffled with a fixed seed (4242) and executed by up to 25 parallel workers, with
+- **Order.** All 48 runs are shuffled with a fixed seed (4242) and executed by 8 parallel workers, with
   launches spaced 3 s apart. Both arms are interleaved in time, so provider-side drift and machine load hit
-  both arms alike.
+  both arms alike. (The owner allowed up to 25 parallel sessions. The bench machine has 16 GiB of RAM, 7 GiB
+  of swap in use and under 1 GiB of free disk, so 25 sessions would have swapped the disk full; the first
+  launch at 25 was stopped before any session started, and the parallelism was lowered to 8.)
 - **Primary metric.** Total input tokens per session = provider-reported uncached input + cached input
   (cache read) + cache write, summed over every model call of the session, read from `opencode export` of that
   run's own session database.
@@ -31,7 +33,9 @@ Written and committed before the full run; nothing below was changed after seein
 - **No outlier removal.** Every completed run is reported, failures and neutral cases included.
 - **Infrastructure failures.** A run whose session never reached the model, or that ended with a provider
   error (rate limit, usage limit, overload, server error), is not a task failure: it is retried from a fresh
-  workspace, up to 3 attempts, and the retries are counted and published. If the subscription hits a usage
+  workspace, up to 3 attempts, and the retries are counted and published. The same applies when the host
+  disk filled up during the run (`No space left on device`/`ENOSPC` in a tool output or OpenCode's stderr).
+  New runs only start while at least 600 MiB of disk is free. If the subscription hits a usage
   limit, the run stops and partial results are published as partial.
 - **Model.** `openai/gpt-6-luna` for every run, through the existing OpenCode OAuth login. Sessions made
   earlier with other models (`gpt-6.1-sol` during harness smoke tests) are not part of any result.

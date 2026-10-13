@@ -1,12 +1,13 @@
 // Per-run metrics computed only from the `opencode export` of that run's session.
 const RECALL_LINE = "[full output: lean recall ";
+const DISK_FULL = /No space left on device|ENOSPC|Insufficient Storage/;
 const PROVIDER_LIMIT = /rate.?limit|too many requests|\b429\b|usage limit|quota|overloaded|insufficient_quota/i;
 
 export function sessionMetrics(exported) {
   const m = {
     llmCalls: 0, inputTokens: 0, cachedInputTokens: 0, cacheWriteTokens: 0, outputTokens: 0, reasoningTokens: 0,
     toolCalls: 0, toolOutputBytes: 0, toolOutputBytesByTool: {}, leanRecallCalls: 0, leanSummaries: 0,
-    readOffsetCalls: 0, errors: [],
+    readOffsetCalls: 0, diskFullSeen: false, errors: [],
   };
   for (const message of exported.messages ?? []) {
     const info = message.info ?? {};
@@ -27,6 +28,7 @@ export function sessionMetrics(exported) {
       const bytes = Buffer.byteLength(output, "utf8");
       m.toolOutputBytes += bytes;
       m.toolOutputBytesByTool[part.tool] = (m.toolOutputBytesByTool[part.tool] ?? 0) + bytes;
+      if (DISK_FULL.test(output)) m.diskFullSeen = true;
       if (part.tool === "lean_recall") m.leanRecallCalls++;
       if (output.includes(RECALL_LINE)) m.leanSummaries++;
       if (part.tool === "read" && Number(part.state?.input?.offset) > 1) m.readOffsetCalls++;
@@ -39,6 +41,8 @@ export function sessionMetrics(exported) {
 
 /** True when the run was stopped by the provider (rate/usage limit, overload), not by the task. */
 export function providerFailure(metrics, stderr) {
+  // The host machine ran out of disk during the run: the environment, not the task, failed.
+  if (metrics.diskFullSeen || DISK_FULL.test(stderr)) return "disk-full";
   if (PROVIDER_LIMIT.test(stderr)) return "provider-limit";
   const hard = metrics.errors.filter((e) => e.name !== "MessageAbortedError");
   if (hard.some((e) => PROVIDER_LIMIT.test(`${e.name} ${e.message}`))) return "provider-limit";
