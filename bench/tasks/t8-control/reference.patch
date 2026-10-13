@@ -1,0 +1,17 @@
+diff --git a/src/utils.ts b/src/utils.ts
+index ea98aba..42944d0 100644
+--- a/src/utils.ts
++++ b/src/utils.ts
+@@ -773,3 +773,12 @@ export function withoutHost(input: string) {
+   const parsed = parseURL(input);
+   return (parsed.pathname || "/") + parsed.search + parsed.hash;
+ }
++
++/**
++ * Checks if the input starts with `https://` (case-insensitive).
++ *
++ * @group utils
++ */
++export function isHttpsURL(input: string): boolean {
++  return input.slice(0, 8).toLowerCase() === "https://";
++}

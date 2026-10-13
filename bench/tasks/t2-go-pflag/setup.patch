@@ -1,0 +1,13 @@
+diff --git a/flag.go b/flag.go
+index a4affd4..81d1302 100644
+--- a/flag.go
++++ b/flag.go
+@@ -1100,7 +1100,7 @@ func (f *FlagSet) parseLongArg(s string, args []string, fn parseFunc) (a []strin
+ 	}
+ 
+ 	var value string
+-	if len(split) == 2 {
++	if len(split) == 2 && flag.NoOptDefVal == "" {
+ 		// '--flag=arg'
+ 		value = split[1]
+ 	} else if flag.NoOptDefVal != "" {
