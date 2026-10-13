@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Runs the A/B benchmark. Arms: "base" (no plugin) and "lean" (hugr-lean 0.4.0, default options).
 // Usage: node bench/run.mjs --label full --runs 3 [--tasks a,b] [--parallel 6] [--seed 4242] [--timeout-min 25]
-//        [--min-free-mib 1024] [--max-attempts 3] [--resume] [--keep]
+//        [--min-free-mib 1024] [--max-attempts 3] [--resume] [--only runId,...] [--keep]
 import { execFileSync, spawn } from "node:child_process";
 import { closeSync, existsSync, mkdirSync, openSync, readFileSync, rmSync, statfsSync, writeFileSync } from "node:fs";
 import { arch, platform, release } from "node:os";
@@ -85,7 +85,13 @@ async function attempt(task, arm, runId, n) {
   rmSync(runDir, { recursive: true, force: true });
   mkdirSync(runDir, { recursive: true });
   const template = join(root, "templates", task.id), ws = join(runDir, "ws");
-  cloneDir(template, ws);
+  try { cloneDir(template, ws); } catch (error) {
+    // Disk can fill between the free-space check and the clone; no session started, so retry.
+    rmSync(ws, { recursive: true, force: true });
+    return { runId, task: task.id, arm, attempt: n, sessionId: null, exitCode: null, signal: null, timedOut: false,
+      wallMs: 0, infraFailure: `workspace-clone: ${String(error.message).split("\n")[0].slice(0, 120)}`, success: null,
+      checkDetail: null, metrics: null, eventErrors: [], stderrTail: "" };
+  }
   writeFileSync(join(ws, "opencode.json"), JSON.stringify(projectConfig(arm, root), null, 2));
   const proc = await runAgent(task, ws, runDir);
   const stderr = readFileSync(join(runDir, "stderr.log"), "utf8");
@@ -101,7 +107,8 @@ async function attempt(task, arm, runId, n) {
     const exported = readFileSync(join(runDir, "export.json"), "utf8");
     metrics = sessionMetrics(JSON.parse(exported.slice(exported.indexOf("{"))));
   }
-  const infra = !sid ? "no-session" : proc.timedOut ? null
+  const diskFull = metrics?.diskFullSeen || /No space left on device|ENOSPC/.test(stderr);
+  const infra = !sid ? "no-session" : diskFull ? "disk-full" : proc.timedOut ? null
     : metrics.llmCalls === 0 ? `no-llm-call: ${eventErrors[0] ?? "none"}`
     : providerFailure(metrics, `${stderr}\n${eventErrors.join("\n")}`);
   const check = infra ? null : checkWorkspace(task, ws, template);
@@ -130,8 +137,10 @@ const random = rng(seed);
 const jobs = [];
 for (const task of tasks) for (const arm of ARMS) for (let k = 1; k <= runs; k++) jobs.push({ task, arm, runId: `${task.id}__${arm}__r${k}` });
 for (let i = jobs.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [jobs[i], jobs[j]] = [jobs[j], jobs[i]]; }
-const todo = jobs.filter((job) => args.resume ? !existsSync(join(outDir, "records", `${job.runId}.json`)) : true);
-writeFileSync(join(outDir, "plan.json"), JSON.stringify({ environment: environment(), order: jobs.map((j) => j.runId) }, null, 2));
+const only = args.only ? new Set(String(args.only).split(",")) : null; // explicit cells, e.g. to complete pairs
+const todo = jobs.filter((job) => (!only || only.has(job.runId)) &&
+  (args.resume ? !existsSync(join(outDir, "records", `${job.runId}.json`)) : true));
+if (!args.resume || !existsSync(join(outDir, "plan.json"))) writeFileSync(join(outDir, "plan.json"), JSON.stringify({ environment: environment(), order: jobs.map((j) => j.runId) }, null, 2));
 console.log(`${todo.length} runs, ${parallel} in parallel, model ${MODEL}`);
 let next = 0, lastLaunch = 0;
 await Promise.all(Array.from({ length: Math.min(parallel, todo.length) }, async () => {

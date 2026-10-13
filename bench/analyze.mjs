@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Aggregates run records into results JSON (no paths, no transcripts) and Markdown tables.
 // Usage: node bench/analyze.mjs --label full [--out bench/results/ab-0.4.0.json] [--md out.md]
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { benchDir, parseArgs, rng } from "./common.mjs";
 
@@ -42,8 +42,15 @@ function pooled(groups, key, r) {
   return { point: ratio((x) => x), lo: quantile(boots, 0.025), hi: quantile(boots, 0.975) };
 }
 
+// Pre-declared: a run that hit the session timeout is a failure even if the check passes afterwards.
+for (const x of records) if (x.timedOut && x.success) { x.checkPassedAfterTimeout = true; x.success = false; }
 const valid = records.filter((r) => !r.infraFailure && r.metrics);
-const excluded = records.filter((r) => r.infraFailure || !r.metrics).map((r) => ({ runId: r.runId, reason: r.infraFailure ?? "no metrics" }));
+// Discarded attempts (disk full, no session, provider errors) are kept in results/<label>/excluded.
+const excludedDir = join(dir, "excluded");
+const discarded = existsSync(excludedDir) ? readdirSync(excludedDir).filter((f) => f.endsWith(".json"))
+  .map((f) => JSON.parse(readFileSync(join(excludedDir, f), "utf8"))) : [];
+const excluded = [...records.filter((r) => r.infraFailure || !r.metrics), ...discarded]
+  .map((r) => ({ runId: r.runId, attempt: r.attempt ?? null, reason: r.note ?? r.reclassified ?? r.infraFailure ?? "no metrics" }));
 const taskIds = [...new Set(records.map((r) => r.task))].sort();
 const r = rng(plan.environment.seed ?? 4242);
 const keys = ["totalInputTokens", "inputTokens", "cachedInputTokens", "outputTokens", "reasoningTokens", "llmCalls", "toolOutputBytes", "wallMs"];
@@ -70,11 +77,30 @@ for (const id of taskIds) {
     groups.push({ base, lean });
   }
   row.runs = [...base, ...lean].map((x) => ({ arm: x.arm, run: x.runId.split("__").pop(), success: x.success, timedOut: x.timedOut,
-    retries: x.retries ?? 0, wallMs: x.wallMs, ...Object.fromEntries(Object.entries(x.metrics).filter(([k]) => k !== "errors")) }));
+    retries: x.retries ?? 0, rescored: x.rescored ?? false, checkPassedAfterTimeout: x.checkPassedAfterTimeout ?? false, wallMs: x.wallMs, ...Object.fromEntries(Object.entries(x.metrics).filter(([k]) => k !== "errors")) }));
   tasks.push(row);
+}
+/** Pair bootstrap: resample (task, run index) pairs that have both arms; statistic = sum(lean)/sum(base) - 1. */
+function pairBootstrap(pairs, key, r) {
+  const stat = (ps) => ps.reduce((a, p) => a + key(p.lean), 0) / ps.reduce((a, p) => a + key(p.base), 0) - 1;
+  const boots = [];
+  for (let i = 0; i < B; i++) boots.push(stat(sample(pairs, r)));
+  return { point: stat(pairs), lo: quantile(boots, 0.025), hi: quantile(boots, 0.975), pairs: pairs.length };
+}
+const pairs = [];
+for (const b of valid.filter((x) => x.arm === "base")) {
+  const l = valid.find((x) => x.arm === "lean" && x.task === b.task && x.runId.split("__")[2] === b.runId.split("__")[2]);
+  if (l) pairs.push({ task: b.task, run: b.runId.split("__")[2], base: b, lean: l });
 }
 const get = (k) => (x) => (k === "wallMs" ? x.wallMs : x.metrics[k]);
 const aggregate = groups.length ? {
+  pairs: pairs.map((p) => `${p.task}/${p.run}`),
+  pairTotalInput: pairBootstrap(pairs, get("totalInputTokens"), r),
+  pairUncachedInput: pairBootstrap(pairs, get("inputTokens"), r),
+  pairOutput: pairBootstrap(pairs, get("outputTokens"), r),
+  pairToolOutputBytes: pairBootstrap(pairs, get("toolOutputBytes"), r),
+  pairWall: pairBootstrap(pairs, get("wallMs"), r),
+  pairTotalInputExcludingControl: pairBootstrap(pairs.filter((p) => p.task !== "t8-control"), get("totalInputTokens"), r),
   totalInput: pooled(groups, get("totalInputTokens"), r),
   uncachedInput: pooled(groups, get("inputTokens"), r),
   output: pooled(groups, get("outputTokens"), r),
@@ -90,17 +116,21 @@ const out = String(args.out ?? join(dir, "aggregate.json"));
 writeFileSync(out, JSON.stringify(result, null, 2) + "\n");
 
 const ci = (c) => `${pct(c.point)}% [${pct(c.lo)}, ${pct(c.hi)}]`;
+const ciN = (c, t) => (Math.min(t.n.base, t.n.lean) < 2 ? `${pct(c.point)}% (n=1, no CI)` : ci(c));
 const k = (x) => (x / 1000).toFixed(1) + "k";
 const lines = ["| Task | Success base | Success lean | Input tokens base: median (mean) | Input tokens lean: median (mean) | Change of mean, 95% CI | Tool output bytes change | Lean summaries / recalls | Wall time base → lean (median s) |",
   "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"];
 for (const t of tasks) {
   if (!t.totalInputChange) continue;
   lines.push(`| ${t.task} | ${t.base.successes}/${t.base.runs} | ${t.lean.successes}/${t.lean.runs} | ${k(t.base.totalInputTokens.median)} (${k(t.base.totalInputTokens.mean)}) | ` +
-    `${k(t.lean.totalInputTokens.median)} (${k(t.lean.totalInputTokens.mean)}) | ${ci(t.totalInputChange)} | ${ci(t.toolBytesChange)} | ` +
+    `${k(t.lean.totalInputTokens.median)} (${k(t.lean.totalInputTokens.mean)}) | ${ciN(t.totalInputChange, t)} | ${ciN(t.toolBytesChange, t)} | ` +
     `${t.lean.leanSummaries} / ${t.lean.leanRecallCalls} | ${(t.base.wallMs.median / 1000).toFixed(0)} → ${(t.lean.wallMs.median / 1000).toFixed(0)} |`);
 }
 if (aggregate) {
-  lines.push("", `Pooled (sum of per-task means): total input ${ci(aggregate.totalInput)}, uncached input ${ci(aggregate.uncachedInput)}, ` +
+  lines.push("", `Paired (${pairs.length} task/run pairs, bootstrap over pairs): total input ${ci(aggregate.pairTotalInput)}, ` +
+    `uncached input ${ci(aggregate.pairUncachedInput)}, output ${ci(aggregate.pairOutput)}, tool output bytes ${ci(aggregate.pairToolOutputBytes)}, ` +
+    `wall time ${ci(aggregate.pairWall)}; total input without the control task ${ci(aggregate.pairTotalInputExcludingControl)}.`);
+  lines.push("", `Pre-declared stratified estimate (sum of per-task means; cells with one run add no variance, so this CI is too narrow): total input ${ci(aggregate.totalInput)}, uncached input ${ci(aggregate.uncachedInput)}, ` +
     `output ${ci(aggregate.output)}, tool output bytes ${ci(aggregate.toolOutputBytes)}, wall time ${ci(aggregate.wall)}. ` +
     `Success: base ${aggregate.success.base.successes}/${aggregate.success.base.runs}, lean ${aggregate.success.lean.successes}/${aggregate.success.lean.runs}. ` +
     `Lean summaries ${aggregate.leanSummaries}, recall calls ${aggregate.recallCalls}, provider retries ${aggregate.retries}.`);

@@ -1,0 +1,1764 @@
+{
+  "label": "full",
+  "environment": {
+    "model": "openai/gpt-6-luna",
+    "opencode": "1.18.17",
+    "plugin": "hugr-lean@0.4.0",
+    "node": "v22.17.1",
+    "os": "darwin 24.3.0 x64",
+    "sources": {
+      "semver": {
+        "url": "https://github.com/dtolnay/semver.git",
+        "commit": "280ebcb6edac3aa4cdc545dbff8a26c5ac4861fe"
+      },
+      "pflag": {
+        "url": "https://github.com/spf13/pflag.git",
+        "commit": "c966cfef47379dcb01e7929504d66d94b540945b"
+      },
+      "more-itertools": {
+        "url": "https://github.com/more-itertools/more-itertools.git",
+        "commit": "b21ec4ee8e139ebe297e2221980a694bebb69523"
+      },
+      "ufo": {
+        "url": "https://github.com/unjs/ufo.git",
+        "commit": "f06c800d0c59f2a4a1b9ba65eb6cb61a84419be6"
+      }
+    },
+    "runs": 3,
+    "parallel": 8,
+    "seed": 4242,
+    "timeoutMin": 25,
+    "maxAttempts": 3,
+    "tasks": [
+      "t1-rust-semver",
+      "t2-go-pflag",
+      "t3-py-more-itertools",
+      "t4-vitest-ufo",
+      "t5-git-review",
+      "t6-ci-log",
+      "t7-large-file",
+      "t8-control"
+    ]
+  },
+  "bootstrap": {
+    "resamples": 10000,
+    "ci": 0.95,
+    "statistic": "ratio of means - 1"
+  },
+  "excluded": [
+    {
+      "runId": "t1-rust-semver__base__r1",
+      "attempt": 1,
+      "reason": "no-session: OpenCode exited after 37 s without creating a session while the disk was full; cell not rerun"
+    },
+    {
+      "runId": "t2-go-pflag__base__r2",
+      "attempt": 1,
+      "reason": "no-session: OpenCode exited after 37 s without creating a session while the disk was full; cell not rerun"
+    },
+    {
+      "runId": "t3-py-more-itertools__lean__r1",
+      "attempt": 1,
+      "reason": "ENOSPC in a pytest tool output; disk-full takes precedence over the timeout"
+    },
+    {
+      "runId": "t3-py-more-itertools__lean__r3",
+      "attempt": 1,
+      "reason": "ENOSPC in a pytest tool output; disk-full takes precedence over the timeout"
+    },
+    {
+      "runId": "t4-vitest-ufo__lean__r3",
+      "attempt": 1,
+      "reason": "workspace-clone: ENOSPC while cloning the template; no session started; cell not rerun (not needed for the 24-record plan)"
+    },
+    {
+      "runId": "t7-large-file__lean__r3",
+      "attempt": 1,
+      "reason": "disk-full: ENOSPC during the session (951 s); redone from a fresh workspace"
+    },
+    {
+      "runId": "t7-large-file__lean__r3",
+      "attempt": 2,
+      "reason": "no-session: OpenCode exited after 36 s without creating a session while the disk was full; redone"
+    }
+  ],
+  "aggregate": {
+    "pairs": [
+      "t1-rust-semver/r3",
+      "t2-go-pflag/r3",
+      "t3-py-more-itertools/r1",
+      "t3-py-more-itertools/r3",
+      "t4-vitest-ufo/r1",
+      "t5-git-review/r1",
+      "t5-git-review/r2",
+      "t6-ci-log/r2",
+      "t6-ci-log/r3",
+      "t7-large-file/r1",
+      "t7-large-file/r3",
+      "t8-control/r2"
+    ],
+    "pairTotalInput": {
+      "point": -0.20636734273430601,
+      "lo": -0.40463208599547096,
+      "hi": 0.13099675145964618,
+      "pairs": 12
+    },
+    "pairUncachedInput": {
+      "point": -0.013634643086208209,
+      "lo": -0.18703140971383903,
+      "hi": 0.21285934063917433,
+      "pairs": 12
+    },
+    "pairOutput": {
+      "point": 0.001216856667093591,
+      "lo": -0.17013484268353585,
+      "hi": 0.1975783565617708,
+      "pairs": 12
+    },
+    "pairToolOutputBytes": {
+      "point": -0.47875403797523863,
+      "lo": -0.5999719410688606,
+      "hi": -0.3008923420244186,
+      "pairs": 12
+    },
+    "pairWall": {
+      "point": 0.07682424736360716,
+      "lo": -0.3037762706341355,
+      "hi": 0.9469029303055685,
+      "pairs": 12
+    },
+    "pairTotalInputExcludingControl": {
+      "point": -0.20619975562318626,
+      "lo": -0.40837081187071067,
+      "hi": 0.14642110895933147,
+      "pairs": 11
+    },
+    "totalInput": {
+      "point": -0.23444889313198836,
+      "lo": -0.3229416598487562,
+      "hi": -0.12395501648557261
+    },
+    "uncachedInput": {
+      "point": -0.04247047119542258,
+      "lo": -0.14186990306200953,
+      "hi": 0.06629592733172762
+    },
+    "output": {
+      "point": -0.020269232737881948,
+      "lo": -0.08575300038714673,
+      "hi": 0.05147220391122831
+    },
+    "toolOutputBytes": {
+      "point": -0.4826200454725059,
+      "lo": -0.5340066836732233,
+      "hi": -0.4209055898446544
+    },
+    "wall": {
+      "point": 0.26179538775185995,
+      "lo": 0.11016695877339555,
+      "hi": 0.44834164279642974
+    },
+    "success": {
+      "base": {
+        "successes": 11,
+        "runs": 12
+      },
+      "lean": {
+        "successes": 11,
+        "runs": 12
+      }
+    },
+    "recallCalls": 0,
+    "leanSummaries": 17,
+    "retries": 0
+  },
+  "tasks": [
+    {
+      "task": "t1-rust-semver",
+      "n": {
+        "base": 1,
+        "lean": 1
+      },
+      "base": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 327268,
+          "median": 327268
+        },
+        "inputTokens": {
+          "mean": 46692,
+          "median": 46692
+        },
+        "cachedInputTokens": {
+          "mean": 280576,
+          "median": 280576
+        },
+        "outputTokens": {
+          "mean": 1261,
+          "median": 1261
+        },
+        "reasoningTokens": {
+          "mean": 174,
+          "median": 174
+        },
+        "llmCalls": {
+          "mean": 11,
+          "median": 11
+        },
+        "toolOutputBytes": {
+          "mean": 108638,
+          "median": 108638
+        },
+        "wallMs": {
+          "mean": 222599,
+          "median": 222599
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 259243,
+          "median": 259243
+        },
+        "inputTokens": {
+          "mean": 31915,
+          "median": 31915
+        },
+        "cachedInputTokens": {
+          "mean": 227328,
+          "median": 227328
+        },
+        "outputTokens": {
+          "mean": 1162,
+          "median": 1162
+        },
+        "reasoningTokens": {
+          "mean": 445,
+          "median": 445
+        },
+        "llmCalls": {
+          "mean": 13,
+          "median": 13
+        },
+        "toolOutputBytes": {
+          "mean": 58873,
+          "median": 58873
+        },
+        "wallMs": {
+          "mean": 192763,
+          "median": 192763
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 3,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.20785716904799734,
+        "lo": -0.20785716904799734,
+        "hi": -0.20785716904799734
+      },
+      "uncachedInputChange": {
+        "point": -0.3164781975499015,
+        "lo": -0.3164781975499015,
+        "hi": -0.3164781975499015
+      },
+      "toolBytesChange": {
+        "point": -0.45808096614444305,
+        "lo": -0.45808096614444305,
+        "hi": -0.45808096614444305
+      },
+      "wallChange": {
+        "point": -0.13403474409139304,
+        "lo": -0.13403474409139304,
+        "hi": -0.13403474409139304
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 222599,
+          "llmCalls": 11,
+          "inputTokens": 46692,
+          "cachedInputTokens": 280576,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1261,
+          "reasoningTokens": 174,
+          "toolCalls": 16,
+          "toolOutputBytes": 108638,
+          "toolOutputBytesByTool": {
+            "todowrite": 694,
+            "bash": 7678,
+            "glob": 14289,
+            "read": 85658,
+            "apply_patch": 102,
+            "grep": 217
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 327268
+        },
+        {
+          "arm": "lean",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 192763,
+          "llmCalls": 13,
+          "inputTokens": 31915,
+          "cachedInputTokens": 227328,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1162,
+          "reasoningTokens": 445,
+          "toolCalls": 16,
+          "toolOutputBytes": 58873,
+          "toolOutputBytesByTool": {
+            "todowrite": 718,
+            "bash": 4989,
+            "glob": 14943,
+            "read": 37580,
+            "grep": 541,
+            "apply_patch": 102
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 3,
+          "readOffsetCalls": 2,
+          "diskFullSeen": false,
+          "totalInputTokens": 259243
+        }
+      ]
+    },
+    {
+      "task": "t2-go-pflag",
+      "n": {
+        "base": 1,
+        "lean": 1
+      },
+      "base": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 278230,
+          "median": 278230
+        },
+        "inputTokens": {
+          "mean": 37078,
+          "median": 37078
+        },
+        "cachedInputTokens": {
+          "mean": 241152,
+          "median": 241152
+        },
+        "outputTokens": {
+          "mean": 1426,
+          "median": 1426
+        },
+        "reasoningTokens": {
+          "mean": 386,
+          "median": 386
+        },
+        "llmCalls": {
+          "mean": 12,
+          "median": 12
+        },
+        "toolOutputBytes": {
+          "mean": 76969,
+          "median": 76969
+        },
+        "wallMs": {
+          "mean": 450725,
+          "median": 450725
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 126006,
+          "median": 126006
+        },
+        "inputTokens": {
+          "mean": 46134,
+          "median": 46134
+        },
+        "cachedInputTokens": {
+          "mean": 79872,
+          "median": 79872
+        },
+        "outputTokens": {
+          "mean": 881,
+          "median": 881
+        },
+        "reasoningTokens": {
+          "mean": 205,
+          "median": 205
+        },
+        "llmCalls": {
+          "mean": 11,
+          "median": 11
+        },
+        "toolOutputBytes": {
+          "mean": 28036,
+          "median": 28036
+        },
+        "wallMs": {
+          "mean": 163680,
+          "median": 163680
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 1,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.5471156956474859,
+        "lo": -0.5471156956474859,
+        "hi": -0.5471156956474859
+      },
+      "uncachedInputChange": {
+        "point": 0.2442418684934462,
+        "lo": 0.2442418684934462,
+        "hi": 0.2442418684934462
+      },
+      "toolBytesChange": {
+        "point": -0.6357494575738285,
+        "lo": -0.6357494575738285,
+        "hi": -0.6357494575738285
+      },
+      "wallChange": {
+        "point": -0.6368517388651617,
+        "lo": -0.6368517388651617,
+        "hi": -0.6368517388651617
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 450725,
+          "llmCalls": 12,
+          "inputTokens": 37078,
+          "cachedInputTokens": 241152,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1426,
+          "reasoningTokens": 386,
+          "toolCalls": 19,
+          "toolOutputBytes": 76969,
+          "toolOutputBytesByTool": {
+            "todowrite": 1059,
+            "bash": 2762,
+            "glob": 6988,
+            "grep": 7131,
+            "read": 58982,
+            "apply_patch": 47
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 278230
+        },
+        {
+          "arm": "lean",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 163680,
+          "llmCalls": 11,
+          "inputTokens": 46134,
+          "cachedInputTokens": 79872,
+          "cacheWriteTokens": 0,
+          "outputTokens": 881,
+          "reasoningTokens": 205,
+          "toolCalls": 15,
+          "toolOutputBytes": 28036,
+          "toolOutputBytesByTool": {
+            "todowrite": 764,
+            "bash": 2405,
+            "glob": 1150,
+            "read": 21715,
+            "grep": 1955,
+            "apply_patch": 47
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 1,
+          "readOffsetCalls": 3,
+          "diskFullSeen": false,
+          "totalInputTokens": 126006
+        }
+      ]
+    },
+    {
+      "task": "t3-py-more-itertools",
+      "n": {
+        "base": 2,
+        "lean": 2
+      },
+      "base": {
+        "successes": 1,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 291450,
+          "median": 291450
+        },
+        "inputTokens": {
+          "mean": 42106,
+          "median": 42106
+        },
+        "cachedInputTokens": {
+          "mean": 249344,
+          "median": 249344
+        },
+        "outputTokens": {
+          "mean": 1462,
+          "median": 1462
+        },
+        "reasoningTokens": {
+          "mean": 1353,
+          "median": 1353
+        },
+        "llmCalls": {
+          "mean": 23,
+          "median": 23
+        },
+        "toolOutputBytes": {
+          "mean": 37376.5,
+          "median": 37376.5
+        },
+        "wallMs": {
+          "mean": 1333576.5,
+          "median": 1333576.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 1
+      },
+      "lean": {
+        "successes": 2,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 168758.5,
+          "median": 168758.5
+        },
+        "inputTokens": {
+          "mean": 43574.5,
+          "median": 43574.5
+        },
+        "cachedInputTokens": {
+          "mean": 125184,
+          "median": 125184
+        },
+        "outputTokens": {
+          "mean": 1022.5,
+          "median": 1022.5
+        },
+        "reasoningTokens": {
+          "mean": 597,
+          "median": 597
+        },
+        "llmCalls": {
+          "mean": 17.5,
+          "median": 17.5
+        },
+        "toolOutputBytes": {
+          "mean": 21786.5,
+          "median": 21786.5
+        },
+        "wallMs": {
+          "mean": 802350.5,
+          "median": 802350.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.42096929147366613,
+        "lo": -0.5698738941099288,
+        "hi": -0.16141404349237876
+      },
+      "uncachedInputChange": {
+        "point": 0.03487626466536842,
+        "lo": -0.33850088837690606,
+        "hi": 0.6144567358690711
+      },
+      "toolBytesChange": {
+        "point": -0.41710700573890014,
+        "lo": -0.4597327939532656,
+        "hi": -0.37402834933699136
+      },
+      "wallChange": {
+        "point": -0.398346851492959,
+        "lo": -0.47618549265487164,
+        "hi": -0.2982831680198804
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 1166975,
+          "llmCalls": 18,
+          "inputTokens": 51217,
+          "cachedInputTokens": 161280,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1234,
+          "reasoningTokens": 972,
+          "toolCalls": 17,
+          "toolOutputBytes": 37179,
+          "toolOutputBytesByTool": {
+            "todowrite": 1080,
+            "bash": 21218,
+            "glob": 770,
+            "grep": 1147,
+            "read": 12837,
+            "apply_patch": 127
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 3,
+          "diskFullSeen": false,
+          "totalInputTokens": 212497
+        },
+        {
+          "arm": "base",
+          "run": "r3",
+          "success": false,
+          "timedOut": true,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 1500178,
+          "llmCalls": 28,
+          "inputTokens": 32995,
+          "cachedInputTokens": 337408,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1690,
+          "reasoningTokens": 1734,
+          "toolCalls": 28,
+          "toolOutputBytes": 37574,
+          "toolOutputBytesByTool": {
+            "todowrite": 698,
+            "bash": 11815,
+            "glob": 14,
+            "grep": 7501,
+            "read": 17230,
+            "apply_patch": 316
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 6,
+          "diskFullSeen": false,
+          "totalInputTokens": 370403
+        },
+        {
+          "arm": "lean",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 818886,
+          "llmCalls": 18,
+          "inputTokens": 53269,
+          "cachedInputTokens": 124928,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1024,
+          "reasoningTokens": 756,
+          "toolCalls": 17,
+          "toolOutputBytes": 23273,
+          "toolOutputBytesByTool": {
+            "todowrite": 1020,
+            "bash": 6322,
+            "glob": 1054,
+            "grep": 1495,
+            "read": 13317,
+            "apply_patch": 65
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 4,
+          "diskFullSeen": false,
+          "totalInputTokens": 178197
+        },
+        {
+          "arm": "lean",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 785815,
+          "llmCalls": 17,
+          "inputTokens": 33880,
+          "cachedInputTokens": 125440,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1021,
+          "reasoningTokens": 438,
+          "toolCalls": 16,
+          "toolOutputBytes": 20300,
+          "toolOutputBytesByTool": {
+            "todowrite": 1149,
+            "bash": 6354,
+            "glob": 238,
+            "grep": 550,
+            "read": 11944,
+            "apply_patch": 65
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 5,
+          "diskFullSeen": false,
+          "totalInputTokens": 159320
+        }
+      ]
+    },
+    {
+      "task": "t4-vitest-ufo",
+      "n": {
+        "base": 1,
+        "lean": 1
+      },
+      "base": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 108686,
+          "median": 108686
+        },
+        "inputTokens": {
+          "mean": 36494,
+          "median": 36494
+        },
+        "cachedInputTokens": {
+          "mean": 72192,
+          "median": 72192
+        },
+        "outputTokens": {
+          "mean": 881,
+          "median": 881
+        },
+        "reasoningTokens": {
+          "mean": 0,
+          "median": 0
+        },
+        "llmCalls": {
+          "mean": 11,
+          "median": 11
+        },
+        "toolOutputBytes": {
+          "mean": 16400,
+          "median": 16400
+        },
+        "wallMs": {
+          "mean": 263109,
+          "median": 263109
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 98289,
+          "median": 98289
+        },
+        "inputTokens": {
+          "mean": 31217,
+          "median": 31217
+        },
+        "cachedInputTokens": {
+          "mean": 67072,
+          "median": 67072
+        },
+        "outputTokens": {
+          "mean": 893,
+          "median": 893
+        },
+        "reasoningTokens": {
+          "mean": 117,
+          "median": 117
+        },
+        "llmCalls": {
+          "mean": 10,
+          "median": 10
+        },
+        "toolOutputBytes": {
+          "mean": 17069,
+          "median": 17069
+        },
+        "wallMs": {
+          "mean": 1053359,
+          "median": 1053359
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 1,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.0956608946874482,
+        "lo": -0.0956608946874482,
+        "hi": -0.0956608946874482
+      },
+      "uncachedInputChange": {
+        "point": -0.14459911218282462,
+        "lo": -0.14459911218282462,
+        "hi": -0.14459911218282462
+      },
+      "toolBytesChange": {
+        "point": 0.04079268292682925,
+        "lo": 0.04079268292682925,
+        "hi": 0.04079268292682925
+      },
+      "wallChange": {
+        "point": 3.0035080517960235,
+        "lo": 3.0035080517960235,
+        "hi": 3.0035080517960235
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 263109,
+          "llmCalls": 11,
+          "inputTokens": 36494,
+          "cachedInputTokens": 72192,
+          "cacheWriteTokens": 0,
+          "outputTokens": 881,
+          "reasoningTokens": 0,
+          "toolCalls": 13,
+          "toolOutputBytes": 16400,
+          "toolOutputBytesByTool": {
+            "todowrite": 1122,
+            "bash": 4882,
+            "glob": 668,
+            "grep": 2554,
+            "read": 7122,
+            "apply_patch": 52
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 1,
+          "diskFullSeen": false,
+          "totalInputTokens": 108686
+        },
+        {
+          "arm": "lean",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 1053359,
+          "llmCalls": 10,
+          "inputTokens": 31217,
+          "cachedInputTokens": 67072,
+          "cacheWriteTokens": 0,
+          "outputTokens": 893,
+          "reasoningTokens": 117,
+          "toolCalls": 13,
+          "toolOutputBytes": 17069,
+          "toolOutputBytesByTool": {
+            "todowrite": 1140,
+            "bash": 3823,
+            "glob": 154,
+            "grep": 1726,
+            "read": 10174,
+            "apply_patch": 52
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 1,
+          "readOffsetCalls": 1,
+          "diskFullSeen": false,
+          "totalInputTokens": 98289
+        }
+      ]
+    },
+    {
+      "task": "t5-git-review",
+      "n": {
+        "base": 2,
+        "lean": 2
+      },
+      "base": {
+        "successes": 2,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 165340,
+          "median": 165340
+        },
+        "inputTokens": {
+          "mean": 29404,
+          "median": 29404
+        },
+        "cachedInputTokens": {
+          "mean": 135936,
+          "median": 135936
+        },
+        "outputTokens": {
+          "mean": 1815,
+          "median": 1815
+        },
+        "reasoningTokens": {
+          "mean": 120,
+          "median": 120
+        },
+        "llmCalls": {
+          "mean": 8.5,
+          "median": 8.5
+        },
+        "toolOutputBytes": {
+          "mean": 62081.5,
+          "median": 62081.5
+        },
+        "wallMs": {
+          "mean": 135763.5,
+          "median": 135763.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 2,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 117309.5,
+          "median": 117309.5
+        },
+        "inputTokens": {
+          "mean": 24125.5,
+          "median": 24125.5
+        },
+        "cachedInputTokens": {
+          "mean": 93184,
+          "median": 93184
+        },
+        "outputTokens": {
+          "mean": 1764.5,
+          "median": 1764.5
+        },
+        "reasoningTokens": {
+          "mean": 118.5,
+          "median": 118.5
+        },
+        "llmCalls": {
+          "mean": 10,
+          "median": 10
+        },
+        "toolOutputBytes": {
+          "mean": 22231,
+          "median": 22231
+        },
+        "wallMs": {
+          "mean": 141362.5,
+          "median": 141362.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 7,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.29049534292972057,
+        "lo": -0.4362478805093257,
+        "hi": -0.10498027410065025
+      },
+      "uncachedInputChange": {
+        "point": -0.17951639232757444,
+        "lo": -0.2797506979159904,
+        "hi": -0.06924505392471969
+      },
+      "toolBytesChange": {
+        "point": -0.6419062039415929,
+        "lo": -0.7798110646000679,
+        "hi": -0.45946754971843373
+      },
+      "wallChange": {
+        "point": 0.041240834244844926,
+        "lo": -0.17192171194520578,
+        "hi": 0.351239221215901
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": true,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 160893,
+          "llmCalls": 10,
+          "inputTokens": 28002,
+          "cachedInputTokens": 157184,
+          "cacheWriteTokens": 0,
+          "outputTokens": 2098,
+          "reasoningTokens": 113,
+          "toolCalls": 18,
+          "toolOutputBytes": 53451,
+          "toolOutputBytesByTool": {
+            "todowrite": 1183,
+            "bash": 52217,
+            "apply_patch": 51
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 185186
+        },
+        {
+          "arm": "base",
+          "run": "r2",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": true,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 110634,
+          "llmCalls": 7,
+          "inputTokens": 30806,
+          "cachedInputTokens": 114688,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1532,
+          "reasoningTokens": 127,
+          "toolCalls": 10,
+          "toolOutputBytes": 70712,
+          "toolOutputBytesByTool": {
+            "bash": 70661,
+            "apply_patch": 51
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 145494
+        },
+        {
+          "arm": "lean",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": true,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 133232,
+          "llmCalls": 10,
+          "inputTokens": 22188,
+          "cachedInputTokens": 108032,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1817,
+          "reasoningTokens": 78,
+          "toolCalls": 17,
+          "toolOutputBytes": 28892,
+          "toolOutputBytesByTool": {
+            "todowrite": 870,
+            "bash": 27971,
+            "apply_patch": 51
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 5,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 130220
+        },
+        {
+          "arm": "lean",
+          "run": "r2",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": true,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 149493,
+          "llmCalls": 10,
+          "inputTokens": 26063,
+          "cachedInputTokens": 78336,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1712,
+          "reasoningTokens": 159,
+          "toolCalls": 12,
+          "toolOutputBytes": 15570,
+          "toolOutputBytesByTool": {
+            "todowrite": 1230,
+            "bash": 13648,
+            "apply_patch": 51,
+            "read": 641
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 2,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 104399
+        }
+      ]
+    },
+    {
+      "task": "t6-ci-log",
+      "n": {
+        "base": 2,
+        "lean": 2
+      },
+      "base": {
+        "successes": 2,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 176142.5,
+          "median": 176142.5
+        },
+        "inputTokens": {
+          "mean": 30478.5,
+          "median": 30478.5
+        },
+        "cachedInputTokens": {
+          "mean": 145664,
+          "median": 145664
+        },
+        "outputTokens": {
+          "mean": 947.5,
+          "median": 947.5
+        },
+        "reasoningTokens": {
+          "mean": 48.5,
+          "median": 48.5
+        },
+        "llmCalls": {
+          "mean": 9,
+          "median": 9
+        },
+        "toolOutputBytes": {
+          "mean": 42772.5,
+          "median": 42772.5
+        },
+        "wallMs": {
+          "mean": 101045.5,
+          "median": 101045.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 2,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 137440.5,
+          "median": 137440.5
+        },
+        "inputTokens": {
+          "mean": 30944.5,
+          "median": 30944.5
+        },
+        "cachedInputTokens": {
+          "mean": 106496,
+          "median": 106496
+        },
+        "outputTokens": {
+          "mean": 1062.5,
+          "median": 1062.5
+        },
+        "reasoningTokens": {
+          "mean": 120.5,
+          "median": 120.5
+        },
+        "llmCalls": {
+          "mean": 12,
+          "median": 12
+        },
+        "toolOutputBytes": {
+          "mean": 18826.5,
+          "median": 18826.5
+        },
+        "wallMs": {
+          "mean": 143734.5,
+          "median": 143734.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 4,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.21971982911563082,
+        "lo": -0.5904094897393632,
+        "hi": 1.1641742915877304
+      },
+      "uncachedInputChange": {
+        "point": 0.015289466345128622,
+        "lo": -0.39915611814345997,
+        "hi": 0.8232447863744132
+      },
+      "toolBytesChange": {
+        "point": -0.559845695248115,
+        "lo": -0.7596676254394376,
+        "hi": 0.2634823726581672
+      },
+      "wallChange": {
+        "point": 0.4224730443216176,
+        "lo": -0.46578780801885766,
+        "hi": 2.3112778465346535
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r2",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 137451,
+          "llmCalls": 7,
+          "inputTokens": 20667,
+          "cachedInputTokens": 53760,
+          "cacheWriteTokens": 0,
+          "outputTokens": 792,
+          "reasoningTokens": 97,
+          "toolCalls": 6,
+          "toolOutputBytes": 16707,
+          "toolOutputBytesByTool": {
+            "bash": 14049,
+            "grep": 2607,
+            "apply_patch": 51
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 74427
+        },
+        {
+          "arm": "base",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 64640,
+          "llmCalls": 11,
+          "inputTokens": 40290,
+          "cachedInputTokens": 237568,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1103,
+          "reasoningTokens": 0,
+          "toolCalls": 10,
+          "toolOutputBytes": 68838,
+          "toolOutputBytesByTool": {
+            "todowrite": 1287,
+            "glob": 100,
+            "read": 64701,
+            "grep": 2251,
+            "apply_patch": 51,
+            "bash": 448
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 2,
+          "diskFullSeen": false,
+          "totalInputTokens": 277858
+        },
+        {
+          "arm": "lean",
+          "run": "r2",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 214041,
+          "llmCalls": 13,
+          "inputTokens": 37681,
+          "cachedInputTokens": 123392,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1310,
+          "reasoningTokens": 158,
+          "toolCalls": 14,
+          "toolOutputBytes": 21109,
+          "toolOutputBytesByTool": {
+            "todowrite": 1240,
+            "read": 14386,
+            "bash": 5432,
+            "apply_patch": 51
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 2,
+          "readOffsetCalls": 2,
+          "diskFullSeen": false,
+          "totalInputTokens": 161073
+        },
+        {
+          "arm": "lean",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 73428,
+          "llmCalls": 11,
+          "inputTokens": 24208,
+          "cachedInputTokens": 89600,
+          "cacheWriteTokens": 0,
+          "outputTokens": 815,
+          "reasoningTokens": 83,
+          "toolCalls": 10,
+          "toolOutputBytes": 16544,
+          "toolOutputBytesByTool": {
+            "todowrite": 809,
+            "glob": 100,
+            "bash": 15264,
+            "grep": 320,
+            "apply_patch": 51
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 2,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 113808
+        }
+      ]
+    },
+    {
+      "task": "t7-large-file",
+      "n": {
+        "base": 2,
+        "lean": 2
+      },
+      "base": {
+        "successes": 2,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 91502,
+          "median": 91502
+        },
+        "inputTokens": {
+          "mean": 21614,
+          "median": 21614
+        },
+        "cachedInputTokens": {
+          "mean": 69888,
+          "median": 69888
+        },
+        "outputTokens": {
+          "mean": 1621,
+          "median": 1621
+        },
+        "reasoningTokens": {
+          "mean": 223.5,
+          "median": 223.5
+        },
+        "llmCalls": {
+          "mean": 8.5,
+          "median": 8.5
+        },
+        "toolOutputBytes": {
+          "mean": 19126,
+          "median": 19126
+        },
+        "wallMs": {
+          "mean": 676527.5,
+          "median": 676527.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 1,
+        "runs": 2,
+        "totalInputTokens": {
+          "mean": 193238.5,
+          "median": 193238.5
+        },
+        "inputTokens": {
+          "mean": 30678.5,
+          "median": 30678.5
+        },
+        "cachedInputTokens": {
+          "mean": 162560,
+          "median": 162560
+        },
+        "outputTokens": {
+          "mean": 2213,
+          "median": 2213
+        },
+        "reasoningTokens": {
+          "mean": 138,
+          "median": 138
+        },
+        "llmCalls": {
+          "mean": 16,
+          "median": 16
+        },
+        "toolOutputBytes": {
+          "mean": 22754.5,
+          "median": 22754.5
+        },
+        "wallMs": {
+          "mean": 717299.5,
+          "median": 717299.5
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": 1.1118500142073398,
+        "lo": 0.6964668618152376,
+        "hi": 1.773024033082664
+      },
+      "uncachedInputChange": {
+        "point": 0.4193809567872675,
+        "lo": -0.09736323403622305,
+        "hi": 1.2697839525062733
+      },
+      "toolBytesChange": {
+        "point": 0.18971557042769005,
+        "lo": -0.006543125142987827,
+        "hi": 0.45130206745136303
+      },
+      "wallChange": {
+        "point": 0.06026658192017331,
+        "lo": -0.4193298897881391,
+        "hi": 1.0292178222242065
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r1",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 905075,
+          "llmCalls": 7,
+          "inputTokens": 16339,
+          "cachedInputTokens": 54272,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1518,
+          "reasoningTokens": 221,
+          "toolCalls": 13,
+          "toolOutputBytes": 16397,
+          "toolOutputBytesByTool": {
+            "grep": 703,
+            "bash": 2795,
+            "read": 12708,
+            "apply_patch": 191
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 5,
+          "diskFullSeen": false,
+          "totalInputTokens": 70611
+        },
+        {
+          "arm": "base",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 447980,
+          "llmCalls": 10,
+          "inputTokens": 26889,
+          "cachedInputTokens": 85504,
+          "cacheWriteTokens": 0,
+          "outputTokens": 1724,
+          "reasoningTokens": 226,
+          "toolCalls": 19,
+          "toolOutputBytes": 21855,
+          "toolOutputBytesByTool": {
+            "grep": 2611,
+            "bash": 4623,
+            "read": 14368,
+            "apply_patch": 253
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 7,
+          "diskFullSeen": false,
+          "totalInputTokens": 112393
+        },
+        {
+          "arm": "lean",
+          "run": "r1",
+          "success": false,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 909049,
+          "llmCalls": 16,
+          "inputTokens": 37086,
+          "cachedInputTokens": 158720,
+          "cacheWriteTokens": 0,
+          "outputTokens": 2336,
+          "reasoningTokens": 0,
+          "toolCalls": 23,
+          "toolOutputBytes": 21712,
+          "toolOutputBytesByTool": {
+            "grep": 2765,
+            "read": 15987,
+            "apply_patch": 165,
+            "bash": 2795
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 9,
+          "diskFullSeen": false,
+          "totalInputTokens": 195806
+        },
+        {
+          "arm": "lean",
+          "run": "r3",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 525550,
+          "llmCalls": 16,
+          "inputTokens": 24271,
+          "cachedInputTokens": 166400,
+          "cacheWriteTokens": 0,
+          "outputTokens": 2090,
+          "reasoningTokens": 276,
+          "toolCalls": 23,
+          "toolOutputBytes": 23797,
+          "toolOutputBytesByTool": {
+            "todowrite": 1182,
+            "grep": 7620,
+            "read": 9546,
+            "apply_patch": 191,
+            "bash": 5258
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 6,
+          "diskFullSeen": false,
+          "totalInputTokens": 190671
+        }
+      ]
+    },
+    {
+      "task": "t8-control",
+      "n": {
+        "base": 1,
+        "lean": 1
+      },
+      "base": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 50335,
+          "median": 50335
+        },
+        "inputTokens": {
+          "mean": 12959,
+          "median": 12959
+        },
+        "cachedInputTokens": {
+          "mean": 37376,
+          "median": 37376
+        },
+        "outputTokens": {
+          "mean": 355,
+          "median": 355
+        },
+        "reasoningTokens": {
+          "mean": 0,
+          "median": 0
+        },
+        "llmCalls": {
+          "mean": 5,
+          "median": 5
+        },
+        "toolOutputBytes": {
+          "mean": 22584,
+          "median": 22584
+        },
+        "wallMs": {
+          "mean": 140326,
+          "median": 140326
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 0,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "lean": {
+        "successes": 1,
+        "runs": 1,
+        "totalInputTokens": {
+          "mean": 39585,
+          "median": 39585
+        },
+        "inputTokens": {
+          "mean": 7329,
+          "median": 7329
+        },
+        "cachedInputTokens": {
+          "mean": 32256,
+          "median": 32256
+        },
+        "outputTokens": {
+          "mean": 572,
+          "median": 572
+        },
+        "reasoningTokens": {
+          "mean": 17,
+          "median": 17
+        },
+        "llmCalls": {
+          "mean": 5,
+          "median": 5
+        },
+        "toolOutputBytes": {
+          "mean": 10105,
+          "median": 10105
+        },
+        "wallMs": {
+          "mean": 979245,
+          "median": 979245
+        },
+        "leanRecallCalls": 0,
+        "leanSummaries": 1,
+        "retries": 0,
+        "timeouts": 0
+      },
+      "totalInputChange": {
+        "point": -0.2135690871163206,
+        "lo": -0.2135690871163206,
+        "hi": -0.2135690871163206
+      },
+      "uncachedInputChange": {
+        "point": -0.4344471023998765,
+        "lo": -0.4344471023998765,
+        "hi": -0.4344471023998765
+      },
+      "toolBytesChange": {
+        "point": -0.5525593340417996,
+        "lo": -0.5525593340417996,
+        "hi": -0.5525593340417996
+      },
+      "wallChange": {
+        "point": 5.978357538873765,
+        "lo": 5.978357538873765,
+        "hi": 5.978357538873765
+      },
+      "runs": [
+        {
+          "arm": "base",
+          "run": "r2",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 140326,
+          "llmCalls": 5,
+          "inputTokens": 12959,
+          "cachedInputTokens": 37376,
+          "cacheWriteTokens": 0,
+          "outputTokens": 355,
+          "reasoningTokens": 0,
+          "toolCalls": 4,
+          "toolOutputBytes": 22584,
+          "toolOutputBytesByTool": {
+            "glob": 91,
+            "read": 22021,
+            "apply_patch": 52,
+            "bash": 420
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 0,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 50335
+        },
+        {
+          "arm": "lean",
+          "run": "r2",
+          "success": true,
+          "timedOut": false,
+          "retries": 0,
+          "rescored": false,
+          "checkPassedAfterTimeout": false,
+          "wallMs": 979245,
+          "llmCalls": 5,
+          "inputTokens": 7329,
+          "cachedInputTokens": 32256,
+          "cacheWriteTokens": 0,
+          "outputTokens": 572,
+          "reasoningTokens": 17,
+          "toolCalls": 7,
+          "toolOutputBytes": 10105,
+          "toolOutputBytesByTool": {
+            "glob": 182,
+            "bash": 160,
+            "read": 9711,
+            "apply_patch": 52
+          },
+          "leanRecallCalls": 0,
+          "leanSummaries": 1,
+          "readOffsetCalls": 0,
+          "diskFullSeen": false,
+          "totalInputTokens": 39585
+        }
+      ]
+    }
+  ]
+}

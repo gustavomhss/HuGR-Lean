@@ -64,7 +64,8 @@ export const TASKS = [
         added_public_names: ["Stats", "concurrent_tee", "running_max", "running_min", "running_statistics",
           "serialize", "sized_iterator", "synchronized"],
         removed_public_names: ["UnequalIterablesError", "zip_equal"],
-        most_changed_file: "tests/test_more.py",
+        // 692 changed lines (486 + 206) vs 627 for tests/test_more.py (git diff --numstat, added + deleted).
+        most_changed_file: "more_itertools/more.py",
         zip_equal_removal_commit: "361b92567361f377489ce608d5e6280e4f6f986b",
       },
     },
