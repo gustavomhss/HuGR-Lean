@@ -1,0 +1,159 @@
+{
+  "total": {
+    "summaries": 17,
+    "originalBytes": 476511,
+    "summarizedBytes": 109368,
+    "missingOriginals": 0
+  },
+  "perRun": [
+    {
+      "runId": "t1-rust-semver__lean__r3",
+      "summaries": 3,
+      "summarizedBytes": 24685,
+      "originalBytes": 54693,
+      "missingOriginals": 0,
+      "byTool": {
+        "read": {
+          "summaries": 3,
+          "originalBytes": 54693,
+          "summarizedBytes": 24685
+        }
+      }
+    },
+    {
+      "runId": "t2-go-pflag__lean__r3",
+      "summaries": 1,
+      "summarizedBytes": 8222,
+      "originalBytes": 49734,
+      "missingOriginals": 0,
+      "byTool": {
+        "read": {
+          "summaries": 1,
+          "originalBytes": 49734,
+          "summarizedBytes": 8222
+        }
+      }
+    },
+    {
+      "runId": "t3-py-more-itertools__lean__r1",
+      "summaries": 0,
+      "summarizedBytes": 0,
+      "originalBytes": 0,
+      "missingOriginals": 0,
+      "byTool": {}
+    },
+    {
+      "runId": "t3-py-more-itertools__lean__r3",
+      "summaries": 0,
+      "summarizedBytes": 0,
+      "originalBytes": 0,
+      "missingOriginals": 0,
+      "byTool": {}
+    },
+    {
+      "runId": "t4-vitest-ufo__lean__r1",
+      "summaries": 1,
+      "summarizedBytes": 3536,
+      "originalBytes": 4574,
+      "missingOriginals": 0,
+      "byTool": {
+        "bash": {
+          "summaries": 1,
+          "originalBytes": 4574,
+          "summarizedBytes": 3536
+        }
+      }
+    },
+    {
+      "runId": "t5-git-review__lean__r1",
+      "summaries": 5,
+      "summarizedBytes": 26202,
+      "originalBytes": 156192,
+      "missingOriginals": 0,
+      "byTool": {
+        "bash": {
+          "summaries": 5,
+          "originalBytes": 156192,
+          "summarizedBytes": 26202
+        }
+      }
+    },
+    {
+      "runId": "t5-git-review__lean__r2",
+      "summaries": 2,
+      "summarizedBytes": 11562,
+      "originalBytes": 59473,
+      "missingOriginals": 0,
+      "byTool": {
+        "bash": {
+          "summaries": 2,
+          "originalBytes": 59473,
+          "summarizedBytes": 11562
+        }
+      }
+    },
+    {
+      "runId": "t6-ci-log__lean__r2",
+      "summaries": 2,
+      "summarizedBytes": 12060,
+      "originalBytes": 58316,
+      "missingOriginals": 0,
+      "byTool": {
+        "read": {
+          "summaries": 1,
+          "originalBytes": 53122,
+          "summarizedBytes": 8139
+        },
+        "bash": {
+          "summaries": 1,
+          "originalBytes": 5194,
+          "summarizedBytes": 3921
+        }
+      }
+    },
+    {
+      "runId": "t6-ci-log__lean__r3",
+      "summaries": 2,
+      "summarizedBytes": 14864,
+      "originalBytes": 71508,
+      "missingOriginals": 0,
+      "byTool": {
+        "bash": {
+          "summaries": 2,
+          "originalBytes": 71508,
+          "summarizedBytes": 14864
+        }
+      }
+    },
+    {
+      "runId": "t7-large-file__lean__r1",
+      "summaries": 0,
+      "summarizedBytes": 0,
+      "originalBytes": 0,
+      "missingOriginals": 0,
+      "byTool": {}
+    },
+    {
+      "runId": "t7-large-file__lean__r3",
+      "summaries": 0,
+      "summarizedBytes": 0,
+      "originalBytes": 0,
+      "missingOriginals": 0,
+      "byTool": {}
+    },
+    {
+      "runId": "t8-control__lean__r2",
+      "summaries": 1,
+      "summarizedBytes": 8237,
+      "originalBytes": 22021,
+      "missingOriginals": 0,
+      "byTool": {
+        "read": {
+          "summaries": 1,
+          "originalBytes": 22021,
+          "summarizedBytes": 8237
+        }
+      }
+    }
+  ]
+}

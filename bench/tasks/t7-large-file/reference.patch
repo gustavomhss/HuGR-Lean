@@ -1,0 +1,68 @@
+diff --git a/docs/api.rst b/docs/api.rst
+index 7b40a8e..0fc21f7 100644
+--- a/docs/api.rst
++++ b/docs/api.rst
+@@ -365,6 +365,7 @@ Others
+ .. autofunction:: side_effect
+ .. autofunction:: iterate
+ .. autofunction:: difference(iterable, func=operator.sub, *, initial=None)
++.. autofunction:: pairwise_diff
+ .. autofunction:: make_decorator
+ .. autoclass:: SequenceView
+ .. autoclass:: time_limited
+diff --git a/more_itertools/more.py b/more_itertools/more.py
+index 9c56ab3..684ccb0 100755
+--- a/more_itertools/more.py
++++ b/more_itertools/more.py
+@@ -133,6 +133,7 @@ __all__ = [
+     'only',
+     'outer_product',
+     'padded',
++    'pairwise_diff',
+     'partial_product',
+     'partitions',
+     'peekable',
+@@ -2940,6 +2941,23 @@ def difference(iterable, func=sub, *, initial=None):
+     return chain(first, map(func, b, a))
+ 
+ 
++def pairwise_diff(iterable):
++    """Yield the difference ``b - a`` for each pair of consecutive items
++    ``a, b`` of *iterable*:
++
++        >>> list(pairwise_diff([1, 4, 9, 16]))
++        [3, 5, 7]
++
++    Iterables with fewer than two items yield nothing.
++
++    """
++    iterator = iter(iterable)
++    for a in iterator:
++        for b in iterator:
++            yield b - a
++            a = b
++
++
+ class SequenceView(Sequence):
+     """Return a read-only view of the sequence object *target*.
+ 
+diff --git a/more_itertools/more.pyi b/more_itertools/more.pyi
+index 927cb21..1d4460f 100644
+--- a/more_itertools/more.pyi
++++ b/more_itertools/more.pyi
+@@ -106,6 +106,7 @@ __all__ = [
+     'only',
+     'outer_product',
+     'padded',
++    'pairwise_diff',
+     'partial_product',
+     'partitions',
+     'peekable',
+@@ -622,6 +623,7 @@ def difference(
+     *,
+     initial: Any,
+ ) -> Iterator[Any]: ...
++def pairwise_diff(iterable: Iterable[Any]) -> Iterator[Any]: ...
+ 
+ class SequenceView(Generic[_T_co], Sequence[_T_co]):
+     def __init__(self, target: Sequence[_T_co]) -> None: ...

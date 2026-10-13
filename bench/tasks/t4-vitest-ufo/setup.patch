@@ -1,0 +1,13 @@
+diff --git a/src/utils.ts b/src/utils.ts
+index ea98aba..bed485a 100644
+--- a/src/utils.ts
++++ b/src/utils.ts
+@@ -13,7 +13,7 @@ const PROTOCOL_REGEX = /^[\s\w\0+.-]{2,}:([/\\]{2})?/;
+ const PROTOCOL_RELATIVE_REGEX = /^([/\\]\s*){2,}[^/\\]/;
+ const PROTOCOL_SCRIPT_RE = /^[\s\0]*(blob|data|javascript|vbscript):$/i;
+ const TRAILING_SLASH_RE = /\/$|\/\?|\/#/;
+-const JOIN_LEADING_SLASH_RE = /^\.?\//;
++const JOIN_LEADING_SLASH_RE = /^\.\//;
+ 
+ /**
+  * Check if a path starts with `./` or `../`.
