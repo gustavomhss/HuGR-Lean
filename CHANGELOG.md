@@ -2,12 +2,13 @@
 
 ## 0.4.0 — 2026-10-12
 
-- New default `mode: "summarize"` (Lean 2.0). Large tool outputs are summarized instead of passed through exactly: shell output above 6 KiB keeps about 2 KiB of head, 2 KiB of tail and the failure lines with their continuation lines; file reads cap at 16 KiB with an `offset=` continuation; webfetch caps at 16 KiB. Thresholds are configurable under `summarize`.
+- New default `mode: "summarize"` (Lean 2.0). Large tool outputs are summarized instead of passed through exactly: shell output above 4 KiB keeps about 1.5 KiB of head, 1.5 KiB of tail and the failure lines with their continuation lines; file reads cap at 8 KiB with an `offset=` continuation; webfetch caps at 8 KiB. Thresholds are configurable under `summarize`.
 - Failures stay whole. When the exit code is nonzero or unknown, every failure line and its continuation block is kept regardless of budget; exit 0 output keeps failure and warning lines within a 4 KiB budget.
 - Every lossy summary stores the complete original in the RawStore and ends with `[full output: lean recall <id>]`. Recall is available as the OpenCode tool `lean_recall` (registered by the plugin, optional line range) and as `hugr-lean recall ID [--lines A-B]`. Summaries are dropped (the original is kept) if storage fails or `raw: false`.
 - Compound commands, pipes, host-truncated output and nonzero exits are now summarized as well.
 - Lossless rewrites without recall: ANSI and carriage-return overwrite stripping, run-length marking of repeated shell lines, and compaction of read `N: ` line-number prefixes into one header line (`summarize.readLineNumbers: true` keeps them).
 - A summary is never larger than its input. `RawStore` gains opt-in `evict` (oldest first), which summarize mode enables so a full store keeps admitting new originals.
+- Offline replay on the owner's recorded sessions: 41.3% total reduction with the defaults (upper bound before recovery re-reads; see `docs/BENCHMARK_REAL.md`).
 - `mode: "lossless"` keeps the 0.3 exact-evidence contract unchanged.
 
 ## 0.3.0 — 2026-10-12

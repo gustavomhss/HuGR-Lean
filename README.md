@@ -67,9 +67,9 @@ the package-name loading route has been tested with a locally installed tarball.
 
 ## Summarize mode (default since 0.4.0)
 
-By default the plugin summarizes large `bash`, `read` and `webfetch` outputs. Shell output above 6 KiB
-keeps its head, its tail and its failure lines; a read caps at 16 KiB and says which `offset` to read next;
-webfetch caps at 16 KiB. When a command fails or its exit code is unknown, every failure line is kept whole.
+By default the plugin summarizes large `bash`, `read` and `webfetch` outputs. Shell output above 4 KiB
+keeps its head, its tail and its failure lines; a read caps at 8 KiB and says which `offset` to read next;
+webfetch caps at 8 KiB. When a command fails or its exit code is unknown, every failure line is kept whole.
 Each summary stores the complete original locally and ends with `[full output: lean recall <id>]`.
 The model can fetch it back with the `lean_recall` tool (optionally a line range); people can run
 `hugr-lean recall <id> [--lines A-B]`. Smaller rewrites with no information loss (ANSI stripping,
@@ -78,8 +78,8 @@ repeated-line marking, read line-number compaction) need no recall. Options:
 ```json
 ["file:///absolute/installed/path/hugr-lean/dist/index.js", {
   "mode": "summarize",
-  "summarize": { "shellThresholdBytes": 6144, "headBytes": 2048, "tailBytes": 2048, "errorBytes": 4096,
-                 "readCapBytes": 16384, "webfetchCapBytes": 16384, "readLineNumbers": false },
+  "summarize": { "shellThresholdBytes": 4096, "headBytes": 1536, "tailBytes": 1536, "errorBytes": 4096,
+                 "readCapBytes": 8192, "webfetchCapBytes": 8192, "readLineNumbers": false },
   "raw": { "maxBytes": 67108864, "ttlMs": 604800000 }
 }]
 ```

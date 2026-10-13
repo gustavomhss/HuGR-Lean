@@ -31,8 +31,8 @@ export type SummarizeResult = { readonly inputBytes: number; readonly outputByte
   | { readonly status: "rewritten" | "summarized"; readonly replacement: string });
 
 export const defaultSummarizeOptions: Required<SummarizeOptions> = Object.freeze({
-  shellThresholdBytes: 6 * 1024, headBytes: 2 * 1024, tailBytes: 2 * 1024, errorBytes: 4 * 1024,
-  readCapBytes: 16 * 1024, webfetchCapBytes: 16 * 1024, readLineNumbers: false,
+  shellThresholdBytes: 4 * 1024, headBytes: 1536, tailBytes: 1536, errorBytes: 4 * 1024,
+  readCapBytes: 8 * 1024, webfetchCapBytes: 8 * 1024, readLineNumbers: false,
 });
 
 export const recoveryLine = (id: string): string => `\n[full output: lean recall ${id}]`;

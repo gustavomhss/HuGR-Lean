@@ -45,12 +45,12 @@ test("missing exit code is treated as a failure; exit 0 keeps failures within th
 });
 
 test("never summarizes at or below the shell threshold; thresholds are configurable", () => {
-  const at = Array.from({ length: 61 }, (_, i) => `row ${String(i).padStart(3, "0")} ${"x".repeat(91)}`).join("\n") + "\n" + "y".repeat(6144 - 61 * 100);
+  const at = Array.from({ length: 40 }, (_, i) => `row ${String(i).padStart(3, "0")} ${"x".repeat(91)}`).join("\n") + "\n" + "y".repeat(4096 - 40 * 100);
   assert.equal(bytes(at), defaultSummarizeOptions.shellThresholdBytes);
   assert.notEqual(summarize({ tool: "bash", output: at, metadata: { exit: 0 } }).status, "summarized");
   assert.equal(summarize({ tool: "bash", output: at + "y", metadata: { exit: 0 } }).status, "summarized");
   const varied = Array.from({ length: 80 }, (_, i) => `line ${i} ${"z".repeat(70)}`).join("\n");
-  assert.ok(bytes(varied) > 6144);
+  assert.ok(bytes(varied) > 4096);
   assert.equal(summarize({ tool: "bash", output: varied, metadata: { exit: 0 } }).status, "summarized");
   assert.equal(summarize({ tool: "bash", output: varied, metadata: { exit: 0 } }, { shellThresholdBytes: 64 * 1024 }).status, "unchanged");
   const small = summarize({ tool: "bash", output: varied.slice(0, 3000), metadata: { exit: 0 } }, { shellThresholdBytes: 1024, headBytes: 256, tailBytes: 256 });
@@ -113,7 +113,7 @@ test("read line-number prefixes compact losslessly; large reads cap with an offs
   if (capped.status !== "summarized") return;
   assert.ok(bytes(capped.replacement) <= defaultSummarizeOptions.readCapBytes);
   const last = Number(/Showing lines 1-(\d+)\. Use offset=(\d+) to continue/.exec(capped.replacement)?.[1]);
-  assert.ok(last > 100 && last < 600);
+  assert.ok(last > 50 && last < 600);
   assert.ok(capped.replacement.endsWith(`Use offset=${last + 1} to continue.)\n</content>`));
   const reminder = big + "\n<system-reminder>\nkeep me\n</system-reminder>";
   const kept = summarize({ tool: "read", output: reminder });
@@ -122,12 +122,14 @@ test("read line-number prefixes compact losslessly; large reads cap with an offs
   assert.equal(summarize({ tool: "read", output: odd }).status, "unchanged");
 });
 
-test("webfetch caps at 16 KB; grep and glob pass through existing automatic views", () => {
+test("webfetch caps at 8 KB; grep and glob pass through existing automatic views", () => {
   const page = Array.from({ length: 2000 }, (_, i) => `Paragraph ${i}: ${"lorem ".repeat(10)}`).join("\n");
   const web = summarize({ tool: "webfetch", output: page });
   assert.equal(web.status, "summarized");
-  if (web.status === "summarized") { assert.ok(page.startsWith(web.replacement.split("\n… [lean:")[0]!)); assert.ok(bytes(web.replacement) < 16 * 1024 + 100); }
+  if (web.status === "summarized") { assert.ok(page.startsWith(web.replacement.split("\n… [lean:")[0]!)); assert.ok(bytes(web.replacement) < defaultSummarizeOptions.webfetchCapBytes + 100); }
   assert.equal(summarize({ tool: "webfetch", output: page.slice(0, 4000) }).status, "unchanged");
+  assert.deepEqual([defaultSummarizeOptions.shellThresholdBytes, defaultSummarizeOptions.headBytes, defaultSummarizeOptions.tailBytes,
+    defaultSummarizeOptions.readCapBytes, defaultSummarizeOptions.webfetchCapBytes], [4096, 1536, 1536, 8192, 8192]);
   const paths = Array.from({ length: 30 }, (_, i) => `/Users/someone/project/src/deep/module/file_${i}.ts`);
   const glob = summarize({ tool: "glob", output: paths.join("\n"), args: { pattern: "**/*.ts" }, metadata: { count: 30, truncated: false } });
   assert.ok(glob.status === "rewritten" && glob.reason === "automatic:auto-files");
