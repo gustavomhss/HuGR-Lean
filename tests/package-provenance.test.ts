@@ -40,7 +40,11 @@ test("artifact snapshot covers every real native source note", async () => {
     const snapshot = path.join(temporary, "snapshot");
     const notes: string[] = await smoke.snapshotArtifact(root, snapshot);
     for (const required of ["fixtures/runners/SOURCES.md", "fixtures/profiles/pylint/SOURCES.md",
-      "fixtures/profiles/cargo-doc/actions-20261009/SOURCES.md"]) assert.ok(notes.includes(required), required);
+      "fixtures/profiles/cargo-doc/actions-20261009/SOURCES.md",
+      ...["browser", "cli", "files", "host"].map(family => `fixtures/automatic/${family}/SOURCES.md`)]) assert.ok(notes.includes(required), required);
+    const packed = await smoke.npmProcess(["pack", "--json", "--ignore-scripts"], { cwd: snapshot, isolation: temporary, timeout: 30000 });
+    const shipped = JSON.parse(packed.stdout)[0].files.map((entry: { path: string }) => entry.path);
+    assert.deepEqual(shipped.filter((name: string) => name.startsWith("fixtures/") && name.endsWith("/SOURCES.md")).sort(), notes);
     for (const name of notes) assert.equal(await readFile(path.join(snapshot, name), "utf8"), await readFile(path.join(root, name), "utf8"), name);
   } finally { await rm(temporary, { recursive: true, force: true }); }
 });

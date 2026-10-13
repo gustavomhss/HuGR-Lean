@@ -136,3 +136,67 @@ Build with `npm ci`, `npm run typecheck`, `npm run structure`, `npm run build`. 
 `node scripts/real-world/analyze.mjs OUTPUT_DIR` and `node scripts/real-world/replay.mjs OUTPUT_DIR` verify existing captures before writing derived reports. Run these only on archive copies to retain the historical `analysis.json` and `replay.json` as well as the original failed report. The historical report's absolute `setup.root` must point to its retained catalog on the inspecting machine; preserve the original report and record any relocation in the inspection copy.
 
 Report verification decodes and rehashes all 120 native gzip files, checks UTF-8 roundtrips and catalog/capture/replay identity, recomputes aggregates and checks all host sidecars. Positive controls reject missing/duplicate cases, empty aggregates, lost Cargo summaries, lost Jest failure identity, wrong native failure exits and lost Git facts; mutations affect only in-memory copies. Focused existing evidence/host tests exercise additional destructive controls. The structure check covers code roots and module-document presence, not the truth of this report; CI green alone does not prove real-host execution or benchmark usefulness.
+
+## Lean 2.0 summarize replay (2026-10-12)
+
+This section replays `summarize()` (0.4.0, default options) offline over the owner's local OpenCode
+session databases.
+
+- Corpus: 27 SQLite files opened read-only (`mode=ro`, `PRAGMA query_only`), 343,045 completed
+  tool parts and 1,626.1 MB of tool output. That is the same total as the 2026-10-12 lossless baseline.
+- Pipeline: for `bash`, the existing lossless profiles run first, as in the plugin. `read`,
+  `webfetch`, `grep` and `glob` go straight to `summarize()`.
+- Output bytes include the 60-byte recovery line of every summary.
+- Only aggregates were computed and recorded. No output, input, path or argument text was printed.
+
+Defaults: `shellThresholdBytes` 4096, `headBytes` 1536, `tailBytes` 1536, `errorBytes` 4096,
+`readCapBytes` 8192 and `webfetchCapBytes` 8192.
+
+| Scope | Calls | Before (MB) | After (MB) | Tool reduction | Share of total |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **All tools** | 343,045 | 1,626.1 | 955.3 | — | **41.3%** |
+| bash | 138,373 | 538.9 | 224.7 | 58.3% | 19.3% |
+| read (file) | 101,309 | 764.7 | 483.9 | 36.7% | 17.3% |
+| webfetch | 6,561 | 103.6 | 40.6 | 60.8% | 3.9% |
+| grep | 24,252 | 100.5 | 94.4 | 6.0% | 0.4% |
+| glob | 13,570 | 17.7 | 11.2 | 36.6% | 0.4% |
+| read (directory) | 6,383 | 9.9 | 9.7 | 1.3% | 0.0% |
+| other tools (skill, task, …) | 52,597 | 91.3 | 91.3 | 0% | 0% |
+
+Savings by mechanism (MB):
+
+| Mechanism | Saved (MB) |
+| --- | ---: |
+| Shell summaries, exit 0 | 274.3 |
+| Shell summaries, failed or unknown exit | 36.4 |
+| Shell cleanup | 3.0 |
+| Lossless profiles | 0.6 |
+| Read cap | 261.0 |
+| Read line-number compaction | 19.8 |
+| Webfetch cap | 63.0 |
+| Automatic grep/glob/directory views | 12.7 |
+
+Counts:
+- Summaries: 22,737 shell, 27,816 read and 3,772 webfetch.
+- Lossless rewrites: 4,622 shell and 64,886 read.
+
+**These are upper bounds.** The replay cannot see the extra calls a model makes to recover omitted
+content: `lean_recall`, or a read with a further `offset`. Each of those adds bytes back. A live A/B
+on real sessions has to validate the net reduction.
+
+Sensitivity on the same corpus (rows other than the defaults change only the listed options):
+
+| Options | Total reduction |
+| --- | ---: |
+| **0.4.0 defaults (above)** | **41.3%** |
+| Initial proposal: shell 6144/2048/2048, read and webfetch caps 16384 | 30.4% |
+| Initial proposal with `shellThresholdBytes: 4096, headBytes: 1536, tailBytes: 1536` | 31.8% |
+| Initial proposal with `readCapBytes: 8192` | 38.4% |
+
+File reads are the largest volume (47% of all bytes). The read cap therefore matters most:
+lowering it from 16 to 8 KiB raises read savings from 150.8 to 280.8 MB. The model sees half as
+much of each large file per read and continues with `offset`.
+
+Recovery cost: with the store full at its default 64 MiB (about 1,400 records of 48 KB),
+storing one original takes about 80 ms (p50) on the owner's Mac. Records already validated by the
+same store instance are reused while their inode, size and times are unchanged.

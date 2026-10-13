@@ -8,6 +8,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { ROOT, readCorpus } from "./benchmark.mjs";
 import { assertCorpusCoverage } from "./native-corpus.mjs";
 import { isolatedEnvironment, runProcess } from "./opencode-boundary.mjs";
+import { PACKAGE_API_INSPECT } from "./package-api.mjs";
 
 // The inspector executes in the temporary consumer, using package names (and Node's exports resolver).
 // Its built-in assertions cannot be replaced by a fixture package's own test script.
@@ -89,7 +90,8 @@ for (const entry of evidence.cases) {
 }
 const cargo = evidence.cases.find((entry) => entry.family === "cargo-test" && entry.status === "reduced");
 assert.ok(cargo, "Installed plugin control has no Cargo fixture");
-const hooks = await root.default({}, { raw: false });
+// Independent goldens pin the 0.3 exact-evidence contract, which 0.4 keeps as mode "lossless".
+const hooks = await root.default({}, { raw: false, mode: "lossless" });
 assert.deepEqual(Object.keys(hooks), ["tool.execute.after"], "Installed default did not load after-hook");
 assert.equal(typeof hooks["tool.execute.after"], "function");
 for (const exit of [0, 101]) {
@@ -127,6 +129,17 @@ assert.equal(entries.length, 1);
 assert.equal(entries[0].id, id);
 await raw.purge();
 assert.equal(await raw.get(id), undefined, "Installed /raw purge failed");
+const summaryDirectory = path.resolve("raw-summary");
+const summarizing = await root.default({}, { raw: { directory: summaryDirectory } });
+assert.deepEqual(Object.keys(summarizing), ["tool.execute.after", "tool"], "Installed default summarize mode did not register lean_recall");
+const long = Array.from({ length: 800 }, (_, i) => "step " + i + " ok").join("\n") + "\nerror: installed failure line\n" + Array.from({ length: 800 }, (_, i) => "tail " + i).join("\n");
+const summary = { title: "Installed summary", output: long, metadata: { exit: 1, truncated: false } };
+await summarizing["tool.execute.after"]({ tool: "bash", args: { command: "cd x && make 2>&1 | tee log" } }, summary);
+const recovery = /\n\[full output: lean recall ([a-f0-9]{32})\]$/.exec(summary.output);
+assert.ok(recovery && summary.output.includes("\nerror: installed failure line\n") && Buffer.byteLength(summary.output) < Buffer.byteLength(long), "Installed summarize mode did not summarize with recovery");
+assert.equal(await summarizing.tool.lean_recall.execute({ id: recovery[1], lines: "" }), long, "Installed lean_recall was not exact");
+await new RawStore({ directory: summaryDirectory }).purge();
+await (async () => { ${PACKAGE_API_INSPECT} })();
 console.log(JSON.stringify({ rootExports: Object.keys(root), serverResolved, profileIds, exactFamilies: evidence.exactFamilies, fixtureCount: rows.length, fixtures: rows,
   plugin: { loaded: true, reduced: true, nonzeroExitExact: true, fixtureCount: evidence.cases.length }, raw: { exact: true, inputBytes: Buffer.byteLength(text, "utf8"), tempfile: true, purged: true } }));
 `;
@@ -208,6 +221,12 @@ export async function snapshotArtifact(root, destination) {
     catch (error) { if (error.code !== "ENOENT") throw error; } // assertPack names every required missing artifact.
   }
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+  // Literal (non-glob) allowlist documents such as CHANGELOG.md or docs/BENCHMARK_REAL.md ship as listed.
+  for (const file of manifest.files ?? []) {
+    if (typeof file !== "string" || /[*?{[]/.test(file) || !file.endsWith(".md")) continue;
+    await mkdir(path.dirname(path.join(destination, file)), { recursive: true });
+    await cp(path.join(root, file), path.join(destination, file));
+  }
   const sourceNotes = new Set();
   if (manifest.files?.includes("src/**/*.md")) {
     await cp(path.join(root, "docs"), path.join(destination, "docs"), { recursive: true });

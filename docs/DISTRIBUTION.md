@@ -1,13 +1,26 @@
 # Distribution status
 
+## 0.4.0: npm and GitHub release
+
+From 0.4.0 the package is distributed as `hugr-lean` on the npm registry, published by the
+[release workflow](../.github/workflows/release.yml) with npm provenance, and as a GitHub release
+asset `hugr-lean-0.4.0.tgz` with its `.sha256`. Both come from the same CI-built tarball at tag `v0.4.0`.
+OpenCode users add `"hugr-lean"` (or `"hugr-lean@0.4.0"`) to the `plugin` list; see the
+[README](../README.md#install). Until the owner pushes the tag, 0.4.0 is a candidate only and the
+name is unpublished on npm.
+
+The sections below record earlier source-only identities and remain historical.
+
+## History
+
 The local repository is canonical; the public source destination is
 [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 This destination is source-only for this handoff. A new repository does not automatically
-contain old release assets or establish an npm release. The [README](../README.md#install-and-enable)
+contain old release assets or establish an npm release. The [README](../README.md#install)
 builds from an approved full source SHA; baseline local proof is verified, while final artifact
 verification, CI and candidate approval remain pending.
 
-## Source and release identities
+### Source and release identities
 
 Source dates below identify commits, not archive build timestamps:
 
@@ -24,7 +37,7 @@ The old `ae4c3b5` pin predates the final format-profile C1 preservation fix
 a merge into `main`. Replace `FULL_REVIEWED_DELIVERY_SHA` in the README before running commands,
 using the approved PR head and matching evidence receipt. This document does not pin itself.
 
-## Tarball identity and availability
+### Tarball identity and availability
 
 These historical package identities remain separate:
 
@@ -45,11 +58,12 @@ The private baseline receipt is not an available public evidence bundle.
 The README uses `npm ci`, then normal `npm pack` (whose `prepack` builds the package),
 then installation of that local archive into a writable npm prefix, followed by doctor.
 
-The snapshot retains package version `0.2.0`. Its filename and reported version do not establish
+The current candidate uses package version `0.3.0`. CI retains `lean-package-<candidate-sha>`
+with its tarball, candidate identity, archive digests/integrity and byte-verified shipped materials. Its filename and reported version do not establish
 identity with the original `v0.2.0` release tarball. Treat every rebuilt tarball as a separate
 snapshot artifact unless its bytes are independently matched to the original recorded checksum.
 Pinning source does not promise a byte-reproducible npm archive. Record the actual local path,
-checksum and full source SHA; keep separate artifacts for upgrade and rollback even at `0.2.0`.
+checksum and full source SHA; keep separate artifacts for upgrade and rollback even when the reported versions match.
 
 The historical native corpus remains unrecovered for a fresh verification pass:
 `hugr-lean-real-world-20260930.tar.gz`, 2,242,474 bytes, SHA-256
@@ -57,7 +71,7 @@ The historical native corpus remains unrecovered for a fresh verification pass:
 Git source history cannot replace it. Historical benchmark links retain their original identity;
 they do not claim current availability or new-head verification.
 
-The next release/version, publication, corpus disposition and practical-usefulness judgment
+The 0.3.0 version bump is authorized; release publication, corpus disposition and practical-usefulness judgment
 require explicit human decisions. See the single [delivery status](DELIVERY.md) for pending
 verification and deferred Actions. Historical measurements, donor pins and fixture provenance
 continue to describe their original evidence.

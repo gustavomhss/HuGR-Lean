@@ -1,7 +1,11 @@
 export { filter } from "./engine.js";
+export { getProfiles } from "./profile-selection.js";
+export { tokenizeCommand } from "./command.js";
 export { filterAutomatic } from "./automatic.js";
 export type { AutomaticObservation, AutomaticOptions, AutomaticReducer, AutomaticEntry } from "./automatic-types.js";
 export { filterStructured } from "./structured.js";
 export { structuredFormats } from "./structured-types.js";
 export type { StructuredFormat, StructuredObservation, StructuredReducer, StructuredFilterOptions } from "./structured-types.js";
 export type * from "./types.js";
+export { summarize, recoveryLine, defaultSummarizeOptions } from "./summarize.js";
+export type { SummarizeObservation, SummarizeOptions, SummarizeResult } from "./summarize.js";

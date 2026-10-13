@@ -20,3 +20,6 @@ const entries = await store.list();
 - Recovery requires validated matching ownership plus `ESRCH`. Live/ambiguous owners, unknown lock contents, and existing recovery claims are preserved; automatic age-based stealing is unsupported.
 - Storage errors propagate from this API; OpenCode catches them and retains original tool text. CLI raw operations report errors with exit 1 and missing/expired get with exit 2; see [CLI manual](../cli/MANUAL.md).
 - Behavior witnesses: [raw tests](../../tests/raw.test.ts); limits/guarantees are local cooperative-storage guarantees, not a filesystem sandbox.
+
+- `evict: true` (opt-in; summarize mode enables it) removes the oldest validated records, never unknown names, until a new record fits the byte and count caps. Without it a full store still rejects.
+- `recallLines(text, range?)` returns the exact text, or the 1-based inclusive line slice for `A-B`, `A-` or `A`; anything else throws `RangeError`.
