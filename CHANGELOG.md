@@ -10,6 +10,10 @@
 - A summary is never larger than its input. `RawStore` gains opt-in `evict` (oldest first), which summarize mode enables so a full store keeps admitting new originals.
 - Offline replay on the owner's recorded sessions: 41.3% total reduction with the defaults (upper bound before recovery re-reads; see `docs/BENCHMARK_REAL.md`).
 - `mode: "lossless"` keeps the 0.3 exact-evidence contract unchanged.
+- Packaging for npm: first publication as `hugr-lean`, with description, keywords, homepage/bugs links, `publishConfig` (public access, provenance) and a smaller `files` allowlist (dist, README, CHANGELOG, SECURITY, LICENSE, NOTICE, license and fixture source notes, `docs/BENCHMARK_REAL.md`); internal module docs and `docs/history` no longer ship. The tarball drops from 235 to 191 files (481.5 kB to about 205 kB packed).
+- README rewritten for external users; CONTRIBUTING.md and SECURITY.md added.
+- `.github/workflows/release.yml`: on a `vX.Y.Z` tag (or manual dispatch with the tag) it checks the tag against `package.json`, CHANGELOG and `docs/RELEASE.md`, runs the full check on Linux, macOS and Windows, packs with a SHA-256, publishes to npm with provenance (secret `NPM_TOKEN`) and creates the GitHub release with the tarball, checksum and the `docs/RELEASE.md` section as notes.
+- The real-host smoke expects the summarize default: small unknown output reaches the model with CRLF normalized to LF; failed output and `mode: "lossless"` stay byte-exact.
 
 ## 0.3.0 — 2026-10-12
 

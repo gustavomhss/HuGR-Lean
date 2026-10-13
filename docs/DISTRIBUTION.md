@@ -1,13 +1,26 @@
 # Distribution status
 
+## 0.4.0: npm and GitHub release
+
+From 0.4.0 the package is distributed as `hugr-lean` on the npm registry, published by the
+[release workflow](../.github/workflows/release.yml) with npm provenance, and as a GitHub release
+asset `hugr-lean-0.4.0.tgz` with its `.sha256`. Both come from the same CI-built tarball at tag `v0.4.0`.
+OpenCode users add `"hugr-lean"` (or `"hugr-lean@0.4.0"`) to the `plugin` list; see the
+[README](../README.md#install). Until the owner pushes the tag, 0.4.0 is a candidate only and the
+name is unpublished on npm.
+
+The sections below record earlier source-only identities and remain historical.
+
+## History
+
 The local repository is canonical; the public source destination is
 [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 This destination is source-only for this handoff. A new repository does not automatically
-contain old release assets or establish an npm release. The [README](../README.md#install-and-enable)
+contain old release assets or establish an npm release. The [README](../README.md#install)
 builds from an approved full source SHA; baseline local proof is verified, while final artifact
 verification, CI and candidate approval remain pending.
 
-## Source and release identities
+### Source and release identities
 
 Source dates below identify commits, not archive build timestamps:
 
@@ -24,7 +37,7 @@ The old `ae4c3b5` pin predates the final format-profile C1 preservation fix
 a merge into `main`. Replace `FULL_REVIEWED_DELIVERY_SHA` in the README before running commands,
 using the approved PR head and matching evidence receipt. This document does not pin itself.
 
-## Tarball identity and availability
+### Tarball identity and availability
 
 These historical package identities remain separate:
 
