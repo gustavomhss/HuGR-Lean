@@ -1,4 +1,33 @@
-# Public GitHub delivery candidate — native documentation close, 2026-10-09
+# Delivery status
+
+## Current: 0.4.0 npm release candidate, 2026-10-13
+
+Branch `release/0.4.0` (from `utility/integration` after PR #160) prepares the first npm publication
+of `hugr-lean` and a GitHub release. Nothing is published or tagged yet; the owner and lead publish together.
+
+- Package: publish-ready `package.json` (no `npm pkg fix` changes), lean `files` allowlist,
+  `publishConfig` with public access and provenance. `npm pack --dry-run` and
+  `npm publish --dry-run --provenance=false` pass locally.
+- Docs: README for external users, CONTRIBUTING.md, SECURITY.md, [RELEASE.md](RELEASE.md) 0.4.0 section,
+  CHANGELOG.
+- Automation: [release workflow](../.github/workflows/release.yml) runs on a `vX.Y.Z` tag (or
+  manual dispatch with the tag): tag/version/CHANGELOG/notes gate, three-OS check, pack + SHA-256,
+  `npm publish --provenance --access public` with secret `NPM_TOKEN`, GitHub release.
+  `scripts/release.sh` (local tag + release, no npm) is superseded by it.
+- Real host: OpenCode 1.18.17 on macOS, isolated HOME/XDG, local model mock, against the packed tarball:
+  `package-smoke.mjs --opencode` proved (Cargo 1,058 → 248 bytes; exit 101 exact; unknown output
+  CRLF → LF under summarize, byte-exact under lossless), `opencode-smoke.mjs --package` proved the
+  `"hugr-lean"` package-name route, `opencode-raw-smoke.mjs` proved raw off/on with exact CLI recovery
+  (1,843 → 233 bytes), and an ad-hoc probe summarized a failing 16,647-byte log to 3,249 bytes with
+  exact `hugr-lean recall`. The first `--opencode` run failed because the smoke still expected the
+  0.3 byte-exact contract for CRLF output under the new summarize default; the smoke now asserts both modes.
+- CI: `ci.yml` is dispatched on the release PR head; its result is recorded on the PR (a commit cannot record CI of itself).
+
+Owner steps to publish: add the `NPM_TOKEN` repository secret (npm granular token with publish rights for
+`hugr-lean`, or an automation token), merge the release PR, then push tag `v0.4.0` on the merged commit.
+The workflow does the rest; if `NPM_TOKEN` is missing the publish job fails before packing.
+
+## History: public GitHub delivery candidate — native documentation close, 2026-10-09
 
 **Candidate pending human approval; not a new release or a completed gate.**
 Final PR: [#129](https://github.com/gustavomhss/HuGR-Lean/pull/129).
@@ -11,7 +40,7 @@ candidate/run remains evidence; focused repair passes are not a green three-OS r
 Local Git is canonical. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
 This is the single operational status record; historical release/benchmark reports remain dated evidence.
 
-## Identity and evidence boundary
+### Identity and evidence boundary
 
 Current verified runtime source: `66454e470862c71a43bc70adfdfd2c85bba41a24` on `campaign/native-integration`.
 It reconciles approved utility-base PR #85 without reverting campaign changes. Default registry
@@ -38,7 +67,7 @@ after documentation integration. Use that approved head as `FULL_REVIEWED_DELIVE
 installation/dispatch commands. The frozen baseline is provenance, not a self-referential pin
 for this document or automatic installation approval. Moving refs are not reviewed snapshots.
 
-## PLAN delivery ledger
+### PLAN delivery ledger
 
 The [plan](../PLAN.md) remains the acceptance source. Links identify implemented surfaces
 and existing witnesses, not fresh executions by this documentation change. Baseline pass
@@ -50,11 +79,11 @@ statements below refer to the historical pre-campaign receipt, not current-head 
 | 2. Pure core | [Engine](../src/core/engine.ts), [command identity](../src/core/command.ts), [lines](../src/core/lines.ts), [core tests](../tests/core.test.ts), [normalization tests](../tests/normalize.test.ts) | Bounded input, fail-open, UTF-16 spans and UTF-8 byte metrics implemented. Baseline full suite and temporary compiled-copy mutation controls passed/restored. |
 | 3. OpenCode | [Adapter](../src/opencode/index.ts), [plugin tests](../tests/plugin.test.ts), [host proof](OPENCODE.md) | Historical file/preinstalled package-name proof plus fresh installed model-bound proof at baseline: 1.18.17 legacy CLI, macOS x64. Final docs-artifact proof pending; V2/other routes unproved. |
 | 4. Profiles | [Registry](../src/profiles/index.ts), [manual](../src/profiles/MANUAL.md), [combined tests](../tests/combined.test.ts), [coverage](COVERAGE.md) | Current bounded reducers include diagnostics/layout/install progress; Cargo/Go extension and Node TAP reuse. Jest/Vitest plaintext reductions withdrawn, legacy validators retained. Exact ledger adds captures without stubs; final installed replay pending. |
-| 5. UX | [Options](../src/opencode/config.ts), [CLI](../src/cli/index.ts), [CLI tests](../tests/cli.test.ts), [README lifecycle](../README.md#lifecycle) | Baseline installed CLI/doctor and normal lifecycle installation passed. Upgrade/rollback/remove documented; final docs-artifact installation pending; no registry availability claim. |
+| 5. UX | [Options](../src/opencode/config.ts), [CLI](../src/cli/index.ts), [CLI tests](../tests/cli.test.ts), [README uninstall](../README.md#uninstall) | Baseline installed CLI/doctor and normal lifecycle installation passed. Upgrade/rollback/remove documented; final docs-artifact installation pending; no registry availability claim. |
 | 6. Optional raw | [Store](../src/raw/index.ts), [raw tests](../tests/raw.test.ts), [TTL tests](../tests/raw-ttl.test.ts), [real-host raw script](../scripts/opencode-raw-smoke.mjs) | Raw off by default; exact captured boundary, byte/TTL limits and safe IDs implemented. Fresh baseline raw off/on host and exact CLI recovery passed. |
 | 7. Proof/release | [Combined corpus tests](../tests/combined.test.ts), [installed smoke](../scripts/package-smoke.mjs), [smoke controls](../tests/package-smoke.test.ts), [benchmarks](BENCHMARK.md), [native evaluation](BENCHMARK_REAL.md), [NOTICE](../NOTICE), [distribution](DISTRIBUTION.md) | Baseline local mechanical/installed/host proof passed. Final docs-artifact proof, three-OS CI, retained corpus verification and human publication/usefulness decisions remain pending. |
 
-## Historical pre-campaign local proof; current artifact receipt pending
+### Historical pre-campaign local proof; current artifact receipt pending
 
 The independently verified private receipt covers exactly the frozen baseline above on Darwin
 24.3.0 x64, Node 22.17.1/npm 10.9.2. Structure/typecheck/build, the full suite at file concurrency 2,
@@ -92,7 +121,7 @@ primary cases: **the practical noise-reduction criterion failed on that corpus**
 Historical sampled preservation and engineering latency results do not establish general
 utility, token/cost savings or wider host support. No new utility goal or waiver is inferred.
 
-## Focused capture Actions; final package CI pending
+### Focused capture Actions; final package CI pending
 
 Two capture runs are recorded: [Rust builtin bench](https://github.com/gustavomhss/HuGR-Lean/actions/runs/37979866069)
 at candidate/workflow/checkout `da4c7601ad37cd1305c1ecd52733a84ee8dcc769`, and
@@ -120,7 +149,7 @@ and pack dry-run. Require all three actual completed lanes; retain failures, can
 skips explicitly. Uploaded provenance records identity only, not later gate success. CI does
 not execute OpenCode, native recapture or latency acceptance.
 
-## Human decisions still open
+### Human decisions still open
 
 Candidate approval/completion, missing variants and unimplemented safe-format dispositions,
 current performance/practical usefulness, release

@@ -1,235 +1,166 @@
 # HuGR-Lean
 
-Small, local, deterministic tool-output filtering **before model ingestion**.
-One TypeScript package. MIT. Offline filtering. No runtime dependencies or extra model calls.
+An [OpenCode](https://opencode.ai) plugin that shrinks large tool outputs before they reach the model.
+Long shell logs, big file reads and web pages are summarized; failures stay whole; every original
+is stored locally so the model (or you) can fetch it back exactly.
 
-## Install and enable
+Local and deterministic: no network calls, no extra model calls, no runtime dependencies. MIT.
 
-Node 22+, npm and Git. Public source destination: [gustavomhss/HuGR-Lean](https://github.com/gustavomhss/HuGR-Lean).
-The delivery candidate is **pending human approval**, not a new release.
-Before running commands, replace only `FULL_REVIEWED_DELIVERY_SHA` in the assignment below
-with the full 40-character lowercase hexadecimal SHA from the approved delivery PR and its
-candidate evidence receipt. Until approval
-and that receipt exist, this installation recipe is not an approved installation target.
-Never substitute floating `main` or a branch tip for the reviewed snapshot.
-Run these commands from a directory where you want a fresh clone. Choose an unused folder name
-(shown here as `hugr-lean-reviewed`), and stop if any command fails:
+## What it does
 
-```sh
-(
-set -eu
-HUGR_LEAN_COMMIT=FULL_REVIEWED_DELIVERY_SHA
-node -e 'const sha = process.argv[1] ?? ""; if (sha.length !== 40 || !/^[0-9a-f]{40}$/.test(sha)) { console.error("Expected approved full 40-character lowercase commit SHA"); process.exit(1); }' "$HUGR_LEAN_COMMIT"
-git clone https://github.com/gustavomhss/HuGR-Lean.git hugr-lean-reviewed
-cd hugr-lean-reviewed
-git checkout --detach "$HUGR_LEAN_COMMIT"
-HUGR_LEAN_HEAD=$(git rev-parse --verify HEAD)
-test "$HUGR_LEAN_HEAD" = "$HUGR_LEAN_COMMIT"
-npm ci
-npm pack
-node --input-type=module -e "import { readFileSync } from 'node:fs'; import { createHash } from 'node:crypto'; console.log(createHash('sha256').update(readFileSync(process.argv[1])).digest('hex'));" ./hugr-lean-0.4.0.tgz
-npm install -g ./hugr-lean-0.4.0.tgz
-hugr-lean doctor
-)
-```
+After each tool call, before the result is sent to the model:
 
-The subshell stops on failure: invalid SHA syntax fails before clone; failed source selection
-or a mismatched HEAD stops before npm. Syntax and identity checks do not grant human approval.
-`npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
-uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
-directory on `PATH`. The candidate package version is `0.4.0`; publication remains a human release decision.
-This locally built tarball is not claimed to be byte-identical to the original release asset.
-Record its absolute path, SHA-256 and source commit for upgrade/rollback.
-See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
-for historical baseline proof, native campaign scope, pending final artifact/CI and human decisions.
-The new repository is source-only;
-old release assets and npm publication are not implied by its existence.
+- **bash** output above 4 KiB keeps about 1.5 KiB of head, 1.5 KiB of tail and the failure lines.
+  If the command failed or its exit code is unknown, every failure line and its continuation block is kept,
+  whatever the budget.
+- **read** output is capped at 8 KiB and ends by naming the `offset` to read next.
+- **webfetch** output is capped at 8 KiB.
+- Each summary ends with `[full output: lean recall <id>]`. The complete original is in a local store.
+- Smaller rewrites that lose nothing need no recall: ANSI/carriage-return cleanup, marking repeated lines,
+  compacting read line-number prefixes, exact-preserving views for `glob`, `grep`, directory reads and
+  some MCP JSON/accessibility snapshots, and 20 built-in profiles for common test/build tools
+  (Cargo, pytest, Go, Node TAP, tsc, ESLint/Biome, Git status, ripgrep, ...).
+- A summary is never larger than its input. Tool metadata, titles and attachments are not touched.
 
-Copy `pluginURL` from doctor into your OpenCode configuration:
+## Numbers
+
+Offline replay of `summarize()` with the 0.4.0 defaults over 27 recorded OpenCode session databases
+(343,045 tool calls, 1,626.1 MB of tool output):
+
+| Scope | Calls | Before (MB) | After (MB) | Tool reduction | Share of total |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **All tools** | 343,045 | 1,626.1 | 955.3 | — | **41.3%** |
+| bash | 138,373 | 538.9 | 224.7 | 58.3% | 19.3% |
+| read (file) | 101,309 | 764.7 | 483.9 | 36.7% | 17.3% |
+| webfetch | 6,561 | 103.6 | 40.6 | 60.8% | 3.9% |
+| grep | 24,252 | 100.5 | 94.4 | 6.0% | 0.4% |
+| glob | 13,570 | 17.7 | 11.2 | 36.6% | 0.4% |
+| read (directory) | 6,383 | 9.9 | 9.7 | 1.3% | 0.0% |
+| other tools | 52,597 | 91.3 | 91.3 | 0% | 0% |
+
+**41.3% is an upper bound.** The replay cannot see the extra calls a model makes to get omitted
+content back (`lean_recall`, or a `read` with a further `offset`); each adds bytes back. The corpus
+is one developer's sessions, and these are UTF-8 bytes, not tokens or cost. A live A/B has not been
+run. Method, mechanism breakdown and sensitivity:
+[docs/BENCHMARK_REAL.md](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/docs/BENCHMARK_REAL.md#lean-20-summarize-replay-2026-10-12).
+
+## Install
+
+Requires Node 22+ and OpenCode. Add the package to the `plugin` list of your `opencode.json`
+(global `~/.config/opencode/opencode.json` or a project `opencode.json`):
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["file:///absolute/installed/path/hugr-lean/dist/index.js"]
+  "plugin": ["hugr-lean"]
 }
 ```
 
-Quit and restart OpenCode. Continue using tools normally; commands need no prefix.
-Historical verified host route (not a fresh native-campaign package proof):
-**OpenCode 1.18.17, macOS x64, legacy `opencode run`**, using a local model mock.
-Final documentation-bearing artifact proof and Linux/macOS/Windows CI remain pending;
-Linux/Windows host compatibility is not established. Final package CI waits for lead freeze;
-focused Rust capture Actions runs are separate evidence.
-Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
+Restart OpenCode. It installs the package from npm on startup. Use tools as usual; nothing needs a prefix.
+To pin a version, write `"hugr-lean@0.4.0"`.
 
-When npm registry publication is available, `hugr-lean@0.4.0` can be used as the plugin package name;
-the package-name loading route has been tested with a locally installed tarball.
+For the `hugr-lean` command line (recall, raw store maintenance), install it globally too:
 
-## Summarize mode (default since 0.4.0)
-
-By default the plugin summarizes large `bash`, `read` and `webfetch` outputs. Shell output above 4 KiB
-keeps its head, its tail and its failure lines; a read caps at 8 KiB and says which `offset` to read next;
-webfetch caps at 8 KiB. When a command fails or its exit code is unknown, every failure line is kept whole.
-Each summary stores the complete original locally and ends with `[full output: lean recall <id>]`.
-The model can fetch it back with the `lean_recall` tool (optionally a line range); people can run
-`hugr-lean recall <id> [--lines A-B]`. Smaller rewrites with no information loss (ANSI stripping,
-repeated-line marking, read line-number compaction) need no recall. Options:
-
-```json
-["file:///absolute/installed/path/hugr-lean/dist/index.js", {
-  "mode": "summarize",
-  "summarize": { "shellThresholdBytes": 4096, "headBytes": 1536, "tailBytes": 1536, "errorBytes": 4096,
-                 "readCapBytes": 8192, "webfetchCapBytes": 8192, "readLineNumbers": false },
-  "raw": { "maxBytes": 67108864, "ttlMs": 604800000 }
-}]
+```sh
+npm install -g hugr-lean
+hugr-lean doctor
 ```
 
-`"mode": "lossless"` restores the 0.3 behavior. `"raw": false` disables lossy summaries, since they
-could not be recovered. Measured on the owner's sessions: see [real-session replay](docs/BENCHMARK_REAL.md#lean-20-summarize-replay-2026-10-12).
-The "Behavior and coverage" notes below describe the lossless profiles, which still run first.
+Without npm, download `hugr-lean-<version>.tgz` and its `.sha256` from the
+[GitHub releases](https://github.com/gustavomhss/HuGR-Lean/releases), check the hash, run
+`npm install -g ./hugr-lean-<version>.tgz`, and put the `pluginURL` printed by `hugr-lean doctor`
+in the `plugin` list instead of `"hugr-lean"`.
 
-## Behavior and coverage
+## Configuration
 
-Default registry has 20 profile IDs: bounded Cargo test/build/check/Clippy, pytest,
-Go text/JSON tests and module changes, Node/tsx TAP, tsc verbose reference-build timestamps,
-pnpm safe install progress, ESLint/Biome, explicit Ruff/Pyright/Pylint JSON layouts,
-Jest/Vitest validators, English Git status and numbered ripgrep. Jest/Vitest plaintext
-reduction is withdrawn: whole markers, timings and source rows stay exact.
-Native corpus enrolls 41 bounded families, including 25 exact-ledger families with no new
-runtime reducers. Missing/unimplemented/conservative variants remain explicit; see
-[coverage inventory](docs/COVERAGE.md) and [profile manual](src/profiles/MANUAL.md).
-
-Explicit [structured-output filtering](docs/STRUCTURED-TOOLS.md) adds lexical JSON, tables,
-progress, process/file/window/event views and accessibility outline/property/scope views.
-Use `filterStructured` from `hugr-lean/core`, CLI `--format`, or declared `structuredTools`
-bindings. These are opt-in producer contracts, separate from the native command registry.
-
-Automatic native views are on by default: the plain plugin entry (no options, no `structuredTools`)
-also filters native `glob`, `grep` and directory `read` results, eligible `bash` output that the legacy
-registry declines (`no_profile`/unsupported command, genuine `metadata.exit === 0` and
-`metadata.truncated === false`), and raw MCP `content[]` text blocks: complete JSON/NDJSON, Playwright
-`browser_snapshot`, Chrome DevTools `take_snapshot` and CDP AX nodes. Changes are layout/prefix factoring
-and ref-leading reformatting only; every path, ref, row, key and value stays. Never touched: errors,
-MCP `isError`, truncation, unknown tools/carriers, file-content reads, attachments, binary
-(`resource.blob` refuses the packet) and `structuredContent`. Legacy reductions and refusals take
-precedence. Hook shapes are pinned to OpenCode 1.18.17 on macOS; Linux/Windows host behavior is not
-established. See [automatic native views](docs/COVERAGE.md#automatic-native-views).
-
-- Unknown commands, malformed/new formats, failures and incomplete/truncated results stay exact.
-- Every reduction must preserve declared evidence and be smaller in UTF-8 bytes.
-- Original summaries remain exact; only specifically admitted progress/layout can disappear after full validation. Native-looking plugin/reporter/lifecycle text does not authenticate its producer.
-- The adapter changes only model-visible text. Native command, title, metadata and attachments remain host-owned.
-- Host truncation happens before the hook: raw recovery means the exact captured boundary, not full process stdout.
-
-## Options and raw recovery
+Options go in a tuple. Every field is optional; the values shown are the defaults:
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [["file:///absolute/installed/path/hugr-lean/dist/index.js", {
+  "plugin": [["hugr-lean", {
+    "mode": "summarize",
+    "summarize": {
+      "shellThresholdBytes": 4096, "headBytes": 1536, "tailBytes": 1536, "errorBytes": 4096,
+      "readCapBytes": 8192, "webfetchCapBytes": 8192, "readLineNumbers": false
+    },
+    "raw": { "maxBytes": 67108864, "ttlMs": 604800000 },
     "enabled": true,
     "automatic": true,
-    "excludeCommands": ["git"],
-    "maxInputBytes": 4194304,
-    "raw": false
+    "excludeCommands": [],
+    "maxInputBytes": 4194304
   }]]
 }
 ```
 
-Defaults: enabled; automatic native views on; 4 MiB input limit (configurable 1–16 MiB); raw off.
-`"automatic": false` restores the legacy behavior: registry `bash` reductions plus explicit `structuredTools` only.
-`excludeCommands` also skips automatic `bash` views; the MCP text budget is the same `maxInputBytes`.
-Invalid options disable filtering. Enable raw with `"raw": {}` or a `directory`, `maxBytes`, `ttlMs` object.
-Raw stores material reductions only: at least 1 KiB and 10% saved. Defaults: 64 MiB serialized records,
-seven-day lazy expiry; full store preserves existing records and makes the current reduction fail open.
-Use a caller-private local directory. IDs and plugin diagnostics are never appended to normal tool output.
+- `mode`: `"summarize"` (default) or `"lossless"`. Lossless is the 0.3 behavior: only exact-preserving
+  profiles and views, no summaries, no recall line.
+- `summarize`: byte thresholds. `readLineNumbers: true` keeps read's `N: ` prefixes.
+- `raw`: the local store of originals. Default directory `~/.cache/hugr-lean/raw` (set `directory` to change it),
+  64 MiB, seven-day expiry; in summarize mode the oldest records are evicted when full.
+  `"raw": false` disables storage, which also disables summaries (only lossless rewrites remain).
+- `enabled: false` turns the plugin off. `automatic: false` disables the automatic views.
+  `excludeCommands` lists shell commands left alone (matched as a prefix of the command line).
+  `maxInputBytes` (1–16 MiB) is the input limit of the exact-preserving profiles and views.
+- Invalid options disable the plugin rather than guess.
+
+## Getting originals back
+
+The model has a `lean_recall` tool, registered by the plugin. It takes the `id` from the recovery
+line and an optional 1-based line range such as `"120-240"`.
+
+From a terminal:
 
 ```sh
-hugr-lean raw list
-hugr-lean raw get ID
-hugr-lean raw purge
+hugr-lean recall <id>                 # the exact original
+hugr-lean recall <id> --lines 120-240 # one line range
+hugr-lean raw list                    # stored records
+hugr-lean raw purge                   # delete all stored records
 ```
 
-Custom stores use `--directory PATH`. Raw get returns exact text or exit 2 with `unavailable`.
+Add `--directory PATH` for a custom store. A missing or expired record prints `unavailable` and exits 2.
+
+## Guarantees
+
+- Failures are never summarized away: on a nonzero or unknown exit, all failure lines are kept whole.
+- Every lossy summary has its complete original in the local store. If storing fails, no summary is
+  made: the model gets the full output (with lossless cleanup at most).
+- Unknown tools, MCP `isError` results, attachments and binary content pass through untouched.
+- Host truncation happens before the plugin runs: the stored original is what OpenCode captured,
+  not more.
+- No network access, telemetry or model calls. Originals stay on your machine.
+
+Tested host: OpenCode 1.18.17 on macOS. CI runs the package tests on Linux, macOS and Windows;
+Linux and Windows OpenCode hosts are not separately proven.
+
+## Uninstall
+
+1. Remove `hugr-lean` from the `plugin` list and restart OpenCode.
+2. Optionally delete stored originals: `hugr-lean raw purge` (add `--directory PATH` for a custom store).
+3. If installed globally: `npm uninstall -g hugr-lean`.
 
 ## Library
 
 ```ts
-import { filter } from "hugr-lean/core";
-
-const result = filter({
-  source: "shell", command: "cargo test", output: toolOutput,
-  termination: { kind: "exited", code: 0 }, completeness: "complete", presentation: "unknown",
-});
-const modelText = "replacement" in result ? result.replacement : toolOutput;
+import { summarize } from "hugr-lean/core";   // also filter, filterStructured, getProfiles, tokenizeCommand
+import { RawStore } from "hugr-lean/raw";
 ```
 
-`getProfiles()` returns fresh frozen selection snapshots of built-in records; `tokenizeCommand()` returns frozen literal argv or `undefined`. See the [core API manual](src/core/MANUAL.md) for host selection.
+See the [core manual](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/src/core/MANUAL.md).
 
-Only supply execution facts the host actually exposes. Core and profiles perform no filesystem/network I/O.
-
-## Lifecycle
-
-Disable with `enabled:false`, or remove the plugin entry; quit and restart OpenCode.
-
-Keep the previous tarball at a distinct absolute path and record its source SHA and SHA-256.
-Build the approved candidate in a separate checkout using the recipe above; retain its tarball
-at another path and record its own checksum. Different builds may report the same version: version and basename
-do not identify bytes. Recompute the checksum before each installation and compare it with
-the record for that exact local artifact. Replace the example paths before running:
-
-Upgrade:
-
-```sh
-npm install -g "/absolute/path/new-snapshot/hugr-lean-0.4.0.tgz"
-hugr-lean doctor
-```
-
-Rollback when needed:
-
-```sh
-npm install -g "/absolute/path/previous-snapshot/hugr-lean-0.4.0.tgz"
-hugr-lean doctor
-```
-
-After either install, update the config with doctor's
-current `pluginURL` and quit/restart OpenCode. Raw records survive disable, upgrade, rollback
-and uninstall; existing expiry/size limits still apply. Rollback does not promise that older
-storage code can read newer record schemas.
-
-To remove: remove the plugin entry and quit OpenCode. Keep raw data by omitting purge.
-To delete retained records, run `hugr-lean raw purge` before uninstall; for a custom store,
-run `hugr-lean raw purge --directory "/absolute/path/custom-store"` for each configured store.
-Purge deletes validated records, including unexpired ones. Then run `npm uninstall -g hugr-lean`
-and restart OpenCode.
-
-## Development and modules
+## Development
 
 ```sh
 npm ci
-npm run structure
-npm run typecheck
-node --import tsx --test --test-concurrency=2 tests/*.test.ts
-npm run build
-npm run smoke
-npm pack --dry-run
+npm run check   # structure, typecheck, tests, build
+npm run smoke   # pack, install and inspect the tarball
 ```
 
-Test-file concurrency is bounded at 2; internal subprocess tests remain unchanged.
-`npm test` and `npm run check` retain their default file scheduling. Run `npm run benchmark`
-separately after other checks finish, recording environment and background load. Local checks
-do not dispatch CI, prove another OS, recapture the historical corpus or authorize publication.
+See [CONTRIBUTING.md](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/CONTRIBUTING.md),
+[SECURITY.md](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/SECURITY.md),
+[CHANGELOG.md](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/CHANGELOG.md) and
+[NOTICE](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/NOTICE) for third-party fixture provenance.
 
-[Core](src/core/README.md) · [Profiles](src/profiles/README.md) · [Raw](src/raw/README.md) ·
-[OpenCode](src/opencode/README.md) · [CLI](src/cli/README.md).
-Each module includes ownership, maintenance, instruction manual and blast-radius documents.
-Target 400 LOC/file; allow 600; tolerate 750; above 750 split. CI checks logical code lines and documentation presence.
+## License
 
-[Benchmarks](docs/BENCHMARK.md) distinguish native fixture savings from synthetic latency workloads.
-[Real-world evaluation](docs/BENCHMARK_REAL.md) executes unchanged commands in pinned projects and reports zero-savings cases, preservation and overhead separately.
-[Host proof](docs/OPENCODE.md) uses a local model mock, including actual model-bound requests.
-Selected [TRS fixtures](fixtures/runners/SOURCES.md) carry pinned source paths, hashes and MIT notices;
-native producer pins/copy modification records live in per-family CASES/SOURCES linked by coverage.
-Production parsers are original TypeScript; fixture licenses remain their own, including GPL license archives.
-See [NOTICE](NOTICE) and [TRS license](licenses/TRS-MIT.txt). Byte savings are not token/cost claims;
-current campaign benchmark and final exact-SHA package CI have not run.
+MIT. See [LICENSE](LICENSE).
