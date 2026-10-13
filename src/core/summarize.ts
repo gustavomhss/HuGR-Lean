@@ -134,7 +134,8 @@ function summarizeShell(text: string, o: Required<SummarizeOptions>, failed: boo
 }
 
 const READ = /^<path>[^\n]*<\/path>\n<type>file<\/type>\n<content>\n/;
-const READ_FOOTER = /^\((?:PARTIAL view\. Showing lines \d+-\d+\. Use offset=\d+ to continue\.|End of file(?: - total \d+ lines)?)\)$/;
+// Host footers across OpenCode versions; older hosts put one blank line before the footer.
+const READ_FOOTER = /^\((?:(?:PARTIAL view\. |Output capped at \d+ KB\. )?Showing lines \d+-\d+(?: of \d+)?\. Use offset=\d+ to continue\.|End of file(?: - total \d+ lines)?)\)$/;
 
 function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: string; lossy: boolean } | undefined {
   const prefix = READ.exec(text)?.[0];
@@ -142,7 +143,9 @@ function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: str
   if (!prefix || footerStart < prefix.length || !READ_FOOTER.test(text.slice(footerStart + 1, close))) return;
   const footer = text.slice(footerStart + 1, close);
   const body = text.slice(prefix.length, footerStart), rest = text.slice(close);
-  const rows = body.split("\n"), start = Number(/^(\d+): /.exec(rows[0]!)?.[1]);
+  const rows = body.split("\n"), gap = rows.length > 1 && rows[rows.length - 1] === "" ? "\n" : "";
+  if (gap) rows.pop();
+  const start = Number(/^(\d+): /.exec(rows[0]!)?.[1]);
   if (!body.length || !Number.isSafeInteger(start)) return;
   const content: string[] = [];
   for (let i = 0; i < rows.length; i++) {
@@ -153,7 +156,7 @@ function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: str
   const render = (count: number, note: string) => {
     const last = start + count - 1;
     const header = o.readLineNumbers ? "" : `(lines ${start}-${last}; "N: " line-number prefixes omitted)\n`;
-    return `${prefix}${header}${content.slice(0, count).join("\n")}\n${note}${rest}`;
+    return `${prefix}${header}${content.slice(0, count).join("\n")}\n${gap}${note}${rest}`;
   };
   const full = render(content.length, footer);
   if (bytes(full) <= o.readCapBytes) return { text: full, lossy: false };

@@ -65,6 +65,29 @@ Other host routes require their own proof. Doctor reports the installed file URL
 When npm registry publication is available, `hugr-lean@0.4.0` can be used as the plugin package name;
 the package-name loading route has been tested with a locally installed tarball.
 
+## Summarize mode (default since 0.4.0)
+
+By default the plugin summarizes large `bash`, `read` and `webfetch` outputs. Shell output above 6 KiB
+keeps its head, its tail and its failure lines; a read caps at 16 KiB and says which `offset` to read next;
+webfetch caps at 16 KiB. When a command fails or its exit code is unknown, every failure line is kept whole.
+Each summary stores the complete original locally and ends with `[full output: lean recall <id>]`.
+The model can fetch it back with the `lean_recall` tool (optionally a line range); people can run
+`hugr-lean recall <id> [--lines A-B]`. Smaller rewrites with no information loss (ANSI stripping,
+repeated-line marking, read line-number compaction) need no recall. Options:
+
+```json
+["file:///absolute/installed/path/hugr-lean/dist/index.js", {
+  "mode": "summarize",
+  "summarize": { "shellThresholdBytes": 6144, "headBytes": 2048, "tailBytes": 2048, "errorBytes": 4096,
+                 "readCapBytes": 16384, "webfetchCapBytes": 16384, "readLineNumbers": false },
+  "raw": { "maxBytes": 67108864, "ttlMs": 604800000 }
+}]
+```
+
+`"mode": "lossless"` restores the 0.3 behavior. `"raw": false` disables lossy summaries, since they
+could not be recovered. Measured on the owner's sessions: see [real-session replay](docs/BENCHMARK_REAL.md#lean-20-summarize-replay-2026-10-12).
+The "Behavior and coverage" notes below describe the lossless profiles, which still run first.
+
 ## Behavior and coverage
 
 Default registry has 20 profile IDs: bounded Cargo test/build/check/Clippy, pytest,

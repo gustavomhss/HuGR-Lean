@@ -155,3 +155,11 @@ test("an unknown exit status keeps every failure beyond the budget, like a faile
   const success = summarize({ tool: "bash", output, metadata: { exit: 0 } });
   assert.ok(success.status === "summarized" && errors.some(line => !success.replacement.includes(line)), "exit 0 applies the error budget");
 });
+
+test("older host read layout with a blank line before the footer compacts and caps too", () => {
+  const old = (count: number) => `<path>/r/a.ts</path>\n<type>file</type>\n<content>\n${Array.from({ length: count }, (_, i) => `${i + 1}: let x${i} = ${"v".repeat(60)};`).join("\n")}\n\n(Showing lines 1-${count} of 9000. Use offset=${count + 1} to continue.)\n</content>`;
+  const small = summarize({ tool: "read", output: old(30) });
+  assert.ok(small.status === "rewritten" && small.replacement.endsWith(`;\n\n(Showing lines 1-30 of 9000. Use offset=31 to continue.)\n</content>`));
+  const big = summarize({ tool: "read", output: old(2000) });
+  assert.ok(big.status === "summarized" && /\n\n\(PARTIAL view\. Showing lines 1-\d+\. Use offset=\d+ to continue\.\)\n<\/content>$/.test(big.replacement));
+});

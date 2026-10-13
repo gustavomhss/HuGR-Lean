@@ -81,6 +81,8 @@ export class RawStore {
   private readonly maxBytes: number;
   private readonly ttlMs: number;
   private readonly evict: boolean;
+  /** Records validated by an earlier scan of this instance, reused only while their inode and times are unchanged. */
+  private validated = new Map<string, StoredEntry>();
   private readonly scanLimit = SCAN_LIMIT;
   private readonly lockMs = LOCK_MS;
 
@@ -345,7 +347,7 @@ export class RawStore {
   }
 
   private async scan(root: string): Promise<{ entries: StoredEntry[]; count: number }> {
-    const entries: StoredEntry[] = [];
+    const entries: StoredEntry[] = [], seen = new Map<string, StoredEntry>();
     let visited = 0;
     // One bounded, nonrecursive pass. Unknown names are never opened or removed.
     for await (const file of await opendir(root)) {
@@ -353,9 +355,21 @@ export class RawStore {
       if (file.name.length !== 37) continue;
       const id = FILE.exec(file.name)?.[1];
       if (!id) continue;
+      const known = this.validated.get(id);
+      if (known) {
+        const stat = await lstat(join(root, file.name));
+        checkFile(stat);
+        if (sameFile(known.stat, stat) && stat.size === known.stat.size && stat.mtimeMs === known.stat.mtimeMs && stat.ctimeMs === known.stat.ctimeMs) {
+          entries.push(known); seen.set(id, known); continue;
+        }
+      }
       const record = await this.read(root, id);
-      if (record) entries.push({ id, createdAt: record.createdAt, expiresAt: record.expiresAt, bytes: record.bytes, stat: record.stat });
+      if (record) {
+        const entry = { id, createdAt: record.createdAt, expiresAt: record.expiresAt, bytes: record.bytes, stat: record.stat };
+        entries.push(entry); seen.set(id, entry);
+      }
     }
+    this.validated = seen;
     entries.sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
     return { entries, count: visited };
   }

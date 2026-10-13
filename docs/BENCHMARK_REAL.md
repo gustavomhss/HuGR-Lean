@@ -136,3 +136,45 @@ Build with `npm ci`, `npm run typecheck`, `npm run structure`, `npm run build`. 
 `node scripts/real-world/analyze.mjs OUTPUT_DIR` and `node scripts/real-world/replay.mjs OUTPUT_DIR` verify existing captures before writing derived reports. Run these only on archive copies to retain the historical `analysis.json` and `replay.json` as well as the original failed report. The historical report's absolute `setup.root` must point to its retained catalog on the inspecting machine; preserve the original report and record any relocation in the inspection copy.
 
 Report verification decodes and rehashes all 120 native gzip files, checks UTF-8 roundtrips and catalog/capture/replay identity, recomputes aggregates and checks all host sidecars. Positive controls reject missing/duplicate cases, empty aggregates, lost Cargo summaries, lost Jest failure identity, wrong native failure exits and lost Git facts; mutations affect only in-memory copies. Focused existing evidence/host tests exercise additional destructive controls. The structure check covers code roots and module-document presence, not the truth of this report; CI green alone does not prove real-host execution or benchmark usefulness.
+
+## Lean 2.0 summarize replay (2026-10-12)
+
+Offline replay of `summarize()` (0.4.0, default options) over the owner's local OpenCode session
+databases: 27 SQLite files opened read-only (`mode=ro`, `PRAGMA query_only`), 343,045 completed tool
+parts, 1,626.1 MB of tool output (the same total as the 2026-10-12 lossless baseline). For `bash`
+the existing lossless profiles run first, as in the plugin; `read`, `webfetch`, `grep` and `glob` go
+straight to `summarize()`. Output bytes include the 60-byte recovery line of every summary. Only
+aggregates were computed and recorded; no output, input, path or argument text was printed.
+
+| Scope | Calls | Before (MB) | After (MB) | Tool reduction | Share of total |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **All tools** | 343,045 | 1,626.1 | 1,132.3 | — | **30.4%** |
+| bash | 138,373 | 538.9 | 247.6 | 54.1% | 17.9% |
+| read (file) | 101,309 | 764.7 | 613.9 | 19.7% | 9.3% |
+| webfetch | 6,561 | 103.6 | 64.7 | 37.6% | 2.4% |
+| grep | 24,252 | 100.5 | 94.4 | 6.0% | 0.4% |
+| glob | 13,570 | 17.7 | 11.2 | 36.6% | 0.4% |
+| read (directory) | 6,383 | 9.9 | 9.7 | 1.3% | 0.0% |
+| other tools (skill, task, …) | 52,597 | 91.3 | 91.3 | 0% | 0% |
+
+Savings by mechanism (MB): shell summaries 254.4 for exit 0 and 33.2 for failed or unknown exits,
+shell cleanup 3.1, lossless profiles 0.6; read cap 113.2, read line-number compaction 37.5;
+webfetch cap 38.9; automatic grep/glob/directory views 12.7. Summaries: 17,862 shell, 8,760 read and
+2,247 webfetch. Lossless rewrites: 4,856 shell and 83,911 read.
+
+**The defaults reach 30.4%, below the 35% target.** Same corpus, other thresholds:
+
+| Options changed from the defaults | Total reduction |
+| --- | ---: |
+| none | 30.4% |
+| `shellThresholdBytes: 4096, headBytes: 1536, tailBytes: 1536` | 31.8% |
+| `readCapBytes: 8192` | 38.4% |
+| `readCapBytes: 8192`, `webfetchCapBytes: 8192`, shell as above | 41.3% |
+
+File reads are the largest volume (47% of all bytes), so the read cap decides whether the target is
+met: lowering it from 16 to 8 KiB alone raises read savings from 150.8 to 280.8 MB. That is an owner
+decision, because the model then sees half as much of each large file per read and continues with `offset`.
+
+Recovery cost: with the store full at its default 64 MiB (about 1,400 records of 48 KB),
+storing one original takes about 80 ms (p50) on the owner's Mac. Records already validated by the
+same store instance are reused while their inode, size and times are unchanged.

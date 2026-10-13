@@ -25,3 +25,5 @@ hugr-lean --version
 - `--version` or `version` writes package version plus LF. `doctor` writes JSON plus LF with `version`, `node`, registry `profiles` IDs (including the `tsc` stub), `defaultRawDirectory` and installed `pluginURL`; use that URL in OpenCode config. It performs no host checks or raw-directory creation.
 - Process exit 0 means successful command, including filter passthrough for a nonzero observed exit; 1 means argument, I/O, storage, or version failure with an error message plus LF on stderr; 2 is unavailable raw get. Doctor/version reject extra arguments.
 - Raw defaults/guarantees remain 64 MiB serialized records, seven-day lazy TTL, and caller-restricted ACLs on every OS; see [raw manual](../raw/MANUAL.md) and [coverage](../../docs/COVERAGE.md) for the implemented-versus-installed evidence boundary.
+
+- `hugr-lean recall ID [--lines A-B] [--directory path]` prints the exact original behind a `[full output: lean recall ID]` line (or a 1-based inclusive line range). Unknown or expired IDs exit 2 with `unavailable`.

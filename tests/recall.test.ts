@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test, type TestContext } from "node:test";
@@ -110,4 +110,13 @@ test("recall returns the pre-rewrite original even when a lossless profile reduc
   const id = RECOVERY.exec(output.output)?.[1];
   assert.ok(id);
   assert.equal(await store.get(id), original);
+});
+
+test("scan reuse never hides a record that changed after it was validated", async (t) => {
+  const dir = await directory(t);
+  const store = new RawStore({ directory: dir });
+  const id = await store.put("kept");
+  assert.equal((await store.list()).length, 1);
+  await writeFile(join(dir, `${id}.json`), "{\"format\":\"corrupt\"}", { mode: 0o600 });
+  await assert.rejects(store.list(), /Invalid raw record/);
 });
