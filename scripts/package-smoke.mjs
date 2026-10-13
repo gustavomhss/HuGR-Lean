@@ -221,6 +221,12 @@ export async function snapshotArtifact(root, destination) {
     catch (error) { if (error.code !== "ENOENT") throw error; } // assertPack names every required missing artifact.
   }
   const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+  // Literal (non-glob) allowlist documents such as CHANGELOG.md or docs/BENCHMARK_REAL.md ship as listed.
+  for (const file of manifest.files ?? []) {
+    if (typeof file !== "string" || /[*?{[]/.test(file) || !file.endsWith(".md")) continue;
+    await mkdir(path.dirname(path.join(destination, file)), { recursive: true });
+    await cp(path.join(root, file), path.join(destination, file));
+  }
   const sourceNotes = new Set();
   if (manifest.files?.includes("src/**/*.md")) {
     await cp(path.join(root, "docs"), path.join(destination, "docs"), { recursive: true });

@@ -11,6 +11,10 @@ import { isolatedEnvironment, runProcess, runScenario } from "./opencode-boundar
 export const SUMMARY = "test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s";
 export const CARGO = `    Finished \`test\` profile [unoptimized + debuginfo] target(s) in 0.01s\n     Running unittests src/lib.rs (target/debug/deps/boundary-0000000000000000)\n\nrunning 40 tests\n${Array.from({ length: 40 }, (_, i) => `test case_${i} ... ok\n`).join("")}\n${SUMMARY}\n\n`;
 const UNKNOWN = "HUGR_UNKNOWN_OUTPUT café 🔥\r\nnot a Cargo grammar\n";
+// Default summarize mode gives small outputs only terminal-equivalent cleanup (CRLF -> LF, no recall);
+// failure lines stay whole. Lossless mode keeps the exact bytes.
+const PRESERVED = [[CARGO, 101, {}], [UNKNOWN, 0, {}], [CARGO, 101, { mode: "lossless" }], [UNKNOWN, 0, { mode: "lossless" }]];
+const preservedText = (output, options) => options.mode === "lossless" ? output : output.replaceAll("\r\n", "\n");
 
 function cargoFixture(output, exit = 0) {
   return async ({ cwd, env }) => {
@@ -51,13 +55,13 @@ export async function runSmoke({ plugin = process.env.HUGR_PLUGIN, ...options } 
   assertReduction(raw, filtered);
   const preserved = [];
   // A failing executable emits the same reducible grammar: removing a failure guard must not pass by grammar fallback.
-  for (const [output, exit] of [[CARGO, 101], [UNKNOWN, 0]]) {
-    const result = await runScenario({ ...options, plugin, command: "cargo test", setup: cargoFixture(output, exit) });
-    assert.equal(result.modelResult.content, output, "Package plugin changed failed or unknown native output");
-    assert.equal(result.tool.state.output, output);
+  for (const [output, exit, pluginOptions] of PRESERVED) {
+    const result = await runScenario({ ...options, plugin, pluginOptions, command: "cargo test", setup: cargoFixture(output, exit) });
+    assert.equal(result.modelResult.content, preservedText(output, pluginOptions), "Package plugin changed failed or unknown native output");
+    assert.equal(result.tool.state.output, preservedText(output, pluginOptions));
     assert.equal(result.tool.state.metadata.exit, exit, "Package plugin changed native exit status");
     assert.equal(result.tool.state.metadata.truncated, false);
-    preserved.push({ exit, outputBytes: Buffer.byteLength(output, "utf8") });
+    preserved.push({ exit, mode: pluginOptions.mode ?? "summarize", outputBytes: Buffer.byteLength(output, "utf8") });
   }
   return { status: "proved", plugin, command: "cargo test", inputBytes: Buffer.byteLength(CARGO, "utf8"), outputBytes: Buffer.byteLength(filtered.modelResult.content, "utf8"), preserved };
 }
@@ -120,9 +124,9 @@ export async function runPackageSmoke({ tarball = process.env.HUGR_TARBALL, with
     const disabled = await runScenario({ ...common, pluginSpec: "hugr-lean", pluginOptions: { enabled: false }, setup: setup(CARGO) });
     assertPackageTuple(disabled, false);
     assert.deepEqual(disabled.tool.state.metadata, raw.tool.state.metadata);
-    for (const [output, exit] of [[CARGO, 101], [UNKNOWN, 0]]) {
-      const result = await runScenario({ ...common, pluginSpec: "hugr-lean", pluginOptions: { enabled: true }, setup: setup(output, exit) });
-      assert.equal(result.modelResult.content, output, "Package-name plugin changed failed or unknown output");
+    for (const [output, exit, extra] of PRESERVED) {
+      const result = await runScenario({ ...common, pluginSpec: "hugr-lean", pluginOptions: { enabled: true, ...extra }, setup: setup(output, exit) });
+      assert.equal(result.modelResult.content, preservedText(output, extra), "Package-name plugin changed failed or unknown output");
       assert.equal(result.tool.state.metadata.exit, exit);
     }
     return { status: "proved", route: "host-package-name", hostVersion, specifier: "hugr-lean", tupleOptions: "enabled true/false", installation, tarball, sha256: createHash("sha256").update(await readFile(tarball)).digest("hex"), inputBytes: Buffer.byteLength(CARGO, "utf8"), outputBytes: Buffer.byteLength(enabled.modelResult.content, "utf8"), preservedExits: [101, 0], sdkReuse: options.dependencies ?? process.env.HUGR_SMOKE_DEPS ?? null };

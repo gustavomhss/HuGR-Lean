@@ -24,7 +24,7 @@ before(async () => {
   await cp(path.join(root, "scripts/utility-corpus.mjs"), path.join(seed, "scripts/utility-corpus.mjs"));
   await cp(path.join(root, "docs"), path.join(seed, "docs"), { recursive: true });
   await cp(path.join(root, "src"), path.join(seed, "src"), { recursive: true });
-  for (const file of ["LICENSE", "NOTICE", "licenses", "README.md"]) await cp(path.join(root, file), path.join(seed, file), { recursive: true });
+  for (const file of ["LICENSE", "NOTICE", "licenses", "README.md", "CHANGELOG.md", "SECURITY.md"]) await cp(path.join(root, file), path.join(seed, file), { recursive: true });
   // Compile the actual application. npm run check runs tests before its final build step.
   const build = await smoke.isolatedProcess(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"), "-p", path.join(root, "tsconfig.build.json"), "--outDir", path.join(seed, "dist")], { cwd: root, isolation: temporary, timeout: 120000 });
   assert.equal(build.code, 0, build.stdout + build.stderr);
