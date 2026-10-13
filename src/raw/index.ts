@@ -12,6 +12,8 @@ export interface RawOptions {
   maxBytes?: number;
   /** Lifetime bound; readers may shorten persisted deadlines. */
   ttlMs?: number;
+  /** When full, remove the oldest unexpired records to admit a new one (off by default). */
+  evict?: boolean;
 }
 
 export interface RawEntry {
@@ -78,6 +80,9 @@ export class RawStore {
   private readonly directory: string;
   private readonly maxBytes: number;
   private readonly ttlMs: number;
+  private readonly evict: boolean;
+  /** Records validated by an earlier scan of this instance, reused only while their inode and times are unchanged. */
+  private validated = new Map<string, StoredEntry>();
   private readonly scanLimit = SCAN_LIMIT;
   private readonly lockMs = LOCK_MS;
 
@@ -88,6 +93,8 @@ export class RawStore {
     this.directory = resolve(options.directory ?? defaultRawDirectory());
     this.maxBytes = positiveInteger(options.maxBytes === undefined ? 64 * 1024 * 1024 : options.maxBytes, "maxBytes");
     this.ttlMs = positiveInteger(options.ttlMs === undefined ? 7 * 24 * 60 * 60 * 1000 : options.ttlMs, "ttlMs");
+    if (options.evict !== undefined && typeof options.evict !== "boolean") throw new TypeError("evict must be a boolean");
+    this.evict = options.evict === true;
   }
 
   async put(text: string): Promise<string> {
@@ -103,11 +110,17 @@ export class RawStore {
       if (bytes > this.maxBytes) throw new RangeError("Raw record exceeds maxBytes");
       const scanned = await this.scan(root);
       const kept = await this.clean(root, scanned.entries, createdAt);
-      const count = scanned.count - (scanned.entries.length - kept.length);
+      let count = scanned.count - (scanned.entries.length - kept.length);
+      let total = kept.reduce((sum, entry) => sum + entry.bytes, 0);
+      if (!Number.isSafeInteger(total)) throw new Error("Raw byte accounting overflow");
+      // Opt-in eviction removes validated records only, oldest first; unknown names are never touched.
+      while (this.evict && kept.length && (count + 2 > this.scanLimit || total > this.maxBytes - bytes)) {
+        const oldest = kept.shift()!;
+        await this.remove(root, oldest);
+        count--; total -= oldest.bytes;
+      }
       // Reserve the new record and a recovery claim while .lock is present; unknown names count too.
       if (count + 2 > this.scanLimit) throw new Error("Raw record capacity is full");
-      const total = kept.reduce((sum, entry) => sum + entry.bytes, 0);
-      if (!Number.isSafeInteger(total)) throw new Error("Raw byte accounting overflow");
       if (total > this.maxBytes - bytes) throw new RangeError("Raw store is full");
       const temporary = join(root, ".lock", `${id}.tmp`);
       const handle = await open(temporary, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | NOFOLLOW, 0o600);
@@ -334,7 +347,7 @@ export class RawStore {
   }
 
   private async scan(root: string): Promise<{ entries: StoredEntry[]; count: number }> {
-    const entries: StoredEntry[] = [];
+    const entries: StoredEntry[] = [], seen = new Map<string, StoredEntry>();
     let visited = 0;
     // One bounded, nonrecursive pass. Unknown names are never opened or removed.
     for await (const file of await opendir(root)) {
@@ -342,9 +355,21 @@ export class RawStore {
       if (file.name.length !== 37) continue;
       const id = FILE.exec(file.name)?.[1];
       if (!id) continue;
+      const known = this.validated.get(id);
+      if (known) {
+        const stat = await lstat(join(root, file.name));
+        checkFile(stat);
+        if (sameFile(known.stat, stat) && stat.size === known.stat.size && stat.mtimeMs === known.stat.mtimeMs && stat.ctimeMs === known.stat.ctimeMs) {
+          entries.push(known); seen.set(id, known); continue;
+        }
+      }
       const record = await this.read(root, id);
-      if (record) entries.push({ id, createdAt: record.createdAt, expiresAt: record.expiresAt, bytes: record.bytes, stat: record.stat });
+      if (record) {
+        const entry = { id, createdAt: record.createdAt, expiresAt: record.expiresAt, bytes: record.bytes, stat: record.stat };
+        entries.push(entry); seen.set(id, entry);
+      }
     }
+    this.validated = seen;
     entries.sort((a, b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id));
     return { entries, count: visited };
   }
@@ -368,4 +393,13 @@ export class RawStore {
     if (!sameFile(entry.stat, stat)) throw new Error("Raw record changed during cleanup");
     await unlink(path);
   }
+}
+
+/** 1-based inclusive line range: "A-B", "A-" or "A"; undefined or "" returns the exact text. */
+export function recallLines(text: string, range?: string): string {
+  if (range === undefined || range === "") return text;
+  const match = /^([1-9]\d*)(?:-([1-9]\d*)?)?$/.exec(range.trim());
+  const start = Number(match?.[1]), end = match?.[2] !== undefined ? Number(match[2]) : range.includes("-") ? Infinity : start;
+  if (!match || !Number.isSafeInteger(start) || end < start) throw new RangeError("lines must look like 120-240, 120- or 120");
+  return text.split("\n").slice(start - 1, end === Infinity ? undefined : end).join("\n");
 }

@@ -5,7 +5,7 @@ import { filterStructured } from "../core/structured.js";
 import { filterAutomatic } from "../core/automatic.js";
 import { structuredFormats, type StructuredFormat } from "../core/structured-types.js";
 import { profiles } from "../profiles/index.js";
-import { RawStore, defaultRawDirectory } from "../raw/index.js";
+import { RawStore, defaultRawDirectory, recallLines } from "../raw/index.js";
 
 // Match the core's default admission limit; larger streams retain every byte.
 const INPUT_LIMIT = 4 * 1024 * 1024;
@@ -117,6 +117,17 @@ async function raw(args: string[]): Promise<void> {
   }
 }
 
+/** Prints the exact original behind `[full output: lean recall <id>]`, optionally one line range. */
+async function recall(args: string[]): Promise<void> {
+  const id = args.shift();
+  if (id === undefined || id.startsWith("--")) throw new Error("Usage: hugr-lean recall ID [--lines A-B] [--directory path]");
+  const options = flags(args, ["--lines", "--directory"]);
+  const directory = options.get("--directory"), lines = options.get("--lines");
+  const text = await new RawStore(typeof directory === "string" ? { directory } : {}).get(id);
+  if (text === undefined) { process.exitCode = 2; process.stderr.write("unavailable\n"); }
+  else await write(recallLines(text, typeof lines === "string" ? lines : undefined));
+}
+
 async function main(): Promise<void> {
   const [command, ...args] = process.argv.slice(2);
   if (command === "--version" || command === "version" || command === "doctor") {
@@ -127,7 +138,8 @@ async function main(): Promise<void> {
     else await write(`${current}\n`);
   } else if (command === "filter") await filterStdin(filterArguments(args));
   else if (command === "raw") await raw(args);
-  else throw new Error("Usage: hugr-lean --version|version|doctor|filter --command <literal command> [--exit-code <integer>] [--complete] [--terminal-rendered]|raw list|get ID|purge [--directory path]");
+  else if (command === "recall") await recall(args);
+  else throw new Error("Usage: hugr-lean --version|version|doctor|filter --command <literal command> [--exit-code <integer>] [--complete] [--terminal-rendered]|raw list|get ID|purge [--directory path]|recall ID [--lines A-B] [--directory path]");
 }
 
 // write callbacks report broken pipes; the listener prevents an unhandled stream error.
