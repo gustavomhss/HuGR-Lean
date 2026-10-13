@@ -36,7 +36,7 @@ test("raw retention requires both UTF-8 material thresholds", async () => {
     calls = 0;
     const original = "x".repeat(before), replacement = "x".repeat(before - saved);
     const output = { output: original, metadata: { exit: 0, truncated: false } };
-    await createAfterHook({ raw: {} }, { raw, filter: () => ({ status: "reduced", profile: "controlled", replacement, inputBytes: before, outputBytes: before - saved, reason: "controlled" }) })(input, output);
+    await createAfterHook({ mode: "lossless", raw: {} }, { raw, filter: () => ({ status: "reduced", profile: "controlled", replacement, inputBytes: before, outputBytes: before - saved, reason: "controlled" }) })(input, output);
     assert.equal(calls, expected);
   }
 });

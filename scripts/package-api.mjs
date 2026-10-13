@@ -6,8 +6,8 @@ const core = await import('hugr-lean/core'), raw = await import('hugr-lean/raw')
 assert.deepEqual(Object.keys(root), ['default']);
 assert.deepEqual(Object.keys(server), ['default']);
 assert.equal(root.default, server.default);
-assert.deepEqual(Object.keys(core), ['filter', 'filterAutomatic', 'filterStructured', 'getProfiles', 'structuredFormats', 'tokenizeCommand']);
-assert.deepEqual(Object.keys(raw), ['RawStore', 'defaultRawDirectory']);
+assert.deepEqual(Object.keys(core), ['defaultSummarizeOptions', 'filter', 'filterAutomatic', 'filterStructured', 'getProfiles', 'recoveryLine', 'structuredFormats', 'summarize', 'tokenizeCommand']);
+assert.deepEqual(Object.keys(raw), ['RawStore', 'defaultRawDirectory', 'recallLines']);
 const { filter, filterAutomatic, filterStructured, getProfiles, tokenizeCommand } = core;
 const first = getProfiles(), second = getProfiles();
 assert.ok(first.length > 0 && Object.isFrozen(first)); assert.notEqual(first, second);

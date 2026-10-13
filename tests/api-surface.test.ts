@@ -14,6 +14,6 @@ test("public package entrypoints and their complete runtime export lists are pin
     "./raw": { types: "./dist/raw/index.d.ts", import: "./dist/raw/index.js" },
   });
   assert.deepEqual(Object.keys(root), ["default"]);
-  assert.deepEqual(Object.keys(core), ["filter", "filterAutomatic", "filterStructured", "getProfiles", "structuredFormats", "tokenizeCommand"]);
-  assert.deepEqual(Object.keys(raw), ["RawStore", "defaultRawDirectory"]);
+  assert.deepEqual(Object.keys(core), ["defaultSummarizeOptions", "filter", "filterAutomatic", "filterStructured", "getProfiles", "recoveryLine", "structuredFormats", "summarize", "tokenizeCommand"]);
+  assert.deepEqual(Object.keys(raw), ["RawStore", "defaultRawDirectory", "recallLines"]);
 });

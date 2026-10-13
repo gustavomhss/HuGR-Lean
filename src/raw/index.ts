@@ -12,6 +12,8 @@ export interface RawOptions {
   maxBytes?: number;
   /** Lifetime bound; readers may shorten persisted deadlines. */
   ttlMs?: number;
+  /** When full, remove the oldest unexpired records to admit a new one (off by default). */
+  evict?: boolean;
 }
 
 export interface RawEntry {
@@ -78,6 +80,7 @@ export class RawStore {
   private readonly directory: string;
   private readonly maxBytes: number;
   private readonly ttlMs: number;
+  private readonly evict: boolean;
   private readonly scanLimit = SCAN_LIMIT;
   private readonly lockMs = LOCK_MS;
 
@@ -88,6 +91,8 @@ export class RawStore {
     this.directory = resolve(options.directory ?? defaultRawDirectory());
     this.maxBytes = positiveInteger(options.maxBytes === undefined ? 64 * 1024 * 1024 : options.maxBytes, "maxBytes");
     this.ttlMs = positiveInteger(options.ttlMs === undefined ? 7 * 24 * 60 * 60 * 1000 : options.ttlMs, "ttlMs");
+    if (options.evict !== undefined && typeof options.evict !== "boolean") throw new TypeError("evict must be a boolean");
+    this.evict = options.evict === true;
   }
 
   async put(text: string): Promise<string> {
@@ -103,11 +108,17 @@ export class RawStore {
       if (bytes > this.maxBytes) throw new RangeError("Raw record exceeds maxBytes");
       const scanned = await this.scan(root);
       const kept = await this.clean(root, scanned.entries, createdAt);
-      const count = scanned.count - (scanned.entries.length - kept.length);
+      let count = scanned.count - (scanned.entries.length - kept.length);
+      let total = kept.reduce((sum, entry) => sum + entry.bytes, 0);
+      if (!Number.isSafeInteger(total)) throw new Error("Raw byte accounting overflow");
+      // Opt-in eviction removes validated records only, oldest first; unknown names are never touched.
+      while (this.evict && kept.length && (count + 2 > this.scanLimit || total > this.maxBytes - bytes)) {
+        const oldest = kept.shift()!;
+        await this.remove(root, oldest);
+        count--; total -= oldest.bytes;
+      }
       // Reserve the new record and a recovery claim while .lock is present; unknown names count too.
       if (count + 2 > this.scanLimit) throw new Error("Raw record capacity is full");
-      const total = kept.reduce((sum, entry) => sum + entry.bytes, 0);
-      if (!Number.isSafeInteger(total)) throw new Error("Raw byte accounting overflow");
       if (total > this.maxBytes - bytes) throw new RangeError("Raw store is full");
       const temporary = join(root, ".lock", `${id}.tmp`);
       const handle = await open(temporary, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | NOFOLLOW, 0o600);
@@ -368,4 +379,13 @@ export class RawStore {
     if (!sameFile(entry.stat, stat)) throw new Error("Raw record changed during cleanup");
     await unlink(path);
   }
+}
+
+/** 1-based inclusive line range: "A-B", "A-" or "A"; undefined or "" returns the exact text. */
+export function recallLines(text: string, range?: string): string {
+  if (range === undefined || range === "") return text;
+  const match = /^([1-9]\d*)(?:-([1-9]\d*)?)?$/.exec(range.trim());
+  const start = Number(match?.[1]), end = match?.[2] !== undefined ? Number(match[2]) : range.includes("-") ? Infinity : start;
+  if (!match || !Number.isSafeInteger(start) || end < start) throw new RangeError("lines must look like 120-240, 120- or 120");
+  return text.split("\n").slice(start - 1, end === Infinity ? undefined : end).join("\n");
 }

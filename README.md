@@ -27,8 +27,8 @@ HUGR_LEAN_HEAD=$(git rev-parse --verify HEAD)
 test "$HUGR_LEAN_HEAD" = "$HUGR_LEAN_COMMIT"
 npm ci
 npm pack
-node --input-type=module -e "import { readFileSync } from 'node:fs'; import { createHash } from 'node:crypto'; console.log(createHash('sha256').update(readFileSync(process.argv[1])).digest('hex'));" ./hugr-lean-0.3.0.tgz
-npm install -g ./hugr-lean-0.3.0.tgz
+node --input-type=module -e "import { readFileSync } from 'node:fs'; import { createHash } from 'node:crypto'; console.log(createHash('sha256').update(readFileSync(process.argv[1])).digest('hex'));" ./hugr-lean-0.4.0.tgz
+npm install -g ./hugr-lean-0.4.0.tgz
 hugr-lean doctor
 )
 ```
@@ -37,7 +37,7 @@ The subshell stops on failure: invalid SHA syntax fails before clone; failed sou
 or a mismatched HEAD stops before npm. Syntax and identity checks do not grant human approval.
 `npm pack` runs `prepack`, which builds `dist` before creating the tarball. Global installation
 uses your npm prefix; it must be writable (a user-owned prefix works), with its executable
-directory on `PATH`. The candidate package version is `0.3.0`; publication remains a human release decision.
+directory on `PATH`. The candidate package version is `0.4.0`; publication remains a human release decision.
 This locally built tarball is not claimed to be byte-identical to the original release asset.
 Record its absolute path, SHA-256 and source commit for upgrade/rollback.
 See [distribution status](docs/DISTRIBUTION.md) for identities and [delivery status](docs/DELIVERY.md)
@@ -62,7 +62,7 @@ Linux/Windows host compatibility is not established. Final package CI waits for 
 focused Rust capture Actions runs are separate evidence.
 Other host routes require their own proof. Doctor reports the installed file URL; it does not test OpenCode.
 
-When npm registry publication is available, `hugr-lean@0.3.0` can be used as the plugin package name;
+When npm registry publication is available, `hugr-lean@0.4.0` can be used as the plugin package name;
 the package-name loading route has been tested with a locally installed tarball.
 
 ## Behavior and coverage
@@ -158,14 +158,14 @@ the record for that exact local artifact. Replace the example paths before runni
 Upgrade:
 
 ```sh
-npm install -g "/absolute/path/new-snapshot/hugr-lean-0.3.0.tgz"
+npm install -g "/absolute/path/new-snapshot/hugr-lean-0.4.0.tgz"
 hugr-lean doctor
 ```
 
 Rollback when needed:
 
 ```sh
-npm install -g "/absolute/path/previous-snapshot/hugr-lean-0.3.0.tgz"
+npm install -g "/absolute/path/previous-snapshot/hugr-lean-0.4.0.tgz"
 hugr-lean doctor
 ```
 

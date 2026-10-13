@@ -7,3 +7,5 @@ export { filterStructured } from "./structured.js";
 export { structuredFormats } from "./structured-types.js";
 export type { StructuredFormat, StructuredObservation, StructuredReducer, StructuredFilterOptions } from "./structured-types.js";
 export type * from "./types.js";
+export { summarize, recoveryLine, defaultSummarizeOptions } from "./summarize.js";
+export type { SummarizeObservation, SummarizeOptions, SummarizeResult } from "./summarize.js";
