@@ -7,6 +7,7 @@ npm run typecheck && npm run build
 ```
 1. Reproduce with a disposable dedicated directory, exact text/options, filesystem state, and actual owner/PID evidence; preserve existing records when diagnosing corruption.
 2. Add success/refusal controls for serialized bytes, TTL boundary, identifier/link checks, unknown files, and exact Unicode/lone-surrogate recovery as relevant.
+   Fault-injection fixtures must resolve temporary-directory aliases before comparing filesystem paths; retain the symlink-parent regression for macOS `/var` and Windows junctions.
 3. Use the real-process crash/reclaimer tests for publication or lock changes. Live, `EPERM`, malformed, or missing owners are ambiguous; age never proves death.
 4. Mutation-probe prepublication eviction, masking record-read errors with close failures, or treating `EPERM` as a dead PID; retention/ambiguous-owner regressions must fail. Include read/write/sync/close/link/unlink faults, crash boundaries, count-cap residue and combined operation/cleanup failures. Restore, rerun focused tests and typecheck/build, and inspect the diff.
 
