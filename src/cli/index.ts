@@ -117,7 +117,7 @@ async function raw(args: string[]): Promise<void> {
   }
 }
 
-/** Prints the exact original behind `[full output: lean recall <id>]`, optionally one line range. */
+/** Prints the exact original behind `[full output: hugr-lean recall <id>]`, optionally one line range. */
 async function recall(args: string[]): Promise<void> {
   const id = args.shift();
   if (id === undefined || id.startsWith("--")) throw new Error("Usage: hugr-lean recall ID [--lines A-B] [--directory path]");

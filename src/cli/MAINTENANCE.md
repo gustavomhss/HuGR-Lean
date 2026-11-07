@@ -1,6 +1,6 @@
 # CLI maintenance
 
-Run from the integrated rebuild (`795df94` or later) repository root after `npm ci`; `tests/cli.test.ts` builds and spawns the compiled entry:
+Run from the repository root after `npm ci`; `tests/cli.test.ts` builds and spawns the compiled entry:
 ```sh
 npx --no-install tsx --test tests/cli.test.ts tests/core.test.ts tests/raw.test.ts
 npm run typecheck && npm run build

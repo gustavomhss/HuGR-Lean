@@ -1,24 +1,44 @@
 # HuGR-Lean
 
-An [OpenCode](https://opencode.ai) plugin that shrinks large tool outputs before they reach the model.
-Long shell logs, big file reads and web pages are summarized; failures stay whole; every original
-is stored locally so the model (or you) can fetch it back exactly.
+An [OpenCode](https://opencode.ai) plugin with a standalone CLI and library for reducing large tool
+outputs. The plugin can summarize shell logs, file reads and web pages, storing originals for
+lossy summaries in a local recovery store. The CLI and library do not require OpenCode.
 
 Local and deterministic: no network calls, no extra model calls, no runtime dependencies. MIT.
+
+## Published version and safety scope
+
+[0.4.0 is published](https://github.com/gustavomhss/HuGR-Lean/releases/tag/v0.4.0).
+An audit found preservation gaps in that artifact's summarize mode: carriage-return cleanup can
+remove failure text without recall, long or boundary-crossing failure blocks can be cut, and
+read summaries can exceed the nominal cap. Use `"mode": "lossless"` for the conservative plugin
+path, or standalone `hugr-lean filter`.
+
+This checkout contains **unreleased fixes** for those cases, corrected recovery text, plugin-wide
+input limits and raw-store failure handling. Installing `hugr-lean@0.4.0` does not install these
+fixes. The API descriptions below include the current source behavior; historical measurements
+and published-artifact warnings remain scoped to 0.4.0.
 
 ## What it does
 
 After each tool call, before the result is sent to the model:
 
 - **bash** output above 4 KiB keeps about 1.5 KiB of head, 1.5 KiB of tail and the failure lines.
-  If the command failed or its exit code is unknown, every failure line and its continuation block is kept,
-  whatever the budget.
-- **read** output is capped at 8 KiB and ends by naming the `offset` to read next.
-- **webfetch** output is capped at 8 KiB.
-- Each summary ends with `[full output: lean recall <id>]`. The complete original is in a local store.
-- Smaller rewrites that lose nothing need no recall: ANSI/carriage-return cleanup, marking repeated lines,
-  compacting read line-number prefixes, exact-preserving views for `glob`, `grep`, directory reads and
-  some MCP JSON/accessibility snapshots, and 20 built-in profiles for common test/build tools
+  Failure detection uses text patterns, not semantic understanding; it cannot identify every diagnostic.
+  In the current source, recognized failure blocks on failed/unknown commands have no continuation
+  length cap, including across head/tail boundaries. The published 0.4.0 limitations above apply.
+- **read** replacements use an 8 KiB budget including their host wrapper and continuation footer,
+  excluding recall. If no complete row fits, the original is kept. **webfetch** uses an 8 KiB
+  content budget plus marker/recall overhead. Neither promises a strict 8 KiB final tool message.
+- Lossy summaries include a recovery ID. Use `hugr-lean recall <id>` in a terminal or the plugin
+  tool `lean_recall`; published 0.4.0 incorrectly names `lean recall` in its footer. Records can expire
+  or be evicted, so recovery is not permanent. Current-source footers name `hugr-lean recall`.
+- Carriage-return overwrite collapse is lossy and requires recovery, even below the shell summary
+  threshold. Failed/unknown commands or output with recognized failure terms retain CR frames;
+  ANSI/CRLF normalization and repeated-line marking can still change presentation.
+- Other rewrites include ANSI/carriage-return cleanup, marking repeated lines,
+  compacting read line-number prefixes, source-backed views for `glob`, `grep`, directory reads and
+  some MCP JSON/accessibility snapshots, and 20 built-in profile IDs for common test/build tools
   (Cargo, pytest, Go, Node TAP, tsc, ESLint/Biome, Git status, ripgrep, ...).
 - A summary is never larger than its input. Tool metadata, titles and attachments are not touched.
 
@@ -40,13 +60,16 @@ Offline replay of `summarize()` with the 0.4.0 defaults over 27 recorded OpenCod
 
 **41.3% is an upper bound.** The replay cannot see the extra calls a model makes to get omitted
 content back (`lean_recall`, or a `read` with a further `offset`); each adds bytes back. The corpus
-is one developer's sessions, and these are UTF-8 bytes, not tokens or cost. A live A/B has not been
-run. Method, mechanism breakdown and sensitivity:
+is one developer's private sessions, and these are UTF-8 bytes, not tokens or cost. This specific
+replay has no committed reproducer or machine-readable aggregate receipt. A separate historical
+[12-pair A/B](https://github.com/gustavomhss/HuGR-Lean/pull/163) is inconclusive, so net savings
+and task quality remain unestablished. These numbers do not measure later fixes. Recorded method,
+mechanism breakdown and sensitivity:
 [docs/BENCHMARK_REAL.md](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/docs/BENCHMARK_REAL.md#lean-20-summarize-replay-2026-10-12).
 
 ## Install
 
-Requires Node 22+ and OpenCode. Add the package to the `plugin` list of your `opencode.json`
+Requires Node 22+. For the OpenCode plugin, add the package to the `plugin` list of your `opencode.json`
 (global `~/.config/opencode/opencode.json` or a project `opencode.json`):
 
 ```json
@@ -66,14 +89,15 @@ npm install -g hugr-lean
 hugr-lean doctor
 ```
 
-Without npm, download `hugr-lean-<version>.tgz` and its `.sha256` from the
+Without a registry download during installation, download `hugr-lean-<version>.tgz` and its `.sha256` from the
 [GitHub releases](https://github.com/gustavomhss/HuGR-Lean/releases), check the hash, run
 `npm install -g ./hugr-lean-<version>.tgz`, and put the `pluginURL` printed by `hugr-lean doctor`
 in the `plugin` list instead of `"hugr-lean"`.
 
 ## Configuration
 
-Options go in a tuple. Every field is optional; the values shown are the defaults:
+Options go in a tuple. Every field is optional. The mode and limits below use default values;
+explicitly setting `raw` also opts into saving material conservative rewrites:
 
 ```json
 {
@@ -93,15 +117,21 @@ Options go in a tuple. Every field is optional; the values shown are the default
 }
 ```
 
-- `mode`: `"summarize"` (default) or `"lossless"`. Lossless is the 0.3 behavior: only exact-preserving
-  profiles and views, no summaries, no recall line.
+- `mode`: `"summarize"` (default) or `"lossless"`. Lossless is the 0.3 conservative behavior:
+  profiles and views preserve their declared evidence; no lossy summaries or recall line.
 - `summarize`: byte thresholds. `readLineNumbers: true` keeps read's `N: ` prefixes.
 - `raw`: the local store of originals. Default directory `~/.cache/hugr-lean/raw` (set `directory` to change it),
-  64 MiB, seven-day expiry; in summarize mode the oldest records are evicted when full.
-  `"raw": false` disables storage, which also disables summaries (only lossless rewrites remain).
+  64 MiB of serialized records, seven-day lazy expiry; in summarize mode the oldest records are
+  evicted when full by default. `"evict": false` rejects new writes at capacity instead.
+  Current-source eviction happens after publication; crashes or cleanup errors can leave extra
+  records above admission limits. This is not a strict disk quota.
+  `"raw": false` disables storage, which also disables summaries (non-summary rewrites remain).
 - `enabled: false` turns the plugin off. `automatic: false` disables the automatic views.
-  `excludeCommands` lists shell commands left alone (matched as a prefix of the command line).
-  `maxInputBytes` (1–16 MiB) is the input limit of the exact-preserving profiles and views.
+  `excludeCommands` lists shell commands left alone (literal prefix followed by a space/tab, or
+  an exact match after leading whitespace).
+  In current source, `maxInputBytes` (default 4 MiB, configurable 1–16 MiB) bounds every native
+  string path before processing or storage; larger input stays unchanged. MCP keeps its aggregate
+  text cap. Published 0.4.0 did not apply this limit to all summarize paths.
 - Invalid options disable the plugin rather than guess.
 
 ## Getting originals back
@@ -120,15 +150,22 @@ hugr-lean raw purge                   # delete all stored records
 
 Add `--directory PATH` for a custom store. A missing or expired record prints `unavailable` and exits 2.
 
-## Guarantees
+## Recovery and privacy boundaries
 
-- Failures are never summarized away: on a nonzero or unknown exit, all failure lines are kept whole.
-- Every lossy summary has its complete original in the local store. If storing fails, no summary is
-  made: the model gets the full output (with lossless cleanup at most).
-- Unknown tools, MCP `isError` results, attachments and binary content pass through untouched.
+- The conservative filter APIs and CLI retain failed, unknown or incomplete observations. Summarize
+  mode has a different contract and is not a semantic guarantee that every failure detail survives.
+- Before publishing a result classified as a lossy summary, the plugin stores the original. If
+  storing fails, it keeps the previous text. Published 0.4.0 misclassifies some destructive shell
+  cleanup as a rewrite, as noted above.
+- Unsupported native tool formats, MCP `isError` results, attachments and binary content are not
+  summarized. Eligible MCP text blocks may still receive conservative automatic views.
 - Host truncation happens before the plugin runs: the stored original is what OpenCode captured,
   not more.
-- No network access, telemetry or model calls. Originals stay on your machine.
+- The package makes no network requests, telemetry or model calls. OpenCode still sends tool results
+  to its configured model; a recalled original enters that same flow. This is not a redaction tool.
+- Local records are unencrypted and may contain secrets. Restrict the directory and ACLs; POSIX
+  mode checks do not verify extended ACLs, and Windows ACLs are caller-managed. Expiry is lazy,
+  not a scheduled secure erase. See [SECURITY.md](https://github.com/gustavomhss/HuGR-Lean/blob/delivery/github-ready/SECURITY.md).
 
 Tested host: OpenCode 1.18.17 on macOS. CI runs the package tests on Linux, macOS and Windows;
 Linux and Windows OpenCode hosts are not separately proven.
@@ -139,14 +176,46 @@ Linux and Windows OpenCode hosts are not separately proven.
 2. Optionally delete stored originals: `hugr-lean raw purge` (add `--directory PATH` for a custom store).
 3. If installed globally: `npm uninstall -g hugr-lean`.
 
-## Library
+## Standalone use
+
+OpenCode is optional. Install `hugr-lean` locally for imports or globally for its command:
+
+```sh
+npm install hugr-lean@0.4.0
+npm install -g hugr-lean@0.4.0
+hugr-lean filter --command 'cargo test' --exit-code 0 --complete < captured-output.txt
+```
+
+Supply the actual exit/completeness facts for the captured output. `--command` describes an
+already executed command; the CLI never runs it. Missing/failed facts, unsupported output,
+malformed UTF-8 or input over 4 MiB pass through byte-exactly. The CLI's exit 0 means filtering
+succeeded, not that the observed command succeeded. `filter` has no summarize mode and does
+not create recovery records. Use `--format` for explicit supported structured formats.
+
+Library entrypoints are separate from the default OpenCode plugin:
 
 ```ts
-import { summarize } from "hugr-lean/core";   // also filter, filterStructured, getProfiles, tokenizeCommand
+import { filter, summarize, recoveryLine } from "hugr-lean/core";
 import { RawStore } from "hugr-lean/raw";
 ```
 
-See the [core manual](https://github.com/gustavomhss/HuGR-Lean/blob/v0.4.0/src/core/MANUAL.md).
+- `filter`, `filterAutomatic` and `filterStructured` perform conservative source-backed reductions
+  using explicit execution facts. Keep the original when the result has no `replacement`.
+- `summarize` is pure and performs no storage. It returns `unchanged`, `rewritten` or `summarized`.
+  For `summarized`, your integration must store the original successfully, append
+  `recoveryLine(id)` and provide recall. On storage failure, return the original. It does not
+  register a host tool or connect itself to other agents. Bound direct inputs yourself: there is
+  no `maxInputBytes` summarize option. Current-source observations support `automatic: false`
+  when your integration has already run the automatic pipeline.
+- `RawStore` handles local persistence independently. Direct construction defaults to no eviction;
+  the OpenCode summarize adapter enables eviction unless overridden. A stored ID is temporary,
+  not a durable archive. `hugr-lean recall`, `raw get`, `raw list` and `raw purge` work standalone.
+- Neither the pure core nor the CLI establishes compatibility with other hosts. Each integration
+  must map actual tool facts, storage, recovery and model-visible output itself.
+
+Full API usage: [core manual](https://github.com/gustavomhss/HuGR-Lean/blob/delivery/github-ready/src/core/MANUAL.md),
+[CLI manual](https://github.com/gustavomhss/HuGR-Lean/blob/delivery/github-ready/src/cli/MANUAL.md),
+[raw manual](https://github.com/gustavomhss/HuGR-Lean/blob/delivery/github-ready/src/raw/MANUAL.md).
 
 ## Development
 

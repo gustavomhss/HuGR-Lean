@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { constants, type Stats } from "node:fs";
-import fs, { lstat, open, opendir, realpath, rmdir, unlink } from "node:fs/promises";
+import fs, { lstat, open, opendir, realpath, rmdir, unlink, type FileHandle } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
@@ -42,6 +42,17 @@ function hasCode(error: unknown, code: string): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === code;
 }
 
+/** Run cleanup exactly once without hiding an earlier operation failure. */
+async function withCleanup<T>(action: () => Promise<T>, cleanup: () => Promise<void>, message: string): Promise<T> {
+  let result: T;
+  try { result = await action(); } catch (error) {
+    try { await cleanup(); } catch (cleanupError) { throw new AggregateError([error, cleanupError], message); }
+    throw error;
+  }
+  await cleanup();
+  return result;
+}
+
 function positiveInteger(value: number, name: string): number {
   if (!Number.isSafeInteger(value) || value <= 0) throw new RangeError(`${name} must be a positive safe integer`);
   return value;
@@ -74,7 +85,8 @@ function deadOwner(pid: number): boolean {
  * The caller must restrict this dedicated local directory on every OS, including macOS/POSIX.
  * POSIX mode checks do not establish extended-ACL isolation; Windows ACLs are also caller-managed.
  * Path APIs do not protect against hostile directory swaps. Writers must cooperate with this lock.
- * Full byte/count capacity rejects new records after expired cleanup; unexpired records are retained.
+ * Full capacity rejects after expired cleanup unless eviction is enabled. Eviction follows
+ * complete publication; a crash or cleanup error can retain extra records above admission caps.
  */
 export class RawStore {
   private readonly directory: string;
@@ -113,10 +125,13 @@ export class RawStore {
       let count = scanned.count - (scanned.entries.length - kept.length);
       let total = kept.reduce((sum, entry) => sum + entry.bytes, 0);
       if (!Number.isSafeInteger(total)) throw new Error("Raw byte accounting overflow");
-      // Opt-in eviction removes validated records only, oldest first; unknown names are never touched.
+      // Keep one physical publication slot so even an interrupted eviction remains scannable.
+      if (count >= this.scanLimit) throw new Error("Raw record capacity is full");
+      const evicted: StoredEntry[] = [];
+      // Plan eviction without deleting recovery evidence before publication can succeed.
       while (this.evict && kept.length && (count + 2 > this.scanLimit || total > this.maxBytes - bytes)) {
         const oldest = kept.shift()!;
-        await this.remove(root, oldest);
+        evicted.push(oldest);
         count--; total -= oldest.bytes;
       }
       // Reserve the new record and a recovery claim while .lock is present; unknown names count too.
@@ -124,15 +139,18 @@ export class RawStore {
       if (total > this.maxBytes - bytes) throw new RangeError("Raw store is full");
       const temporary = join(root, ".lock", `${id}.tmp`);
       const handle = await open(temporary, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | NOFOLLOW, 0o600);
-      try {
-        if (POSIX) await handle.chmod(0o600);
-        await handle.writeFile(record, "utf8");
-        await handle.sync();
+      await withCleanup(async () => {
+        await withCleanup(async () => {
+          if (POSIX) await handle.chmod(0o600);
+          await handle.writeFile(record, "utf8");
+          await handle.sync();
+        }, () => handle.close(), "Raw write and close failed");
         // link() publishes a complete file atomically and never replaces an existing path.
         await fs.link(temporary, join(root, `${id}.json`));
-      } finally {
-        try { await handle.close(); } finally { await unlink(temporary); }
-      }
+      }, () => unlink(temporary), "Raw publication and temporary cleanup failed");
+      // A crash or deletion failure can retain an extra complete record, never lose old
+      // evidence because its replacement could not be written. All steps hold the lock.
+      for (const entry of evicted) await this.remove(root, entry);
       return id;
     });
   }
@@ -194,11 +212,8 @@ export class RawStore {
       if (!sameFile(rootStat, await lstat(root))) throw new Error("Raw directory changed during access");
       try {
         await fs.mkdir(lock, { mode: 0o700 });
-        lockStat = await lstat(lock);
-        checkDirectory(lockStat, "Unsafe raw lock path");
-        owner = await this.writeOwner(lock);
-        break;
       } catch (error) {
+        // Only mkdir contention is retryable, not a later owner-initialization failure.
         // Windows can return EPERM while a competing rmdir is delete-pending.
         const pendingDelete = !POSIX && hasCode(error, "EPERM");
         if (!hasCode(error, "EEXIST") && !pendingDelete) throw error;
@@ -215,31 +230,69 @@ export class RawStore {
         checkDirectory(existing, "Unsafe raw lock path");
         if (await this.recover(root, existing, rootStat)) continue;
         await delay(10);
+        continue;
       }
+      lockStat = await lstat(lock);
+      try {
+        checkDirectory(lockStat, "Unsafe raw lock path");
+        owner = await this.writeOwner(root, rootStat, lockStat);
+      } catch (error) {
+        try {
+          await this.checkLock(root, rootStat, lockStat);
+          // Nonrecursive removal preserves any unknown or replaced owner/lock contents.
+          await rmdir(lock);
+        } catch (cleanup) { throw new AggregateError([error, cleanup], "Raw lock initialization and cleanup failed"); }
+        throw error;
+      }
+      break;
     }
-    try {
+    return withCleanup(async () => {
       if (!sameFile(rootStat, await lstat(root))) throw new Error("Raw directory changed during access");
-      return await action(root, owner.id);
-    } finally {
-      if (!sameFile(rootStat, await lstat(root)) || !sameFile(lockStat, await lstat(lock))) {
-        throw new Error("Raw directory or lock changed during access");
-      }
-      const ownerPath = join(lock, "owner.json");
-      if (!sameFile(owner.stat, await lstat(ownerPath))) throw new Error("Raw lock owner changed during access");
-      await unlink(ownerPath);
-      await rmdir(lock);
+      return action(root, owner.id);
+    }, async () => {
+      if (!await this.removeLock(root, rootStat, lockStat, owner)) throw new Error("Unsafe contents in raw lock");
+    }, "Raw operation and lock cleanup failed");
+  }
+
+  private async checkLock(root: string, rootStat: Stats, lockStat: Stats): Promise<void> {
+    if (!sameFile(rootStat, await lstat(root)) || !sameFile(lockStat, await lstat(join(root, ".lock")))) {
+      throw new Error("Raw directory or lock changed during access");
     }
   }
 
-  private async writeOwner(lock: string): Promise<Owner> {
+  private async writeOwner(root: string, rootStat: Stats, lockStat: Stats): Promise<Owner> {
     const id = randomBytes(16).toString("hex"), token = randomBytes(16).toString("hex");
     if (id === token) throw new Error("Raw lock identifier collision");
-    const handle = await open(join(lock, "owner.json"), constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | NOFOLLOW, 0o600);
+    const path = join(root, ".lock", "owner.json");
+    const handle = await open(path, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | NOFOLLOW, 0o600);
+    const stat = await this.writeMetadata(handle, path, JSON.stringify({ format: LOCK_FORMAT, pid: process.pid, id, token }),
+      () => this.checkLock(root, rootStat, lockStat));
+    return { pid: process.pid, id, token, stat };
+  }
+
+  private async writeMetadata(handle: FileHandle, path: string, contents: string, checkParent: () => Promise<void>): Promise<Stats> {
+    let stat: Stats | undefined;
     try {
-      if (POSIX) await handle.chmod(0o600);
-      await handle.writeFile(JSON.stringify({ format: LOCK_FORMAT, pid: process.pid, id, token }), "utf8");
-      return { pid: process.pid, id, token, stat: await handle.stat() };
-    } finally { await handle.close(); }
+      return await withCleanup(async () => {
+        try {
+          stat = await handle.stat();
+          if (POSIX) await handle.chmod(0o600);
+          await handle.writeFile(contents, "utf8");
+          return stat;
+        } catch (error) {
+          // A transient initial fstat failure need not strand a file we can still identify.
+          if (!stat) { try { stat = await handle.stat(); } catch { /* Remain conservative if identity is unavailable. */ } }
+          throw error;
+        }
+      }, () => handle.close(), "Raw metadata initialization and close failed");
+    } catch (error) {
+      try {
+        await checkParent();
+        if (!stat || !sameFile(stat, await lstat(path))) throw new Error("Raw metadata ownership cannot be verified");
+        await unlink(path);
+      } catch (cleanup) { throw new AggregateError([error, cleanup], "Raw metadata initialization and cleanup failed"); }
+      throw error;
+    }
   }
 
   private async readOwner(lock: string): Promise<Owner | undefined> {
@@ -275,46 +328,54 @@ export class RawStore {
       if (hasCode(error, "EEXIST") || hasCode(error, "ENOENT") || (!POSIX && hasCode(error, "EPERM"))) return false;
       throw error;
     }
-    let claimStat: Stats;
-    try {
-      if (POSIX) await handle.chmod(0o600);
-      await handle.writeFile(JSON.stringify({ pid: process.pid, token: owner.token }), "utf8");
-      claimStat = await handle.stat();
-    } finally { await handle.close(); }
-    try {
-      if (!sameFile(rootStat, await lstat(root)) || !sameFile(lockStat, await lstat(lock))) return false;
-      const current = await this.readOwner(lock);
-      if (!current || !sameFile(owner.stat, current.stat) || current.pid !== owner.pid || current.id !== owner.id || current.token !== owner.token || !deadOwner(current.pid)) return false;
-      const temporary: { path: string; stat: Stats }[] = [];
-      let visited = 0;
-      for await (const file of await opendir(lock)) {
-        if (++visited > 2) return false;
-        if (file.name === "owner.json") continue;
-        if (file.name !== `${owner.id}.tmp`) return false;
-        const stat = await lstat(join(lock, file.name));
-        try {
-          checkFile(stat, stat.nlink === 2 ? 2 : 1);
-          if (stat.nlink === 2 && !sameFile(stat, await lstat(join(root, `${owner.id}.json`)))) return false;
-        } catch { return false; }
-        temporary.push({ path: join(lock, file.name), stat });
+    const claimStat = await this.writeMetadata(handle, claim, JSON.stringify({ pid: process.pid, token: owner.token }), async () => {
+      if (!sameFile(rootStat, await lstat(root))) throw new Error("Raw directory changed during access");
+    });
+    return withCleanup(async () => {
+      try {
+        if (!sameFile(rootStat, await lstat(root)) || !sameFile(lockStat, await lstat(lock))) return false;
+        const current = await this.readOwner(lock);
+        if (!current || !sameFile(owner.stat, current.stat) || current.pid !== owner.pid || current.id !== owner.id || current.token !== owner.token || !deadOwner(current.pid)) return false;
+        return await this.removeLock(root, rootStat, lockStat, owner);
+      } catch (error) {
+        if (hasCode(error, "ENOENT") || (!POSIX && hasCode(error, "EPERM"))) return false;
+        throw error;
       }
-      // Validate every name before removing anything; partial record temporaries are crash artifacts.
-      for (const file of [...temporary, { path: join(lock, "owner.json"), stat: owner.stat }]) {
-        if (!sameFile(rootStat, await lstat(root)) || !sameFile(lockStat, await lstat(lock)) || !sameFile(file.stat, await lstat(file.path))) {
-          throw new Error("Raw lock changed during recovery");
-        }
-        await unlink(file.path);
-      }
-      await rmdir(lock);
-    } catch (error) {
-      if (hasCode(error, "ENOENT") || (!POSIX && hasCode(error, "EPERM"))) return false;
-      throw error;
-    } finally {
+    }, async () => {
       if (!sameFile(rootStat, await lstat(root)) || !sameFile(claimStat, await lstat(claim))) {
         throw new Error("Raw recovery claim changed during access");
       }
       await unlink(claim);
+    }, "Raw recovery and claim cleanup failed");
+  }
+
+  private async removeLock(root: string, rootStat: Stats, lockStat: Stats, owner: Owner): Promise<boolean> {
+    const lock = join(root, ".lock");
+    await this.checkLock(root, rootStat, lockStat);
+    const currentOwner = await lstat(join(lock, "owner.json"));
+    checkFile(currentOwner);
+    if (!sameFile(owner.stat, currentOwner)) throw new Error("Raw lock owner changed during cleanup");
+    const temporary: { path: string; stat: Stats }[] = [];
+    let visited = 0;
+    for await (const file of await opendir(lock)) {
+      if (++visited > 2) return false;
+      if (file.name === "owner.json") continue;
+      if (file.name !== `${owner.id}.tmp`) return false;
+      const stat = await lstat(join(lock, file.name));
+      try {
+        checkFile(stat, stat.nlink === 2 ? 2 : 1);
+        if (stat.nlink === 2 && !sameFile(stat, await lstat(join(root, `${owner.id}.json`)))) return false;
+      } catch { return false; }
+      temporary.push({ path: join(lock, file.name), stat });
     }
+    // Validate every name before removing anything; partial record temporaries are crash artifacts.
+    for (const file of [...temporary, { path: join(lock, "owner.json"), stat: owner.stat }]) {
+      if (!sameFile(rootStat, await lstat(root)) || !sameFile(lockStat, await lstat(lock)) || !sameFile(file.stat, await lstat(file.path))) {
+        throw new Error("Raw lock changed during cleanup");
+      }
+      await unlink(file.path);
+    }
+    await rmdir(lock);
     return true;
   }
 

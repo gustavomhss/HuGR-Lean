@@ -1,7 +1,13 @@
 # HuGR-Lean releases
 
 Each `## X.Y.Z — date` section is the GitHub release body for tag `vX.Y.Z`
-(extracted by `scripts/release-tag.mjs`). Older sections are kept unchanged as history.
+(extracted by `scripts/release-tag.mjs`). Dated sections record release-time claims, not
+verification of later changes.
+
+[0.4.0 is published](https://github.com/gustavomhss/HuGR-Lean/releases/tag/v0.4.0).
+The later audit found that its absolute failure-preservation and strict cap claims below do
+not hold for all inputs. See [current status and limitations](DELIVERY.md) and
+[artifact identity](DISTRIBUTION.md). Local fixes do not modify that published artifact.
 
 ## 0.4.0 — 2026-10-12
 

@@ -2,12 +2,13 @@ import { filterAutomatic } from "./automatic.js";
 
 /** Byte budgets are UTF-8; cuts never split a UTF-16 surrogate pair. */
 export interface SummarizeOptions {
-  /** Shell outputs at or below this size are never summarized (lossless cleanup still applies). */
+  /** Shell outputs at or below this size are not shortened to head/tail; lossy CR cleanup still requires recovery. */
   readonly shellThresholdBytes?: number;
   readonly headBytes?: number;
   readonly tailBytes?: number;
   /** Budget for warning lines, and for failure lines of a command that exited 0. */
   readonly errorBytes?: number;
+  /** Read replacement budget, including wrapper/suffix but excluding recall; refuses if no whole row fits. */
   readonly readCapBytes?: number;
   readonly webfetchCapBytes?: number;
   /** Keep the host's `N: ` read prefixes instead of compacting them into one header line. */
@@ -19,6 +20,8 @@ export interface SummarizeObservation {
   readonly output: string;
   readonly args?: Readonly<Record<string, unknown>>;
   readonly metadata?: Readonly<Record<string, unknown>>;
+  /** Disable automatic native views when the caller already ran that pipeline. */
+  readonly automatic?: boolean;
 }
 
 /**
@@ -35,7 +38,7 @@ export const defaultSummarizeOptions: Required<SummarizeOptions> = Object.freeze
   readCapBytes: 8 * 1024, webfetchCapBytes: 8 * 1024, readLineNumbers: false,
 });
 
-export const recoveryLine = (id: string): string => `\n[full output: lean recall ${id}]`;
+export const recoveryLine = (id: string): string => `\n[full output: hugr-lean recall ${id}]`;
 const bytes = (text: string): number => Buffer.byteLength(text, "utf8");
 const RECOVERY_BYTES = bytes(recoveryLine("0".repeat(32)));
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
@@ -43,7 +46,7 @@ const record = (value: unknown): value is Record<string, unknown> => value !== n
 // Failure evidence is kept whole. Matching is deliberately broad: a false positive only costs bytes.
 const FAILURE = /error|fail|panic|exception|fatal|traceback|assert|denied|abort|segmentation fault|not found|cannot|unable to|[✗✘×]/i;
 const WARNING = /warn|deprecat/i;
-const CONTINUATION = /^(?:\s+\S|\s*at |\s*[|^~]|\s*-->|\s*File ")/;
+const CONTINUATION = /^(?:\s+\S|\s*at |\s*[|^~]|\s*-->|\s*File "|\[previous line repeated \d+ more times\]$)/;
 const ANSI = /\x1b\[[0-?]*[ -/]*[@-~]|\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)|\x1b[@-Z\\-_]/g;
 
 function options(value: SummarizeOptions | undefined): Required<SummarizeOptions> {
@@ -68,12 +71,19 @@ function cut(text: string, max: number, fromEnd = false): string {
   return take(low);
 }
 
-/** ANSI escapes, carriage-return overwrites and runs of identical lines. */
-export function cleanShell(text: string): string {
-  const lines = text.replace(ANSI, "").split("\n").map(line => {
+/** ANSI/CRLF normalization and reversible repeated-line marking; CR frame collapse is lossy. */
+function shellCleanup(text: string, preserveFrames: boolean): { text: string; lossy: boolean } {
+  let lossy = false;
+  const normalized = text.replace(ANSI, "");
+  preserveFrames ||= FAILURE.test(normalized);
+  const lines = normalized.split("\n").map(line => {
     const end = line.endsWith("\r") ? line.slice(0, -1) : line;
     const overwrite = end.lastIndexOf("\r");
-    return overwrite < 0 ? end : end.slice(overwrite + 1);
+    if (overwrite < 0) return end;
+    // A failed/unknown command can hide diagnostics in any overwritten frame.
+    if (preserveFrames) return end;
+    lossy = true;
+    return end.slice(overwrite + 1);
   });
   const out: string[] = [];
   for (let i = 0; i < lines.length;) {
@@ -84,7 +94,12 @@ export function cleanShell(text: string): string {
     else for (let k = i; k < j; k++) out.push(line);
     i = j;
   }
-  return out.join("\n");
+  return { text: out.join("\n"), lossy };
+}
+
+/** Display cleanup only. Call summarize() to determine whether recovery is required. */
+export function cleanShell(text: string): string {
+  return shellCleanup(text, false).text;
 }
 
 function omitted(count: number): string {
@@ -93,51 +108,57 @@ function omitted(count: number): string {
 
 /** Head + tail + failure blocks (+ warnings within budget); markers replace every omitted run. */
 function summarizeShell(text: string, o: Required<SummarizeOptions>, failed: boolean): string | undefined {
-  const lines = text.split("\n");
-  const head: string[] = [], tail: string[] = [];
+  const lines = text.split("\n"), keep = new Uint8Array(lines.length), partial = new Map<number, string>();
   let headEnd = 0, used = 0;
   while (headEnd < lines.length && used + bytes(lines[headEnd]!) + 1 <= o.headBytes) used += bytes(lines[headEnd++]!) + 1;
-  head.push(...lines.slice(0, headEnd));
-  const whole = (line: string) => failed && FAILURE.test(line);
-  if (!headEnd && lines.length) { head.push(whole(lines[0]!) ? lines[0]! : `${cut(lines[0]!, o.headBytes)} … [lean: line cut]`); headEnd = 1; }
+  keep.fill(1, 0, headEnd);
+  if (!headEnd && lines.length && o.headBytes > 0) {
+    keep[0] = 1; partial.set(0, `${cut(lines[0]!, o.headBytes)} … [lean: line cut]`); headEnd = 1;
+  }
   let tailStart = lines.length; used = 0;
   while (tailStart > headEnd && used + bytes(lines[tailStart - 1]!) + 1 <= o.tailBytes) used += bytes(lines[--tailStart]!) + 1;
-  tail.push(...lines.slice(tailStart));
-  if (tailStart === lines.length && tailStart > headEnd) { const last = lines[tailStart - 1]!; tail.push(whole(last) ? last : `[lean: line cut] … ${cut(last, o.tailBytes, true)}`); tailStart--; }
-  if (tailStart <= headEnd) return;
-  const keep = new Uint8Array(lines.length);
+  keep.fill(1, tailStart);
+  if (tailStart === lines.length && tailStart > headEnd && o.tailBytes > 0) {
+    tailStart--; keep[tailStart] = 1;
+    partial.set(tailStart, `[lean: line cut] … ${cut(lines[tailStart]!, o.tailBytes, true)}`);
+  }
   let budget = o.errorBytes;
-  for (let i = headEnd; i < tailStart; i++) {
+  // Scan the entire output: a diagnostic may start in the head or continue into a cut tail.
+  for (let i = 0; i < lines.length; i++) {
     if (!FAILURE.test(lines[i]!)) continue;
     let end = i + 1;
-    while (end < tailStart && end - i <= 40 && CONTINUATION.test(lines[end]!) && !FAILURE.test(lines[end]!)) end++;
-    const start = Math.max(headEnd, i - 1);
-    const size = lines.slice(start, end).reduce((sum, line, index) => sum + (keep[start + index] ? 0 : bytes(line) + 1), 0);
+    // Keep every recognized continuation, including lines that resemble later test success output.
+    while (end < lines.length && CONTINUATION.test(lines[end]!) && !FAILURE.test(lines[end]!)) end++;
+    const start = Math.max(0, i - 1);
+    let size = 0;
+    for (let row = start; row < end; row++) if (!keep[row] || partial.has(row)) size += bytes(lines[row]!) + 1;
     if (!failed && size > budget) continue;
     if (!failed) budget -= size;
     keep.fill(1, start, end);
+    for (let row = start; row < end; row++) partial.delete(row);
     i = end - 1;
   }
-  for (let i = headEnd; i < tailStart; i++) {
+  for (let i = 0; i < lines.length; i++) {
     const size = bytes(lines[i]!) + 1;
     if (!keep[i] && WARNING.test(lines[i]!) && size <= budget) { keep[i] = 1; budget -= size; }
   }
-  const middle: string[] = [];
-  for (let i = headEnd; i < tailStart;) {
-    if (keep[i]) { middle.push(lines[i++]!); continue; }
+  const rendered: string[] = [];
+  let changed = partial.size > 0;
+  for (let i = 0; i < lines.length;) {
+    if (keep[i]) { rendered.push(partial.get(i) ?? lines[i]!); i++; continue; }
     let j = i;
-    while (j < tailStart && !keep[j]) j++;
-    middle.push(omitted(j - i));
+    while (j < lines.length && !keep[j]) j++;
+    rendered.push(omitted(j - i)); changed = true;
     i = j;
   }
-  return [...head, ...middle, ...tail].join("\n");
+  return changed ? rendered.join("\n") : undefined;
 }
 
 const READ = /^<path>[^\n]*<\/path>\n<type>file<\/type>\n<content>\n/;
 // Host footers across OpenCode versions; older hosts put one blank line before the footer.
 const READ_FOOTER = /^\((?:(?:PARTIAL view\. |Output capped at \d+ KB\. )?Showing lines \d+-\d+(?: of \d+)?\. Use offset=\d+ to continue\.|End of file(?: - total \d+ lines)?)\)$/;
 
-function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: string; lossy: boolean } | undefined {
+function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: string; lossy: boolean } | { reason: string } | undefined {
   const prefix = READ.exec(text)?.[0];
   const close = text.lastIndexOf("\n</content>"), footerStart = text.lastIndexOf("\n", close - 1);
   if (!prefix || footerStart < prefix.length || !READ_FOOTER.test(text.slice(footerStart + 1, close))) return;
@@ -146,7 +167,7 @@ function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: str
   const rows = body.split("\n"), gap = rows.length > 1 && rows[rows.length - 1] === "" ? "\n" : "";
   if (gap) rows.pop();
   const start = Number(/^(\d+): /.exec(rows[0]!)?.[1]);
-  if (!body.length || !Number.isSafeInteger(start)) return;
+  if (!body.length || !Number.isSafeInteger(start) || start < 1 || !Number.isSafeInteger(start + rows.length - 1)) return;
   const content: string[] = [];
   for (let i = 0; i < rows.length; i++) {
     const label = `${start + i}: `;
@@ -160,12 +181,19 @@ function summarizeRead(text: string, o: Required<SummarizeOptions>): { text: str
   };
   const full = render(content.length, footer);
   if (bytes(full) <= o.readCapBytes) return { text: full, lossy: false };
-  let count = 0, used = bytes(render(0, "(PARTIAL view. Showing lines 0000000-0000000. Use offset=0000000 to continue.)"));
-  while (count < content.length && used + bytes(content[count]!) + 1 <= o.readCapBytes) used += bytes(content[count++]!) + 1;
-  count = Math.max(count, 1);
-  if (count >= content.length) return { text: full, lossy: false };
-  const last = start + count - 1;
-  return { text: render(count, `(PARTIAL view. Showing lines ${start}-${last}. Use offset=${last + 1} to continue.)`), lossy: true };
+  const partial = (count: number) => {
+    const last = start + count - 1;
+    return render(count, `(PARTIAL view. Showing lines ${start}-${last}. Use offset=${last + 1} to continue.)`);
+  };
+  // The cap excludes the recovery line, but includes the full wrapper and mandatory suffix.
+  // If not even one intact source row fits, leave the original rather than inventing a partial row.
+  if (content.length < 2 || bytes(partial(1)) > o.readCapBytes) return { reason: "read_cap_unsatisfiable" };
+  let low = 1, high = content.length - 1;
+  while (low < high) {
+    const middle = Math.ceil((low + high) / 2);
+    if (bytes(partial(middle)) <= o.readCapBytes) low = middle; else high = middle - 1;
+  }
+  return { text: partial(low), lossy: true };
 }
 
 function summarizeCapped(text: string, cap: number, label: string): string {
@@ -176,7 +204,7 @@ function summarizeCapped(text: string, cap: number, label: string): string {
   return `${kept.join("\n")}\n… [lean: ${label} capped, showing ${bytes(kept.join("\n"))} of ${total} bytes]`;
 }
 
-/** Pure: no I/O. Never summarizes below a threshold and never returns something not smaller. */
+/** Pure: no I/O. Head/tail shortening honors its threshold; every accepted result is smaller. */
 export function summarize(observation: SummarizeObservation, value?: SummarizeOptions): SummarizeResult {
   let inputBytes = 0;
   const unchanged = (reason: string): SummarizeResult => ({ status: "unchanged", reason, inputBytes, outputBytes: inputBytes });
@@ -190,24 +218,25 @@ export function summarize(observation: SummarizeObservation, value?: SummarizeOp
       return outputBytes < inputBytes && replacement.length ? { status, replacement, reason, inputBytes, outputBytes } : unchanged("not_smaller");
     };
     if (tool === "bash") {
-      const clean = cleanShell(output);
       const exit = metadata.exit;
       const failed = !(typeof exit === "number" && exit === 0);
+      const cleanup = shellCleanup(output, failed), clean = cleanup.text;
       const summary = bytes(clean) > o.shellThresholdBytes ? summarizeShell(clean, o, failed) : undefined;
       if (summary !== undefined) {
         const result = done("summarized", summary, failed ? "shell_summary_failed_command" : "shell_summary");
         if (result.status !== "unchanged") return result;
       }
-      return clean === output ? unchanged("below_threshold") : done("rewritten", clean, "shell_cleanup");
+      return clean === output ? unchanged("below_threshold") : done(cleanup.lossy ? "summarized" : "rewritten", clean, cleanup.lossy ? "shell_overwrite" : "shell_cleanup");
     }
     if (tool === "read") {
       const read = summarizeRead(output, o);
+      if (read && "reason" in read) return unchanged(read.reason);
       if (read) return done(read.lossy ? "summarized" : "rewritten", read.text, read.lossy ? "read_cap" : "read_line_numbers");
     }
     if (tool === "webfetch") {
       return inputBytes > o.webfetchCapBytes ? done("summarized", summarizeCapped(output, o.webfetchCapBytes, "webfetch"), "webfetch_cap") : unchanged("below_threshold");
     }
-    if (["grep", "glob", "read"].includes(tool) && metadata.truncated === false) {
+    if (observation.automatic !== false && ["grep", "glob", "read"].includes(tool) && metadata.truncated === false) {
       const view = filterAutomatic({ source: "native", tool, output, args, metadata, status: "success", completeness: "complete" });
       if (view.status === "reduced" || view.status === "normalized") return done("rewritten", view.replacement, `automatic:${view.profile ?? view.status}`);
     }

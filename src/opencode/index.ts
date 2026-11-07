@@ -27,6 +27,9 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
         if (options.automatic !== false) await filterMcpResult(input, output, processAutomatic, options.maxInputBytes, options.raw && store ? text => store.put(text) : undefined);
         return;
       }
+      // Bound every native path before parsing or storage; summaries cannot bypass core limits.
+      const before = Buffer.byteLength(original, "utf8"), limit = options.maxInputBytes ?? 4 * 1024 * 1024;
+      if (!Number.isSafeInteger(limit) || limit < 1024 * 1024 || limit > 16 * 1024 * 1024 || before > limit) return;
       const { tool, args: actualArgs } = input, actualMetadata = output.metadata;
       const args = isRecord(actualArgs) ? Object.freeze({ ...actualArgs }) : undefined;
       const metadata: Readonly<Record<string, unknown>> = isRecord(actualMetadata) ? Object.freeze({ ...actualMetadata }) : {};
@@ -67,7 +70,6 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
         const literal = args.command.trimStart();
         if (options.excludeCommands?.some((prefix) => literal === prefix || (literal.startsWith(prefix) && /^[ \t]/.test(literal.slice(prefix.length))))) return;
       }
-      const before = Buffer.byteLength(original, "utf8");
       let text = original, stored: string | undefined;
       const result = lossless();
       if (isRecord(result) && (result.status === "reduced" || result.status === "normalized") && typeof result.replacement === "string") {
@@ -79,7 +81,7 @@ export function createAfterHook(options: PluginOptions = {}, dependencies: Depen
         }
       }
       if (summarizing && typeof tool === "string" && SUMMARIZED.includes(tool) && !options.structuredTools?.some((entry) => entry.tool === tool)) {
-        const summary = summarize({ tool, output: text, ...(args ? { args } : {}), metadata }, options.summarize);
+        const summary = summarize({ tool, output: text, ...(args ? { args } : {}), metadata, automatic: false }, options.summarize);
         if (summary.status === "rewritten") text = summary.replacement;
         else if (summary.status === "summarized" && store) {
           // The complete original, before any rewrite, is what recall returns. Storage failure keeps `text`.
@@ -104,7 +106,7 @@ function summaryStore(options: PluginOptions, injected?: Pick<RawStore, "put">):
 /** OpenCode plugin tool; legacy JSON-schema args keep this package free of a zod dependency. */
 export function createRecallTool(store: Pick<RawStore, "get">) {
   return {
-    description: "Fetch the complete original output of a tool call that HuGR-Lean summarized. Pass the id from its last line `[full output: lean recall <id>]`. Optionally pass lines as a 1-based inclusive range like \"120-240\" (empty string for everything).",
+    description: "Fetch the complete original output of a tool call that HuGR-Lean summarized. Use this lean_recall tool with the id from its last line `[full output: hugr-lean recall <id>]`, or run `hugr-lean recall <id>` in a shell. Optionally pass lines as a 1-based inclusive range like \"120-240\" (empty string for everything).",
     args: {
       id: { type: "string", description: "32 hex characters from the recovery line" },
       lines: { type: "string", description: "Optional line range such as 120-240, 120- or 120; empty for the whole output" },

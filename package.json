@@ -1,7 +1,7 @@
 {
   "name": "hugr-lean",
   "version": "0.4.0",
-  "description": "OpenCode plugin that summarizes large tool outputs before they reach the model, keeps failures whole and stores every original for exact recall",
+  "description": "Deterministic tool-output summaries with local recovery, plus a standalone CLI and library",
   "keywords": [
     "opencode",
     "opencode-plugin",

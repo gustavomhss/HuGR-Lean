@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+These source changes are not included in the published `hugr-lean@0.4.0` archive.
+
+- Preserve carriage-return frames for failed/unknown shell commands and output containing recognized failure terms. Successful non-diagnostic overwrite collapse is classified as lossy and requires recovery, even below the head/tail threshold.
+- Preserve recognized failure continuation blocks across head/tail boundaries without the old 40-line limit. Indented lines resembling test successes are still continuations; conservative retention can produce larger summaries or unchanged output.
+- Size read replacements exactly within `readCapBytes`, including the host wrapper and mandatory suffix but excluding the recall line. If no complete source row fits, return unchanged with `read_cap_unsatisfiable`. Webfetch retains its content-budget-plus-overhead contract.
+- Correct recovery footers to `hugr-lean recall`; keep the registered OpenCode tool named `lean_recall`.
+- Add `automatic?: boolean` to `SummarizeObservation`. The plugin disables this fallback after its own conservative pipeline so `automatic: false` is respected.
+- Apply plugin `maxInputBytes` to every native string path before filtering, summarization or storage. Oversized text stays unchanged; direct `summarize()` calls still need a caller-owned input limit.
+- Publish complete raw records before evicting unexpired originals. Prepublication failures retain those originals; postpublication failures can leave an extra record above normal admission limits. This is fail-safe retention, not a strict disk quota.
+- Clean failed owner/recovery initialization only after identity checks, retain ownership on persistent temporary-file cleanup failures, and preserve both operation and cleanup errors in `AggregateError` when both fail. Ambiguous artifacts are not removed automatically.
+- Correct release/distribution status: 0.4.0 is published. Preserve earlier candidate ledgers as dated history.
+- Separate standalone CLI filtering, pure summarization and raw-store contracts; document published 0.4.0 preservation/cap limitations and recovery requirements.
+- Qualify the historical private-corpus byte benchmark and inconclusive 12-pair A/B; clarify plaintext storage, ACL limits, lazy expiry and recall entering the host/model flow.
+
+The dated 0.4.0 notes below retain release-time claims. Later audit findings show that its
+absolute failure-preservation, lossless-cleanup and strict-cap claims do not hold for all inputs;
+see [current delivery status](https://github.com/gustavomhss/HuGR-Lean/blob/delivery/github-ready/docs/DELIVERY.md).
+
 ## 0.4.0 — 2026-10-12
 
 - New default `mode: "summarize"` (Lean 2.0). Large tool outputs are summarized instead of passed through exactly: shell output above 4 KiB keeps about 1.5 KiB of head, 1.5 KiB of tail and the failure lines with their continuation lines; file reads cap at 8 KiB with an `offset=` continuation; webfetch caps at 8 KiB. Thresholds are configurable under `summarize`.

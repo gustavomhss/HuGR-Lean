@@ -135,7 +135,7 @@ assert.deepEqual(Object.keys(summarizing), ["tool.execute.after", "tool"], "Inst
 const long = Array.from({ length: 800 }, (_, i) => "step " + i + " ok").join("\n") + "\nerror: installed failure line\n" + Array.from({ length: 800 }, (_, i) => "tail " + i).join("\n");
 const summary = { title: "Installed summary", output: long, metadata: { exit: 1, truncated: false } };
 await summarizing["tool.execute.after"]({ tool: "bash", args: { command: "cd x && make 2>&1 | tee log" } }, summary);
-const recovery = /\n\[full output: lean recall ([a-f0-9]{32})\]$/.exec(summary.output);
+const recovery = /\n\[full output: hugr-lean recall ([a-f0-9]{32})\]$/.exec(summary.output);
 assert.ok(recovery && summary.output.includes("\nerror: installed failure line\n") && Buffer.byteLength(summary.output) < Buffer.byteLength(long), "Installed summarize mode did not summarize with recovery");
 assert.equal(await summarizing.tool.lean_recall.execute({ id: recovery[1], lines: "" }), long, "Installed lean_recall was not exact");
 await new RawStore({ directory: summaryDirectory }).purge();
