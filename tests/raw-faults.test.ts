@@ -330,14 +330,19 @@ test("owner cleanup preserves metadata when its inode cannot be established", as
 test("owner cleanup refuses a swapped lock directory", async (t) => {
   const { directory, parent } = await fixture(t);
   const backup = join(parent, "original-lock"), failure = new Error("lock replaced during initialization");
+  let closed = 0, swapped = 0;
   openFault(t, (path) => basename(path) === "owner.json", async (_path, handle) => {
     if (!handle) return undefined;
     return new Proxy(handle, { get(target, key) {
-      if (key === "writeFile") return async () => {
+      if (key === "writeFile") return async () => { throw failure; };
+      if (key === "close") return async () => {
+        // Windows cannot rename this parent while its owner handle is open.
+        // Swap after closing, but before the store verifies ownership for cleanup.
+        await target.close(); closed++;
         await rename(join(directory, ".lock"), backup);
         await mkdir(join(directory, ".lock"), { mode: 0o700 });
         await writeFile(join(directory, ".lock", "sentinel"), "keep");
-        throw failure;
+        swapped++;
       };
       const value = Reflect.get(target, key, target);
       return typeof value === "function" ? value.bind(target) : value;
@@ -349,6 +354,8 @@ test("owner cleanup refuses a swapped lock directory", async (t) => {
     assert.match(String(error.errors[1]), /lock changed/);
     return true;
   });
+  assert.equal(closed, 1);
+  assert.equal(swapped, 1, "the parent replacement must execute before ownership cleanup");
   assert.deepEqual(await readdir(backup), ["owner.json"]);
   assert.deepEqual(await readdir(join(directory, ".lock")), ["sentinel"]);
   assert.equal(await readFile(join(directory, ".lock", "sentinel"), "utf8"), "keep");
