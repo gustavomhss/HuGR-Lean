@@ -1,15 +1,35 @@
 # OpenCode adapter
 
-The package root `hugr-lean` exposes only the default plugin; [index.ts](index.ts) maps the legacy post-execution hook into the pure core.
+The package root and `hugr-lean/server` expose the default OpenCode plugin.
+[index.ts](index.ts) maps the legacy post-execution hook into the pure core. The CLI and
+`hugr-lean/core`/`hugr-lean/raw` remain usable without this adapter or OpenCode.
 
 ## Scope
-- `tool.execute.after` receives actual tool/args/output/metadata and may change only model-visible `output.output` (native) or MCP `output.content` text blocks; it returns `void` asynchronously.
-- Native command, title, attachments, exit/truncation metadata, and raw preview remain host-owned; execution is never rerouted.
-- Presentation is always `unknown`: the observed host retains raw ANSI/CR. Missing/failed/timed-out/truncated facts preserve original output.
-- [config.ts](config.ts) validates short options; filtering defaults on, raw defaults off, invalid plugin options yield no hooks.
-- Opt-in raw saves require at least 1,024 bytes and 10% saved; a required save failure leaves original output.
-- Automatic native views are on by default (`automatic` option, default `true`): native `glob`/`grep`/`read` with `metadata.truncated === false`, `bash` after a legacy `no_profile`/unsupported passthrough with exit 0 and nontruncated metadata, and MCP results without string `output.output`, whose `content[]` text blocks go through [automatic-mcp.ts](automatic-mcp.ts). `automatic: false` restores legacy bash plus explicit bindings.
-- Explicit `structuredTools` bindings admit caller-owned non-bash producers with complete successful metadata. There are no default bindings; [structured schemas and scope rules](../../docs/STRUCTURED-TOOLS.md) remain caller-declared.
 
-Evidence: [plugin tests](../../tests/plugin.test.ts), [boundary teeth tests](../../tests/opencode-boundary.test.ts), and [OpenCode boundary proof](../../docs/OPENCODE.md), scoped to the recorded legacy CLI host.
-Read [ownership](OWNERSHIP.md), [maintenance](MAINTENANCE.md), [manual](MANUAL.md), and [blast radius](BLAST_RADIUS.md).
+- `tool.execute.after` may change model-visible native `output.output` or eligible MCP
+  `output.content` text blocks. Native command, title, attachments, metadata and raw preview
+  remain host-owned; commands are never executed or rewritten by the plugin.
+- [config.ts](config.ts) validates options. `enabled`, `automatic` and summarize mode are on by
+  default; invalid plugin options yield no hooks.
+- `mode: "lossless"` uses conservative profile/automatic/structured filtering. Failed, unknown,
+  timed-out or incomplete native shell observations retain the original. Storage is off unless
+  explicitly configured, and material-save thresholds apply.
+- Default `mode: "summarize"` runs that pipeline first, then summarizes eligible `bash`, `read`
+  and `webfetch` text. It can process failed/unknown and host-truncated shell observations; this
+  is not the conservative filter contract. Explicit structured-tool bindings are not summarized.
+- Current unreleased source checks `maxInputBytes` before every native string path, including
+  summarization and raw saves. Oversized text stays exact; MCP retains its aggregate text cap.
+  Summarizer automatic fallback is disabled after the adapter's own pipeline.
+- Summarize mode stores originals before emitting lossy summaries and registers `lean_recall`.
+  `raw: false` disables storage and lossy summaries, but not other rewrites. Published 0.4.0 has
+  known destructive-cleanup/continuation defects; see [delivery limitations](../../docs/DELIVERY.md).
+- Automatic native/MCP views and explicit `structuredTools` bindings have their own producer and
+  metadata requirements. See [manual](MANUAL.md) and [structured schemas](../../docs/STRUCTURED-TOOLS.md).
+
+Recorded real-host evidence is OpenCode 1.18.17 on macOS, not every host/version/platform.
+Package CI tests the package and mock harness, not installed OpenCode. See
+[boundary proof](../../docs/OPENCODE.md), [plugin tests](../../tests/plugin.test.ts) and
+[boundary tests](../../tests/opencode-boundary.test.ts).
+
+Read [ownership](OWNERSHIP.md), [maintenance](MAINTENANCE.md), [blast radius](BLAST_RADIUS.md)
+and [privacy/storage boundaries](../../SECURITY.md).

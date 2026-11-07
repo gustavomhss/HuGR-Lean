@@ -10,7 +10,7 @@ import plugin, { createAfterHook, createRecallTool } from "../src/opencode/index
 import { RawStore, recallLines } from "../src/raw/index.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const RECOVERY = /\n\[full output: lean recall ([a-f0-9]{32})\]$/;
+const RECOVERY = /\n\[full output: hugr-lean recall ([a-f0-9]{32})\]$/;
 // Unicode, CRLF, ANSI, NUL and a lone surrogate must all come back byte-identical.
 const original = `\x1b[31mstart\x1b[0m café 🔥\r\n${Array.from({ length: 900 }, (_, i) => `step ${i} \u0000 ok ${"·".repeat(i % 30)}`).join("\n")}\nerror: boom \ud800 here\n  at frame (x.ts:1:1)\n${Array.from({ length: 900 }, (_, i) => `tail ${i}`).join("\r\n")}`;
 
@@ -36,10 +36,9 @@ test("summary ends with a recovery line and recall returns the exact original by
   assert.ok(Buffer.from(recalled, "utf8").equals(Buffer.from(original, "utf8")));
   assert.equal(await tool.execute({ id, lines: "2-3" }), original.split("\n").slice(1, 3).join("\n"));
   assert.equal(await new RawStore({ directory: dir }).get(id), original);
-  const tsx = join(root, "node_modules/tsx/dist/cli.mjs");
-  const { stdout } = await promisify(execFile)(process.execPath, [tsx, join(root, "src/cli/index.ts"), "recall", id, "--directory", dir], { encoding: "buffer", maxBuffer: 1 << 24 });
+  const { stdout } = await promisify(execFile)(process.execPath, ["--import", "tsx", join(root, "src/cli/index.ts"), "recall", id, "--directory", dir], { cwd: root, encoding: "buffer", maxBuffer: 1 << 24 });
   assert.ok(stdout.equals(Buffer.from(original, "utf8")), "CLI recall must be byte-identical");
-  const ranged = await promisify(execFile)(process.execPath, [tsx, join(root, "src/cli/index.ts"), "recall", id, "--lines", "903", "--directory", dir]);
+  const ranged = await promisify(execFile)(process.execPath, ["--import", "tsx", join(root, "src/cli/index.ts"), "recall", id, "--lines", "903", "--directory", dir], { cwd: root });
   assert.equal(ranged.stdout, original.split("\n")[902]);
 });
 
@@ -78,7 +77,7 @@ test("read and webfetch summaries in the plugin carry the recovery line; small o
   const page = { output: Array.from({ length: 3000 }, (_, i) => `para ${i} ${"text ".repeat(8)}`).join("\n"), metadata: {} };
   const before = page.output;
   await hook({ tool: "webfetch", args: { url: "https://example.com" } }, page);
-  assert.ok(page.output.endsWith(`\n[full output: lean recall ${"b".repeat(32)}]`));
+  assert.ok(page.output.endsWith(`\n[full output: hugr-lean recall ${"b".repeat(32)}]`));
   assert.deepEqual(stored, [before]);
   const small = { output: "hello", metadata: { exit: 0, truncated: false } };
   await hook({ tool: "bash", args: { command: "echo hello" } }, small);

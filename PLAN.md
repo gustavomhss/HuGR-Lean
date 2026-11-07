@@ -1,5 +1,11 @@
 # HuGR-Lean: completion plan
 
+## Scope of this plan
+The frozen profile and exact-evidence rules below describe the conservative filtering pipeline.
+Default summarize mode has a separate lossy/recovery contract in the [core manual](src/core/MANUAL.md)
+and [adapter manual](src/opencode/MANUAL.md). [Delivery status](docs/DELIVERY.md) records the
+published 0.4.0 artifact and its limitations; this plan is not a release receipt.
+
 ## Intent
 One local MIT TypeScript package. Deterministic post-execution filtering, no extra model call.
 Recognize command identity, validate the entire supported grammar, preserve declared evidence,
@@ -30,7 +36,7 @@ recovery/progress/hook lessons. Copied material records repository, commit, path
 
 ## Done
 Published package installs and filters supported real host calls; required evidence survives;
-unknown output stays exact; raw opt-in works or explicitly reports unavailable; measured overhead
+unknown output stays exact; raw recovery follows the selected mode and explicitly reports unavailable records; measured overhead
 meets declared budgets; lifecycle is documented and reproducible. Compatibility never exceeds tests.
 
 ## Module discipline

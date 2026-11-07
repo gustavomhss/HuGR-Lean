@@ -10,4 +10,7 @@
 - Command/normalization changes alter which outputs reach parsers; run [command](../../tests/command.test.ts), [normalize](../../tests/normalize.test.ts), and [lines](../../tests/lines.test.ts) tests, including exact unknown/CR controls.
 - `FilterResult` statuses/reasons are public API data; replacement changes reach model-visible text and the adapter's raw-save decision, not native execution.
 - Automatic core/registry/renderer changes alter default model-visible text for native `glob`/`grep`/`read`, eligible `bash` and MCP text blocks in the [OpenCode adapter](../opencode/README.md) and CLI command mode; run [automatic core](../../tests/automatic-core.test.ts), [plugin](../../tests/automatic-plugin.test.ts) and `tests/auto-*.test.ts`. Registry order is precedence: specialized first, generic JSON last.
+- Summarize statuses, suffix text and byte accounting affect every embedding host, the adapter
+  and recall UX. A change can require storage even when the old algorithm called it a rewrite.
+  Test failure/unknown exits, CR frames, continuation boundaries, read caps and storage failure.
 - No persisted core schema exists; use [maintenance](MAINTENANCE.md) before revising the [public manual](MANUAL.md).

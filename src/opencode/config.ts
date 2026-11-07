@@ -6,6 +6,7 @@ export interface PluginOptions {
   readonly enabled?: boolean;
   readonly automatic?: boolean;
   readonly excludeCommands?: readonly string[];
+  /** UTF-8 ceiling for all processing/storage: native output or joined MCP text; default 4 MiB. */
   readonly maxInputBytes?: number;
   readonly raw?: false | RawOptions;
   readonly structuredTools?: readonly { readonly tool: string; readonly format: StructuredFormat }[];

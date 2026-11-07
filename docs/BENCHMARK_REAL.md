@@ -140,7 +140,11 @@ Report verification decodes and rehashes all 120 native gzip files, checks UTF-8
 ## Lean 2.0 summarize replay (2026-10-12)
 
 This section replays `summarize()` (0.4.0, default options) offline over the owner's local OpenCode
-session databases.
+session databases. This is a historical 0.4.0 measurement, not a benchmark of later fixes.
+The private corpus is not shipped. No committed reproducer or machine-readable aggregate
+receipt for this specific 343,045-call run is available here, so its tables are recorded results,
+not an independently reproducible public benchmark. The older native-corpus scripts above
+exercise a different dataset and do not reproduce this table.
 
 - Corpus: 27 SQLite files opened read-only (`mode=ro`, `PRAGMA query_only`), 343,045 completed
   tool parts and 1,626.1 MB of tool output. That is the same total as the 2026-10-12 lossless baseline.
@@ -182,7 +186,10 @@ Counts:
 
 **These are upper bounds.** The replay cannot see the extra calls a model makes to recover omitted
 content: `lean_recall`, or a read with a further `offset`. Each of those adds bytes back. A live A/B
-on real sessions has to validate the net reduction.
+on real sessions has to validate the net reduction. A separate historical
+[12-pair A/B in PR #163](https://github.com/gustavomhss/HuGR-Lean/pull/163) is inconclusive; it
+does not establish net token/cost savings or task-quality equivalence. UTF-8 byte savings are
+not token counts, billed cost, correctness or latency measurements.
 
 Sensitivity on the same corpus (rows other than the defaults change only the listed options):
 

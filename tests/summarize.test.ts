@@ -12,7 +12,7 @@ const failureBlock = [
   "  - Expected  4",
   "  + Received  3",
 ];
-const failing = `${filler(400)}\n${failureBlock.join("\n")}\n${filler(400, "later")}\n Test Files  1 failed | 3 passed (4)`;
+const failing = `${filler(400)}\n${failureBlock.join("\n")}\nrunner resumed\n${filler(400, "later")}\n Test Files  1 failed | 3 passed (4)`;
 
 test("failures in a failed command survive whole, in order, with their continuation lines", () => {
   const result = summarize({ tool: "bash", output: failing, metadata: { exit: 1 } });
@@ -74,7 +74,7 @@ test("never worse: output that cannot shrink is returned unchanged", () => {
   }
 });
 
-test("lossless cleanup strips ANSI and CR overwrites and run-length encodes repeated lines", () => {
+test("display cleanup strips ANSI and CR overwrites and run-length encodes repeated lines", () => {
   assert.equal(cleanShell("\x1b[32mok\x1b[0m\r\n10%\r50%\r100%\ndone"), "ok\n100%\ndone");
   const same = "Downloading crates ... same progress line";
   assert.equal(cleanShell(["a", same, same, same, same, "b"].join("\n")), `a\n${same}\n[previous line repeated 3 more times]\nb`);
@@ -138,7 +138,7 @@ test("webfetch caps at 8 KB; grep and glob pass through existing automatic views
 
 test("huge failure lines at the head or tail of a failed command are never cut", () => {
   const first = `Error: ${"head-evidence ".repeat(700)}`, last = `FAILED: ${"tail-evidence ".repeat(700)}`;
-  const output = `${first}\n${filler(600)}\n${last}`;
+  const output = `${first}\nrunner resumed\n${filler(600)}\n${last}`;
   const result = summarize({ tool: "bash", output, metadata: { exit: 1 } });
   assert.equal(result.status, "summarized");
   if (result.status === "summarized") { assert.ok(result.replacement.startsWith(`${first}\n`)); assert.ok(result.replacement.endsWith(`\n${last}`)); }

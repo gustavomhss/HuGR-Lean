@@ -1,5 +1,12 @@
 # OpenCode boundary proof
 
+This page records host experiments and older conservative-mode fixtures, not a guarantee that
+the default summarize mode preserves every failed/unknown output byte-for-byte. Published 0.4.0
+adds summaries and CRLF normalization; see [release status and limitations](DELIVERY.md) and
+the [current adapter manual](../src/opencode/MANUAL.md) for the separate mode contracts.
+Package-name proof below used a preinstalled tarball; npm availability is independently verified
+in [DISTRIBUTION.md](DISTRIBUTION.md).
+
 For optional storage through the real host runtime, run `node scripts/opencode-raw-smoke.mjs`
 after building. This verifies raw off/on, material retention, Unicode and exact Node CLI recovery.
 
