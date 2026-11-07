@@ -49,8 +49,9 @@ const entries = await store.list();
   This allows another validated cleanup attempt after a one-shot temporary unlink failure.
   Persistent temporary cleanup failure preserves ownership for possible later dead-PID recovery;
   it does not promise immediate recovery while that owner is still alive.
-- If both an operation and its cleanup fail, `AggregateError` retains both errors. A cleanup error
-  can reject an otherwise completed operation. Treat uncertain outcomes as uncertain rather than
+- If both an operation and its cleanup fail, `AggregateError` retains both errors, including
+  record read/validation and handle-close failures. Nested lock cleanup retains that aggregate.
+  A cleanup error can reject an otherwise completed operation. Treat uncertain outcomes as uncertain rather than
   assuming a rejected call was side-effect-free. No timestamp-based lock stealing is added.
 
 ## Recall and privacy

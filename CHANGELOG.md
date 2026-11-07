@@ -12,6 +12,7 @@ These source changes are not included in the published `hugr-lean@0.4.0` archive
 - Apply plugin `maxInputBytes` to every native string path before filtering, summarization or storage. Oversized text stays unchanged; direct `summarize()` calls still need a caller-owned input limit.
 - Publish complete raw records before evicting unexpired originals. Prepublication failures retain those originals; postpublication failures can leave an extra record above normal admission limits. This is fail-safe retention, not a strict disk quota.
 - Clean failed owner/recovery initialization only after identity checks, retain ownership on persistent temporary-file cleanup failures, and preserve both operation and cleanup errors in `AggregateError` when both fail. Ambiguous artifacts are not removed automatically.
+- Preserve raw record read/validation errors together with handle-close failures, including when outer lock cleanup also fails; record reads no longer mask the original diagnostic.
 - Correct release/distribution status: 0.4.0 is published. Preserve earlier candidate ledgers as dated history.
 - Separate standalone CLI filtering, pure summarization and raw-store contracts; document published 0.4.0 preservation/cap limitations and recovery requirements.
 - Qualify the historical private-corpus byte benchmark and inconclusive 12-pair A/B; clarify plaintext storage, ACL limits, lazy expiry and recall entering the host/model flow.

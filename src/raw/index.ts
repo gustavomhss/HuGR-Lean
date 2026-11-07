@@ -388,7 +388,7 @@ export class RawStore {
     }
     checkFile(before);
     const handle = await open(path, constants.O_RDONLY | NOFOLLOW | (constants.O_NONBLOCK ?? 0));
-    try {
+    return withCleanup(async () => {
       const stat = await handle.stat();
       checkFile(stat);
       if (!sameFile(before, stat)) throw new Error("Raw record changed during access");
@@ -402,9 +402,7 @@ export class RawStore {
         throw new Error("Invalid raw record");
       }
       return { id, createdAt: data.createdAt, expiresAt: data.expiresAt, bytes: stat.size, stat, text: data.text };
-    } finally {
-      await handle.close();
-    }
+    }, () => handle.close(), "Raw read and close failed");
   }
 
   private async scan(root: string): Promise<{ entries: StoredEntry[]; count: number }> {
